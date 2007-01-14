@@ -36,7 +36,8 @@ bin_PROGRAMS = apertium-pretransfer apertium-destxt apertium-retxt \
                apertium-filter-ambiguity apertium-lextor \
                apertium-gen-wlist-lextor-translation \
                apertium-unchunker apertium-interchunk apertium-postchunk \
-               apertium-lextor-eval ###pruebas-lextor apertium-lextor-search
+               apertium-lextor-eval apertium-tagger-apply-new-rules 
+               ###pruebas-lextor apertium-lextor-search
 
 bin_SCRIPTS =  $(GENERATEDSCRIPTS) apertium-createmodes.awk
 
@@ -87,6 +88,9 @@ apertium_lextor_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
 
 apertium_lextor_eval_SOURCES = apertium-lextor-eval.C
 apertium_lextor_eval_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
+
+apertium_tagger_apply_new_rules_SOURCES = apertium-tagger-apply-new-rules.C
+apertium_tagger_apply_new_rules_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
 
 ###apertium_lextor_search_SOURCES = apertium-lextor-search.C
 ###apertium_lextor_search_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
