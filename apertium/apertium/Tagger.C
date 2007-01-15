@@ -364,6 +364,8 @@ Tagger::train()
     fseek(fcrp, 0, SEEK_SET);
     hmm.train(fcrp);
   }
+  cerr << "Applying forbid and enforce rules...\n";
+  hmm.apply_rules();
 
   fclose(fdic);
   fclose(fcrp);
@@ -417,6 +419,8 @@ Tagger::trainSupervised()
       fseek(fcrp, 0, SEEK_SET);
       hmm.train(fcrp);
     }
+    cerr << "Applying forbid and enforce rules...\n";
+    hmm.apply_rules();
   }
   else
   {
@@ -456,6 +460,8 @@ Tagger::retrain()
     fseek(fcrp, 0, SEEK_SET);
     hmm.train(fcrp);
   }
+  cerr << "Applying forbid and enforce rules...\n";
+  hmm.apply_rules();
   fclose(fcrp);
 
   ftdata = fopen(filenames[1].c_str(), "w");
