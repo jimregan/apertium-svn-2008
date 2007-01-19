@@ -31,12 +31,13 @@ using namespace std;
 void endProgram(char *name)
 {
   cout << basename(name) << ": process a stream with a letter transducer" << endl;
-  cout << "USAGE: " << basename(name) << " [-a|-g|-n|-p|-s] fst_file [input_file [output_file]]" << endl;
+  cout << "USAGE: " << basename(name) << " [-a|-g|-n|-d|-p|-s] fst_file [input_file [output_file]]" << endl;
   cout << "Options:" << endl;
 #if HAVE_GETOPT_LONG
   cout << "  -a, --analysis:         morphological analysis (default behavior)" << endl;
   cout << "  -g, --generation:       morphological generation" << endl;
-  cout << "  -n, --non-marked-gen    morph. generation without unknown word marks " << endl;
+  cout << "  -n, --non-marked-gen    morph. generation without unknown word marks" << endl;
+  cout << "  -d, --debugged-gen      morph. generation with all the stuff" <<endl;
   cout << "  -p, --post-generation:  post-generation" << endl;
   cout << "  -s, --sao:              SAO annotation system input processing" << endl;
   cout << "  -v, --version:          version" << endl;
@@ -71,6 +72,7 @@ int main(int argc, char *argv[])
       {"analysis",        0, 0, 'a'},
       {"generation",      0, 0, 'g'},
       {"non-marked-gen",  0, 0, 'n'},
+      {"debugged-gen",    0, 0, 'd'},
       {"post-generation", 0, 0, 'p'},
       {"sao",             0, 0, 's'},
       {"version",	  0, 0, 'v'},
@@ -81,9 +83,9 @@ int main(int argc, char *argv[])
   {
 #if HAVE_GETOPT_LONG
     int option_index;
-    int c = getopt_long(argc, argv, "agnpsvh", long_options, &option_index);
+    int c = getopt_long(argc, argv, "agndpsvh", long_options, &option_index);
 #else
-    int c = getopt(argc, argv, "agnpsvh");
+    int c = getopt(argc, argv, "agndpsvh");
 #endif    
 
     if(c == -1)
@@ -96,6 +98,7 @@ int main(int argc, char *argv[])
     case 'a':
     case 'g':
     case 'n':
+    case 'd':
     case 'p':
     case 's':
       if(cmd == 0)
@@ -182,7 +185,7 @@ int main(int argc, char *argv[])
     case 'n':
       fstp.initGeneration();
       checkValidity(fstp);
-      fstp.generation(stdin, stdout, false);
+      fstp.generation(stdin, stdout, gm_clean);
       break;
 
     case 'g':
@@ -190,6 +193,11 @@ int main(int argc, char *argv[])
       checkValidity(fstp);
       fstp.generation(stdin, stdout); 
       break;
+      
+    case 'd':
+      fstp.initGeneration();
+      checkValidity(fstp);
+      fstp.generation(stdin, stdout, gm_all);
       
     case 'p':
       fstp.initPostgeneration();

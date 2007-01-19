@@ -31,6 +31,16 @@
 #include <lttoolbox/State.H>
 #include <lttoolbox/TransExe.H>
 
+/**
+ * Kind of output of the generator module
+ */
+enum GenerationMode
+{
+  gm_clean,      // clear all
+  gm_unknown,    // display unknown words, clear transfer and generation tags
+  gm_all         // display all
+};
+
 using namespace std;
 /**
  * Class that implement the FST-based modules of the system
@@ -190,6 +200,7 @@ private:
   unsigned int lastBlank(string const &str);
   void printSpace(unsigned short const val, FILE *output);
   void skipUntil(FILE *input, FILE *output, int const character);
+  static string removeTags(string const &str);
 
 public:
   FSTProcessor();
@@ -202,7 +213,7 @@ public:
   void initBiltrans();
   
   void analysis(FILE *input = stdin, FILE *output = stdout);
-  void generation(FILE *input = stdin, FILE *output = stdout, bool unknown_words = true);
+  void generation(FILE *input = stdin, FILE *output = stdout, GenerationMode mode = gm_unknown);
   void postgeneration(FILE *input = stdin, FILE *output = stdout); 
   string biltrans(string const &input_word, bool with_delim = true);
   pair<string, int> biltransWithQueue(string const &input_word, bool with_delim = true);

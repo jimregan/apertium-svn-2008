@@ -182,7 +182,7 @@ FSTProcessor::readGeneration(FILE *input, FILE *output)
 
   if(feof(input))
   {
-    return 0;
+    return 0xffff;
   }
   
   if(outOfWord)
@@ -192,7 +192,7 @@ FSTProcessor::readGeneration(FILE *input, FILE *output)
       val = fgetc_unlocked(input);
       if(feof(input))
       {
-        return 0;
+        return 0xffff;
       }
     }
     else if(val == '\\')
@@ -201,14 +201,14 @@ FSTProcessor::readGeneration(FILE *input, FILE *output)
       val = fgetc_unlocked(input);
       if(feof(input))
       {
-        return 0;
+        return 0xffff;
       }
       fputc_unlocked(val,output);
       skipUntil(input,output, '^');
       val = fgetc_unlocked(input);
       if(feof(input))
       {
-        return 0;
+        return 0xffff;
       }
     }
     else
@@ -218,7 +218,7 @@ FSTProcessor::readGeneration(FILE *input, FILE *output)
       val = fgetc_unlocked(input);
       if(feof(input))
       {
-        return 0;
+        return 0xffff;
       }
     }
     outOfWord = false;
@@ -260,7 +260,7 @@ FSTProcessor::readGeneration(FILE *input, FILE *output)
     return static_cast<unsigned short>(val);
   }
 
-  return 0;
+  return 0xffff;
 }
 
 void
@@ -617,7 +617,7 @@ FSTProcessor::analysis(FILE *input, FILE *output)
 }
 
 void
-FSTProcessor::generation(FILE *input, FILE *output, bool unknown_words)
+FSTProcessor::generation(FILE *input, FILE *output, GenerationMode mode)
 {
   State current_state = initial_state;
   string sf = "";
@@ -625,13 +625,14 @@ FSTProcessor::generation(FILE *input, FILE *output, bool unknown_words)
   outOfWord = false;
  
   skipUntil(input, output, '^');
-  while(unsigned short val = readGeneration(input, output))
+  unsigned short val;
+  while((val = readGeneration(input, output)) != 0xffff)
   {
     if(val == '$')
     {
       if(sf[0] == '*')
       {
-	if(unknown_words)
+	if(mode != gm_clean)
         {
 	  writeEscaped(sf, output);
 	}
@@ -642,7 +643,18 @@ FSTProcessor::generation(FILE *input, FILE *output, bool unknown_words)
       }
       else if(sf[0] == '@')
       {
-        writeEscaped(sf, output);
+        if(mode == gm_all)
+        {
+          writeEscaped(sf, output);
+        }
+        else if(mode == gm_clean)
+        {
+          writeEscaped(removeTags(sf.substr(1)), output);
+        }
+        else if(mode == gm_unknown)
+        {
+          writeEscaped(removeTags(sf), output);
+        }
       }
       else if(current_state.isFinal(all_finals))
       {
@@ -656,8 +668,20 @@ FSTProcessor::generation(FILE *input, FILE *output, bool unknown_words)
       }
       else
       {
-	fputc_unlocked('#', output);
-	writeEscaped(sf.c_str(), output);
+        if(mode == gm_all)
+        {
+          fputc_unlocked('#', output);
+	  writeEscaped(sf, output);
+        }
+        else if(mode == gm_clean)
+        {
+          writeEscaped(removeTags(sf), output);
+        }
+        else if(mode == gm_unknown)
+        {
+          fputc_unlocked('#', output);
+          writeEscaped(removeTags(sf), output);
+        }
       }
   
       current_state = initial_state;
@@ -1479,5 +1503,19 @@ FSTProcessor::SAO(FILE *input, FILE *output)
   
   // print remaining blanks
   flushBlanks(output);
+}
+
+string
+FSTProcessor::removeTags(string const &str)
+{
+  for(unsigned int i = 0; i < str.size(); i++)
+  {
+    if(str[i] == '<' && i >=1 && str[i-1] != '\\')
+    {
+      return str.substr(0, i);
+    }
+  }
+  
+  return str;
 }
 
