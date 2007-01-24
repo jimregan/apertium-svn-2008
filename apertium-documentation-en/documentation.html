@@ -1,0 +1,1039 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for MkLinux (vers 1 September 2005), see www.w3.org" />
+
+  <title>Apertium: an open-source shallow-transfer machine
+  translation engine for related-language pairs</title>
+<style type="text/css">
+/*<![CDATA[*/
+  .note { background-color : yellow }
+/*]]>*/
+</style>
+</head>
+
+<body>
+  <p><strong>APERTIUM: AN OPEN-SOURCE SHALLOW-TRANSFER MACHINE
+  TRANSLATION PLATFORM</strong></p>
+
+  <p><em>Carme Armentano-Oller, Rafael C. Carrasco, Boyan I. Bonev,
+  Antonio M. Corb&iacute;-Bellot, Mikel L. Forcada, Mireia
+  Ginest&iacute;-Rosell, Sergio Ortiz-Rojas, Juan Antonio
+  P&eacute;rez-Ortiz, Gema Ram&iacute;rez-S&aacute;nchez, Felipe
+  S&aacute;nchez-Mart&iacute;nez,</em></p>
+
+  <p><em>Transducens group, Departament de Llenguatges i Sistemes
+  Inform&agrave;tics Universitat d'Alacant, E-03071 Alacant
+  (Spain).</em></p>
+
+  <p><code>carmentano [at] dlsi.ua.es, carrasco [at] dlsi.ua.es,
+  bib [at] alu.ua.es, acorbi [at] dlsi.ua.es, mlf [at] ua.es,
+  mginesti [at] dlsi.ua.es, sortiz [at] dlsi.ua.es, japerez [at]
+  dlsi.ua.es, gema [at] internostrum.com, fsanchez [at]
+  dlsi.ua.es</code></p>
+
+  <p>January 2007</p>
+
+  <p>This documentation is distributed under the GNU General Public
+  License (<a href=
+  "http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</a>)</p>
+
+  <p><strong>Abstract.</strong> We briefly describe Apertium: an
+  open-source shallow-transfer machine translation platform (engine
+  and toolbox), initially aimed at related-language pairs but
+  recently expanded to deal with more divergent language pairs
+  (such as English&ndash;Catalan). Apertium uses finite-state
+  transducers for lexical processing, hidden Markov models for
+  part-of-speech tagging, and multi-stage finite-state based
+  chunking for structural transfer; the initial design was largely
+  based upon that of systems already developed by the Transducens
+  group at the Universitat d'Alacant, such as interNOSTRUM
+  (Spanish-Catalan, http://www.internostrum.com/welcome.php) and
+  Traductor Universia (Spanish-Portuguese,
+  http://traductor.universia.net). It is possible to use Apertium
+  to build machine translation systems for a variety of language
+  pairs; to that end, the project proposes simple standard formats
+  to encode the linguistic data needed. This paper briefly
+  describes the machine translation engine, the formats it uses for
+  linguistic data, and the compilers that convert these data into
+  an efficient format used by the engine.</p>
+
+  <p><strong>1. Introduction</strong></p><!--
+  <p>[This document is largely based on the paper "An Open-Source
+  Shallow-Transfer Machine Translation Engine for the Romance
+  Languages of Spain", presented by Antonio M. Corb&iacute;-Bellot,
+  Mikel L. Forcada, Sergio Ortiz-Rojas, Juan Antonio
+  P&eacute;rez-Ortiz, Gema Ram&iacute;rez-S&aacute;nchez, Felipe
+  S&aacute;nchez-Mart&iacute;nez, I&ntilde;aki Alegria, Aingeru
+  Mayor, and Kepa Sarasola at the 10th Conference of the European
+  Association for Machine Translation (Budapest, may 30-31,
+  2005).]</p>
+  -->
+
+  <p>This document describes Apertium: an open-source
+  shallow-transfer machine translation (MT) engine, initially aimed
+  at related-language pairs, but recently expanded to deal with
+  more difficult language pairs. The shallow-transfer architecture
+  is most suitable for pairs of closely related languages: Romance
+  language pairs such as Spanish-Catalan, Spanish-Portuguese, or
+  other language pairs such as Czech-Slovak, Danish-Swedish,
+  Kirwanda-Kiswahili, etc, but has also been used for pairs such as
+  English-Catalan.</p>
+
+  <p>Existing MT programs are mostly commercial or use proprietary
+  technologies, which makes them very hard to adapt to new usages,
+  and may use different technologies across language pairs, which
+  makes it very difficult to integrate them in a single
+  multilingual content management system.</p>
+
+  <p>The MT architecture proposed here uses finite-state
+  transducers for lexical processing, hidden Markov models for
+  part-of-speech tagging, and multi-stage finite-state based
+  chunking for structural transfer; the initial design was largely
+  based upon that of systems already developed by the Transducens
+  group such as interNOSTRUM (Spanish-Catalan, Canals-Marote et al.
+  2001, <a href=
+  "http://www.internostrum.com/welcome.php">http://www.internostrum.com/welcome.php</a>)
+  and Traductor Universia (Spanish-Portuguese, Garrido-Alenda et
+  al. 2003, <a href=
+  "http://traductor.universia.net">http://traductor.universia.net</a>);
+  these systems are publicly accessible through the net and used on
+  a daily basis by thousands of users.</p>
+
+  <p>The Apertium MT platform (engine and toolbox) is made of two
+  main packages: <code>lttoolbox</code> (containing all the lexical
+  processing modules and tools) and <code>apertium</code> itself
+  (containing the rest of the engine) under an open-source license
+  (GPL), but includes other tools such as
+  <code>apertium-tagger-training-tools</code>,
+  <code>apertium-eval-translator</code> and
+  <code>apertium-lexical-webform</code>. In addition to the
+  toolbox, open-source data are available for a number of language
+  pairs: Spanish-Catalan (<code>apertium-es-ca</code>) and
+  Spanish-Galician (<code>apertium-es-gl</code>), developed under
+  the <a href="http://www.opentrad.org">OpenTrad</a> consortium,
+  Spanish-Portuguese (<code>apertium-es-pt</code>), [Aranese]
+  Occitan-Catalan (<code>apertium-oc-ca</code>), and French-Catalan
+  (<code>apertium-fr-ca</code>), developed at the University of
+  Alacant, and English-Catalan (<code>apertium-en-ca</code>),
+  developed by at the Universitat d'Alacant and the Universitat
+  Pompeu Fabra (Barcelona). This means that anyone having the
+  necessary computational and linguistic skills can use the
+  Apertium platform and data to expand an existing MT system or
+  even produce an MT system for a new pair of languages. The first
+  version of the whole system, together with linguistic data for
+  the Spanish-Catalan language pair was released on July 29, 2005
+  (becoming Apertium 1.0 in March 2006). The enhanced engine
+  Apertium 2.0 was released on December 22, 2006. <!--
+The description in
+  this document applies to version 1.0 of <code>apertium</code> and
+  version 1.0 of <code>lttoolbox</code>.
+--></p>
+
+  <p>Web prototypes for all the language pairs mentioned above may
+  also be tested on plain texts, RTF and HTML documents and
+  websites at the address <a href=
+  "http://www.apertium.org">www.apertium.org</a>.</p>
+
+  <p>We expect that the introduction of a unified open-source MT
+  architecture will ease some of the mentioned problems (having
+  different technologies for different pairs, closed-source
+  architectures being hard to adapt to new uses, etc.). It will
+  also help shift the current business model from a licence-centred
+  one to a services-centred one (in fact, there are companies which
+  are already making business around the Apertium platform), and
+  favour the interchange of existing linguistic data through the
+  use of the XML-based formats defined in this project.</p>
+
+  <p>The following sections give an overview of the architecture
+  (sec. 2), the formats defined for the encoding of linguistic data
+  (sec. 3), and the compilers used to convert these data into an
+  executable form (sec. 4); finally, we give some concluding
+  remarks (sec. 5).</p>
+
+  <p><strong>2. The Apertium MT architecture</strong></p>
+
+  <p>The MT strategy used in the initial versions of Apertium
+  (Apertium 1.0) has already been described in detail
+  (Canals-Marote et al. 2001; Garrido-Alenda et al. 2003); a sketch
+  will be given here, including the main features of Apertium 2.0.
+  Apertium 1.0 is a classical shallow-transfer or transformer
+  system consisting of an 8-module <em>assembly line</em>; we have
+  found that the strategy used in Apertium 1.0 is sufficient to
+  achieve a reasonable translation quality between related
+  languages such as Spanish (<code>es</code>), Catalan
+  (<code>ca</code>), Galician (<code>gl</code>) or Portuguese
+  (<code>pt</code>). While, for these languages, a rudimentary
+  word-for-word MT model may give an adequate translation for about
+  75% of the text (measured as the percentage of words in a text
+  that do not need correction), the addition of homograph
+  disambiguation, management of contiguous multi-word units, and
+  local reordering and agreement rules may raise the fraction of
+  adequately translated text above 90%. This is the approach used
+  in Apertium 1.0, which we expect it to be useful for other
+  related-language pairs; Apertium 2.0 has a more powerful
+  11-module architecture which may be useful for less related
+  language pairs (such as English and a Romance language) and will
+  be described below in detail.</p>
+
+  <p>To ease diagnosis and independent testing, modules communicate
+  between them using text streams (examples below give an idea of
+  the communication format used). This allows for some of the
+  modules to be used in isolation, independently from the rest of
+  the MT system, for other natural-language processing tasks. The
+  <code>apertium</code> package includes a shell script, also
+  called <code>apertium</code> which calls modules as necessary for
+  a given language pair and a given text format; depending on the
+  language pair, either the 8-module Apertium 1.0 architecture or the full 11-module
+  Apertium 2.0 architecture is chosen (a file, <code>modes.xml</code>, decides which modules to include; for instance, lexical selection may be included or not.).</p>
+
+
+  <p>The modules are organized as in the diagrams in Figure 1
+  (Apertium 1.0) and 2 (Apertium 2.0) at the end of this document.
+  Most of the modules are capable of processing tens of thousands
+  of words per second on current desktop workstations; only the
+  structural transfer module lags behind at several thousands of
+  words per second. The following sections describe each module of
+  the shallow-transfer architecture in detail.</p>
+
+  <p><strong>2.1. The de-formatter</strong></p>
+
+  <p>The de-formatter (generated automatically from a formatting
+  specification file, see 3.4) separates the text to be translated
+  from the format information (RTF, HTML, etc.). Format information
+  is encapsulated so that the rest of the modules treat it as
+  blanks between words. For example, the HTML text in Spanish:</p>
+
+  <p><code>vi &lt;em&gt;una se&ntilde;al&lt;/em&gt;</code></p>
+
+  <p class="note">[perhaps the example could be expanded to contain
+  a contraction, a multiword of some kind, and, who knows, some
+  material for Apertium 2.0 chunking]</p>
+
+  <p>("I saw a signal") would be processed by the de-formatter so
+  that it would encapsulate the HTML tags between brackets and
+  deliver</p>
+
+  <p><code>vi[ &lt;em&gt;]una se&ntilde;al[&lt;/em&gt;]</code></p>
+
+  <p>The character sequences in brackets are treated as simple
+  blanks between words by the rest of the modules. As usual, the
+  escape symbol <code>\</code> is used before symbols
+  <code>[</code> and <code>]</code> if present in the text.</p>
+
+  <p><strong>2.2. The morphological analyser</strong></p>
+
+  <p>The morphological analyser (program <code>lt-proc</code> in
+  package <code>lttoolbox</code> with option <code>-a</code>)
+  tokenizes the text in <em>surface forms</em> (lexical units as
+  they appear in texts) and delivers, for each surface form, one or
+  more <em>lexical forms</em> consisting of lemma, lexical category
+  and morphological inflection information. Tokenization is not
+  straightforward due to the existence, on the one hand, of
+  contractions, and, on the other hand, of multi-word lexical
+  units. For contractions, the system reads in a single surface
+  form and delivers the corresponding sequence of lexical forms
+  (for instance, the <code>es</code> preposition-article
+  contraction <em>del</em> would be analysed into two lexical
+  forms, one for the preposition <em>de</em> and another one for
+  the article <em>el</em>). Multi-word surface forms are analysed
+  in a left-to-right, longest-match fashion; for instance, the
+  analysis for the <code>es</code> preposition <em>a</em> would not
+  be delivered when the input text is <em>a trav&eacute;s de</em>
+  ("through"), which is a multi-word preposition in
+  <code>es</code>. Multi-word surface forms may be invariable (such
+  as a multi-word preposition or conjunction) or inflected (for
+  example, in <code>es</code>, <em>echaban de menos</em>, "they
+  missed", is a form of the imperfect indicative tense of the verb
+  <em>echar de menos</em>, "to miss"). Apertium offers support for
+  many types of inflected multi-word units. The module reads in a
+  binary file compiled from a source-language morphological
+  dictionary (see section 3.1).</p>
+
+  <p>Upon receiving the example text in the previous section, the
+  morphological analyser would deliver</p>
+
+  <p><code>^vi/ver&lt;vblex&gt;&lt;ifi&gt;&lt;1&gt;&lt;sg&gt;$[
+  &lt;em&gt;]^una/un&lt;det&gt;&lt;ind&gt;&lt;f&gt;&lt;sg&gt;/unir&lt;vblex&gt;&lt;prs&gt;&lt;1&gt;&lt;sg&gt;/unir&lt;vblex&gt;&lt;prs&gt;&lt;3&gt;&lt;sg&gt;$
+  ^se&ntilde;al/se&ntilde;al&lt;n&gt;&lt;f&gt;&lt;sg&gt;$[&lt;/em&gt;]</code></p>
+
+  <p>where each surface form is analysed into one or more lexical
+  forms. For example, <em>vi</em> is analysed into lemma
+  <em>ver</em>, lexical category lexical verb (<code>vblex</code>),
+  indefinite indicative (<code>ifi</code>), 1st person, singular,
+  whereas <em>una</em> (a homograph) receives three analyses:
+  <em>un</em>, determinant, indefinite, feminine singular, and two
+  forms of the present subjunctive (prs) of the verb <em>unir</em>
+  ("to join"). The characters "^" and "$" delimit the analyses for
+  each surface form; lexical forms for each surface form are
+  separatd by "/"; angle brackets "&lt;...&gt;" are used to delimit
+  grammatical symbols. The string after the "^" and before the
+  first "/" is the surface form as it appears in the source input
+  text.</p>
+
+  <p>Multi-word SFs may be invariable (such as multi-word
+  prepositions or conjunctions) or inflected (for example, in
+  Portuguese, <em>tinham saudades</em>, "they missed", is a form of
+  the imperfect indicative tense of the verb <em>ter saudades</em>,
+  "to miss"). Apertium offers support for many types of inflected
+  multiword units.</p>
+
+  <p><strong>2.3. The part-of-speech tagger</strong></p>
+
+
+  <p>As has been shown in the previous example, some surface forms
+  (about 30% in Romance languages) are homographs, ambiguous forms
+  for which the morphological analyser delivers more than one
+  lexical form. The part-of-speech tagger (program
+  <code>apertium-tagger</code> in package <code>apertium</code>
+  with option <code>--tagger</code>) chooses one of them, according
+  to the lexical forms of neighbouring words. When translating
+  between related languages, ambiguous surface forms are one of the
+  main sources of errors when incorrectly solved.</p>
+
+  <p>The part-of-speech tagger is trained from a tagger definition
+  file (see section 3.2) and corpus data. The tagger has options
+  <code>--tagger</code> for tagging (during machine translation),
+  <code>--train</code> for unsupervised training and
+  <code>--supervised</code> for supervised training (offline, when
+  building the machine translation system). The result of training
+  is a file containing a first-order hidden Markov model (HMM) that
+  is then used for part-of-speech tagging. This file also contains
+  the patterns used to define the "coarse tags" used in the tagger
+  to group the "fine tags" delivered by the morphological analyser
+  and the information about the ambiguity classes present during
+  training. As has been mentioned, two training methods are
+  possible: the unsupervised one uses a larger amount (millions of
+  words) of untagged text processed by the morphological analyser
+  whereas the supervised one uses a smaller amount of tagged text
+  (tens of thousands of words) where a lexical form for each
+  homograph has been manually selected. The second method usually
+  leads to a slightly better performance (about 96% correct
+  part-of-speech tags considering homographs and non-homographs).
+  We are currently building a collection of open corpora (both
+  untagged and tagged) using texts that will released (as part of
+  language-pair data) under open licenses.</p>
+
+  <p>In addition to the two training method exposed above, package
+  <code>apertium-tagger-training-tools</code> implements an
+  unsupervised training method that uses information not only from
+  the source language, but also from the target language
+  (S&aacute;nchez-Mart&iacute;nez et al. 2004;
+  S&aacute;nchez-Mart&iacute;nez et al. 2006). To this end, the MT
+  modules after the part-of-speech tagger are used in conjunction
+  with a classical language model of the target language trained on
+  representative target language corpora. After training a file
+  containing the HMM used for part-of-speech tagging by program
+  <code>apertium-tagger</code> is produced. This training method
+  leads to better performance than the unsupervised training method
+  implemented inside package <code>apertium</code> and may simplify
+  the initial building of a machine translation system for a new
+  pair of languages.</p>
+
+  <p>The result of processing the example text delivered by the
+  morphological analyser with the part-of-speech tagger would
+  be</p>
+
+  <p><code>^ver&lt;vblex&gt;&lt;ifi&gt;&lt;1&gt;&lt;sg&gt;$[
+  &lt;em&gt;]^un&lt;det&gt;&lt;ind&gt;&lt;f&gt;&lt;sg&gt;$
+  ^se&ntilde;al&lt;n&gt;&lt;f&gt;&lt;sg&gt;$[&lt;/em&gt;]</code></p>
+
+  <p>where the correct lexical form (determiner) has been selected
+  for the word <em>una</em>.</p>
+
+  <p><strong>2.4. The lexical selection module (Apertium
+  2.0)</strong></p>
+
+  <p>The lexical selection module (program
+  <code>apertium-lextor</code> inside package <code>apertium</code>
+  with option <code>--lextor</code>) chooses, according to the
+  surrounding context, the <em>translation sense</em> of those
+  lexical forms that can be translated in more than one way. For
+  each lexical form, the selected translation sense determines the
+  target-language lexical form finally delivered by the lexical
+  transfer module (see next section). This module is optional and
+  under development, there is no language package using it by the
+  time of writing this lines.</p>
+
+  <p>The lexical selection is done by consulting co-occurrence
+  models of source-language lemmas previously estimated in an
+  unsupervised way. The training consists, on the one hand, of the
+  training of co-occurrence models of lemmas in the target language
+  from a huge target-language corpus (option
+  <code>--trainwrd</code>), and, on the other hand, of the training
+  of co-occurrences models of lemmas from a huge source-language
+  corpus for the translation senses involved (option
+  <code>--trainlch</code>). The estimation of the later is done by
+  using the bilingual dictionary of the system and consulting the
+  co-occurrence models of target-language lemmas previously
+  estimated.</p>
+
+  <p class="note">[Still being written. An example should be given.
+  (Felipe)]</p>
+
+  <p><strong>2.5. The lexical transfer module</strong></p>
+
+  <p>The lexical transfer module which is implemented inside the
+  <code>lttoolbox</code> library is called by the structural
+  transfer module (see next section); it reads each source-language
+  lexical form and delivers a corresponding target-language lexical
+  form. The module reads in a binary file compiled from a bilingual
+  dictionary (see section 3.1). The dictionary contains a single
+  equivalent for each source-language entry; that is, no word-sense
+  disambiguation is performed. For some words, multi-word entries
+  are used to safely select the correct equivalent in
+  frequently-occurring fixed contexts. This approach has been used
+  with very good results in Traductor Universia and
+  interNOSTRUM.</p>
+
+  <p>Each of the lexical forms in the running example would be
+  translated into Catalan as follows:</p>
+
+  <p><code>ver&lt;vblex&gt; ---&gt; veure&lt;vblex&gt;</code></p>
+
+  <p><code>un&lt;det&gt; ---&gt; un&lt;det&gt;</code></p>
+
+  <p><code>se&ntilde;al&lt;n&gt;&lt;f&gt; ---&gt;
+  senyal&lt;n&gt;&lt;m&gt;</code></p>
+
+  <p>where the remaining grammatical symbols for each lexical form
+  would be simply copied to the target-language output. Note the
+  gender change to masculine when translating <em>se&ntilde;al</em>
+  into Catalan <em>senyal</em>.</p>
+
+  <p><strong>2.6. The structural transfer module in Apertium
+  1.0</strong></p>
+
+  <p>In Apertium 1.0, a generic structural transfer module
+  interprets a slightly preprocessed version of the structural
+  transfer specfication file (see 3.3); it uses finite-state
+  pattern matching to detect (in the usual left-to-right,
+  longest-match way) fixed-length patterns of lexical forms (chunks
+  or phrases) needing special processing due to grammatical
+  divergences between the two languages (gender and number changes
+  to ensure agreement in the target language, word reorderings,
+  lexical changes such as changes in prepositions, etc.) and
+  performs the corresponding transformations.</p>
+
+  <p>Optionally, the module may be compiled from the structural
+  transfer specification file to increase slightly the translation
+  speed, but in this case each language pair would have a different
+  structural transfer module (this was the usual situation until
+  the release of Apertium 1.0 and is not supported anymore).</p>
+
+  <p>In the running example, a determiner-noun rule is used to
+  change the gender of the determiner so that it agrees with the
+  noun; the result is</p>
+
+  <p><code>^veure&lt;vblex&gt;&lt;ifi&gt;&lt;1&gt;&lt;sg&gt;$[
+  &lt;em&gt;]^un&lt;det&gt;&lt;ind&gt;&lt;m&gt;&lt;sg&gt;$<br />
+  ^senyal&lt;n&gt;&lt;m&gt;&lt;sg&gt;$[&lt;/em&gt;]</code></p>
+
+  <p>Currently, the funcionality of the Apertium 1.0 structural
+  transfer module is provided by module <code>transfer</code> (also
+  called <code>intrachunk</code>) in apertium 2.0; see the next
+  section for details. Depending on root-element <code>default</code>
+  attribute of the specification files, module <code>transfer</code>
+  acts as a complete Apertium 1.0 structural transfer module (either
+  the value for this attribute is <code>"lu"</code> or is not
+  specified) or as the first stage of Apertium 2.0 structural
+  transfer (only if <code>default="chunk"</code>).</p>
+
+  <p><strong>2.7. The structural transfer modules in Apertium
+  2.0</strong></p>
+
+  <p class="note">[still being written: Sergio check]</p>
+
+  <p>In Apertium 2.0, structural transfer is performed in a
+  three-stage process:</p>
+
+  <ul>
+    <li>The first module (<code>intrachunk</code> or
+    <code>transfer</code>) divides the input sequence of lexical
+    forms in <em>chunks</em>, as specified by the patterns defining
+    each kind of chunk, performs an internal processing (very
+    similar to that of Apertium 1.0 structural transfer) and then
+    writes each chunk with a chunk type label, chunk attributes,
+    and chunk contents (basically target-language lexical forms).
+    This is the module that calls the lexical transfer module
+    described in 2.4.</li>
+
+    <li>The second module (<code>interchunk</code>) detects patterns
+    of target-language chunks and writes sequences of target-language
+    chunks (reordering and modifying input chunks or even adding new
+    chunks if needed), as specified by rules that use the information
+    provided by chunk parameters (the contents of chunks are not
+    modified in this stage).</li>
+
+    <li>The third module (<code>postchunk</code>) performs
+    "finishing" operations for each chunk (using, if necessary,
+    information computed for each chunk in the previous step), and
+    writes the resulting (modified) target-language lexical forms contained inside each chunk.</li>
+  </ul>
+
+  <p><em>2.7.1. Structural transfer module #1:
+  <code>intrachunk</code></em></p>
+
+  <p>The <code>transfer</code> or <code>intrachunk</code> module is
+  very similar to the single structural transfer module used in
+  Apertium 1.0; indeed, as has been said, it functions either as
+  the first structural transfer stage in Apertium 2.0 or as the
+  only structural transfer module in Apertium 1.0, depending on the
+  compiled language data it reads.</p>
+
+  <p>The main difference is in the output; it either outputs a
+  sequence of lexical forms as described in 2.6 (Apertium 1.0) or a
+  sequence of named <em>chunks</em> containing sequences of lexical
+  forms (Apertium 2.0), ready to be processed by the
+  <code>interchunk</code> module (see the next section).</p>
+
+  <p>For example, the phrase (in intrachunk input
+  format) <code>^The&lt;det&gt;$ ^house&lt;n&gt;&lt;sg&gt;$
+  ^is&lt;vb&gt;&lt;p3&gt;&lt;sg&gt;$ ^green&lt;adj&gt;$</code> can be
+  encapsulated as <code>^Subj&lt;sg&gt;{^the&lt;det&gt;$
+  ^house&lt;n&gt;&lt;sg&gt;$}
+  ^vbbe{^is&lt;vb&gt;&lt;p3&gt;&lt;sg&gt;$}$
+  ^adj{^green&lt;adj&gt;$}$</code></p>.  Note that the case
+  information in the first word of the phrase pass to the chunk name,
+  for the purpose of maintaining such information when reordering
+  phrases.
+
+  <p><em>2.7.2. Structural transfer module #2:
+  <code>interchunk</code></em></p>
+
+  <p class="note">[to be written]</p>
+
+  <p><em>2.7.3. Structural transfer module #3:
+  <code>postchunk</code></em></p>
+
+  <p class="note">[to be written]</p>
+
+  <p><strong>2.8. The morphological generator</strong></p>
+
+  <p>The morphological generator (program <code>lt-proc</code> in
+  package <code>lttoolbox</code> with option <code>-g</code>)
+  delivers a target-language surface form for each target-language
+  lexical form, by suitably inflecting it. The module reads in a
+  binary file compiled from a target-language morphological
+  dictionary (see section 3.1). The result for the running example
+  would be</p>
+
+  <p><code>vaig veure[ &lt;em&gt;]un senyal[&lt;/em&gt;]</code></p>
+
+  <p><strong>2.9. The post-generator</strong></p>
+
+  <p>The post-generator (program <code>lt-proc</code> in package
+  <code>lttoolbox</code> with option <code>-p</code>) performs
+  orthographical operations such as contractions and
+  apostrophations. The module reads in a binary file compiled from
+  a rule file expressed as a dictionary (section 3.1). The
+  post-generator is usually <em>dormant</em> (just copies the input
+  to the output) until a special <em>alarm</em> symbol contained in
+  some target-language surface forms <em>wakes it up</em> to
+  perform a particular string transformation if necessary; then it
+  goes <em>back to sleep</em>.</p>
+
+  <p>For example, in Catalan, clitic pronouns in contact may change
+  before a verb: <em>em</em> ("to me") and <em>ho</em> ("it")
+  contract into <em>m'ho</em>, <em>em</em> and <em>els</em>
+  ("them") contract into <em>me'ls</em> and <em>em</em> and
+  <em>la</em> ("her") are written <em>me la</em>. To signal these
+  changes, linguists prepend an "alarm" to the target-language
+  surface form "em" in target-language dictionaries and write
+  post-generation rules to ensure the changes described.</p>
+
+  <p><strong>2.10. The re-formatter</strong></p>
+
+  <p>Finally, the re-formatter restores the format information
+  encapsulated by the de-formatter into the translated text and
+  removes the encapsulation sequences used to protect certain
+  characters in the source text. The result for the running example
+  would be the correct translation of the HTML text:</p>
+
+  <p><code>vaig veure &lt;em&gt;un senyal&lt;/em&gt;</code></p>
+
+  <p><strong>3. Formats for linguistic data</strong></p>
+
+  <p>An adequate documentation of the code and auxiliary files is
+  crucial to the success of open-source software. In the case of a
+  MT system, this implies carefully defining a systematic format
+  for each source of linguistic data used by the system. The
+  formats used by this architecture are based on XML (World Wide
+  Web Consortium, 2004) for interoperability; in particular, for
+  easier parsing, transformation, and maintenance.</p>
+
+  <p>The XML formats for each type of linguistic data are defined
+  through conveniently-designed XML document-type definitions
+  (DTDs) which may be found inside the <code>apertium</code>
+  package (available through <a href=
+  "http://www.apertium.org">www.apertium.org</a>). On the one hand,
+  the success of the OS MT engine heavily depends on the acceptance
+  of these formats by other groups; this is indeed the mechanism by
+  which <em>de facto</em> standards appear. Acceptance may be eased
+  by the use of an interoperable XML-based format which, as
+  mentioned, simplifies the transformation of data from and towards
+  it, and also by the availability of tools to manage linguistic
+  data in these formats; the current project is expected to produce
+  transformation and management tools in a later phase. But, on the
+  other hand, acceptance of the formats also depends on the success
+  of the translation engine itself.</p>
+
+  <p><strong>3.1. Dictionaries (lexical processing)</strong></p>
+
+  <p>Monolingual morphological dictionaries, bilingual dictionaries
+  and post-generation dictionaries use a common format, defined by
+  DTD <code>dix.dtd</code> in package <code>apertium</code>.</p>
+
+  <p>Morphological dictionaries establish the correspondences
+  between surface forms and lexical forms and contain (a) a
+  definition of the alphabet (used by the tokenizer), (b) a section
+  defining the grammatical symbols used in a particular application
+  to specify lexical forms (symbols representing concepts such as
+  noun, verb, plural, present, feminine, etc.), (c) a section
+  defining paradigms (describing reusable groups of correspondences
+  between parts of surface forms and parts of lexical forms), and
+  (d) one or more labelled dictionary sections containing lists of
+  surface form-lexical form correspondences for whole lexical units
+  (including contiguous multi-word units). Paradigms may be used
+  directly in the dictionary sections or to build larger paradigms
+  (at the conceptual level, paradigms represent the regularities in
+  the inflective system of the corresponding language).</p>
+
+  <p>Bilingual dictionaries have a very similar structure and
+  establish correspondences between source-language lexical forms
+  and target-language lexical forms, but seldom use paradigms.</p>
+
+  <p>Finally, post-generation dictionaries are used to establish
+  correspondences between input and output strings corresponding to
+  the orthographical transformations to be performed by the
+  post-generator on the target-language surface forms generated by
+  the generator.</p>
+
+  <p><strong>3.2. Tagger definition</strong></p>
+
+  <p>Source-language lexical forms delivered by the morphological
+  analyser are defined in terms of fine part-of-speech tags (for
+  example, the word <em>cant&aacute;bamos</em> (es, "we sang") has
+  lemma <em>cantar</em> ("sing"), category <em>verb</em>, and the
+  following inflection information: indicative, imperfect, 1st
+  person, plural), which are necessary in some parts of the MT
+  engine (structural transfer, morphological generation); however,
+  for the purpose of efficient disambiguation, these fine
+  part-of-speech tags may be grouped in coarser part-of-speech tags
+  (such as verb in personal form).</p>
+
+  <p>The tagger definition file is also an XML file (the
+  corresponding DTD, <code>tagger.dtd</code>, may also be found in
+  the <code>apertium</code> package) where (a) coarser tags are
+  defined in terms of fine tags, both for single-word and for
+  multi-word units, (b) constraints may defined to forbid or
+  enforce certain sequences of part-of-speech tags, and (c)
+  priority lists are used to decide which fine part-of-speech tag
+  to pass on to the structural transfer module when the coarse
+  part-of-speech tag contains more than a fine tag. The tagger
+  definition file is used to define the behaviour of the
+  part-of-speech tagger both when it is being trained on a
+  source-language corpus and when it is running as part of the MT
+  system.</p>
+
+  <p><strong>3.3. Structural transfer in Apertium 1.0</strong></p>
+
+  <p>An XML format for shallow structural transfer rules has also
+  been established; a commented DTD (<code>transfer.dtd</code>) may
+  be found inside the <code>apertium</code> package.</p>
+
+  <p>Structural transfer rule files contain pattern--action rules
+  which describe what has to be done for each pattern (much like in
+  languages such as <code>perl</code> or <code>lex</code>).
+  Patterns are defined in terms of categories which are in turn
+  defined (in the preamble) in terms of fine morphological tags
+  and, optionally, lemmas for lexicalized rules. For example, a
+  commonly used pattern, <em>determiner-noun</em>, has an
+  associated action which sets the gender and number of the
+  determiner to those of the noun to ensure gender and number
+  agreement.</p>
+
+  <p>Using a declarative notation such as XML is rather
+  straightforward for the pattern part of rules but using it for
+  the action (procedural) part means stretching it a bit; we have,
+  however, found a reasonable way to express linguistic
+  transformations in XML. In this way, we follow as close as
+  possible the declarative approach used in the XML files defining
+  the linguistic data used for the tagger and for the lexical
+  processing modules.</p>
+
+  <p><strong>3.4. Structural transfer in Apertium 2.0</strong></p>
+
+  <p>The three modules of the structural transfer in Apertium 2.0 are
+  specified in a very similar format. The behaviour of the
+  interchunk/transfer program is specified jointly by a XML file that
+  follows the DTD stated in the transfer.dtd file of the Apertium 2.0
+  setup, and a compiled bilingual dictionary.  The behaviour of
+  interchunk and postchunk modules is defined by XML files that follow
+  the DTDs written in <code>interchunk.dtd</code>
+  and <code>postchunk.dtd</code> files, respectively.  No bilingual
+  dictionary is required for these last two programs.</p>
+  <p>The compiler for all three modules is the
+  program <code>apertium-preprocess-transfer</code>.  In fact, the
+  three formats are highly compatible, and perhaps future versions of
+  Apertium will merge these three programs in a single program (that will be used
+  repeatedly, as happens with <code>lt-proc</code>), and the three
+  DTDs in an unique one too.</p>
+
+  <p>The interchunk module of Apertium 2.0 works much like transfer module
+  in Apertium 1.0 (as said, it is in fact the same program).  The only
+  difference in the processing  is that the output of the interchunk
+  module consists not of encapsulated words but instead of chunks (named
+  encapsulations of encapsulated words).  These chunks will be
+  processed in the next two modules like words were in Apertium 1.0
+  The chunk contents (the words) is cannot be changed by
+  the interchunk module.  This encapsulation will disappear at the end
+  of the processing of the postchunk module, and the words contained
+  will be output in a format suitable for the generation process.</p>
+
+  <p class="note">Perhaps the formats for the language of
+  specification of transference rules for all three modules will be
+  merged in future versions of Apertium.  At present, we preferred to
+  decouple all three modules although the similarities of all of them
+  are very high.</p>
+  
+  <p class="note">[Mikel] I have corrected the above a bit. Perhaps the previous comment can be eliminated.</p>
+
+
+  <p><strong>3.5. De-formatter and re-formatter</strong></p>
+
+  <p>De-formatters and re-formatters are generated from <em>format
+  management files</em> specified by the DTD
+  <code>format.dtd</code> in package <code>apertium</code>. These
+  are not linguistic data but are considered in this section for
+  convenience. Format management files for RTF
+  (<code>format-rtf.xml</code>), HTML
+  (<code>format-html.xml</code>) and plain ISO-8859-1 text
+  (<code>format-txt.xml</code>) are provided in package
+  <code>apertium</code>. Scripts <code>apertium-gen-deformat</code>
+  and <code>apertium-gen-reformat</code> in the
+  <code>apertium</code> package generate C++ de-formatters and
+  re-formatters respectively for each format using <code>lex</code>
+  as an intermediate representation.</p>
+
+  <p><strong>4. Compilers and preprocessors</strong></p>
+
+  <p>The Apertium toolbox contains compilers to convert the
+  linguistic data into the corresponding efficient form used by the
+  modules of the engine. Two main compilers are used in this
+  project: one for the four lexical processing modules of the
+  system and another one for the structural transfer.</p>
+
+  <p><strong>4.1. Lexical processing</strong></p>
+
+  <p>The lexical processor compiler (<code>lt-comp</code> in
+  package <code>lttoolbox</code>) is very fast (it takes about a
+  minute to compile the current dictionaries in the system) thanks
+  to the use of advanced transducer building strategies and to the
+  minimization of partial finite-state transducers (Roche &amp;
+  Schabes 1997) during construction . This makes linguistic data
+  development much easier, because the effect on the whole system
+  of changing a rule or a lexical item may be tested almost
+  immediately.</p>
+
+  <p>The four lexical processing modules (morphological analyser,
+  lexical transfer, morphological generator, post-generator) are
+  implemented as a single program (<code>lt-proc</code> in package
+  <code>lttoolbox</code>) which reads binary files containing a
+  compact and efficient representation of a class of finite-state
+  transducers (in particular, augmented letter transducers,
+  Garrido-Alenda et al. 2002).</p>
+
+  <p>[A mention to how the bilingual dictionary is used by the
+  lexical selection module is probably needed here]</p>
+
+  <p><strong>4.2. Structural transfer</strong></p>
+
+  <p class="note">[this has to be updated for Apertium 2.0; perhaps
+  a new section is needed]</p>
+
+  <p>The current structural transfer preprocessor (file
+  <code>apertium-preprocess-transfer</code> in package
+  <code>apertium</code>) reads in a structural transfer rule file
+  (see section 3.3) and generates a file with precompiled patterns
+  and indexes the actions of the rules of the structural transfer
+  module specification.</p>
+
+  <p>As mentioned in section 2.5, structural transfer rules for a
+  given language pair may also be <em>compiled</em> into a specific
+  structural transfer module, if a slight increase in translation
+  speed is desired (this was the default until the release of
+  Apertium 1.0, but is not supported in later versions).
+  <span class="note">[Check this]</span></p>
+
+  <p><strong>5. Concluding remarks</strong></p>
+
+  <p>This document describes Apertium: an open-source
+  shallow-transfer machine translation platform (engine and
+  toolbox) for related-language pairs, developed in a large,
+  government-funded open-source development project. It may be
+  adapted to translating between Romance languages of Europe
+  (French, Portuguese, Italian, Occitan, etc.), between European
+  related language pairs outside the Romance group (Danish-Swedish
+  Czech-Slovak, etc.), or even between other related languages (for
+  instance, Kirwanda-Swahili); the newest version, Apertium 2.0,
+  may be an interesting choice when dealing with more divergent
+  language pairs such as English&ndash;Catalan.</p>
+
+  <p>The Apertium shallow-transfer engine has not been designed
+  from scratch but may rather be seen as a complete open-source
+  rewriting and extension of an existing engine (interNOSTRUM,
+  Canals-Marote et al. 2001; Traductor Universia, Garrido-Alenda et
+  al. 2003) which is currently used daily by thousands of people
+  through the net, and the corresponding redesign of linguistic
+  data formats and rewriting of compilers.</p>
+
+  <p>The code (in two packages, <code>lttoolbox</code> and
+  <code>apertium</code>), together with pilot Spanish-Catalan
+  (package <code>apertium-es-ca</code>), Spanish-Galician
+  (<code>apertium-es-gl</code>), and Spanish-Portuguese
+  (<code>apertium-es-pt</code>) linguistic data is available
+  through <a href=
+  "http://sourceforge.net/projects/apertium/">http://sourceforge.net/projects/apertium/</a>.</p>
+
+  <p><strong>Acknowledgements:</strong> This work has been funded
+  by the Spanish Ministry of Industry, Commerce and Tourism through
+  projects FIT-340101-2004-3 and FIT-340001-2005-2, by the
+  Generalitat de Catalunya (Catalan autonomous government, in
+  2006), and has also had support from project TIC2003-08681-C02-01
+  (Spanish Ministry of Science and Technology). Felipe
+  S&aacute;nchez-Mart&iacute;nez is supported by the Spanish
+  Ministry of Science and Education and the European Social Fund
+  through grant BES-2004-4711.</p>
+
+  <p><strong>6. Further reading</strong></p>
+
+  <p class="note">[cite other existing Apertium publications?]</p>
+
+  <ul>
+    <li>Armentano-Oller, C., Carrasco, R.C., Corb&iacute;-Bellot,
+    A.M., Forcada, M.L., Ginest&iacute;-Rosell, M., Ortiz-Rojas,
+    S., P&eacute;rez-Ortiz, J.A., Ram&iacute;rez-S&aacute;nchez,
+    G., S&aacute;nchez-Mart&iacute;nez, F., Scalco, M.A. (2006)
+    "Open-source Portuguese-Spanish machine translation." In
+    <em>Lecture Notes in Computer Science</em>
+    <strong>3960</strong> (Computational Processing of the
+    Portuguese Language, Proceedings of the 7th International
+    Workshop on Computational Processing of Written and Spoken
+    Portuguese, PROPOR 2006), p. 50-59, May 13-17, 2006, ME - RJ /
+    Itatiaia, Rio de Janeiro, Brazil.</li>
+
+    <li>Corb&iacute;-Bellot, A.M., Forcada, M.L., Ortiz-Rojas, S.,
+    P&eacute;rez-Ortiz, S., Ram&iacute;rez-S&aacute;nchez, G.,
+    S&aacute;nchez-Mart&iacute;nez, F., Alegria, I., Mayor, A.,
+    Sarasola, K.(2005) "An Open-Source Shallow-Transfer Machine
+    Translation Engine for the Romance Languages of Spain", Proc.
+    10th Conference of the European Association for Machine
+    Translation (Budapest, may 30-31, 2005).</li>
+
+    <li>Forcada, M.L., Bonev, B.I., Ortiz-Rojas, S.,
+    P&eacute;rez-Ortiz, J.A., Ram&iacute;rez-S&aacute;nchez, G.,
+    S&aacute;nchez-Mart&iacute;nez, F., Ginest&iacute;-Rosell, M.
+    (coord.) (2006) "Documentaci&oacute;n del sistema de
+    c&oacute;digo abierto 'Opentrad Apertium' de traducci&oacute;n
+    autom&aacute;tica de transferencia sint&aacute;ctica
+    superficial" (in Spanish), available from <a href=
+    "http://www.sf.net/projects/apertium/">http://www.sf.net/projects/apertium/</a>
+    as package <code>apertium-documentation-es</code>.</li>
+
+    <li>Grup Transducens (2006) "Documentaci&oacute; de les
+    modificacions al sistema de traducci&oacute; autom&aacute;tica
+    Apertium per al projecte 'Traducci&oacute; Autom&agrave;tica de
+    Codi Obert per al Catal&agrave;'" (in Catalan), available from
+    <a href=
+    "http://www.sf.net/projects/apertium/">http://www.sf.net/projects/apertium/</a>
+    as package <code>apertium2-documentation-ca</code>.</li>
+  </ul>
+
+  <p><strong>7. References cited</strong></p>
+
+  <p class="note">[make sure all references are given and they are
+  correct]</p>
+
+  <ul>
+    <li>Canals-Marote, R., A. Esteve-Guill&eacute;n, A.
+    Garrido-Alenda, M.I. Guardiola-Savall, A. Iturraspe-Bellver, S.
+    Montserrat-Buendia, S. Ortiz-Rojas, H. Pastor-Pina, P.M.
+    P&eacute;rez-Ant&oacute;n, M.L. Forcada (2001). "The
+    Spanish-Catalan machine translation system interNOSTRUM", in B.
+    Maegaard, ed., Proceedings of MT Summit VIII: Machine
+    Translation in the Information Age, 73-76.</li>
+
+    <li>Carreras, X., I. Chao, L. Padr&oacute; and M. Padr&oacute;
+    (2004). "FreeLing: An Open-Source Suite of Language Analyzers",
+    in M.T. Lino, M. F. Xavier, F. Ferreira, R. Costa, R. Silva,
+    ed., Proceedings of the 4th International Conference on
+    Language Resources and Evaluation (LREC'04). Lisbon,
+    Portugal.</li>
+
+    <li>D&iacute;az de Ilarraza, A., A. Mayor, K. Sarasola (2000).
+    "Reusability of wide-coverage linguistic resources in the
+    construction of a multilingual machine translation system", in
+    Lewis, D., Mitkov, R., ed., Proceedings of MT 2000 (Univ. of
+    Exeter, UK, 19-22 Nov. 2000), .</li>
+
+    <li>Garrido, A., Amaia Iturraspe, Sandra Montserrat,
+    Herm&iacute;nia Pastor, Mikel L. Forcada (1999). "A compiler
+    for morphological analysers and generators based on
+    finite-state transducers", Procesamiento del Lenguaje Natural,
+    25, 93-98.</li>
+
+    <li>Garrido-Alenda, A., M.L. Forcada (2001). "MorphTrans: un
+    lenguaje y un compilador para especificar y generar
+    m&oacute;dulos de transferencia morfol&oacute;gica para
+    sistemas de traducci&oacute;n autom&aacute;tica", Procesamiento
+    del Lenguaje Natural, 27, 157-162.</li>
+
+    <li>Garrido-Alenda, A. Mikel L. Forcada, Rafael C. Carrasco
+    (2002). "Incremental construction and maintenance of
+    morphological analysers based on augmented letter transducers",
+    in Mitamura, T., Nyberg, E., ed., Proceedings of TMI 2002
+    (Theoretical and Methodological Issues in Machine Translation,
+    Keihanna/Kyoto, Japan, March 2002), 53-62.</li>
+
+    <li>Garrido-Alenda, A., Patr&iacute;cia Gilabert Zarco, Juan
+    Antonio P&eacute;rez Ortiz, Antonio
+    Pertusa-Ib&aacute;&ntilde;ez, Gema
+    Ram&iacute;rez-S&aacute;nchez, Felipe
+    S&aacute;nchez-Mart&iacute;nez, M&iacute;riam A. Scalco, Mikel
+    L. Forcada (2004). "Shallow parsing for Portuguese-Spanish
+    Machine Translation", in Branco, A. and Mendes, A., Ribeiro,
+    R., Language technology for Portuguese: shallow processing
+    tools and resources , 135-144.</li>
+
+    <li>Roche, E., Schabes, Y. (1997). "Introduction", in Roche,
+    E., Schabes, Y., Finite-state language processing , 1-65.</li>
+
+    <li>S&aacute;nchez-Mart&iacute;nez, F., J.A.
+    P&eacute;rez-Ortiz, M.L. Forcada (2004). "Exploring the use of
+    target-language information to train the part-of-speech tagger
+    of machine translation systems", in Vicedo, J. L.,
+    Mart&iacute;nez-Barco, P., Mu&ntilde;oz, R. and Saiz Noeda, M.
+    ed., Lecture Notes in Computer Science 3230 (Advances in
+    Natural Language Processing, Proceedings of EsTAL -
+    Espa&ntilde;a for Natural Language Processing), p. 137-148,
+    October 20-22, 2004, Alicante, Spain.</li>
+
+    <li>S&aacute;nchez-Mart&iacute;nez, F., J.A.
+    P&eacute;rez-Ortiz, M.L. Forcada (2006). "Speeding up
+    target-language driven part-of-speech tagger training for
+    machine translation", in Gelbukh, A. and Reyes-Garcia, C.A.
+    ed., Lecture Notes in Computer Science 4293 (MICAI 2006:
+    Advances in Artificial Intelligence, Proceedings of the 5th
+    Mexican International Conference on Artificial Intelligence),
+    p. 844-854, November 13-17, 2006, Apizaco, Mexico.</li>
+
+    <li>World Wide Web Consortium (2004). "Extensible Markup
+    Language (XML)", http://www.w3.org/XML/.</li>
+  </ul>
+
+  <p>Figure 1: Block diagram of the Apertium 1.0 machine
+  translation system</p>
+  <pre>
++---------+       +-----------------+
+| SL text |  ---&gt; | de-formatter    |
++---------+       +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  | morph. analyser |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  | part-of-speech  |
+                  |    tagger       |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+       +-----------+
+                  |   structural    |  &lt;-&gt;  | lexical   |
+                  |    transfer     |       | transfer  |
+                  +-----------------+       +-----------+
+                           |
+                           V
+                  +-----------------+
+                  |  morphological  |
+                  |    generator    |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  | post-generator  |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+       +---------+
+                  |  re-formatter   |  --&gt;  | TL text |
+                  +-----------------+       +---------+
+</pre>
+
+  <p>Figure 2: Block diagram of the Apertium 2.0 machine
+  translation system</p>
+  <pre>
++---------+       +-----------------+
+| SL text |  ---&gt; | de-formatter    |
++---------+       +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  | morph. analyser |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  | part-of-speech  |
+                  |    tagger       |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  |    lexical      |
+                  |    selector     |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+       +-----------+
+                  |struct. transfer |  &lt;-&gt;  | lexical   |
+                  |  (intrachunk)   |       | transfer  |
+                  +-----------------+       +-----------+
+                           |
+                           V
+                  +-----------------+
+                  |struct. transfer |
+                  |  (interchunk)   |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  |struct. transfer |
+                  |  (postchunk)    |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  |  morphological  |
+                  |    generator    |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+
+                  | post-generator  |
+                  +-----------------+
+                           |
+                           V
+                  +-----------------+       +---------+
+                  |  re-formatter   |  --&gt;  | TL text |
+                  +-----------------+       +---------+
+</pre>
+</body>
+</html>
