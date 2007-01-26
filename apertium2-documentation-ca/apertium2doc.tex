@@ -1736,16 +1736,87 @@ secció~\ref{se:diccionaris} que hauria d'ubicar-se a la secció 3.1.2
 (pàgina 26) on s'expliquen els diccionaris usats per Apertium.}
 
 \section{Introducció}
-La necessitat d'un mòdul per a triar la traducció correcta d'aquelles
-paraules que poden tenir més d'una traducció en llengua meta apareix
-quan ens proposem implementar traductors entre llengües menys
-emparentades que les que fins ara ha tractat Apertium.
+Quan el sistema Apertium s'utilitza per a traduïr automàticament entre
+llengües menys emparentades que les que ha tractat fins ara, pren
+importància la qüestió de la tria lèxica, que s'ha de dur a terme quan una
+paraula de la llengua origen pot tenir més d'una traducció en llengua
+meta. Per aquest motiu s'ha creat un nou mòdul, el mòdul
+de selecció lèxica, que s'ocupa d'aquesta qüestió.
 
-El tractament de paraules que poden tenir més d'una traducció ha
-comportat, d'una banda, l'especificació de més d'una traducció al
-diccionari bilingüe i, d'altra, la introducció d'un nou mòdul el
-propòsit del qual és triar la traducció més apropiada d'acord amb el
-context. 
+Abans d'explicar-ne les característiques, veurem com els problemes d'equivalència
+múltiple (l'existència de
+més d'una traducció possible en llengua meta per a un lema en llengua
+origen) es tracten a Apertium de dues maneres diferents.
+
+Per una banda, ens trobem amb la situació en què entre els múltiples
+equivalents en llengua meta no hi ha una gran diferència de
+significat, i el fet d'escollir entre l'un o l'altre no comportaria
+cap error de traducció. Podríem dir que entre aquests equivalents hi
+ha una relació de sinonímia o quasisinonímia. En aquest cas, el
+lingüista escull com a traducció un dels dos lemes (generalment el més
+freqüent o més usual), i posa una restricció de direcció en els altres
+(\texttt{LR} o \texttt{RL}) per tal que siguin traduïts en la direcció
+contrària però no pas en la direcció en què hi ha múltiples
+equivalents.
+
+Per altra banda, tenim el cas en què entre els múltiples equivalents
+en llengua meta hi ha una evident diferència de significat que pot
+portar a errors de traducció quan es tria el lema inadequat. Aquests
+casos són els que tracta el nou mòdul de selecció lèxica. El lingüista
+codifica les entrades amb els atributs \texttt{slr} o \texttt{srl} que
+s'expliquen en l'apartat següent, identificant així les diferents
+possibilitats de traducció, i el mòdul de selecció lèxica s'ocupa
+d'escollir, mitjançant procediments estadístics, quina és la traducció
+adequada en un context determinat.
+
+
+Decidir quan una situació d'equivalència múltiple s'ha de tractar
+d'una manera o de l'altra, de vegades no és senzill. Quan entre dos o
+més lemes de la llengua meta existeix una diferència de significat,
+però considerem que el mòdul de selecció lèxica no serà capaç
+d'escollir la bona traducció a partir del context, seguirem el primer
+mètode: escollir la traducció fixa que volguem (la més general, la que
+considerem adequada en el màxim de situacions possibles) i posar una
+restricció de direcció en la resta d'equivalents.
+En la resta de casos, codificarem les entrades de manera que la decisió
+quedi en mans del mòdul de selecció lèxica.
+
+Quan s'utilitzi un sistema Apertium sense mòdul de selecció lèxica, l'única manera
+de codificar entrades amb múltiples equivalents és la primera, és a dir, escollint
+una única traducció i marcant la resta d'equivalències amb una restricció de direcció.
+En cas que utilitzem diccionaris bilingües amb aquests dos tipus d'entrades
+en un sistema que no disposa de mòdul de selecció lèxica, un full d'estil
+s'encarrega de convertir les entrades amb atributs \texttt{slr} o \texttt{srl}
+pensats per al mòdul de selecció lèxica en entrades amb restriccions de direcció \texttt{LR} o \texttt{RL},
+de manera que un dels múltiples equivalents (el que el lingüista ha escollit com a
+entrada per defecte) queda com a traducció fixa del lema en llengua origen.
+
+Com a exemples d'equivalències bilingües que haurien de portar una restricció
+de direcció, podem donar els parells de traducció \texttt{ca-es}
+\emph{encara - aún / todavía} i \emph{sobtat - súbito / repentino}, el primer dels
+quals podria quedar així:
+\begin{alltt}
+\begin{small}
+
+<e r="LR">
+   <p>
+      <l>aún<s n="adv"/></l>
+      <r>encara<s n="adv"/></r>
+   </p>
+</e>
+<e>
+    <p>
+      <l>todavía<s n="adv"/></l>
+      <r>encara<s n="adv"/></r>
+    </p>
+</e>
+\end{small}
+\end{alltt}
+
+
+Com a exemple del segon cas (múltiples equivalents amb gran diferència de significat) tenim els parells
+\texttt{es-ca} \emph{hoja - full / fulla} o \emph{muñeca - nina / canell}.
+
 
 \begin{figure}
 {\footnotesize
@@ -1795,9 +1866,9 @@ com funciona i com s'ha d'entrenar el mòdul que fa la tria lèxica.
 
 La modificació feta als diccionaris per a permetre l'especificació de
 més d'una traducció en llengua meta consisteix a afegir dos atributs
-nous al element \texttt{<e>}, el qual permet la definició d'entrades a
-tots els diccionaris. Aquests nous atributs només tenen sentit quan
-l'entrada és una entrada del diccionari bilingüe.
+nous a l'element \texttt{<e>}. Aquests nous atributs poden utilitzar-se en
+tots els diccionaris però només tenen sentit quan es tracta d'una
+entrada del diccionari bilingüe.
 
 \begin{figure}[tb]
 \begin{small}
@@ -1834,9 +1905,9 @@ codificar les entrades als diccionaris. Els nous atributs introduïts
 són:
 \begin{description}
 \item[slr (\emph{sense from left to right})] s'utilitza per a
-  especificar la \emph{marca de traducció} quan la traducció és de
-  esquerra a dreta. L'atribut pot rebre qualsevol valor; no obstant
-  això, el més apropiat és que reba el valor del lema marcat com a
+  especificar la \emph{marca de traducció} quan la traducció és d'esquerra dreta.
+  L'atribut pot rebre qualsevol valor; no obstant
+  això, el més apropiat és que rebi el valor del lema marcat com a
   \texttt{<r>}.
 \item[srl (\emph{sense from right to left})] s'utilitza per a
   especificar la marca de traducció quan la traducció és de dreta a
@@ -1845,7 +1916,7 @@ són:
 \end{description}
 
 A més, en ambdós casos el valor de l'atribut pot acabar amb un espai
-en blanc i la lletra ``D'' (per \emph{default}) per a indicar que
+en blanc i la lletra ``D'' per a indicar que
 aquesta és la traducció per defecte, és a dir, la traducció a emprar
 quan no hi ha suficient informació per a triar-ne una altra.
 
@@ -1903,26 +1974,76 @@ abans:
 \end{small}
 \end{alltt}
 
+
+
 \section{Preprocessament dels diccionaris bilingües}\label{se:preprocessament}
-Tot i que als diccionaris bilingües es pot especificar més d'una
-traducció per paraula, el motor de traducció d'Apertium treballa amb
-diccionaris compilats en els quals cada mot té només una traducció
-possible. El diccionari bilingüe s'ha de preprocessar
+El fet que, amb aquesta modificació, es creïn diccionaris bilingües
+que permeten l'especificació de més d'una traducció per paraula fa
+necessari un preprocessament d'aquests diccionaris, ja que el motor de
+traducció Apertium treballa amb diccionaris compilats en els quals
+cada mot té només una traducció possible.
+
+El preprocessament dels diccionaris es fa automàticament durant la
+compilació, per la qual cosa l'usuari final no ha de fer cap acció especial.
+
+Quan aquests diccionaris s'utilitzin en un sistema que no disposa de
+mòdul de selecció lèxica, el preprocessament es realitza amb
+l'aplicació del full d'estil \texttt{new2old.xsl}.  Aquest full
+d'estil converteix els diccionaris amb més d'una possible traducció per entrada en
+diccionaris amb una sola traducció per entrada, escollint com a
+traducció l'entrada marcada com a equivalent per defecte, i posant una
+restricció de direcció (\texttt{LR} o \texttt{RL} segons el cas) en les entrades
+restants, de manera que aquestes només es tradueixen en la direcció de
+traducció en què no hi ha multiplicitat d'equivalents.  Aquest full
+d'estil es crida des del \texttt{Makefile}.
+
+Com a exemple, les tres primeres entrades que es mostren en el capítol
+\ref{se:diccionaris} queden així després de l'aplicació del full
+d'estil esmentat:
+
+\begin{alltt}
+\begin{small}
+<e>
+   <p>
+      <l>flat<s n="n"/></l>
+      <r>pis<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+
+<e r="LR">
+   <p>
+      <l>floor<s n="n"/></l>
+      <r>pis<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+
+<e r="RL">
+   <p>
+      <l>floor<s n="n"/></l>
+      <r>terra<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+\end{small}
+\end{alltt}
+
+
+En el cas que el sistema Apertium funcioni amb un mòdul de selecció lèxica, el diccionari bilingüe 
+s'ha de preprocessar per a obtenir:
 \begin{itemize}
-\item per a obtenir un diccionari monolingüe que per a cada paraula en
-  llengua origen (per exemple \emph{look}) retorne totes les possibles
+\item un diccionari monolingüe que per a cada paraula en
+  llengua origen (per exemple \emph{look}) retorni totes les possibles
   marques de traducció (\texttt{look\_\_mirar D} i
   \texttt{look\_\_parèixer}), aquest diccionari serà utilitzat pel
   mòdul que fa la tria lèxica; i
-\item per a obtenir un nou diccionari bilingüe que donada una paraula
+\item un nou diccionari bilingüe que donada una paraula
   amb la selecció lèxica ja feta (per exemple
-  \texttt{look\_\_parèixer}) en retorne la traducció
+  \texttt{look\_\_parèixer}) en retorni la traducció
   (\emph{parèixer}); aquest serà el diccionari bilingüe a emprar en la
   transferència lèxica.
 \end{itemize}
 
-El preprocessament esmentat abans es fa automàticament amb el següent
-programari:
+Aquest preprocessament es fa automàticament amb el següent
+programari en compilar els diccionaris:
 \begin{itemize}
 \item \texttt{apertium-gen-lextormono}, que rep tres paràmetres: 
   \begin{itemize}
