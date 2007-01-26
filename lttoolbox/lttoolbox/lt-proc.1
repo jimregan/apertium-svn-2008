@@ -13,6 +13,7 @@ architecture: \fBhttp://apertium.sf.net\fR.
 .B \-a \fR| 
 .B \-g \fR|
 .B \-n \fR|
+.B \-d \fR|
 .B \-p \fR|
 .B \-s \fR|
 .B \-v \fR|
@@ -24,6 +25,7 @@ architecture: \fBhttp://apertium.sf.net\fR.
 .B \-\-analysis \fR| 
 .B \-\-generation \fR|
 .B \-\-non-marked-gen \fR|
+.B \-\-debugged-gen \fR|
 .B \-\-post-generation \fR|
 .B \-\-sao \fR|
 .B \-\-version \fR|
@@ -37,9 +39,11 @@ processing functionalities
 .RS
 \(bu \fImorphological analyser\fR  ( option \fB\-a\fR )
 .PP
-\(bu \fIlexical transfer\fR  ( option \fB\-n\fR )
-.PP
 \(bu \fImorphological generator\fR  ( option \fB\-g\fR )
+.PP
+\(bu \fImorphological generator (without marks)\fR  ( option \fB\-n\fR )
+.PP
+\(bu \fImorphological generator (with debugging information)\fR ( option \fB\-d\fR )
 .PP
 \(bu \fIpost-generator\fR  ( option \fB\-p\fR )
 .RE
@@ -85,6 +89,10 @@ lexical form, by suitably inflecting it.
 .B \-n, \-\-non-marked-gen
 Morphological generation (like \fB-g\fR) but without unknown word
 marks (asterisk `*').
+.TP
+.B \-d, \-\-debugged-gen
+Morphological generation (like \fB-g\fR) but also with tags information
+for errors in the transfer and generator dictionaries.
 .TP
 .B \-p, \-\-post-generation
 Performs orthographical operations such as contractions and
