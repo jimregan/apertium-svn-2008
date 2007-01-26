@@ -5021,22 +5021,22 @@ este modo es suficiente con escribir un punto para hacer referencia al directori
 
 Si no se indica ningún formato, el formato por defecto es
 \texttt{txt}. Con los formatos \texttt{txt}, \texttt{html} y \texttt{rtf}, las palabras
-desconocidas se marcan con un asterisco (*); si se desea que no se
-marquen las desconocidas, se añade una \texttt{u} al nombre del
+desconocidas se marcan con un asterisco (*) y los errores con un símbolo (@, \# o /); si se desea que no se
+marquen las desconocidas ni los errores, se añade una \texttt{u} al nombre del
 formato. Así, las opciones de formato son las siguientes:
 
 \begin{itemize}
-\item \texttt{txt} : Opción predeterminada, texto con marca de desconocidas
+\item \texttt{txt} : Opción predeterminada, texto con marca de desconocidas y de errores
 
-\item \texttt{txtu} : texto sin marca de desconocidas
+\item \texttt{txtu} : texto sin marca de desconocidas ni de errores
 
-\item \texttt{html} : HTML con marca de desconocidas
+\item \texttt{html} : HTML con marca de desconocidas y de errores
 
-\item \texttt{htmlu} : HTML sin marca de desconocidas
+\item \texttt{htmlu} : HTML sin marca de desconocidas ni de errores
 
-\item \texttt{rtf} : RTF con marca de desconocidas
+\item \texttt{rtf} : RTF con marca de desconocidas y de errores
 
-\item \texttt{rtfu} : RTF sin marca de desconocidas 
+\item \texttt{rtfu} : RTF sin marca de desconocidas ni de errores
 
 \end{itemize}
 
@@ -6375,18 +6375,85 @@ operativo.\footnote{Existen en \url{http://apertium.org} paquetes
   experimentales para Windows con los datos lingüísticos fijos
   (binarios no modificables)}
 
-Como todos los datos procesados por el sistema, desde el texto
-original al texto traducido, circulan entre los ocho módulos del
-sistema en formato de texto, es posible detener el flujo de texto en
-cualquier punto para examinar la entrada o la salida de un módulo
-determinado. Para ello sólo hay que escribir los comandos adecuados en
-el terminal utilizando una estructura de tubería, de modo que la
-salida estándar de un módulo se utilice como la entrada estándar del
-siguiente.
+Cuando el sistema tiene algún problema para traducir una o más
+palabras del texto en lengua origen, en el modo de funcionamiento por
+defecto se muestra la palabra problemática acompañada de un símbolo
+que indica que se ha producido algun error.
+El significado de los diferents símbolos es el siguiente:
 
-Mediante los comandos \texttt{echo} o \texttt{cat} se puede enviar texto a través de uno o varios módulos para analizar
-la salida y detectar el origen del error. Debe irse al directorio en que se guardan los datos lingüísticos
-y escribir los comandos explicados a continuación.
+
+
+\begin{itemize}
+
+
+\item \verb!@! = El problema se ha producido en el módulo de transferencia
+  léxica, que no puede traducir la forma léxica (el diccionario
+  bilingüe no la contiene)
+
+\item \verb!#! = El problema se ha producido en el generador, que no puede
+  generar la forma léxica (el diccionario morfológico no la contiene
+  en la dirección de generación)
+
+\item \verb!/! = Este símbolo separa dos o más formas superficiales
+  ofrecidas por el generador. El problema, por lo tanto, está en el
+  diccionario monolingüe de la lengua meta, que contiene, en la
+dirección de generación, dos formas superficiales para una forma
+  léxica, cuando debería contener sólo una.
+
+
+\end{itemize}
+
+
+El módulo de generación tiene tres modos de funcionamiento, con los
+cuales podemos elegir la forma en que se mostrarán los errores en el resultado final.
+Los tres parámetros que pueden utilitzarse son los siguientes:
+
+\begin{itemize}
+
+\item -n : no se visualizan ni los símbolos de error ni el símbolo de
+palabra desconocida, así como ninguna etiqueta morfológica
+
+\item -g : se visualizan los símbolos de error y el símbolo de palabra desconocida
+ (funcionamiento por defecto)
+
+\item -d : se visualizan los símbolos de error y el de palabra desconocida, además de
+ las etiquetas morfológicas de las formas léxicas en las que se ha producido el error.
+
+
+\end{itemize}
+
+
+Según el tipo de usuario y la finalidad de la traducción, es más
+conveniente utilizar una u otra opción. La primera opción és la más
+adecuada cuando no se desea que signos ajenos al texto interfieren en
+la lectura de la traducción. La segunda opción és útil cuando el usuario
+quiere que el sistema le muestre cuándo ha habido algún problema en la traducción (errores
+o palabras desconocidas) para poder posteditarla con más facilidad. La tercera
+opción es ideal para desarrolladores lingüísticos, puesto que muestra toda la información
+lingüística de las formas léxicas que han sufrido errores.
+
+
+Utilizando los símbolos de error visualizados por el sistema, se puede
+hacer una comprobación exhaustiva de los diccionarios de un par
+de lenguas determinado, para detectar y corregir todos los errores que 
+contienen; la forma de hacerlo se explica en el apartado \ref{integridad}.
+
+A veces es difícil
+localizar el origen de un error determinado. En este caso es útil
+poder ver la salida de cada uno de los módulos.  Como todos los datos
+procesados por el sistema, desde el texto original al texto traducido,
+circulan entre los  módulos del sistema en formato de texto, es
+posible detener el flujo de texto en cualquier punto y examinar la
+entrada o la salida de un módulo determinado.  
+
+Utilizando
+una estructura de tubería y los comandos \texttt{echo} o \texttt{cat},
+se puede enviar texto a través de uno o varios módulos para analizar
+su salida y detectar el motivo del error. A continuación se explica
+cómo hacerlo. El usuario debe situarse en el directorio en que se
+guardan los datos lingüísticos y escribir los comandos mostrados.
+
+
 
 \subsection{La salida del analizador morfológico}
 
@@ -6442,7 +6509,7 @@ para la dirección catalán -- español):
 
 \begin{small}
 \begin{alltt}
-echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|./ca-es.tagger --tagger ca-es
+echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger -g ca-es.prob
 \end{alltt}
 \end{small}
 
@@ -6468,7 +6535,7 @@ intercalada justo detrás de la cabeza del lema). Para conocer su salida, escriba
 
 \begin{small}
 \begin{alltt}
-echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|./ca-es.tagger --tagger ca-es | apertium-pretransfer
+echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger -g ca-es.prob | apertium-pretransfer
 \end{alltt}
 \end{small}
 
@@ -6480,7 +6547,7 @@ Para saber cómo se traduce a la lengua meta una palabra o un grupo de palabras y
 de transferencia estructural, escriba lo siguiente en el terminal:
 \begin{small}
 \begin{alltt}
-echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|./ca-es.tagger --tagger ca-es | apertium-pretransfer \\| ./ca-es.transfer ca-es.autobil.bin
+echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger -g ca-es.prob | apertium-pretransfer \\| ./ca-es.transfer ca-es.autobil.bin
 \end{alltt}
 \end{small}
 
@@ -6507,7 +6574,7 @@ Para saber cómo el sistema genera una palabra, escriba lo siguiente en el termin
 
 \begin{small}
 \begin{alltt}
-echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|./ca-es.tagger --tagger ca-es | apertium-pretransfer \\| ./ca-es.transfer ca-es.autobil.bin | ltproc -g ca-es.autogen.bin
+echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger -g ca-es.prob | apertium-pretransfer \\| ./ca-es.transfer ca-es.autobil.bin | ltproc -g ca-es.autogen.bin
 \end{alltt}
 \end{small}
 
@@ -6533,7 +6600,7 @@ comprobar cómo un texto en lengua origen sale de este módulo, escribiendo:
 
 \begin{small}
 \begin{alltt}
-echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|./ca-es.tagger --tagger ca-es | apertium-pretransfer \\| ./ca-es.transfer ca-es.autobil.bin | ltproc -g ca-es.autogen.bin \\| ltproc -p es-ca.autopgen.bin
+echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger -g ca-es.prob | apertium-pretransfer \\| ./ca-es.transfer ca-es.autobil.bin | ltproc -g ca-es.autogen.bin \\| ltproc -p es-ca.autopgen.bin
 \end{alltt}
 \end{small}
 
@@ -6545,7 +6612,7 @@ comando anterior:
 
 \begin{small}
 \begin{alltt}
-echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|./ca-es.tagger --tagger ca-es | apertium-pretransfer \\| ./ca-es.transfer ca-es.autobil.bin | ltproc -g ca-es.autogen.bin \\| ltproc -p es-ca.autopgen.bin | apertium-retxt
+echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger -g ca-es.prob | apertium-pretransfer \\| ./ca-es.transfer ca-es.autobil.bin | ltproc -g ca-es.autogen.bin \\| ltproc -p es-ca.autopgen.bin | apertium-retxt
 \end{alltt}
 \end{small}
 
@@ -6564,21 +6631,13 @@ echo "sabates" | apertium-translator . ca-es
 Naturalmente, en lugar de escribir todos los comandos presentados cada vez que necesite probar una traducción, 
 puede crear \emph{scripts} para cada acción y utilizarlos para probar la salida de cada módulo.
 
+
+
+
 \subsection{Ejemplos de errores}
 
-Cuando se produce algún tipo de error lingüístico en la traducción, el sistema da como salida un símbolo seguido
-de la forma léxica causante del problema. El significado de los símbolos es el siguiente:
 
-\begin{itemize}
-
-\item \verb!#! = El problema está en el generador, que no puede generar la forma léxica (el diccionario morfológico no la contiene en la dirección de generación)
-
-\item \verb!@! = El problema está en el módulo de transferencia léxica, que no puede traducir la forma léxica (el 
-diccionario bilingüe no la contiene)
-
-\end{itemize}
-
-1) Por ejemplo, al escribir el comando siguiente se puede obtener el resultado mostrado:
+1) Podemos encontrarnos con el siguiente resultado en la traducción:
 
 \begin{small}
 \begin{alltt}
@@ -6658,6 +6717,38 @@ estructural. La manera de solucionar un error cuya causa no conocemos
 es comprobar la salida de cada uno de los módulos para detectar en qué
 punto surge el problema.
 
+\subsection{Comprobación de la integridad de los diccionarios}\label{integridad}
+
+Es muy recomendable comprobar la integridad de los diccionarios de vez
+en cuando, especialmente si se ha hecho cambios significativos en
+ellos (o bien si se ha modificado las reglas de transferencia, ya que
+algunos errores pueden deberse a su aplicación).
+
+La comprobación se realiza en una dirección de traducción, por lo que, para un par de lenguas determinado, 
+hay que realizar dos comprobaciones, una en cada dirección.
+
+Para ello, los pasos a seguir son los siguientes:
+
+\begin{itemize}
+
+\item expandir el diccionario monolingüe de la lengua origen, mediante
+  la herramienta \texttt{lt-expand}, para obtener todas las formas
+  léxicas (que son las formas que aparecen a la derecha de los dos
+  puntos en el fichero resultante);
+
+\item pasar estas formas léxicas (exceptuando las que sean sólo de
+  generación, que \texttt{lt-expand} habrá marcado con el signo '\texttt{<}' )
+  por todos los módulos del sistema desde el pretransfer hasta el generador;
+
+\item Buscar en el resultado las formas léxicas marcadas con los signos '\texttt{\#}' ,
+  '\texttt{@}' o '\texttt{/}', que serán las
+formas con error.
+
+
+\end{itemize}
+
+
+
 
 \section{Generar un nuevo sistema con los  nuevos datos}
 
@@ -6669,9 +6760,10 @@ que se guardan los datos lingüísticos, y el sistema genererará los nuevos ficher
 Si se ha hecho algún cambio en el fichero de definición del
 desambiguador o en el corpus utilizado para entrenar el mismo, será
 necesario además reentrenar el desambiguador: en el mismo directorio
-de datos lingüísticos, debe escribirse \texttt{make
-  tagger\_supervised} o \texttt{make tagger\_unsupervised} según sea
-el caso.
+de datos lingüísticos, debe escribirse (ejemplo para el desambiguador de español en el
+traductor es-ca) \texttt{make -f es-ca-unsupervised.make}
+para el entrenamiento no supervisado o \texttt{make -f es-ca-supervised.make} 
+para el entrenamiento supervisado.
 
 Tras las operaciones de compilación, \texttt{apertium-translator} ya
 utilizará los nuevos datos.
