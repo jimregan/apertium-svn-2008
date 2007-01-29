@@ -6357,9 +6357,10 @@ desambiguador de dos maneras:
 \label{errores}
 
 
-Es fácil cometer errores al añadir palabras o reglas de transferencia al sistema Apertium.
+Es fácil cometer errores al añadir nuevas
+palabras o reglas de transferencia al sistema Apertium.
 
-Por un lado es posible que, al compilar los ficheros nuevos, el
+Por un lado, es posible que, al compilar los ficheros nuevos, el
 sistema muestre un mensaje de error. En este caso se tratará muy
 probablemente de un error formal (una etiqueta XML que falta, una
 etiqueta no permitida en un determinado contexto, etc.).  Sólo hay que
@@ -6373,28 +6374,32 @@ información está dirigida a los usuarios de Linux, puesto que por el
 momento Apertium funciona únicamente con este sistema
 operativo.\footnote{Existen en \url{http://apertium.org} paquetes
   experimentales para Windows con los datos lingüísticos fijos
-  (binarios no modificables)}
+  (binarios no modificables).}
+
+\subsection{Control de las marcas de error}
+\label{subsec:marcaserror}
 
 Cuando el sistema tiene algún problema para traducir una o más
 palabras del texto en lengua origen, en el modo de funcionamiento por
 defecto se muestra la palabra problemática acompañada de un símbolo
 que indica que se ha producido algun error.
-El significado de los diferents símbolos es el siguiente:
+El significado de los diferentes símbolos es el siguiente:
 
 
 
 \begin{itemize}
 
 
-\item \verb!@! = El problema se ha producido en el módulo de transferencia
+\item '\verb!@!': El problema se ha producido en el módulo de transferencia
   léxica, que no puede traducir la forma léxica (el diccionario
   bilingüe no la contiene)
 
-\item \verb!#! = El problema se ha producido en el generador, que no puede
-  generar la forma léxica (el diccionario morfológico no la contiene
+\item '\verb!#!': El problema se ha producido en el generador, que no puede
+  generar una forma superficial a partir de 
+  la forma léxica (el diccionario morfológico no la contiene
   en la dirección de generación)
 
-\item \verb!/! = Este símbolo separa dos o más formas superficiales
+\item '\verb!/!': Este símbolo separa dos o más formas superficiales
   ofrecidas por el generador. El problema, por lo tanto, está en el
   diccionario monolingüe de la lengua meta, que contiene, en la
 dirección de generación, dos formas superficiales para una forma
@@ -6406,7 +6411,7 @@ dirección de generación, dos formas superficiales para una forma
 
 El módulo de generación tiene tres modos de funcionamiento, con los
 cuales podemos elegir la forma en que se mostrarán los errores en el resultado final.
-Los tres parámetros que pueden utilitzarse son los siguientes:
+Los tres parámetros que pueden utilizarse son los siguientes:
 
 \begin{itemize}
 
@@ -6425,18 +6430,20 @@ palabra desconocida, así como ninguna etiqueta morfológica
 
 Según el tipo de usuario y la finalidad de la traducción, es más
 conveniente utilizar una u otra opción. La primera opción és la más
-adecuada cuando no se desea que signos ajenos al texto interfieren en
+adecuada cuando no se desea que signos ajenos al texto interfieran en
 la lectura de la traducción. La segunda opción és útil cuando el usuario
 quiere que el sistema le muestre cuándo ha habido algún problema en la traducción (errores
 o palabras desconocidas) para poder posteditarla con más facilidad. La tercera
-opción es ideal para desarrolladores lingüísticos, puesto que muestra toda la información
-lingüística de las formas léxicas que han sufrido errores.
-
+opción es ideal para los desarrolladores lingüísticos de Apertium, 
+puesto que muestra toda la información
+lingüística de las formas que han sufrido errores.
 
 Utilizando los símbolos de error visualizados por el sistema, se puede
 hacer una comprobación exhaustiva de los diccionarios de un par
 de lenguas determinado, para detectar y corregir todos los errores que 
 contienen; la forma de hacerlo se explica en el apartado \ref{integridad}.
+
+\subsection{Salida de los diferentes módulos de Apertium}
 
 A veces es difícil
 localizar el origen de un error determinado. En este caso es útil
@@ -6455,7 +6462,7 @@ guardan los datos lingüísticos y escribir los comandos mostrados.
 
 
 
-\subsection{La salida del analizador morfológico}
+\subsubsection{La salida del analizador morfológico}
 
 Para saber cómo el traductor analiza una palabra, escriba lo siguiente en el terminal (ejemplo para la palabra catalana
 \emph{sabates}):
@@ -6501,7 +6508,7 @@ El análisis de una palabra desconocida es (prescindiendo de la información del f
 
 Cada forma léxica (lema más análisis morfológico) es presentada como análisis posible de la palabra \emph{casa}.
 
-\subsection{La salida del desambiguador}
+\subsubsection{La salida del desambiguador}
 
 
 Para saber cuál es la salida que da el desambiguador de un texto, escriba lo siguiente en el terminal (ejemplo
@@ -6528,7 +6535,7 @@ La salida de una palabra ambigua será igual que esta, puesto que el desambiguado
 \end{alltt}
 \end{small}
 
-\subsection{La salida del módulo \texttt{pretransfer}}
+\subsubsection{La salida del módulo \texttt{pretransfer}}
 
 Este módulo aplica algunos cambios a las multipalabras (desplaza la cola del lema de una multipalabra con flexión
 intercalada justo detrás de la cabeza del lema). Para conocer su salida, escriba:
@@ -6541,7 +6548,7 @@ echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger
 
 Como \emph{sabates} no es una multipalabra este módulo no altera la entrada.
 
-\subsection{La salida del módulo de transferencia estructural}
+\subsubsection{La salida del módulo de transferencia estructural}
 
 Para saber cómo se traduce a la lengua meta una palabra o un grupo de palabras y cómo lo procesan las reglas
 de transferencia estructural, escriba lo siguiente en el terminal:
@@ -6568,7 +6575,7 @@ asignación incorrecta de símbolos morfológicos. Los errores debidos a las reglas
 pueden ser muy variados ya que dependen de las acciones realizadas por las reglas.
 
 
-\subsection{La salida del generador morfológico}
+\subsubsection{La salida del generador morfológico}
 
 Para saber cómo el sistema genera una palabra, escriba lo siguiente en el terminal:
 
@@ -6592,7 +6599,7 @@ zapatos.[][]
 
 Aquí ya no aparecen los símbolos morfológicos y la palabra aparece flexionada.
 
-\subsection{La salida del postgenerador}
+\subsubsection{La salida del postgenerador}
 
 No es muy usual que se produzcan errores debido al postgenerador, ya que generalmente el diccionario de postgeneración
 es de pequeño tamaño y raras veces se modifica una vez añadidas las combinaciones más usuales, pero también puede
@@ -6604,7 +6611,7 @@ echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger
 \end{alltt}
 \end{small}
 
-\subsection{La salida de Apertium}
+\subsubsection{La salida de Apertium}
 
 Se pueden poner todos los módulos del sistema en la estructura de tubería para ver cómo un texto en lengua origen
 pasa a través de los módulos y es traducido a la lengua meta. Sólo hace falta añadir el reformateador al 
@@ -6654,7 +6661,7 @@ tiene en el diccionario morfológico.
 
 2) La siguiente entrada bilingüe \texttt{es-ca} no tiene en cuenta el
 cambio de género entre \emph{adhesiu} (masculino) y \emph{pegatina}
-(femenino), con lo qual provoca un error del traductor:
+(femenino), con lo cual provoca un error del traductor:
 
 \begin{small}
 \begin{alltt}
@@ -6742,7 +6749,7 @@ Para ello, los pasos a seguir son los siguientes:
 
 \item Buscar en el resultado las formas léxicas marcadas con los signos '\texttt{\#}' ,
   '\texttt{@}' o '\texttt{/}', que serán las
-formas con error.
+formas con error (véase el apartado~\ref{subsec:marcaserror}).
 
 
 \end{itemize}
