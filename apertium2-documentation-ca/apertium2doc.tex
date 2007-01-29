@@ -1743,9 +1743,11 @@ paraula de la llengua origen pot tenir més d'una traducció en llengua
 meta. Per aquest motiu s'ha creat un nou mòdul, el mòdul
 de selecció lèxica, que s'ocupa d'aquesta qüestió.
 
-Abans d'explicar-ne les característiques, veurem com els problemes d'equivalència
-múltiple (l'existència de
-més d'una traducció possible en llengua meta per a un lema en llengua
+Abans d'explicar-ne les característiques, veurem com els 
+problemes d'\emph{equivalència
+múltiple} (l'existència de
+més d'una traducció possible en llengua meta per a un lema o una forma 
+lèxica en llengua
 origen) es tracten a Apertium de dues maneres diferents.
 
 Per una banda, ens trobem amb la situació en què entre els múltiples
@@ -1755,7 +1757,7 @@ cap error de traducció. Podríem dir que entre aquests equivalents hi
 ha una relació de sinonímia o quasisinonímia. En aquest cas, el
 lingüista escull com a traducció un dels dos lemes (generalment el més
 freqüent o més usual), i posa una restricció de direcció en els altres
-(\texttt{LR} o \texttt{RL}) per tal que siguin traduïts en la direcció
+(amb els atributs \texttt{LR} o \texttt{RL}) per tal que siguin traduïts en la direcció
 contrària però no pas en la direcció en què hi ha múltiples
 equivalents.
 
@@ -1771,7 +1773,8 @@ adequada en un context determinat.
 
 
 Decidir quan una situació d'equivalència múltiple s'ha de tractar
-d'una manera o de l'altra, de vegades no és senzill. Quan entre dos o
+d'una manera o de l'altra, de vegades no és senzill. Per exemple, 
+quan entre dos o
 més lemes de la llengua meta existeix diferència de significat,
 però considerem que el mòdul de selecció lèxica no serà capaç
 d'escollir la bona traducció a partir del context, seguirem el primer
@@ -1784,7 +1787,8 @@ quedi en mans del mòdul de selecció lèxica.
 Quan s'utilitzi un sistema Apertium sense mòdul de selecció lèxica, l'única manera
 de codificar entrades amb diverses traduccions possibles és la primera, és a dir, escollint
 una única traducció i marcant la resta d'equivalències amb una restricció de direcció.
-En cas que utilitzem diccionaris bilingües amb múltiples traduccions
+En cas que utilitzem diccionaris bilingües amb múltiples traduccions,
+codificades amb els atributs \texttt{slr} o \texttt{srl},
 en un sistema que no disposa de mòdul de selecció lèxica, un full d'estil
 s'encarrega de convertir aquestes entrades
 pensades per al mòdul de selecció lèxica en entrades amb restriccions de direcció \texttt{LR} o \texttt{RL},
@@ -1793,7 +1797,7 @@ entrada per defecte) queda com a traducció fixa del lema en llengua origen.
 
 Com a exemples d'equivalències bilingües que haurien de portar una restricció
 de direcció, podem donar els parells de traducció \texttt{ca-es}
-\emph{encara - aún / todavía} i \emph{sobtat - súbito / repentino}, el primer dels
+\emph{encara -- aún/todavía} i \emph{sobtat -- súbito/repentino}, el primer dels
 quals podria quedar així:
 \begin{alltt}
 \begin{small}
@@ -1815,7 +1819,8 @@ quals podria quedar així:
 
 
 Com a exemple del segon cas (múltiples equivalents amb gran diferència de significat) tenim els parells
-\texttt{es-ca} \emph{hoja - full / fulla} o \emph{muñeca - nina / canell}.
+\texttt{es-ca} \emph{hoja -- full/fulla} o \emph{muñeca -- nina/canell}, i els exemples \texttt{en-ca}
+mostrats en el següent apartat.
 
 
 \begin{figure}
@@ -1858,8 +1863,8 @@ La resta del capítol s'organitza de la següent manera: la
 secció~\ref{se:diccionaris} explica la modificació feta per a
 especificar més d'una traducció al diccionari bilingüe; la
 secció~\ref{se:preprocessament} explica el preprocessament que s'ha de
-fer del diccionari bilingüe per tal d'obtenir els diccionaris a emprar
-en la tria lèxica. Finalment en la secció~\ref{se:lextor} s'explica
+fer del diccionari bilingüe, tant si s'usa un mòdul 
+de tria lèxica com si no. Finalment en la secció~\ref{se:lextor} s'explica
 com funciona i com s'ha d'entrenar el mòdul que fa la tria lèxica.
 
 \section{Modificació dels diccionaris}\label{se:diccionaris}
@@ -1986,9 +1991,11 @@ cada mot té només una traducció possible.
 El preprocessament dels diccionaris es fa automàticament durant la
 compilació, per la qual cosa l'usuari final no ha de fer cap acció especial.
 
+\subsection{Preprocessament sense mòdul de tria lèxica}
+
 Quan aquests diccionaris s'utilitzin en un sistema que no disposa de
 mòdul de selecció lèxica, el preprocessament es realitza amb
-l'aplicació del full d'estil \texttt{new2old.xsl}.  Aquest full
+l'aplicació del full d'estil \texttt{translate-to-default-equivalent.xsl}.  Aquest full
 d'estil converteix els diccionaris amb més d'una possible traducció per entrada en
 diccionaris amb una sola traducció per entrada, escollint com a
 traducció l'entrada marcada com a equivalent per defecte, i posant una
@@ -1997,7 +2004,7 @@ restants, de manera que aquestes només es tradueixen en la direcció de
 traducció en què no hi ha multiplicitat d'equivalents.  Aquest full
 d'estil es crida des del \texttt{Makefile}.
 
-Com a exemple, les tres primeres entrades que es mostren en el capítol
+Com a exemple, les tres primeres entrades que es mostren en la secció
 \ref{se:diccionaris} queden així després de l'aplicació del full
 d'estil esmentat:
 
@@ -2026,6 +2033,7 @@ d'estil esmentat:
 \end{small}
 \end{alltt}
 
+\subsection{Preprocessament amb mòdul de tria lèxica}
 
 En el cas que el sistema Apertium funcioni amb un mòdul de selecció lèxica, el diccionari bilingüe 
 s'ha de preprocessar per a obtenir:
