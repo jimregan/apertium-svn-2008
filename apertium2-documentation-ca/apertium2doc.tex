@@ -68,13 +68,13 @@
 \section{Introducció}
 
 La necessitat d'una nova arquitectura de transferència per a Apertium
-apareix amb el requeriment de la implementació de traductors entre
-llen\-gües menys emparentades que les que fins ara s'han tractat.
+apareix amb el requeriment de la implementació de traductors per a parells
+de llengües menys emparentats que els que fins ara s'han tractat.
 
 L'arquitectura de transferència d'Apertium es basa en la manipulació
 automàtica de determinats patrons d'aparició de paraules
-mit\-jan\-çant regles definides per l'usuari. A aquest model el
-denominem \textit{transferència sintàctica superficial}. Una visió
+mit\-jan\-çant regles definides per l'usuari. Aquest model l'anomenem
+\textit{transferència sintàctica superficial}. Una visió
 esquemàtica del sistema ens mostra una estructura que considera dos
 nivells des del punt de vista de la naturalesa de les dades: un nivell
 bàsic que denominem \textit{nivell lèxic}, que s'ocupa de les paraules
@@ -98,14 +98,14 @@ processament és permetre la manipulació i la relació de patrons
 de patrons de paraules de manera similar a com es tracten les paraules
 en els patrons de paraules d'Apertium.
 
-Amb aquesta nova identificació de nivells es pretén que hi haja un
+Amb aquesta nova estructura de nivells es pretén que hi haja un
 tractament més adequat de totes les transformacions que es requereixen
 per a traduir d'una llengua a una altra. Per això s'ha de posar de
 manifest que la identificació de patrons de paraules en Apertium no ha
 de coincidir amb la identificació de patrons en Apertium 2: es pretén
 que els patrons en Apertium 2 tinguen un \textit{esperit}
 de sintagmes que no tenien en Apertium. Per aquesta raó utilitzarem
-el terme \textit{segment} (\textit{chunk}, en anglès), per a
+el terme \textit{segment} (en anglès \textit{chunk}), per a
 referir-nos a les seqüències de paraules d'Apertium 2.
 
 L'arquitectura de transferència d'Apertium 2 s'organitza en tres
@@ -116,13 +116,13 @@ passades són realitzades per tres mòduls (programes) diferents:
 \item \texttt{transfer} (intrachunk): identifica els segments, realitza
   la traducció paraula per paraula, així com certes operacions de
   reordenament i propagació d'informació morfosintàctica dins del
-  segment (per exemple, per a establir la concordança). A més, crea
+  segment (per exemple, per a establir-hi la concordança). A més, crea
   els segments perquè siguen tractats pel mòdul següent.
 \item \texttt{interchunk}: aquest mòdul rep els segments construïts
-  per l'\texttt{in\-tra\-chunk} i permet de reordenar els segments,
-  modificar la ``informació sintàctica'' de cada segment i, finalment,
+  per l'\texttt{in\-tra\-chunk} i permet reordenar-los,
+  modificar la ``informació sintàctica'' associada a cada segment i, finalment,
   imprimir els segments en l'ordre nou i amb les característiques
-  noves en l'eixida.
+  noves en l'eixida, creant segments nous si és necessari.
 \item \texttt{postchunk}: aquest mòdul rep els segments modificats
   per l'interchunk i realitza tasques finals de modificació de les
   paraules contingudes en cada segment i d'impressió del text
@@ -134,6 +134,10 @@ seccions corresponents.
 
 \section{Format dels segments}
 \label{sec:format}
+
+\notavisible{El document presenta una vacil·lació entre les denominacions
+\emph{intrachunk} i \emph{transfer}; caldria elegir una i usar-la en tot el
+document.}
 
 La comunicació entre els mòduls \texttt{intrachunk} i
 \texttt{interchunk}, al igual que la comunicació entre
@@ -155,14 +159,16 @@ informació:
   $E=e_{1}e_{2} \ldots$ es una seqüència de etiquetes morfològiques
   denominades \emph{etiquetes del segment}. La modificació d'aquestes
   etiquetes provocarà la modificació de la informació morfològica de
-  les paraules dins del segment que estiguen adscrites a aquests
+  les paraules dins del segment que estiga enllaçada a aquests
   paràmetres.
 \item $W=b_{0}w_{1}b_{1}w_{2}b_{2} \ldots w_{k}b_{k}$ és la seqüència de
-  paraules $w_i$ enviada pel transfer, amb els \textit{superblancs}
+  paraules $w_i$ enviada pel transfer,
+\notavisible{Ací cal canviar \emph{transfer} per una altra denominació més
+adequada} amb els \textit{superblancs}
   $b_i$ intercalats. Aquestes paraules es troben en el mateix format
   d'Apertium, és a dir, una paraula individual
-  $w_i=$\verb!^!$l_{i}E_{i}$\verb!$! conté lema i etiquetes, algunes
-  de les quals són \emph{referències a les etiquetes } del segment i
+  $w_i=$\verb!^!$l_{i}E_{i}$\verb!$! conté lema $l_i$ i etiquetes $E_i$, algunes
+  de les quals poden ser \emph{referències o enllaços a les etiquetes} del segment i
   es designen amb números naturals \texttt{<1>}, \texttt{<2>},
   \texttt{<3>}, etc. Aquestes referències a etiquetes corresponen, en
   l'ordre especificat, amb les etiquetes d'$E$.
@@ -183,9 +189,9 @@ davant.
 
 \subsection{Tractament de majúscules i minúscules}
 \label{ss:majuscules}
-Per a cada segment, la informació de majúscules i minúscules està
-relacionada amb la informació de majúscules i minúscules del
-pseudolema del segment, tenint en compte aquestes condicions.
+Per a cada segment, la informació de majúscules i minúscules de les paraules ve determinada
+per la informació de majúscules i minúscules del
+pseudolema del segment, tenint en compte aquestes condicions:
 
 \begin{itemize}
 \item Si totes les lletres del pseudolema estan en minúscules: l'estat de majúscules i
@@ -193,16 +199,20 @@ pseudolema del segment, tenint en compte aquestes condicions.
 \item Si la primera lletra del pseudolema està en majúscules i la
   resta en minúscules: en la generació en el mòdul
   \texttt{trans\-fer\--post}, es farà que la primera lletra que
-  resulte de tots els possibles canvis d'ordre estiga en majúscules.
+  resulte de tots els possibles canvis d'ordre dels mots del segment estiga en majúscules.
+\notavisible{Crec que aquí hauria de dir \texttt{postchunk} i no
+\texttt{transferpost}.}
 \item Si totes les lletres del pseudolema estan en majúscules: totes
   les paraules romandran en majúscules.
 \end{itemize}
 
-Una tasca requerida és que les paraules de l'interior del segment no
+Una requisit és que les paraules de l'interior del segment no
 comencen per majúscules si no es tracta de noms propis, per tal
 d'evitar que l'últim mòdul busque quina és la paraula que ha de perdre
-la majúscula, si n'hi ha. Aquesta tasca li correspon al mòdul
-\texttt{trans\-fer\--in\-tra\-chunk} i es fa mitjançant una macro o
+la majúscula, si n'hi ha. Aquesta tasca correspon al mòdul
+\texttt{trans\-fer\--in\-tra\-chunk} 
+\notavisible{Ací no hauria de dir \texttt{intrachunk} només?}
+i es fa mitjançant una macro o
 algun mecanisme similar.
 
 \section{Programa \texttt{transfer} (\texttt{intrachunk})}
@@ -214,7 +224,7 @@ d'Apertium. De fet, un dels objectius del disseny d'aquest programa
 \subsection{Entrada/eixida}
 
 \begin{itemize}
-\item Entrada: dades amb el format d'eixida del pretransfer, és a dir,
+\item Entrada: dades amb el format d'eixida del \texttt{pretransfer}, és a dir,
   amb les cues invariants dels multimots desplaçats a una posició
   anterior a qualsevol etiqueta.
 \item Eixida: segments (chunks), perquè el mòdul següent els
@@ -223,12 +233,16 @@ d'Apertium. De fet, un dels objectius del disseny d'aquest programa
 
 \subsection{Fitxers de dades}
 
+\notavisible{Explicar millor això de l'únic fitxer de configuració}
 Aquest programa usa un únic fitxer de configuració i un fitxer
 precompilat de detecció de patrons calculat a partir del primer, de
-manera idèntica a Apertium. El fitxer de patrons tindrà en el seu nom
+manera idèntica a Apertium. El nom del fitxer de patrons tindrà 
 l'extensió \texttt{.t1x}. Com que \texttt{intrachunk} es qui fa la
 consulta del diccionari bilingüe, aquest (en forma compilada) també
 s'ha d'aportar al programa.
+
+\notavisible{Potser seria bona idea esmentar en quina secció s'explica el
+compilador a què es fa referència}
 
 La DTD d'aquest fitxer de dades s'especifica en l'apèndix
 \ref{ss:dtdtransfer}.
@@ -237,15 +251,20 @@ La DTD d'aquest fitxer de dades s'especifica en l'apèndix
 
 El sistema de detecció de regles d'aquest mòdul serà el mateix que en
 el mòdul de transferència actual d'Apertium. El programa
-\texttt{a\-per\-tium-pre\-trans\-fer} és necessari per a adaptar el format
+\texttt{a\-per\-tium-pre\-trans\-fer} 
+\notavisible{Vacil·lació terminològica \texttt{pretransfer}.}
+és necessari per a adaptar el format
 d'eixida de l'etiquetador a l'entrada que reconeix el mòdul de
 transferència. En posteriors versions d'Apertium no es descarta que es
 modifique el \textit{desambiguador categorial} perquè faça la feina del
 \texttt{apertium-pretransfer}.
+\notavisible{També hem d'unificar la terminologia d'altres mòduls:
+\emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
+el paràgraf es podria pensar que són dues coses diferents.}
 
 \subsection{Especificació de les accions associades}
 
-Serà bàsicament similar a l'actual mòdul de transferència d'Apertium,
+És bàsicament similar a l'actual mòdul de transferència d'Apertium,
 amb les següents incorporacions:
 
 \begin{itemize}
@@ -253,15 +272,14 @@ amb les següents incorporacions:
   \texttt{<transfer>}. Aquest element té l'atribut opcional
   \texttt{default} que pot tenir els valors \texttt{lu} (valor per
   defecte) o \texttt{chunk} depenent de si es vol que el transfer
-  funcione a la manera d'Apertium o d'Apertium 2, respectivament.
+  funcione a la manera d'Apertium 1 o d'Apertium 2, respectivament.
 \item Atribut \texttt{comment} (opcional) per als elements
   \texttt{<rule>}. Les regles tindran a partir d'ara un comentari que
   permetrà d'incloure informació que s'usarà per a documentació.
-\item Generació de segments (chunks): una etiqueta d'un nivell més alt
+\item Generació de segments (chunks): l'etiqueta \texttt{<chunk>} és una etiqueta d'un nivell més alt
   que \texttt{<lu>} (\textit{lexical unit}) que
-  permeta de generar segments amb les característiques que han sigut
-  especificades a la secció anterior. Aquesta etiqueta és
-  \texttt{<chunk>} i té els següents atributs:
+  permet generar segments amb les característiques que han sigut
+  especificades a la secció anterior; \texttt{<chunk>} i té els següents atributs:
   \begin{itemize}
   \item \texttt{name} (opcional): pseudolema del segment. Una
     cadena que permeta d'identificar el pseudolema del segment.
