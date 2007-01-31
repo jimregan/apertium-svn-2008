@@ -142,6 +142,49 @@ FSTProcessor::readAnalysis(FILE *input)
   return val;
 }
 
+unsigned short
+FSTProcessor::readPostgeneration(FILE *input)
+{
+  if(!input_buffer.isEmpty())
+  {
+    return input_buffer.next();
+  }
+
+  unsigned short val = static_cast<unsigned short>(fgetc_unlocked(input));
+  if(feof(input))
+  {
+    return 0;
+  }
+
+  switch(val)
+  {
+    case '<':
+      val = static_cast<unsigned short>(alphabet(readFullBlock(input, '<', '>')));
+      input_buffer.add(val);
+      return val;
+
+    case '[':
+      blankqueue.push(readFullBlock(input, '[', ']'));
+      input_buffer.add(' ');
+      return static_cast<unsigned short>(' ');
+        
+    case '\\':
+      val = static_cast<unsigned short>(fgetc_unlocked(input));
+      if(escaped_chars.find(val) == escaped_chars.end())
+      {
+        streamError();
+      }
+      input_buffer.add(val);
+      return val;
+
+    default:
+      input_buffer.add(val);
+      return val;
+  }
+}
+
+
+
 
 void
 FSTProcessor::skipUntil(FILE *input, FILE *output, int const character)
@@ -722,7 +765,7 @@ FSTProcessor::postgeneration(FILE *input, FILE *output)
   string sf = "";
   int last = 0;
 
-  while(unsigned short val = readAnalysis(input))
+  while(unsigned short val = readPostgeneration(input))
   {
     if(val == '~')
     {

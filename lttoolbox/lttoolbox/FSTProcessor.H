@@ -153,11 +153,18 @@ private:
   bool isEscaped(unsigned short const c) const;
 
   /**
-   * Read text from stream (analysis version, also used in postgeneration)
+   * Read text from stream (analysis version)
    * @param input the stream to read
    * @return the next symbol in the stream
    */
   unsigned short readAnalysis(FILE *input);
+
+  /**
+   * Read text from stream (postgeneration version)
+   * @param input the stream to read
+   * @return the next symbol in the stream
+   */
+  unsigned short readPostgeneration(FILE *input);
 
   /**
    * Read text from stream (generation version)
