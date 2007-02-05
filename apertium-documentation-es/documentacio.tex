@@ -22,7 +22,7 @@
 % 
 
 
-%\setcounter{secnumdepth}{4}
+\setcounter{secnumdepth}{3}
 %\setcounter{tocdepth}{3} %%(perquè l'índex arribi fins al tercer nivell, més específic)
 
 % Salto de línea tras título de secciones \paragraph
@@ -3241,8 +3241,50 @@ unidad verbal con significado propio.
 \section{Módulo de transferencia estructural}
 \label{ss:transfer}
 
-\subsection{Descripción del funcionamiento}
+
+\notavisible{Faena per fer (mlf):
+  \begin{itemize}
+  \item El document no diu encara res de metaparadigmes. En cal una descripció.
+  \item Caldria demanar comentaris a Marta Villegas com a usuària del document perquè ens indique parts fosques, possibles suggeriments, etc.
+  \item Hi ha bastants vacil·lacions en la terminologia usada per a referir-se a conceptes i en els noms usats per als programes.
+\item He intentat substituir en cada cas l'expressió \emph{per defecte} per una altra més adequada; però caldrà distingir en quin cas ens trobem en cada cas.
+  \end{itemize}
+}
+
+
+\subsection{Introducción}
+
+A partir de 2007, Apertium funciona con dos sistemas de transferencia
+estructural diferentes, que denominamos Apertium 1 y Apertium 2.
+
+Apertium 1 es el sistema inicial, que realiza las transformaciones
+estructurales en una única pasada de las reglas, las cuales detectan
+secuencias o \emph{patrones} de formas léxicas y realizan sobre ellas
+las comprobacions y cambios pertinentes.  
+
+Apertium 2 es un sistema más avanzado, que funciona con una nueva
+arquitectura de transferencia que permite detectar \emph{patrones de
+  patrones} de formas léxicas.  Su necesidad aparece con el
+requerimiento de la implementación de traductores para pares de
+lenguas menos emparentados que los que se habían tratado hasta el
+momento, como por ejemplo el par \emph{inglés}--\emph{catalán}. Este
+sistema de transferencia se compone de tres módulos, el primero de los
+cuales puede identificarse con el módulo de transferencia de Apertium
+1.0, con ligeras variaciones.
+
+A continuación se describen sus características.  En el apartado
+\ref{functransfer} se describe el sistema Apertium 1.0, y en el 
+apartado \ref{apertium2}, el sistema Apertium 2.0. Puesto que,
+como hemos dicho, éste es una ampliación del primer sistema, la
+descripción general de Apertium 1.0 es válida también para Apertium 2.0,
+con las diferencias que se exponen en el apartado dedicado al mismo.
+Finalmente, en el apartado \ref{formatotransfer} se describe el formato
+utilizado para crear reglas en ambos sistemas.
+
+
+\subsection{Descripción del funcionamiento: Apertium 1}
 \label{functransfer}
+
 
 El diseño del lenguaje y del compilador que se usan para generar el módulo encargado de
 la transferencia estructural está fuertemente inspirado en el lenguaje
@@ -3408,18 +3450,519 @@ demás FL.
 \end{itemize}
 
 
+\subsection{Descripción del funcionamiento: Apertium 2}
+\label{apertium2}
+
+La arquitectura de transferencia de Apertium 1 descrita en el apartado
+anterior se basa, como hemos visto, en la manipulación automática de
+determinados patrones de aparición de palabras mediante reglas
+definidas por el usuario. Este modelo, que denominamos de
+\textit{transferencia sintàctica superficial}, considera dos niveles desde
+el punto de vista de la naturaleza de los datos: un nivel básico que
+denominamos \textit{nivel léxico}, que se ocupa de las palabras y de
+las operaciones de consulta y modificación de sus características
+(lema y etiquetas), además de la traducción de lemas individuales
+mediante consultas al diccionario bilingüe; y otro nivel que
+denominamos \textit{nivel de patrones de palabras}, que se encarga de
+realizar, cuando conviene, reordenamientos con las palabras que constituyen
+estos patrones, así como cambios en las características de las
+palabras que dependan de cada patrón concreto que haya sido
+detectado. Todo este procesamiento de detección y manipulación lèxica
+y de patrones se lleva a cabo en una única pasada.  
+
+Como contraste, la
+nueva arquitectura de transferencia de Apertium 2 se
+define como un sistema de transferencia lèxica adelantada en tres
+niveles y tres pasadas. Los dos primeros niveles, el nivel léxico y el
+de patrones, son homólogos a los del transfer de Apertium. El nuevo
+nivel que aparece es un nivel de \emph{patrones de patrones} de
+palabras. El objetivo de la existencia de este nuevo nivel de
+procesamiento es permitir la manipulación y la relación de patrones de
+patrones de palabras de manera similar a cómo se tratan las palabras
+en los patrones de palabras de Apertium. Con esta nueva estructura de
+niveles se pretende que haya un tratamiento más adecuado de todas las
+transformaciones que se requieren para traducir de una lengua a
+otra. Por esto se tiene que poner de manifiesto que la identificación
+de patrones de palabras en Apertium 1 no tiene que coincidir con la
+identificación de patrones en Apertium 2: se pretende que los patrones
+en Apertium 2 tengan un \textit{espíritu} de sintagmas que no tenían
+en Apertium. Por esta razón utilizaremos el término \textit{segmento}
+(en inglés \textit{chunk}), para referirnos a las secuencias de
+palabras de Apertium 2. 
+
+La arquitectura de transferencia de Apertium 2
+se organiza en tres pasadas. Siguiendo el modelo de procesamiento de
+Apertium, estas tres pasadas son realizadas por tres módulos
+(programas) diferentes:
+
+\begin{itemize} 
+\item \texttt{transfer} (intrachunk): identifica los segmentos,
+  realiza la traducción palabra por palabra, así como ciertas
+  operaciones de reordenamiento y propagación de información
+  morfosintáctica dentro del segmento (por ejemplo, para establecer la
+  concordancia). Además, crea los segmentos para que sean tratados por el
+  módulo siguiente.
+\item \texttt{interchunk}: este módulo recibe los segmentos
+  construidos por el \texttt{in\-tra\-chunk} y permite reordenarlos,
+  modificar la ``información sintáctica'' asociada a cada segmento y,
+  finalmente, imprimir los segmentos en el orden nuevo y con las
+  características nuevas en la salida, creando segmentos nuevos si es
+  necesario.
+\item \texttt{postchunk}: este módulo recibe los segmentos modificados
+  por el interchunk y realiza tareas finales de modificación de las
+  palabras contenidas en cada segmento y de impresión del texto
+  contenido en los segmentos en el formato que acepta el
+  generador. 
+\end{itemize}
+
+
+La especificación concreta de las tareas de cada módulo se encuentra en las secciones
+correspondientes.
+
+\subsubsection{Formato de los segmentos}
+\label{sec:format}
+
+\notavisible{El document presenta una vacil·lació entre les denominacions
+\emph{intrachunk} i \emph{transfer}; caldria elegir una i usar-la en tot el
+document.}
+
+
+La comunicación entre los módulos \texttt{intrachunk} y
+\texttt{interchunk}, al igual que la comunicación entre
+\texttt{interchunk} y \texttt{postchunk}, se lleva a cabo
+mediante secuencias de segmentos. Definimos $C$ como una
+\emph{secuenca de segmentos}, que tiene la forma:
+$$
+C=b_{0}c_{1}b_{1}c_{2}b_{2} \ldots b_{k-1}c_{k}b_{k}
+$$
+
+Donde cada $b_i$ es un \textit{superblanco}, y cada $c$ es un \emph{segmento}. Un
+segmento $c$ se define como a una cadena
+\verb!^!$F$\verb!{!$W$\verb!}$! que contiene la siguiente
+información:
+
+\begin{itemize} 
+\item $F$ es el \emph{pseudolema del segmento}, y es una cadena que
+  tiene la forma $fE$, donde $f$ es el \textit{pseudolema} del
+  segmento, y  $E=e_{1}e_{2} \ldots$ es una secuencia de etiquetas
+  morfológicas denominadas \emph{etiquetas del segmento}. La
+  modificación de estas etiquetas provocará la modificación de la
+  información morfològica de las palabras dentro del segmento que esté
+  enlazada a estos parámetros.
+\item $W=b_{0}w_{1}b_{1}w_{2}b_{2} \ldots w_{k}b_{k}$ es la secuencia
+  de palabras $w_i$ enviada por el transfer, \notavisible{Ací cal canviar \emph{transfer} per una altra denominació més
+  adequada}
+  con los \textit{superblancos}  $b_i$ intercalados. Estas palabras se
+  encuentran en el mismo formato de Apertium, es decir, una palabra
+  individual 
+$w_i=$\verb!^!$l_{i}E_{i}$\verb!$! 
+
+ contiene lema $l_i$ y
+  etiquetas $E_i$, algunas de las cuales pueden ser \emph{referencias
+    o enlaces a las etiquetas} del segmento y se designan con números
+  naturales \texttt{<1>}, \texttt{<2>}, \texttt{<3>}, etc. Estas
+  referencias a etiquetas se corresponden, en el orden especificado, con
+  las etiquetas de $E$.
+\end{itemize} 
+
+Un ejemplo de uso de este formato es el siguiente:
+
+\begin{small}
+\begin{alltt}
+\verb!^!det_nom<SN><m><pl>\verb!{^!el<det><def><2><3>$[ 
+<a href="http://www.ua.es">]^gat<n><2><3>$\verb!}$![</a>]
+\end{alltt}
+\end{small}
+
+Los caracteres \verb!{! y \verb!}!, cuando estén presentes en el texto
+original, deberán protegerse colocando una barra invertida \verb!\!
+delante.
+
+\subsubsection{Tratamiento de mayúsculas y minúsculas}
+
+Para cada segmento, la información de mayúsculas y minúsculas de las
+palabras viene determinada por la información de mayúsculas y
+minúsculas del pseudolema del segmento, teniendo en cuenta estas
+condiciones:
+
+\begin{itemize}
+
+\item Si todas las letras del pseudolema están en minúsculas: el estado de mayúsculas y minúsculas no se modifica. 
+\item Si la primera letra del pseudolema está en mayúsculas y el resto
+  en minúsculas: en la generación en el módulo
+  \texttt{trans\-fer\--post}, se hará que la primera letra que
+  resulto de todos los posibles cambios de orden de las palabras del
+  segmento esté en mayúsculas. \notavisible{Crec que aquí hauria de dir \texttt{postchunk} i no
+\texttt{transferpost}.}
+ \item Si
+  todas las letras del pseudolema están en mayúsculas: todas las
+  palabras permanecerán en mayúsculas.
+\end{itemize}
+
+
+Un requisito es que las palabras del interior del segmento no
+empiecen por mayúsculas si no se trata de nombres propios, con tal de
+evitar que el último módulo busque cuál es la palabra que tiene que
+perder la mayúscula, si la hay. Esta tarea corresponde al módulo
+\texttt{trans\-fer\--in\-tra\-chunk} 
+\notavisible{Ací no hauria de dir \texttt{intrachunk} només?}
+y se hace mediante una macro o
+algún mecanismo similar.
+
+\subsubsection{Programa \texttt{transfer} (\texttt{intrachunk})}
+
+\notavisible{ATENCIÓ: TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
+
+Aquest programa és l'hereu més directe del mòdul de transferència
+d'Apertium. De fet, un dels objectius del disseny d'aquest programa
+és que siga plenament compatible amb l'actual mòdul de transferència.
+
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: dades amb el format d'eixida del \texttt{pretransfer}, és a dir,
+  amb les cues invariants dels multimots desplaçats a una posició
+  anterior a qualsevol etiqueta.
+\item Eixida: segments (chunks), perquè el mòdul següent els
+  detecte i realitze operacions amb ells.
+\end{itemize}
+
+
+\paragraph{Fitxers de dades}
+
+\notavisible{Explicar millor això de l'únic fitxer de configuració}
+Aquest programa usa un únic fitxer de configuració i un fitxer
+precompilat de detecció de patrons calculat a partir del primer, de
+manera idèntica a Apertium. El nom del fitxer de patrons tindrà 
+l'extensió \texttt{.t1x}. Com que \texttt{intrachunk} es qui fa la
+consulta del diccionari bilingüe, aquest (en forma compilada) també
+s'ha d'aportar al programa.
+
+\notavisible{Potser seria bona idea esmentar en quina secció s'explica el
+compilador a què es fa referència}
+
+La DTD d'aquest fitxer de dades s'especifica en l'apèndix
+\ref{ss:dtdtransfer}.
+
+\paragraph{Detecció de patrons}
+
+El sistema de detecció de regles d'aquest mòdul serà el mateix que en
+el mòdul de transferència actual d'Apertium. El programa
+\texttt{a\-per\-tium-pre\-trans\-fer} 
+\notavisible{Vacil·lació terminològica \texttt{pretransfer}.}
+és necessari per a adaptar el format
+d'eixida de l'etiquetador a l'entrada que reconeix el mòdul de
+transferència. En posteriors versions d'Apertium no es descarta que es
+modifique el \textit{desambiguador categorial} perquè faça la feina del
+\texttt{apertium-pretransfer}.
+\notavisible{També hem d'unificar la terminologia d'altres mòduls:
+\emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
+el paràgraf es podria pensar que són dues coses diferents.}
+
+\paragraph{Especificació de les accions associades}
+\label{ass_intra}
+
+
+És bàsicament similar a l'actual mòdul de transferència d'Apertium,
+amb les següents incorporacions:
+
+\begin{itemize}
+\item Especificació de l'acció implícita en l'element arrel
+  \texttt{<transfer>}. Aquest element té l'atribut opcional
+  \texttt{default} que pot tenir els valors \texttt{lu} (valor per
+  defecte) o \texttt{chunk} depenent de si es vol que el transfer
+  funcione a la manera d'Apertium 1 o d'Apertium 2, respectivament.
+\item Atribut \texttt{comment} (opcional) per als elements
+  \texttt{<rule>}. Les regles tindran a partir d'ara un comentari que
+  permetrà d'incloure informació que s'usarà per a documentació.
+\item Generació de segments (chunks): l'etiqueta \texttt{<chunk>} és una etiqueta d'un nivell més alt
+  que \texttt{<lu>} (\textit{lexical unit}) que
+  permet generar segments amb les característiques que han sigut
+  especificades a la secció anterior; \texttt{<chunk>} i té els següents atributs:
+  \begin{itemize}
+  \item \texttt{name} (opcional): pseudolema del segment. Una
+    cadena que permeta d'identificar el pseudolema del segment.
+  \item \texttt{namefrom} (opcional): pseudolema del segment, obtingut
+    d'una variable. És obligatori especificar bé \texttt{name} o bé
+    \texttt{namefrom}.
+  \item \texttt{case} (opcional): variable que serveix per a obtenir
+    la informació de majúscules o minúscules d'una variable i
+    aplicar-la al lema especificat bé per \texttt{name}, bé per
+    \texttt{namefrom}.
+  \end{itemize}
+\item Cada chunk comença per una instrucció \texttt{<tags>}, que no
+  permet especificar cap atribut, la qual, per la seua part, conté una
+  o més instruccions individuals \texttt{<tag>}.
+\item Les instruccions \texttt{<tag>} no tenen atributs. Dins d'elles
+  es pot posar qualsevol instrucció que torne com a valor una cadena:
+  \texttt{<lit>}, \texttt{<var>}.
+\item Les instruccions \texttt{<clip>} tenen un nou atribut opcional:
+  \texttt{link-to}, que serveix per a especificar una etiqueta
+  \verb!<!\textit{valor de link-to}\verb!>! en comptes de 
+\notavisible{Es ``en comptes de'' o ``addicionalment a''?}
+la
+  informació que continga el \texttt{<clip>} en la resta d'atributs.
+  Aquesta informació és prescindible però pot servir com a
+  documentació de l'origen de la decisió lingüística.
+\end{itemize}
+
+Veiem amb un exemple l'ús de l'element \texttt{<chunk>}:
+
+\begin{alltt}
+<out>
+  <chunk name="adj-nom" case="variableCase">
+    <tags>
+      <tag><lit-tag v="SN"/></tag>
+      <tag><clip pos="2" side="tl" part="gen"/></tag>
+      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+    </tags>
+    <lu>
+      <clip pos="2" side="tl" part="lemh"/> 
+      <clip pos="2" side="tl" part="a_nom"/>
+      <clip pos="2" side="tl" part="gen" link-to="2"/>
+      <clip pos="2" side="tl" part="nbr" link-to="3"/>
+    </lu>
+    <b pos="1"/>
+    <lu>  
+      <var n="adjectiu"/> 
+      <clip pos="1" side="tl" part="lem"/>  
+      <clip pos="1" side="tl" part="a_adj"/>
+      <clip pos="2" side="tl" part="gen" link-to="2"/>
+      <clip pos="2" side="tl" part="nbr" link-to="3"/>
+    </lu> 
+  </chunk>
+</out>
+\end{alltt}
+
+
+\paragraph{Acció implícita}
+
+Els \textit{superblancs} aïllats, que no són detectats per cap patró
+d'aquest mòdul s'escriuen en el mateix ordre en què arriben.
+
+L'element arrel del fitxer \texttt{.t1x} de regles del
+\texttt{in\-tra\-chunk}, \texttt{<transfer>}, té un
+atribut opcional \texttt{default} que pot prendre els valors
+\begin{itemize}
+\item \texttt{chunk}: en el cas que es vulga que el mòdul genere
+  segments trivials amb les paraules que no puga incloure en la
+  formació de cap segment o que no hagen sigut especificats. Aquest
+  és el cas d'Apertium 2. El nou segment es crearà
+  mit\-jan\-çant la traducció de la paraula pel diccionari bilingüe.
+  El lema fix dels chunks creats implícitament és
+  \texttt{default}.
+\item \texttt{lu} (valor implícit): el funcionament actual per
+  defecte del mòdul de transferència d'Apertium 1, traduint la paraula
+  amb el diccionari bilingüe.
+\end{itemize}
+
+A continuació es mostra el resultat del processament implícit d'un
+segment que no ha sigut detectat per cap regla del
+\texttt{trans\-fer\--in\-tra\-chunk}:
+\notavisible{Denominació consistent!!}
+
+
+\begin{alltt}
+^default\verb!{!^that<cnjsub>$\verb!}!$
+\end{alltt}
+
+\notavisible{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
+
+
+
+
+\subsubsection{Programa \texttt{interchunk}}
+
+
+\notavisible{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
+
+El programa \texttt{interchunk} tracta els segments, els reordena i fa els
+canvis pertinents en la informació morfosintàctica. Això es fa
+mit\-jan\-çant la detecció de patrons de segments (seqüències de
+segments). La sintaxi de les instruccions que s'usen per a controlar
+el seu funcionament són, amb poques diferències, les mateixes que usa
+el programa \texttt{transfer} d'Apertium 1 o el \texttt{intrachunk}
+d'Apertium 2, però ha de quedar clar que s'utilitza un arxiu
+diferent. Els segments són tractats de forma similar a com es
+tracten les paraules en el transfer d'Apertium.
+\notavisible{Comprovar la denominació dels programes}
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: segments procedents d'\texttt{intrachunk}.
+\notavisible{Nom OK?}
+\item Eixida: segments possiblement reordenats i amb la informació del
+  pseudolema del segment possiblement modificada.
+\end{itemize}
+
+\paragraph{Fitxers de dades}
+
+Aquest mòdul usa dos fitxers de dades. Un fitxer d'especificació del
+comportament del programa \texttt{in\-ter\-chunk}, amb extensió
+\texttt{.t2x} pera analogia amb el mòdul anterior, i un
+fitxer de patrons precalculats per a accelerar l'anàlisi de l'entrada.
+No s'hi inclou el fitxer binari del diccionari bilingüe perquè no
+s'usa.
+\notavisible{Citar el compilador?}
+
+La sintaxi del fitxer d'especificació és molt similar a la del mòdul
+\texttt{in\-tra\-chunk}, i s'especifica en l'apèndix
+\ref{ss:dtdinterchunk}.
+
+
+\paragraph{Detecció de regles}
+
+Les regles detecten patrons que estan definits mitjançant seqüències
+de pseudoparaules. Aquestes pseudoparaules tenen un format basat en
+el format de la forma lèxica de les paraules. Des del punt de vista
+pràctic, aquest pseudolema és vist de manera equivalent a com es
+\notavisible{L'alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
+veu la forma lèxica d'una paraula en el mòdul
+\texttt{in\-tra\-chunk} per a realitzar la detecció.
+D'aquesta forma, s'usarà una detecció de patrons amb atributs definits
+sobre les pseudoparaules i no sobre les paraules del patró original.
+
+
+\paragraph{Especificació de les accions associades}
+
+Les modificacions en el joc d'instruccions d'aquest mòdul ---respecte
+del joc d'instruccions utilitzat en
+\texttt{in\-tra\-chunk}--- són les següents:
+
+\begin{itemize}
+\item L'element arrel es diu \texttt{<interchunk>} i no especifica cap
+  atribut.
+\item Desaparició de l'atribut \texttt{side}: aquest mòdul no fa
+  servir diccionaris bilingües; per tant l'atribut que indica si la
+  part que es consulta és l'origen o la meta no té sentit. Aquest
+  atribut era usat fonamentalment en les instruccions \texttt{<out>}.
+\item L'etiqueta \texttt{<chunk>} ara s'usa sense atributs,
+  senzillament dins de \texttt{<out>} per a delimitar l'eixida de
+  segments.
+\item L'atribut predefinit \texttt{lem} fa referència al pseudolema
+  del segment. De la mateixa manera, l'atribut predefinit
+  \texttt{tags} fa referència a les etiquetes del segment. El
+  contingut del segment queda com una cua que es pot imprimir
+  mitjançant l'atribut implícit \texttt{chcontent}.\notavisible{Només imprimir o s'hi pot fer referència també?}
+\notavisible{Dir de quin element són aquests atributs}
+\item Tots els valors de \texttt{part}, excepte \texttt{chname},
+  accedeixen a la informació del lema i les etiquetes del
+  pseudolema de cada segment.
+\item A diferencia del que succeeix en el \texttt{trans\-fer\--in\-ter\-chunk},
+\notavisible{Denominació!!} no es
+  permet d'imprimir una altra cosa que \texttt{<chunk>}s en les instruccions
+  \texttt{<out>} en el fitxer d'especificació del comportament
+  d'aquest mòdul, i en cap cas paraules soltes.
+\end{itemize}
+
+
+\paragraph{Acció implícita}
+
+Al igual que en el mòdul anterior, s'hi ha establert una acció
+implícita que escriu sense modificar els segments no reconegut per cap
+patró del fitxer d'especificació d'aquest mòdul. Aquesta acció implícita
+escriu exactament el que llig, tant si es tracta de chunks com
+de blancs.
+\notavisible{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
+
+
+\subsubsection{Programa \texttt{postchunk}}
+
+El programa \texttt{postchunk} detecta segments individuals, i per a
+cadascun d'ells, executa unes accions especificades. La detecció es
+basa en els lemes del segment, 
+\notavisible{Seria \emph{en el lema}?}
+i no en patrons (no en les etiquetes);
+això farà que la detecció en aquest mòdul siga específica per a cada
+``nom'' de segment.\notavisible{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
+
+D'altra banda, el funcionament de la detecció i del processament de
+les regles es basa en que les referències a paràmetres es resolen
+immediatament després de la detecció, és a dir, les etiquetes
+\texttt{<1>}, \texttt{<2>}, etc. són substituïdes automàticament pel
+valor dels paràmetres abans de començar el processament. Les posicions
+(atribut \texttt{pos}) a les quals es fa referència amb les
+instruccions \texttt{<clip>}, etc. corresponen a la posició de les
+paraules en l'interior del segment.
+
+També aplica automàticament la política de majúscules (veure secció
+\ref{ss:majuscules}) dels lemes de les pseudoparaules cap a les
+paraules que són dins del segment.
+
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: segments procedents d'\texttt{in\-ter\-chunk}.
+\item Eixida: entrada vàlida del mòdul de generació morfològica d'Apertium.
+\end{itemize}
+
+\paragraph{Fitxers de dades}
+
+Aquest programa té el seu propi arxiu d'especificació, que tindrà
+extensió \texttt{.t3x}. La sintaxi està basada igualment en el
+\texttt{transfer} d'Apertium i en el
+\texttt{trans\-fer\--in\-ter\-chunk} d'Apertium 2. 
+\notavisible{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
+
+\paragraph{Detecció de regles}
+
+La detecció dels segments es basa en el nom dels segments. Els
+segments no detectats reben el processament implícit.
+
+
+\paragraph{Especificació de les accions associades}
+
+Les diferències en les accions amb
+\texttt{trans\-fer\--in\-ter\-chunk} són les següents:
+
+\begin{itemize}
+\item Prohibició de l'escriptura de segments (\texttt{<chunk>}s) a
+  l'eixida: només es poden escriure unitats lèxiques d'un mot
+  (\texttt{<lu>}) o de més d'un mot (\texttt{<mlu>}).
+\notavisible{Comprovar aquest ítem perquè era incomplet i l'ha completat mlf}
+\item Nou atribut de detecció \texttt{name} de \texttt{<pattern-item>},
+  que s'usa en la part de \texttt{<pattern>} de les regles de manera
+  aïllada, per tal de forçar la detecció dels patrons pel seu nom.
+\notavisible{Què vol dir ``de manera aïllada''? Sembla que vulga dir ``de tant en tant''}
+\item Tampoc existeix l'atribut \texttt{side} als elements als quals
+  és aplicable en el mòdul \texttt{trans\-fer\--in\-ter\-chunk}, per
+  la mateixa raó que en \texttt{trans\-fer\--in\-ter\-chunk}: no
+  s'accedeix al diccionari bilingüe.
+\end{itemize}
+
+\paragraph{Acció implícita}
+
+En aquest mòdul l'acció implícita és la d'escriure les paraules de
+dins del segment, substituint-hi les referències pels paràmetres del
+segment. Serà usada per la major part de segments, ja que es preveu
+que aquest mòdul s'utilitze per a casos molts específics en què
+calga fer algun processament molt específic.
+
+També s'aplica implícitament la política de majúscules (secció
+\ref{ss:majuscules}).
+
+En qualsevol cas, els blancs externs als segments són copiats en el
+mateix ordre en el que són llegits, ja que la detecció de segments és
+unitària (aquest mòdul no els agrupa).
+
+\notavisible{FI TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
 
 
 %\settocdepth{subsection}
-\subsection{Datos: especificación del formato de las reglas de transferencia estructural}
+\subsection{Especificación del formato de las reglas de transferencia estructural}
 \label{formatotransfer}
 
 
 En esta sección se explica el formato en el que se escriben las reglas
-de transferencia estructural. En el apéndice~\ref{ss:dtd_transfer} se
+de transferencia estructural. En el apéndice, en las secciones
+~\ref{ss:dtdtransfer}, \ref{ss:dtdinterchunk} i \ref{ss:dtdpostchunk}
+(pingui treure! ~\ref{ss:dtd_transfer}) se
 ofrece la descripción formal (DTD).
 
-El archivo de reglas de transferencia estructural tiene dos partes
+Los archivos de reglas de transferencia estructural tienen dos partes
 bien diferenciadas: una de declaración de los elementos que se
 utilizarán en las reglas y otra de reglas propiamente dichas.\\
 
@@ -3450,7 +3993,7 @@ En la parte de \textbf{declaración} encontramos:
   \emph{crisis} en español) y \emph{número por determinar} (para
   formas léxicas de la LM con distinción
   \emph{singular}--\emph{plural} cuyo número no se puede determinar en
-  la traducción al ser la forma léxica de la LO invariable en género,
+  la traducción al ser la forma léxica de la LO invariable en número,
   véase la explicación de la página \pageref{pg:GD}). Si dentro de la
   regla, fuera del patrón, debe hacerse referencia a alguna de las
   categorías léxicas definidas en el punto anterior (para someterlas a
@@ -3463,7 +4006,7 @@ En la parte de \textbf{declaración} encontramos:
 
 \item Una sección de \textit{definición de listas de cadenas},
   generalmente listas de lemas, que serán utilizados para buscar en
-  ellas un elemento que corresponda para realizar una transformación
+  ellas un valor que corresponda para realizar una transformación
   determinada.
 
 \item Una serie de declaraciones de \emph{macroinstrucciones}; las
@@ -3486,14 +4029,54 @@ una secuencia de categorías léxicas tal como se han definido en la parte de decl
 y se construye el patrón en la LM.
 
 \end{itemize}
+\notavisible{Assegurem-nos que totes les sigles estan definides}
 
 A continuación se explican detalladamente las características de cada uno de los elementos utilizados.
 
 
 \subsubsection{Elemento \texttt{<transfer>}}
 
-Es el elemento raíz y contiene todos los demás elementos del archivo de reglas de
-transferencia estructural.
+(\textit{Apertium 2: Sólo en transfer/intrachunk})
+\notavisible{Decidim-nos per un nom}
+
+
+Es el elemento raíz (en Apertium 1) o el elemento raíz del
+módulo transfer/intrachunk (en Apertium 2) y contiene todos los demás
+elementos del archivo de reglas de transferencia estructural de este
+módulo.
+
+Su atributo \texttt{default} puede tomar dos valores: 
+\begin{itemize}
+
+\item \texttt{lu}: indica que funcionará como un 
+transfer de Apertium 1 y, por lo tanto, que las palabras implícitas deben dejarse intactas
+
+\item \texttt{chunk}: indica que, cuando una palabra no es
+reconocida por ninguna regla,  se creará de oficio un segmento que encapsule
+esta palabra para que pueda ser tratada por los siguientes módulos en Apertium 2.
+
+\end{itemize}
+
+El valor por defecto es \texttt{lu}.
+
+\subsubsection{Elemento \texttt{<interchunk>}}
+
+(\textit{Sólo en interchunk de Apertium 2})
+
+Es el elemento raíz del módulo interchunk y contiene todos los demás
+elementos del archivo de reglas de transferencia
+estructural de este módulo.
+
+
+\subsubsection{Elemento \texttt{<postchunk>}}
+\notavisible{Atenció a l'ús polisèmic del mot \emph{categoria} en el document}
+
+(\textit{Sólo en postchunk de Apertium 2})
+
+Es el elemento raíz del módulo postchunk y contiene todos los demás
+elementos del archivo de reglas de transferencia
+estructural de este módulo.
+
 
 
 \subsubsection{Elemento de sección de definición de categorías \\\texttt{<section-def-cats>}}
@@ -3512,6 +4095,13 @@ de la categoría no puede contener acentos.
 
 
 \subsubsection{Elemento de categoría \texttt{<cat-item>}}
+
+
+Este elemento tiene dos usos diferenciados según el sistema de transferencia y el
+módulo en el que se utilice.
+
+\paragraph{Uso en Apertium 1 y en el módulo transfer/intrachunk de Apertium 2}
+
 
 Mediante este elemento se definen las categorías léxicas que se
 utilizarán en los patrones, es decir, que se desea detectar en el
@@ -3540,7 +4130,8 @@ define cada posible forma léxica entregada por el desambiguador léxico
 categorial.  De este modo, una categoría representa un determinado
 conjunto de formas léxicas.  Tenemos que definir tantas categorías
 distintas como tipos de formas léxicas queramos detectar en los
-patrones. Así, si nos interesa detectar todos los nombres para realizar operaciones con ellos, crearemos una
+patrones. Así, si nos interesa detectar todos los nombres (en Apertium 1 o en
+el \texttt{intrachunk}) para realizar operaciones con ellos, crearemos una
 categoría definida a partir del símbolo gramatical \texttt{n}. Por otro lado, si nos interesa detectar
 todos los nombres femeninos en plural, deberemos definir una categoría mediante los símbolos 
 \texttt{n} \texttt{f} y \texttt{pl}.
@@ -3555,7 +4146,8 @@ contengan este símbolo, como \texttt{casa<n><f><pl>} o
 \texttt{coche<n><m><sg>}. En cambio, cuando detrás del símbolo
 utilizado no puede venir ningún otro símbolo, no se incluye el
 asterisco: por ejemplo, \texttt{tags}=\texttt{"}\texttt{adv"} abarcará
-todos los adverbios. También puede utilizarse el asterisco para
+todos los adverbios, pues en nuestro sistema son caracterizados por
+una única etiqueta. También puede utilizarse el asterisco para
 indicar la existencia de símbolos precedentes:
 \texttt{tags}=\texttt{"*.f.*"} incluye a todas las formas léxicas
 femeninas, sean de la categoría que sean. Además, puede utilizarse un
@@ -3586,7 +4178,51 @@ partir de su lema (ver figura \ref{fig:cat-item}).
 \label{fig:cat-item}
 \end{figure}
 
+
+\paragraph{Uso en el módulo interchunk de Apertium 2}
+
+
+Se utiliza igual que en el módulo transfer/intrachunk, pero aquí, en lugar de definirse
+a partir de los símbolos gramaticales de las formas léxicas, se define a partir de los símbolos de
+los segmentos entregados por el módulo transfer/intrachunk. Si, por ejemplo, queremos definir
+una categoría para detectar todos los sintagmas nominales determinados, la definiremos mediante
+los símbolos \texttt{SN} y \texttt{DET} si así hemos caracterizado el segmento o \emph{chunk} mediante 
+las instrucciones \texttt{<tag>} contenidas en el elemento \texttt{<chunk>} (véase 
+\ref{{ass_intra}}). También se puede utilizar el atributo opcional
+\texttt{lemma} para hacer referencia al \emph{pseudolema} del segmento. Así pues, sus características
+formales son las mismas en el módulo transfer y en el interchunk, con la única diferencia que en el
+primero se utilizan para detectar formas léxicas y el en segundo, para detectar segmentos.
+
+
+\paragraph{Uso en el módulo postchunk de Apertium 2}
+
+Este elemento solo prevé el atributo obligatorio \texttt{name}, que hace referencia al nombre del
+segmento o chunk,
+
+\notavisible{MG: abans deia 'al nom de la regla', comentari mlf: De la regla o del patró?}
+sin etiquetas, ja que en el módulo \texttt{postchunk}
+sólo se usa el pseudolema (nombre del segmento) para la detección. 
+En la detección no se distingue entre mayúsculas y minúsculas, porque el pseudolema se usa para transmitir la información sobre las mayúsculas y las minúsculas del segmento. (Véase la figura \ref{fig:cat-item-postchunk}).
+
+\begin{figure}
+\begin{small}
+\begin{alltt}
+<\textbf{def-cat} \textsl{n}="det-nom"/>    
+  <\textbf{cat-item} \textsl{name}="det-nom"/>
+</\textbf{def-cat}>
+\end{alltt}
+\end{small}
+\caption{Ús de l'element \texttt{<\textbf{cat-item}>} en el mòdul
+  postchunk per a detectar chunks de determinant-nom.}
+\label{fig:cat-item-postchunk}
+\end{figure}
+
+
+
+
 \subsubsection{Elemento de sección de definición de atributos de categoría \\\texttt{<section-def-attrs>}}
+
+\nota{MG: vaig per aquí}
 
 En esta sección se definen los atributos que se extraerán de las
 categorías detectadas por el patrón y que se utilizarán en la parte de
@@ -4404,6 +5040,10 @@ almacena en un archivo en formato binario que se lee junto con el
 diccionario bilingüe correspondiente y el propio fichero de reglas de
 transferencia para la ejecución conjunta de los módulos de
 transferencia léxica y estructural.
+
+
+pingui2
+
 
 \section{Desformateador y reformateador}
 \label{se:desformat}
@@ -6429,9 +7069,9 @@ palabra desconocida, así como ninguna etiqueta morfológica
 
 
 Según el tipo de usuario y la finalidad de la traducción, es más
-conveniente utilizar una u otra opción. La primera opción és la más
+conveniente utilizar una u otra opción. La primera opción es la más
 adecuada cuando no se desea que signos ajenos al texto interfieran en
-la lectura de la traducción. La segunda opción és útil cuando el usuario
+la lectura de la traducción. La segunda opción es útil cuando el usuario
 quiere que el sistema le muestre cuándo ha habido algún problema en la traducción (errores
 o palabras desconocidas) para poder posteditarla con más facilidad. La tercera
 opción es ideal para los desarrolladores lingüísticos de Apertium, 
