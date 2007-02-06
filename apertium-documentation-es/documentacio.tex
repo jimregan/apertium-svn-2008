@@ -3254,37 +3254,52 @@ unidad verbal con significado propio.
 
 \subsection{Introducción}
 
-A partir de 2007, Apertium funciona con dos sistemas de transferencia
-estructural diferentes, que denominamos Apertium 1 y Apertium 2.
-
-Apertium 1 es el sistema inicial, que realiza las transformaciones
-estructurales en una única pasada de las reglas, las cuales detectan
-secuencias o \emph{patrones} de formas léxicas y realizan sobre ellas
-las comprobacions y cambios pertinentes.  
-
-Apertium 2 es un sistema más avanzado, que funciona con una nueva
-arquitectura de transferencia que permite detectar \emph{patrones de
-  patrones} de formas léxicas.  Su necesidad aparece con el
+A partir de 2007, Apertium dispone de un sistema
+de transferencia estructural más avanzado que el que existía
+hasta el momento, cuya necesidad aparece con el
 requerimiento de la implementación de traductores para pares de
 lenguas menos emparentados que los que se habían tratado hasta el
-momento, como por ejemplo el par \emph{inglés}--\emph{catalán}. Este
-sistema de transferencia se compone de tres módulos, el primero de los
-cuales puede identificarse con el módulo de transferencia de Apertium
-1.0, con ligeras variaciones.
+momento, como por ejemplo el par \emph{inglés}--\emph{catalán}.
+
+Este sistema de transferencia se compone de tres módulos, el primero
+de los cuales puede utilitzarse aisladamente cuando se desee ejecutar
+un sistema de \textbf{transferencia sintática superficial}, como es
+el caso de los pares de lenguas emparentadas
+\emph{español}--\emph{catalán} o \emph{español}--\emph{gallego}.
+Cuando el sistema se utiliza para pares de lenguas más alejados y se
+desee, por lo tanto, realizar una \textbf{transferencia sintáctica
+  avanzada}, se ejecutarán los tres módulos de transferencia en lo que
+denominamos sistema Apertium 2.
+
+El sistema de transferencia inicial o superficial realiza las
+transformaciones estructurales en una única pasada de las reglas, las
+cuales detectan secuencias o \emph{patrones} de formas léxicas y
+realizan sobre ellas las comprobacions y cambios pertinentes.
+
+El sistema de transferencia avanzado o Apertium 2 funciona con una
+nueva arquitectura de transferencia que permite detectar
+\emph{patrones de patrones} de formas léxicas mediante tres pasadas,
+que realizan sus tres módulos.
 
 A continuación se describen sus características.  En el apartado
-\ref{functransfer} se describe el sistema Apertium 1.0, y en el 
-apartado \ref{apertium2}, el sistema Apertium 2.0. Puesto que,
-como hemos dicho, éste es una ampliación del primer sistema, la
-descripción general de Apertium 1.0 es válida también para Apertium 2.0,
-con las diferencias que se exponen en el apartado dedicado al mismo.
-Finalmente, en el apartado \ref{formatotransfer} se describe el formato
-utilizado para crear reglas en ambos sistemas.
+\ref{functransfer} se describe el sistema de transferencia
+superficial, que funciona con un sólo módulo de transferencia, y en el
+apartado \ref{apertium2}, el sistema de transferencia avanzada, el
+cual funciona con tres módulos de transferencia, con lo que la
+descripción del primer apartado es válida también para el sistema de
+transferencia avanzada, con las diferencias que se exponen en el
+apartado correspondiente. Finalmente, en el apartado
+\ref{formatotransfer} se describe el formato utilizado para crear
+reglas en ambos sistemas.
 
 
-\subsection{Descripción del funcionamiento: Apertium 1}
+\subsection{Transferencia sintáctica superficial}
 \label{functransfer}
 
+
+Este sistema utiliza únicamente el primero de los tres módulos de los
+que se compone el sistema de transferencia avanzada. Este módulo lo
+hemos denominado \textrm{transfer} o \emph{chunker}.
 
 El diseño del lenguaje y del compilador que se usan para generar el módulo encargado de
 la transferencia estructural está fuertemente inspirado en el lenguaje
@@ -3450,14 +3465,13 @@ demás FL.
 \end{itemize}
 
 
-\subsection{Descripción del funcionamiento: Apertium 2}
+\subsection{Transferencia sintáctica avanzada (Apertium 2)}
 \label{apertium2}
 
-La arquitectura de transferencia de Apertium 1 descrita en el apartado
+La arquitectura de transferencia superficial descrita en el apartado
 anterior se basa, como hemos visto, en la manipulación automática de
 determinados patrones de aparición de palabras mediante reglas
-definidas por el usuario. Este modelo, que denominamos de
-\textit{transferencia sintàctica superficial}, considera dos niveles desde
+definidas por el usuario. Este modelo considera dos niveles desde
 el punto de vista de la naturaleza de los datos: un nivel básico que
 denominamos \textit{nivel léxico}, que se ocupa de las palabras y de
 las operaciones de consulta y modificación de sus características
@@ -3467,43 +3481,46 @@ denominamos \textit{nivel de patrones de palabras}, que se encarga de
 realizar, cuando conviene, reordenamientos con las palabras que constituyen
 estos patrones, así como cambios en las características de las
 palabras que dependan de cada patrón concreto que haya sido
-detectado. Todo este procesamiento de detección y manipulación lèxica
+detectado. Todo este procesamiento de detección y manipulación léxica
 y de patrones se lleva a cabo en una única pasada.  
 
 Como contraste, la
-nueva arquitectura de transferencia de Apertium 2 se
-define como un sistema de transferencia lèxica adelantada en tres
+nueva arquitectura de transferencia avanzada de Apertium 2 se
+define como un sistema de transferencia en tres
 niveles y tres pasadas. Los dos primeros niveles, el nivel léxico y el
-de patrones, son homólogos a los del transfer de Apertium. El nuevo
+de patrones, son homólogos a los del sistema de transferencia superficial. El nuevo
 nivel que aparece es un nivel de \emph{patrones de patrones} de
 palabras. El objetivo de la existencia de este nuevo nivel de
 procesamiento es permitir la manipulación y la relación de patrones de
 patrones de palabras de manera similar a cómo se tratan las palabras
-en los patrones de palabras de Apertium. Con esta nueva estructura de
+en los patrones de palabras del sistema superficial. Con esta nueva estructura de
 niveles se pretende que haya un tratamiento más adecuado de todas las
 transformaciones que se requieren para traducir de una lengua a
 otra. Por esto se tiene que poner de manifiesto que la identificación
-de patrones de palabras en Apertium 1 no tiene que coincidir con la
-identificación de patrones en Apertium 2: se pretende que los patrones
-en Apertium 2 tengan un \textit{espíritu} de sintagmas que no tenían
-en Apertium. Por esta razón utilizaremos el término \textit{segmento}
+de patrones de palabras en el sistema de transferencia superficial no tiene que coincidir con la
+identificación de patrones en el sistema avanzado: se pretende que los patrones
+en este último tengan un \textit{espíritu} de sintagmas que no tienen en el 
+sistema anterior. Por esta razón utilizaremos el término \textit{segmento}
 (en inglés \textit{chunk}), para referirnos a las secuencias de
-palabras de Apertium 2. 
+palabras del sistema de transferencia avanzada. 
 
-La arquitectura de transferencia de Apertium 2
+La arquitectura de transferencia avanzada de Apertium 2
 se organiza en tres pasadas. Siguiendo el modelo de procesamiento de
 Apertium, estas tres pasadas son realizadas por tres módulos
 (programas) diferentes:
 
 \begin{itemize} 
-\item \texttt{transfer} (intrachunk): identifica los segmentos,
+\item \texttt{chunker} (\texttt{transfer}): identifica los segmentos,
   realiza la traducción palabra por palabra, así como ciertas
   operaciones de reordenamiento y propagación de información
   morfosintáctica dentro del segmento (por ejemplo, para establecer la
-  concordancia). Además, crea los segmentos para que sean tratados por el
-  módulo siguiente.
+  concordancia). Además, crea los segmentos para que sean tratados por
+  el módulo siguiente. Este módulo tiene la opción de funcionar como
+  módulo independiente en un sistema de transferencia sintáctica
+  superficial; ello se controla mediante un atributo del elemento
+  \texttt{<transfer>}.
 \item \texttt{interchunk}: este módulo recibe los segmentos
-  construidos por el \texttt{in\-tra\-chunk} y permite reordenarlos,
+  construidos por el \texttt{chunker} y permite reordenarlos,
   modificar la ``información sintáctica'' asociada a cada segmento y,
   finalmente, imprimir los segmentos en el orden nuevo y con las
   características nuevas en la salida, creando segmentos nuevos si es
@@ -3527,7 +3544,7 @@ correspondientes.
 document.}
 
 
-La comunicación entre los módulos \texttt{intrachunk} y
+La comunicación entre los módulos \texttt{chunker} e
 \texttt{interchunk}, al igual que la comunicación entre
 \texttt{interchunk} y \texttt{postchunk}, se lleva a cabo
 mediante secuencias de segmentos. Definimos $C$ como una
@@ -3547,11 +3564,10 @@ información:
   segmento, y  $E=e_{1}e_{2} \ldots$ es una secuencia de etiquetas
   morfológicas denominadas \emph{etiquetas del segmento}. La
   modificación de estas etiquetas provocará la modificación de la
-  información morfològica de las palabras dentro del segmento que esté
+  información morfológica de las palabras del segmento que esté
   enlazada a estos parámetros.
 \item $W=b_{0}w_{1}b_{1}w_{2}b_{2} \ldots w_{k}b_{k}$ es la secuencia
-  de palabras $w_i$ enviada por el transfer, \notavisible{Ací cal canviar \emph{transfer} per una altra denominació més
-  adequada}
+  de palabras $w_i$ enviada por el chunker
   con los \textit{superblancos}  $b_i$ intercalados. Estas palabras se
   encuentran en el mismo formato de Apertium, es decir, una palabra
   individual 
@@ -3590,10 +3606,9 @@ condiciones:
 \item Si todas las letras del pseudolema están en minúsculas: el estado de mayúsculas y minúsculas no se modifica. 
 \item Si la primera letra del pseudolema está en mayúsculas y el resto
   en minúsculas: en la generación en el módulo
-  \texttt{trans\-fer\--post}, se hará que la primera letra que
+  \texttt{postchunk}, se hará que la primera letra que
   resulto de todos los posibles cambios de orden de las palabras del
-  segmento esté en mayúsculas. \notavisible{Crec que aquí hauria de dir \texttt{postchunk} i no
-\texttt{transferpost}.}
+  segmento esté en mayúsculas.
  \item Si
   todas las letras del pseudolema están en mayúsculas: todas las
   palabras permanecerán en mayúsculas.
@@ -3604,18 +3619,19 @@ Un requisito es que las palabras del interior del segmento no
 empiecen por mayúsculas si no se trata de nombres propios, con tal de
 evitar que el último módulo busque cuál es la palabra que tiene que
 perder la mayúscula, si la hay. Esta tarea corresponde al módulo
-\texttt{trans\-fer\--in\-tra\-chunk} 
-\notavisible{Ací no hauria de dir \texttt{intrachunk} només?}
-y se hace mediante una macro o
+\texttt{chunker} y se hace mediante una macro o
 algún mecanismo similar.
 
-\subsubsection{Programa \texttt{transfer} (\texttt{intrachunk})}
+\subsubsection{Programa \texttt{chunker} (\texttt{transfer})}
 
 \notavisible{ATENCIÓ: TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
 
 Aquest programa és l'hereu més directe del mòdul de transferència
-d'Apertium. De fet, un dels objectius del disseny d'aquest programa
-és que siga plenament compatible amb l'actual mòdul de transferència.
+sintàctica superficial d'Apertium. De fet aquest mòdul pot
+utilitzar-se individualment com a sistema de transferència sintàctica
+superficial, o en combinació amb els altres dos mòduls de
+transferencia per a construir un sistema de transferència sintàctica
+avançada.
 
 
 \paragraph{Entrada/eixida}
@@ -3624,8 +3640,14 @@ d'Apertium. De fet, un dels objectius del disseny d'aquest programa
 \item Entrada: dades amb el format d'eixida del \texttt{pretransfer}, és a dir,
   amb les cues invariants dels multimots desplaçats a una posició
   anterior a qualsevol etiqueta.
-\item Eixida: segments (chunks), perquè el mòdul següent els
-  detecte i realitze operacions amb ells.
+\item Eixida: 
+\begin{itemize}
+\item[-] si s'utilitza en un sistema de transferència avançada: segments (chunks),
+  perquè el mòdul següent els detecte i realitze operacions amb ells.
+\item[-] si s'utilitza en un sistema de transferència superficial: formes lèxiques que constitueixen
+l'entrada del mòdul de generació 
+\end{itemize}
+
 \end{itemize}
 
 
@@ -3634,10 +3656,11 @@ d'Apertium. De fet, un dels objectius del disseny d'aquest programa
 \notavisible{Explicar millor això de l'únic fitxer de configuració}
 Aquest programa usa un únic fitxer de configuració i un fitxer
 precompilat de detecció de patrons calculat a partir del primer, de
-manera idèntica a Apertium. El nom del fitxer de patrons tindrà 
-l'extensió \texttt{.t1x}. Com que \texttt{intrachunk} es qui fa la
-consulta del diccionari bilingüe, aquest (en forma compilada) també
-s'ha d'aportar al programa.
+manera idèntica a Apertium \notavisible{MG: caldria canviar les
+  referències a 'Apertium' com si fos una altra cosa}. El nom del
+fitxer de patrons tindrà l'extensió \texttt{.t1x}. Com que el
+\texttt{chunker} és qui fa la consulta del diccionari bilingüe, aquest
+(en forma compilada) també s'ha d'aportar al programa.
 
 \notavisible{Potser seria bona idea esmentar en quina secció s'explica el
 compilador a què es fa referència}
@@ -3648,7 +3671,7 @@ La DTD d'aquest fitxer de dades s'especifica en l'apèndix
 \paragraph{Detecció de patrons}
 
 El sistema de detecció de regles d'aquest mòdul serà el mateix que en
-el mòdul de transferència actual d'Apertium. El programa
+el mòdul de transferència actual d'Apertium \notavisible{ídem sobre 'Apertium', canviar-ho}. El programa
 \texttt{a\-per\-tium-pre\-trans\-fer} 
 \notavisible{Vacil·lació terminològica \texttt{pretransfer}.}
 és necessari per a adaptar el format
@@ -3664,7 +3687,8 @@ el paràgraf es podria pensar que són dues coses diferents.}
 \label{ass_intra}
 
 
-És bàsicament similar a l'actual mòdul de transferència d'Apertium,
+És bàsicament similar a l'actual mòdul de transferència d'Apertium \notavisible{canviar referència a ``l'actual
+mòdul de transferència d'Apertium''},
 amb les següents incorporacions:
 
 \begin{itemize}
@@ -3672,14 +3696,16 @@ amb les següents incorporacions:
   \texttt{<transfer>}. Aquest element té l'atribut opcional
   \texttt{default} que pot tenir els valors \texttt{lu} (valor per
   defecte) o \texttt{chunk} depenent de si es vol que el transfer
-  funcione a la manera d'Apertium 1 o d'Apertium 2, respectivament.
+  funcione a la manera d'Apertium 1 (transferència sintàctica
+  superficial) o d'Apertium 2 (transferència sintàctiva avançada),
+  respectivament.
 \item Atribut \texttt{comment} (opcional) per als elements
   \texttt{<rule>}. Les regles tindran a partir d'ara un comentari que
   permetrà d'incloure informació que s'usarà per a documentació.
 \item Generació de segments (chunks): l'etiqueta \texttt{<chunk>} és una etiqueta d'un nivell més alt
   que \texttt{<lu>} (\textit{lexical unit}) que
   permet generar segments amb les característiques que han sigut
-  especificades a la secció anterior; \texttt{<chunk>} i té els següents atributs:
+  especificades a la secció anterior; té els següents atributs:
   \begin{itemize}
   \item \texttt{name} (opcional): pseudolema del segment. Una
     cadena que permeta d'identificar el pseudolema del segment.
@@ -3742,25 +3768,24 @@ Els \textit{superblancs} aïllats, que no són detectats per cap patró
 d'aquest mòdul s'escriuen en el mateix ordre en què arriben.
 
 L'element arrel del fitxer \texttt{.t1x} de regles del
-\texttt{in\-tra\-chunk}, \texttt{<transfer>}, té un
+\texttt{chunker}, \texttt{<transfer>}, té un
 atribut opcional \texttt{default} que pot prendre els valors
 \begin{itemize}
-\item \texttt{chunk}: en el cas que es vulga que el mòdul genere
-  segments trivials amb les paraules que no puga incloure en la
-  formació de cap segment o que no hagen sigut especificats. Aquest
-  és el cas d'Apertium 2. El nou segment es crearà
+\item \texttt{chunk}: quan el mòdul funcioni en Apertium 2 (transferència
+sintàctica avançada), per tal que es generin
+  segments trivials amb les paraules que el mòdul no puga incloure en la
+  formació de cap segment o que no hagen sigut especificats. El nou segment es crearà
   mit\-jan\-çant la traducció de la paraula pel diccionari bilingüe.
   El lema fix dels chunks creats implícitament és
   \texttt{default}.
-\item \texttt{lu} (valor implícit): el funcionament actual per
-  defecte del mòdul de transferència d'Apertium 1, traduint la paraula
-  amb el diccionari bilingüe.
+\item \texttt{lu} (valor implícit): quan el mòdul funcioni com a únic
+  mòdul de transferència en Apertium 1 (transferència sintàctica
+  superficial), traduint la paraula amb el diccionari bilingüe.
 \end{itemize}
 
-A continuació es mostra el resultat del processament implícit d'un
-segment que no ha sigut detectat per cap regla del
-\texttt{trans\-fer\--in\-tra\-chunk}:
-\notavisible{Denominació consistent!!}
+A continuació es mostra el segment generat automàticament amb una forma lèxica no
+detectada per cap regla  del
+\texttt{chunker} quan l'atribut \texttt{default} té el valor \texttt{chunk}:
 
 
 \begin{alltt}
@@ -3769,7 +3794,7 @@ segment que no ha sigut detectat per cap regla del
 
 \notavisible{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
 
-
+\nota{pingui}
 
 
 \subsubsection{Programa \texttt{interchunk}}
@@ -5040,9 +5065,6 @@ almacena en un archivo en formato binario que se lee junto con el
 diccionario bilingüe correspondiente y el propio fichero de reglas de
 transferencia para la ejecución conjunta de los módulos de
 transferencia léxica y estructural.
-
-
-pingui2
 
 
 \section{Desformateador y reformateador}
