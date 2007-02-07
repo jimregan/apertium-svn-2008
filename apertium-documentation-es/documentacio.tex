@@ -3264,7 +3264,7 @@ momento, como por ejemplo el par \emph{inglés}--\emph{catalán}.
 Este sistema de transferencia se compone de tres módulos, el primero
 de los cuales puede utilitzarse aisladamente cuando se desee ejecutar
 un sistema de \textbf{transferencia sintática superficial}, como es
-el caso de los pares de lenguas emparentadas
+el caso para los pares de lenguas emparentadas
 \emph{español}--\emph{catalán} o \emph{español}--\emph{gallego}.
 Cuando el sistema se utiliza para pares de lenguas más alejados y se
 desee, por lo tanto, realizar una \textbf{transferencia sintáctica
@@ -3284,8 +3284,8 @@ que realizan sus tres módulos.
 A continuación se describen sus características.  En el apartado
 \ref{functransfer} se describe el sistema de transferencia
 superficial, que funciona con un sólo módulo de transferencia, y en el
-apartado \ref{apertium2}, el sistema de transferencia avanzada, el
-cual funciona con tres módulos de transferencia, con lo que la
+apartado \ref{apertium2}, el sistema de transferencia avanzada, que
+funciona con tres módulos de transferencia, con lo que la
 descripción del primer apartado es válida también para el sistema de
 transferencia avanzada, con las diferencias que se exponen en el
 apartado correspondiente. Finalmente, en el apartado
@@ -3498,7 +3498,7 @@ niveles se pretende que haya un tratamiento más adecuado de todas las
 transformaciones que se requieren para traducir de una lengua a
 otra. Por esto se tiene que poner de manifiesto que la identificación
 de patrones de palabras en el sistema de transferencia superficial no tiene que coincidir con la
-identificación de patrones en el sistema avanzado: se pretende que los patrones
+identificación de patrones de palabras en el sistema avanzado: se pretende que los patrones
 en este último tengan un \textit{espíritu} de sintagmas que no tienen en el 
 sistema anterior. Por esta razón utilizaremos el término \textit{segmento}
 (en inglés \textit{chunk}), para referirnos a las secuencias de
@@ -3539,10 +3539,6 @@ correspondientes.
 \subsubsection{Formato de los segmentos}
 \label{sec:format}
 
-\notavisible{El document presenta una vacil·lació entre les denominacions
-\emph{intrachunk} i \emph{transfer}; caldria elegir una i usar-la en tot el
-document.}
-
 
 La comunicación entre los módulos \texttt{chunker} e
 \texttt{interchunk}, al igual que la comunicación entre
@@ -3569,11 +3565,9 @@ información:
 \item $W=b_{0}w_{1}b_{1}w_{2}b_{2} \ldots w_{k}b_{k}$ es la secuencia
   de palabras $w_i$ enviada por el chunker
   con los \textit{superblancos}  $b_i$ intercalados. Estas palabras se
-  encuentran en el mismo formato de Apertium, es decir, una palabra
+  encuentran en el mismo formato an ambos sistemas de transferencia, es decir, una palabra
   individual 
-$w_i=$\verb!^!$l_{i}E_{i}$\verb!$! 
-
- contiene lema $l_i$ y
+$w_i=$\verb!^!$l_{i}E_{i}$\verb!$!  contiene lema $l_i$ y
   etiquetas $E_i$, algunas de las cuales pueden ser \emph{referencias
     o enlaces a las etiquetas} del segmento y se designan con números
   naturales \texttt{<1>}, \texttt{<2>}, \texttt{<3>}, etc. Estas
@@ -3595,6 +3589,7 @@ original, deberán protegerse colocando una barra invertida \verb!\!
 delante.
 
 \subsubsection{Tratamiento de mayúsculas y minúsculas}
+\label{ss:majuscules}
 
 Para cada segmento, la información de mayúsculas y minúsculas de las
 palabras viene determinada por la información de mayúsculas y
@@ -3794,8 +3789,6 @@ detectada per cap regla  del
 
 \notavisible{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
 
-\nota{pingui}
-
 
 \subsubsection{Programa \texttt{interchunk}}
 
@@ -3807,17 +3800,15 @@ canvis pertinents en la informació morfosintàctica. Això es fa
 mit\-jan\-çant la detecció de patrons de segments (seqüències de
 segments). La sintaxi de les instruccions que s'usen per a controlar
 el seu funcionament són, amb poques diferències, les mateixes que usa
-el programa \texttt{transfer} d'Apertium 1 o el \texttt{intrachunk}
-d'Apertium 2, però ha de quedar clar que s'utilitza un arxiu
+el programa \texttt{chunker}, però ha de quedar clar que s'utilitza un arxiu
 diferent. Els segments són tractats de forma similar a com es
-tracten les paraules en el transfer d'Apertium.
+tracten les paraules en el transfer o \texttt{chunker} d'Apertium.
 \notavisible{Comprovar la denominació dels programes}
 
 \paragraph{Entrada/eixida}
 
 \begin{itemize}
-\item Entrada: segments procedents d'\texttt{intrachunk}.
-\notavisible{Nom OK?}
+\item Entrada: segments procedents de \texttt{chunker}.
 \item Eixida: segments possiblement reordenats i amb la informació del
   pseudolema del segment possiblement modificada.
 \end{itemize}
@@ -3833,7 +3824,7 @@ s'usa.
 \notavisible{Citar el compilador?}
 
 La sintaxi del fitxer d'especificació és molt similar a la del mòdul
-\texttt{in\-tra\-chunk}, i s'especifica en l'apèndix
+\texttt{chunker}, i s'especifica en l'apèndix
 \ref{ss:dtdinterchunk}.
 
 
@@ -3845,7 +3836,7 @@ el format de la forma lèxica de les paraules. Des del punt de vista
 pràctic, aquest pseudolema és vist de manera equivalent a com es
 \notavisible{L'alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
 veu la forma lèxica d'una paraula en el mòdul
-\texttt{in\-tra\-chunk} per a realitzar la detecció.
+\texttt{chunker} per a realitzar la detecció.
 D'aquesta forma, s'usarà una detecció de patrons amb atributs definits
 sobre les pseudoparaules i no sobre les paraules del patró original.
 
@@ -3854,7 +3845,7 @@ sobre les pseudoparaules i no sobre les paraules del patró original.
 
 Les modificacions en el joc d'instruccions d'aquest mòdul ---respecte
 del joc d'instruccions utilitzat en
-\texttt{in\-tra\-chunk}--- són les següents:
+\texttt{chunker}--- són les següents:
 
 \begin{itemize}
 \item L'element arrel es diu \texttt{<interchunk>} i no especifica cap
@@ -3875,18 +3866,17 @@ del joc d'instruccions utilitzat en
 \item Tots els valors de \texttt{part}, excepte \texttt{chname},
   accedeixen a la informació del lema i les etiquetes del
   pseudolema de cada segment.
-\item A diferencia del que succeeix en el \texttt{trans\-fer\--in\-ter\-chunk},
-\notavisible{Denominació!!} no es
-  permet d'imprimir una altra cosa que \texttt{<chunk>}s en les instruccions
-  \texttt{<out>} en el fitxer d'especificació del comportament
-  d'aquest mòdul, i en cap cas paraules soltes.
+\item A diferencia del que succeeix en el mòdul \texttt{chunker}, no
+  es permet d'imprimir una altra cosa que \texttt{<chunk>}s en les
+  instruccions \texttt{<out>} en el fitxer d'especificació del
+  comportament d'aquest mòdul, i en cap cas paraules soltes.
 \end{itemize}
 
 
 \paragraph{Acció implícita}
 
 Al igual que en el mòdul anterior, s'hi ha establert una acció
-implícita que escriu sense modificar els segments no reconegut per cap
+implícita que escriu sense modificar els segments no reconeguts per cap
 patró del fitxer d'especificació d'aquest mòdul. Aquesta acció implícita
 escriu exactament el que llig, tant si es tracta de chunks com
 de blancs.
@@ -3921,15 +3911,14 @@ paraules que són dins del segment.
 
 \begin{itemize}
 \item Entrada: segments procedents d'\texttt{in\-ter\-chunk}.
-\item Eixida: entrada vàlida del mòdul de generació morfològica d'Apertium.
+\item Eixida: entrada vàlida per al mòdul de generació morfològica d'Apertium.
 \end{itemize}
 
 \paragraph{Fitxers de dades}
 
 Aquest programa té el seu propi arxiu d'especificació, que tindrà
 extensió \texttt{.t3x}. La sintaxi està basada igualment en el
-\texttt{transfer} d'Apertium i en el
-\texttt{trans\-fer\--in\-ter\-chunk} d'Apertium 2. 
+\texttt{chunker} i en l'\texttt{in\-ter\-chunk} d'Apertium 2. 
 \notavisible{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
 
 \paragraph{Detecció de regles}
@@ -3941,7 +3930,7 @@ segments no detectats reben el processament implícit.
 \paragraph{Especificació de les accions associades}
 
 Les diferències en les accions amb
-\texttt{trans\-fer\--in\-ter\-chunk} són les següents:
+\texttt{in\-ter\-chunk} són les següents:
 
 \begin{itemize}
 \item Prohibició de l'escriptura de segments (\texttt{<chunk>}s) a
@@ -3953,9 +3942,10 @@ Les diferències en les accions amb
   aïllada, per tal de forçar la detecció dels patrons pel seu nom.
 \notavisible{Què vol dir ``de manera aïllada''? Sembla que vulga dir ``de tant en tant''}
 \item Tampoc existeix l'atribut \texttt{side} als elements als quals
-  és aplicable en el mòdul \texttt{trans\-fer\--in\-ter\-chunk}, per
-  la mateixa raó que en \texttt{trans\-fer\--in\-ter\-chunk}: no
+  és aplicable en el mòdul \texttt{in\-ter\-chunk}, per
+  la mateixa raó que en \texttt{in\-ter\-chunk} no
   s'accedeix al diccionari bilingüe.
+\notavisible{MG: però llavors això no és una diferència respecte de \texttt{interchunk} no?}
 \end{itemize}
 
 \paragraph{Acció implícita}
@@ -3970,7 +3960,7 @@ També s'aplica implícitament la política de majúscules (secció
 \ref{ss:majuscules}).
 
 En qualsevol cas, els blancs externs als segments són copiats en el
-mateix ordre en el que són llegits, ja que la detecció de segments és
+mateix ordre en què són llegits, ja que la detecció de segments és
 unitària (aquest mòdul no els agrupa).
 
 \notavisible{FI TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
@@ -4061,24 +4051,24 @@ A continuación se explican detalladamente las características de cada uno de los
 
 \subsubsection{Elemento \texttt{<transfer>}}
 
-(\textit{Apertium 2: Sólo en transfer/intrachunk})
-\notavisible{Decidim-nos per un nom}
+(\textit{Sólo en el módulo transfer/chunker})
 
-
-Es el elemento raíz (en Apertium 1) o el elemento raíz del
-módulo transfer/intrachunk (en Apertium 2) y contiene todos los demás
+Es el elemento raíz  del
+módulo \texttt{transfer/chunker} y contiene todos los demás
 elementos del archivo de reglas de transferencia estructural de este
 módulo.
 
 Su atributo \texttt{default} puede tomar dos valores: 
 \begin{itemize}
 
-\item \texttt{lu}: indica que funcionará como un 
-transfer de Apertium 1 y, por lo tanto, que las palabras implícitas deben dejarse intactas
+\item \texttt{lu}: indica que funcionará como único módulo de
+  transferencia en un sistema de transferencia sintáctica superficial
+  y que, por lo tanto, las palabras implícitas deben dejarse intactas
 
 \item \texttt{chunk}: indica que, cuando una palabra no es
 reconocida por ninguna regla,  se creará de oficio un segmento que encapsule
-esta palabra para que pueda ser tratada por los siguientes módulos en Apertium 2.
+esta palabra para que pueda ser tratada por los siguientes módulos de transferencia en Apertium 2 (transferencia
+sintáctica avanzada).
 
 \end{itemize}
 
@@ -4086,25 +4076,26 @@ El valor por defecto es \texttt{lu}.
 
 \subsubsection{Elemento \texttt{<interchunk>}}
 
-(\textit{Sólo en interchunk de Apertium 2})
+(\textit{Sólo en interchunk})
 
-Es el elemento raíz del módulo interchunk y contiene todos los demás
+Es el elemento raíz del módulo \texttt{interchunk} y contiene todos los demás
 elementos del archivo de reglas de transferencia
 estructural de este módulo.
 
 
 \subsubsection{Elemento \texttt{<postchunk>}}
-\notavisible{Atenció a l'ús polisèmic del mot \emph{categoria} en el document}
 
-(\textit{Sólo en postchunk de Apertium 2})
 
-Es el elemento raíz del módulo postchunk y contiene todos los demás
+(\textit{Sólo en postchunk})
+
+Es el elemento raíz del módulo \texttt{postchunk} y contiene todos los demás
 elementos del archivo de reglas de transferencia
 estructural de este módulo.
 
 
 
 \subsubsection{Elemento de sección de definición de categorías \\\texttt{<section-def-cats>}}
+\notavisible{Atenció a l'ús polisèmic del mot \emph{categoria} en el document}
 
 En esta sección se definen las categorías léxicas que se usarán para crear
 los patrones utilizados en las reglas. Cada definición se realiza con un \texttt{<\textbf{def-cat}>}.
@@ -4122,10 +4113,10 @@ de la categoría no puede contener acentos.
 \subsubsection{Elemento de categoría \texttt{<cat-item>}}
 
 
-Este elemento tiene dos usos diferenciados según el sistema de transferencia y el
+Este elemento tiene dos usos marcadamente diferenciados según el 
 módulo en el que se utilice.
 
-\paragraph{Uso en Apertium 1 y en el módulo transfer/intrachunk de Apertium 2}
+\paragraph{Uso en el módulo transfer/chunker}
 
 
 Mediante este elemento se definen las categorías léxicas que se
@@ -4147,18 +4138,19 @@ desambiguador\footnote{Hay que tener en cuenta que a lo largo de los
   según el tipo de formas léxicas que se quiera detectar en los
   patrones.}.
 
-Cada elemento \texttt{<\textbf{cat-item}>} tiene un atributo obligatorio
-\texttt{tags} cuyo valor es una secuencia de símbolos gramaticales
-separados por puntos; esta secuencia es una subsecuencia de la
-etiqueta fina, es decir, de la secuencia de símbolos gramaticales que
-define cada posible forma léxica entregada por el desambiguador léxico
-categorial.  De este modo, una categoría representa un determinado
-conjunto de formas léxicas.  Tenemos que definir tantas categorías
-distintas como tipos de formas léxicas queramos detectar en los
-patrones. Así, si nos interesa detectar todos los nombres (en Apertium 1 o en
-el \texttt{intrachunk}) para realizar operaciones con ellos, crearemos una
-categoría definida a partir del símbolo gramatical \texttt{n}. Por otro lado, si nos interesa detectar
-todos los nombres femeninos en plural, deberemos definir una categoría mediante los símbolos 
+Cada elemento \texttt{<\textbf{cat-item}>} tiene un atributo
+obligatorio \texttt{tags} cuyo valor es una secuencia de símbolos
+gramaticales separados por puntos; esta secuencia es una subsecuencia
+de la etiqueta fina, es decir, de la secuencia de símbolos
+gramaticales que define cada posible forma léxica entregada por el
+desambiguador léxico categorial.  De este modo, una categoría
+representa un determinado conjunto de formas léxicas.  Tenemos que
+definir tantas categorías distintas como tipos de formas léxicas
+queramos detectar en los patrones. Así, si nos interesa detectar todos
+los nombres para realizar operaciones con ellos, crearemos una
+categoría definida a partir del símbolo gramatical \texttt{n}. Por
+otro lado, si nos interesa detectar todos los nombres femeninos en
+plural, deberemos definir una categoría mediante los símbolos
 \texttt{n} \texttt{f} y \texttt{pl}.
 
 
@@ -4204,30 +4196,33 @@ partir de su lema (ver figura \ref{fig:cat-item}).
 \end{figure}
 
 
-\paragraph{Uso en el módulo interchunk de Apertium 2}
+\paragraph{Uso en el módulo interchunk}
 
 
-Se utiliza igual que en el módulo transfer/intrachunk, pero aquí, en lugar de definirse
+Se utiliza igual que en el módulo \texttt{chunker}, pero aquí, en lugar de definirse
 a partir de los símbolos gramaticales de las formas léxicas, se define a partir de los símbolos de
-los segmentos entregados por el módulo transfer/intrachunk. Si, por ejemplo, queremos definir
+los segmentos entregados por el módulo \texttt{chunker}. Si, por ejemplo, queremos definir
 una categoría para detectar todos los sintagmas nominales determinados, la definiremos mediante
 los símbolos \texttt{SN} y \texttt{DET} si así hemos caracterizado el segmento o \emph{chunk} mediante 
 las instrucciones \texttt{<tag>} contenidas en el elemento \texttt{<chunk>} (véase 
 \ref{{ass_intra}}). También se puede utilizar el atributo opcional
 \texttt{lemma} para hacer referencia al \emph{pseudolema} del segmento. Así pues, sus características
-formales son las mismas en el módulo transfer y en el interchunk, con la única diferencia que en el
-primero se utilizan para detectar formas léxicas y el en segundo, para detectar segmentos.
+formales son las mismas en los módulos \texttt{chunker} e \texttt{interchunk}, con la única diferencia que en el
+primero se utilizan para detectar formas léxicas y en el segundo, para detectar segmentos o \emph{chunks}.
 
 
-\paragraph{Uso en el módulo postchunk de Apertium 2}
+\paragraph{Uso en el módulo postchunk}
 
-Este elemento solo prevé el atributo obligatorio \texttt{name}, que hace referencia al nombre del
+En este módulo, este elemento solo prevé el atributo obligatorio \texttt{name}, que hace referencia al nombre del
 segmento o chunk,
 
-\notavisible{MG: abans deia 'al nom de la regla', comentari mlf: De la regla o del patró?}
-sin etiquetas, ja que en el módulo \texttt{postchunk}
-sólo se usa el pseudolema (nombre del segmento) para la detección. 
-En la detección no se distingue entre mayúsculas y minúsculas, porque el pseudolema se usa para transmitir la información sobre las mayúsculas y las minúsculas del segmento. (Véase la figura \ref{fig:cat-item-postchunk}).
+\notavisible{MG: abans deia 'al nom de la regla', comentari mlf: De la
+  regla o del patró?}  sin etiquetas, ya que en el módulo
+\texttt{postchunk} sólo se usa el pseudolema (nombre del segmento)
+para la detección.  En la detección no se distingue entre mayúsculas y
+minúsculas, porque el pseudolema se usa para transmitir la información
+sobre las mayúsculas y las minúsculas del segmento. (Véase la figura
+\ref{fig:cat-item-postchunk}).
 
 \begin{figure}
 \begin{small}
@@ -4237,27 +4232,30 @@ En la detección no se distingue entre mayúsculas y minúsculas, porque el pseudol
 </\textbf{def-cat}>
 \end{alltt}
 \end{small}
-\caption{Ús de l'element \texttt{<\textbf{cat-item}>} en el mòdul
-  postchunk per a detectar chunks de determinant-nom.}
+\caption{Uso del elemento \texttt{<\textbf{cat-item}>} en el módulo
+  postchunk para detectar chunks de determinante-nombre.}
 \label{fig:cat-item-postchunk}
 \end{figure}
 
 
 
-
 \subsubsection{Elemento de sección de definición de atributos de categoría \\\texttt{<section-def-attrs>}}
 
-\nota{MG: vaig per aquí}
 
 En esta sección se definen los atributos que se extraerán de las
 categorías detectadas por el patrón y que se utilizarán en la parte de
 acción de las reglas. Cada atributo se define mediante una etiqueta
 \texttt{<\textbf{def-attr}>}.
 
+\notavisible{De vegades les etiquetes aprareixen en el text en
+  negretes i de vegades sense negretes. Decidim-nos per una tipografia
+  i usem-la en tot el document.}
+
+
 \subsubsection{Elemento de definición de atributos de categoría \\\texttt{<def-attr>}}
 
 Cada \texttt{<\textbf{def-attr}>} define un atributo con información
-morfológica (tanto información flexiva --género, nombre, persona,
+morfológica (tanto información flexiva --género, número, persona,
 etc.--, como categorial --verbo, adjetivo, etc--) mediante una lista
 de elementos de atributo de categoría (\texttt{<\textbf{attr-item}>})
 y tiene un nombre único obligatorio \texttt{n}. Un atributo se define,
@@ -4268,15 +4266,18 @@ del patrón, los símbolos que éstas contienen de entre los posibles valores dados
 \subsubsection{Elemento de atributo de categoría \texttt{<attr-item>}}
 
 Cada elemento de atributo de categoría representa uno de los valores
-posibles que puede tomar el atributo (por ejemplo, el atributo de
+posibles que puede tomar el atributo. Por ejemplo, el atributo de
 número \texttt{nbr} puede tomar los valores singular \texttt{sg},
 plural \texttt{pl}, singular--plural \texttt{sp} y número por
-determinar \texttt{ND}). Estos valores son una subsecuencia de las
+determinar \texttt{ND}. Estos valores son una subsecuencia de las
 etiquetas morfológicas que caracterizan a las formas léxicas y se
 indican en el atributo \texttt{tags} del elemento, separadas por punto
 si hay más de una. En la figura \ref{fig:attr-item} puede verse un
 ejemplo de utilización de este elemento para el atributo de
-\emph{número} y el atributo de \emph{nombre}. Compárese la definición del
+\emph{número} y el atributo de \emph{nombre}. 
+\notavisible{Potser s'hauria d'explicar per què s'ha triat el nom \emph{a\_nom} en la figura}
+
+Compárese la definición del
 atributo de nombre en esta figura (con todos los valores posibles y sin asteriscos) con la
 definición de la categoría de nombre de la figura \ref{fig:cat-item}. 
 
@@ -4302,7 +4303,7 @@ definición de la categoría de nombre de la figura \ref{fig:cat-item}.
 \end{small}
 \caption{Definición del atributo de categoría \emph{número}
   \texttt{nbr}, que puede tomar los valores  \emph{singular}, \emph{plural}, \emph{singular-plural} o
- \emph{número por determinar}, así como del atributo de categoría \emph{nombre}, que puede
+ \emph{número por determinar}, así como del atributo de categoría \emph{nombre} \texttt{a\_nom}, que puede
 tomar los valores de los símbolos \emph{n} o \emph{n acr}.}
 \label{fig:attr-item}
 \end{figure}
@@ -4310,22 +4311,25 @@ tomar los valores de los símbolos \emph{n} o \emph{n acr}.}
 
 \subsubsection{Elemento de sección de definición de variables \\\texttt{<section-def-vars>}}
 
-En esta sección se definen (mediante \texttt{<\textbf{def-var}>}) las
+En esta sección se definen (mediante etiquetas \texttt{<\textbf{def-var}>}) las
 variables globales de tipo cadena que se utilizarán para transferir información
 dentro de una regla y de una regla a otra (por ejemplo, para poder
 transmitir información de género o número entre dos patrones).
+
+
+\notavisible{Que quede clar que aquesta transferència d'una regla a altra es fa només d'una aplicació d'una regla a l'aplicació d'altra regla en un moment posterior, o d'esquerra a dreta}
 
 \subsubsection{Elemento de definición de variables \texttt{<def-var>}}
 \label{ss:defvar}
 La definición de una variable global de tipo cadena tiene un nombre único obligatorio
 \texttt{n} que se utilizará para referirse a la misma dentro de las
-reglas.  Las variables transmiten cadenas que describen información de estado, como la
+reglas.  Las variables contienen cadenas que describen información de estado, como la
 existencia de concordancia entre dos elementos, la detección de un
 signo de interrogación en la LO que haya que eliminar en LM, etc.
 
 
 \subsubsection{Elemento de sección de definición de listas de cadenas \\\texttt{<section-def-lists>}}
-En esta sección se definen (mediante \texttt{<\textbf{def-list}>}) las
+En esta sección se definen (mediante etiquetas \texttt{<\textbf{def-list}>}) las
 listas que se utilizarán para realizar búsquedas de cadenas.  Estas
 listas se pueden utilizar para agrupar lemas de palabras que tengan
 alguna característica común (por ejemplo, verbos que expresen
@@ -4349,7 +4353,7 @@ en la figura \ref{fig:deflist}.
 \begin{figure}
 \begin{small}
 \begin{alltt}
-<\textbf{def-list} n="verbos_estado">
+<\textbf{def-list} n="verbos_est">
   <\textbf{list-item} v="actuar"/>
   <\textbf{list-item} v="buscar"/>
   <\textbf{list-item} v="estudiar"/>
@@ -4388,7 +4392,12 @@ Esta sección contiene las reglas de transferencia estructural, cada una en un el
 
 \subsubsection{Elemento de regla \texttt{<rule>}}
 
-Cada regla tiene un patrón (\texttt{<\textbf{pattern}>}) y la acción (\texttt{<\textbf{action}>}) asociada a él que se ejecuta cuando es detectado.
+Cada regla tiene un patrón (\texttt{<\textbf{pattern}>}) y la acción
+(\texttt{<\textbf{action}>}) asociada que se ejecuta cuando es
+detectado.
+
+La regla puede especificar en un atributo opcional \texttt{comment}
+un comentario que explique cuál es la función de la regla.
 
 \subsubsection{Elemento de patrón \texttt{<pattern>}}
 
@@ -4416,28 +4425,33 @@ más instrucciones de tipo: \texttt{<\textbf{choose}>} (procesamiento
 condicional), \texttt{<\textbf{let}>} (asignación de valores),
 \texttt{<\textbf{out}>} (escritura de formas léxicas de la LM),
 \texttt{<\textbf{modify-case}>} (modificación del estado de las
-mayúsculas y minúsculas de una forma léxica) y
-\texttt{<\textbf{call-macro}>} (llamadas a macroinstrucciones).
+mayúsculas y minúsculas de una forma léxica),
+\texttt{<\textbf{call-macro}>} (llamadas a macroinstrucciones) y 
+\texttt{<\textbf{append}>} (concatenación de cadenas).
+
+
 Durante el procesamiento, según se cumplan o no una serie de opciones
 condicionales, se realizan distintas operaciones, como por ejemplo la
-concordancia de los elementos de un patrón ya que éstos están sujetos
+concordancia de los elementos de un patrón, ya que éstos están sujetos
 a posibles cambios de género o número durante el proceso de
 transferencia léxica. Para ello, a pesar de trabajar con FL en LM
 también se tiene en cuenta la información de la LO ya que si, por
 ejemplo, en LO los elementos de un patrón no concuerdan, tal vez tampoco deben
 hacerlo en LM. Durante la aplicación de las distintas operaciones
-realizadas dentro un patrón, se asignan valores a atributos del mismo
+realizadas dentro un patrón, se asignan valores a atributos del patrón
 y, en su caso, a variables globales o de estado y se envía la
-información del patrón en LM resultante al siguiente módulo (el generador morfológico).
+información del patrón en LM resultante al siguiente módulo (el generador morfológico en un sistema de
+transferencia sintáctica superficial, o bien un módulo posterior de transferencia
+en un sistema de transferencia sintáctica avanzada).
 
 
 \subsubsection{Elemento de llamada a macroinstrucción \\\texttt{<call-macro>}}
 
 Dentro de una regla puede invocarse cualquiera de las
 macroinstrucciones definidas en \texttt{<\textbf{section-def-macros}>}. Para
-ello, hay que especificar su nombre en el atributo \texttt{n} y uno o
+ello, hay que especificar el nombre de la macroinstrucción en el atributo \texttt{n} y uno o
 más argumentos en el elemento de parámetros \texttt{<\textbf{with-param}>} (ver
-más abajo).
+a continuación).
 
 \subsubsection{Elemento de parámetros \texttt{<with-param>}}
 
@@ -4485,20 +4499,20 @@ condicionales (\texttt{<\textbf{when}>}) y una opción alternativa
 
 \subsubsection{Elemento de condición \texttt{<when>}}
 
-Con este elemento se describe una opción condicional (véase
-la página \pageref{choose}).  Se compone de la condición a verificar
+Con este elemento se describe una opción condicional (véase la página
+\pageref{choose}).  Se compone de la condición a verificar
 \texttt{<\textbf{test}>} y de un bloque de cero o más instrucciones de
 tipo \texttt{<\textbf{choose}>}, \texttt{<\textbf{let}>},
-\texttt{<\textbf{out}>}, \texttt{<\textbf{modify-case}>} y
-\texttt{<\textbf{call-macro}>}, que se ejecutarán si se cumple la
-citada condición.
+\texttt{<\textbf{out}>}, \texttt{<\textbf{modify-case}>},
+\texttt{<\textbf{call-macro}>} o \texttt{<\textbf{append}>}, \notavisible{OK append?} que se
+ejecutarán si se cumple la citada condición.
 
 \subsubsection{Elemento de opción alternativa \texttt{<otherwise>}}
 
 El elemento \texttt{<\textbf{otherwise}>} contiene un bloque de una o
 más instrucciones (de tipo \texttt{<\textbf{choose}>},
-\texttt{<\textbf{let}>}, \texttt{<\textbf{out}>}, \texttt{<\textbf{modify-case}>} y
-\texttt{<\textbf{call-macro}>}) que deben realizarse si no se cumple
+\texttt{<\textbf{let}>}, \texttt{<\textbf{out}>}, \texttt{<\textbf{modify-case}>},
+\texttt{<\textbf{call-macro}>} y \texttt{<\textbf{append}>}) que deben realizarse si no se cumple
 la condición descrita en ninguno de los \texttt{<\textbf{when}>} de un
 \texttt{<\textbf{choose}>}.
 
@@ -4508,11 +4522,14 @@ El elemento de evaluación \texttt{<\textbf{test}>} dentro de un
 elemento de condición \texttt{<\textbf{when}>} puede estar compuesto
 por una conjunción (\texttt{<\textbf{and}>}), una disyunción
 (\texttt{<\textbf{or}>}) o una negación (\texttt{<\textbf{not}>}) de
-condiciones a evaluar, así como por una simple condición de igualdad
-(\texttt{<\textbf{equal}>}).
+condiciones a evaluar, así como por una simple condición de igualdad de cadenas
+(\texttt{<\textbf{equal}>}), de principio de cadena (\texttt{<\textbf{begins-with}>}), de final de cadena (\texttt{<\textbf{ends-with}>}), de subcadena (\texttt{<\textbf{contains-substring}>}) o de inclusión en conjunto (\texttt{<\textbf{in}>}).
 
+\notavisible{Segur que es pot millorar la redacció de l'últim paràgraf, canviat per mlf perquè hi estiguen totes les condicions booleanes simples.}
 
 \subsubsection{Elementos de operadores condicionales o booleanos: \texttt{<equal>}, \texttt{<and>}, \texttt{<or>}, \texttt{<not>}, \texttt{<in>}}
+
+\notavisible{Cal completar-ho: falten \texttt{contains-substring}, \texttt{ends-with}, \texttt{begins-with}, etc.}
 
 \begin{itemize}
   
@@ -4527,31 +4544,38 @@ condiciones a evaluar, así como por una simple condición de igualdad
   ejemplo de este tipo de condición para evaluar la concordancia de
   género de un patrón en LO.
   
-\item El elemento de negación \texttt{<\textbf{not}>} representa una condición
-  que se cumple cuando la condición incluida no se cumple y viceversa. Se puede ver un ejemplo de negación de una igualdad en la figura \ref{fig:ornot}.
+\item El elemento de negación \texttt{<\textbf{not}>} representa una
+  condición que se cumple cuando la condición incluida no se cumple y
+  viceversa. Se puede ver un ejemplo de negación de una igualdad en la
+  figura \ref{fig:ornot}.
 
-\item El operador condicional más simple es el de igualdad
-  (\texttt{<\textbf{equal}>}). Es una instrucción que comprueba si dos
+\item El operador condicional de igualdad
+  \texttt{<\textbf{equal}>} es una instrucción que comprueba si dos
   argumentos (dos cadenas) son o no idénticos. Véase un ejemplo del
   uso de este elemento en las figuras \ref{fig:clip} y
   \ref{fig:lit-tag}.  En este operador, además, se puede especificar
   el atributo \texttt{caseless}, el cual, si tiene el valor
   \texttt{yes}, hace que la comparación entre cadenas se realice sin
   tener en cuenta las diferencias de mayúsculas y minúsculas.
+\notavisible{Totes les comprovacions condicionals de cadenes tenen l'atribut \texttt{caseless}; \texttt{in} també; més avall}
 
-\item El operador de búsqueda en listas, \texttt{<\textbf{in}>}, que
-  sirve para buscar cualquier valor (que corresponde al primer
-  parámetro de la condición en una lista definida en la sección
-  correspondiente (\texttt{<\textbf{section-\\def-lists}}), a la que
-  se hace referencia mediante el atributo \texttt{n} del elemento \texttt{<\textbf{list}>}.
-  La búsqueda es cierta si el valor se encuentra en la lista.  En esta
-  comparación se puede utilizar también el atributo \texttt{caseless}:
-  si se le asigna el valor \texttt{yes}, se realiza la búsqueda en la
-  lista sin tener en cuenta las diferencias de mayúsculas y
-  minúsculas. En la figura \ref{fig:in} puede verse un ejemplo de su
-  uso.
+\item El operador de búsqueda en listas, \texttt{<\textbf{in}>} sirve
+  para buscar cualquier valor (que corresponde al primer parámetro de
+  la condición) en una lista a la que se hace referencia mediante el
+  atributo \texttt{n} del elemento \texttt{<\textbf{list}>} y que debe
+  estar definida en la sección correspondiente
+  (\texttt{<\textbf{section-\\def-lists}}).  El resultado de la búsqueda es cierto si
+  el valor se encuentra en la lista.  En esta comparación se puede
+  utilizar también el atributo \texttt{caseless}: si se le asigna el
+  valor \texttt{yes}, se realiza la búsqueda en la lista sin tener en
+  cuenta las diferencias de mayúsculas y minúsculas. En la figura
+  \ref{fig:in} puede verse un ejemplo de su uso.
   
 \end{itemize}
+
+\notavisible{Cal unificar tota la discussió anterior, traient factor comú.}
+
+\notavisible{Cal descriure la resta d'elements condicionals que no hi són.}
 
 
 \subsubsection{Elemento \texttt{<clip>}}
@@ -4559,29 +4583,46 @@ condiciones a evaluar, así como por una simple condición de igualdad
 
 
 El elemento \texttt{<\textbf{clip}>} representa una subcadena de una
-forma léxica de la lengua de origen o de la lengua de destino,
+forma léxica de la LO o de la LM,
 definida por el valor de varios atributos (véase un ejemplo de uso en
 la figura \ref{fig:clip}):
 
 \begin{itemize}
-\item \texttt{pos} es un índice (1, 2, 3, etc.) utilizado para seleccionar una
-  forma léxica dentro de la regla: se corresponde con el lugar que
-  ocupa la forma léxica en el patrón.
+\item \texttt{pos} es un índice (1, 2, 3, etc.) utilizado para
+  seleccionar una forma léxica dentro de la regla: se corresponde con
+  el lugar que ocupa la forma léxica en el patrón. En el módulo
+  \textit{postchunk}, també existe el índice ``0'', que hace
+  referencia al pseudolema del chunk, el cual es tratado como una
+  palabra más para poder acceder a su información y tomar decisiones a
+  partir de ella.
 
-\item \texttt{side} especifica si se selecciona un \emph{clip} de la lengua de
-  origen (\texttt{sl}, por \emph{source language}) o de la lengua de destino
-  (\texttt{tl}, por \emph{target language}).
+\item \texttt{side} \textit{(sólo en módulo \texttt{chunker})} especifica si
+  se selecciona un \emph{clip} de la lengua de origen (\texttt{sl},
+  por \emph{source language}) o de la lengua de destino (\texttt{tl},
+  por \emph{target language}).
   
-\item en \texttt{part} se indica qué parte de la forma léxica se
-  procesa; generalmente su valor es uno de los atributos definidos en
+\item \texttt{part} indica qué parte de la forma léxica se procesa;
+  generalmente su valor es uno de los atributos definidos en
   \texttt{<\textbf{section-def-\\attrs}>} (\texttt{gen}, \texttt{nbr},
   etc.), aunque también puede tomar cuatro valores predefinidos que
   son: \texttt{lem} (para hacer referencia al lema de la forma
   léxica), \texttt{lemh} (para hacer referencia a la primera parte de
   un lema partido), \texttt{lemq} (la cola del lema partido), y
   \texttt{whole} (la forma léxica completa, con el lema y todos los
-  símbolos gramaticales, con sus valores actuales en el caso de que
-  hayan sido modificados en la parte precedente de la regla).
+  símbolos gramaticales, que pueden haber sido modificados en la parte
+  precedente de la regla).
+
+\item \texttt{link-to} \textit{(sólo en \texttt{chunker} en un sistema de
+transferencia sintáctica avanzada)} sustituye
+  el valor que se derivaría de la consulta del resto de atributos del
+  clip por el valor especificado en este atributo, que ha de ser un
+  número natural ($>0$). Este número indica con qué etiqueta
+  \texttt{<\textbf{tag}>} del \texttt{<\textbf{chunk}>} se enlaza el
+  contenido del clip, siendo el número el orden que ocupa esta
+  etiqueta dentro de \texttt{<\textbf{tags}>}. El resto de atributos
+  del clip quedan únicamente como información, pues son sobrescritos
+  por el valor de la etiqueta enlazada. Puede verse un ejemplo de su
+  uso en la figura \ref{fig:chunkintrachunk}.
    
 \end{itemize}
 
@@ -4657,9 +4698,13 @@ en la figura \ref{fig:lit-tag}.
   <\textbf{/test}>
 \end{alltt}
 \end{small}
-\caption{Fragmento de una regla en la que se comprueba si el género en LO de la primera o de la segunda unidad léxica identificada en un patrón (podría ser determinante--adjetivo--nombre) es distinto del género de la tercera unidad léxica también en LO.}
+\caption{Fragmento de una regla en la que se comprueba si el género en
+  LO de la primera o de la segunda unidad léxica identificada en un
+  patrón (podría ser determinante--adjetivo--nombre) es distinto del
+  género de la tercera unidad léxica también en LO.}
 \label{fig:ornot}
 \end{figure}
+
 
 
 \subsubsection{Elemento de variable \texttt{<var>}}
@@ -4671,8 +4716,9 @@ definido en \texttt{<\textbf{section-def-vars}>}. Cuando se encuentra
 en un \texttt{<\textbf{out}>}, un \texttt{<\textbf{test}>}, o la parte
 derecha de un \texttt{<\textbf{let}>}, representa el valor de la
 variable; cuando se encuentra en la parte izquierda de un
-\texttt{<\textbf{let}>} o en un \texttt{<\textbf{modify-case}>}, representa la referencia de la variable y se
-puede cambiar su valor.
+\texttt{<\textbf{let}>}, dentro de un \texttt{<\textbf{append}>} o en
+un \texttt{<\textbf{modify-case}>}, representa la referencia de la
+variable y se puede cambiar su valor.
 
 \subsubsection{Elemento de referencia a lista de cadenas \texttt{<list>}}
 
@@ -4697,7 +4743,7 @@ en la figura \ref{fig:in}.
           <\textbf{test}>
             <\textbf{in} \textsl{caseless}="yes"/>
               <\textbf{clip} \textsl{pos}="1" \textsl{side}="sl" \textsl{part}="lem"/>
-              <\textbf{list} \textsl{n}="verbos_estado"/>
+              <\textbf{list} \textsl{n}="verbos_est"/>
             <\textbf{/in}>
          <\textbf{/test}>
          <\textbf{let}>
@@ -4719,7 +4765,7 @@ en la figura \ref{fig:in}.
 \end{figure}
 
 
-\subsubsection{Elemento de información de mayúsculas/minúsculas\\  \texttt{<get-case-from>}}
+\subsubsection{Elemento de información de mayúsculas/mi\-nús\-cu\-las\\  \texttt{<get-case-from>}}
 
 El elemento \texttt{<\textbf{get-case-from}>} representa la cadena
 resultante de aplicar el esquema de mayúsculas que presenta el lema de
@@ -4739,17 +4785,19 @@ traduzca \emph{Dije} por \emph{Vaig dir}, \emph{dije} por \emph{vaig
   dir} y \emph{DIJE} por \emph{VAIG DIR}.
 
 
-\subsubsection{Elemento de obtención del patrón de mayúsculas/minúsculas\\ \texttt{<case-of>}}
+\subsubsection{Elemento de obtención del patrón de mayúsculas/mi\-nús\-cu\-las\\ \texttt{<case-of>}}
 
 Sirve para obtener el patrón de mayúsculas/minúsculas, es decir, uno
 de los valores "\texttt{aa}", "\texttt{Aa"} o "\texttt{AA}", de una
 cadena, que se obtiene como en el caso de la etiqueta
 \texttt{<\textbf{clip}>}, pues tiene los mismos atributos:
 \texttt{pos}, la posición que ocupa la palabra en el patrón detectado;
-\texttt{side}, el lado de la traducción, \texttt{sl} para la LO y
-\texttt{tl} para la LM, y \texttt{part}, el atributo concreto al que
+\texttt{part}, el atributo concreto al que
 se hace referencia (normalmente el lema), con los atributos
-predefinidos que ya se mencionan en la página \pageref{ss:clip}. En la figura
+predefinidos que ya se mencionan en la página \pageref{ss:clip}, y, sólo en
+el caso del módulo \texttt{chunker}, el atributo
+\texttt{side}, el lado de la traducción, \texttt{sl} para la LO y
+\texttt{tl} para la LM. En la figura
 \ref{fig:case} puede verse un ejemplo de utilización de este elemento,
 y en el apartado siguiente (la explicación de
 \texttt{<\textbf{modify-case}>}) se encuentra una explicación más
@@ -4764,23 +4812,25 @@ parámetro puede ser una \texttt{<\textbf{var}>}, un
 \texttt{<\textbf{clip}>} o un \texttt{<\textbf{case-of}>}, mientras
 que el segundo puede ser cualquier cosa que devuelva un valor, pero en
 principio será \texttt{<\textbf{var}>} o \texttt{<\textbf{lit}>}.  Los
-valores que toma este valor suelen ser ``\texttt{Aa}' para expresar
-que la ``parte izquierda'' de esta modificación de las mayúsculas debe
-tener la primera letra en mayúsculas y el resto en minúsculas,
-``\texttt{aa}'' para poner todo en minúsculas y ``\texttt{AA}'' para
-poner todo en mayúsculas. En la figura \ref{fig:case} puede verse un
-ejemplo de su utilización. En esta regla se modifica el estado de
-mayúsculas del lema en LM en posición "1", que corresponde a
-\emph{dir}, puesto que, aunque a la salida de la regla sea la segunda
-forma léxica (\emph{vaig dir}), es la traducción de la FL que tiene la
-posición 1 en la LO, y por lo tanto sigue teniendo asignada esta
-posición en la LM. A este lema se le asigna el valor ``\texttt{aa}''
-en caso de que el lema en LO tenga el estado ``\texttt{Aa}''. En los
-demás casos no hay que especificar nada, pues el estado de
-mayúsculas/minúsculas en la FL con posición 1 coincidirá en la LO y en
-la LM y, por lo tanto, se transfiere automáticamente (véase la
-página~\pageref{mayusc} para más información sobre la gestión de
-mayúsculas y minúsculas en los diccionarios).
+valores que puede tomar este valor suelen ser ``\texttt{Aa}'' para
+expresar que la ``parte izquierda'' de esta modificación de las
+mayúsculas debe tener la primera letra en mayúsculas y el resto en
+minúsculas, ``\texttt{aa}'' para poner todo en minúsculas y
+``\texttt{AA}'' para poner todo en mayúsculas. 
+
+En la figura
+\ref{fig:case} puede verse un ejemplo de su utilización. En esta regla
+se modifica el estado de mayúsculas del lema en LM en posición "1",
+que corresponde a \emph{dir}, puesto que, aunque a la salida de la
+regla sea la segunda forma léxica (\emph{vaig dir}), es la traducción
+de la FL que tiene la posición 1 en la LO, y por lo tanto sigue
+teniendo asignada esta posición en la LM. A este lema se le asigna el
+valor ``\texttt{aa}'' en caso de que el lema en LO tenga el estado
+``\texttt{Aa}''. En los demás casos no hay que especificar nada, pues
+el estado de mayúsculas/minúsculas en la FL con posición 1 coincidirá
+en la LO y en la LM y, por lo tanto, se transfiere automáticamente
+(véase la página~\pageref{mayusc} para más información sobre la
+gestión de mayúsculas y minúsculas en los diccionarios).
 
 
 \begin{figure}
@@ -4828,7 +4878,7 @@ mayúsculas y minúsculas en los diccionarios).
 <\textbf{/rule}>
 \end{alltt}
 \end{small}
-\caption{Regla para \texttt{es}--\texttt{ca} que transforma los verbos
+\caption{Regla para traducir de español a catalán que transforma los verbos
   en pretérito perfecto simple o indefinido (\emph{dije}) en la forma
   de pretérito perfecto perifrástico usual en catalán (\emph{vaig
     dir}), al mismo tiempo que se asigna la información correcta de
@@ -4896,6 +4946,77 @@ etc.). Véase un ejemplo de uso en la figura \ref{fig:regla}.
   ambas lenguas.}
 \label{fig:regla}
 \end{figure}
+
+\subsubsection{Elemento de concatenación de cadenas \texttt{<concat>}} 
+
+Este elemento se usa para concatenar cadenas para asignarlas a una
+variable. Se usa de manera combinada con \texttt{<\textbf{let}>}, y el
+valor anterior de la variable que se modifica con la asignación de
+\texttt{<\textbf{concat}>}, se pierde.
+
+No tienen ningún atributo. Puede contener qualquier instrucción que devuelva una
+cadena, como \texttt{<\textbf{lit}>}, \texttt{<\textbf{lit-tag}>} o
+\texttt{<\textbf{clip}>}.
+
+En la figura \ref{fig:concat} puede verse un ejemplo de uso.
+
+
+\begin{figure}
+\begin{small}
+\begin{alltt}
+<\textbf{let}>    
+  <\textbf{var} n="palabra"/>
+    <\textbf{concat}>
+       <\textbf{clip} pos="3" side="tl" part="lem"/>  
+       <\textbf{lit-tag} v="adv"/>
+    <\textbf{/concat}>
+<\textbf{/let}>   
+\end{alltt}
+\end{small}
+\caption{En este ejemplo se atribuye a la variable \texttt{palabra} el valor
+de la concatenación de un \texttt{clip} (el lema de la posición 3) y una etiqueta \emph{adv}.}
+\label{fig:concat}
+\end{figure}
+
+
+\nota{pingui}
+
+\subsubsection{Elemento de concatenación de cadenas \\\texttt{<append>}}
+
+La instrucción \texttt{<\textbf{append}>} puede utilizarse para almacenar la salida
+de una acción antes de imprimirla en el \texttt{<\textbf{out}>} correspondiente, por conveniencia del diseñador de las
+reglas de transferencia.
+
+El atributo obligatorio \texttt{n} especifica el nombre de variable que tiene
+la expresión. Al final de la instrucción, el contenido antiguo de la
+variable referenciada será prefijo del nuevo contenido, es decir, el nuevo
+contenido indicado dentro de \texttt{<\textbf{append}>} se concatenará al contenido preexistente
+en la variable indicada en  \texttt{n}.
+
+El contenido de esta instrucción puede ser una o más de las siguientes
+etiquetas: \texttt{<\textbf{b}>}, \texttt{<\textbf{clip}>},
+\texttt{<\textbf{lit}>}, \texttt{<\textbf{lit-tag}>},
+\texttt{<\textbf{var}>}, \texttt{<\textbf{get-case-from}>},
+\texttt{<\textbf{case-of}>} o \texttt{<\textbf{concat}>}. Se puede ver
+un ejemplo en la figura \ref{fig:append}.
+
+\begin{figure}
+\begin{small}
+\begin{alltt}
+<\textbf{append} n="temporal">    
+  <clip pos="3" part="gen" side="tl"/>    
+<\textbf{/append}>
+\end{alltt}
+\end{small}
+\caption{En este ejemplo se concatena a la variable
+  \texttt{temporal} el valor de género de la parte de LM de la tercera
+  palabra detectada por la regla.}
+\label{fig:append}
+\end{figure}
+
+
+
+
 
 
 \subsubsection{Elemento de salida \texttt{<out>}}
