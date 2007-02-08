@@ -1349,6 +1349,13 @@ es el siguiente:
   incluir las correspondencias bilingües del diccionario. 
 \end{itemize}
 
+A partir de 2007, los diccionarios bilingües permiten la 
+especificación de más de una traducción en lengua meta para
+que un módulo de selección léxica (veáse el apartado \ref{se:seleccio_lex})
+pueda elegir el equivalente más adecuado según el contexto. Para tal fin se ha 
+añadido un atributo a los diccionarios bilingües, que se describe en la página 
+\pageref{dic_lextor}.
+
 
 Los \textbf{diccionarios de postgeneración} se usan para llevar a cabo
 las operaciones de transformación ortográfica, contracción,
@@ -1402,7 +1409,9 @@ se da en el apéndice~\ref{ss:dtd_dics}. En las páginas
 \pageref{ss:morfgen}, \pageref{ss:bil} y \pageref{ss:postgen} se describen las
 características particulares de las entradas de los tres tipos de
 diccionarios (morfológicos, bilingües y de postgeneración
-respectivamente).
+respectivamente). En la página \pageref{dic_lextor}, además, 
+se describen las características de un diccionario bilingüe que funcione en un 
+sistema Apertium que disponga de módulo de selección léxica.
 
 
 
@@ -2307,6 +2316,106 @@ singular y plural, mientras que en ca\-ta\-lán el singular es
 
 
 \end{figure}
+
+
+
+
+
+\paragraph{Diccionario bilingüe para un sitema con selección léxica}\label{dic_lextor}
+
+En 2007 se ha añadido un nuevo módulo al sistema Apertium: el módulo de
+selección léxica, que se describe en el apartado \ref{se:seleccio_lex}.
+
+Para funcionar en un sistema de selección léxica, los diccionarios
+bilingües deben ser modificados ligeramente para permitir la especificación
+de más de una traducción en lengua meta. El único cambio
+consiste en el añadido de dos nuevos atributos al elemento \texttt{<e>}.
+Estos nuevos atributos pueden utilizarse en todos los diccionarios
+pero sólo tienen sentido cuando se trata de una entrada del diccionario bilingüe.
+
+\notavisible{*** ATENCIÓN ***
+\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
+
+
+
+A l'Apèndix~\ref{dixdtd} es mostra el fragment de la DTD
+\texttt{dix.dtd} on es defineix l'element \texttt{e} usat per a
+codificar les entrades als diccionaris. Els nous atributs introduïts
+són:
+\begin{description}
+\item[slr (\emph{sense from left to right})] s'utilitza per a
+  especificar la \emph{marca de traducció} quan la traducció és d'esquerra dreta.
+  L'atribut pot rebre qualsevol valor; no obstant
+  això, el més apropiat és que rebi el valor del lema marcat com a
+  \texttt{<r>}.
+\item[srl (\emph{sense from right to left})] s'utilitza per a
+  especificar la marca de traducció quan la traducció és de dreta a
+  esquerra. Com abans, l'atribut pot rebre qualsevol valor, però el
+  més apropiat és que reba el lema marcat com a \texttt{<l>}.
+\end{description}
+
+A més, en ambdós casos el valor de l'atribut pot acabar amb un espai
+en blanc i la lletra ``D'' per a indicar que
+aquesta és la traducció predeterminada, és a dir, la traducció a emprar
+quan no hi ha suficient informació per a triar-ne una altra.
+
+El següent exemple il·lustra el funcionament dels nous atributs.
+Considerem el cas d'un diccionari bilingüe anglès--català i les
+següents entrades amb més d'una traducció en llengua meta:
+\begin{itemize}
+\item \emph{look}: que es pot traduir al català com \emph{mirar} (per
+  defecte) o com \emph{parèixer},
+\item \emph{floor}: que es pot traduir al català per \emph{pis} (per
+  defecte) o per \emph{terra},
+\item \emph{pis}: que es pot traduir a l'anglès per \emph{flat} (per
+  defecte) o per \emph{floor} (prenent \emph{pis} en el sentit de
+  paviment).
+\end{itemize}
+
+Aquesta informació es representa fent ús dels dos atributs esmentats
+abans:
+\begin{alltt}
+\begin{small}
+<e srl="flat D">
+   <p>
+      <l>flat<s n="n"/></l>
+      <r>pis<s n="n"/><s n="m"/></r>
+    </p>
+</e>
+
+<e slr="pis D" srl="floor">
+   <p>
+      <l>floor<s n="n"/></l>
+      <r>pis<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+
+<e slr="terra">
+   <p>
+      <l>floor<s n="n"/></l>
+      <r>terra<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+
+<e slr="mirar D">
+   <p>
+      <l>look<s n="vblex"/></l>
+      <r>mirar<s n="vblex"/></r>
+   </p>
+</e>
+
+<e slr="parèixer">
+   <p>
+      <l>look<s n="vblex"/></l>
+      <r>parèixer<s n="vblex"/></r>
+   </p>
+</e>
+\end{small}
+\end{alltt}
+
+
+
+\notavisible{FIN DEL TEXTO EN CATALÁN}
 
 
 \paragraph{Diccionarios de postgeneración}
@@ -3235,6 +3344,322 @@ unidad verbal con significado propio.
 
 
 
+\section{Mòdul de selecció lèxica}
+\label{se:seleccio_lex}
+
+\notavisible{Aquest capítol documenta el nou mòdul introduït a la cadena de
+muntatge d'Apertium i hauria d'ubicar-se entre les seccions 3.3 i 3.4 de
+la documentació de la versió 1 d'Apertium, a excepció de la
+secció~\ref{dic_lextor} que hauria d'ubicar-se a la secció 3.1.2
+(pàgina 26) on s'expliquen els diccionaris usats per Apertium.}
+
+\subsection{Introducció} pingui1
+Quan el sistema Apertium s'utilitza per a traduïr automàticament entre
+llengües menys emparentades que les que ha tractat fins ara, pren
+importància la qüestió de la tria lèxica, que s'ha de dur a terme quan una
+paraula de la llengua origen pot tenir més d'una traducció en llengua
+meta. Per aquest motiu s'ha creat un nou mòdul, el mòdul
+de selecció lèxica, que s'ocupa d'aquesta qüestió.
+
+Abans d'explicar-ne les característiques, veurem com els 
+problemes d'\emph{equivalència
+múltiple} (l'existència de
+més d'una traducció possible en llengua meta per a un lema o una forma 
+lèxica en llengua
+origen) es tracten a Apertium de dues maneres diferents.
+
+Per una banda, ens trobem amb la situació en què entre els múltiples
+equivalents en llengua meta no hi ha una gran diferència de
+significat, i el fet d'escollir entre l'un o l'altre no comportaria
+cap error de traducció. Podríem dir que entre aquests equivalents hi
+ha una relació de sinonímia o quasisinonímia. En aquest cas, el
+lingüista escull com a traducció un dels dos lemes (generalment el més
+freqüent o més usual), i posa una restricció de direcció en els altres
+(amb els atributs \texttt{LR} o \texttt{RL}) per tal que siguin traduïts en la direcció
+contrària però no pas en la direcció en què hi ha múltiples
+equivalents.
+
+Per altra banda, tenim el cas en què entre els múltiples equivalents
+en llengua meta hi ha una evident diferència de significat que pot
+portar a errors de traducció quan es tria el lema inadequat. Aquests
+casos són els que tracta el nou mòdul de selecció lèxica. El lingüista
+codifica les entrades amb els atributs \texttt{slr} o \texttt{srl} que
+s'expliquen en l'apartat següent, identificant així les diferents
+possibilitats de traducció, i el mòdul de selecció lèxica s'ocupa
+d'escollir, mitjançant procediments estadístics, quina és la traducció
+adequada en un context determinat.
+
+
+Decidir quan una situació d'equivalència múltiple s'ha de tractar
+d'una manera o de l'altra, de vegades no és senzill. Per exemple, 
+quan entre dos o
+més lemes de la llengua meta existeix diferència de significat,
+però considerem que el mòdul de selecció lèxica no serà capaç
+d'escollir la bona traducció a partir del context, seguirem el primer
+mètode: escollir la traducció fixa que volguem (la més general, la que
+considerem adequada en el màxim de situacions possibles) i posar una
+restricció de direcció en la resta d'equivalents.
+En la resta de casos, codificarem les entrades de manera que la decisió
+quedi en mans del mòdul de selecció lèxica.
+
+Quan s'utilitzi un sistema Apertium sense mòdul de selecció lèxica, l'única manera
+de codificar entrades amb diverses traduccions possibles és la primera, és a dir, escollint
+una única traducció i marcant la resta d'equivalències amb una restricció de direcció.
+En cas que utilitzem diccionaris bilingües amb múltiples traduccions,
+codificades amb els atributs \texttt{slr} o \texttt{srl},
+en un sistema que no disposa de mòdul de selecció lèxica, un full d'estil
+s'encarrega de convertir aquestes entrades
+pensades per al mòdul de selecció lèxica en entrades amb restriccions de direcció \texttt{LR} o \texttt{RL},
+de manera que un dels múltiples equivalents (el que el lingüista ha escollit com a
+a entrada predeterminada) queda com a traducció fixa del lema en llengua origen.
+
+Com a exemples d'equivalències bilingües que haurien de portar una restricció
+de direcció, podem donar els parells de traducció \texttt{ca-es}
+\emph{encara -- aún/todavía} i \emph{sobtat -- súbito/repentino}, el primer dels
+quals podria quedar així:
+\begin{alltt}
+\begin{small}
+
+<e r="LR">
+   <p>
+      <l>aún<s n="adv"/></l>
+      <r>encara<s n="adv"/></r>
+   </p>
+</e>
+<e>
+    <p>
+      <l>todavía<s n="adv"/></l>
+      <r>encara<s n="adv"/></r>
+    </p>
+</e>
+\end{small}
+\end{alltt}
+
+
+Com a exemple del segon cas (múltiples equivalents amb gran diferència de significat) tenim els parells
+\texttt{es-ca} \emph{hoja -- full/fulla} o \emph{muñeca -- nina/canell}, i els exemples \texttt{en-ca}
+mostrats en el següent apartat. (Mireia: ara no hi són pingui!)
+
+
+\begin{figure}
+{\footnotesize
+\setlength{\tabcolsep}{0.5mm}
+\begin{center}
+\begin{tabular}{ccccccccc}
+\\
+\parbox{0.95cm}{text en llengua origen} \\
+$\downarrow$ \\
+\framebox{\parbox{1.0cm}{desfor\-matador}} $\rightarrow$ &
+\framebox{\parbox{0.6cm}{anal. morf.}}  $\rightarrow$ &
+\framebox{\parbox{1.0cm}{desamb. categ.}} $\rightarrow$ & 
+\framebox{\parbox{0.6cm}{selec. lèxic}} $\rightarrow$ & 
+\framebox{\parbox{0.85cm}{transf.\ estruc.}} $\rightarrow$ &
+\framebox{\parbox{0.6cm}{gen. morf.}} 
+$\rightarrow$ & \framebox{\parbox{1.2cm}{post\-generador}}
+$\rightarrow$ & \framebox{\parbox{1.0cm}{refor\-matador}} \\
+& & & & $\updownarrow$ & & &  $\downarrow$ \\
+& & & & \framebox{\parbox{0.8cm}{transf.\ lèxica}} & & &
+\parbox{0.95cm}{text en llengua meta}\\
+\end{tabular}
+\end{center}
+}
+\caption{Els nou mòduls que formen la cadena de muntatge de la versió
+  2 del sistema de traducció automàtica Apertium.}
+\label{fig:moduls}
+\end{figure}
+
+La figura~\ref{fig:moduls} mostra com queda la cadena de muntatge en
+la versió 2 d'Apertium.\footnote{Aquesta figura reemplaça a la figura
+  1.1 que es troba a la pàgina 6 de la documentació de la versió 1
+  d'Apertium.} El mòdul encarregat de la tria lèxica (selector lèxic)
+s'executa després del desambiguador lèxic categorial i abans del mòdul
+encarregat de la transferència estructural; per tant, aquest nou mòdul
+treballa únicament amb informació de la llengua origen. 
+
+La resta del capítol s'organitza de la següent manera: la
+secció~\ref{dic_lextor} explica la modificació feta per a
+especificar més d'una traducció al diccionari bilingüe; la
+secció~\ref{se:preprocessament} explica el preprocessament que s'ha de
+fer del diccionari bilingüe, tant si s'usa un mòdul 
+de tria lèxica com si no. Finalment en la secció~\ref{se:lextor} s'explica
+com funciona i com s'ha d'entrenar el mòdul que fa la tria lèxica.
+
+
+
+\subsection{Preprocessament dels diccionaris bilingües}\label{se:preprocessament}
+El fet que, amb aquesta modificació, es creïn diccionaris bilingües
+que permeten l'especificació de més d'una traducció per paraula fa
+necessari un preprocessament d'aquests diccionaris, ja que el motor de
+traducció Apertium treballa amb diccionaris compilats en els quals
+cada mot té només una traducció possible.
+
+El preprocessament dels diccionaris es fa automàticament durant la
+compilació, per la qual cosa l'usuari final no ha de fer cap acció especial.
+
+\subsubsection{Preprocessament sense mòdul de tria lèxica}
+
+Quan aquests diccionaris s'utilitzin en un sistema que no disposa de
+mòdul de selecció lèxica, el preprocessament es realitza amb
+l'aplicació del full d'estil \texttt{translate-to-default-equivalent.xsl}.  Aquest full
+d'estil converteix els diccionaris amb més d'una possible traducció per entrada en
+diccionaris amb una sola traducció per entrada, escollint com a
+traducció l'entrada marcada com a equivalent predeterminat, i posant una
+restricció de direcció (\texttt{LR} o \texttt{RL} segons el cas) en les entrades
+restants, de manera que aquestes només es tradueixen en la direcció de
+traducció en què no hi ha multiplicitat d'equivalents.  Aquest full
+d'estil es crida des del \texttt{Makefile}.
+
+Com a exemple, les tres primeres entrades que es mostren en la pàgina
+\ref{dic_lextor} queden així després de l'aplicació del full
+d'estil esmentat:
+
+\begin{alltt}
+\begin{small}
+<e>
+   <p>
+      <l>flat<s n="n"/></l>
+      <r>pis<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+
+<e r="LR">
+   <p>
+      <l>floor<s n="n"/></l>
+      <r>pis<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+
+<e r="RL">
+   <p>
+      <l>floor<s n="n"/></l>
+      <r>terra<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+\end{small}
+\end{alltt}
+
+\subsubsection{Preprocessament amb mòdul de tria lèxica}
+
+En el cas que el sistema Apertium funcioni amb un mòdul de selecció lèxica, el diccionari bilingüe 
+s'ha de preprocessar per a obtenir:
+\begin{itemize}
+\item un diccionari monolingüe que per a cada paraula en
+  llengua origen (per exemple \emph{look}) retorni totes les possibles
+  marques de traducció (\texttt{look\_\_mirar D} i
+  \texttt{look\_\_parèixer}), aquest diccionari serà utilitzat pel
+  mòdul que fa la tria lèxica; i
+\item un nou diccionari bilingüe que donada una paraula
+  amb la selecció lèxica ja feta (per exemple
+  \texttt{look\_\_parèixer}) en retorni la traducció
+  (\emph{parèixer}); aquest serà el diccionari bilingüe a emprar en la
+  transferència lèxica.
+\end{itemize}
+
+Aquest preprocessament es fa automàticament amb el següent
+programari en compilar els diccionaris:
+\begin{itemize}
+\item \texttt{apertium-gen-lextormono}, que rep tres paràmetres: 
+  \begin{itemize}
+  \item el sentit de traducció per al qual es vol obtenir el
+    diccionari monolingüe usat en la tria lèxica; \texttt{lr}
+    (\emph{left to rigth}) per a la traducció d'esquerra a dreta, i
+    \texttt{rl} (\emph{right to left}) per a la traducció de dreta a
+    esquerra;
+  \item el diccionari bilingüe a preprocessar; i
+  \item el fitxer on s'ha d'escriure el diccionari monolingüe
+    resultant.
+  \end{itemize}
+\item \texttt{apertium-gen-lextorbil}, que rep tres paràmetres: 
+  \begin{itemize}
+  \item el sentit de traducció (\texttt{lr} o \texttt{rl}) per al qual
+    es vol obtenir el diccionari bilingüe a usar pel mòdul de
+    transferència lèxica;
+  \item el diccionari bilingüe a preprocessar; i
+  \item el fitxer on s'ha d'escriure el diccionari bilingüe resultant.
+  \end{itemize}
+\end{itemize}
+
+\subsection{Funcionament del mòdul per a la tria lèxica}\label{se:lextor}
+El mòdul encarregat de la tria lèxica s'executa després del
+desambiguador lèxic categorial i abans de la transferència estructural
+(vegeu la figura~\ref{fig:moduls} de la pàgina~\pageref{fig:moduls});
+per tant fa ús únicament d'informació de la llengua origen de la
+traducció. No obstant això, per a l'entrenament del mòdul també es fa
+ús d'informació de la llengua meta.
+
+\subsubsection{Entrenament}\label{se:entrenament}
+Per al entrenament del mòdul que fa la tria lèxica es necessiten un
+corpus en llengua origen i un altre en llengua meta; no cal que
+estiguen relacionats. Tots dos corpus han de ser preprocessats abans
+de l'entrenament. Aquest preprocessament, el qual consisteix a
+analitzar els còrpora i fer la desambiguació lèxica categorial, es pot
+fer
+%perquè estiguen en el mateix format que quan es fa la
+%tria lèxica durant la traducció (vegeu la secció~\ref{se:us} més
+%avall) 
+amb \texttt{apertium-preprocess-corpus-lextor}.
+
+L'entrenament del mòdul encarregat de la tria lèxica consisteix a fer
+les següents tasques:\footnote{L'entrenament dels models usats per a
+  la tria lèxica s'ha automatitzat en aquells paquets lingüístics que
+  l'usen. A més tot el programari esmentat té la seua pàgina de manual UNIX}
+\begin{enumerate}
+\item obtenir la llista de paraules que no hauran de ser tingudes en
+  compte a l'hora de fer la tria lèxica (\emph{stopwords}). Aquesta
+  llista pot fer-se a mà o mitjançant
+  \texttt{apertium-gen-stopwords-lextor};
+\item obtenir la llista de paraules (en llengua origen) que tenen més
+  d'una traducció en llengua meta amb
+  \texttt{apertium-gen-wlist-lextor};
+\item traduir a la llengua meta cada una de les paraules obtingudes en
+  el pas anterior amb \texttt{apertium-gen-wlist-lextor-translation};
+\item entrenar amb \texttt{apertium-lextor --trainwrd} i usant el
+  corpus preprocessat de la llengua meta un model de coaparició de
+  paraules per a les obtingudes en el pas anterior;
+\item entrenar amb \texttt{apertium-lextor --trainlch} i usant el
+  corpus preprocessat de la llengua origen, els diccionaris generats
+  amb els programes esmentats a la secció~\ref{se:preprocessament} i
+  els models de coaparició de paraules estimats en el pas anterior, un
+  model de coaparició per a cadascuna de les marques de traducció
+  d'aquelles paraules que poden tenir més d'una traducció en llengua
+  meta.
+\end{enumerate}
+
+\subsubsection{Utilització}\label{se:us}
+Els models de coaparició de paraules estimats a la secció anterior per
+a cadascuna de les marques de traducció proporcionen la informació
+necessària per a portar a terme la tria lèxica amb informació del
+context.
+
+La tria lèxica es fa amb \texttt{apertium-lextor --lextor}; els formats
+usats per a la comunicació amb la resta de mòduls del motor de
+traducció són:
+\begin{description}
+\item [Entrada:] text en el mateix format que el d'entrada al mòdul de
+  transferència estructural, és a dir, text analitzat i desambiguat
+  amb les cues invariants dels multimots desplaçats abans de qualsevol
+  etiqueta.
+\item [Eixida:] text en el mateix format però amb la marca de
+  traducció a emprar quan es faça la transferència lèxica.
+\end{description}
+
+El següent exemple il·lustra els formats d'entrada/eixida usats pel
+selector lèxic (suposem que únicament el verb anglès \emph{get} té més
+d'un sentit de traducció als diccionaris):
+\begin{itemize}
+\item Text en llengua origen (anglès): \emph{To get to the city
+    centre}
+\item Entrada al selector lèxic: \verb!^To<pr>$!
+  \verb!^get<vblex><inf>$! \verb!^to<pr>$! \verb!^the<det><def><sp>$!
+  \verb!^city<n><sg>$! \verb!^centre<n><sg>$!
+\item Marques de traducció al diccionari bilingüe per al verb \emph{get}:
+  \texttt{rebre}, \texttt{agafar}, \texttt{arribar},
+  \texttt{aconseguir D}
+\item Eixida del selector lèxic: \verb!^To<pr>$!
+  \verb!^get__arribar<vblex><inf>$! \verb!^to<pr>$!
+  \verb!^the<det><def><sp>$!  \verb!^city<n><sg>$!
+  \verb!^centre<n><sg>$!
+\end{itemize}
 
 
 \newpage
@@ -3616,354 +4041,6 @@ evitar que el último módulo busque cuál es la palabra que tiene que
 perder la mayúscula, si la hay. Esta tarea corresponde al módulo
 \texttt{chunker} y se hace mediante una macro o
 algún mecanismo similar.
-
-\subsubsection{Programa \texttt{chunker} (\texttt{transfer})}
-
-\notavisible{ATENCIÓ: TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
-
-Aquest programa és l'hereu més directe del mòdul de transferència
-sintàctica superficial d'Apertium. De fet aquest mòdul pot
-utilitzar-se individualment com a sistema de transferència sintàctica
-superficial, o en combinació amb els altres dos mòduls de
-transferencia per a construir un sistema de transferència sintàctica
-avançada.
-
-
-\paragraph{Entrada/eixida}
-
-\begin{itemize}
-\item Entrada: dades amb el format d'eixida del \texttt{pretransfer}, és a dir,
-  amb les cues invariants dels multimots desplaçats a una posició
-  anterior a qualsevol etiqueta.
-\item Eixida: 
-\begin{itemize}
-\item[-] si s'utilitza en un sistema de transferència avançada: segments (chunks),
-  perquè el mòdul següent els detecte i realitze operacions amb ells.
-\item[-] si s'utilitza en un sistema de transferència superficial: formes lèxiques que constitueixen
-l'entrada del mòdul de generació 
-\end{itemize}
-
-\end{itemize}
-
-
-\paragraph{Fitxers de dades}
-
-\notavisible{Explicar millor això de l'únic fitxer de configuració}
-Aquest programa usa un únic fitxer de configuració i un fitxer
-precompilat de detecció de patrons calculat a partir del primer, de
-manera idèntica a Apertium \notavisible{MG: caldria canviar les
-  referències a 'Apertium' com si fos una altra cosa}. El nom del
-fitxer de patrons tindrà l'extensió \texttt{.t1x}. Com que el
-\texttt{chunker} és qui fa la consulta del diccionari bilingüe, aquest
-(en forma compilada) també s'ha d'aportar al programa.
-
-\notavisible{Potser seria bona idea esmentar en quina secció s'explica el
-compilador a què es fa referència}
-
-La DTD d'aquest fitxer de dades s'especifica en l'apèndix
-\ref{ss:dtdtransfer}.
-
-\paragraph{Detecció de patrons}
-
-El sistema de detecció de regles d'aquest mòdul serà el mateix que en
-el mòdul de transferència actual d'Apertium \notavisible{ídem sobre 'Apertium', canviar-ho}. El programa
-\texttt{a\-per\-tium-pre\-trans\-fer} 
-\notavisible{Vacil·lació terminològica \texttt{pretransfer}.}
-és necessari per a adaptar el format
-d'eixida de l'etiquetador a l'entrada que reconeix el mòdul de
-transferència. En posteriors versions d'Apertium no es descarta que es
-modifique el \textit{desambiguador categorial} perquè faça la feina del
-\texttt{apertium-pretransfer}.
-\notavisible{També hem d'unificar la terminologia d'altres mòduls:
-\emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
-el paràgraf es podria pensar que són dues coses diferents.}
-
-\paragraph{Especificació de les accions associades}
-\label{ass_intra}
-
-
-És bàsicament similar a l'actual mòdul de transferència d'Apertium \notavisible{canviar referència a ``l'actual
-mòdul de transferència d'Apertium''},
-amb les següents incorporacions:
-
-\begin{itemize}
-\item Especificació de l'acció implícita en l'element arrel
-  \texttt{<transfer>}. Aquest element té l'atribut opcional
-  \texttt{default} que pot tenir els valors \texttt{lu} (valor per
-  defecte) o \texttt{chunk} depenent de si es vol que el transfer
-  funcione a la manera d'Apertium 1 (transferència sintàctica
-  superficial) o d'Apertium 2 (transferència sintàctiva avançada),
-  respectivament.
-\item Atribut \texttt{comment} (opcional) per als elements
-  \texttt{<rule>}. Les regles tindran a partir d'ara un comentari que
-  permetrà d'incloure informació que s'usarà per a documentació.
-\item Generació de segments (chunks): l'etiqueta \texttt{<chunk>} és una etiqueta d'un nivell més alt
-  que \texttt{<lu>} (\textit{lexical unit}) que
-  permet generar segments amb les característiques que han sigut
-  especificades a la secció anterior; té els següents atributs:
-  \begin{itemize}
-  \item \texttt{name} (opcional): pseudolema del segment. Una
-    cadena que permeta d'identificar el pseudolema del segment.
-  \item \texttt{namefrom} (opcional): pseudolema del segment, obtingut
-    d'una variable. És obligatori especificar bé \texttt{name} o bé
-    \texttt{namefrom}.
-  \item \texttt{case} (opcional): variable que serveix per a obtenir
-    la informació de majúscules o minúscules d'una variable i
-    aplicar-la al lema especificat bé per \texttt{name}, bé per
-    \texttt{namefrom}.
-  \end{itemize}
-\item Cada chunk comença per una instrucció \texttt{<tags>}, que no
-  permet especificar cap atribut, la qual, per la seua part, conté una
-  o més instruccions individuals \texttt{<tag>}.
-\item Les instruccions \texttt{<tag>} no tenen atributs. Dins d'elles
-  es pot posar qualsevol instrucció que torne com a valor una cadena:
-  \texttt{<lit>}, \texttt{<var>}.
-\item Les instruccions \texttt{<clip>} tenen un nou atribut opcional:
-  \texttt{link-to}, que serveix per a especificar una etiqueta
-  \verb!<!\textit{valor de link-to}\verb!>! en comptes de 
-\notavisible{Es ``en comptes de'' o ``addicionalment a''?}
-la
-  informació que continga el \texttt{<clip>} en la resta d'atributs.
-  Aquesta informació és prescindible però pot servir com a
-  documentació de l'origen de la decisió lingüística.
-\end{itemize}
-
-Veiem amb un exemple l'ús de l'element \texttt{<chunk>}:
-
-\begin{alltt}
-<out>
-  <chunk name="adj-nom" case="variableCase">
-    <tags>
-      <tag><lit-tag v="SN"/></tag>
-      <tag><clip pos="2" side="tl" part="gen"/></tag>
-      <tag><clip pos="2" side="tl" part="nbr"/></tag>
-    </tags>
-    <lu>
-      <clip pos="2" side="tl" part="lemh"/> 
-      <clip pos="2" side="tl" part="a_nom"/>
-      <clip pos="2" side="tl" part="gen" link-to="2"/>
-      <clip pos="2" side="tl" part="nbr" link-to="3"/>
-    </lu>
-    <b pos="1"/>
-    <lu>  
-      <var n="adjectiu"/> 
-      <clip pos="1" side="tl" part="lem"/>  
-      <clip pos="1" side="tl" part="a_adj"/>
-      <clip pos="2" side="tl" part="gen" link-to="2"/>
-      <clip pos="2" side="tl" part="nbr" link-to="3"/>
-    </lu> 
-  </chunk>
-</out>
-\end{alltt}
-
-
-\paragraph{Acció implícita}
-
-Els \textit{superblancs} aïllats, que no són detectats per cap patró
-d'aquest mòdul s'escriuen en el mateix ordre en què arriben.
-
-L'element arrel del fitxer \texttt{.t1x} de regles del
-\texttt{chunker}, \texttt{<transfer>}, té un
-atribut opcional \texttt{default} que pot prendre els valors
-\begin{itemize}
-\item \texttt{chunk}: quan el mòdul funcioni en Apertium 2 (transferència
-sintàctica avançada), per tal que es generin
-  segments trivials amb les paraules que el mòdul no puga incloure en la
-  formació de cap segment o que no hagen sigut especificats. El nou segment es crearà
-  mit\-jan\-çant la traducció de la paraula pel diccionari bilingüe.
-  El lema fix dels chunks creats implícitament és
-  \texttt{default}.
-\item \texttt{lu} (valor implícit): quan el mòdul funcioni com a únic
-  mòdul de transferència en Apertium 1 (transferència sintàctica
-  superficial), traduint la paraula amb el diccionari bilingüe.
-\end{itemize}
-
-A continuació es mostra el segment generat automàticament amb una forma lèxica no
-detectada per cap regla  del
-\texttt{chunker} quan l'atribut \texttt{default} té el valor \texttt{chunk}:
-
-
-\begin{alltt}
-^default\verb!{!^that<cnjsub>$\verb!}!$
-\end{alltt}
-
-\notavisible{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
-
-
-\subsubsection{Programa \texttt{interchunk}}
-
-
-\notavisible{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
-
-El programa \texttt{interchunk} tracta els segments, els reordena i fa els
-canvis pertinents en la informació morfosintàctica. Això es fa
-mit\-jan\-çant la detecció de patrons de segments (seqüències de
-segments). La sintaxi de les instruccions que s'usen per a controlar
-el seu funcionament són, amb poques diferències, les mateixes que usa
-el programa \texttt{chunker}, però ha de quedar clar que s'utilitza un arxiu
-diferent. Els segments són tractats de forma similar a com es
-tracten les paraules en el transfer o \texttt{chunker} d'Apertium.
-\notavisible{Comprovar la denominació dels programes}
-
-\paragraph{Entrada/eixida}
-
-\begin{itemize}
-\item Entrada: segments procedents de \texttt{chunker}.
-\item Eixida: segments possiblement reordenats i amb la informació del
-  pseudolema del segment possiblement modificada.
-\end{itemize}
-
-\paragraph{Fitxers de dades}
-
-Aquest mòdul usa dos fitxers de dades. Un fitxer d'especificació del
-comportament del programa \texttt{in\-ter\-chunk}, amb extensió
-\texttt{.t2x} pera analogia amb el mòdul anterior, i un
-fitxer de patrons precalculats per a accelerar l'anàlisi de l'entrada.
-No s'hi inclou el fitxer binari del diccionari bilingüe perquè no
-s'usa.
-\notavisible{Citar el compilador?}
-
-La sintaxi del fitxer d'especificació és molt similar a la del mòdul
-\texttt{chunker}, i s'especifica en l'apèndix
-\ref{ss:dtdinterchunk}.
-
-
-\paragraph{Detecció de regles}
-
-Les regles detecten patrons que estan definits mitjançant seqüències
-de pseudoparaules. Aquestes pseudoparaules tenen un format basat en
-el format de la forma lèxica de les paraules. Des del punt de vista
-pràctic, aquest pseudolema és vist de manera equivalent a com es
-\notavisible{L'alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
-veu la forma lèxica d'una paraula en el mòdul
-\texttt{chunker} per a realitzar la detecció.
-D'aquesta forma, s'usarà una detecció de patrons amb atributs definits
-sobre les pseudoparaules i no sobre les paraules del patró original.
-
-
-\paragraph{Especificació de les accions associades}
-
-Les modificacions en el joc d'instruccions d'aquest mòdul ---respecte
-del joc d'instruccions utilitzat en
-\texttt{chunker}--- són les següents:
-
-\begin{itemize}
-\item L'element arrel es diu \texttt{<interchunk>} i no especifica cap
-  atribut.
-\item Desaparició de l'atribut \texttt{side}: aquest mòdul no fa
-  servir diccionaris bilingües; per tant l'atribut que indica si la
-  part que es consulta és l'origen o la meta no té sentit. Aquest
-  atribut era usat fonamentalment en les instruccions \texttt{<out>}.
-\item L'etiqueta \texttt{<chunk>} ara s'usa sense atributs,
-  senzillament dins de \texttt{<out>} per a delimitar l'eixida de
-  segments.
-\item L'atribut predefinit \texttt{lem} fa referència al pseudolema
-  del segment. De la mateixa manera, l'atribut predefinit
-  \texttt{tags} fa referència a les etiquetes del segment. El
-  contingut del segment queda com una cua que es pot imprimir
-  mitjançant l'atribut implícit \texttt{chcontent}.\notavisible{Només imprimir o s'hi pot fer referència també?}
-\notavisible{Dir de quin element són aquests atributs}
-\item Tots els valors de \texttt{part}, excepte \texttt{chname},
-  accedeixen a la informació del lema i les etiquetes del
-  pseudolema de cada segment.
-\item A diferencia del que succeeix en el mòdul \texttt{chunker}, no
-  es permet d'imprimir una altra cosa que \texttt{<chunk>}s en les
-  instruccions \texttt{<out>} en el fitxer d'especificació del
-  comportament d'aquest mòdul, i en cap cas paraules soltes.
-\end{itemize}
-
-
-\paragraph{Acció implícita}
-
-Al igual que en el mòdul anterior, s'hi ha establert una acció
-implícita que escriu sense modificar els segments no reconeguts per cap
-patró del fitxer d'especificació d'aquest mòdul. Aquesta acció implícita
-escriu exactament el que llig, tant si es tracta de chunks com
-de blancs.
-\notavisible{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
-
-
-\subsubsection{Programa \texttt{postchunk}}
-
-El programa \texttt{postchunk} detecta segments individuals, i per a
-cadascun d'ells, executa unes accions especificades. La detecció es
-basa en els lemes del segment, 
-\notavisible{Seria \emph{en el lema}?}
-i no en patrons (no en les etiquetes);
-això farà que la detecció en aquest mòdul siga específica per a cada
-``nom'' de segment.\notavisible{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
-
-D'altra banda, el funcionament de la detecció i del processament de
-les regles es basa en que les referències a paràmetres es resolen
-immediatament després de la detecció, és a dir, les etiquetes
-\texttt{<1>}, \texttt{<2>}, etc. són substituïdes automàticament pel
-valor dels paràmetres abans de començar el processament. Les posicions
-(atribut \texttt{pos}) a les quals es fa referència amb les
-instruccions \texttt{<clip>}, etc. corresponen a la posició de les
-paraules en l'interior del segment.
-
-També aplica automàticament la política de majúscules (veure secció
-\ref{ss:majuscules}) dels lemes de les pseudoparaules cap a les
-paraules que són dins del segment.
-
-
-\paragraph{Entrada/eixida}
-
-\begin{itemize}
-\item Entrada: segments procedents d'\texttt{in\-ter\-chunk}.
-\item Eixida: entrada vàlida per al mòdul de generació morfològica d'Apertium.
-\end{itemize}
-
-\paragraph{Fitxers de dades}
-
-Aquest programa té el seu propi arxiu d'especificació, que tindrà
-extensió \texttt{.t3x}. La sintaxi està basada igualment en el
-\texttt{chunker} i en l'\texttt{in\-ter\-chunk} d'Apertium 2. 
-\notavisible{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
-
-\paragraph{Detecció de regles}
-
-La detecció dels segments es basa en el nom dels segments. Els
-segments no detectats reben el processament implícit.
-
-
-\paragraph{Especificació de les accions associades}
-
-Les diferències en les accions amb
-\texttt{in\-ter\-chunk} són les següents:
-
-\begin{itemize}
-\item Prohibició de l'escriptura de segments (\texttt{<chunk>}s) a
-  l'eixida: només es poden escriure unitats lèxiques d'un mot
-  (\texttt{<lu>}) o de més d'un mot (\texttt{<mlu>}).
-\notavisible{Comprovar aquest ítem perquè era incomplet i l'ha completat mlf}
-\item Nou atribut de detecció \texttt{name} de \texttt{<pattern-item>},
-  que s'usa en la part de \texttt{<pattern>} de les regles de manera
-  aïllada, per tal de forçar la detecció dels patrons pel seu nom.
-\notavisible{Què vol dir ``de manera aïllada''? Sembla que vulga dir ``de tant en tant''}
-\item Tampoc existeix l'atribut \texttt{side} als elements als quals
-  és aplicable en el mòdul \texttt{in\-ter\-chunk}, per
-  la mateixa raó que en \texttt{in\-ter\-chunk} no
-  s'accedeix al diccionari bilingüe.
-\notavisible{MG: però llavors això no és una diferència respecte de \texttt{interchunk} no?}
-\end{itemize}
-
-\paragraph{Acció implícita}
-
-En aquest mòdul l'acció implícita és la d'escriure les paraules de
-dins del segment, substituint-hi les referències pels paràmetres del
-segment. Serà usada per la major part de segments, ja que es preveu
-que aquest mòdul s'utilitze per a casos molts específics en què
-calga fer algun processament molt específic.
-
-També s'aplica implícitament la política de majúscules (secció
-\ref{ss:majuscules}).
-
-En qualsevol cas, els blancs externs als segments són copiats en el
-mateix ordre en què són llegits, ja que la detecció de segments és
-unitària (aquest mòdul no els agrupa).
-
-\notavisible{FI TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
 
 
 %\settocdepth{subsection}
@@ -4968,18 +5045,18 @@ En la figura \ref{fig:concat} puede verse un ejemplo de uso.
   <\textbf{var} n="palabra"/>
     <\textbf{concat}>
        <\textbf{clip} pos="3" side="tl" part="lem"/>  
-       <\textbf{lit-tag} v="adv"/>
+       <\textbf{lit-tag} v="adj"/>
     <\textbf{/concat}>
 <\textbf{/let}>   
 \end{alltt}
 \end{small}
 \caption{En este ejemplo se atribuye a la variable \texttt{palabra} el valor
-de la concatenación de un \texttt{clip} (el lema de la posición 3) y una etiqueta \emph{adv}.}
+de la concatenación de un \texttt{clip} (el lema de la posición 3) y una etiqueta \emph{adj}.}
 \label{fig:concat}
 \end{figure}
 
 
-\nota{pingui}
+
 
 \subsubsection{Elemento de concatenación de cadenas \\\texttt{<append>}}
 
@@ -5017,24 +5094,30 @@ un ejemplo en la figura \ref{fig:append}.
 
 
 
-
-
 \subsubsection{Elemento de salida \texttt{<out>}}
 \label{ss:out}
 En la instrucción de salida se especifican las formas léxicas que se
 envían a la salida del módulo tras haber sido sometidas a las
-operaciones de transferencia estructural pertinentes. La instrucción
-envía cada forma léxica dentro de un conjunto \texttt{<\textbf{lu}>}, que a su vez
-puede estar contenido dentro de  un elemento \texttt{<\textbf{mlu}>}  si lo que
-se envía es una multipalabra compuesta de dos o más FL. Además, 
-se envían también los espacios en blanco o superblancos (\texttt{<\textbf{b}>}) que haya que 
-colocar entre FL y FL.
- 
+operaciones de transferencia estructural pertinentes. El uso de este
+elemento varía según el módulo. Por un lado, el uso en el módulo
+\texttt{chunker} cuando funciona como único módulo (transferencia sintáctica superficial)
+y en el módulo \texttt{postchunk} son similares, pues la salida que hay
+que imprimirse en los dos casos será la entrada del generador. 
+El módulo \texttt{chunker} en Apertium 2 y el módulo \texttt{interchunk} tienen
+modos de uso diferentes: el primero para crear los segmentos y el segundo
+para modificar los segmentos sin modificar su parte interna.
 
-En las figuras \ref{fig:case} y \ref{fig:regla2} puede verse
-un ejemplo de uso.
+\begin{enumerate}
 
+\item \textbf{Uso en \texttt{chunker} como módulo único y en \texttt{postchunk}}
 
+  La instrucción envía cada forma léxica dentro de un conjunto
+  \texttt{<\textbf{lu}>}, que a su vez puede estar contenido dentro de
+  un elemento \texttt{<\textbf{mlu}>} si lo que se envía es una
+  multipalabra compuesta de dos o más FL. Además, se envían también
+  los espacios en blanco o superblancos (\texttt{<\textbf{b}>}) que
+  haya que colocar entre FL y FL. En las figuras \ref{fig:case} y
+  \ref{fig:regla2} puede verse un ejemplo de uso.
 
 \begin{figure}
 \begin{small}
@@ -5060,6 +5143,100 @@ un ejemplo de uso.
   1 y 2 del patrón).}
 \label{fig:regla2}
 \end{figure}
+
+
+\item \textbf{Uso en \texttt{chunker} en un sistema de transferencia avanzada}
+
+  La salida de este módulo se espera que sea una secuencia de uno o
+  más chunks (enviados con el elemento \texttt{<\textbf{chunk}>})
+  separados por blancos \texttt{<\textbf{b}>}. Las formas léxicas y multiformas
+  léxicas, así como los blancos entre las mismas, se envían dentro de
+  los chunks. En la figura \ref{fig:chunkintrachunk} se puede ver su
+  uso.
+
+
+\begin{figure}
+\begin{small}
+\begin{alltt}
+<\textbf{out}>
+  <\textbf{chunk} name="pr" case="caseFirstWord">
+    <\textbf{tags}>
+      <\textbf{tag}><\textbf{lit-tag} v="PREP"/><\textbf{/tag}>
+    <\textbf{/tags}>
+    <\textbf{lu}>   
+      <\textbf{clip} pos="1" side="tl" part="whole"/> 
+    <\textbf{/lu}> 
+  <\textbf{/chunk}>	  
+  <\textbf{b} pos="1"/>
+  <\textbf{chunk} name="probj" case="caseOtherWord">
+    <\textbf{tags}>
+      <\textbf{tag}><\textbf{lit-tag} v="SN"/><\textbf{/tag}>
+      <\textbf{tag}><\textbf{lit-tag} v="tn"/><\textbf{/tag}>
+      <\textbf{tag}><\textbf{clip} pos="2" side="tl" part="pers"/><\textbf{/tag}>
+      <\textbf{tag}><\textbf{clip} pos="2" side="tl" part="gen"/><\textbf{/tag}>
+      <\textbf{tag}><\textbf{clip} pos="2" side="tl" part="nbr"/><\textbf{/tag}>
+    <\textbf{/tags}>
+    <\textbf{lu}>  
+      <\textbf{clip} pos="2" side="tl" part="lem"/>
+      <\textbf{lit-tag} v="prn"/>
+      <\textbf{lit-tag} v="2"/>
+      <\textbf{clip} pos="2" side="tl" part="pers"/>
+      <\textbf{clip} pos="2" side="tl" part="gen" link-to="4"/>
+      <\textbf{clip} pos="2" side="tl" part="nbr" link-to="5"/>
+    <\textbf{/lu}>
+  <\textbf{/chunk}>
+<\textbf{/out}>
+\end{alltt}
+\end{small}
+\caption{Instrucción de salida que imprime dos segmentos separados por
+  un blanco. La secuencia que se imprime es la de preposición seguida
+  de sintagma nominal. Las etiquetas que se enlazan a fuera como
+  referencia son la persona, el género y el número del sintagma
+  nominal. Usa las etiquetas \texttt{<\textbf{tag}>} para especificar
+  las etiquetas del segmento, y el valor de los atributos \texttt{name} y
+  \texttt{case} para especificar la forma léxica del chunk.}
+\label{fig:chunkintrachunk}
+\end{figure}
+
+
+\item \textbf{Uso en \texttt{interchunk}}
+
+  En este módulo, las formas léxicas de las palabras son inaccesibles, pues
+  sólo son posibles las operaciones con los chunks y, por
+  lo tanto, dentro de un elemento \texttt{<\textbf{out}>} sólo puede
+  haber elementos \texttt{<\textbf{chunk}>} o blancos
+  \texttt{<\textbf{b}>}.  La información de lema y de etiquetas que
+  hay dentro del elemento \texttt{<\textbf{chunk}>} corresponde al
+  lema del chunk y a las etiquetas del chunk exclusivamente.
+
+Se puede ver un ejemplo de uso en la figura \ref{fig:chunkinterchunk}.
+
+\begin{figure}
+\begin{small}
+\begin{alltt}
+<\textbf{out}>
+  <\textbf{b} pos="1">
+  <\textbf{chunk}>
+    <\textbf{clip} pos="2" part="lem"/>
+    <\textbf{clip} pos="2" part="tags"/>
+    <\textbf{clip} pos="2" part="chcontent"/>
+  <\textbf{/chunk}>
+<\textbf{/out}>
+\end{alltt}  
+
+\end{small}
+\caption{Esta salida se ha hecho para descartar el primer chunk de una
+  regla (caída de pronombre). El uso de los tres elementos
+  \texttt{<\textbf{clip}>} se ha hecho aquí con fines ilustrativos, puesto que se habrían
+  podido sustituir por la \texttt{part="whole"} que los agruparía en un 
+  único \texttt{<\textbf{clip}>} .}
+\label{fig:chunkinterchunk}
+\end{figure}
+
+
+\end{enumerate}
+
+
 
 
 \subsubsection{Elemento de unidad léxica \texttt{<lu>}}
@@ -5141,8 +5318,9 @@ en el primer ejemplo, la forma léxica enviada dentro de
 (cabeza del lema) y un \texttt{lemq} (cola del lema), puesto que puede
 ser que el verbo detectado en el patrón sea una multipalabra con lema
 partido. En la práctica, esto significa que, en nuestro sistema, el
-atributo \texttt{whole} puede utilizarse para enviar cualquier tipo de forma léxica
-excepto los verbos, puesto que sólo hemos definido multipalabras con flexión para formas verbales.
+atributo \texttt{whole} puede utilizarse para enviar cualquier tipo de
+forma léxica excepto los verbos y los nombres, puesto que sólo hemos
+definido multipalabras con flexión para formas verbales y nombres.
 
 \subsubsection{Elemento de unidad léxica \texttt{<mlu>}}
 
@@ -5161,6 +5339,76 @@ multipalabra para que sea posible generarla.
 En nuestro sistema, este elemento se utiliza para unir los pronombres enclíticos a los verbos
 conjugados.
 
+\subsubsection{Elemento de encapsulamiento de segmento \texttt{<chunk>}}
+
+Es el elemento con el que se envían los chunks a la salida del módulo
+dentro de un elemento \texttt{<\textbf{out}>}.  Este elemento sólo
+está definido en los módulos \texttt{chunker} e \texttt{interchunk}.
+En el módulo \texttt{postchunk} no se usa porque no es necesario crear
+ningú chunk a la salida.
+
+\begin{enumerate}
+
+\item \textbf{Uso en el módulo chunker}
+
+
+En este modo, el elemento \texttt{<\textbf{chunk}>} debe tener un atributo
+\texttt{name} que es el lema del segmento, o bien un atributo \texttt{namefrom}
+que hace referencia a una variable previamente definida, el valor de la cual se usará
+como lema del segmento. Además, puede incorporar un atributo \texttt{case} para
+especificar de qué variable se toma la política de mayúsculas (con un valor obtenido
+con la instrucción  \texttt{<\textbf{case-from}>}, por ejemplo).
+
+Se puede ver un ejemplo de uso del elemento en la figura
+\ref{fig:chunkintrachunk}.
+
+
+\item \textbf{Uso en el módulo interchunk}
+
+  En este módulo, el elemento \texttt{<\textbf{chunk}>} no especifica
+  ningún atributo, sólo se usa del modo en que se usa
+  \texttt{<\textbf{lu}>} en el transfer superficial o en el
+  \texttt{postchunk} para deliminar la forma léxica.  Dentro de él se
+  envían (generalmente con una instrucción de
+  \texttt{<\textbf{clip}>})
+\notavisible{MG: generalmente o sempre}, el lema del chunk (\texttt{lem}), las
+  etiquetas (\texttt{tags}) y el contenido del chunk
+  (\texttt{chcontent}, contiene las FL más los blancos), que es una
+  parte invariable pues en el módulo \texttt{interchunk} no se puede
+  acceder a él.  La parte invariable del segmento se envía al final.
+  También puede utilizarse el atributo \texttt{whole} para enviar el
+  chunk entero (lema, etiquetas y contenido invariable).
+
+  Se puede ver un ejemplo de uso del elemento en la figura
+  \ref{fig:chunkinterchunk}.
+
+\end{enumerate}
+
+\subsubsection{Elemento de sección de enlace de etiquetas \texttt{<tags>}}
+
+\textit{Sólo en chunker con transferencia sintáctiva avanzada}. 
+
+Este elemento sirve para especificar una lista de etiquetas o
+elementos \texttt{<\textbf{tag}>} que serán las pseudoetiquetas del
+chunk. No tiene atributos, y debe especificarse como primer elemento
+dentro del elemento \texttt{<\textbf{chunk}>}. Véase la
+figura \ref{fig:chunkintrachunk}.
+
+
+\subsubsection{Elemento de enlace de etiquetas \texttt{<tag>}}
+
+\textit{Sólo en chunker con transferencia sintáctiva avanzada}. 
+
+El elemento  \texttt{<\textbf{tag}>} tiene que contener una
+una etiqueta morfológica, que se puede especificar mediante una
+instrucción \texttt{<\textbf{clip}>} o bien una etiqueta literal
+\texttt{<\textbf{lit-tag}>}. No tiene atributos.
+
+La etiqueta o las etiquetas especificadas de esta manera dentro de un chunk
+pasarán a ser las etiquetas morfológicas del segmento, que
+el módulo siguiente, \texttt{interchunk}, podrá utilizar
+para realizar comprobaciones y modificaciones en las características
+de los segmentos.
 
 
 \subsubsection{Elemento de blanco \texttt{<b>}}
@@ -5173,6 +5421,367 @@ la 3ª FLLO. La gestión explícita de [super]blancos permite la
 colocación correcta del formato cuando el resultado de la
 transferencia estructural tiene más o menos elementos léxicos que el
 original o bien ha sido sometido a algún tipo de reordenación.
+
+
+\subsection{Características de los tres módulos de transferencia}
+
+Como ya se ha explicado, el sistema de transferencia sintática avanzada o 
+Apertium 2 funciona con tres módulos, cuyas características diferenciadas
+se describen a continuación. Cuando Apertium funcione con un sistema
+de transferencia sintáctica superficial, sólo entra en acción el
+primero módulo, llamado \texttt{chunker}, que se comunica con el
+módulo de generación.
+
+
+\subsubsection{Programa \texttt{chunker} (\texttt{transfer})}
+
+\notavisible{ATENCIÓ: TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
+
+Aquest programa és l'hereu més directe del mòdul de transferència
+sintàctica superficial d'Apertium. De fet aquest mòdul pot
+utilitzar-se individualment com a sistema de transferència sintàctica
+superficial, o en combinació amb els altres dos mòduls de
+transferencia per a construir un sistema de transferència sintàctica
+avançada.
+
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: dades amb el format d'eixida del \texttt{pretransfer}, és a dir,
+  amb les cues invariants dels multimots desplaçats a una posició
+  anterior a qualsevol etiqueta.
+\item Eixida: 
+\begin{itemize}
+\item[-] si s'utilitza en un sistema de transferència avançada: segments (chunks),
+  perquè el mòdul següent els detecte i realitze operacions amb ells.
+\item[-] si s'utilitza en un sistema de transferència superficial: formes lèxiques que constitueixen
+l'entrada del mòdul de generació 
+\end{itemize}
+
+\end{itemize}
+
+
+\paragraph{Fitxers de dades}
+
+\notavisible{Explicar millor això de l'únic fitxer de configuració}
+Aquest programa usa un únic fitxer de configuració i un fitxer
+precompilat de detecció de patrons calculat a partir del primer, de
+manera idèntica a Apertium \notavisible{MG: caldria canviar les
+  referències a 'Apertium' com si fos una altra cosa}. El nom del
+fitxer de patrons tindrà l'extensió \texttt{.t1x}. Com que el
+\texttt{chunker} és qui fa la consulta del diccionari bilingüe, aquest
+(en forma compilada) també s'ha d'aportar al programa.
+
+\notavisible{Potser seria bona idea esmentar en quina secció s'explica el
+compilador a què es fa referència}
+
+La DTD d'aquest fitxer de dades s'especifica en l'apèndix
+\ref{ss:dtdtransfer}.
+
+\paragraph{Detecció de patrons}
+
+El sistema de detecció de regles d'aquest mòdul serà el mateix que en
+el mòdul de transferència actual d'Apertium \notavisible{ídem sobre 'Apertium', canviar-ho}. El programa
+\texttt{a\-per\-tium-pre\-trans\-fer} 
+\notavisible{Vacil·lació terminològica \texttt{pretransfer}.}
+és necessari per a adaptar el format
+d'eixida de l'etiquetador a l'entrada que reconeix el mòdul de
+transferència. En posteriors versions d'Apertium no es descarta que es
+modifique el \textit{desambiguador categorial} perquè faça la feina del
+\texttt{apertium-pretransfer}.
+\notavisible{També hem d'unificar la terminologia d'altres mòduls:
+\emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
+el paràgraf es podria pensar que són dues coses diferents.}
+
+\paragraph{Especificació de les accions associades}
+\label{ass_intra}
+
+
+És bàsicament similar a l'actual mòdul de transferència d'Apertium \notavisible{canviar referència a ``l'actual
+mòdul de transferència d'Apertium''},
+amb les següents incorporacions:
+
+\begin{itemize}
+\item Especificació de l'acció implícita en l'element arrel
+  \texttt{<transfer>}. Aquest element té l'atribut opcional
+  \texttt{default} que pot tenir els valors \texttt{lu} (valor per
+  defecte) o \texttt{chunk} depenent de si es vol que el transfer
+  funcione a la manera d'Apertium 1 (transferència sintàctica
+  superficial) o d'Apertium 2 (transferència sintàctiva avançada),
+  respectivament.
+\item Atribut \texttt{comment} (opcional) per als elements
+  \texttt{<rule>}. Les regles tindran a partir d'ara un comentari que
+  permetrà d'incloure informació que s'usarà per a documentació.
+\item Generació de segments (chunks): l'etiqueta \texttt{<chunk>} és una etiqueta d'un nivell més alt
+  que \texttt{<lu>} (\textit{lexical unit}) que
+  permet generar segments amb les característiques que han sigut
+  especificades a la secció anterior; té els següents atributs:
+  \begin{itemize}
+  \item \texttt{name} (opcional): pseudolema del segment. Una
+    cadena que permeta d'identificar el pseudolema del segment.
+  \item \texttt{namefrom} (opcional): pseudolema del segment, obtingut
+    d'una variable. És obligatori especificar bé \texttt{name} o bé
+    \texttt{namefrom}.
+  \item \texttt{case} (opcional): variable que serveix per a obtenir
+    la informació de majúscules o minúscules d'una variable i
+    aplicar-la al lema especificat bé per \texttt{name}, bé per
+    \texttt{namefrom}.
+  \end{itemize}
+\item Cada chunk comença per una instrucció \texttt{<tags>}, que no
+  permet especificar cap atribut, la qual, per la seua part, conté una
+  o més instruccions individuals \texttt{<tag>}.
+\item Les instruccions \texttt{<tag>} no tenen atributs. Dins d'elles
+  es pot posar qualsevol instrucció que torne com a valor una cadena:
+  \texttt{<lit>}, \texttt{<var>}.
+\item Les instruccions \texttt{<clip>} tenen un nou atribut opcional:
+  \texttt{link-to}, que serveix per a especificar una etiqueta
+  \verb!<!\textit{valor de link-to}\verb!>! en comptes de 
+\notavisible{Es ``en comptes de'' o ``addicionalment a''?}
+la
+  informació que continga el \texttt{<clip>} en la resta d'atributs.
+  Aquesta informació és prescindible però pot servir com a
+  documentació de l'origen de la decisió lingüística.
+\end{itemize}
+
+Veiem amb un exemple l'ús de l'element \texttt{<chunk>}:
+
+\begin{alltt}
+<out>
+  <chunk name="adj-nom" case="variableCase">
+    <tags>
+      <tag><lit-tag v="SN"/></tag>
+      <tag><clip pos="2" side="tl" part="gen"/></tag>
+      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+    </tags>
+    <lu>
+      <clip pos="2" side="tl" part="lemh"/> 
+      <clip pos="2" side="tl" part="a_nom"/>
+      <clip pos="2" side="tl" part="gen" link-to="2"/>
+      <clip pos="2" side="tl" part="nbr" link-to="3"/>
+    </lu>
+    <b pos="1"/>
+    <lu>  
+      <var n="adjectiu"/> 
+      <clip pos="1" side="tl" part="lem"/>  
+      <clip pos="1" side="tl" part="a_adj"/>
+      <clip pos="2" side="tl" part="gen" link-to="2"/>
+      <clip pos="2" side="tl" part="nbr" link-to="3"/>
+    </lu> 
+  </chunk>
+</out>
+\end{alltt}
+
+
+\paragraph{Acció implícita}
+
+Els \textit{superblancs} aïllats, que no són detectats per cap patró
+d'aquest mòdul s'escriuen en el mateix ordre en què arriben.
+
+L'element arrel del fitxer \texttt{.t1x} de regles del
+\texttt{chunker}, \texttt{<transfer>}, té un
+atribut opcional \texttt{default} que pot prendre els valors
+\begin{itemize}
+\item \texttt{chunk}: quan el mòdul funcioni en Apertium 2 (transferència
+sintàctica avançada), per tal que es generin
+  segments trivials amb les paraules que el mòdul no puga incloure en la
+  formació de cap segment o que no hagen sigut especificats. El nou segment es crearà
+  mit\-jan\-çant la traducció de la paraula pel diccionari bilingüe.
+  El lema fix dels chunks creats implícitament és
+  \texttt{default}.
+\item \texttt{lu} (valor implícit): quan el mòdul funcioni com a únic
+  mòdul de transferència en Apertium 1 (transferència sintàctica
+  superficial), traduint la paraula amb el diccionari bilingüe.
+\end{itemize}
+
+A continuació es mostra el segment generat automàticament amb una forma lèxica no
+detectada per cap regla  del
+\texttt{chunker} quan l'atribut \texttt{default} té el valor \texttt{chunk}:
+
+
+\begin{alltt}
+^default\verb!{!^that<cnjsub>$\verb!}!$
+\end{alltt}
+
+\notavisible{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
+
+
+\subsubsection{Programa \texttt{interchunk}}
+
+
+\notavisible{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
+
+El programa \texttt{interchunk} tracta els segments, els reordena i fa els
+canvis pertinents en la informació morfosintàctica. Això es fa
+mit\-jan\-çant la detecció de patrons de segments (seqüències de
+segments). La sintaxi de les instruccions que s'usen per a controlar
+el seu funcionament són, amb poques diferències, les mateixes que usa
+el programa \texttt{chunker}, però ha de quedar clar que s'utilitza un arxiu
+diferent. Els segments són tractats de forma similar a com es
+tracten les paraules en el transfer o \texttt{chunker} d'Apertium.
+\notavisible{Comprovar la denominació dels programes}
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: segments procedents de \texttt{chunker}.
+\item Eixida: segments possiblement reordenats i amb la informació del
+  pseudolema del segment possiblement modificada.
+\end{itemize}
+
+\paragraph{Fitxers de dades}
+
+Aquest mòdul usa dos fitxers de dades. Un fitxer d'especificació del
+comportament del programa \texttt{in\-ter\-chunk}, amb extensió
+\texttt{.t2x} pera analogia amb el mòdul anterior, i un
+fitxer de patrons precalculats per a accelerar l'anàlisi de l'entrada.
+No s'hi inclou el fitxer binari del diccionari bilingüe perquè no
+s'usa.
+\notavisible{Citar el compilador?}
+
+La sintaxi del fitxer d'especificació és molt similar a la del mòdul
+\texttt{chunker}, i s'especifica en l'apèndix
+\ref{ss:dtdinterchunk}.
+
+
+\paragraph{Detecció de regles}
+
+Les regles detecten patrons que estan definits mitjançant seqüències
+de pseudoparaules. Aquestes pseudoparaules tenen un format basat en
+el format de la forma lèxica de les paraules. Des del punt de vista
+pràctic, aquest pseudolema és vist de manera equivalent a com es
+\notavisible{L'alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
+veu la forma lèxica d'una paraula en el mòdul
+\texttt{chunker} per a realitzar la detecció.
+D'aquesta forma, s'usarà una detecció de patrons amb atributs definits
+sobre les pseudoparaules i no sobre les paraules del patró original.
+
+
+\paragraph{Especificació de les accions associades}
+
+Les modificacions en el joc d'instruccions d'aquest mòdul ---respecte
+del joc d'instruccions utilitzat en
+\texttt{chunker}--- són les següents:
+
+\begin{itemize}
+\item L'element arrel es diu \texttt{<interchunk>} i no especifica cap
+  atribut.
+\item Desaparició de l'atribut \texttt{side}: aquest mòdul no fa
+  servir diccionaris bilingües; per tant l'atribut que indica si la
+  part que es consulta és l'origen o la meta no té sentit. Aquest
+  atribut era usat fonamentalment en les instruccions \texttt{<out>}.
+\item L'etiqueta \texttt{<chunk>} ara s'usa sense atributs,
+  senzillament dins de \texttt{<out>} per a delimitar l'eixida de
+  segments.
+\item L'atribut predefinit \texttt{lem} fa referència al pseudolema
+  del segment. De la mateixa manera, l'atribut predefinit
+  \texttt{tags} fa referència a les etiquetes del segment. El
+  contingut del segment queda com una cua que es pot imprimir
+  mitjançant l'atribut implícit \texttt{chcontent}.\notavisible{Només imprimir o s'hi pot fer referència també?}
+\notavisible{Dir de quin element són aquests atributs}
+\item Tots els valors de \texttt{part}, excepte \texttt{chname},
+  accedeixen a la informació del lema i les etiquetes del
+  pseudolema de cada segment.
+\item A diferencia del que succeeix en el mòdul \texttt{chunker}, no
+  es permet d'imprimir una altra cosa que \texttt{<chunk>}s en les
+  instruccions \texttt{<out>} en el fitxer d'especificació del
+  comportament d'aquest mòdul, i en cap cas paraules soltes.
+\end{itemize}
+
+
+\paragraph{Acció implícita}
+
+Al igual que en el mòdul anterior, s'hi ha establert una acció
+implícita que escriu sense modificar els segments no reconeguts per cap
+patró del fitxer d'especificació d'aquest mòdul. Aquesta acció implícita
+escriu exactament el que llig, tant si es tracta de chunks com
+de blancs.
+\notavisible{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
+
+
+\subsubsection{Programa \texttt{postchunk}}
+
+El programa \texttt{postchunk} detecta segments individuals, i per a
+cadascun d'ells, executa unes accions especificades. La detecció es
+basa en els lemes del segment, 
+\notavisible{Seria \emph{en el lema}?}
+i no en patrons (no en les etiquetes);
+això farà que la detecció en aquest mòdul siga específica per a cada
+``nom'' de segment.\notavisible{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
+
+D'altra banda, el funcionament de la detecció i del processament de
+les regles es basa en que les referències a paràmetres es resolen
+immediatament després de la detecció, és a dir, les etiquetes
+\texttt{<1>}, \texttt{<2>}, etc. són substituïdes automàticament pel
+valor dels paràmetres abans de començar el processament. Les posicions
+(atribut \texttt{pos}) a les quals es fa referència amb les
+instruccions \texttt{<clip>}, etc. corresponen a la posició de les
+paraules en l'interior del segment.
+
+També aplica automàticament la política de majúscules (veure secció
+\ref{ss:majuscules}) dels lemes de les pseudoparaules cap a les
+paraules que són dins del segment.
+
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: segments procedents d'\texttt{in\-ter\-chunk}.
+\item Eixida: entrada vàlida per al mòdul de generació morfològica d'Apertium.
+\end{itemize}
+
+\paragraph{Fitxers de dades}
+
+Aquest programa té el seu propi arxiu d'especificació, que tindrà
+extensió \texttt{.t3x}. La sintaxi està basada igualment en el
+\texttt{chunker} i en l'\texttt{in\-ter\-chunk} d'Apertium 2. 
+\notavisible{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
+
+\paragraph{Detecció de regles}
+
+La detecció dels segments es basa en el nom dels segments. Els
+segments no detectats reben el processament implícit.
+
+
+\paragraph{Especificació de les accions associades}
+
+Les diferències en les accions amb
+\texttt{in\-ter\-chunk} són les següents:
+
+\begin{itemize}
+\item Prohibició de l'escriptura de segments (\texttt{<chunk>}s) a
+  l'eixida: només es poden escriure unitats lèxiques d'un mot
+  (\texttt{<lu>}) o de més d'un mot (\texttt{<mlu>}).
+\notavisible{Comprovar aquest ítem perquè era incomplet i l'ha completat mlf}
+\item Nou atribut de detecció \texttt{name} de \texttt{<pattern-item>},
+  que s'usa en la part de \texttt{<pattern>} de les regles de manera
+  aïllada, per tal de forçar la detecció dels patrons pel seu nom.
+\notavisible{Què vol dir ``de manera aïllada''? Sembla que vulga dir ``de tant en tant''}
+\item Tampoc existeix l'atribut \texttt{side} als elements als quals
+  és aplicable en el mòdul \texttt{in\-ter\-chunk}, per
+  la mateixa raó que en \texttt{in\-ter\-chunk} no
+  s'accedeix al diccionari bilingüe.
+\notavisible{MG: però llavors això no és una diferència respecte de \texttt{interchunk} no?}
+\end{itemize}
+
+\paragraph{Acció implícita}
+
+En aquest mòdul l'acció implícita és la d'escriure les paraules de
+dins del segment, substituint-hi les referències pels paràmetres del
+segment. Serà usada per la major part de segments, ja que es preveu
+que aquest mòdul s'utilitze per a casos molts específics en què
+calga fer algun processament molt específic.
+
+També s'aplica implícitament la política de majúscules (secció
+\ref{ss:majuscules}).
+
+En qualsevol cas, els blancs externs als segments són copiats en el
+mateix ordre en què són llegits, ja que la detecció de segments és
+unitària (aquest mòdul no els agrupa).
+
+\notavisible{FI TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
+
+
 
 \subsection{Preproceso del módulo de transferencia estructural}
 
@@ -5933,7 +6542,7 @@ está trabajando con el par español--catalán.  En este caso, deberá añadir:
 
 \begin{enumerate}
 \item una entrada en el diccionario monolingüe español: para que
-  el traductor pueda analizar ("entender") la palabra cuando la
+  el traductor pueda analizar (''entender'') la palabra cuando la
   encuentre en un texto, y la pueda generar al traducir esta palabra al
   español.
 
@@ -5941,7 +6550,7 @@ está trabajando con el par español--catalán.  En este caso, deberá añadir:
   una lengua a la otra. 
 
 \item una entrada en el diccionario monolingüe
-  de catalán: para que el traductor pueda analizar ("entender") la
+  de catalán: para que el traductor pueda analizar (''entender'') la
   palabra cuando lo encuentre en un texto, y la pueda generar al traducir
   esta palabra al catalán. 
 \end{enumerate}
@@ -7035,76 +7644,81 @@ y no se incluye dentro del elemento \texttt{<out>}, no se generará.
 La información lingüística que necesita el desambiguador léxico
 categorial para desambiguar un texto proviene básicamente de dos
 fuentes: del fichero de definición del desambiguador y de corpus. Los
-ficheros de definición se encuentran en el directorio de datos
+ficheros de definición del desambiguador se encuentran en el directorio de datos
 lingüísticos y su nombre tiene la estructura
 \texttt{apertium-}$L_1$\texttt{-}$L_2$\texttt{.}$L_1$\texttt{.tsx} y
 \texttt{apertium-}$L_1$\texttt{-}$L_2$\texttt{.}$L_2$\texttt{.tsx},
 mientras que los corpus se encuentran en los directorios
-$L_1$\texttt{-tagger-data} y $L_1$\texttt{-tagger-data} que están
-contenidos en el directorio anterior. En este directorio se encuentran
-los ficheros siguientes (ejemplos de \texttt{es-tagger-data}):
+$L_1$\texttt{-tagger-data} y $L_2$\texttt{-tagger-data} que están
+contenidos en el directorio anterior. 
 
-\begin{itemize}
-
-\item \texttt{es.tagged.txt}: Corpus españo en formato de texto llano.
-\item \texttt{es.untagged}: Corpus analizado morfológicamente
-  (procesado por el desformateador de texto y el analizador morfológico).
-\item \texttt{es.tagged}: El corpus anterior desambiguado manualmente.
-\item \texttt{es.crp.txt}: Un corpus grande (cientos de miles de
-  palabras) utilizado cuando se entrena el desambiguador de forma sno
-  supervisada mediante el algoritmo de maximización de la esperanza
-  matemática.
-\item \texttt{es.crp}: El corpus anterior procesado consecutivamente por el desformateador de texto y el analizador morfológico.
-\item \texttt{es.dic}: Calculado a partir del diccionario
-  \texttt{*.es.dix}, y mediante el uso de las herramientas
-  \texttt{lt-expand} y \texttt{apertium-filter-ambiguity} contiene
-  todas las formas distintas que el etiquetador definido mediante el
-  archivo \texttt{*.es.tsx} identifica como clases de ambigüedad
-  diferentes (es decir, qué categorías léxicas pueden ser homógrafas).
-  Si se añaden al diccionario palabras que comporten la aparición de
-  una nueva clase de ambigüedad, será necesario volver a generar este
-  fichero.
-
-\end{itemize}
-
-Al bajarse el traductor Apertium de Sourceforge
-(\url{http://apertium.sourceforge.net/} se obtendrán sólo los tres
-primeros ficheros, de modo que deberán generarse los últimos tres,
-expandiendo los diccionarios y creando un corpus de gran tamaño,
-aunque este gran corpus no es necesario si no se va a entrenar el
-desambiguador con reestimación de Baum-Welch. 
-
-Rl entrenamiento del desambiguador puede ser supervisado (con texto
-desambiguado a mano) o no supervisado (sin texto desambiguado a mano), de modo que:
-
-\begin{itemize}
-\item Para entrenar el desambiguador utilizando texto desambiguado a
-  mano se necesitan los ficheros (para español): \texttt{es.untagged},
-  \texttt{es.tagged}, \texttt{es.dic}.
-
-\item Para entrenar el desambiguador de forma no supervisada mediante
-  el algoritmo de Baum y Welch se necesitan los ficheros (para
-  español): \texttt{es.dic}, \texttt{es.crp}
-\end{itemize}
-
-Los ficheros \texttt{*.crp}, \texttt{*.untagged}, \texttt{*.dic} son
-generados automáticamente mediante \texttt{make} a partir del resto de
-los ficheros.
-
- Aparte de estos ficheros
-contenidos en los directorios $L_1$\texttt{-tagger-data} y
-$L_1$\texttt{-tagger-data}, se necesitan los mencionados ficheros de
-definición
-\texttt{apertium-}$L_1$\texttt{-}$L_2$\texttt{.}$L_1$\texttt{.tsx} y
-\texttt{apertium-}$L_1$\texttt{-}$L_2$\texttt{.}$L_2$\texttt{.tsx}.
-Este fichero contiene la definición de las etiquetas gruesas (o
+Los  \emph{ficheros de definición del desambiguador} contienen la definición de las etiquetas gruesas (o
 categorías) que utiliza el desambiguador durante su entrenamiento y al
 desambiguar un texto, así como restricciones de ocurrencia de
 etiquetas que ayudan a obtener mejores probabilidades para la
-desambiguación.
+desambiguación. En el apartado \ref{ss:tagger} se describen en detalle sus características.
 
-De acuerdo con todo lo expuesto, se pueden modificar los datos del
-desambiguador de dos maneras:
+Los \emph{corpus} que deben encontrarse en el directorio
+$LANG$\texttt{-tagger-data} son diferentes según si el
+entrenamiento del desambiguador se realiza de forma supervisada (con texto
+desambiguado a mano) o no supervisada (sin texto desambiguado a mano):
+
+\begin{itemize}
+
+\item para el entrenamiento de forma supervisada se necesitan los
+  ficheros (para español): \texttt{es.tagged.txt},
+  \texttt{es.untagged}, \texttt{es.tagged}, \texttt{es.dic}.
+
+\item para el entrenamiento de forma no supervisada se necesitan los
+  ficheros (para español): \texttt{es.crp.txt}, \texttt{es.crp},
+  \texttt{es.dic}
+
+\end{itemize}
+
+Las características de estos ficheros son las siguientes:
+
+\begin{itemize}
+
+\item \texttt{es.tagged.txt}: Un corpus español en formato de texto llano.
+\item \texttt{es.untagged}: El corpus \texttt{es.tagged.txt} analizado morfológicamente, es decir,
+ procesado por el desformateador de texto y el analizador morfológico (corpus creado automáticamente).
+\item \texttt{es.tagged}: El corpus anterior desambiguado manualmente.
+\item \texttt{es.crp.txt}: Un corpus grande (cientos de miles de
+  palabras) utilizado cuando se entrena el desambiguador de forma no
+  supervisada mediante el algoritmo de maximización de la esperanza
+  matemática.
+\item \texttt{es.crp}: El corpus anterior procesado consecutivamente
+  por el desformateador de texto y el analizador morfológico (corpus creado automáticamente).
+\item \texttt{es.dic}: Fichero creado a partir del diccionario
+  monolingüe de español \texttt{*.es.dix}, mediante las herramientas
+  \texttt{lt-expand} y \texttt{aper\-tium\--fil\-ter\--am\-biguity}, que
+  expanden el diccionario y filtran las clases de ambigüedad,
+  de modo que el fichero contenga todas las formas
+  distintas que el etiquetador definido mediante el archivo
+  \texttt{*.es.tsx} identifica como clases de ambigüedad diferentes,
+  es decir, qué categorías léxicas pueden ser homógrafas (fichero creado automáticamente).
+\end{itemize}
+
+Al bajarse el traductor Apertium de Sourceforge
+(\url{http://apertium.sourceforge.net/}), si el desambiguador ha sido
+entrenado de forma supervisada es probable que se bajen los ficheros
+necesarios para este tipo de entrenamiento, \texttt{es.tagged} y
+\texttt{es.tagged.txt} (para español). Los demás ficheros requeridos
+son generados automáticamente al ejecutarse el entrenamiento.
+Si el desambiguador ha sido entrenado de forma no supervisada, no se bajará ningún
+corpus pues los ficheros necesarios para entrenar de esta forma son de enorme tamaño. En
+caso de que el usuario desee reentrenar el traductor de este modo, deberá recolectar
+un corpus de gran tamaño para ello y ponerle el nombre \texttt{es.crp.txt}. Los demás
+ficheros requeridos son generados automáticamente al ejecutarse el entrenamiento.
+
+De todos modos, el traductor Apertium vienen con todos los datos necesarios
+para que el desambiguador funcione correctamente. No es necesario entrenar
+el desambiguador para utilizar Apertium. Puede ser necesario realizar
+un reentrenamiento en caso de que se hayan realizado grandes cambios
+en los diccionarios o se haya modificado el fichero de definición del
+desambiguador.
+
+Así pues, los datos del desambiguador se pueden modificar de dos maneras:
 
 \begin{enumerate}
 
@@ -7123,17 +7737,29 @@ desambiguador de dos maneras:
   pueden añadirse frases a este texto (así como el corpus
   \texttt{es.tagged.txt}, usado para generar automáticamente el corpus
   \texttt{es.untagged}) para dar más información al desambiguador,
-  puesto que es posible que la mala desambiguación de ciertas palabras
-  se deba a su inexistencia en los corpus de entrenamiento.
+  puesto que es posible que la mala desambiguación de ciertas categorias de palabras
+  se deba a poca presencia o inexistencia en los corpus de entrenamiento.
 
-  Si se modifican los datos utilizados por el desambiguador (los
-  corpus o el fichero de definición) es necesario reentrenarlo; para
-  ello, debe escribirse \texttt{make tagger\_supervised} o
-  \texttt{make tagger\_unsupervised} en el directorio en el que se
-  guardan los datos lingüísticos, dependiendo de si el entrenamiento
-  es supervisado o no supervisado, respectivamente.
 
 \end{enumerate}
+
+Para llevar a cabo el reentrenamiento, existen dos comandos:
+
+\begin{itemize}
+
+\item para entrenar de forma supervisada, debe escribirse, en el directorio
+en el que se encuentren los datos lingüísticos (ejemplo para \emph{es}--\emph{ca}):
+  \texttt{make -f es-ca-supervised.make} 
+
+
+\item para entrenar de forma no supervisada, debe escribirse, en el directorio
+en el que se encuentren los datos lingüísticos (ejemplo para \emph{es}--\emph{ca}):
+  \texttt{make -f es-ca-unsupervised.make} 
+
+
+\end{itemize}
+
+En ambos casos se generarán automáticamente los ficheros previstos.
 
 
 \section{Detección de errores}
@@ -7634,6 +8260,42 @@ La explicación de los distintos elementos se encuentra en la página
 <!\textsl{ELEMENT} \textbf{s} \textsl{EMPTY}>
 <!\textsl{ATTLIST} s
         n \textsl{IDREF #REQUIRED}>
+\end{alltt}
+\end{small}
+
+
+\subsection{Modificación en la DTD de diccionarios para selección léxica}
+\label{dixdtd}
+
+La DTD para el formato de los diccionarios se ha modificado ligeramente para que éstos
+pueden funcionar en un sistema con módulo de selección léxica. A continuación se muestra
+el cambio realizado, que afecta sólo al elemento  \texttt{<e>}
+
+
+
+\begin{small}
+\begin{alltt}
+
+...
+<!\textsl{ATTLIST} e  
+        r (LR|RL) \textsl{#IMPLIED}   
+        lm \textsl{CDATA #IMPLIED}
+        a \textsl{CDATA #IMPLIED}
+        c \textsl{CDATA #IMPLIED}>
+        i CDATA \textsl{#IMPLIED}
+        slr CDATA \textsl{#IMPLIED}
+        srl CDATA \textsl{#IMPLIED}>
+
+  <!-- r: restriction LR: left-to-right,
+                      RL: right-to-left -->
+  <!-- lm: lemma -->
+  <!-- a: author -->
+  <!-- c: comment -->
+  <!-- i: ignore ('yes') means ignore, otherwise it is not ignored) -->
+  <!-- slr: translation sense when translating from left to right -->
+  <!-- srl: translation sense when translating from right to left --> 
+...
+
 \end{alltt}
 \end{small}
 
