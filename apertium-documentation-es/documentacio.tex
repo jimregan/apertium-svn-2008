@@ -3972,8 +3972,19 @@ Apertium, estas tres pasadas son realizadas por tres módulos
 \end{itemize}
 
 
-La especificación concreta de las tareas de cada módulo se encuentra en las secciones
-correspondientes.
+A continuación se especifica el formato de los segmentos que circulan entre los tres
+módulos del sistema de transferencia (sección \ref{sec:format}, el tratamiento de 
+mayúsculas y minúsculas en los segmentos (sección \ref{ss:majuscules}), que difiere del 
+que se da para las formas léxicas individuales en el caso de un sistema de transferencia superficial, 
+y finalmente se describe el funcionamiento de cada uno de los tres módulos (secciones 
+\ref{ss:chunker}, \ref{ss:interchunk} y  \ref{ss:postchunk} respectivamente).
+
+) 
+En la sección \ref{formatotransfer} se describe el formato de las reglas de
+transferencia, que es común para los tres módulos con algunas diferencias, y finalmente
+en la sección \ref{noutransfer} se recalcan algunas de las características diferenciadas de los
+tres módulos en cuanto al formato y el funcionamiento de las reglas.
+
 
 \subsubsection{Formato de los segmentos}
 \label{sec:format}
@@ -4055,6 +4066,228 @@ evitar que el último módulo busque cuál es la palabra que tiene que
 perder la mayúscula, si la hay. Esta tarea corresponde al módulo
 \texttt{chunker} y se hace mediante una macro o
 algún mecanismo similar.
+
+\subsubsection{Programa \texttt{chunker} (\texttt{transfer})}
+\label{ss:chunker}
+
+\notavisible{*** ATENCIÓN ***
+\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
+
+Aquest programa és l'hereu més directe del mòdul de transferència
+sintàctica superficial d'Apertium. De fet aquest mòdul pot
+utilitzar-se individualment com a sistema de transferència sintàctica
+superficial, o en combinació amb els altres dos mòduls de
+transferencia per a construir un sistema de transferència sintàctica
+avançada.
+
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: dades amb el format d'eixida del \texttt{pretransfer}, és a dir,
+  amb les cues invariants dels multimots desplaçats a una posició
+  anterior a qualsevol etiqueta.
+\item Eixida: 
+\begin{itemize}
+\item[-] si s'utilitza en un sistema de transferència avançada: segments (chunks),
+  perquè el mòdul següent els detecte i realitze operacions amb ells.
+\item[-] si s'utilitza en un sistema de transferència superficial: formes lèxiques que constitueixen
+l'entrada del mòdul de generació 
+\end{itemize}
+
+\end{itemize}
+
+
+\paragraph{Fitxers de dades}
+
+\nota{Explicar millor això de l'únic fitxer de configuració}
+Aquest programa usa un únic fitxer de configuració i un fitxer
+precompilat de detecció de patrons calculat a partir del primer, de
+manera idèntica a Apertium \nota{MG: caldria canviar les
+  referències a 'Apertium' com si fos una altra cosa}. El nom del
+fitxer de patrons tindrà l'extensió \texttt{.t1x}. Com que el
+\texttt{chunker} és qui fa la consulta del diccionari bilingüe, aquest
+(en forma compilada) també s'ha d'aportar al programa.
+
+\nota{Potser seria bona idea esmentar en quina secció s'explica el
+compilador a què es fa referència}
+
+La DTD d'aquest fitxer de dades s'especifica en l'apèndix
+\ref{ss:dtdtransfer}.
+
+\paragraph{Detecció de patrons}
+
+El sistema de detecció de regles d'aquest mòdul serà el mateix que en
+el mòdul de transferència actual d'Apertium \nota{ídem sobre 'Apertium', canviar-ho}. El programa
+\texttt{a\-per\-tium-pre\-trans\-fer} 
+\nota{Vacil·lació terminològica \texttt{pretransfer}.}
+és necessari per a adaptar el format
+d'eixida de l'etiquetador a l'entrada que reconeix el mòdul de
+transferència. En posteriors versions d'Apertium no es descarta que es
+modifique el \textit{desambiguador categorial} perquè faça la feina del
+\texttt{apertium-pretransfer}.
+\nota{També hem d'unificar la terminologia d'altres mòduls:
+\emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
+el paràgraf es podria pensar que són dues coses diferents.}
+
+
+\paragraph{Acció implícita}
+
+Els \textit{superblancs} aïllats, que no són detectats per cap patró
+d'aquest mòdul s'escriuen en el mateix ordre en què arriben.
+
+L'element arrel del fitxer \texttt{.t1x} de regles del
+\texttt{chunker}, \texttt{<transfer>}, té un
+atribut opcional \texttt{default} que pot prendre els valors
+\begin{itemize}
+\item \texttt{chunk}: quan el mòdul funcioni en Apertium 2 (transferència
+sintàctica avançada), per tal que es generin
+  segments trivials amb les paraules que el mòdul no puga incloure en la
+  formació de cap segment o que no hagen sigut especificats. El nou segment es crearà
+  mit\-jan\-çant la traducció de la paraula pel diccionari bilingüe.
+  El lema fix dels chunks creats implícitament és
+  \texttt{default}.
+\item \texttt{lu} (valor implícit): quan el mòdul funcioni com a únic
+  mòdul de transferència en Apertium 1 (transferència sintàctica
+  superficial), traduint la paraula amb el diccionari bilingüe.
+\end{itemize}
+
+A continuació es mostra el segment generat automàticament amb una forma lèxica no
+detectada per cap regla  del
+\texttt{chunker} quan l'atribut \texttt{default} té el valor \texttt{chunk}:
+
+
+\begin{alltt}
+^default\verb!{!^that<cnjsub>$\verb!}!$
+\end{alltt}
+
+\nota{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
+
+
+\subsubsection{Programa \texttt{interchunk}}
+\label{ss:interchunk}
+
+
+\nota{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
+
+El programa \texttt{interchunk} tracta els segments, els reordena i fa els
+canvis pertinents en la informació morfosintàctica. Això es fa
+mit\-jan\-çant la detecció de patrons de segments (seqüències de
+segments). La sintaxi de les instruccions que s'usen per a controlar
+el seu funcionament són, amb poques diferències, les mateixes que usa
+el programa \texttt{chunker}, però ha de quedar clar que s'utilitza un arxiu
+diferent. Els segments són tractats de forma similar a com es
+tracten les paraules en el transfer o \texttt{chunker} d'Apertium.
+\nota{Comprovar la denominació dels programes}
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: segments procedents de \texttt{chunker}.
+\item Eixida: segments possiblement reordenats i amb la informació del
+  pseudolema del segment possiblement modificada.
+\end{itemize}
+
+\paragraph{Fitxers de dades}
+
+Aquest mòdul usa dos fitxers de dades. Un fitxer d'especificació del
+comportament del programa \texttt{in\-ter\-chunk}, amb extensió
+\texttt{.t2x} pera analogia amb el mòdul anterior, i un
+fitxer de patrons precalculats per a accelerar l'anàlisi de l'entrada.
+No s'hi inclou el fitxer binari del diccionari bilingüe perquè no
+s'usa.
+\nota{Citar el compilador?}
+
+La sintaxi del fitxer d'especificació és molt similar a la del mòdul
+\texttt{chunker}, i s'especifica en l'apèndix
+\ref{ss:dtdinterchunk}.
+
+
+\paragraph{Detecció de regles}
+
+Les regles detecten patrons que estan definits mitjançant seqüències
+de pseudoparaules. Aquestes pseudoparaules tenen un format basat en
+el format de la forma lèxica de les paraules. Des del punt de vista
+pràctic, aquest pseudolema és vist de manera equivalent a com es
+\nota{L'alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
+veu la forma lèxica d'una paraula en el mòdul
+\texttt{chunker} per a realitzar la detecció.
+D'aquesta forma, s'usarà una detecció de patrons amb atributs definits
+sobre les pseudoparaules i no sobre les paraules del patró original.
+
+
+\paragraph{Acció implícita}
+
+Al igual que en el mòdul anterior, s'hi ha establert una acció
+implícita que escriu sense modificar els segments no reconeguts per cap
+patró del fitxer d'especificació d'aquest mòdul. Aquesta acció implícita
+escriu exactament el que llig, tant si es tracta de chunks com
+de blancs.
+\nota{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
+
+
+\subsubsection{Programa \texttt{postchunk}}
+\label{ss:postchunk}
+
+El programa \texttt{postchunk} detecta segments individuals, i per a
+cadascun d'ells, executa unes accions especificades. La detecció es
+basa en els lemes del segment, 
+\nota{Seria \emph{en el lema}?}
+i no en patrons (no en les etiquetes);
+això farà que la detecció en aquest mòdul siga específica per a cada
+``nom'' de segment.\nota{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
+
+D'altra banda, el funcionament de la detecció i del processament de
+les regles es basa en que les referències a paràmetres es resolen
+immediatament després de la detecció, és a dir, les etiquetes
+\texttt{<1>}, \texttt{<2>}, etc. són substituïdes automàticament pel
+valor dels paràmetres abans de començar el processament. Les posicions
+(atribut \texttt{pos}) a les quals es fa referència amb les
+instruccions \texttt{<clip>}, etc. corresponen a la posició de les
+paraules en l'interior del segment.
+
+També aplica automàticament la política de majúscules (veure secció
+\ref{ss:majuscules}) dels lemes de les pseudoparaules cap a les
+paraules que són dins del segment.
+
+
+\paragraph{Entrada/eixida}
+
+\begin{itemize}
+\item Entrada: segments procedents d'\texttt{in\-ter\-chunk}.
+\item Eixida: entrada vàlida per al mòdul de generació morfològica d'Apertium.
+\end{itemize}
+
+\paragraph{Fitxers de dades}
+
+Aquest programa té el seu propi arxiu d'especificació, que tindrà
+extensió \texttt{.t3x}. La sintaxi està basada igualment en el
+\texttt{chunker} i en l'\texttt{in\-ter\-chunk} d'Apertium 2. 
+\nota{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
+
+\paragraph{Detecció de regles}
+
+La detecció dels segments es basa en el nom dels segments. Els
+segments no detectats reben el processament implícit.
+
+
+\paragraph{Acció implícita}
+
+En aquest mòdul l'acció implícita és la d'escriure les paraules de
+dins del segment, substituint-hi les referències pels paràmetres del
+segment. Serà usada per la major part de segments, ja que es preveu
+que aquest mòdul s'utilitze per a casos molts específics en què
+calga fer algun processament molt específic.
+
+També s'aplica implícitament la política de majúscules (secció
+\ref{ss:majuscules}).
+
+En qualsevol cas, els blancs externs als segments són copiats en el
+mateix ordre en què són llegits, ja que la detecció de segments és
+unitària (aquest mòdul no els agrupa).
+
+\notavisible{FIN DEL TEXTO EN CATALÁN, PENIENTE DE TRADUCCIÓN}
+
 
 
 %\settocdepth{subsection}
@@ -5437,11 +5670,12 @@ transferencia estructural tiene más o menos elementos léxicos que el
 original o bien ha sido sometido a algún tipo de reordenación.
 
 
-\subsection{Características de los tres módulos de transferencia}
+\subsection{Formato de las reglas en los tres módulos del sistema de transferencia avanzada}
+\label{noutransfer}
 
-Como ya se ha explicado, el sistema de transferencia sintática avanzada o 
-Apertium 2 funciona con tres módulos, cuyas características diferenciadas
-se describen a continuación. Cuando Apertium funcione con un sistema
+A continuación se describen las características diferenciadas del formato
+de los reglas en los tres módulos de un sistema
+de transferencia sintáctica avanzada. Cuando Apertium funcione con un sistema
 de transferencia sintáctica superficial, sólo entra en acción el
 primero módulo, llamado \texttt{chunker}, que se comunica con el
 módulo de generación.
@@ -5453,68 +5687,7 @@ módulo de generación.
 \notavisible{*** ATENCIÓN ***
 \newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
 
-Aquest programa és l'hereu més directe del mòdul de transferència
-sintàctica superficial d'Apertium. De fet aquest mòdul pot
-utilitzar-se individualment com a sistema de transferència sintàctica
-superficial, o en combinació amb els altres dos mòduls de
-transferencia per a construir un sistema de transferència sintàctica
-avançada.
-
-
-\paragraph{Entrada/eixida}
-
-\begin{itemize}
-\item Entrada: dades amb el format d'eixida del \texttt{pretransfer}, és a dir,
-  amb les cues invariants dels multimots desplaçats a una posició
-  anterior a qualsevol etiqueta.
-\item Eixida: 
-\begin{itemize}
-\item[-] si s'utilitza en un sistema de transferència avançada: segments (chunks),
-  perquè el mòdul següent els detecte i realitze operacions amb ells.
-\item[-] si s'utilitza en un sistema de transferència superficial: formes lèxiques que constitueixen
-l'entrada del mòdul de generació 
-\end{itemize}
-
-\end{itemize}
-
-
-\paragraph{Fitxers de dades}
-
-\nota{Explicar millor això de l'únic fitxer de configuració}
-Aquest programa usa un únic fitxer de configuració i un fitxer
-precompilat de detecció de patrons calculat a partir del primer, de
-manera idèntica a Apertium \nota{MG: caldria canviar les
-  referències a 'Apertium' com si fos una altra cosa}. El nom del
-fitxer de patrons tindrà l'extensió \texttt{.t1x}. Com que el
-\texttt{chunker} és qui fa la consulta del diccionari bilingüe, aquest
-(en forma compilada) també s'ha d'aportar al programa.
-
-\nota{Potser seria bona idea esmentar en quina secció s'explica el
-compilador a què es fa referència}
-
-La DTD d'aquest fitxer de dades s'especifica en l'apèndix
-\ref{ss:dtdtransfer}.
-
-\paragraph{Detecció de patrons}
-
-El sistema de detecció de regles d'aquest mòdul serà el mateix que en
-el mòdul de transferència actual d'Apertium \nota{ídem sobre 'Apertium', canviar-ho}. El programa
-\texttt{a\-per\-tium-pre\-trans\-fer} 
-\nota{Vacil·lació terminològica \texttt{pretransfer}.}
-és necessari per a adaptar el format
-d'eixida de l'etiquetador a l'entrada que reconeix el mòdul de
-transferència. En posteriors versions d'Apertium no es descarta que es
-modifique el \textit{desambiguador categorial} perquè faça la feina del
-\texttt{apertium-pretransfer}.
-\nota{També hem d'unificar la terminologia d'altres mòduls:
-\emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
-el paràgraf es podria pensar que són dues coses diferents.}
-
-\paragraph{Especificació de les accions associades}
-
-
-
-És bàsicament similar a l'actual mòdul de transferència d'Apertium \nota{canviar referència a ``l'actual
+El funcionament és bàsicament similar a l'actual mòdul de transferència d'Apertium \nota{canviar referència a ``l'actual
 mòdul de transferència d'Apertium''},
 amb les següents incorporacions:
 
@@ -5589,91 +5762,9 @@ Veiem amb un exemple l'ús de l'element \texttt{<chunk>}:
 \end{alltt}
 
 
-\paragraph{Acció implícita}
-
-Els \textit{superblancs} aïllats, que no són detectats per cap patró
-d'aquest mòdul s'escriuen en el mateix ordre en què arriben.
-
-L'element arrel del fitxer \texttt{.t1x} de regles del
-\texttt{chunker}, \texttt{<transfer>}, té un
-atribut opcional \texttt{default} que pot prendre els valors
-\begin{itemize}
-\item \texttt{chunk}: quan el mòdul funcioni en Apertium 2 (transferència
-sintàctica avançada), per tal que es generin
-  segments trivials amb les paraules que el mòdul no puga incloure en la
-  formació de cap segment o que no hagen sigut especificats. El nou segment es crearà
-  mit\-jan\-çant la traducció de la paraula pel diccionari bilingüe.
-  El lema fix dels chunks creats implícitament és
-  \texttt{default}.
-\item \texttt{lu} (valor implícit): quan el mòdul funcioni com a únic
-  mòdul de transferència en Apertium 1 (transferència sintàctica
-  superficial), traduint la paraula amb el diccionari bilingüe.
-\end{itemize}
-
-A continuació es mostra el segment generat automàticament amb una forma lèxica no
-detectada per cap regla  del
-\texttt{chunker} quan l'atribut \texttt{default} té el valor \texttt{chunk}:
-
-
-\begin{alltt}
-^default\verb!{!^that<cnjsub>$\verb!}!$
-\end{alltt}
-
-\nota{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
-
 
 \subsubsection{Programa \texttt{interchunk}}
 
-
-\nota{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
-
-El programa \texttt{interchunk} tracta els segments, els reordena i fa els
-canvis pertinents en la informació morfosintàctica. Això es fa
-mit\-jan\-çant la detecció de patrons de segments (seqüències de
-segments). La sintaxi de les instruccions que s'usen per a controlar
-el seu funcionament són, amb poques diferències, les mateixes que usa
-el programa \texttt{chunker}, però ha de quedar clar que s'utilitza un arxiu
-diferent. Els segments són tractats de forma similar a com es
-tracten les paraules en el transfer o \texttt{chunker} d'Apertium.
-\nota{Comprovar la denominació dels programes}
-
-\paragraph{Entrada/eixida}
-
-\begin{itemize}
-\item Entrada: segments procedents de \texttt{chunker}.
-\item Eixida: segments possiblement reordenats i amb la informació del
-  pseudolema del segment possiblement modificada.
-\end{itemize}
-
-\paragraph{Fitxers de dades}
-
-Aquest mòdul usa dos fitxers de dades. Un fitxer d'especificació del
-comportament del programa \texttt{in\-ter\-chunk}, amb extensió
-\texttt{.t2x} pera analogia amb el mòdul anterior, i un
-fitxer de patrons precalculats per a accelerar l'anàlisi de l'entrada.
-No s'hi inclou el fitxer binari del diccionari bilingüe perquè no
-s'usa.
-\nota{Citar el compilador?}
-
-La sintaxi del fitxer d'especificació és molt similar a la del mòdul
-\texttt{chunker}, i s'especifica en l'apèndix
-\ref{ss:dtdinterchunk}.
-
-
-\paragraph{Detecció de regles}
-
-Les regles detecten patrons que estan definits mitjançant seqüències
-de pseudoparaules. Aquestes pseudoparaules tenen un format basat en
-el format de la forma lèxica de les paraules. Des del punt de vista
-pràctic, aquest pseudolema és vist de manera equivalent a com es
-\nota{L'alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
-veu la forma lèxica d'una paraula en el mòdul
-\texttt{chunker} per a realitzar la detecció.
-D'aquesta forma, s'usarà una detecció de patrons amb atributs definits
-sobre les pseudoparaules i no sobre les paraules del patró original.
-
-
-\paragraph{Especificació de les accions associades}
 
 Les modificacions en el joc d'instruccions d'aquest mòdul ---respecte
 del joc d'instruccions utilitzat en
@@ -5705,61 +5796,8 @@ del joc d'instruccions utilitzat en
 \end{itemize}
 
 
-\paragraph{Acció implícita}
-
-Al igual que en el mòdul anterior, s'hi ha establert una acció
-implícita que escriu sense modificar els segments no reconeguts per cap
-patró del fitxer d'especificació d'aquest mòdul. Aquesta acció implícita
-escriu exactament el que llig, tant si es tracta de chunks com
-de blancs.
-\nota{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
-
-
 \subsubsection{Programa \texttt{postchunk}}
 
-El programa \texttt{postchunk} detecta segments individuals, i per a
-cadascun d'ells, executa unes accions especificades. La detecció es
-basa en els lemes del segment, 
-\nota{Seria \emph{en el lema}?}
-i no en patrons (no en les etiquetes);
-això farà que la detecció en aquest mòdul siga específica per a cada
-``nom'' de segment.\nota{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
-
-D'altra banda, el funcionament de la detecció i del processament de
-les regles es basa en que les referències a paràmetres es resolen
-immediatament després de la detecció, és a dir, les etiquetes
-\texttt{<1>}, \texttt{<2>}, etc. són substituïdes automàticament pel
-valor dels paràmetres abans de començar el processament. Les posicions
-(atribut \texttt{pos}) a les quals es fa referència amb les
-instruccions \texttt{<clip>}, etc. corresponen a la posició de les
-paraules en l'interior del segment.
-
-També aplica automàticament la política de majúscules (veure secció
-\ref{ss:majuscules}) dels lemes de les pseudoparaules cap a les
-paraules que són dins del segment.
-
-
-\paragraph{Entrada/eixida}
-
-\begin{itemize}
-\item Entrada: segments procedents d'\texttt{in\-ter\-chunk}.
-\item Eixida: entrada vàlida per al mòdul de generació morfològica d'Apertium.
-\end{itemize}
-
-\paragraph{Fitxers de dades}
-
-Aquest programa té el seu propi arxiu d'especificació, que tindrà
-extensió \texttt{.t3x}. La sintaxi està basada igualment en el
-\texttt{chunker} i en l'\texttt{in\-ter\-chunk} d'Apertium 2. 
-\nota{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
-
-\paragraph{Detecció de regles}
-
-La detecció dels segments es basa en el nom dels segments. Els
-segments no detectats reben el processament implícit.
-
-
-\paragraph{Especificació de les accions associades}
 
 Les diferències en les accions amb
 \texttt{in\-ter\-chunk} són les següents:
@@ -5779,23 +5817,6 @@ Les diferències en les accions amb
   s'accedeix al diccionari bilingüe.
 \nota{MG: però llavors això no és una diferència respecte de \texttt{interchunk} no?}
 \end{itemize}
-
-\paragraph{Acció implícita}
-
-En aquest mòdul l'acció implícita és la d'escriure les paraules de
-dins del segment, substituint-hi les referències pels paràmetres del
-segment. Serà usada per la major part de segments, ja que es preveu
-que aquest mòdul s'utilitze per a casos molts específics en què
-calga fer algun processament molt específic.
-
-També s'aplica implícitament la política de majúscules (secció
-\ref{ss:majuscules}).
-
-En qualsevol cas, els blancs externs als segments són copiats en el
-mateix ordre en què són llegits, ja que la detecció de segments és
-unitària (aquest mòdul no els agrupa).
-
-\notavisible{FIN DEL TEXTO EN CATALÁN, PENIENTE DE TRADUCCIÓN}
 
 
 
