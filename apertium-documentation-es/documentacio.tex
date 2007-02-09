@@ -33,14 +33,14 @@
 
 
 
-%  \newcommand{\nota}[1]{  \begin{small}
-%   \begin{quote} 
-%   \begin{sf}
-%   [Nota: #1]
-%   \end{sf}
-%   \end{quote}
-%   \end{small}
-%  }
+  \newcommand{\nota}[1]{  \begin{small}
+   \begin{quote} 
+   \begin{sf}
+   [Nota: #1]
+   \end{sf}
+   \end{quote}
+   \end{small}
+  }
 
 
  \newcommand{\notavisible}[1]{  \begin{small}
@@ -52,7 +52,7 @@
   \end{small}
  }
 
- \newcommand{\nota}[1]{}
+ %\newcommand{\nota}[1]{}
 
 
 %% Proyecto ``Traducción
@@ -770,7 +770,7 @@ Nombre & Carácter & Forma proteg.& Significado \\
 \hline
 Arroba & \texttt{@} & \verb!\@! & Superblanco externo\\
 Barra & \texttt{/} & \verb!\/! & Divisor de acepciones\\
-%Barra invertida & \verb!\! & \verb!\\! & Carácter de protección \\Mireia treure
+Barra invertida & \verb!\! & \verb!\\! & Carácter de protección \\
 Circunflejo & \verb!^! & \verb!\^! & Inicio de FL\\
 Corchete de apertura & \texttt{[} & \verb!\[! & Inicio de blanco\\
 Corchete de cierre & \texttt{]} & \verb!\]! & Fin de blanco \\
@@ -1295,8 +1295,9 @@ La estructura de bloques típica de estos diccionarios consta de:
 \item \textit{Una definición del alfabeto}.  Esta definición se usa
   exclusivamente para la construcción del analizador morfológico; en
   concreto, para que éste pueda recortar las palabras desconocidas y
-  las de las secciones condicionales (ver \ref{ss:section} de forma adecuada; el generador
-  morfológico no necesita esta definición.
+  las de las secciones condicionales (ver la explicación del elemento
+  \texttt{<section>} en la página \pageref{ss:section}) de forma
+  adecuada; el generador morfológico no necesita esta definición.
 %% \item \textit{Una definición de la marca de activación del postgenerador}. 
 %%   Para su uso en algunas de las entradas de sólo generación. 
 \item \textit{Una definición de los símbolos}.  Consiste en una
@@ -1312,12 +1313,13 @@ La estructura de bloques típica de estos diccionarios consta de:
 \item \textit{Una o más secciones de diccionario de recorte
     incondicional}.  Para incluir ciertas palabras que siguen algún
   patrón regular o se recortan independientemente del texto que les
-  sigue (ver discusión en el apartado \ref{ss:section}). En los
-  diccionarios morfológicos de catalán, las palabras que requieren un
-  recorte incondicional se reparten en dos secciones: una para las
-  formas que necesitan que se coloque un blanco a continuación (por
-  razones de procesamiento de las formas léxicas), como \emph{l'} o
-  \emph{d'}, y otra para signos de puntuación, números y otros signos.
+  sigue (ver discusión del elemento \texttt{<section>} en la página
+  \pageref{ss:section}). En los diccionarios morfológicos de catalán,
+  las palabras que requieren un recorte incondicional se reparten en
+  dos secciones: una para las formas que necesitan que se coloque un
+  blanco a continuación (por razones de procesamiento de las formas
+  léxicas), como \emph{l'} o \emph{d'}, y otra para signos de
+  puntuación, números y otros signos.
 
 \end{itemize}
 
@@ -1353,8 +1355,8 @@ A partir de 2007, los diccionarios bilingües permiten la
 especificación de más de una traducción en lengua meta para
 que un módulo de selección léxica (veáse el apartado \ref{se:seleccio_lex})
 pueda elegir el equivalente más adecuado según el contexto. Para tal fin se ha 
-añadido un atributo a los diccionarios bilingües, que se describe en la página 
-\pageref{dic_lextor}.
+añadido un atributo a los diccionarios bilingües, que se describe en la sección 
+\ref{dic_lextor}.
 
 
 Los \textbf{diccionarios de postgeneración} se usan para llevar a cabo
@@ -1405,13 +1407,15 @@ Postgeneración & izquierda--derecha   & postgeneración para \texttt{ca}, \texttt
 \label{formatodics}
 En esta sección se presentan los principales elementos del formato en
 el que se construyen los diccionarios. La definición formal (una DTD)
-se da en el apéndice~\ref{ss:dtd_dics}. En las páginas
-\pageref{ss:morfgen}, \pageref{ss:bil} y \pageref{ss:postgen} se describen las
-características particulares de las entradas de los tres tipos de
-diccionarios (morfológicos, bilingües y de postgeneración
-respectivamente). En la página \pageref{dic_lextor}, además, 
-se describen las características de un diccionario bilingüe que funcione en un 
-sistema Apertium que disponga de módulo de selección léxica.
+se da en el apéndice~\ref{ss:dtd_dics}.  En la sección
+\ref{dic_lextor} se describen las características de un
+diccionario bilingüe que funcione en un sistema Apertium que disponga
+de módulo de selección léxica.  Finalmente, en las páginas
+\pageref{ss:morfgen} a %\pageref{ss:bil} y 
+\pageref{ss:postgen} se
+describen las características particulares de las entradas de los tres
+tipos de diccionarios (morfológicos, bilingües y de postgeneración
+respectivamente).
 
 
 
@@ -1496,6 +1500,7 @@ de todos los simbolos gramaticales utilizados en los diccionarios de este proyec
 \end{figure}
 
 \paragraph{Elemento de sección del diccionario \texttt{<section>}}
+\label{ss:section}
 
 Define en su interior las palabras que serán reconocidas por el diccionario. 
 La razón de dividir el diccionario en secciones es porque ciertos grupos de formas ---como
@@ -2102,6 +2107,102 @@ sólo de análisis, la entrada debe tener la restricción \texttt{LR}.
 En la página~\pageref{ss:multipalabras} se ilustra más detalladamente el uso de este elemento. Puede
 verse un ejemplo de uso en la figura \ref{fig:cont} de la mencionada sección.
 
+\subsubsection{Modificación de los diccionarios  bilingües para el nuevo módulo de selección léxica}
+\label{dic_lextor}
+
+En 2007 se ha añadido un nuevo módulo al sistema Apertium: el módulo de
+selección léxica, que se describe en el apartado \ref{se:seleccio_lex}.
+
+Para funcionar en un sistema de selección léxica, los diccionarios
+bilingües deben ser modificados ligeramente para permitir la especificación
+de más de una traducción en lengua meta. El único cambio
+consiste en el añadido de dos nuevos atributos al elemento \texttt{<e>}.
+Estos nuevos atributos pueden utilizarse en todos los diccionarios
+pero sólo tienen sentido cuando se trata de una entrada del diccionario bilingüe.
+
+\notavisible{*** ATENCIÓN ***
+\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
+
+
+
+A l'Apèndix~\ref{dixdtd} es mostra el fragment de la DTD
+\texttt{dix.dtd} \nota{MG: no caldria ajuntar les dues DTDs en una de sola?} on es defineix l'element \texttt{e} usat per a
+codificar les entrades als diccionaris. Els nous atributs introduïts
+són:
+\begin{description}
+\item[slr (\emph{sense from left to right})] s'utilitza per a
+  especificar la \emph{marca de traducció} quan la traducció és d'esquerra dreta.
+  L'atribut pot rebre qualsevol valor; no obstant
+  això, el més apropiat és que rebi el valor del lema marcat com a
+  \texttt{<r>}.
+\item[srl (\emph{sense from right to left})] s'utilitza per a
+  especificar la marca de traducció quan la traducció és de dreta a
+  esquerra. Com abans, l'atribut pot rebre qualsevol valor, però el
+  més apropiat és que reba el lema marcat com a \texttt{<l>}.
+\end{description}
+
+A més, en ambdós casos el valor de l'atribut pot acabar amb un espai
+en blanc i la lletra ``D'' per a indicar que
+aquesta és la traducció predeterminada, és a dir, la traducció a emprar
+quan no hi ha suficient informació per a triar-ne una altra.
+
+El següent exemple il·lustra el funcionament dels nous atributs.
+Considerem el cas d'un diccionari bilingüe anglès--català i les
+següents entrades amb més d'una traducció en llengua meta:
+\begin{itemize}
+\item \emph{look}: que es pot traduir al català com \emph{mirar} (per
+  defecte) o com \emph{parèixer},
+\item \emph{floor}: que es pot traduir al català per \emph{pis} (per
+  defecte) o per \emph{terra},
+\item \emph{pis}: que es pot traduir a l'anglès per \emph{flat} (per
+  defecte) o per \emph{floor} (prenent \emph{pis} en el sentit de
+  paviment).
+\end{itemize}
+
+Aquesta informació es representa fent ús dels dos atributs esmentats
+abans:\label{entrades_lextor}
+\begin{alltt}
+\begin{small}
+<e srl="flat D">
+   <p>
+      <l>flat<s n="n"/></l>
+      <r>pis<s n="n"/><s n="m"/></r>
+    </p>
+</e>
+
+<e slr="pis D" srl="floor">
+   <p>
+      <l>floor<s n="n"/></l>
+      <r>pis<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+
+<e slr="terra">
+   <p>
+      <l>floor<s n="n"/></l>
+      <r>terra<s n="n"/><s n="m"/></r>
+   </p>
+</e>
+
+<e slr="mirar D">
+   <p>
+      <l>look<s n="vblex"/></l>
+      <r>mirar<s n="vblex"/></r>
+   </p>
+</e>
+
+<e slr="parèixer">
+   <p>
+      <l>look<s n="vblex"/></l>
+      <r>parèixer<s n="vblex"/></r>
+   </p>
+</e>
+\end{small}
+\end{alltt}
+
+
+
+\notavisible{FIN DEL TEXTO EN CATALÁN}
 
 
 %\settocdepth{paragraph}
@@ -2321,101 +2422,6 @@ singular y plural, mientras que en ca\-ta\-lán el singular es
 
 
 
-\paragraph{Diccionario bilingüe para un sitema con selección léxica}\label{dic_lextor}
-
-En 2007 se ha añadido un nuevo módulo al sistema Apertium: el módulo de
-selección léxica, que se describe en el apartado \ref{se:seleccio_lex}.
-
-Para funcionar en un sistema de selección léxica, los diccionarios
-bilingües deben ser modificados ligeramente para permitir la especificación
-de más de una traducción en lengua meta. El único cambio
-consiste en el añadido de dos nuevos atributos al elemento \texttt{<e>}.
-Estos nuevos atributos pueden utilizarse en todos los diccionarios
-pero sólo tienen sentido cuando se trata de una entrada del diccionario bilingüe.
-
-\notavisible{*** ATENCIÓN ***
-\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
-
-
-
-A l'Apèndix~\ref{dixdtd} es mostra el fragment de la DTD
-\texttt{dix.dtd} on es defineix l'element \texttt{e} usat per a
-codificar les entrades als diccionaris. Els nous atributs introduïts
-són:
-\begin{description}
-\item[slr (\emph{sense from left to right})] s'utilitza per a
-  especificar la \emph{marca de traducció} quan la traducció és d'esquerra dreta.
-  L'atribut pot rebre qualsevol valor; no obstant
-  això, el més apropiat és que rebi el valor del lema marcat com a
-  \texttt{<r>}.
-\item[srl (\emph{sense from right to left})] s'utilitza per a
-  especificar la marca de traducció quan la traducció és de dreta a
-  esquerra. Com abans, l'atribut pot rebre qualsevol valor, però el
-  més apropiat és que reba el lema marcat com a \texttt{<l>}.
-\end{description}
-
-A més, en ambdós casos el valor de l'atribut pot acabar amb un espai
-en blanc i la lletra ``D'' per a indicar que
-aquesta és la traducció predeterminada, és a dir, la traducció a emprar
-quan no hi ha suficient informació per a triar-ne una altra.
-
-El següent exemple il·lustra el funcionament dels nous atributs.
-Considerem el cas d'un diccionari bilingüe anglès--català i les
-següents entrades amb més d'una traducció en llengua meta:
-\begin{itemize}
-\item \emph{look}: que es pot traduir al català com \emph{mirar} (per
-  defecte) o com \emph{parèixer},
-\item \emph{floor}: que es pot traduir al català per \emph{pis} (per
-  defecte) o per \emph{terra},
-\item \emph{pis}: que es pot traduir a l'anglès per \emph{flat} (per
-  defecte) o per \emph{floor} (prenent \emph{pis} en el sentit de
-  paviment).
-\end{itemize}
-
-Aquesta informació es representa fent ús dels dos atributs esmentats
-abans:
-\begin{alltt}
-\begin{small}
-<e srl="flat D">
-   <p>
-      <l>flat<s n="n"/></l>
-      <r>pis<s n="n"/><s n="m"/></r>
-    </p>
-</e>
-
-<e slr="pis D" srl="floor">
-   <p>
-      <l>floor<s n="n"/></l>
-      <r>pis<s n="n"/><s n="m"/></r>
-   </p>
-</e>
-
-<e slr="terra">
-   <p>
-      <l>floor<s n="n"/></l>
-      <r>terra<s n="n"/><s n="m"/></r>
-   </p>
-</e>
-
-<e slr="mirar D">
-   <p>
-      <l>look<s n="vblex"/></l>
-      <r>mirar<s n="vblex"/></r>
-   </p>
-</e>
-
-<e slr="parèixer">
-   <p>
-      <l>look<s n="vblex"/></l>
-      <r>parèixer<s n="vblex"/></r>
-   </p>
-</e>
-\end{small}
-\end{alltt}
-
-
-
-\notavisible{FIN DEL TEXTO EN CATALÁN}
 
 
 \paragraph{Diccionarios de postgeneración}
@@ -3347,13 +3353,11 @@ unidad verbal con significado propio.
 \section{Mòdul de selecció lèxica}
 \label{se:seleccio_lex}
 
-\notavisible{Aquest capítol documenta el nou mòdul introduït a la cadena de
-muntatge d'Apertium i hauria d'ubicar-se entre les seccions 3.3 i 3.4 de
-la documentació de la versió 1 d'Apertium, a excepció de la
-secció~\ref{dic_lextor} que hauria d'ubicar-se a la secció 3.1.2
-(pàgina 26) on s'expliquen els diccionaris usats per Apertium.}
+\notavisible{*** ATENCIÓN ***
+\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
 
-\subsection{Introducció} pingui1
+
+\subsection{Introducció} 
 Quan el sistema Apertium s'utilitza per a traduïr automàticament entre
 llengües menys emparentades que les que ha tractat fins ara, pren
 importància la qüestió de la tria lèxica, que s'ha de dur a terme quan una
@@ -3438,7 +3442,8 @@ quals podria quedar així:
 
 Com a exemple del segon cas (múltiples equivalents amb gran diferència de significat) tenim els parells
 \texttt{es-ca} \emph{hoja -- full/fulla} o \emph{muñeca -- nina/canell}, i els exemples \texttt{en-ca}
-mostrats en el següent apartat. (Mireia: ara no hi són pingui!)
+que es mostren en la pàgina \pageref{entrades_lextor}, on s'explica de quina manera
+s'indiquen en el diccionari bilingüe aquests múltiples equivalents.
 
 
 \begin{figure}
@@ -3476,20 +3481,18 @@ s'executa després del desambiguador lèxic categorial i abans del mòdul
 encarregat de la transferència estructural; per tant, aquest nou mòdul
 treballa únicament amb informació de la llengua origen. 
 
-La resta del capítol s'organitza de la següent manera: la
-secció~\ref{dic_lextor} explica la modificació feta per a
-especificar més d'una traducció al diccionari bilingüe; la
-secció~\ref{se:preprocessament} explica el preprocessament que s'ha de
-fer del diccionari bilingüe, tant si s'usa un mòdul 
-de tria lèxica com si no. Finalment en la secció~\ref{se:lextor} s'explica
-com funciona i com s'ha d'entrenar el mòdul que fa la tria lèxica.
+A continuació, en la secció~\ref{se:preprocessament} s'explica el
+preprocessament que s'ha de fer d'un diccionari bilingüe que conté més
+d'una traducció per a una entrada, tant si s'usa un mòdul de tria
+lèxica com si no, i en la secció~\ref{se:lextor} s'explica com
+funciona i com s'ha d'entrenar el mòdul que fa la tria lèxica.
 
-
-
+ 
 \subsection{Preprocessament dels diccionaris bilingües}\label{se:preprocessament}
 El fet que, amb aquesta modificació, es creïn diccionaris bilingües
-que permeten l'especificació de més d'una traducció per paraula fa
-necessari un preprocessament d'aquests diccionaris, ja que el motor de
+que permeten l'especificació de més d'una traducció per entrada (vegeu
+en la secció \ref{dic_lextor} com s'especifiquen aquestes entrades)
+fa necessari un preprocessament d'aquests diccionaris, ja que el motor de
 traducció Apertium treballa amb diccionaris compilats en els quals
 cada mot té només una traducció possible.
 
@@ -3498,19 +3501,21 @@ compilació, per la qual cosa l'usuari final no ha de fer cap acció especial.
 
 \subsubsection{Preprocessament sense mòdul de tria lèxica}
 
-Quan aquests diccionaris s'utilitzin en un sistema que no disposa de
-mòdul de selecció lèxica, el preprocessament es realitza amb
-l'aplicació del full d'estil \texttt{translate-to-default-equivalent.xsl}.  Aquest full
-d'estil converteix els diccionaris amb més d'una possible traducció per entrada en
-diccionaris amb una sola traducció per entrada, escollint com a
-traducció l'entrada marcada com a equivalent predeterminat, i posant una
-restricció de direcció (\texttt{LR} o \texttt{RL} segons el cas) en les entrades
-restants, de manera que aquestes només es tradueixen en la direcció de
-traducció en què no hi ha multiplicitat d'equivalents.  Aquest full
-d'estil es crida des del \texttt{Makefile}.
+Quan els diccionaris bilingües amb múltiples equivalents 
+s'utilitzin en un sistema que no disposa de mòdul de selecció lèxica,
+el preprocessament es realitza amb l'aplicació del full d'estil
+\texttt{translate-to-default\--e\-qui\-va\-lent.xsl}.  Aquest full d'estil
+converteix els diccionaris amb més d'una possible traducció per
+entrada en diccionaris amb una sola traducció per entrada, escollint
+com a traducció l'entrada marcada com a equivalent predeterminat, i
+posant una restricció de direcció (\texttt{LR} o \texttt{RL} segons el
+cas) en les entrades restants, de manera que aquestes només es
+tradueixen en la direcció de traducció en què no hi ha multiplicitat
+d'equivalents.  Aquest full d'estil es crida des del
+\texttt{Makefile}.
 
 Com a exemple, les tres primeres entrades que es mostren en la pàgina
-\ref{dic_lextor} queden així després de l'aplicació del full
+\pageref{entrades_lextor} queden així després de l'aplicació del full
 d'estil esmentat:
 
 \begin{alltt}
@@ -3661,13 +3666,14 @@ d'un sentit de traducció als diccionaris):
   \verb!^centre<n><sg>$!
 \end{itemize}
 
+\notavisible{FIN DEL TEXTO EN CATALÁN}
 
 \newpage
 \section{Módulo de transferencia estructural}
 \label{ss:transfer}
 
 
-\notavisible{Faena per fer (mlf):
+\nota{Faena per fer (mlf):
   \begin{itemize}
   \item El document no diu encara res de metaparadigmes. En cal una descripció.
   \item Caldria demanar comentaris a Marta Villegas com a usuària del document perquè ens indique parts fosques, possibles suggeriments, etc.
@@ -4051,8 +4057,7 @@ algún mecanismo similar.
 En esta sección se explica el formato en el que se escriben las reglas
 de transferencia estructural. En el apéndice, en las secciones
 ~\ref{ss:dtdtransfer}, \ref{ss:dtdinterchunk} i \ref{ss:dtdpostchunk}
-(pingui treure! ~\ref{ss:dtd_transfer}) se
-ofrece la descripción formal (DTD).
+se ofrece la descripción formal (DTD).
 
 Los archivos de reglas de transferencia estructural tienen dos partes
 bien diferenciadas: una de declaración de los elementos que se
@@ -4121,7 +4126,7 @@ una secuencia de categorías léxicas tal como se han definido en la parte de decl
 y se construye el patrón en la LM.
 
 \end{itemize}
-\notavisible{Assegurem-nos que totes les sigles estan definides}
+\nota{Assegurem-nos que totes les sigles estan definides}
 
 A continuación se explican detalladamente las características de cada uno de los elementos utilizados.
 
@@ -4172,7 +4177,7 @@ estructural de este módulo.
 
 
 \subsubsection{Elemento de sección de definición de categorías \\\texttt{<section-def-cats>}}
-\notavisible{Atenció a l'ús polisèmic del mot \emph{categoria} en el document}
+\nota{Atenció a l'ús polisèmic del mot \emph{categoria} en el document}
 
 En esta sección se definen las categorías léxicas que se usarán para crear
 los patrones utilizados en las reglas. Cada definición se realiza con un \texttt{<\textbf{def-cat}>}.
@@ -4282,7 +4287,7 @@ los segmentos entregados por el módulo \texttt{chunker}. Si, por ejemplo, querem
 una categoría para detectar todos los sintagmas nominales determinados, la definiremos mediante
 los símbolos \texttt{SN} y \texttt{DET} si así hemos caracterizado el segmento o \emph{chunk} mediante 
 las instrucciones \texttt{<tag>} contenidas en el elemento \texttt{<chunk>} (véase 
-\ref{{ass_intra}}). También se puede utilizar el atributo opcional
+\ref{ss:chunker}). También se puede utilizar el atributo opcional
 \texttt{lemma} para hacer referencia al \emph{pseudolema} del segmento. Así pues, sus características
 formales son las mismas en los módulos \texttt{chunker} e \texttt{interchunk}, con la única diferencia que en el
 primero se utilizan para detectar formas léxicas y en el segundo, para detectar segmentos o \emph{chunks}.
@@ -4293,7 +4298,7 @@ primero se utilizan para detectar formas léxicas y en el segundo, para detectar 
 En este módulo, este elemento solo prevé el atributo obligatorio \texttt{name}, que hace referencia al nombre del
 segmento o chunk,
 
-\notavisible{MG: abans deia 'al nom de la regla', comentari mlf: De la
+\nota{MG: abans deia 'al nom de la regla', comentari mlf: De la
   regla o del patró?}  sin etiquetas, ya que en el módulo
 \texttt{postchunk} sólo se usa el pseudolema (nombre del segmento)
 para la detección.  En la detección no se distingue entre mayúsculas y
@@ -4324,7 +4329,7 @@ categorías detectadas por el patrón y que se utilizarán en la parte de
 acción de las reglas. Cada atributo se define mediante una etiqueta
 \texttt{<\textbf{def-attr}>}.
 
-\notavisible{De vegades les etiquetes aprareixen en el text en
+\nota{De vegades les etiquetes aprareixen en el text en
   negretes i de vegades sense negretes. Decidim-nos per una tipografia
   i usem-la en tot el document.}
 
@@ -4352,7 +4357,7 @@ indican en el atributo \texttt{tags} del elemento, separadas por punto
 si hay más de una. En la figura \ref{fig:attr-item} puede verse un
 ejemplo de utilización de este elemento para el atributo de
 \emph{número} y el atributo de \emph{nombre}. 
-\notavisible{Potser s'hauria d'explicar per què s'ha triat el nom \emph{a\_nom} en la figura}
+\nota{Potser s'hauria d'explicar per què s'ha triat el nom \emph{a\_nom} en la figura}
 
 Compárese la definición del
 atributo de nombre en esta figura (con todos los valores posibles y sin asteriscos) con la
@@ -4394,7 +4399,7 @@ dentro de una regla y de una regla a otra (por ejemplo, para poder
 transmitir información de género o número entre dos patrones).
 
 
-\notavisible{Que quede clar que aquesta transferència d'una regla a altra es fa només d'una aplicació d'una regla a l'aplicació d'altra regla en un moment posterior, o d'esquerra a dreta}
+\nota{Que quede clar que aquesta transferència d'una regla a altra es fa només d'una aplicació d'una regla a l'aplicació d'altra regla en un moment posterior, o d'esquerra a dreta}
 
 \subsubsection{Elemento de definición de variables \texttt{<def-var>}}
 \label{ss:defvar}
@@ -4581,7 +4586,7 @@ Con este elemento se describe una opción condicional (véase la página
 \texttt{<\textbf{test}>} y de un bloque de cero o más instrucciones de
 tipo \texttt{<\textbf{choose}>}, \texttt{<\textbf{let}>},
 \texttt{<\textbf{out}>}, \texttt{<\textbf{modify-case}>},
-\texttt{<\textbf{call-macro}>} o \texttt{<\textbf{append}>}, \notavisible{OK append?} que se
+\texttt{<\textbf{call-macro}>} o \texttt{<\textbf{append}>}, \nota{OK append?} que se
 ejecutarán si se cumple la citada condición.
 
 \subsubsection{Elemento de opción alternativa \texttt{<otherwise>}}
@@ -4602,11 +4607,11 @@ por una conjunción (\texttt{<\textbf{and}>}), una disyunción
 condiciones a evaluar, así como por una simple condición de igualdad de cadenas
 (\texttt{<\textbf{equal}>}), de principio de cadena (\texttt{<\textbf{begins-with}>}), de final de cadena (\texttt{<\textbf{ends-with}>}), de subcadena (\texttt{<\textbf{contains-substring}>}) o de inclusión en conjunto (\texttt{<\textbf{in}>}).
 
-\notavisible{Segur que es pot millorar la redacció de l'últim paràgraf, canviat per mlf perquè hi estiguen totes les condicions booleanes simples.}
+\nota{Segur que es pot millorar la redacció de l'últim paràgraf, canviat per mlf perquè hi estiguen totes les condicions booleanes simples.}
 
 \subsubsection{Elementos de operadores condicionales o booleanos: \texttt{<equal>}, \texttt{<and>}, \texttt{<or>}, \texttt{<not>}, \texttt{<in>}}
 
-\notavisible{Cal completar-ho: falten \texttt{contains-substring}, \texttt{ends-with}, \texttt{begins-with}, etc.}
+\nota{Cal completar-ho: falten \texttt{contains-substring}, \texttt{ends-with}, \texttt{begins-with}, etc.}
 
 \begin{itemize}
   
@@ -4634,7 +4639,7 @@ condiciones a evaluar, así como por una simple condición de igualdad de cadenas
   el atributo \texttt{caseless}, el cual, si tiene el valor
   \texttt{yes}, hace que la comparación entre cadenas se realice sin
   tener en cuenta las diferencias de mayúsculas y minúsculas.
-\notavisible{Totes les comprovacions condicionals de cadenes tenen l'atribut \texttt{caseless}; \texttt{in} també; més avall}
+\nota{Totes les comprovacions condicionals de cadenes tenen l'atribut \texttt{caseless}; \texttt{in} també; més avall}
 
 \item El operador de búsqueda en listas, \texttt{<\textbf{in}>} sirve
   para buscar cualquier valor (que corresponde al primer parámetro de
@@ -4650,9 +4655,9 @@ condiciones a evaluar, así como por una simple condición de igualdad de cadenas
   
 \end{itemize}
 
-\notavisible{Cal unificar tota la discussió anterior, traient factor comú.}
+\nota{Cal unificar tota la discussió anterior, traient factor comú.}
 
-\notavisible{Cal descriure la resta d'elements condicionals que no hi són.}
+\nota{Cal descriure la resta d'elements condicionals que no hi són.}
 
 
 \subsubsection{Elemento \texttt{<clip>}}
@@ -5323,6 +5328,7 @@ forma léxica excepto los verbos y los nombres, puesto que sólo hemos
 definido multipalabras con flexión para formas verbales y nombres.
 
 \subsubsection{Elemento de unidad léxica \texttt{<mlu>}}
+\label{ss:mlu}
 
 Su nombre proviene de \emph{multilexical unit} o ``multiforma léxica''
 y se utiliza dentro del elemento \texttt{<\textbf{out}>} para enviar
@@ -5371,7 +5377,7 @@ Se puede ver un ejemplo de uso del elemento en la figura
   \texttt{postchunk} para deliminar la forma léxica.  Dentro de él se
   envían (generalmente con una instrucción de
   \texttt{<\textbf{clip}>})
-\notavisible{MG: generalmente o sempre}, el lema del chunk (\texttt{lem}), las
+\nota{MG: generalmente o sempre}, el lema del chunk (\texttt{lem}), las
   etiquetas (\texttt{tags}) y el contenido del chunk
   (\texttt{chcontent}, contiene las FL más los blancos), que es una
   parte invariable pues en el módulo \texttt{interchunk} no se puede
@@ -5434,8 +5440,10 @@ módulo de generación.
 
 
 \subsubsection{Programa \texttt{chunker} (\texttt{transfer})}
+\label{ss:chunker}
 
-\notavisible{ATENCIÓ: TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
+\notavisible{*** ATENCIÓN ***
+\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
 
 Aquest programa és l'hereu més directe del mòdul de transferència
 sintàctica superficial d'Apertium. De fet aquest mòdul pot
@@ -5464,16 +5472,16 @@ l'entrada del mòdul de generació
 
 \paragraph{Fitxers de dades}
 
-\notavisible{Explicar millor això de l'únic fitxer de configuració}
+\nota{Explicar millor això de l'únic fitxer de configuració}
 Aquest programa usa un únic fitxer de configuració i un fitxer
 precompilat de detecció de patrons calculat a partir del primer, de
-manera idèntica a Apertium \notavisible{MG: caldria canviar les
+manera idèntica a Apertium \nota{MG: caldria canviar les
   referències a 'Apertium' com si fos una altra cosa}. El nom del
 fitxer de patrons tindrà l'extensió \texttt{.t1x}. Com que el
 \texttt{chunker} és qui fa la consulta del diccionari bilingüe, aquest
 (en forma compilada) també s'ha d'aportar al programa.
 
-\notavisible{Potser seria bona idea esmentar en quina secció s'explica el
+\nota{Potser seria bona idea esmentar en quina secció s'explica el
 compilador a què es fa referència}
 
 La DTD d'aquest fitxer de dades s'especifica en l'apèndix
@@ -5482,23 +5490,23 @@ La DTD d'aquest fitxer de dades s'especifica en l'apèndix
 \paragraph{Detecció de patrons}
 
 El sistema de detecció de regles d'aquest mòdul serà el mateix que en
-el mòdul de transferència actual d'Apertium \notavisible{ídem sobre 'Apertium', canviar-ho}. El programa
+el mòdul de transferència actual d'Apertium \nota{ídem sobre 'Apertium', canviar-ho}. El programa
 \texttt{a\-per\-tium-pre\-trans\-fer} 
-\notavisible{Vacil·lació terminològica \texttt{pretransfer}.}
+\nota{Vacil·lació terminològica \texttt{pretransfer}.}
 és necessari per a adaptar el format
 d'eixida de l'etiquetador a l'entrada que reconeix el mòdul de
 transferència. En posteriors versions d'Apertium no es descarta que es
 modifique el \textit{desambiguador categorial} perquè faça la feina del
 \texttt{apertium-pretransfer}.
-\notavisible{També hem d'unificar la terminologia d'altres mòduls:
+\nota{També hem d'unificar la terminologia d'altres mòduls:
 \emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
 el paràgraf es podria pensar que són dues coses diferents.}
 
 \paragraph{Especificació de les accions associades}
-\label{ass_intra}
 
 
-És bàsicament similar a l'actual mòdul de transferència d'Apertium \notavisible{canviar referència a ``l'actual
+
+És bàsicament similar a l'actual mòdul de transferència d'Apertium \nota{canviar referència a ``l'actual
 mòdul de transferència d'Apertium''},
 amb les següents incorporacions:
 
@@ -5537,7 +5545,7 @@ amb les següents incorporacions:
 \item Les instruccions \texttt{<clip>} tenen un nou atribut opcional:
   \texttt{link-to}, que serveix per a especificar una etiqueta
   \verb!<!\textit{valor de link-to}\verb!>! en comptes de 
-\notavisible{Es ``en comptes de'' o ``addicionalment a''?}
+\nota{Es ``en comptes de'' o ``addicionalment a''?}
 la
   informació que continga el \texttt{<clip>} en la resta d'atributs.
   Aquesta informació és prescindible però pot servir com a
@@ -5603,13 +5611,13 @@ detectada per cap regla  del
 ^default\verb!{!^that<cnjsub>$\verb!}!$
 \end{alltt}
 
-\notavisible{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
+\nota{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
 
 
 \subsubsection{Programa \texttt{interchunk}}
 
 
-\notavisible{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
+\nota{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
 
 El programa \texttt{interchunk} tracta els segments, els reordena i fa els
 canvis pertinents en la informació morfosintàctica. Això es fa
@@ -5619,7 +5627,7 @@ el seu funcionament són, amb poques diferències, les mateixes que usa
 el programa \texttt{chunker}, però ha de quedar clar que s'utilitza un arxiu
 diferent. Els segments són tractats de forma similar a com es
 tracten les paraules en el transfer o \texttt{chunker} d'Apertium.
-\notavisible{Comprovar la denominació dels programes}
+\nota{Comprovar la denominació dels programes}
 
 \paragraph{Entrada/eixida}
 
@@ -5637,7 +5645,7 @@ comportament del programa \texttt{in\-ter\-chunk}, amb extensió
 fitxer de patrons precalculats per a accelerar l'anàlisi de l'entrada.
 No s'hi inclou el fitxer binari del diccionari bilingüe perquè no
 s'usa.
-\notavisible{Citar el compilador?}
+\nota{Citar el compilador?}
 
 La sintaxi del fitxer d'especificació és molt similar a la del mòdul
 \texttt{chunker}, i s'especifica en l'apèndix
@@ -5650,7 +5658,7 @@ Les regles detecten patrons que estan definits mitjançant seqüències
 de pseudoparaules. Aquestes pseudoparaules tenen un format basat en
 el format de la forma lèxica de les paraules. Des del punt de vista
 pràctic, aquest pseudolema és vist de manera equivalent a com es
-\notavisible{L'alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
+\nota{L'alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
 veu la forma lèxica d'una paraula en el mòdul
 \texttt{chunker} per a realitzar la detecció.
 D'aquesta forma, s'usarà una detecció de patrons amb atributs definits
@@ -5677,8 +5685,8 @@ del joc d'instruccions utilitzat en
   del segment. De la mateixa manera, l'atribut predefinit
   \texttt{tags} fa referència a les etiquetes del segment. El
   contingut del segment queda com una cua que es pot imprimir
-  mitjançant l'atribut implícit \texttt{chcontent}.\notavisible{Només imprimir o s'hi pot fer referència també?}
-\notavisible{Dir de quin element són aquests atributs}
+  mitjançant l'atribut implícit \texttt{chcontent}.\nota{Només imprimir o s'hi pot fer referència també?}
+\nota{Dir de quin element són aquests atributs}
 \item Tots els valors de \texttt{part}, excepte \texttt{chname},
   accedeixen a la informació del lema i les etiquetes del
   pseudolema de cada segment.
@@ -5696,7 +5704,7 @@ implícita que escriu sense modificar els segments no reconeguts per cap
 patró del fitxer d'especificació d'aquest mòdul. Aquesta acció implícita
 escriu exactament el que llig, tant si es tracta de chunks com
 de blancs.
-\notavisible{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
+\nota{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
 
 
 \subsubsection{Programa \texttt{postchunk}}
@@ -5704,10 +5712,10 @@ de blancs.
 El programa \texttt{postchunk} detecta segments individuals, i per a
 cadascun d'ells, executa unes accions especificades. La detecció es
 basa en els lemes del segment, 
-\notavisible{Seria \emph{en el lema}?}
+\nota{Seria \emph{en el lema}?}
 i no en patrons (no en les etiquetes);
 això farà que la detecció en aquest mòdul siga específica per a cada
-``nom'' de segment.\notavisible{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
+``nom'' de segment.\nota{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
 
 D'altra banda, el funcionament de la detecció i del processament de
 les regles es basa en que les referències a paràmetres es resolen
@@ -5735,7 +5743,7 @@ paraules que són dins del segment.
 Aquest programa té el seu propi arxiu d'especificació, que tindrà
 extensió \texttt{.t3x}. La sintaxi està basada igualment en el
 \texttt{chunker} i en l'\texttt{in\-ter\-chunk} d'Apertium 2. 
-\notavisible{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
+\nota{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
 
 \paragraph{Detecció de regles}
 
@@ -5752,16 +5760,16 @@ Les diferències en les accions amb
 \item Prohibició de l'escriptura de segments (\texttt{<chunk>}s) a
   l'eixida: només es poden escriure unitats lèxiques d'un mot
   (\texttt{<lu>}) o de més d'un mot (\texttt{<mlu>}).
-\notavisible{Comprovar aquest ítem perquè era incomplet i l'ha completat mlf}
+\nota{Comprovar aquest ítem perquè era incomplet i l'ha completat mlf}
 \item Nou atribut de detecció \texttt{name} de \texttt{<pattern-item>},
   que s'usa en la part de \texttt{<pattern>} de les regles de manera
   aïllada, per tal de forçar la detecció dels patrons pel seu nom.
-\notavisible{Què vol dir ``de manera aïllada''? Sembla que vulga dir ``de tant en tant''}
+\nota{Què vol dir ``de manera aïllada''? Sembla que vulga dir ``de tant en tant''}
 \item Tampoc existeix l'atribut \texttt{side} als elements als quals
   és aplicable en el mòdul \texttt{in\-ter\-chunk}, per
   la mateixa raó que en \texttt{in\-ter\-chunk} no
   s'accedeix al diccionari bilingüe.
-\notavisible{MG: però llavors això no és una diferència respecte de \texttt{interchunk} no?}
+\nota{MG: però llavors això no és una diferència respecte de \texttt{interchunk} no?}
 \end{itemize}
 
 \paragraph{Acció implícita}
@@ -5779,7 +5787,7 @@ En qualsevol cas, els blancs externs als segments són copiats en el
 mateix ordre en què són llegits, ja que la detecció de segments és
 unitària (aquest mòdul no els agrupa).
 
-\notavisible{FI TEXT EN CATALÀ, PENDENT DE TRADUCCIÓ}
+\notavisible{FIN DEL TEXTO EN CATALÁN, PENIENTE DE TRADUCCIÓN}
 
 
 
@@ -8185,6 +8193,825 @@ Tras las operaciones de compilación, \texttt{apertium-translator} ya
 utilizará los nuevos datos.
 
 \newpage
+
+
+\chapter{Formularis web d'inserció de dades}
+
+\notavisible{*** ATENCIÓN ***
+\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
+
+
+Aquest capítol presenta el sistema de manteniment de diccionaris
+d'Apertium 2.  Està estructurat en dues seccions.  En la secció
+\ref{ss:formadmin} es dóna l'informació necessària per a instal·lar la
+ferramenta i realitzar adaptacions.  En la secció \ref{ss:formus} s'exposa el
+mode d'ús de l'aplicació web per a dur a terme la millora de les dades
+lingüístiques.
+
+
+\section{Introducció}
+
+El formularis per a la introducció de nous termes als diccionaris de
+les diferents llengües sorgeixen com a resposta a la necessitat de
+proveir una ferramenta amb la qual introduir còmodament noves paraules
+als diferents diccionaris i amb la possibilitat de fer-ho de forma
+remota des de qualsevol ordinador que tinga accés a Internet.
+
+Així és plantegen com uns formularis que estan escrits en \texttt{php}
+i són utilitzables amb qualsevol navegador d'Internet, bé de forma
+local en el mateix ordinador on s'emmagatzemen els diccionaris o bé
+remotament.
+
+\section{Instal·lació i administració}
+\label{ss:formadmin}
+
+\subsection{Instal·lació de la ferramenta}
+
+La instal·lació s'ha de realitzar en un màquina Unix, que tinga
+instal·lat un servidor web Apache amb \texttt{php}. Així s'ha de
+procedir primerament a fer la instal·lació del servidor \texttt{php}
+si no estigués ja fet. Una vegada estiga resolt el punt anterior es
+procedeix a fer la instal·lació pròpiament dita.
+
+S'obté el paquet \textit{`apertium-lexical-webform-0.9'} i
+es descomprimeix dins del directori on vaja a deixar-se la ferramenta
+de formularis d'inserció.
+
+\begin{alltt}
+   # cd /ruta/dels/formularis
+   # tar -xvzf /ruta/apertium-lexical-webform-0.9.tar.gz
+\end{alltt}
+
+S'ha de tenir en compte que l'Apache sols serveix les pàgines que
+estan dintre del directori arrel amb què l'hem configurat. Per tant el
+directori on deixem els formularis ha de ser un subdirectori que
+estiga dintre de l'arrel del servidor Apache.
+
+Seguidament s'edita el fitxer de configuració que està en
+\textit{private/config.php} i es dóna valors adequats a les variables
+de configuració:
+
+\begin{itemize}
+\item \texttt{\$anmor}: ruta sencera on es troba l'analitzador
+  morfològic \textit{'lt-proc`}.
+\item \texttt{\$dicos\_path}: ruta on es troben els diccionaris finals
+  i el binaris compilats de cada diccionari. Este directori ha de
+  contindre un sub-directori per a cada diccionari amb el que pot
+  treballar el formulari. El nom del subdirectori ha de seguir la
+  següent sintaxi: \texttt{paradigmes-ll-rr} , on \textit{ll} i
+  \textit{rr} són les inicials del parell de llengües del traductor en
+  concret. En cada directori es deixen els diccionaris finals amb què
+  treballa el traductor i els corresponents binaris compilats.
+  Aquests directoris es poden substituir per enllaços simbòlics en
+  cas que es troben en diferents llocs.
+\item \texttt{\$usuaris\_professionals}: un llistat amb els usuaris
+  professionals del sistema que tenen permís per a inserir als
+  diccionaris del formulari i validar paraules pendents de
+  confirmació.
+\item \texttt{\$mail}: Adreça electrònica de l'administrador
+  encarregat dels formularis. Quan algú sol.licite donar-se d'alta com
+  a usuari s'enviarà un correu electrònic a aquesta adreça.
+\end{itemize}
+
+Una vegada s'han configurat els paràmetres d'aquest fitxer el servidor
+de formularis ja es troba en funcionament.
+
+
+\subsection{Estructura de directoris}
+
+Tots els fitxers necessaris per al correcte funcionament s'estructuren
+de la següent forma:
+
+\begin{itemize}
+\item \texttt{/index.php:} presenta el formulari inicial d'inserció.
+  Té un apartat per a cada parell de llengües on s'introdueix el lema
+  en llengua origen i en llengua meta i permet triar el tipus de
+  categoria gramatical que es tracta. En prémer el botó \textit{'Go
+    on'} avancem a la pàgina següent on seleccionarem els paradigmes
+  de flexió corresponent a cadascun dels lemes en llengua origen i
+  llengua meta.
+\item \texttt{/dics:} directori amb els diccionaris de les entrades
+  que van inserint-se des dels formularis. Estan els fitxers amb les
+  entrades dels usuaris no professionals (pendents de ser validades) i
+  els diccionaris amb les entrades en format \texttt{XML} dels usuaris
+  professionals
+\item \texttt{/private:} aquí està la major part dels mòduls
+  utilitzats en els formularis. També conté els directoris amb la
+  definició de paradigmes per a totes les llengües amb les que podem
+  treballar, aquests directoris tenen la forma
+  \texttt{paradigmes-ll-rr} sent \textit{ll} i \textit{rr} les
+  inicials del parell de llengües del traductor en concret. L'ordre
+  escollit per a les dues llengües, primer \textit{ll} i després
+  \textit{rr} depèn de l'ordre en que s'hagen construït les entrades
+  per al diccionari bilingüe. També estan en aquest directori els
+  fitxers encarregats de fer tot el processament de les paraules a
+  inserir. Aquests son:
+\begin{itemize}
+\item \texttt{resultado.php: } Aquest \textit{php} és cridat quan
+  s'insereixen dues paraules de qualsevol parell de llengües des del
+  mòdul \textit{index.php}. Bàsicament el que fa és establir el parell
+  de llengües amb què es treballarà (\textit{\$LR} i \textit{\$RL}) i
+  la categoria gramatical de la paraula que s'inserirà
+  (\textit{\$tipus}). S'inclou al mòdul \textit{selec.php} que serà el
+  següent que es crida en el procés d'inserció. En el cas que el
+  \textit{tipus} de la paraula a inserir fos una unitat multi-paraula
+  (\textit{Multi Word Verb}) aleshores és el mòdul \textit{multip.php}
+  el que s'inclou i es crida en comptes de \textit{selec.php}. Els
+  elements \textit{Multi Word Verb} o unitats multi-paraula estan
+  formats per un verb que pot flexionar seguit d'una cua invariable
+  d'una o més paraules.
+\item \texttt{selecc.php: } És el mòdul encarregat de proporcionar la
+  selecció del paradigma escollit per a cada una de les dues paraules,
+  la paraula en llengua origen i en llengua meta. Proporciona una
+  llista de paradigmes per a escollir que depenen del tipus gramatical
+  de l'entrada que estem creant. Quan es selecciona un nou paradigma
+  per a un dels dos lemes, proporciona uns exemples de la flexió del
+  lema a inserir segons el paradigma que hem escollit. Si acceptem els
+  paradigmes escollits, el mòdul crida a \textit{insertarPro.php} o
+  \textit{insertar.php} depenen de si l'usuari que està fent la nova
+  inserció està considerat com a professional o no professional
+  respectivament.
+\item \texttt{multip.php: } Té la mateixa funció que el mòdul
+  \textit{selecc.php} però per a les unitats multi-paraula. Utilitza
+  les mateixes variables i realitza les mateixes operacions, però quan
+  mostra els exemples ho fa flexionant el verb i afegint totes les
+  paraules que formen la cua. La manera de funcionar del mòdul és
+  anàloga a la del mòdul \textit{selecc.php} i la seua descripció
+  detallada la trobarem a l'apartat \ref{ss:fitxersphp}.
+\item \texttt{valida.php: } Aquest mòdul es crida quan un usuari
+  professional decideix validar paraules que estan en la cua
+  d'entrades pendents de validació. Llegeix el fitxer amb la cua de
+  paraules per validar i el recorre un a un, agafa les dades de
+  l'entrada corresponent (\textit{LRlem, RLlem, paradigmaLR,
+    paradigmaRL, LR, RL}, etc...) i crida a \textit{selecc.php} per a
+  continuar amb el procés d'inserció d'eixa entrada particular.
+\item \texttt{insertarPro.php: } Aquest mòdul es crida quan ja hem
+  seleccionat el paradigma adequat per a la paraula en llengua origen
+  i en llengua meta (operació realitzada en \textit{selecc.php}) i
+  volem visualitzar com quedarà l'entrada en el format \texttt{XML}
+  dels tres diccionaris, monolingüe origen, bilingüe i monolingüe
+  meta. Des d'aquesta pantalla es podrà modificar directament el codi
+  i finalment acceptar la nova entrada o cancelar l'operació.
+\item \texttt{ins\_multip.php: } Té la mateixa funció que
+  \textit{insertarPro.php} però està pensat per a les unitats
+  multi-paraula, de manera que té un tractament especial amb l'entrada
+  per a que el codi \texttt{XML} que s'insereix als diccionaris siga
+  correcte.
+\item \texttt{insertar.php: } És el mòdul equivalent a
+  \textit{insertarPro.php} però quan l'operació està realitzant-la un
+  usuari no professional. Les accions que es realitzen en este cas són
+  molt més senzilles ja que l'única cosa que es fa és inserir en el
+  fitxer de termes pendents de validar els lemes i els paradigmes
+  escollits per l'usuari no professional, i queden allí fins que un
+  usuari professional els valida.
+\item \texttt{verSemi.php: } Este mòdul té la funció de mostrar el
+  fitxer amb les entrades inserides per usuaris no professionals i que
+  estan pendents de ser validades. Pot servir com ajuda per als
+  usuaris professionals que abans de començar a validar paraules poden
+  comprovar quines estan en la cua per a validar. Per a cridar-lo
+  apareix un enllaç en el formulari generat per \textit{selec.php} des
+  d'on es pot cridar aquesta funcionalitat.
+\item \texttt{paradigmas.xsl:} Full d'estils que s'utilitza per a
+  generar els fitxers de paradigmes amb que treballen els mòduls del
+  formulari. S'utilitza amb l'especificació dels paradigmes de cada
+  llengua escrit en format \texttt{XML}. Aquest punt es tractarà més
+  extensament en l'apartat \textit{Fitxers de Paradigmes}.
+\item \texttt{creaparadigma.awk:} Fitxer \texttt{awk} que també
+  s'utilitza per a generar els fitxers de paradigmes de treball.
+\item \texttt{gen\_paradig.sh:} Script que es pot fer servir si volem
+  que automàticament es generen els fitxers de paradigmes de tots els
+  parells de llengües que tenim instal·lats.
+\end{itemize}
+\end{itemize}
+
+L'especificació detallada de les tasques de cada mòdul es troba en les
+seccions corresponents.
+
+\subsection{Fitxers php}
+
+\subsubsection{resultado.php}
+
+Depenent del valor de la variable \texttt{\$nomtrad} actualitzada per
+\textit{index.php} el mòdul assigna els valor adequats a \texttt{\$LR}
+i \texttt{\$RL} (el tipus de llengua origen i llengua meta
+respectivament). Seguidament, depenent de la categoria gramatical de
+la paraula que s'inserirà, assignem el valor adequat a la variable
+\$tipus i cridem a \textit{selec.php} o \textit{multip.php} depenent
+de si es tracta d'una paraula simple o d'una unitat multi-paraula.
+
+\subsubsection{selecc.php}
+\label{ss:fitxersphp}
+
+Aquest mòdul té la funció de triar el paradigma corresponent a les
+paraules que volem introduir. Es tria el paradigma de la paraula en
+llengua origen i en llengua meta.
+
+Depenent de la categoria gramatical de la paraula que estem
+introduint, s'assignen uns determinats valors a unes variables que
+darrerament s'utilitzaran, aquestes són
+\begin{itemize}
+\item \texttt{cadFich:} categoria gramatical del lema.
+\item \texttt{show:} cadena que es mostra al formulari indicant la
+  categoria gramatical de la paraula que està inserint-se.
+\item \texttt{tag:} cadena amb l'etiqueta \texttt{XML} d'eixida de
+  l'analitzador morfològic per a aquesta categoria gramatical.
+\item \texttt{tagout:} cadena amb el codi \texttt{XML} que indica la
+  categoria gramatical de la paraula. Esta cadena s'utilitzarà quan es
+  compose l'entrada final \texttt{XML} que s'inserirà al diccionari.
+\item \texttt{nota:} cadena amb possibles comentaris a inserir en el
+  codi \texttt{XML} de l'entrada.
+\end{itemize}
+Els formularis treballen amb 4 tipus de diccionaris:
+\begin{itemize}
+\item \textit{Semiprofessionals}: Aquests contenen les paraules
+  inserides des del formulari per usuaris no professionals i que estan
+  pendents de validació. Acaben amb l'extensió "\textit{semi.dic}"
+\item \textit{Diccionaris del formulari}: Contenen les paraules que
+  han sigut inserides des del formulari per usuaris professionals i
+  també les que han estat validades des dels diccionaris
+  semiprofessionals. Acaben amb l'extensió "\textit{webform}".
+\item \textit{Finals}: Són els fitxers amb totes les entrades escrites
+  en codi \texttt{XML} . Aquests fitxers són els que utilitza
+  definitivament el traductor després de rebre un tractament adequat
+  de compilació. Acaben amb l'extensió "\textit{dix}".
+\item \textit{Finals compilats}: Després d'haver compilat els
+  diccionaris finals ja poden ser utilitzats pels binaris del
+  traductor. Acaben amb l'extensió "\textit{bin}"
+\end{itemize}
+
+Aquests diccionaris són utilitzats pels formularis i hi ha variables
+que contenen les rutes on es poden trobar. També es donen valors a les
+variables que mantenen les rutes on s'han de buscar els fitxers
+auxiliars i de configuració:
+\begin{itemize}
+\item \texttt{path:} ruta per als diccionaris temporals.
+\item \texttt{fich\_LR:} diccionari de la llengua origen de les
+  paraules inserides mitjançant el formulari i que encara no són al
+  diccionari final ni al diccionari compilat.
+\item \texttt{fich\_RL:} diccionari de la llengua meta de les paraules
+  inserides mitjançant el formulari i que encara no són al diccionari
+  final ni al diccionari compilat.
+\item \texttt{fich\_LRRL:} diccionari bilingüe de les paraules
+  inserides mitjançant el formulari i que encara no són al diccionari
+  final ni al diccionari compilat.
+\item \texttt{fich-semi:} entrades inserides mitjançant el formulari
+  per usuaris no professionals i que estan pendents de validació.
+\item \texttt{path\_paradigmasLR:} ruta dels fitxers amb els
+  paradigmes de flexió per a llengua origen.
+\item \texttt{path\_paradigmasRL:} ruta dels fitxers amb els
+  paradigmes de flexió per a llengua meta.
+\item \texttt{anmor:} ruta de l'analitzador morfològic.
+\item \texttt{aut\_LRRL:} ruta del binari morfològic de llengua origen
+  a llengua meta.
+\item \texttt{aut\_RLLR:} ruta del binari morfològic de llengua meta a
+  llengua origen.
+\end{itemize}
+
+Seguidament s'insereix el codi html del que ha de fer depenent de
+l'acció seleccionada. Les accions que es produeixen per ordre
+seqüencial són les següents:
+
+\begin{itemize}
+\item Comprova que el lema en llengua origen a inserir no hi siga ja
+  en els diccionaris de paraules inserides pel formulari. Si s'hagués
+  cridat a \texttt{selecc.php} des de la pantalla de validació de
+  paraules (\texttt{valida.php}) aleshores comprova que el lema no hi
+  siga ja en el fitxer de paraules inserides per usuaris no
+  professionals. També ho comprova en el diccionari complet final.
+\item Fa la mateixa comprovació corresponent per a la llengua meta.
+\item Seguidament s'escriu codi per a seleccionar restriccions del
+  sentit de la traducció.
+\item Es defineixen una sèrie de funcions que s'utilitzaran en la
+  generació d'exemples per als lemes quan triem el corresponent
+  paradigma. Aquestes son:
+  \begin{itemize}
+  \item \texttt{esVocalFuerte}
+  \item \texttt{esVocalDebil}
+  \item \texttt{esVocal}
+  \item \texttt{PosicioVocalTall}
+  \end{itemize}
+  Aquestes funcions es descriuen més endavant en l'apartat
+  corresponent a \textit{insertarPro.php}.
+\item S'obri el fitxer de paradigmes per a mostrar una finestra de
+  selecció desplegable amb els paradigmes que podem triar per al lema
+  en llengua origen que estem tractant. Per a fer això s'ha de
+  comprovar seqüencialment els paradigmes corresponents a la categoria
+  gramatical del lema i comprovar que el paradigma es pot aplicar al
+  lema corresponent.
+\item Seguidament es fa el mateix però per als paradigmes del lema en
+  llengua meta.
+\item Amb els lemes i amb els paradigmes corresponents seleccionats,
+  s'han de generar els exemples de com quedaria la flexió d'eixos
+  lemes segons els paradigmes escollits. Per aconseguir això
+  necessitem per una banda l'arrel del lema (\texttt{raiz\_LR i
+    raiz\_RL}) i per altra les terminacions d'exemple per al paradigma
+  escollit (\texttt{paradigma\_LR i paradigma\_RL}), terminacions que
+  s'obtenen del fitxer de paradigmes. Finalment compon una cadena amb
+  els exemples generats (\texttt{ejemplos\_LR i ejemplos\_RL}) i els
+  mostra
+\item Si estem en aquesta pantalla perquè venim de validar paraules
+  (\texttt{valida=1}) aleshores afegeix al formulari un botó per a
+  eliminar l'entrada actual en cas que no volguérem validar-la i
+  inserir-la.
+\item Si l'usuari que ha entrat en aquesta pantalla és un usuari
+  reconegut com a professional, aleshores afegeix al formulari un botó
+  per a que eixe usuari puga triar l'opció de validar paraules
+  inserides per usuaris no professionals
+\item Finalment tenim el tractament de l'acció corresponent activada
+  al polsar un dels botons de confirmació que es mostren a la part
+  inferior del formulari. Si l'acció és \textit{"Delete"} , cosa que
+  sols pot ocórrer quan s'estan validant entrades, elimina l'entrada
+  corresponent del fitxer amb les entrades d'usuaris no professionals.
+  Sinó, l'acció és la de confirmar (botó \textit{"Go on"}), i cridem
+  al mòdul \texttt{insertarPro.php} o \texttt{insertar.php} depenent
+  de si l'usuari es professional o no professional respectivament.
+  Aquests mòduls s'encarreguen de fer l'inserció als diccionaris.
+\end{itemize}
+Quan s'ha inserit la paraula, es torna a mostrar la pàgina de
+\texttt{validar.php} o de \texttt{selecc.php} depenent de si havíem
+entrat des d'un procediment de validació (i aleshores
+\textit{valida=1}) o des d'una inserció normal.
+
+\subsubsection{multip.php}
+El codi i el comportament d'aquest mòdul és el mateix que el de
+\textit{selecc.php}. L'única diferència és que aquest està pensat per
+a tractar les unitats multiparaula, mentre que \textit{selec.php}
+tracta la resta de unitats. Així, la diferència més evident es que
+tenim les variables \texttt{\$LRcua} i \texttt{\$RLcua} que contenen
+la cua invariable que va després de la part variable de la
+multi-paraula. Quan es mostren els exemples, a banda de mostrar la
+part variable flexionada segons el paradigma escollit, també es mostra
+un quadre de text modificable amb la cua invariable.
+
+Quan es premi el botó de seguir amb l'inserció de l'entrada als
+diccionaris, es crida al mòdul \textit{ins\_multip.php} en comptes de
+\textit{insertarPro.php}.
+
+\subsubsection{valida.php}
+Aquest mòdul és cridat quan un usuari professional polsa el botó
+"\textit{validate pairs}". El control passa a aquest mòdul que llegeix
+el diccionari d'entrades pendents de ser validades (\$fichSemi) del
+parell de llengües corresponent. Aleshores s'entra en un bucle que
+recorre aquest fitxer i va llegint les entrades una a una. Amb la
+informació de l'entrada particular dóna valor a una sèrie de variables
+que seran utilitzades en els mòduls que faran el tractament posterior,
+com ara:
+\begin{center}
+% use packages: array
+\begin{tabular}{ll}
+\$LRlem & \$RLlem \\ 
+\$paradigmaLR & \$paradigmaRL \\ 
+\$direccions & \$tipo \\ 
+\$comentarios & \$user \\ 
+\$geneLR & \$geneRL \\ 
+\$numLR & \$numRL \\ 
+\$LR & \$RL
+\end{tabular}
+\end{center}
+
+Una vegada establerts els valors adequats per a aquestes variables es
+cedeix el control a \textit{selec.php} que tracta l'entrada com si
+d'una inserció d'usuari professional es tractara. Després d'inserir
+les entrades als diccionaris mitjançant \textit{insertarPro.php}, el
+flux torna a \textit{valida.php} que continua amb la següent entrada
+per validar.
+
+\subsubsection{insertarPro.php}
+Una vegada introduïts els lemes i seleccionats els paradigmes
+corresponents en \textit{selec.php}, aquest mòdul és l'encarregat de
+generar les corresponents entrades en codi \texttt{XML} i inserir-les
+als diccionaris monolingües i al bilingüe.
+
+Realitza moltes operacions semblants a les realitzades en
+\textit{selec.php}, com ara generar els exemples de la paraula
+flexionada. Així primerament dóna valor a \texttt{cadFich, show, tag,
+  tagout, nota} depenent de la categoria gramatical (\texttt{\$tipus})
+de la paraula a inserir.  Assigna rutes a les variables de ubicació de
+fitxers i defineix unes funcions necessàries de igual manera a com
+ocorria en \textit{selec.php}.
+\begin{itemize}
+\item \texttt{esVocalFuerte}: Retorna \textit{true} si la vocal és
+  forta, és a dir \textit{a, e, o}.
+\item \texttt{esVocalDebil}: Retorna \textit{true} si la vocal és
+  feble, és a dir \textit{a, e, o}.
+\item \texttt{esVocal}: Retorna \textit{true} si el caràcter que li
+  passem com argument és una vocal.
+\item \texttt{diptongo}: Retorna \textit{true} si les dues lletres que
+  se li passen com arguments formen diftong. Això ocorrerà sempre que
+  les dues vocals no siguin fortes.
+\item \texttt{acentuar}: Se li passa una cadena de text i l'accentua
+  seguint les regles del castellà en funció del parametre
+  \textit{\$siguienteletra}.
+\item \texttt{esMayuscula}: Retorna \textit{true} si el caràcter està
+  en majúscula.
+\item \texttt{TieneAcento}: Retorna \textit{true} si la cadena té
+  accent.
+\item \texttt{acentua}: Accentua l'última vocal accentuable d'una
+  paraula amb un accent tancat o obert depenent del sentit indicat en
+  el paràmetre \$sentit.
+\item \texttt{PonQuitaAcento}: Posa o lleva l'accent de la primera
+  cadena passada com argument en funció de si la segona cadena
+  argument té o no té accent.
+\item \texttt{PosicioVocalTall}: Torna la posició dins del lema
+  (\$lema) on es troba la vocal (\$vocal) que separa l'arrel de la
+  desinència. Busquem la vocal del final cap al principi i tornem la
+  primera ocurrència de \$vocal.
+\end{itemize}
+
+Ara es realitzen les mateixes operacions que en \textit{selec.php},
+comprova que l'entrada no hi siga ja als diccionaris i genera els
+exemples de la paraula flexionada amb el paradigma prèviament
+escollit.  Seguidament el que fem és construir la cadena amb el codi
+\texttt{XML} que va a inserirem al diccionari monolingüe de llengua
+origen. Amb la informació que disposem dels lemes provinent de
+\textit{selec.php}, es genera una cadena de text (\texttt{\$cad\_LR})
+que conté el codi \texttt{XML} per al diccionari monolingüe. Aquesta
+cadena es mostra en una finestra de text que pot ser modificada
+manualment. El mateix procés es repeteix per a generar la cadena
+corresponent al diccionari monolingüe de llengua meta
+(\texttt{\$cad\_RL}) i per al diccionari bilingüe
+(\texttt{\$cad\_bil}).  Seguidament, es concatena a aquestes variables
+de cadena els comentaris i el nom d'usuari que insereix l'entrada, si
+s'escau.  Finalment s'acaba de compondre la pantalla de formulari, amb
+botons d'acceptar, eliminar i tornar cap enrere.  El codi que fa el
+tractament de cadascuna de les possibles accions es troba al final del
+fitxer:
+\begin{itemize}
+\item \texttt{Inserir: } En aquest cas, fa unes substitucions de
+  caràcters perquè l'entrada tinga el format adequat per als
+  diccionaris, i insereix les cadenes \texttt{\$cad\_LR, \$cad\_bil,
+    \$cad\_RL} als diccionaris monolingüe origen, bilingüe i
+  monolingüe meta respectivament (\texttt{\$fich\_LR, \$fich\_LRRL,
+    \$fich\_RL}). Si es produeix algun tipus d'error en inserir
+  l'entrada informa d'aquest fet amb una notificació per pantalla. Si
+  \textit{insertarPro.php} havia estat cridat des d'un procediment de
+  validació de paraules (\textit{\$valida=1}), aleshores insereix un
+  botó "\textit{Continue}" per a seguir validant paraules. En cas
+  contrari insereix un botó de tancar la finestra que ens permetrà
+  acabar.
+\item  \texttt{Eliminar: } En aquest cas, elimina l'entrada del fitxer d'entrades pendents de validar.
+\end{itemize}
+
+\subsubsection{ins\_multip.php}
+
+Realitza les mateixes operacions que \textit{insertarPro.php} però
+quan l'entrada a inserir és una unitat multi-paraula. La diferencia
+principal és que ara disposem de dues variables addicionals
+\texttt{\$LRcua} i \texttt{\$RLcua} que contenen la part invariable de
+la multi-paraula. Quan s'insereix l'entrada als diccionaris s'ha
+d'afegir aquesta cua al lloc convenient i convertir els espais en blanc
+per l'etiqueta de blanc \texttt{<b/>}.
+
+\subsubsection{insertar.php}
+
+La funció d'aquest mòdul és molt senzilla. Compon una cadena de text
+amb la informació provinent de \textit{selec.php} separada per
+tabuladors. Aquesta cadena conté tota la informació necessària per a
+generar una entrada al diccionari:
+
+\texttt{\$LRlem.\$RLlem.\$paradigmaLR.\$direccion.\$paradigmaRL.}
+
+
+\texttt{\$tipo.\$comentarios.\$user.\$geneLR.\$geneRL.}
+
+ 
+
+Aquesta entrada es guarda en un fitxer (\$fichSemi) que conté la cua
+amb les entrades pendents de validar inserides per usuaris no
+professionals. Quan un usuari considerat professional vulga validar
+entrades pendents, el mòdul \textit{valida.php} llegirà aquest mateix
+fitxer.
+
+
+\subsubsection{verSemi.php}
+S'encarrega de mostrar per pantalla el fitxer d'entrades pendents de
+validació, i ho fa així: llegeix el fitxer amb les entrades
+(\textit{\$fichSemi}) i entra en un bucle que recorre totes les
+entrades que es troben al fitxer. Per a cadascuna d'elles mostra un
+línia amb la següent informació:
+
+\texttt{\$LRlem
+\$paradigmaLR
+\$direccion
+\$RLlem}
+
+\texttt{\$paradigmaRL
+\$tipo
+\$comentarios}
+
+\subsection{Fitxers de diccionari}
+
+Els fitxers amb les entrades inserides des de el formulari es troben
+en \texttt{/dics}. Ací es troben dos tipus de fitxers:
+
+\begin{itemize}
+\item \texttt{apertium-ll-rr.xx.webform}: El fitxer que conté entrades
+  en codi \texttt{XML} preparades per a ser copiades en els
+  diccionaris finals. El fitxer te el format mostrat, sent
+  \texttt{ll-rr} les inicials corresponents al traductor al que fa
+  referència eixe fitxer i \texttt{xx} les inicials a la llengua del
+  monolingüe al que fa referència o les inicials del bilingüe. Per
+  exemple, les inicials del traductor espanyol-català són
+  \texttt{es-ca}. Per aquest traductor tenim el monolingüe de espanyol
+  (\texttt{es}), el de català (\texttt{ca}) i el bilingüe
+  (\texttt{es-ca}) Així, en aquest directori tindrem els següents
+  fitxers per al traductor espanyol-català:
+\begin{center}
+\texttt{apertium-es-ca.es.webform	apertium-es-ca.ca.webform	apertium-es-ca.es-ca.webform}
+\end{center}
+
+
+\item \texttt{oo-mm.semi.dic}: El fitxer que conté les entrades
+  pendents de ser validades d'un determinat traductor. \texttt{oo-mm}
+  són les inicials corresponents al traductor concret. Per exemple, el
+  traductor espanyol-català tindrà aquest fitxer per al
+  semi-professional: \texttt{es-ca.semi.dic}
+
+
+\end{itemize}
+
+\subsection{Fitxers de paradigmes}
+
+Els paradigmes utilitzats per a cada parell de llengües s'especifiquen
+en dos arxius de format \texttt{XML} anomenats
+\texttt{paradig.ll-rr.xx.xml} on \texttt{xx} són les inicials
+corresponents a una llengua i \texttt{ll-rr} les inicials
+corresponents a un parell de llengües. Aquests arxius estan formats per un
+conjunt d'entrades corresponents a paradigmes o models de flexió de les paraules 
+d'una llengüa en concret. El fitxer \texttt{XML} es composa de les següents parts:
+\begin{itemize}
+\item Capçalera/Arrel del document d'especificació.\\
+\begin{alltt}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="paradigmas.xsl"?>
+<!DOCTYPE form SYSTEM "form.dtd">
+<form lang="oc" langpair="oc-ca">
+\end{alltt}
+  A l'atribut \textit{lang} estan les inicials de la llengua per a la
+  qual estan especificant-se paradigmes i a l'atribut
+  \textit{langpair} estan les inicials corresponents al parell de
+  llengües del traductor a què correspon el fitxer. Cal que
+  al mateix directori on estan els fitxers de paradigmes estiga
+  \texttt{form.dtd} on s'especifica la DTD que segueixen aquests
+  fitxers. Aquesta DTD està detallada a l'anexe \ref{ss:dtdparadigmes}. 
+\item Un conjunt d'elements que defineixen els paradigmes. Per a
+  explicar el format dels elements s'utilitzarà el següent exemple:
+  \\
+\begin{alltt}
+<entry PoS="adj" nbr="sg_pl" gen="mf">
+        <endings>
+                <stem>amable</stem> 
+                <ending/>
+                <ending>s</ending>  
+        </endings>
+        <paradigms howmany="1">
+                <par n="amable\_\_adj"/>
+        </paradigms>
+</entry>
+\end{alltt}
+  Cada paradigma està especificat en un element \texttt{<entry>}.
+  Aquest element pot tenir tres atributs:
+  \begin{itemize}
+  \item \textit{PoS}: la categoria gramatical del paradigma. Pot
+    prendre els valors: acr, adj, adv, noun, pname, pr, verb. Aquest
+    és obligatori per a qualsevol categoria gramatical.
+  \item \textit{nbr}: els nombres admesos pel paradigma. Pot tenir
+    els valors: sg, pl, sg\_pl, sp.
+  \item \textit{gen}: els gèneres admesos pel paradigma. Pot tenir
+    els valors: m, f, m f, mf.
+  \end {itemize}
+  A més, està format per dos elements:
+  \begin{itemize}
+  \item \texttt{endings}: l'arrel i les terminacions utilitzades per a
+    seleccionar el paradigma al formulari i mostrar els exemples de
+    flexió.
+  \item \texttt{paradigms}: especificació del paradigma o
+    paradigmes que defineixen la flexió seguida per una entrada en concret.
+    Necessita de l'atribut \textit{howmany} que indica el nombre de
+    paradigmes que utilitza l'entrada. Per a cadascun dels
+    paradigmes utilitzats hi ha una línia que especifica el nom del
+    paradigma del diccionari, i que té el següent format:
+    \begin{center}
+\begin{alltt}
+<par n="long\_\_adj"/>
+\end{alltt}           
+    \end{center}
+  \end {itemize}
+\end {itemize}
+
+A partir del fitxer de paradigmes escrit en \texttt{XML}, s'han de
+generar els fitxers amb els que directament treballen els mòduls dels
+formularis. Si s'executa el script \texttt{/private/gen\_paradig.sh}
+el procés es realitza automàticament per a tots els parells de
+llengües de què disposem:
+\begin{alltt}
+   #  cd private
+   #  ./gen\_paradig.sh
+\end{alltt}
+Per a inserir un nou paradigma als formularis, cal
+preparar l'entrada corresponent al fitxer de paradigmes en format
+\texttt{XML} i després actualitzar els arxius de treball amb l'ordre
+anterior.
+
+El procés automatitzat també es pot realitzar de forma manual si no
+volem actualitzar els fitxers de tots els parells de llengües que
+tenim instal·lats. La generació manual dels arxius de
+treball, es fa amb un full d'estil \texttt{XSL} mitjançant
+aquesta ordre:
+\begin{alltt}
+   #  xsltproc paradigmas.xsl fitxer\_de\_paradigmes.xml 
+                                     | ./creaparadig.awk
+\end{alltt}
+
+Aquesta acció genera un fitxer de treball per a cada categoria
+gramatical. Els fitxers generats es troben en els directoris \texttt{/private/paradigmas.ll-rr}.
+Cada directori conté fitxers amb els paradigmes que es poden utilitzar
+per a cada parell de llengües \texttt{ll-rr} i per a cada component gramatical.
+Cadascun d'aquests directori conté els fitxers següents:
+\begin{itemize}
+\item \texttt{paradigacr\_xx}: paradigmes per acrònims de la llengua
+  \texttt{xx}.
+\item \texttt{paradigadj\_xx}: paradigmes per adjectius de la llengua
+  \texttt{xx}.
+\item \texttt{paradigadv\_xx}: paradigmes per adverbis de la llengua
+  \texttt{xx}.
+\item \texttt{paradigcnjadv\_xx}: paradigmes per a conjuncions
+  adverbials de la llengua \texttt{xx}.
+\item \texttt{paradigcnjcoo\_xx}: paradigmes per a conjuncions
+  copulatives de la llengua \texttt{xx}.
+\item \texttt{paradigcnjsub\_xx}: paradigmes per a conjuncions
+  subordinades de la llengua \texttt{xx}.
+\item \texttt{paradignoun\_xx}: paradigmes per a noms de la llengua
+  \texttt{xx}.
+\item \texttt{paradigpname\_xx}: paradigmes per a noms propis de la
+  llengua \texttt{xx}.
+\item \texttt{paradigpr\_xx}: paradigmes per a preposicions de la
+  llengua \texttt{xx}.
+\item \texttt{paradigverb\_xx}: paradigmes per a verbs de la llengua
+  \texttt{xx}.
+\end{itemize}
+
+Els fitxers estan composts per una entrada per línia. Cada entrada
+conté la informació següent:
+
+\begin{center}
+% use packages: array
+\begin{tabular}{lllll}
+\textit{exemples} & \textit{nombre de paradigmes} & \textit{paradigmes\_model} & \textit{(nombres)} & \textit{(gèneres)}
+\end{tabular}
+\end{center}
+
+
+El separador utilitzat per a les diferents parts de l'entrada es el
+tabulador.
+\begin{itemize}
+\item \textit{Exemples}: són les terminacions que s'utilitzaran per a
+  generar els exemples quan escollim aquest paradigma com a prototip
+  per a una determinada paraula a inserir.
+\item \textit{Nombre de paradigmes}: és el nombre de paradigmes del
+  diccionari que s'utilitzaran per a flexionar adequadament aquest
+  model de flexió en particular.
+\item \textit{Paradigmes model}: és el nom del paradigma o paradigmes
+  que estan al diccionari i que són els que s'utilitzaran per a
+  flexionar la nova entrada.
+\item \textit{(Nombres)}: Només es posa en el cas de noms, adjectius i
+  acrònims. Fa referència al nombre del paradigma.
+\item \textit{(Gèneres)}: Només es posa en el cas de noms, adjectius i
+  acrònims. Fa referència al gènere del paradigma.
+\end{itemize}
+
+Així per exemple, al traductor espanyol-català tindríem el directori  \texttt{/private\-/paradigmas.es-ca} 
+on trobaríem dos fitxers \texttt{XML}: \texttt{paradig.es-ca.es.xml}
+i \texttt{paradig.es-ca.ca.xml} amb l'especificació dels paradigmes
+utilitzats en cada llengua. A partir d'aquests fitxers es poden generar tots 
+els fitxers de paradigmes per un parell de llengües concret amb l'ordre:
+\begin{alltt}
+   #  cd private/paradigmas.es-ca
+   #  xsltproc ../paradigmas.xsl paradig.es-ca.es.xml 
+                                    | ../creaparadig.awk
+   #  xsltproc ../paradigmas.xsl paradig.es-ca.ca.xml 
+                                    | ../creaparadig.awk
+\end{alltt}
+
+O bé, es poden generar automàticament per a tots els parells de llengües amb:
+\begin{alltt}
+   #  ./private/gen\_paradig.sh
+\end{alltt}
+
+Entre els fitxers de treball generats hi hauria un anomenat \texttt{paradigverb\_ca} que conté
+els possibles paradigmes de verbs per al català, on una possible línia seria la següent:
+
+\begin{center}
+\texttt{abra/çar /ço /ci        1       abalan/çar\_\_vblex}
+\end{center}
+
+que deriva de l'entrada en \texttt{XML}:
+
+\begin{alltt}
+<entry PoS="verb">
+        <endings>
+                <stem>abra</stem> 
+                <ending>çar</ending>  
+                <ending>ço</ending> 
+                <ending>ci</ending>
+        </endings>
+        <paradigms howmany="1">
+                <par n="abalan/çar\_\_vblex"/>
+        </paradigms>
+</entry>
+\end{alltt}
+
+\section{Utilització dels formularis}
+\label{ss:formus}
+\subsection{Introducció}
+
+Quan un usuari vulga inserir noves entrades a un diccionari ha de connectar-se mitjançant un client navegador a l'adreça on s'haja instal·lat el servidor de
+ formularis, per exemple:
+\begin{center}
+\texttt{http://xixona.dlsi.ua.es/forms}
+\end{center}
+S'obrirà una pàgina web amb el portal d'entrada a \texttt{Opentrad\- Apertium\- Insertion\- Form}. En el marc de l'esquerra hi ha enllaços per a obtenir més \textit{informació} , \textit{descarregar} els programes i \textit{contacte} per a sol·licitar registrar-se com a usuari del sistema. Per a registrar-se com a usuari cal enviar un correu electrònic al webmaster encarregat dels formularis.
+
+Per a inserir noves paraules, s'omplirà el formulari amb les dades corresponents i polsarem el botó \textit{'Go On'}; en aquest moment cal autentificar-se com a usuari registrat o no deixarà continuar amb el procediment d'inserir paraules. Quan un usuari es registra pot ser registrat de dues formes, com a usuari professional o com a usuari no professional. Ambdós tenen unes habilitacions diferents i que s'explicaran en apartats següents.
+
+\subsection{Inserció d'entrades}
+
+\subsubsection{Usuari professional}
+
+Quan vulguem inserir una nova entrada als diccionaris cal que ens dirigim a l'apartat corresponent al parell de llengües que vulguem ampliar. Aleshores especifiquem el lema en llengua origen i en llengua meta i triem el tipus de categoria gramatical de les entrades que inserirem. Seguidament, polsem el botó \textit{'Go on'} per a seguir amb el procés d'inserció. 
+
+En aquest punt apareix una nova finestra on mostra els lemes i uns paràmetres que caracteritzen la nova entrada al diccionari. Si l'entrada ja hi és en algun dels diccionaris, s'avisarà a l'usuari i el sistema automàticament escollirà sentit unidireccional (d'esquerra a dreta o a l'inrevés). Si no és en cap, triarà doble sentit de traducció. En aquesta nova finestra podem fer estes tres accions, si s'escau:
+\begin{itemize}
+\item Escollir el paradigma corresponent per al lema en llengua origen
+  % i també en llengua meta (aquesta acció és obligatòria, la resta
+  no).\footnote{Escollir el paradigma és un procés amb el que s'ha
+    d'anar amb molta cura. Cal triar el paradigma exacte que descriu
+    el comportament del lema que estem inserint. En el cas
+    d'adjectius, noms i acrònims, cal escollir el paradigma que
+    s'ajusti a la flexió desitjada i també als gèneres admesos. En el
+    cas d'acrònims cal fixar-se en el gènere i nombre que admeteix
+    cada paradigma dels que podem escollir; per exemple BBC serveix
+    per a acrònims femenins singulars i SA per a acrònims femenins que
+    admeteixen plural). En el cas de noms propis cal escollir el
+    paradigma corresponent depenent de si es tracta d'un nom propi de
+    cosa (un diari), de persona o de lloc.}
+\item Escollir la direcció de traducció de l'entrada si és diferent de
+  la proposada automàticament.
+\item Afegir comentaris en l'entrada que quedaran al diccionari final.
+\end{itemize}
+
+Una vegada hem fet les operacions corresponents, polsem el botó
+\textit{'Go on'} si volem confirmar l'entrada o \textit{'Close'} si
+senzillament volem cancelar l'operació d'inserció.
+
+La següent i última pantalla que se'ns mostra conté les tres entrades
+en format \texttt{XML} generades per als diccionaris monolingüe
+llengua origen, bilingüe i monolingüe llengua meta. Aquestes entrades
+es mostren en tres finestres de text i es poden editar per si cal fer
+alguna modificació. Una vegada revisades les entrades, polsarem el
+botó \textit{'Insert'} per a inserir-les definitivament als
+diccionaris corresponents. També tenim la possibilitat de polsar el
+botó \textit{'Go back'} en cas que volguérem tornar al pas anterior.
+
+\subsubsection{Usuari no professional}
+
+Quan un usuari entra al sistema d'inserció com a usuari no
+professional, el procediment d'inserció de paraules és el mateix que
+per a l'usuari professional, però les entrades inserides no es guarden
+als diccionaris generats pels formularis sinó que queden en una cua
+d'entrades pendents de validació. Per inserir les paraules d'aquesta
+cua als diccionaris cal que un usuari professional les valide.
+
+\subsection{Validació d'entrades pendents d'aprovació}
+
+Els usuaris professionals, en la pantalla on s'escull el paradigma
+dels lemes inserits, tenen dos enllaços addicionals:
+\begin{itemize}
+\item \textit{See pairs to be validated}: Ací obrirem una finestra on
+  podrem veure el contingut del fitxer amb les paraules que estan
+  pendents de validació; paraules que hauran estat inserides per
+  usuaris no professionals. Aquesta finestra és merament informativa i
+  es tanca polsant el botó \textit{'Close'}.
+\item \textit{Validate pairs}: Aquesta opció permet a un usuari
+  professional validar una a una les entrades pendents. Quan polsem
+  este botó, s'obri la finestra de selecció de paradigmes que s'ha
+  vist en l'apartat d'inserció de noves paraules. Esta finestra es
+  mostra amb les dades que havia escollit l'usuari que havia afegit
+  eixa entrada. Ara, l'usuari professional podrà modificar els lemes,
+  esborrar l'entrada (botó \textit{'Delete'}) o seguir amb el procés
+  d'inserció. Si segueix amb l'inserció de l'entrada, el procés és el
+  mateix que en una inserció normal, sols que quan l'entrada queda
+  definitivament afegida als diccionaris de formulari el control torna
+  a mostrar la següent entrada a validar de la cua
+
+Aquest procés és repeteix fins que es validen totes les paraules de la cua o finalitzem el procés en polsar el botó \textit{'Close'}.
+
+\end {itemize}
+
+
+\notavisible{FIN DEL TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
+
+\newpage
 \appendix
 
 \chapter[DTDs en XML]{Definiciones de tipos de documento (DTD) en XML}
@@ -8202,66 +9029,64 @@ descargar de \url{http://www.sourceforge.net}.
 La explicación de los distintos elementos se encuentra en la página
 \pageref{formatodics} y siguientes.
 
+
 \begin{small}
 \begin{alltt}
-<!\textsl{ELEMENT} \textbf{dictionary} (alphabet?, sdefs, 
-                      pardefs, section+)>
+<!\textsl{ELEMENT} \textbf{dictionary} (alphabet?, sdefs?,
+		      pardefs?, section+)>
 
 <!\textsl{ELEMENT} \textbf{alphabet} (\textsl{#PCDATA})>
-
+	
 <!\textsl{ELEMENT} \textbf{sdefs} (sdef+)>
-
+	
 <!\textsl{ELEMENT} \textbf{sdef} \textsl{EMPTY}>
-<!\textsl{ATTLIST} sdef
-        n \textsl{ID #REQUIRED}>
-
-<!\textsl{ELEMENT} \textbf{pardefs} (pardef*)>
-
+<!\textsl{ATTLIST} sdef n ID \textsl{#REQUIRED}>
+	
+<!\textsl{ELEMENT} \textbf{pardefs} (pardef+)>
+	
 <!\textsl{ELEMENT} \textbf{pardef} (e+)>
-<!\textsl{ATTLIST} pardef
-        n \textsl{CDATA #REQUIRED}>
-
+<!\textsl{ATTLIST} pardef n CDATA \textsl{#REQUIRED}>
+	
 <!\textsl{ELEMENT} \textbf{section} (e+)>
-<!\textsl{ATTLIST} section
-        id \textsl{ID #REQUIRED}
-        type (standard|inconditional) \textsl{#REQUIRED}>
 
+<!\textsl{ATTLIST} section id ID \textsl{#REQUIRED}
+                  type (standard|inconditional|postblank) \textsl{#REQUIRED}>
+	
 <!\textsl{ELEMENT} \textbf{e} (i | p | par | re)+>
-<!\textsl{ATTLIST} e  
-        r (LR|RL) \textsl{#IMPLIED}   
-        lm \textsl{CDATA #IMPLIED}
-        a \textsl{CDATA #IMPLIED}
-        c \textsl{CDATA #IMPLIED}>
-
+<!\textsl{ATTLIST} e r (LR|RL) \textsl{#IMPLIED}
+            lm CDATA \textsl{#IMPLIED}
+            a CDATA \textsl{#IMPLIED}
+            c CDATA \textsl{#IMPLIED}
+	
 <!\textsl{ELEMENT} \textbf{par} \textsl{EMPTY}>
-<!\textsl{ATTLIST} par
-        n \textsl{CDATA #REQUIRED}>
-
+<!\textsl{ATTLIST} par n CDATA \textsl{#REQUIRED}>
+	
 <!\textsl{ELEMENT} \textbf{i} (\textsl{#PCDATA} | b | s | g | j | a)*>
-
-<!\textsl{ELEMENT} \textbf{re} (\textsl{#PCDATA})>      
-
-<!\textsl{ELEMENT} \textbf{p} (l, r)> 
-
+	
+<!\textsl{ELEMENT} \textbf{re} (\textsl{#PCDATA})>
+	
+<!\textsl{ELEMENT} \textbf{p} (l, r)>
+	
 <!\textsl{ELEMENT} \textbf{l} (\textsl{#PCDATA} | a | b | g | j | s)*>
-
+	
 <!\textsl{ELEMENT} \textbf{r} (\textsl{#PCDATA} | a | b | g | j | s)*>
-
+	
 <!\textsl{ELEMENT} \textbf{a} \textsl{EMPTY}>
-
+	
 <!\textsl{ELEMENT} \textbf{b} \textsl{EMPTY}>
-
+	
 <!\textsl{ELEMENT} \textbf{g} (\textsl{#PCDATA} | a | b | j | s)*>
-<!\textsl{ATTLIST} g
-        i \textsl{CDATA #IMPLIED}>
-
+<!\textsl{ATTLIST} g i CDATA \textsl{#IMPLIED}>
+	
 <!\textsl{ELEMENT} \textbf{j} \textsl{EMPTY}>
-
+	
 <!\textsl{ELEMENT} \textbf{s} \textsl{EMPTY}>
-<!\textsl{ATTLIST} s
-        n \textsl{IDREF #REQUIRED}>
+
+<!\textsl{ATTLIST} s n \textsl{IDREF} \textsl{#REQUIRED}>
+
 \end{alltt}
 \end{small}
+
 
 
 \subsection{Modificación en la DTD de diccionarios para selección léxica}
@@ -8354,12 +9179,13 @@ en la página~\pageref{formatotagger}.
 \end{small}
 
 
-\section{DTD del módulo de transferencia estructural}
-\label{ss:dtd_transfer}
+\section[DTD del módulo chunker]{DTD del módulo de transferencia estructural (chunker)}
+\label{ss:dtdtransfer}
 
-DTD para el formato de las reglas de transferencia estructural.  Esta
-Esta definición viene con el paquete \texttt{apertium} (última
-versión) que se puede descargar de \url{http://www.sourceforge.net}.
+DTD para el formato de las reglas de transferencia estructural del
+módulo \texttt{chunker}.  Esta definición viene con el paquete
+\texttt{apertium} (versión 2.0) que se puede descargar de
+\url{http://www.sourceforge.net}.
 
 La descripción de los distintos elementos se
 encuentra en el apartado \ref{formatotransfer}.
@@ -8367,59 +9193,65 @@ encuentra en el apartado \ref{formatotransfer}.
 
 \begin{small}
 \begin{alltt}
-<!\textsl{ENTITY} \% condition "(and|or|not|equal|in)">
-
+<!\textsl{ENTITY} \% condition "(and|or|not|equal|begins-with|
+                       ends-with|contains-substring|in)">
 <!\textsl{ENTITY} \% container "(var|clip)">
+<!\textsl{ENTITY} \% sentence "(let|out|choose|modify-case|
+                      call-macro|append)">
+<!\textsl{ENTITY} \% value "(b|clip|lit|lit-tag|var|get-case-from|
+                   case-of|concat)">
+<!\textsl{ENTITY} \% stringvalue "(clip|lit|var|get-case-from|
+                         case-of)">
 
-<!\textsl{ENTITY} \% sentence "(let|out|choose|modify-case|call-macro)">
+<!\textsl{ELEMENT} \textbf{transfer} (section-def-cats, 
+                    section-def-attrs, 
+                    section-def-vars, 
+                    section-def-lists?, 
+                    section-def-macros?, 
+                    section-rules)>
 
-<!\textsl{ENTITY} \% value "(b|clip|lit|lit-tag|var|get-case-from|case-of)">
-
-<!\textsl{ENTITY} \% stringvalue "(clip|lit|var|get-case-from|case-of)">
-
-<!\textsl{ELEMENT} \textbf{transfer} (section-def-cats, section-def-attrs, 
-                    section-def-vars, section-def-lists?, 
-                    section-def-macros?, section-rules)>
+<!\textsl{ATTLIST} transfer default (lu|chunk) \textsl{#IMPLIED}>
 
 <!\textsl{ELEMENT} \textbf{section-def-cats} (def-cat+)>
 
 <!\textsl{ELEMENT} \textbf{def-cat} (cat-item+)>
-<!\textsl{ATTLIST} def-cat  n \textsl{ID} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} def-cat n ID \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{cat-item} \textsl{EMPTY}>
-<!\textsl{ATTLIST} cat-item lemma \textsl{CDATA} \textsl{#IMPLIED} 
-                   tags \textsl{CDATA} \textsl{#REQUIRED} >
+<!\textsl{ATTLIST} cat-item lemma CDATA \textsl{#IMPLIED}
+                   tags CDATA \textsl{#REQUIRED} >
 
 <!\textsl{ELEMENT} \textbf{section-def-attrs} (def-attr+)>
 
 <!\textsl{ELEMENT} \textbf{def-attr} (attr-item+)>
-<!\textsl{ATTLIST} def-attr n \textsl{ID} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} def-attr n ID \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{attr-item} \textsl{EMPTY}>
-<!\textsl{ATTLIST} attr-item tags \textsl{CDATA} \textsl{#IMPLIED}>
+<!\textsl{ATTLIST} attr-item tags CDATA \textsl{#IMPLIED}>
 
 <!\textsl{ELEMENT} \textbf{section-def-vars} (def-var+)>
 
 <!\textsl{ELEMENT} \textbf{def-var} \textsl{EMPTY}>
-<!\textsl{ATTLIST} def-var n \textsl{ID} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} def-var n ID \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{section-def-lists} (def-list)+>
 
 <!\textsl{ELEMENT} \textbf{def-list} (list-item+)>
-<!\textsl{ATTLIST} def-list n \textsl{ID} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} def-list n ID \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{list-item} \textsl{EMPTY}>
-<!\textsl{ATTLIST} list-item v \textsl{CDATA} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} list-item v CDATA \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{section-def-macros} (def-macro)+>
 
 <!\textsl{ELEMENT} \textbf{def-macro} (\%sentence;)+>
-<!\textsl{ATTLIST} def-macro n \textsl{ID} \textsl{#REQUIRED}
-                    npar \textsl{CDATA} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} def-macro n ID \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} def-macro npar CDATA \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{section-rules} (rule+)>
 
 <!\textsl{ELEMENT} \textbf{rule} (pattern, action)>
+<!\textsl{ATTLIST} rule comment CDATA \textsl{#IMPLIED}>
 
 <!\textsl{ELEMENT} \textbf{pattern} (pattern-item+)>
 
@@ -8445,6 +9277,15 @@ encuentra en el apartado \ref{formatotransfer}.
 <!\textsl{ELEMENT} \textbf{equal} (\%value;,\%value;)>
 <!\textsl{ATTLIST} equal caseless (no|yes) \textsl{#IMPLIED}>
 
+<!\textsl{ELEMENT} \textbf{begins-with} (\%value;,\%value;)>
+<!\textsl{ATTLIST} begins-with caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{ends-with} (\%value;,\%value;)>
+<!\textsl{ATTLIST} ends-with caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{contains-substring} (\%value;,\%value;)>
+<!\textsl{ATTLIST} contains-substring caseless (no|yes) \textsl{#IMPLIED}>
+
 <!\textsl{ELEMENT} \textbf{in} (\%value;, list)>
 <!\textsl{ATTLIST} in caseless (no|yes) \textsl{#IMPLIED}>
 
@@ -8453,7 +9294,10 @@ encuentra en el apartado \ref{formatotransfer}.
 
 <!\textsl{ELEMENT} \textbf{let} (\%container;, \%value;)>
 
-<!\textsl{ELEMENT} \textbf{out} (mlu|lu|b)+>
+<!\textsl{ELEMENT} \textbf{append} (\%value;)+>
+<!\textsl{ATTLIST} append n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{out} (mlu|lu|b|chunk)+>
 
 <!\textsl{ELEMENT} \textbf{modify-case} (\%container;, \%stringvalue;)>
 
@@ -8461,38 +9305,376 @@ encuentra en el apartado \ref{formatotransfer}.
 <!\textsl{ATTLIST} call-macro n \textsl{IDREF} \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{with-param} \textsl{EMPTY}>
-<!\textsl{ATTLIST} with-param pos \textsl{CDATA} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} with-param pos CDATA \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{clip} \textsl{EMPTY}>
-<!\textsl{ATTLIST} clip pos \textsl{CDATA} \textsl{#REQUIRED}
+<!\textsl{ATTLIST} clip pos CDATA \textsl{#REQUIRED}
                side (sl|tl) \textsl{#REQUIRED}
-               part \textsl{CDATA} \textsl{#REQUIRED}>
+               part CDATA \textsl{#REQUIRED}
+               queue CDATA \textsl{#IMPLIED}
+               link-to CDATA \textsl{#IMPLIED}>
 
 <!\textsl{ELEMENT} \textbf{lit} \textsl{EMPTY}>
-<!\textsl{ATTLIST} lit v \textsl{CDATA} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} lit v CDATA \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{lit-tag} \textsl{EMPTY}>
-<!\textsl{ATTLIST} lit-tag v \textsl{CDATA} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} lit-tag v CDATA \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{var} \textsl{EMPTY}>
 <!\textsl{ATTLIST} var n \textsl{IDREF} \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{get-case-from} (clip|lit|var)>
-<!\textsl{ATTLIST} get-case-from pos \textsl{CDATA} \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} get-case-from pos CDATA \textsl{#REQUIRED}>
 
 <!\textsl{ELEMENT} \textbf{case-of} \textsl{EMPTY}>
-<!\textsl{ATTLIST} case-of pos \textsl{CDATA} \textsl{#REQUIRED}
+<!\textsl{ATTLIST} case-of pos CDATA \textsl{#REQUIRED}
                   side (sl|tl) \textsl{#REQUIRED}
-                  part \textsl{CDATA} \textsl{#REQUIRED}>
+                  part CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{concat} (\%value;)+>
+
+<!\textsl{ELEMENT} \textbf{mlu} (lu+)>
+
+<!\textsl{ELEMENT} \textbf{lu} (\%value;)+>
+
+<!\textsl{ELEMENT} \textbf{chunk} (tags,(mlu|lu|b)+)>
+<!\textsl{ATTLIST} chunk name CDATA \textsl{#IMPLIED}
+                namefrom CDATA \textsl{#IMPLIED}
+                case CDATA \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{tags} (tag+)>
+<!\textsl{ELEMENT} \textbf{tag} (\%value;)>
+
+<!\textsl{ELEMENT} \textbf{b} \textsl{EMPTY}>
+<!\textsl{ATTLIST} b pos CDATA \textsl{#IMPLIED}>
+
+\end{alltt}
+\end{small}
+
+
+\newpage
+\section{DTD del módulo interchunk}
+\label{ss:dtdinterchunk}
+
+DTD para el formato de las reglas de transferencia estructural del módulo
+\texttt{interchunk}. Esta definición viene con el paquete
+\texttt{apertium} (versión 2.0) que se puede descargar de
+\url{http://www.sourceforge.net}.
+
+La descripción de los distintos elementos se
+encuentra en el apartado \ref{formatotransfer}.
+
+
+
+\begin{small}
+\begin{alltt}
+
+<!\textsl{ENTITY} \% condition "(and|or|not|equal|begins-with|
+                       ends-with|contains-substring|in)">
+<!\textsl{ENTITY} \% container "(var|clip)">
+<!\textsl{ENTITY} \% sentence "(let|out|choose|modify-case|
+                      call-macro|append)">
+<!\textsl{ENTITY} \% value "(b|clip|lit|lit-tag|var|get-case-from|
+                   case-of|concat)">
+<!\textsl{ENTITY} \% stringvalue "(clip|lit|var|get-case-from|
+                         case-of)">
+
+<!\textsl{ELEMENT} \textbf{interchunk} (section-def-cats, 
+                      section-def-attrs, 
+                      section-def-vars, 
+                      section-def-lists?, 
+                      section-def-macros?, 
+                      section-rules)>
+
+<!\textsl{ELEMENT} \textbf{section-def-cats} (def-cat+)>
+
+<!\textsl{ELEMENT} \textbf{def-cat} (cat-item+)>
+<!\textsl{ATTLIST} def-cat n ID \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{cat-item} \textsl{EMPTY}>
+<!\textsl{ATTLIST} cat-item lemma CDATA \textsl{#IMPLIED}
+                    tags CDATA \textsl{#REQUIRED} >
+
+<!\textsl{ELEMENT} \textbf{section-def-attrs} (def-attr+)>
+
+<!\textsl{ELEMENT} \textbf{def-attr} (attr-item+)>
+<!\textsl{ATTLIST} def-attr n ID \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{attr-item} \textsl{EMPTY}>
+<!\textsl{ATTLIST} attr-item tags CDATA \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{section-def-vars} (def-var+)>
+
+<!\textsl{ELEMENT} \textbf{def-var} \textsl{EMPTY}>
+<!\textsl{ATTLIST} def-var n ID \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{section-def-lists} (def-list)+>
+
+<!\textsl{ELEMENT} \textbf{def-list} (list-item+)>
+<!\textsl{ATTLIST} def-list n ID \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{list-item} \textsl{EMPTY}>
+<!\textsl{ATTLIST} list-item v CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{section-def-macros} (def-macro)+>
+
+<!\textsl{ELEMENT} \textbf{def-macro} (\%sentence;)+>
+<!\textsl{ATTLIST} def-macro n ID \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} def-macro npar CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{section-rules} (rule+)>
+
+<!\textsl{ELEMENT} \textbf{rule} (pattern, action)>
+<!\textsl{ATTLIST} rule comment CDATA \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{pattern} (pattern-item+)>
+
+<!\textsl{ELEMENT} \textbf{pattern-item} \textsl{EMPTY}>
+<!\textsl{ATTLIST} pattern-item n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{action} (\%sentence;)*>
+
+<!\textsl{ELEMENT} \textbf{choose} (when+,otherwise?)>
+
+<!\textsl{ELEMENT} \textbf{when} (test,(\%sentence;)*)>
+
+<!\textsl{ELEMENT} \textbf{otherwise} (\%sentence;)+>
+
+<!\textsl{ELEMENT} \textbf{test} (\%condition;)+>
+
+<!\textsl{ELEMENT} \textbf{and} ((\%condition;),(\%condition;)+)>
+
+<!\textsl{ELEMENT} \textbf{or} ((\%condition;),(\%condition;)+)>
+
+<!\textsl{ELEMENT} \textbf{not} (\%condition;)>
+
+<!\textsl{ELEMENT} \textbf{equal} (\%value;,\%value;)>
+<!\textsl{ATTLIST} equal caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{begins-with} (\%value;,\%value;)>
+<!\textsl{ATTLIST} begins-with caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{ends-with} (\%value;,\%value;)>
+<!\textsl{ATTLIST} ends-with caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{contains-substring} (\%value;,\%value;)>
+<!\textsl{ATTLIST} contains-substring caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{in} (\%value;, list)>
+<!\textsl{ATTLIST} in caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{list} \textsl{EMPTY}>
+<!\textsl{ATTLIST} list n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{let} (\%container;, \%value;)>
+
+<!\textsl{ELEMENT} \textbf{append} (\%value;)+>
+<!\textsl{ATTLIST} append n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{out} (b|chunk)+>
+
+<!\textsl{ELEMENT} \textbf{modify-case} (\%container;, \%stringvalue;)>
+
+<!\textsl{ELEMENT} \textbf{call-macro} (with-param)*>
+<!\textsl{ATTLIST} call-macro n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{with-param} \textsl{EMPTY}>
+<!\textsl{ATTLIST} with-param pos CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{clip} \textsl{EMPTY}>
+<!\textsl{ATTLIST} clip pos CDATA \textsl{#REQUIRED}
+               part CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{lit} \textsl{EMPTY}>
+<!\textsl{ATTLIST} lit v CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{lit-tag} \textsl{EMPTY}>
+<!\textsl{ATTLIST} lit-tag v CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{var} \textsl{EMPTY}>
+<!\textsl{ATTLIST} var n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{get-case-from} (clip|lit|var)>
+<!\textsl{ATTLIST} get-case-from pos CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{case-of} \textsl{EMPTY}>
+<!\textsl{ATTLIST} case-of pos CDATA \textsl{#REQUIRED}
+                  part CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{concat} (\%value;)+>
+
+<!\textsl{ELEMENT} \textbf{chunk} (\%value;)+>
+
+<!\textsl{ELEMENT} \textbf{pseudolemma} (\%value;)>
+
+<!\textsl{ELEMENT} \textbf{b} \textsl{EMPTY}>
+<!\textsl{ATTLIST} b pos CDATA \textsl{#IMPLIED}>
+
+\end{alltt}
+\end{small}
+
+\newpage
+
+\section{DTD del módulo postchunk}
+\label{ss:dtdpostchunk}
+
+DTD para el formato de las reglas de transferencia estructural del módulo
+\texttt{postchunk}. Esta definición viene con el paquete
+\texttt{apertium} (versión 2.0) que se puede descargar de
+\url{http://www.sourceforge.net}.
+
+La descripción de los distintos elementos se
+encuentra en el apartado \ref{formatotransfer}.
+
+
+
+\begin{small}
+\begin{alltt}
+<!\textsl{ENTITY} \% condition "(and|or|not|equal|begins-with|
+                       ends-with|contains-substring|in)">
+<!\textsl{ENTITY} \% container "(var|clip)">
+<!\textsl{ENTITY} \% sentence "(let|out|choose|modify-case|
+                      call-macro|append)">
+<!\textsl{ENTITY} \% value "(b|clip|lit|lit-tag|var|get-case-from|
+                   case-of|concat)">
+<!\textsl{ENTITY} \% stringvalue "(clip|lit|var|get-case-from|
+                         case-of)">
+
+<!\textsl{ELEMENT} \textbf{postchunk} (section-def-cats, 
+                      section-def-attrs, 
+                      section-def-vars, 
+                      section-def-lists?, 
+                      section-def-macros?, 
+                      section-rules)>
+
+<!\textsl{ELEMENT} \textbf{section-def-cats} (def-cat+)>
+
+<!\textsl{ELEMENT} \textbf{def-cat} (cat-item+)>
+<!\textsl{ATTLIST} def-cat n ID \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{cat-item} \textsl{EMPTY}>
+<!\textsl{ATTLIST} cat-item name CDATA \textsl{#REQUIRED}>
+ 
+<!\textsl{ELEMENT} \textbf{section-def-attrs} (def-attr+)>
+
+<!\textsl{ELEMENT} \textbf{def-attr} (attr-item+)>
+<!\textsl{ATTLIST} def-attr n ID \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{attr-item} \textsl{EMPTY}>
+<!\textsl{ATTLIST} attr-item tags CDATA \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{section-def-vars} (def-var+)>
+
+<!\textsl{ELEMENT} \textbf{def-var} \textsl{EMPTY}>
+<!\textsl{ATTLIST} def-var n ID \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{section-def-lists} (def-list)+>
+
+<!\textsl{ELEMENT} \textbf{def-list} (list-item+)>
+<!\textsl{ATTLIST} def-list n ID \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{list-item} \textsl{EMPTY}>
+<!\textsl{ATTLIST} list-item v CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{section-def-macros} (def-macro)+>
+
+<!\textsl{ELEMENT} \textbf{def-macro} (\%sentence;)+>
+<!\textsl{ATTLIST} def-macro n ID \textsl{#REQUIRED}>
+<!\textsl{ATTLIST} def-macro npar CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{section-rules} (rule+)>
+
+<!\textsl{ELEMENT} \textbf{rule} (pattern, action)>
+<!\textsl{ATTLIST} rule comment CDATA \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{pattern} (pattern-item+)>
+
+<!\textsl{ELEMENT} \textbf{pattern-item} \textsl{EMPTY}>
+<!\textsl{ATTLIST} pattern-item n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{action} (\%sentence;)*>
+
+<!\textsl{ELEMENT} \textbf{choose} (when+,otherwise?)>
+
+<!\textsl{ELEMENT} \textbf{when} (test,(\%sentence;)*)>
+
+<!\textsl{ELEMENT} \textbf{otherwise} (\%sentence;)+>
+
+<!\textsl{ELEMENT} \textbf{test} (\%condition;)+>
+
+<!\textsl{ELEMENT} \textbf{and} ((\%condition;),(\%condition;)+)>
+
+<!\textsl{ELEMENT} \textbf{or} ((\%condition;),(\%condition;)+)>
+
+<!\textsl{ELEMENT} \textbf{not} (\%condition;)>
+
+<!\textsl{ELEMENT} \textbf{equal} (\%value;,\%value;)>
+<!\textsl{ATTLIST} equal caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{begins-with} (\%value;,\%value;)>
+<!\textsl{ATTLIST} begins-with caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{ends-with} (\%value;,\%value;)>
+<!\textsl{ATTLIST} ends-with caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{contains-substring} (\%value;,\%value;)>
+<!\textsl{ATTLIST} contains-substring caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{in} (\%value;, list)>
+<!\textsl{ATTLIST} in caseless (no|yes) \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{list} \textsl{EMPTY}>
+<!\textsl{ATTLIST} list n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{let} (\%container;, \%value;)>
+
+<!\textsl{ELEMENT} \textbf{append} (\%value;)+>
+<!\textsl{ATTLIST} append n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{out} (b|lu|mlu)+>
+
+<!\textsl{ELEMENT} \textbf{modify-case} (\%container;, \%stringvalue;)>
+
+<!\textsl{ELEMENT} \textbf{call-macro} (with-param)*>
+<!\textsl{ATTLIST} call-macro n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{with-param} \textsl{EMPTY}>
+<!\textsl{ATTLIST} with-param pos CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{clip} \textsl{EMPTY}>
+<!\textsl{ATTLIST} clip pos CDATA \textsl{#REQUIRED}
+               part CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{lit} \textsl{EMPTY}>
+<!\textsl{ATTLIST} lit v CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{lit-tag} \textsl{EMPTY}>
+<!\textsl{ATTLIST} lit-tag v CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{var} \textsl{EMPTY}>
+<!\textsl{ATTLIST} var n \textsl{IDREF} \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{get-case-from} (clip|lit|var)>
+<!\textsl{ATTLIST} get-case-from pos CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{case-of} \textsl{EMPTY}>
+<!\textsl{ATTLIST} case-of pos CDATA \textsl{#REQUIRED}
+                  part CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{concat} (\%value;)+>
 
 <!\textsl{ELEMENT} \textbf{mlu} (lu+)>
 
 <!\textsl{ELEMENT} \textbf{lu} (\%value;)+>
 
 <!\textsl{ELEMENT} \textbf{b} \textsl{EMPTY}>
-<!\textsl{ATTLIST} b pos \textsl{CDATA} \textsl{#IMPLIED}>
+<!\textsl{ATTLIST} b pos CDATA \textsl{#IMPLIED}>
+
 \end{alltt}
 \end{small}
+
+\newpage
+
 
 \section[DTD para reglas de formato]{DTD para las reglas de especificación de formato}
 \label{ss:dtd_formato}
@@ -8558,6 +9740,53 @@ elementos se encuentra en el apartado \ref{ss:reglasformato}.
 
 \end{alltt}
 \end{small}
+
+\newpage
+\section{DTD de los paradigmas del formulario}
+\label{ss:dtdparadigmes}
+
+DTD para el formato de los ficheros de paradigmas que utiliza la herramienta de formularios. Esta definición
+viene con el paquete
+\texttt{apertium-lexical-webform}.
+
+\begin{small}
+\begin{alltt}
+
+
+<!\textsl{ELEMENT} \textbf{form} (entry)+>
+
+<!\textsl{ATTLIST} \textbf{form}
+        lang CDATA \textsl{#REQUIRED}
+        langpair CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{entry} (endings, paradigms)+>
+
+<!\textsl{ATTLIST} \textbf{entry}
+        PoS CDATA \textsl{#REQUIRED}
+        nbr CDATA \textsl{#IMPLIED}
+        gen CDATA \textsl{#IMPLIED}>
+
+<!\textsl{ELEMENT} \textbf{endings} (stem, ending+)>
+
+<!\textsl{ELEMENT} \textbf{stem} (\textsl{#PCDATA})>
+
+<!\textsl{ELEMENT} \textbf{ending} (\textsl{#PCDATA})>
+
+<!\textsl{ELEMENT} \textbf{paradigms} (par+)>
+
+<!\textsl{ATTLIST} \textbf{paradigms} howmany CDATA \textsl{#REQUIRED}>
+
+<!\textsl{ELEMENT} \textbf{par} \textsl{EMPTY}>
+
+<!\textsl{ATTLIST} \textbf{par} n CDATA \textsl{#REQUIRED}>
+
+
+
+\end{alltt}
+\end{small}
+
+
+
 
 \chapter[Símbolos gramaticales]{Símbolos gramaticales utilizados en los módulos}
 \label{se:simbolosmorf}
