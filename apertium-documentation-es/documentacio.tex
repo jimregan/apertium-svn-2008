@@ -2136,16 +2136,17 @@ las entradas en los diccionarios.  Los nuevos atributos introducidos
 son:
 \begin{description}
 \item[slr (\emph{sense from left to right})] se utiliza para
-  especificar que hay más de una traducción de izquierda a derecha
-  para el lema situado en la parte izquierda de la entrada. El
-  atributo puede recibir cualquier valor; sin embargo, lo más
-  apropiado es que reciba como valor el lema situado en la parte
-  derecha \texttt{<r>} (la traducción del lema).
+  especificar la \emph{marca de traducción} cuando hay más de una
+  traducción de izquierda a derecha para el lema situado en la parte
+  izquierda de la entrada. El atributo puede recibir cualquier valor;
+  sin embargo, lo más apropiado es que reciba como valor el lema
+  situado en la parte derecha \texttt{<r>} (la traducción del lema).
 \item[srl (\emph{sense from right to left})] se utiliza para
-  especificar que hay más de una traducción de derecha a izquierda
-  para el lema situado en la parte derecha de la entrada.  Como antes,
-  el atributo puede recibir cualquier valor, pero lo más apropiado es
-  que reciba el lema situado en la parte izquierda \texttt{<l>} (la traducción del lema).
+  especificar la \emph{marca de traducción} cuando hay más de una
+  traducción de derecha a izquierda para el lema situado en la parte
+  derecha de la entrada.  Como antes, el atributo puede recibir
+  cualquier valor, pero lo más apropiado es que reciba el lema situado
+  en la parte izquierda \texttt{<l>} (la traducción del lema).
 \end{description}
 
 Además, en ambos casos el valor del atributo puede acabar con un
@@ -3356,77 +3357,81 @@ unidad verbal con significado propio.
 
 
 
-\section{Mòdul de selecció lèxica}
+\section{Módulo de selección léxica}
 \label{se:seleccio_lex}
 
-\notavisible{*** ATENCIÓN ***
-\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
+
+\subsection{Introducción} 
 
 
-\subsection{Introducció} 
-Quan el sistema Apertium s'utilitza per a traduïr automàticament entre
-llengües menys emparentades que les que ha tractat fins ara, pren
-importància la qüestió de la tria lèxica, que s'ha de dur a terme quan una
-paraula de la llengua origen pot tenir més d'una traducció en llengua
-meta. Per aquest motiu s'ha creat un nou mòdul, el mòdul
-de selecció lèxica, que s'ocupa d'aquesta qüestió.
+Cuando el sistema Apertium se utiliza para traducir automáticamente entre
+lenguas menos emparentades que las que ha tratado hasta ahora, toma
+importancia la cuestión de la selección léxica, que debe llevarse a cabo cuando una
+palabra de la lengua origen puede tener más de una traducción en lengua
+meta. Por este motivo se ha creado un nuevo módulo, el módulo
+de selección léxica, que se ocupa de esta cuestión.
 
-Abans d'explicar-ne les característiques, veurem com els 
-problemes d'\emph{equivalència
-múltiple} (l'existència de
-més d'una traducció possible en llengua meta per a un lema o una forma 
-lèxica en llengua
-origen) es tracten a Apertium de dues maneres diferents.
+Antes de explicar sus características, veremos como los 
+problemas de \emph{equivalencia
+múltiple} (la existencia de más
+de una traducción posible en lengua meta para un lema o una forma 
+léxica en lengua
+origen) se tratan en Apertium de dos maneras diferentes.
 
-Per una banda, ens trobem amb la situació en què entre els múltiples
-equivalents en llengua meta no hi ha una gran diferència de
-significat, i el fet d'escollir entre l'un o l'altre no comportaria
-cap error de traducció. Podríem dir que entre aquests equivalents hi
-ha una relació de sinonímia o quasisinonímia. En aquest cas, el
-lingüista escull com a traducció un dels dos lemes (generalment el més
-freqüent o més usual), i posa una restricció de direcció en els altres
-(amb els atributs \texttt{LR} o \texttt{RL}) per tal que siguin traduïts en la direcció
-contrària però no pas en la direcció en què hi ha múltiples
-equivalents.
-
-Per altra banda, tenim el cas en què entre els múltiples equivalents
-en llengua meta hi ha una evident diferència de significat que pot
-portar a errors de traducció quan es tria el lema inadequat. Aquests
-casos són els que tracta el nou mòdul de selecció lèxica. El lingüista
-codifica les entrades amb els atributs \texttt{slr} o \texttt{srl} que
-s'expliquen en l'apartat següent, identificant així les diferents
-possibilitats de traducció, i el mòdul de selecció lèxica s'ocupa
-d'escollir, mitjançant procediments estadístics, quina és la traducció
-adequada en un context determinat.
+Por un lado, nos encontramos con la situación en que entre los múltiples
+equivalentes en lengua meta no hay una gran diferencia de significado,
+y el hecho de escoger entre uno u otro no comportaría
+ningún error de traducción. Podríamos decir que entre estos equivalentes hay
+una relación de sinonímia o casi-sinonímia. En este caso, el
+lingüista escoge como traducción uno de los dos lemas (generalmente el más
+frecuente o más usual), y pone una restricción de dirección en los otros
+(con los atributos \texttt{LR} o \texttt{RL}) para que sean traducidos en la dirección
+contraria pero no en la dirección en que hay múltiples
+equivalentes.
 
 
-Decidir quan una situació d'equivalència múltiple s'ha de tractar
-d'una manera o de l'altra, de vegades no és senzill. Per exemple, 
-quan entre dos o
-més lemes de la llengua meta existeix diferència de significat,
-però considerem que el mòdul de selecció lèxica no serà capaç
-d'escollir la bona traducció a partir del context, seguirem el primer
-mètode: escollir la traducció fixa que volguem (la més general, la que
-considerem adequada en el màxim de situacions possibles) i posar una
-restricció de direcció en la resta d'equivalents.
-En la resta de casos, codificarem les entrades de manera que la decisió
-quedi en mans del mòdul de selecció lèxica.
+Por otro lado, tenemos el caso en que entre los múltiples equivalentes
+en lengua meta hay una evidente diferencia de significado que puede
+conllevar errores de traducción cuando se elige el lema inadecuado. Estos
+casos son los que trata el nuevo módulo de selección léxica. El lingüista
+codifica las entradas con los atributos \texttt{slr} o \texttt{srl} que
+se explican en el apartado siguiente, identificando así las diferentes
+posibilidades de traducción, y el módulo de selección léxica se ocupa
+de escoger, mediante procedimientos estadísticos, cuál es la traducción
+adecuada en un contexto determinado.
 
-Quan s'utilitzi un sistema Apertium sense mòdul de selecció lèxica, l'única manera
-de codificar entrades amb diverses traduccions possibles és la primera, és a dir, escollint
-una única traducció i marcant la resta d'equivalències amb una restricció de direcció.
-En cas que utilitzem diccionaris bilingües amb múltiples traduccions,
-codificades amb els atributs \texttt{slr} o \texttt{srl},
-en un sistema que no disposa de mòdul de selecció lèxica, un full d'estil
-s'encarrega de convertir aquestes entrades
-pensades per al mòdul de selecció lèxica en entrades amb restriccions de direcció \texttt{LR} o \texttt{RL},
-de manera que un dels múltiples equivalents (el que el lingüista ha escollit com a
-a entrada predeterminada) queda com a traducció fixa del lema en llengua origen.
 
-Com a exemples d'equivalències bilingües que haurien de portar una restricció
-de direcció, podem donar els parells de traducció \texttt{ca-es}
-\emph{encara -- aún/todavía} i \emph{sobtat -- súbito/repentino}, el primer dels
-quals podria quedar així:
+
+Decidir cuándo una situación de equivalencia múltiple debe solucionarse
+de una manera o de la otra, a veces no es sencillo. Por ejemplo, 
+cuando entre dos o más
+lemas de la lengua meta existe diferencia de significado,
+pero consideramos que el módulo de selección léxica no será capaz
+de escoger la buena traducción a partir del contexto, seguiremos el primer
+método: escoger la traducción fija que queramos (la más general, la que
+consideramos adecuada en el máximo de situaciones posibles) y poner una
+restricción de dirección en el resto de equivalentes.
+En los demás casos, codificaremos las entradas de forma que la decisión
+quede en manos del módulo de selección léxica.
+
+
+Cuando se utilice un sistema Apertium sin módulo de selección léxica, la única manera
+de codificar entradas con varias traducciones posibles es la primera, es decir, escogiendo
+una única traducción y marcando el resto de equivalencias con una restricción de dirección.
+En caso de que utilicemos diccionarios bilingües con múltiples traducciones,
+codificades con los atributos \texttt{slr} o \texttt{srl},
+en un sistema que no dispone de módulo de selección léxica, una hoja de estilo
+se encarga de convertir estas entradas
+pensadas para el módulo de selección léxica en entradas con restricciones de dirección \texttt{LR} o \texttt{RL},
+de manera que uno de los múltiples equivalentes (el que el lingüista haya escogido como
+entrada predeterminada) queda como traducción fija del lema en lengua origen.
+
+
+
+Como ejemplos de equivalencias bilingües que deberían llevar una restricción
+de dirección, podemos dar los pares de traducción \texttt{ca-es}
+\emph{encara -- aún/todavía} y \emph{sobtat -- súbito/repentino}, el primero de los cuales
+podría quedar así:
 \begin{alltt}
 \begin{small}
 
@@ -3445,11 +3450,11 @@ quals podria quedar així:
 \end{small}
 \end{alltt}
 
+Como ejemplo del segundo caso (múltiples equivalentes con gran diferencia de significado) tenemos los pares
+\texttt{es-ca} \emph{hoja -- full/fulla} o \emph{muñeca -- nina/canell}, y los ejemplos \texttt{en-ca}
+que se muestran en la página \pageref{entrades_lextor}, donde se explica de qué manera
+se indican en el diccionario bilingüe estos múltiples equivalentes.
 
-Com a exemple del segon cas (múltiples equivalents amb gran diferència de significat) tenim els parells
-\texttt{es-ca} \emph{hoja -- full/fulla} o \emph{muñeca -- nina/canell}, i els exemples \texttt{en-ca}
-que es mostren en la pàgina \pageref{entrades_lextor}, on s'explica de quina manera
-s'indiquen en el diccionari bilingüe aquests múltiples equivalents.
 
 
 \begin{figure}
@@ -3474,55 +3479,61 @@ $\rightarrow$ & \framebox{\parbox{1.0cm}{refor\-matador}} \\
 \end{tabular}
 \end{center}
 }
-\caption{Els nou mòduls que formen la cadena de muntatge de la versió
-  2 del sistema de traducció automàtica Apertium.}
+\caption{Los nuevo módulos que forman la cadena de montaje de la versión
+  2 del sistema de traducción automática Apertium.}
 \label{fig:moduls}
 \end{figure}
 
-La figura~\ref{fig:moduls} mostra com queda la cadena de muntatge en
-la versió 2 d'Apertium.\footnote{Aquesta figura reemplaça a la figura
-  1.1 que es troba a la pàgina 6 de la documentació de la versió 1
-  d'Apertium.} El mòdul encarregat de la tria lèxica (selector lèxic)
-s'executa després del desambiguador lèxic categorial i abans del mòdul
-encarregat de la transferència estructural; per tant, aquest nou mòdul
-treballa únicament amb informació de la llengua origen. 
+La figura~\ref{fig:moduls} muestra cómo queda la cadena de montaje en
+la versión 2 de Apertium.\footnote{Esta figura reemplaza la figura 1.1
+  que se encuentra en la página 6 de la documentación de la versión 1
+  de Apertium.} \nota{MG: caldria canviar la figura de la pàgina 6 per
+  aquesta d'aquí?} El módulo encargado de la selección léxica (selector léxico)
+se ejecuta después del desambiguador léxico categorial y antes del módulo
+encargado de la transferencia estructural; por lo tanto, este nuevo módulo
+trabaja únicamente con información de la lengua origen. 
 
-A continuació, en la secció~\ref{se:preprocessament} s'explica el
-preprocessament que s'ha de fer d'un diccionari bilingüe que conté més
-d'una traducció per a una entrada, tant si s'usa un mòdul de tria
-lèxica com si no, i en la secció~\ref{se:lextor} s'explica com
-funciona i com s'ha d'entrenar el mòdul que fa la tria lèxica.
+
+A continuación, en la sección~\ref{se:preprocessament} se explica el
+preprocesamiento a que debe someterse un diccionario bilingüe que contiene más
+de una traducción por entrada, tanto si se usa un módulo de selección léxica
+como si no, y en la sección~\ref{se:lextor} se explica cómo
+funciona y cómo se tiene que entrenar el módulo que realiza la selección léxica.
+
 
  
-\subsection{Preprocessament dels diccionaris bilingües}\label{se:preprocessament}
-El fet que, amb aquesta modificació, es creïn diccionaris bilingües
-que permeten l'especificació de més d'una traducció per entrada (vegeu
-en la secció \ref{dic_lextor} com s'especifiquen aquestes entrades)
-fa necessari un preprocessament d'aquests diccionaris, ja que el motor de
-traducció Apertium treballa amb diccionaris compilats en els quals
-cada mot té només una traducció possible.
+\subsection{Preprocesamiento de los diccionarios bilingües}\label{se:preprocessament}
 
-El preprocessament dels diccionaris es fa automàticament durant la
-compilació, per la qual cosa l'usuari final no ha de fer cap acció especial.
+El hecho de que, con esta modificación, se creen diccionarios bilingües
+que permiten la especificación de más de una traducción por entrada (véase
+en la sección \ref{dic_lextor} cómo se especifican estas entradas)
+hace necesario un preprocesamiento de estos diccionarios, puesto que el motor de traducción
+Apertium trabaja con diccionarios compilados en los que
+cada palabra tiene sólo una traducción posible.
 
-\subsubsection{Preprocessament sense mòdul de tria lèxica}
+El preprocesamiento de los diccionarios se hace automáticamente durante la compilación,
+por lo que el usuario final no tiene que ejecutar ninguna acción especial.
 
-Quan els diccionaris bilingües amb múltiples equivalents 
-s'utilitzin en un sistema que no disposa de mòdul de selecció lèxica,
-el preprocessament es realitza amb l'aplicació del full d'estil
-\texttt{translate-to-default\--e\-qui\-va\-lent.xsl}.  Aquest full d'estil
-converteix els diccionaris amb més d'una possible traducció per
-entrada en diccionaris amb una sola traducció per entrada, escollint
-com a traducció l'entrada marcada com a equivalent predeterminat, i
-posant una restricció de direcció (\texttt{LR} o \texttt{RL} segons el
-cas) en les entrades restants, de manera que aquestes només es
-tradueixen en la direcció de traducció en què no hi ha multiplicitat
-d'equivalents.  Aquest full d'estil es crida des del
+
+\subsubsection{Preprocesamiento sin módulo de selección léxica}
+
+Cuando los diccionarios bilingües con múltiples equivalentes se
+utilicen en un sistema que no dispone de módulo de selección léxica,
+el preprocesamiento se realiza con la aplicación de la hoja de estilo
+\texttt{translate-to\--de\-fault\--e\-qui\-va\-lent.xsl}.  Esta hoja
+de estilo convierte los diccionarios con más de una posible traducción
+por entrada en diccionarios con una sola traducción por entrada,
+escogiendo como traducción la entrada marcada como equivalente
+predeterminado, y poniendo una restricción de dirección (\texttt{LR} o
+\texttt{RL} según el caso) en las demás entradas, de forma que éstas
+sólo se traducen en la dirección de traducción en la que no hay
+multiplicidad de equivalentes.  Esta hoja de estilo se llama desde el
 \texttt{Makefile}.
 
-Com a exemple, les tres primeres entrades que es mostren en la pàgina
-\pageref{entrades_lextor} queden així després de l'aplicació del full
-d'estil esmentat:
+
+Como ejemplo, las tres primeras entradas que se muestran en la página
+\pageref{entrades_lextor} quedan así después de la aplicación de la hoja
+de estilo mencionada:
 
 \begin{alltt}
 \begin{small}
@@ -3549,130 +3560,141 @@ d'estil esmentat:
 \end{small}
 \end{alltt}
 
-\subsubsection{Preprocessament amb mòdul de tria lèxica}
+\subsubsection{Preprocesamiento con módulo de selección léxica}
 
-En el cas que el sistema Apertium funcioni amb un mòdul de selecció lèxica, el diccionari bilingüe 
-s'ha de preprocessar per a obtenir:
+En el caso de que el sistema Apertium funcione con un módulo de selección léxica, el diccionario bilingüe 
+se tiene que preprocessar para obtener:
 \begin{itemize}
-\item un diccionari monolingüe que per a cada paraula en
-  llengua origen (per exemple \emph{look}) retorni totes les possibles
-  marques de traducció (\texttt{look\_\_mirar D} i
-  \texttt{look\_\_parèixer}), aquest diccionari serà utilitzat pel
-  mòdul que fa la tria lèxica; i
-\item un nou diccionari bilingüe que donada una paraula
-  amb la selecció lèxica ja feta (per exemple
-  \texttt{look\_\_parèixer}) en retorni la traducció
-  (\emph{parèixer}); aquest serà el diccionari bilingüe a emprar en la
-  transferència lèxica.
+\item un diccionario monolingüe que para cada palabra en
+  lengua origen (por ejemplo \emph{look}) devuelva todas las posibles
+  marcas de traducción  o equivalencias (\texttt{look\_\_mirar D} y \texttt{look\_\_semblar}),
+  este diccionario será utilizado por el
+  módulo que hace la selección léxica; y
+
+\item un nuevo diccionario bilingüe que dada una palabra con la
+  selección léxica ya hecha (por ejemplo \texttt{look\_\_semblar})
+  devuelva la traducción (\emph{parèixer}); este será el diccionario
+  bilingüe a emplear en la transferencia lèxica.
+
 \end{itemize}
 
-Aquest preprocessament es fa automàticament amb el següent
-programari en compilar els diccionaris:
+
+Este preprocesamiento se hace automáticamente con el siguiente
+software en compilar los diccionarios:
 \begin{itemize}
-\item \texttt{apertium-gen-lextormono}, que rep tres paràmetres: 
+\item \texttt{apertium-gen-lextormono}, que recibe tres parámetros: 
   \begin{itemize}
-  \item el sentit de traducció per al qual es vol obtenir el
-    diccionari monolingüe usat en la tria lèxica; \texttt{lr}
-    (\emph{left to rigth}) per a la traducció d'esquerra a dreta, i
-    \texttt{rl} (\emph{right to left}) per a la traducció de dreta a
-    esquerra;
-  \item el diccionari bilingüe a preprocessar; i
-  \item el fitxer on s'ha d'escriure el diccionari monolingüe
-    resultant.
+  \item el sentido de traducción para el cual se quiere obtener el
+    diccionario monolingüe usado en la selección lèxica; \texttt{lr}
+    (\emph{left to rigth}) para la traducción de izquierda a derecha, y
+    \texttt{rl} (\emph{right to left}) para la traducción de derecha a
+    izquierda;
+  \item el diccionario bilingüe a preprocesar; y
+  \item el fichero donde se tiene que escribir el diccionario monolingüe
+    resultante.
   \end{itemize}
-\item \texttt{apertium-gen-lextorbil}, que rep tres paràmetres: 
+
+\item \texttt{apertium-gen-lextorbil}, que recibe tres parámetros: 
   \begin{itemize}
-  \item el sentit de traducció (\texttt{lr} o \texttt{rl}) per al qual
-    es vol obtenir el diccionari bilingüe a usar pel mòdul de
-    transferència lèxica;
-  \item el diccionari bilingüe a preprocessar; i
-  \item el fitxer on s'ha d'escriure el diccionari bilingüe resultant.
+  \item el sentido de traducción (\texttt{lr} o \texttt{rl}) para el que
+     se quiere obtener el diccionario bilingüe a usar por el módulo de transferencia
+    léxica;
+  \item el diccionario bilingüe a preprocesar; y
+  \item el fichero donde se tiene que escribir el diccionario bilingüe resultante.
   \end{itemize}
 \end{itemize}
 
-\subsection{Funcionament del mòdul per a la tria lèxica}\label{se:lextor}
-El mòdul encarregat de la tria lèxica s'executa després del
-desambiguador lèxic categorial i abans de la transferència estructural
-(vegeu la figura~\ref{fig:moduls} de la pàgina~\pageref{fig:moduls});
-per tant fa ús únicament d'informació de la llengua origen de la
-traducció. No obstant això, per a l'entrenament del mòdul també es fa
-ús d'informació de la llengua meta.
+\subsection{Funcionamiento del módulo de selección léxica}\label{se:lextor}
 
-\subsubsection{Entrenament}\label{se:entrenament}
-Per al entrenament del mòdul que fa la tria lèxica es necessiten un
-corpus en llengua origen i un altre en llengua meta; no cal que
-estiguen relacionats. Tots dos corpus han de ser preprocessats abans
-de l'entrenament. Aquest preprocessament, el qual consisteix a
-analitzar els còrpora i fer la desambiguació lèxica categorial, es pot
-fer
+El módulo encargado de la selección léxica se ejecuta después del
+desambiguador léxico categorial y antes de la transferencia estructural
+(véase la figura~\ref{fig:moduls} de la página~\pageref{fig:moduls});
+por lo tanto hace uso únicamente de información de la lengua origen de la
+traducción. Sin embargo, para el entrenamiento del módulo también se hace
+uso de información de la lengua meta.
+
+
+\subsubsection{Entrenamiento}\label{se:entrenament}
+
+Para el entrenamiento del módulo que realiza la selección léxica se necesitan un
+corpus en lengua origen y otro en lengua meta; no es necesario que
+estén relacionados. Los dos corpus tienen que ser preprocesados antes
+del entrenamiento. Este preprocesamiento, que consiste en analizar
+los corpus y hacer la desambiguación léxica categorial, se puede
+hacer
 %perquè estiguen en el mateix format que quan es fa la
 %tria lèxica durant la traducció (vegeu la secció~\ref{se:us} més
 %avall) 
-amb \texttt{apertium-preprocess-corpus-lextor}.
+con \texttt{apertium-prepro\-cess\--cor\-pus\--lex\-tor}.
 
-L'entrenament del mòdul encarregat de la tria lèxica consisteix a fer
-les següents tasques:\footnote{L'entrenament dels models usats per a
-  la tria lèxica s'ha automatitzat en aquells paquets lingüístics que
-  l'usen. A més tot el programari esmentat té la seua pàgina de manual UNIX}
+El entrenamiento del módulo encargado de la selección léxica consiste en hacer
+las siguientes tareas:\footnote{El entrenamiento de los modelos usados para
+  la selección léxica se ha automatizado en aquellos paquetes lingüísticos que
+  lo usan. Además todo el software mencionado tiene su página de manual UNIX}
+
+
+
 \begin{enumerate}
-\item obtenir la llista de paraules que no hauran de ser tingudes en
-  compte a l'hora de fer la tria lèxica (\emph{stopwords}). Aquesta
-  llista pot fer-se a mà o mitjançant
+\item obtener la lista de palabras que no tendrán que ser tenidas en
+  cuenta a la hora de hacer la selección lèxica (\emph{stopwords}). Esta
+  lista puede hacerse a mano o mediante
   \texttt{apertium-gen-stopwords-lextor};
-\item obtenir la llista de paraules (en llengua origen) que tenen més
-  d'una traducció en llengua meta amb
+\item obtener la lista de palabras (en lengua origen) que tienen más
+  de una traducción en lengua meta con
   \texttt{apertium-gen-wlist-lextor};
-\item traduir a la llengua meta cada una de les paraules obtingudes en
-  el pas anterior amb \texttt{apertium-gen-wlist-lextor-translation};
-\item entrenar amb \texttt{apertium-lextor --trainwrd} i usant el
-  corpus preprocessat de la llengua meta un model de coaparició de
-  paraules per a les obtingudes en el pas anterior;
-\item entrenar amb \texttt{apertium-lextor --trainlch} i usant el
-  corpus preprocessat de la llengua origen, els diccionaris generats
-  amb els programes esmentats a la secció~\ref{se:preprocessament} i
-  els models de coaparició de paraules estimats en el pas anterior, un
-  model de coaparició per a cadascuna de les marques de traducció
-  d'aquelles paraules que poden tenir més d'una traducció en llengua
+\item traducir a la lengua meta cada una de las palabras obtenidas en
+  el paso anterior con \texttt{apertium-gen-wlist-lextor-translation};
+\item entrenar con \texttt{apertium-lextor --trainwrd}  y usando el
+  corpus preprocesado de la lengua meta un modelo de coaparición de palabras
+  para las obtenidas en el paso anterior;
+\item entrenar con \texttt{apertium-lextor --trainlch} 
+y usando el
+  corpus preprocesado de la lengua origen, los diccionarios generados
+  con los programas mencionados en la sección~\ref{se:preprocessament} y los
+  modelos de coaparición de palabras estimados en el paso anterior, un
+  modelo de coaparición para cada una de las marcas de traducción
+  de aquellas palabras que pueden tener más de una traducción en lengua
   meta.
 \end{enumerate}
 
-\subsubsection{Utilització}\label{se:us}
-Els models de coaparició de paraules estimats a la secció anterior per
-a cadascuna de les marques de traducció proporcionen la informació
-necessària per a portar a terme la tria lèxica amb informació del
-context.
+\subsubsection{Utilización}\label{se:us}
+Los modelos de coaparición de palabras estimados en la sección anterior para
+cada una de las marcas de traducción proporcionan la información
+necesaria para llevar a cabo la selección léxica con información del
+contexto.
 
-La tria lèxica es fa amb \texttt{apertium-lextor --lextor}; els formats
-usats per a la comunicació amb la resta de mòduls del motor de
-traducció són:
+La selección léxica se hace con \texttt{apertium-lextor --lextor}; los formatos
+usados para la comunicación con el resto de módulos del motor de traducción
+son:
+
 \begin{description}
-\item [Entrada:] text en el mateix format que el d'entrada al mòdul de
-  transferència estructural, és a dir, text analitzat i desambiguat
-  amb les cues invariants dels multimots desplaçats abans de qualsevol
+\item [Entrada:] texto en el mismo formato que el de entrada al módulo de transferencia
+  estructural, es decir, texto analizado y desambiguado
+  con las colas invariantes de las multipalabras desplazadas antes de cualquier
   etiqueta.
-\item [Eixida:] text en el mateix format però amb la marca de
-  traducció a emprar quan es faça la transferència lèxica.
+\item [Salida:] texto en el mismo formato pero con la marca de traducción
+  a emplear cuando se haga la transferencia léxica.
 \end{description}
 
-El següent exemple il·lustra els formats d'entrada/eixida usats pel
-selector lèxic (suposem que únicament el verb anglès \emph{get} té més
-d'un sentit de traducció als diccionaris):
+
+El siguiente ejemplo ilustra los formatos de entrada/salida usados por el
+selector léxico (suponemos que únicamente el verbo inglés \emph{get} tiene más
+de un equivalente de traducción en los diccionarios):
 \begin{itemize}
-\item Text en llengua origen (anglès): \emph{To get to the city
+\item Texto en lengua origen (inglés): \emph{To get to the city
     centre}
-\item Entrada al selector lèxic: \verb!^To<pr>$!
+\item Entrada al selector léxico: \verb!^To<pr>$!
   \verb!^get<vblex><inf>$! \verb!^to<pr>$! \verb!^the<det><def><sp>$!
   \verb!^city<n><sg>$! \verb!^centre<n><sg>$!
-\item Marques de traducció al diccionari bilingüe per al verb \emph{get}:
+\item Marcas de traducción en el diccionario bilingüe para el verbo \emph{get}:
   \texttt{rebre}, \texttt{agafar}, \texttt{arribar},
   \texttt{aconseguir D}
-\item Eixida del selector lèxic: \verb!^To<pr>$!
+\item Salida del selector léxico: \verb!^To<pr>$!
   \verb!^get__arribar<vblex><inf>$! \verb!^to<pr>$!
   \verb!^the<det><def><sp>$!  \verb!^city<n><sg>$!
   \verb!^centre<n><sg>$!
 \end{itemize}
 
-\notavisible{FIN DEL TEXTO EN CATALÁN}
 
 \newpage
 \section{Módulo de transferencia estructural}
