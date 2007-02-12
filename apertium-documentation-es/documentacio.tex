@@ -2128,47 +2128,49 @@ consiste en el añadido de dos nuevos atributos al elemento \texttt{<e>}.
 Estos nuevos atributos pueden utilizarse en todos los diccionarios
 pero sólo tienen sentido cuando se trata de una entrada del diccionario bilingüe.
 
-\notavisible{*** ATENCIÓN ***
-\newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
 
-
-
-A l'Apèndix~\ref{dixdtd} es mostra el fragment de la DTD
-\texttt{dix.dtd} \nota{MG: no caldria ajuntar les dues DTDs en una de sola?} on es defineix l'element \texttt{e} usat per a
-codificar les entrades als diccionaris. Els nous atributs introduïts
-són:
+En el Apéndice~\ref{dixdtd} se muestra el fragmento de la DTD
+\texttt{dix.dtd} \nota{MG: no caldria ajuntar les dues DTDs en una de
+  sola?}  donde se define el elemento \texttt{e} usado para codificar
+las entradas en los diccionarios.  Los nuevos atributos introducidos
+son:
 \begin{description}
-\item[slr (\emph{sense from left to right})] s'utilitza per a
-  especificar la \emph{marca de traducció} quan la traducció és d'esquerra dreta.
-  L'atribut pot rebre qualsevol valor; no obstant
-  això, el més apropiat és que rebi el valor del lema marcat com a
-  \texttt{<r>}.
-\item[srl (\emph{sense from right to left})] s'utilitza per a
-  especificar la marca de traducció quan la traducció és de dreta a
-  esquerra. Com abans, l'atribut pot rebre qualsevol valor, però el
-  més apropiat és que reba el lema marcat com a \texttt{<l>}.
+\item[slr (\emph{sense from left to right})] se utiliza para
+  especificar que hay más de una traducción de izquierda a derecha
+  para el lema situado en la parte izquierda de la entrada. El
+  atributo puede recibir cualquier valor; sin embargo, lo más
+  apropiado es que reciba como valor el lema situado en la parte
+  derecha \texttt{<r>} (la traducción del lema).
+\item[srl (\emph{sense from right to left})] se utiliza para
+  especificar que hay más de una traducción de derecha a izquierda
+  para el lema situado en la parte derecha de la entrada.  Como antes,
+  el atributo puede recibir cualquier valor, pero lo más apropiado es
+  que reciba el lema situado en la parte izquierda \texttt{<l>} (la traducción del lema).
 \end{description}
 
-A més, en ambdós casos el valor de l'atribut pot acabar amb un espai
-en blanc i la lletra ``D'' per a indicar que
-aquesta és la traducció predeterminada, és a dir, la traducció a emprar
-quan no hi ha suficient informació per a triar-ne una altra.
+Además, en ambos casos el valor del atributo puede acabar con un
+espacio en blanco y la letra ``D'' para indicar que ésta es la
+traducción predeterminada, es decir, la traducción a emplear cuando no
+hay suficiente información para elegir otra. Es obligatorio que las
+entradas con más de un equivalente en lengua meta tengan una, y sólo
+una, de estas equivalencias marcada con la letra ``D'' de
+\emph{predeterminado}.
 
-El següent exemple il·lustra el funcionament dels nous atributs.
-Considerem el cas d'un diccionari bilingüe anglès--català i les
-següents entrades amb més d'una traducció en llengua meta:
+El siguiente ejemplo ilustra el funcionamiento de los nuevos
+atributos.  Consideramos el caso de un diccionario bilingüe
+inglés--catalán y las siguientes entradas con más de una traducción en
+lengua meta:
 \begin{itemize}
-\item \emph{look}: que es pot traduir al català com \emph{mirar} (per
-  defecte) o com \emph{parèixer},
-\item \emph{floor}: que es pot traduir al català per \emph{pis} (per
-  defecte) o per \emph{terra},
-\item \emph{pis}: que es pot traduir a l'anglès per \emph{flat} (per
-  defecte) o per \emph{floor} (prenent \emph{pis} en el sentit de
-  paviment).
+\item \emph{look}: que se puede traducir al catalán por \emph{mirar} (por
+  defecto) o por \emph{semblar} (en español, \emph{mirar/parecer}),
+\item \emph{floor}: que se puede traducir al catalán por \emph{pis} (por
+  defecto) o por \emph{terra} (en español, \emph{piso/suelo})
+\item \emph{pis}: que se puede traducir al inglés por \emph{flat} (por
+  defecto) o por \emph{floor}.
 \end{itemize}
 
-Aquesta informació es representa fent ús dels dos atributs esmentats
-abans:\label{entrades_lextor}
+Esta información se representa utilizando los dos atributos descritos
+antes:\label{entrades_lextor}
 \begin{alltt}
 \begin{small}
 <e srl="flat D">
@@ -2199,18 +2201,14 @@ abans:\label{entrades_lextor}
    </p>
 </e>
 
-<e slr="parèixer">
+<e slr="semblar">
    <p>
       <l>look<s n="vblex"/></l>
-      <r>parèixer<s n="vblex"/></r>
+      <r>semblar<s n="vblex"/></r>
    </p>
 </e>
 \end{small}
 \end{alltt}
-
-
-
-\notavisible{FIN DEL TEXTO EN CATALÁN}
 
 
 %\settocdepth{paragraph}
