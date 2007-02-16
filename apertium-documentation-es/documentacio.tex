@@ -8246,367 +8246,374 @@ utilizará los nuevos datos.
 \newpage
 
 
-\chapter{Formularis web d'inserció de dades}
-
 \notavisible{*** ATENCIÓN ***
 \newline TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
 
-
-Aquest capítol presenta el sistema de manteniment de diccionaris
-d'Apertium 2.  Està estructurat en dues seccions.  En la secció
-\ref{ss:formadmin} es dóna l'informació necessària per a instal·lar la
-ferramenta i realitzar adaptacions.  En la secció \ref{ss:formus} s'exposa el
-mode d'ús de l'aplicació web per a dur a terme la millora de les dades
-lingüístiques.
+\chapter{Formularios web de inserción de datos}
 
 
-\section{Introducció}
 
-El formularis per a la introducció de nous termes als diccionaris de
-les diferents llengües sorgeixen com a resposta a la necessitat de
-proveir una ferramenta amb la qual introduir còmodament noves paraules
-als diferents diccionaris i amb la possibilitat de fer-ho de forma
-remota des de qualsevol ordinador que tinga accés a Internet.
+Este capítulo presenta el sistema de mantenimiento de diccionarios
+de Apertium 2.  Está estructurado en dos secciones.  En la sección
+\ref{ss:formadmin} se da la información necesaria para instalar la herramienta
+y realizar adaptaciones.  En la sección \ref{ss:formus} se expone el
+modo de uso de la aplicación web para llevar a cabo la mejora de los datos
+lingüísticos.
 
-Així és plantegen com uns formularis que estan escrits en \texttt{php}
-i són utilitzables amb qualsevol navegador d'Internet, bé de forma
-local en el mateix ordinador on s'emmagatzemen els diccionaris o bé
-remotament.
 
-\section{Instal·lació i administració}
+\section{Introducción}
+
+La tarea de introducir nuevos términos a los diccionarios de las
+diferentes lenguas del traductor es lenta si se hace editando
+manualmente los diccionarios en XML; para ello se han creado estos
+formularios, que facilitan considerablemente la tarea de inserción de
+palabras y además permiten hacerlo de forma remota desde cualquier
+ordenador que tenga acceso a Internet.
+
+Así se plantean como unos formularios escritos en \texttt{php}
+que son utilitzables con cualquier navegador de Internet, ya sea de forma
+local en el mismo ordenador donde se almacenan los diccionarios, ya sea
+remotamente.
+
+\section{Instalación y administración}
 \label{ss:formadmin}
 
-\subsection{Instal·lació de la ferramenta}
+\subsection{Instalación de la herramienta}
 
-La instal·lació s'ha de realitzar en un màquina Unix, que tinga
-instal·lat un servidor web Apache amb \texttt{php}. Així s'ha de
-procedir primerament a fer la instal·lació del servidor \texttt{php}
-si no estigués ja fet. Una vegada estiga resolt el punt anterior es
-procedeix a fer la instal·lació pròpiament dita.
+La instalación debe realizarse en un máquina Unix que tenga
+instalado un servidor web Apache con \texttt{php}. Así, primero
+debe hacerse la instalación del servidor \texttt{php} en caso de que
+no estuviera hecha, y a continuación puede ya instalarse la herramienta
+de formularios.
 
-S'obté el paquet \textit{`apertium-lexical-webform-0.9'} i
-es descomprimeix dins del directori on vaja a deixar-se la ferramenta
-de formularis d'inserció.
+
+Para ello, debe descargarse el paquete \textit{`apertium-lexical-webform-0.9'} de la página
+web de Apertium  en Sourceforge (\url{http://apertium.sourceforge.net/}) 
+y descomprimirlo dentro del directorio donde vaya a dejarse la herramienta.
+
 
 \begin{alltt}
-   # cd /ruta/dels/formularis
+   # cd /ruta/de los/formularios
    # tar -xvzf /ruta/apertium-lexical-webform-0.9.tar.gz
 \end{alltt}
 
-S'ha de tenir en compte que l'Apache sols serveix les pàgines que
-estan dintre del directori arrel amb què l'hem configurat. Per tant el
-directori on deixem els formularis ha de ser un subdirectori que
-estiga dintre de l'arrel del servidor Apache.
+Hay que tener en cuenta que Apache sólo sirve las páginas que
+están dentro del directorio raíz con el que lo hemos configurado. Por lo tanto, el
+directorio donde dejemos los formularios tiene que ser un subdirectorio que
+esté dentro de la raíz del servidor Apache.
 
-Seguidament s'edita el fitxer de configuració que està en
-\textit{private/config.php} i es dóna valors adequats a les variables
-de configuració:
-
-\begin{itemize}
-\item \texttt{\$anmor}: ruta sencera on es troba l'analitzador
-  morfològic \texttt{lt-proc}.
-\item \texttt{\$dicos\_path}: ruta on es troben els diccionaris finals
-  i el binaris compilats de cada diccionari. Aquest directori ha de
-  contenir un sub-directori per a cada diccionari amb el que pot
-  treballar el formulari. El nom del subdirectori ha de seguir la
-  següent sintaxi: \texttt{paradigmes-ll-rr} , on \textit{ll} i
-  \textit{rr} són les inicials del parell de llengües del traductor en
-  concret. En cada directori es deixen els diccionaris finals amb què
-  treballa el traductor i els corresponents binaris compilats.
-  Aquests directoris es poden substituir per enllaços simbòlics en
-  cas que es troben en diferents llocs.
-\item \texttt{\$usuaris\_professionals}: un llistat amb els usuaris
-  professionals del sistema que tenen permís per a inserir als
-  diccionaris del formulari i validar entrades (equivalències) pendents de
-  confirmació.
-\item \texttt{\$mail}: Adreça electrònica de l'administrador
-  encarregat dels formularis. Quan algú sol.licite donar-se d'alta com
-  a usuari s'enviarà un correu electrònic a aquesta adreça.
-\end{itemize}
-
-Una vegada s'han configurat els paràmetres d'aquest fitxer el servidor
-de formularis ja es troba en funcionament.
-
-
-\subsection{Estructura de directoris}
-
-Tots els fitxers necessaris per al correcte funcionament s'estructuren
-de la següent forma:
+A continuación debe editarse el fichero de configuración que está en
+\textit{private/config.php} y dar valores adecuados a las variables
+de configuración:
 
 \begin{itemize}
-\item \texttt{/index.php:} presenta el formulari inicial d'inserció.
-  Té un apartat per a cada parell de llengües on s'introdueix el lema
-  en llengua origen i en llengua meta i permet triar el tipus de
-  categoria gramatical que es tracta. En prémer el botó \textit{'Go
-    on'} avancem a la pàgina següent on seleccionarem els paradigmes
-  de flexió corresponent a cadascun dels lemes en llengua origen i
-  llengua meta.
-\item \texttt{/dics:} directori amb els diccionaris de les entrades
-  que van inserint-se des dels formularis. Estan els fitxers amb les
-  entrades dels usuaris no professionals (pendents de ser validades) i
-  els diccionaris amb les entrades en format \texttt{XML} dels usuaris
-  professionals
-\item \texttt{/private:} aquí està la major part dels mòduls
-  utilitzats en els formularis. També conté els directoris amb la
-  definició de paradigmes per a totes les llengües amb les que podem
-  treballar, aquests directoris tenen la forma
-  \texttt{paradigmes-ll-rr} sent \textit{ll} i \textit{rr} les
-  inicials del parell de llengües del traductor en concret. L'ordre
-  escollit per a les dues llengües, primer \textit{ll} i després
-  \textit{rr} depèn de l'ordre en que s'hagen construït les entrades
-  per al diccionari bilingüe. També estan en aquest directori els
-  fitxers encarregats de fer tot el processament de les paraules a
-  inserir. Aquests son:
+\item \texttt{\$anmor}: ruta entera donde se encuentra el analizador
+  morfológico \texttt{lt-proc}.
+\item \texttt{\$dicos\_path}: ruta donde se encuentran los diccionarios finales
+  y los binarios compilados de cada diccionario. Este directorio tiene que
+  contener un subdirectorio para cada diccionario con el que puede
+  trabajar el formulario. El nombre del subdirectorio tiene que seguir la siguiente
+  sintaxis: \texttt{paradigmes-ll-rr} , donde \textit{ll} y \textit{rr}
+  son las iniciales del par de lenguas del traductor en
+  concreto. En cada directorio se dejan los diccionarios finales con los que
+  trabaja el traductor y los correspondientes binarios compilados.
+  Estos directorios se pueden sustituir por enlaces simbólicos en caso de que
+  se encuentren en diferentes lugares.
+\item \texttt{\$usuaris\_professionals}: un listado de los usuarios
+  profesionales del sistema que tienen permiso para inserir en los
+  diccionarios del formulario y validar entradas (equivalencias) pendientes de confirmación.
+  
+\item \texttt{\$mail}: Dirección electrónica del administrador
+  encargado de los formularios. Cuando alguien solicite darse de alta como
+  usuario se enviará un correo electrónico a esta dirección.
+\end{itemize}
+
+Una vez configurados los parámetros de este fichero, el servidor
+de formularios ya se encuentra en funcionamiento.
+
+
+\subsection{Estructura de directorios}
+
+Todos los ficheros necesarios para el correcto funcionamiento se estructuran
+de la siguiente forma:
+
 \begin{itemize}
-\item \texttt{resultado.php: } Aquest \textit{php} és cridat quan
-  s'insereixen dues paraules de qualsevol parell de llengües des del
-  mòdul \textit{index.php}. Bàsicament el que fa és establir el parell
-  de llengües amb què es treballarà (\textit{\$LR} i \textit{\$RL}) i
-  la categoria gramatical de la paraula que s'inserirà
-  (\textit{\$tipus}). S'inclou al mòdul \textit{selec.php} que serà el
-  següent que es crida en el procés d'inserció. En el cas que el
-  \textit{tipus} de la paraula a inserir fos una unitat multi-paraula
-  (\textit{Multi Word Verb}) aleshores és el mòdul \textit{multip.php}
-  el que s'inclou i es crida en comptes de \textit{selec.php}. Els
-  elements \textit{Multi Word Verb} o unitats multi-paraula estan
-  formats per un verb que pot flexionar seguit d'una cua invariable
-  d'una o més paraules.
-\item \texttt{selecc.php: } És el mòdul encarregat de proporcionar la
-  selecció del paradigma escollit per a cada una de les dues paraules,
-  la paraula en llengua origen i en llengua meta. Proporciona una
-  llista de paradigmes per a escollir que depenen del tipus gramatical
-  de l'entrada que estem creant. Quan es selecciona un nou paradigma
-  per a un dels dos lemes, proporciona uns exemples de la flexió del
-  lema a inserir segons el paradigma que hem escollit. Si acceptem els
-  paradigmes escollits, el mòdul crida a \textit{insertarPro.php} o
-  \textit{insertar.php} depenen de si l'usuari que està fent la nova
-  inserció està considerat com a professional o no professional
-  respectivament.
-\item \texttt{multip.php: } Té la mateixa funció que el mòdul
-  \textit{selecc.php} però per a les unitats multi-paraula. Utilitza
-  les mateixes variables i realitza les mateixes operacions, però quan
-  mostra els exemples ho fa flexionant el verb i afegint totes les
-  paraules que formen la cua. La manera de funcionar del mòdul és
-  anàloga a la del mòdul \textit{selecc.php} i la seua descripció
-  detallada la trobarem a l'apartat \ref{ss:fitxersphp}.
-\item \texttt{valida.php: } Aquest mòdul es crida quan un usuari
-  professional decideix validar paraules que estan en la cua
-  d'entrades pendents de validació. Llegeix el fitxer amb la cua de
-  paraules per validar i el recorre un a un, agafa les dades de
-  l'entrada corresponent (\textit{LRlem, RLlem, paradigmaLR,
-    paradigmaRL, LR, RL}, etc...) i crida a \textit{selecc.php} per a
-  continuar amb el procés d'inserció d'eixa entrada particular.
-\item \texttt{insertarPro.php: } Aquest mòdul es crida quan ja hem
-  seleccionat el paradigma adequat per a la paraula en llengua origen
-  i en llengua meta (operació realitzada en \textit{selecc.php}) i
-  volem visualitzar com quedarà l'entrada en el format \texttt{XML}
-  dels tres diccionaris, monolingüe origen, bilingüe i monolingüe
-  meta. Des d'aquesta pantalla es podrà modificar directament el codi
-  i finalment acceptar la nova entrada o cancelar l'operació.
-\item \texttt{ins\_multip.php: } Té la mateixa funció que
-  \textit{insertarPro.php} però està pensat per a les unitats
-  multi-paraula, de manera que té un tractament especial amb l'entrada
-  per a que el codi \texttt{XML} que s'insereix als diccionaris siga
-  correcte.
-\item \texttt{insertar.php: } És el mòdul equivalent a
-  \textit{insertarPro.php} però quan l'operació està realitzant-la un
-  usuari no professional. Les accions que es realitzen en este cas són
-  molt més senzilles ja que l'única cosa que es fa és inserir en el
-  fitxer de termes pendents de validar els lemes i els paradigmes
-  escollits per l'usuari no professional, i queden allí fins que un
-  usuari professional els valida.
-\item \texttt{verSemi.php: } Este mòdul té la funció de mostrar el
-  fitxer amb les entrades inserides per usuaris no professionals i que
-  estan pendents de ser validades. Pot servir com ajuda per als
-  usuaris professionals que abans de començar a validar paraules poden
-  comprovar quines estan en la cua per a validar. Per a cridar-lo
-  apareix un enllaç en el formulari generat per \textit{selec.php} des
-  d'on es pot cridar aquesta funcionalitat.
-\item \texttt{paradigmas.xsl:} Full d'estils que s'utilitza per a
-  generar els fitxers de paradigmes amb que treballen els mòduls del
-  formulari. S'utilitza amb l'especificació dels paradigmes de cada
-  llengua escrit en format \texttt{XML}. Aquest punt es tractarà més
-  extensament en l'apartat \textit{Fitxers de Paradigmes}.
-\item \texttt{creaparadigma.awk:} Fitxer \texttt{awk} que també
-  s'utilitza per a generar els fitxers de paradigmes de treball.
-\item \texttt{gen\_paradig.sh:} Script que es pot fer servir si volem
-  que automàticament es generen els fitxers de paradigmes de tots els
-  parells de llengües que tenim instal·lats.
+\item \texttt{/index.php:} presenta el formulario inicial de
+  inserción.  Tiene un apartado para cada par de lenguas donde se
+  introduce el lema en lengua origen y en lengua meta y se elige
+  el tipo de categoría gramatical apropiado. Al pulsar el botón
+  \textit{'Go on'} se pasa a la página siguiente, donde deben
+  seleccionarse los paradigmas de flexión correspondientes a cada uno
+  de los lemas en lengua origen y lengua meta.
+\item \texttt{/dics:} directorio con los diccionarios de las entradas
+  que van inseriéndose desde los formularios. Están los ficheros con las
+  entradas de los usuarios no profesionales (pendientes de ser validades) y los
+  diccionarios con las entradas en formato \texttt{XML} de los usuarios
+  profesionales.
+\item \texttt{/private:} aquí está la mayor parte de los módulos
+  utilizados en los formularios. También contiene los directorios con
+  la definición de paradigmas para todas las lenguas con las que podemos
+  trabajar; estos directorios tienen la forma
+  \texttt{paradigmes-ll-rr} siendo \textit{ll} y \textit{rr} las
+  iniciales del par de lenguas del traductor en concreto. El orden
+  escogido para las dos lenguas, primero \textit{ll} y después
+  \textit{rr}, depende del orden en que se hayan construido las entradas
+  para el diccionario bilingüe. También están en este directorio los
+  ficheros encargados de hacer todo el procesamiento de las palabras a inserir.
+  Estos son:
+\begin{itemize}
+\item \texttt{resultado.php: } Este \textit{php} es llamado cuando se
+  insieren dos palabras de cualquier par de lenguas desde el módulo
+  \textit{index.php}. Básicamente lo que hace es establecer el par de
+  lenguas con que se trabajará (\textit{\$LR} y \textit{\$RL}) y la
+  categoría gramatical de la palabra que se inserirá
+  (\textit{\$tipus}). Se incluye en el módulo \textit{selec.php} que
+  será el siguiente que se llama en el proceso de inserción. En el
+  supuesto de que el \textit{tipus} (\textit{tipo}) de la palabra a
+  inserir fuera una unidad multipalabra (\textit{Multi Word Verb})
+  entonces es el módulo \textit{multip.php} el que se incluye y se
+  llama en vez de \textit{selec.php}. Los elementos \textit{Multi Word
+    Verb} o unidades multipalabra están formados por un verbo que
+  puede flexionar seguido de una cola invariable de una o más palabras
+  (véase una descripción más detallada en la sección
+  \ref{ss:multipalabras}.
+\item \texttt{selecc.php: } Es el módulo encargado de proporcionar la selección
+  del paradigma escogido para cada una de las dos palabras,
+  la palabra en lengua origen y la palabra en lengua meta. Proporciona una
+  lista de paradigmas para escoger que dependen del tipo gramatical
+  de la entrada que estamos creando. Cuando se selecciona un nuevo paradigma
+  para uno de los dos lemas, proporciona unos ejemplos de la flexión del
+  lema a inserir según el paradigma que hemos escogido. Si aceptamos los
+  paradigmas escogidos, el módulo llama a \textit{insertarPro.php} o \textit{insertar.php}
+  dependiendo de si el usuario que está haciendo la nueva
+  inserción está considerado como profesional o no profesional
+  respectivamente.
+\item \texttt{multip.php: } Tiene la misma función que el módulo
+  \textit{selecc.php} pero para las unidades multipalabra. Utiliza
+  las mismas variables y realiza las mismas operaciones, pero cuando
+  muestra los ejemplos lo hace flexionando el verbo y añadiendo todas las
+  palabras que forman la cola. La manera de funcionar del módulo es
+  análoga a la del módulo \textit{selecc.php} y su descripción
+  detallada la encontraremos en el apartado \ref{ss:fitxersphp}.
+\item \texttt{valida.php: } Este módulo se llama cuando un usuario
+  profesional decide validar palabras que están en la cola
+  de entradas pendientes de validación. Lee el fichero con la cola de palabras
+  por validar y lo recorre de una en una, coge los datos de la
+  entrada correspondiente (\textit{LRlem, RLlem, paradigmaLR,
+    paradigmaRL, LR, RL}, etc...) y llama a \textit{selecc.php} para
+  continuar con el proceso de inserción de esa entrada particular.
+\item \texttt{insertarPro.php: } Este módulo se llama cuando ya hemos
+  seleccionado el paradigma adecuado para la palabra en lengua origen
+  y en lengua meta (operación realizada en \textit{selecc.php}) y queremos
+  visualizar como quedará la entrada en el formato \texttt{XML}
+  de los tres diccionarios, monolingüe origen, bilingüe y monolingüe
+  meta. Desde esta pantalla se podrá modificar directamente el código
+  y finalmente aceptar la nueva entrada o cancelar la operación.
+\item \texttt{ins\_multip.php: } Tiene la misma función que
+  \textit{insertarPro.php} pero está pensado para las unidades
+  multipalabra, de forma que tiene un tratamiento especial con la entrada
+  para que el código \texttt{XML} que se insiere en los diccionarios sea
+  correcto.
+\item \texttt{insertar.php: } Es el módulo equivalente a \textit{insertarPro.php}
+  pero cuando la operación está realizándola un
+  usuario no profesional. Las acciones que se realizan en este caso son
+  mucho más sencillas puesto que la única cosa que se hace es inserir en
+  el fichero de términos pendientes de validar los lemas y los paradigmas
+  escogidos por el usuario no profesional, y quedan allí hasta que un
+  usuario profesional los valida.
+\item \texttt{verSemi.php: } Este módulo tiene la función de mostrar el
+  fichero con las entradas inseridas por usuarios no profesionales y que
+  están pendientes de ser validadas. Puede servir como ayuda para los
+  usuarios profesionales que antes de empezar a validar palabras quieran
+  comprobar cuáles están en la cola para validar. Para llamarlo
+  aparece un enlace en el formulario generado por \textit{selec.php} desde donde
+  se puede llamar esta funcionalidad.
+\item \texttt{paradigmas.xsl:} Hoja de estilos que se utiliza para
+  generar los ficheros de paradigmas con que trabajan los módulos del
+  formulario. Se utiliza con la especificación de los paradigmas de cada
+  lengua escrita en formato \texttt{XML}. Este punto se tratará más
+  extensamente en el apartado \textit{Ficheros de Paradigmas}.
+\item \texttt{creaparadigma.awk:} Fichero \texttt{awk} que también
+  se utiliza para generar los ficheros de paradigmas de trabajo.
+\item \texttt{gen\_paradig.sh:} Script que se puede usar si queremos
+  que automáticamente se generan los ficheros de paradigmas de todos los
+  pares de lenguas que tenemos instalados.
 \end{itemize}
 \end{itemize}
 
-L'especificació detallada de les tasques de cada mòdul es troba en les
-seccions corresponents.
+La especificación detallada de las tareas de cada módulo se encuentra en las
+secciones correspondientes.
 
-\subsection{Fitxers php}
+\subsection{Ficheros php}
 
 \subsubsection{resultado.php}
 
-Depenent del valor de la variable \texttt{\$nomtrad} actualitzada per
-\textit{index.php} el mòdul assigna els valor adequats a \texttt{\$LR}
-i \texttt{\$RL} (el tipus de llengua origen i llengua meta
-respectivament). Seguidament, depenent de la categoria gramatical de
-la paraula que s'inserirà, assignem el valor adequat a la variable
-\$tipus i cridem a \textit{selec.php} o \textit{multip.php} depenent
-de si es tracta d'una paraula simple o d'una unitat multi-paraula.
+Dependiendo del valor de la variable \texttt{\$nomtrad} actualizada por
+\textit{index.php} el módulo asigna los valor adecuados a \texttt{\$LR}
+y \texttt{\$RL} (la lengua origen y la lengua meta
+respectivamente). Seguidamente, dependiendo de la categoría gramatical de la
+palabra que se inserirá, asignamos el valor adecuado a la variable
+\$tipo y llamamos a \textit{selec.php} o \textit{multip.php} dependiendo
+de si se trata de una palabra simple o de una unidad multipalabra.
+\nota{MG: ``asignamos'' i ``llamamos'' no seria més aviat ``se asigna'' y ``se llama''?}
 
 \subsubsection{selecc.php}
 \label{ss:fitxersphp}
 
-Aquest mòdul té la funció de triar el paradigma corresponent a les
-paraules que volem introduir. Es tria el paradigma de la paraula en
-llengua origen i en llengua meta.
+Este módulo tiene la función de elegir el paradigma correspondiente a las
+palabras que queremos introducir. Se elige el paradigma de la palabra en
+lengua origen y en lengua meta.
 
-Depenent de la categoria gramatical de la paraula que estem
-introduint, s'assignen uns determinats valors a unes variables que
-darrerament s'utilitzaran, aquestes són
+En función de la categoría gramatical de la palabra que estamos
+introduciendo, se asignan unos determinados valores a unas variables que
+darrerament se utilizarán \nota{MG: vol dir ``que se utilizarán más adelante''?}, estas son
 \begin{itemize}
-\item \texttt{cadFich:} categoria gramatical del lema.
-\item \texttt{show:} cadena que es mostra al formulari indicant la
-  categoria gramatical de la paraula que està inserint-se.
-\item \texttt{tag:} cadena amb l'etiqueta \texttt{XML} d'eixida de
-  l'analitzador morfològic per a aquesta categoria gramatical.
-\item \texttt{tagout:} cadena amb el codi \texttt{XML} que indica la
-  categoria gramatical de la paraula. Esta cadena s'utilitzarà quan es
-  compose l'entrada final \texttt{XML} que s'inserirà al diccionari.
-\item \texttt{nota:} cadena amb possibles comentaris a inserir en el
-  codi \texttt{XML} de l'entrada.
+\item \texttt{cadFich:} categoría gramatical del lema.
+\item \texttt{show:} cadena que se muestra en el  formulario indicando la categoría
+  gramatical de la palabra que está inseriéndose.
+\item \texttt{tag:} cadena con la etiqueta \texttt{XML} de salida del
+  analizador morfológico para esta categoría gramatical.
+\item \texttt{tagout:} cadena con el código \texttt{XML} que indica la categoría
+  gramatical de la palabra. Esta cadena se utilizará cuando se
+  componga la entrada final \texttt{XML} que se inserirá en el diccionario.
+\item \texttt{nota:} cadena con posibles comentarios a inserir en
+  el código \texttt{XML} de la entrada.
 \end{itemize}
-Els formularis treballen amb 4 tipus de diccionaris:
+Los formularios trabajan con 4 tipos de diccionarios:
 \begin{itemize}
-\item \textit{Semiprofessionals}: Aquests contenen les paraules
-  inserides des del formulari per usuaris no professionals i que estan
-  pendents de validació. Acaben amb l'extensió "\textit{semi.dic}"
-\item \textit{Diccionaris del formulari}: Contenen les paraules que
-  han sigut inserides des del formulari per usuaris professionals i
-  també les que han estat validades des dels diccionaris
-  semiprofessionals. Acaben amb l'extensió "\textit{webform}".
-\item \textit{Finals}: Són els fitxers amb totes les entrades escrites
-  en codi \texttt{XML} . Aquests fitxers són els que utilitza
-  definitivament el traductor després de rebre un tractament adequat
-  de compilació. Acaben amb l'extensió "\textit{dix}".
-\item \textit{Finals compilats}: Després d'haver compilat els
-  diccionaris finals ja poden ser utilitzats pels binaris del
-  traductor. Acaben amb l'extensió "\textit{bin}"
-\end{itemize}
-
-Aquests diccionaris són utilitzats pels formularis i hi ha variables
-que contenen les rutes on es poden trobar. També es donen valors a les
-variables que mantenen les rutes on s'han de buscar els fitxers
-auxiliars i de configuració:
-\begin{itemize}
-\item \texttt{path:} ruta per als diccionaris temporals.
-\item \texttt{fich\_LR:} diccionari de la llengua origen de les
-  paraules inserides mitjançant el formulari i que encara no són al
-  diccionari final ni al diccionari compilat.
-\item \texttt{fich\_RL:} diccionari de la llengua meta de les paraules
-  inserides mitjançant el formulari i que encara no són al diccionari
-  final ni al diccionari compilat.
-\item \texttt{fich\_LRRL:} diccionari bilingüe de les paraules
-  inserides mitjançant el formulari i que encara no són al diccionari
-  final ni al diccionari compilat.
-\item \texttt{fich-semi:} entrades inserides mitjançant el formulari
-  per usuaris no professionals i que estan pendents de validació.
-\item \texttt{path\_paradigmasLR:} ruta dels fitxers amb els
-  paradigmes de flexió per a llengua origen.
-\item \texttt{path\_paradigmasRL:} ruta dels fitxers amb els
-  paradigmes de flexió per a llengua meta.
-\item \texttt{anmor:} ruta de l'analitzador morfològic.
-\item \texttt{aut\_LRRL:} ruta del binari morfològic de llengua origen
-  a llengua meta.
-\item \texttt{aut\_RLLR:} ruta del binari morfològic de llengua meta a
-  llengua origen.
+\item \textit{Semiprofesionales}: Estos contienen las palabras
+  inseridas desde el formulario por usuarios no profesionales y que están
+  pendientes de validación. Acaban con la extensión "\textit{semi.dic}"
+\item \textit{Diccionarios del formulario}: Contienen las palabras que
+  han sido inseridas desde el formulario por usuarios profesionales y también
+  las que han sido validades desde los diccionarios
+  semiprofesionales. Acaban con la extensión "\textit{webform}".
+\item \textit{Finales}: Son los ficheros con todas las entradas escritas
+  en código \texttt{XML} . Estos ficheros son los que utiliza
+  definitivamente el traductor después de recibir un tratamiento adecuado
+  de compilación. Acaban con la extensión "\textit{dix}".
+\item \textit{Finales compilados}: Después de haber compilado los
+  diccionarios finales ya pueden ser utilizados por los binarios del
+  traductor. Acaban con la extensión "\textit{bin}"
 \end{itemize}
 
-Seguidament s'insereix el codi html del que ha de fer depenent de
-l'acció seleccionada. Les accions que es produeixen per ordre
-seqüencial són les següents:
+Estos diccionarios son utilizados por los formularios y hay variables
+que contienen las rutas donde se pueden encontrar. También se dan valores a las
+variables que mantienen las rutas donde se tienen que buscar los ficheros
+auxiliares y de configuración:
+\begin{itemize}
+\item \texttt{path:} ruta para los diccionarios temporales.
+\item \texttt{fich\_LR:} diccionario de la lengua origen de las
+  palabras inseridas mediante el formulario y que todavía no están en el
+  diccionario final ni en el diccionario compilado.
+\item \texttt{fich\_RL:} diccionario de la lengua meta de las palabras
+  inseridas mediante el formulario y que todavía no están en el diccionario
+  final ni en el diccionario compilado.
+\item \texttt{fich\_LRRL:} diccionario bilingüe de las palabras
+  inseridas mediante el formulario y que todavía no están en el diccionario
+  final ni en el diccionario compilado.
+\item \texttt{fich-semi:} entradas inseridas mediante el formulario
+  por usuarios no profesionales y que están pendientes de validación.
+\item \texttt{path\_paradigmasLR:} ruta de los ficheros con los
+  paradigmas de flexión para la lengua origen.
+\item \texttt{path\_paradigmasRL:} ruta de los ficheros con los
+  paradigmas de flexión para la lengua meta.
+\item \texttt{anmor:} ruta del analizador morfológico.
+\item \texttt{aut\_LRRL:} ruta del binario morfológico de lengua origen
+  a lengua meta.\nota{MG: no serà ``binario bilingüe''?}
+\item \texttt{aut\_RLLR:} ruta del binario morfológico de lengua meta a lengua
+  origen.\nota{MG: ídem}
+\end{itemize}
+
+A continuación se insiere el código html de lo que hay que hacer según la
+acción seleccionada. Las acciones que se producen por orden
+secuencial son las siguientes:
 
 \begin{itemize}
-\item Comprova que el lema en llengua origen a inserir no hi siga ja
-  en els diccionaris de paraules inserides pel formulari. Si s'hagués
-  cridat a \texttt{selecc.php} des de la pantalla de validació de
-  paraules (\texttt{valida.php}) aleshores comprova que el lema no hi
-  siga ja en el fitxer de paraules inserides per usuaris no
-  professionals. També ho comprova en el diccionari complet final.
-\item Fa la mateixa comprovació corresponent per a la llengua meta.
-\item Seguidament s'escriu codi per a seleccionar restriccions del
-  sentit de la traducció.
-\item Es defineixen una sèrie de funcions que s'utilitzaran en la
-  generació d'exemples per als lemes quan triem el corresponent
-  paradigma. Aquestes son:
+\item Comprueba que el lema en lengua origen a inserir no esté ya
+  en los diccionarios de palabras inseridas por el formulario. Si se ha
+  llamado a \texttt{selecc.php} desde la pantalla de validación de palabras
+  (\texttt{valida.php}), entonces comprueba que el lema no 
+  esté ya en el fichero de palabras inseridas por usuarios no
+  profesionales. También lo comprueba en el diccionario completo final.
+\item Hace la misma comprobación correspondiente para la lengua meta.
+\item Seguidamente se escribe código para seleccionar restricciones del
+  sentido de la traducción.
+\item Se definen una serie de funciones que se utilizarán en la generación
+  de ejemplos para los lemas cuando elegimos el correspondiente
+  paradigma. Estas son:
   \begin{itemize}
   \item \texttt{esVocalFuerte}
   \item \texttt{esVocalDebil}
   \item \texttt{esVocal}
   \item \texttt{PosicioVocalTall}
   \end{itemize}
-  Aquestes funcions es descriuen més endavant en l'apartat
-  corresponent a \textit{insertarPro.php}.
-\item S'obri el fitxer de paradigmes per a mostrar una finestra de
-  selecció desplegable amb els paradigmes que podem triar per al lema
-  en llengua origen que estem tractant. Per a fer això s'ha de
-  comprovar seqüencialment els paradigmes corresponents a la categoria
-  gramatical del lema i comprovar que el paradigma es pot aplicar al
-  lema corresponent.
-\item Seguidament es fa el mateix però per als paradigmes del lema en
-  llengua meta.
-\item Amb els lemes i amb els paradigmes corresponents seleccionats,
-  s'han de generar els exemples de com quedaria la flexió d'eixos
-  lemes segons els paradigmes escollits. Per aconseguir això
-  necessitem per una banda l'arrel del lema (\texttt{raiz\_LR i
-    raiz\_RL}) i per altra les terminacions d'exemple per al paradigma
-  escollit (\texttt{paradigma\_LR i paradigma\_RL}), terminacions que
-  s'obtenen del fitxer de paradigmes. Finalment compon una cadena amb
-  els exemples generats (\texttt{ejemplos\_LR i ejemplos\_RL}) i els
-  mostra
-\item Si estem en aquesta pantalla perquè venim de validar paraules
-  (\texttt{valida=1}) aleshores afegeix al formulari un botó per a
-  eliminar l'entrada actual en cas que no volguérem validar-la i
-  inserir-la.
-\item Si l'usuari que ha entrat en aquesta pantalla és un usuari
-  reconegut com a professional, aleshores afegeix al formulari un botó
-  per a que eixe usuari puga triar l'opció de validar paraules
-  inserides per usuaris no professionals
-\item Finalment tenim el tractament de l'acció corresponent activada
-  al polsar un dels botons de confirmació que es mostren a la part
-  inferior del formulari. Si l'acció és \textit{"Delete"} , cosa que
-  sols pot ocórrer quan s'estan validant entrades, elimina l'entrada
-  corresponent del fitxer amb les entrades d'usuaris no professionals.
-  Sinó, l'acció és la de confirmar (botó \textit{"Go on"}), i cridem
-  al mòdul \texttt{insertarPro.php} o \texttt{insertar.php} depenent
-  de si l'usuari es professional o no professional respectivament.
-  Aquests mòduls s'encarreguen de fer l'inserció als diccionaris.
+  Estas funciones se describen más adelante en el apartado
+  correspondiente a \textit{insertarPro.php}.
+\item Se abre el fichero de paradigmas para mostrar una ventana de selección
+  desplegable con los paradigmas que podemos elegir para el lema
+  en lengua origen que estamos tratando. Para hacer esto se tienen que
+  comprobar secuencialmente los paradigmas correspondientes a la categoría
+  gramatical del lema y comprobar que el paradigma se puede aplicar al
+  lema correspondiente.
+\item A continuación se hace lo mismo pero para los paradigmas del lema en
+  lengua meta.
+\item Con los lemas y con los paradigmas correspondientes seleccionados,
+  se tienen que generar los ejemplos de cómo quedaría la flexión de esos
+  lemas según los paradigmas escogidos. Para conseguir esto
+  necesitamos, por un lado, la raíz del lema (\texttt{raiz\_LR y raiz\_RL})
+    y, por otro, las terminacions de ejemplo para el paradigma
+  escogido (\texttt{paradigma\_LR y paradigma\_RL}), terminaciones que
+  se obtienen del fichero de paradigmas. Finalmente se compone una cadena con
+  los ejemplos generados (\texttt{ejemplos\_LR y ejemplos\_RL}) y se
+  muestran.
+\item Si estamos en esta pantalla porque venimos de validar palabras
+  (\texttt{va\-li\-da=1}) entonces se añade al formulario un botón para
+  eliminar la entrada actual en caso de que no queramos validarla e
+  inserirla.
+\item Si el usuario que ha entrado en esta pantalla es un usuario
+  reconocido como profesional, entonces se añade al formulario un botón
+  para que ese usuario pueda elegir la opción de validar palabras
+  inseridas por usuarios no profesionales
+\item Finalmente tenemos el tratamiento de la acción correspondiente activada
+  al pulsar uno de los botones de confirmación que se muestran en la
+  parte inferior del formulario. Si la acción es \textit{"Delete"} , lo cual
+  sólo puede ocurrir cuando se están validando entradas, se elimina la entrada
+  correspondiente del fichero con las entradas de usuarios no profesionales.
+  Si la acción es la de confirmar (botón \textit{"Go on"}), se llama
+  al módulo \texttt{insertarPro.php} o \texttt{insertar.php} dependiendo
+  de si el usuario es profesional o no profesional respectivamente.
+  Estos módulos se encargan de hacer la inserción en los diccionarios.
 \end{itemize}
-Quan s'ha inserit la paraula, es torna a mostrar la pàgina de
-\texttt{validar.php} o de \texttt{selecc.php} depenent de si havíem
-entrat des d'un procediment de validació (i aleshores
-\textit{valida=1}) o des d'una inserció normal.
+Cuando se ha inserido la palabra, se vuelve a mostrar la página de \texttt{va\-li\-dar.php}
+o de \texttt{selecc.php} según si habíamos
+entrado desde un procedimiento de validación (y entonces
+\textit{valida=1}) o desde una inserción normal.
 
 \subsubsection{multip.php}
-El codi i el comportament d'aquest mòdul és el mateix que el de
-\textit{selecc.php}. L'única diferència és que aquest està pensat per
-a tractar les unitats multiparaula, mentre que \textit{selec.php}
-tracta la resta de unitats. Així, la diferència més evident es que
-tenim les variables \texttt{\$LRcua} i \texttt{\$RLcua} que contenen
-la cua invariable que va després de la part variable de la
-multi-paraula. Quan es mostren els exemples, a banda de mostrar la
-part variable flexionada segons el paradigma escollit, també es mostra
-un quadre de text modificable amb la cua invariable.
+El código y el comportamiento de este módulo es el mismo que el de \textit{selecc.php}.
+La única diferencia es que este está pensado para
+tratar las unidades multipalabra, mientras que \textit{selec.php}
+trata el resto de unidades. Así, la diferencia más evidente es que
+tenemos las variables \texttt{\$LRcua} y \texttt{\$RLcua} que contienen
+la cola invariable que va después de la parte variable de la
+multipalabra. Cuando se muestran los ejemplos, aparte de mostrar la parte
+variable flexionada según el paradigma escogido, también se muestra
+un cuadro de texto modificable con la cola invariable.
 
-Quan es premi el botó de seguir amb l'inserció de l'entrada als
-diccionaris, es crida al mòdul \textit{ins\_multip.php} en comptes de
-\textit{insertarPro.php}.
+Cuando se pulse el botón de seguir con la inserción de la entrada en los
+diccionarios, se llama al módulo \textit{ins\_multip.php} en vez de \textit{insertarPro.php}..
+
 
 \subsubsection{valida.php}
-Aquest mòdul és cridat quan un usuari professional polsa el botó
-"\textit{validate pairs}". El control passa a aquest mòdul que llegeix
-el diccionari d'entrades pendents de ser validades (\$fichSemi) del
-parell de llengües corresponent. Aleshores s'entra en un bucle que
-recorre aquest fitxer i va llegint les entrades una a una. Amb la
-informació de l'entrada particular dóna valor a una sèrie de variables
-que seran utilitzades en els mòduls que faran el tractament posterior,
-com ara:
+Este módulo es llamado cuando un usuario profesional pulsa el botón
+"\textit{validate pairs}". El control pasa a este módulo que lee
+el diccionario de entradas pendientes de ser validadas (\$fichSemi) del
+par de lenguas correspondiente. Entonces se entra en un bucle que
+recorre este fichero y va leyendo las entradas una a una. Con
+la información de la entrada particular da valor a una serie de variables
+que serán utilizadas en los módulos que harán el tratamiento posterior,
+como por ejemplo:
 \begin{center}
 % use packages: array
 \begin{tabular}{ll}
@@ -8620,105 +8627,105 @@ com ara:
 \end{tabular}
 \end{center}
 
-Una vegada establerts els valors adequats per a aquestes variables es
-cedeix el control a \textit{selec.php} que tracta l'entrada com si
-d'una inserció d'usuari professional es tractara. Després d'inserir
-les entrades als diccionaris mitjançant \textit{insertarPro.php}, el
-flux torna a \textit{valida.php} que continua amb la següent entrada
-per validar.
+Una vez establecidos los valores adecuados para estas variables se
+cede el control a \textit{selec.php} que trata la entrada como si
+de una inserción de usuario profesional se tratara. Después de inserir
+las entradas en los diccionarios mediante \textit{insertarPro.php}, el
+flujo vuelve a \textit{valida.php} que continúa con la siguiente entrada
+por validar.
 
-\subsubsection{insertarPro.php}
-Una vegada introduïts els lemes i seleccionats els paradigmes
-corresponents en \textit{selec.php}, aquest mòdul és l'encarregat de
-generar les corresponents entrades en codi \texttt{XML} i inserir-les
-als diccionaris monolingües i al bilingüe.
+\subsubsection{insertarPro.php} 
+Una vez introducidos los lemas y seleccionados los paradigmas
+correspondientes en \textit{selec.php}, este módulo es el encargado de generar
+las correspondientes entradas en código \texttt{XML} e inserirlas
+en los diccionarios monolingües y en el bilingüe.
 
-Realitza moltes operacions semblants a les realitzades en
-\textit{selec.php}, com ara generar els exemples de la paraula
-flexionada. Així primerament dóna valor a \texttt{cadFich, show, tag,
-  tagout, nota} depenent de la categoria gramatical (\texttt{\$tipus})
-de la paraula a inserir.  Assigna rutes a les variables de ubicació de
-fitxers i defineix unes funcions necessàries de igual manera a com
-ocorria en \textit{selec.php}.
+Realiza muchas operaciones parecidas a las realizadas en
+\textit{selec.php}, como por ejemplo generar los ejemplos de la palabra
+flexionada. Así primeramente da valor a \texttt{cadFich, show, tag,
+  tagout, nota} dependiendo de la categoría gramatical (\texttt{\$tipus})
+de la palabra a inserir.  Asigna rutas a las variables de ubicación de ficheros
+y define unas funciones necesarias de igual manera a como
+ocurría en \textit{selec.php}.
 \begin{itemize}
-\item \texttt{esVocalFuerte}: Retorna \textit{true} si la vocal és
-  forta, és a dir \textit{a, e, o}.
-\item \texttt{esVocalDebil}: Retorna \textit{true} si la vocal és
-  feble, és a dir \textit{a, e, o}.
-\item \texttt{esVocal}: Retorna \textit{true} si el caràcter que li
-  passem com argument és una vocal.
-\item \texttt{diptongo}: Retorna \textit{true} si les dues lletres que
-  se li passen com arguments formen diftong. Això ocorrerà sempre que
-  les dues vocals no siguin fortes.
-\item \texttt{acentuar}: Se li passa una cadena de text i l'accentua
-  seguint les regles del castellà en funció del parametre
+\item \texttt{esVocalFuerte}: Devuelve \textit{true} si la vocal es
+  fuerte, es decir \textit{a, e, o}.
+\item \texttt{esVocalDebil}: Devuelve \textit{true} si la vocal es
+  débil, es decir \textit{a, e, o}.\nota{MG: vol dir ``i, u''?}
+\item \texttt{esVocal}: Devuelve \textit{true} si el carácter que le pasamos
+  como argumento es una vocal.
+\item \texttt{diptongo}: Devuelve \textit{true} si las dos letras que
+  se le pasan como argumentos forman diptongo. Esto ocurrirá siempre que
+  las dos vocales no sean fuertes.
+\item \texttt{acentuar}: Se le pasa una cadena de texto y lo acentúa
+  siguiendo las reglas del castellano en función del parámetro
   \textit{\$siguienteletra}.
-\item \texttt{esMayuscula}: Retorna \textit{true} si el caràcter està
-  en majúscula.
-\item \texttt{TieneAcento}: Retorna \textit{true} si la cadena té
-  accent.
-\item \texttt{acentua}: Accentua l'última vocal accentuable d'una
-  paraula amb un accent tancat o obert depenent del sentit indicat en
-  el paràmetre \$sentit.
-\item \texttt{PonQuitaAcento}: Posa o lleva l'accent de la primera
-  cadena passada com argument en funció de si la segona cadena
-  argument té o no té accent.
-\item \texttt{PosicioVocalTall}: Torna la posició dins del lema
-  (\$lema) on es troba la vocal (\$vocal) que separa l'arrel de la
-  desinència. Busquem la vocal del final cap al principi i tornem la
-  primera ocurrència de \$vocal.
+\item \texttt{esMayuscula}: Devuelve \textit{true} si el carácter está
+  en mayúscula.
+\item \texttt{TieneAcento}: Devuelve \textit{true} si la cadena tiene
+  acento.
+\item \texttt{acentua}: Acentúa la última vocal accentuable de una
+  palabra con un acento cerrado o abierto dependiendo del sentido indicado en
+  el parámetro \$sentit.
+\item \texttt{PonQuitaAcento}: Pone o quita el acento de la primera
+  cadena pasada como argumento en función de si la segunda cadena
+  argumento tiene o no tiene acento.
+\item \texttt{PosicioVocalTall}: Devuelve la posición dentro del lema
+  (\$lema) donde se encuentra la vocal (\$vocal) que separa la raíz de la
+  desinencia. Se busca la vocal del final hacia el principio y se devuelve la primera
+  ocurrencia de \$vocal.
 \end{itemize}
 
-Ara es realitzen les mateixes operacions que en \textit{selec.php},
-comprova que l'entrada no hi siga ja als diccionaris i genera els
-exemples de la paraula flexionada amb el paradigma prèviament
-escollit.  Seguidament el que fem és construir la cadena amb el codi
-\texttt{XML} que va a inserirem al diccionari monolingüe de llengua
-origen. Amb la informació que disposem dels lemes provinent de
-\textit{selec.php}, es genera una cadena de text (\texttt{\$cad\_LR})
-que conté el codi \texttt{XML} per al diccionari monolingüe. Aquesta
-cadena es mostra en una finestra de text que pot ser modificada
-manualment. El mateix procés es repeteix per a generar la cadena
-corresponent al diccionari monolingüe de llengua meta
-(\texttt{\$cad\_RL}) i per al diccionari bilingüe
-(\texttt{\$cad\_bil}).  Seguidament, es concatena a aquestes variables
-de cadena els comentaris i el nom d'usuari que insereix l'entrada, si
-s'escau.  Finalment s'acaba de compondre la pantalla de formulari, amb
-botons d'acceptar, eliminar i tornar cap enrere.  El codi que fa el
-tractament de cadascuna de les possibles accions es troba al final del
-fitxer:
+Ahora se realizan las mismas operaciones que en \textit{selec.php}. Primero,
+comprueba que la entrada no esté ya en los diccionarios y genera los
+ejemplos de la palabra flexionada con el paradigma previamente
+escogido.  A continuación se construye la cadena con el código
+\texttt{XML} que va a inserirse en el diccionario monolingüe de lengua
+origen. Con la información que tenemos de los lemas proveniente de \textit{selec.php},
+se genera una cadena de texto (\texttt{\$cad\_LR})
+que contiene el código \texttt{XML} para el diccionario monolingüe. Esta
+cadena se muestra en una ventana de texto que puede ser modificada
+manualment. El mismo proceso se repite para generar la cadena
+correspondiente al diccionario monolingüe de lengua meta
+(\texttt{\$cad\_RL}) y para el diccionario bilingüe
+(\texttt{\$cad\_bil}).  Luego, se concatena a estas variables
+de cadena los comentarios y el nombre del usuario que insiere la entrada, si
+procede.  Finalmente se acaba de componer la pantalla de formulario, con
+botones de aceptar, eliminar y volver atrás.  El código que hace el
+tratamiento de cada una de las posibles acciones se encuentra al final del
+fichero:
 \begin{itemize}
-\item \texttt{Inserir: } En aquest cas, fa unes substitucions de
-  caràcters perquè l'entrada tinga el format adequat per als
-  diccionaris, i insereix les cadenes \texttt{\$cad\_LR, \$cad\_bil,
-    \$cad\_RL} als diccionaris monolingüe origen, bilingüe i
-  monolingüe meta respectivament (\texttt{\$fich\_LR, \$fich\_LRRL,
-    \$fich\_RL}). Si es produeix algun tipus d'error en inserir
-  l'entrada informa d'aquest fet amb una notificació per pantalla. Si
-  \textit{insertarPro.php} havia estat cridat des d'un procediment de
-  validació de paraules (\textit{\$valida=1}), aleshores insereix un
-  botó "\textit{Continue}" per a seguir validant paraules. En cas
-  contrari insereix un botó de tancar la finestra que ens permetrà
+\item \texttt{Inserir: } En este caso, hace unas sustituciones de caracteres
+  para que la entrada tenga el formato adecuado para los
+  diccionarios, e insiere las cadenas \texttt{\$cad\_LR, \$cad\_bil,
+    \$cad\_RL} en los diccionarios monolingüe origen, bilingüe y monolingüe
+  meta respectivamente (\texttt{\$fich\_LR, \$fich\_LRRL,
+    \$fich\_RL}). Si se produce algún tipo de error al inserir
+  la entrada, informa de este hecho con una notificación por pantalla. Si
+  \textit{insertarPro.php} había sido llamado desde un procedimiento de validación
+  de palabras (\textit{\$valida=1}), entonces insiere un
+  botón "\textit{Continue}" para seguir validando palabras. En
+  caso contrario insiere un botón de cerrar la ventana que nos permitirá
   acabar.
-\item  \texttt{Eliminar: } En aquest cas, elimina l'entrada del fitxer d'entrades pendents de validar.
+\item  \texttt{Eliminar: } En este caso, elimina la entrada del fichero de entradas pendientes de validar.
 \end{itemize}
 
 \subsubsection{ins\_multip.php}
 
-Realitza les mateixes operacions que \textit{insertarPro.php} però
-quan l'entrada a inserir és una unitat multi-paraula. La diferencia
-principal és que ara disposem de dues variables addicionals
-\texttt{\$LRcua} i \texttt{\$RLcua} que contenen la part invariable de
-la multi-paraula. Quan s'insereix l'entrada als diccionaris s'ha
-d'afegir aquesta cua al lloc convenient i convertir els espais en blanc
-per l'etiqueta de blanc \texttt{<b/>}.
+Realiza las mismas operaciones que \textit{insertarPro.php} pero
+cuando la entrada a inserir es una unidad multipalabra. La diferencia
+principal es que ahora disponemos de dos variables adicionales
+\texttt{\$LRcua} y \texttt{\$RLcua} que contienen la parte invariable de la
+multipalabra. Cuando se insiere la entrada en los diccionarios se tiene que añadir
+esta cola en el lugar conveniente y convertir los espacios en blanco
+por la etiqueta de blanco \texttt{<b/>}.
 
 \subsubsection{insertar.php}
 
-La funció d'aquest mòdul és molt senzilla. Compon una cadena de text
-amb la informació provinent de \textit{selec.php} separada per
-tabuladors. Aquesta cadena conté tota la informació necessària per a
-generar una entrada al diccionari:
+La función de este módulo es muy sencilla. Compone una cadena de texto
+con la información proveniente de \textit{selec.php} separada por
+tabuladores. Esta cadena contiene toda la información necesaria para
+generar una entrada de diccionario:
 
 \texttt{\$LRlem.\$RLlem.\$paradigmaLR.\$direccion.\$paradigmaRL.}
 
@@ -8727,19 +8734,19 @@ generar una entrada al diccionari:
 
  
 
-Aquesta entrada es guarda en un fitxer (\$fichSemi) que conté la cua
-amb les entrades pendents de validar inserides per usuaris no
-professionals. Quan un usuari considerat professional vulga validar
-entrades pendents, el mòdul \textit{valida.php} llegirà aquest mateix
-fitxer.
+Esta entrada se guarda en un fichero (\$fichSemi) que contiene la cola
+con las entradas pendientes de validar inseridas por usuarios no
+profesionales. Cuando un usuario considerado profesional quiera validar
+entradas pendientes, el módulo \textit{valida.php} leerá este mismo
+fichero.
 
 
 \subsubsection{verSemi.php}
-S'encarrega de mostrar per pantalla el fitxer d'entrades pendents de
-validació, i ho fa així: llegeix el fitxer amb les entrades
-(\textit{\$fichSemi}) i entra en un bucle que recorre totes les
-entrades que es troben al fitxer. Per a cadascuna d'elles mostra un
-línia amb la següent informació:
+Se encarga de mostrar por pantalla el fichero de entradas pendientes de validación,
+y lo hace así: lee el fichero con las entradas
+(\textit{\$fichSemi}) y entra en un bucle que recorre todas las
+entradas que se encuentran en el fichero. Para cada una de ellas muestra una
+línea con la siguiente información:
 
 \texttt{\$LRlem
 \$paradigmaLR
@@ -8750,63 +8757,63 @@ línia amb la següent informació:
 \$tipo
 \$comentarios}
 
-\subsection{Fitxers de diccionari}
+\subsection{Ficheros de diccionario}
 
-Els fitxers amb les entrades inserides des de el formulari es troben
-en \texttt{/dics}. Ací es troben dos tipus de fitxers:
+Los ficheros con las entradas inseridas desde el formulario se encuentran
+en \texttt{/dics}. Aquí se encuentran dos tipos de ficheros:
 
 \begin{itemize}
-\item \texttt{apertium-ll-rr.xx.webform}: El fitxer que conté entrades
-  en codi \texttt{XML} preparades per a ser copiades en els
-  diccionaris finals. El fitxer te el format mostrat, sent
-  \texttt{ll-rr} les inicials corresponents al traductor al que fa
-  referència eixe fitxer i \texttt{xx} les inicials a la llengua del
-  monolingüe al que fa referència o les inicials del bilingüe. Per
-  exemple, les inicials del traductor espanyol-català són
-  \texttt{es-ca}. Per aquest traductor tenim el monolingüe de espanyol
-  (\texttt{es}), el de català (\texttt{ca}) i el bilingüe
-  (\texttt{es-ca}) Així, en aquest directori tindrem els següents
-  fitxers per al traductor espanyol-català:
+\item \texttt{apertium-ll-rr.xx.webform}: El fichero que contiene entradas
+  en código \texttt{XML} preparadas para ser copiadas en los
+  diccionarios finales. El nombre del fichero tiene el formato mostrado, siendo
+  \texttt{ll-rr} las iniciales correspondientes al traductor al que hace
+  referencia el fichero y \texttt{xx} las iniciales de la lengua del
+  monolingüe al que hace referencia o las iniciales del bilingüe. Por
+  ejemplo, las iniciales del traductor español-catalán son
+  \texttt{es-ca}. Para este traductor tenemos el monolingüe de español
+  (\texttt{es}), el de catalán (\texttt{can}) y el bilingüe
+  (\texttt{es-ca}) Así, en este directorio tendremos los siguientes
+  ficheros para el traductor español-catalán:
 \begin{center}
 \texttt{apertium-es-ca.es.webform	apertium-es-ca.ca.webform	apertium-es-ca.es-ca.webform}
 \end{center}
 
 
-\item \texttt{oo-mm.semi.dic}: El fitxer que conté les entrades
-  pendents de ser validades d'un determinat traductor. \texttt{oo-mm}
-  són les inicials corresponents al traductor concret. Per exemple, el
-  traductor espanyol-català tindrà aquest fitxer per al
-  semi-professional: \texttt{es-ca.semi.dic}
+\item \texttt{oo-mm.semi.dic}: El fichero que contiene las entradas
+  pendientes de ser validadas de un determinado par de lenguas. \texttt{oo-mm}
+  son las iniciales correspondientes al par concreto. Por ejemplo, el
+  traductor español-catalán tendrá este fichero para el
+  semi-profesional: \texttt{es-ca.semi.dic}
 
 
 \end{itemize}
 
-\subsection{Fitxers de paradigmes}
+\subsection{Ficheros de paradigmas}
 
-Els paradigmes utilitzats per a cada parell de llengües s'especifiquen
-en dos arxius de format \texttt{XML} anomenats
-\texttt{paradig.ll-rr.xx.xml} on \texttt{xx} són les inicials
-corresponents a una llengua i \texttt{ll-rr} les inicials
-corresponents a un parell de llengües. Aquests arxius estan formats per un
-conjunt d'entrades corresponents a paradigmes o models de flexió de les paraules 
-d'una llengüa en concret. El fitxer \texttt{XML} es composa de les següents parts:
+Los paradigmas utilizados para cada par de lenguas se especifican
+en dos archivos de formato \texttt{XML} denominados
+\texttt{paradig.ll-rr.xx.xml} donde \texttt{xx} son las iniciales
+correspondientes a una lengua y \texttt{ll-rr} las iniciales
+correspondientes a un par de lenguas. Estos archivos están formados por
+un conjunto de entradas correspondientes a paradigmas o modelos de flexión de las palabras 
+de una lengua en concreto. El fichero \texttt{XML} se compone de las siguientes partes:
 \begin{itemize}
-\item Capçalera/Arrel del document d'especificació.\\
+\item Cabecera/Raíz del documento de especificación.\\
 \begin{alltt}
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <?xml-stylesheet type="text/xsl" href="paradigmas.xsl"?>
 <!DOCTYPE form SYSTEM "form.dtd">
 <form lang="oc" langpair="oc-ca">
 \end{alltt}
-  A l'atribut \textit{lang} estan les inicials de la llengua per a la
-  qual estan especificant-se paradigmes i a l'atribut
-  \textit{langpair} estan les inicials corresponents al parell de
-  llengües del traductor a què correspon el fitxer. Cal que
-  al mateix directori on estan els fitxers de paradigmes estiga
-  \texttt{form.dtd} on s'especifica la DTD que segueixen aquests
-  fitxers. Aquesta DTD està detallada a l'anexe \ref{ss:dtdparadigmes}. 
-\item Un conjunt d'elements que defineixen els paradigmes. Per a
-  explicar el format dels elements s'utilitzarà el següent exemple:
+  El atributo \textit{lang} indica las iniciales de la lengua para la cual
+  están especificándose paradigmas y el atributo
+  \textit{langpair} indica las iniciales correspondientes al par de lenguas
+  del traductor al que corresponde el fichero. Es necesario que
+  en el mismo directorio donde están los ficheros de paradigmas esté
+  \texttt{form.dtd}, donde se especifica la DTD que siguen estos
+  ficheros. Esta DTD está detallada en el anexo \ref{ss:dtdparadigmes}. 
+\item Un conjunto de elementos que definen los paradigmas. Para
+  explicar el formato de los elementos reproducimos este ejemplo:
   \\
 \begin{alltt}
 <entry PoS="adj" nbr="sg_pl" gen="mf">
@@ -8820,28 +8827,28 @@ d'una llengüa en concret. El fitxer \texttt{XML} es composa de les següents part
         </paradigms>
 </entry>
 \end{alltt}
-  Cada paradigma està especificat en un element \texttt{<entry>}.
-  Aquest element pot tenir tres atributs:
+  Cada paradigma está especificado en un elemento \texttt{<entry>}.
+  Este elemento puede tener tres atributos:
   \begin{itemize}
-  \item \textit{PoS}: la categoria gramatical del paradigma. Pot
-    prendre els valors: acr, adj, adv, noun, pname, pr, verb. Aquest
-    és obligatori per a qualsevol categoria gramatical.
-  \item \textit{nbr}: els nombres admesos pel paradigma. Pot tenir
-    els valors: sg, pl, sg\_pl, sp.
-  \item \textit{gen}: els gèneres admesos pel paradigma. Pot tenir
-    els valors: m, f, m f, mf.
+  \item \textit{PoS}: la categoría gramatical del paradigma. Puede
+    tomar los valores: acr, adj, adv, noun, pname, pr, verbo. \nota{faltaria cnjadv?} Es
+    obligatorio para cualquier categoría gramatical.
+  \item \textit{nbr}: los números admitidos por el paradigma. Puede tener
+    los valores: sg, pl, sg\_pl, sp.
+  \item \textit{gen}: los géneros admitidos por el paradigma. Puede tener
+    los valores: m, f, m f, mf.
   \end {itemize}
-  A més, està format per dos elements:
+  Además, está formado por dos elementos:
   \begin{itemize}
-  \item \texttt{endings}: l'arrel i les terminacions utilitzades per a
-    seleccionar el paradigma al formulari i mostrar els exemples de
-    flexió.
-  \item \texttt{paradigms}: especificació del paradigma o
-    paradigmes que defineixen la flexió seguida per una entrada en concret.
-    Necessita de l'atribut \textit{howmany} que indica el nombre de
-    paradigmes que utilitza l'entrada. Per a cadascun dels
-    paradigmes utilitzats hi ha una línia que especifica el nom del
-    paradigma del diccionari, i que té el següent format:
+  \item \texttt{endings}: la raíz y las terminacions utilizadas para
+    seleccionar el paradigma en el formulario y mostrar los ejemplos de flexión.
+    
+  \item \texttt{paradigms}: especificación del paradigma o paradigmas
+    que definen la flexión seguida por una entrada en concreto.
+    Necesita del atributo \textit{howmany} que indica el número de paradigmas
+    que utiliza la entrada. Para cada uno de los
+    paradigmas utilizados hay una línea que especifica el nombre del
+    paradigma del diccionario, y que tiene el siguiente formato:
     \begin{center}
 \begin{alltt}
 <par n="long\_\_adj"/>
@@ -8850,92 +8857,92 @@ d'una llengüa en concret. El fitxer \texttt{XML} es composa de les següents part
   \end {itemize}
 \end {itemize}
 
-A partir del fitxer de paradigmes escrit en \texttt{XML}, s'han de
-generar els fitxers amb els que directament treballen els mòduls dels
-formularis. Si s'executa el script \texttt{/private/gen\_paradig.sh}
-el procés es realitza automàticament per a tots els parells de
-llengües de què disposem:
+A partir del fichero de paradigmas escrito en \texttt{XML}, se tienen que
+generar los ficheros con los que directamente trabajan los módulos de los
+formularios. Si se ejecuta el script \texttt{/private/gen\_paradig.sh}
+el proceso se realiza automáticamente para todos los pares de lenguas
+de que disponemos:
 \begin{alltt}
    #  cd private
    #  ./gen\_paradig.sh
 \end{alltt}
-Per a inserir un nou paradigma als formularis, cal
-preparar l'entrada corresponent al fitxer de paradigmes en format
-\texttt{XML} i després actualitzar els arxius de treball amb l'ordre
+Para añadir un nuevo paradigma a los formularios, debe
+prepararse la entrada correspondiente en el fichero de paradigmas en formato
+\texttt{XML} y después actualizar los archivos de trabajo con la orden
 anterior.
 
-El procés automatitzat també es pot realitzar de forma manual si no
-volem actualitzar els fitxers de tots els parells de llengües que
-tenim instal·lats. La generació manual dels arxius de
-treball, es fa amb un full d'estil \texttt{XSL} mitjançant
-aquesta ordre:
+El proceso automatizado también se puede realizar de forma manual si no
+queremos actualizar los ficheros de todos los pares de lenguas que
+tenemos instalados. La generación manual de los archivos de trabajo
+se hace con una hoja de estilo \texttt{XSL} mediante
+esta orden:
 \begin{alltt}
-   #  xsltproc paradigmas.xsl fitxer\_de\_paradigmes.xml 
+   #  xsltproc paradigmas.xsl fichero\_de\_paradigmas.xml 
                                      | ./creaparadig.awk
 \end{alltt}
 
-Aquesta acció genera un fitxer de treball per a cada categoria
-gramatical. Els fitxers generats es troben en els directoris \texttt{/private/paradigmas.ll-rr}.
-Cada directori conté fitxers amb els paradigmes que es poden utilitzar
-per a cada parell de llengües \texttt{ll-rr} i per a cada component gramatical.
-Cadascun d'aquests directori conté els fitxers següents:
+Esta acción genera un fichero de trabajo para cada categoría
+gramatical. Los ficheros generados se encuentran en los directorios \texttt{/private/paradigmas.ll-rr}.
+Cada directorio contiene ficheros con los paradigmas que se pueden utilizar
+para cada par de lenguas \texttt{ll-rr} y para cada componente gramatical.
+Cada uno de estos directorio contiene los ficheros siguientes:
 \begin{itemize}
-\item \texttt{paradigacr\_xx}: paradigmes per acrònims de la llengua
+\item \texttt{paradigacr\_xx}: paradigmas para acrónimos de la lengua
   \texttt{xx}.
-\item \texttt{paradigadj\_xx}: paradigmes per adjectius de la llengua
+\item \texttt{paradigadj\_xx}: paradigmas para adjetivos de la lengua
   \texttt{xx}.
-\item \texttt{paradigadv\_xx}: paradigmes per adverbis de la llengua
+\item \texttt{paradigadv\_xx}: paradigmas para adverbios de la lengua
   \texttt{xx}.
-\item \texttt{paradigcnjadv\_xx}: paradigmes per a conjuncions
-  adverbials de la llengua \texttt{xx}.
-\item \texttt{paradigcnjcoo\_xx}: paradigmes per a conjuncions
-  copulatives de la llengua \texttt{xx}.
-\item \texttt{paradigcnjsub\_xx}: paradigmes per a conjuncions
-  subordinades de la llengua \texttt{xx}.
-\item \texttt{paradignoun\_xx}: paradigmes per a noms de la llengua
+\item \texttt{paradigcnjadv\_xx}: paradigmas para conjunciones
+  adverbiales de la lengua \texttt{xx}.
+\item \texttt{paradigcnjcoo\_xx}: paradigmas para conjunciones
+  copulativas de la lengua \texttt{xx}.\nota{MG: aquesta no està en la pàgina web del formulari}
+\item \texttt{paradigcnjsub\_xx}: paradigmas para conjunciones
+  subordinadas de la lengua \texttt{xx}.\nota{ídem}
+\item \texttt{paradignoun\_xx}: paradigmas para nombres de la lengua
   \texttt{xx}.
-\item \texttt{paradigpname\_xx}: paradigmes per a noms propis de la
-  llengua \texttt{xx}.
-\item \texttt{paradigpr\_xx}: paradigmes per a preposicions de la
-  llengua \texttt{xx}.
-\item \texttt{paradigverb\_xx}: paradigmes per a verbs de la llengua
+\item \texttt{paradigpname\_xx}: paradigmas para nombres propios de la
+  lengua \texttt{xx}.
+\item \texttt{paradigpr\_xx}: paradigmas para preposiciones de la
+  lengua \texttt{xx}.
+\item \texttt{paradigverb\_xx}: paradigmas para verbos de la lengua
   \texttt{xx}.
 \end{itemize}
 
-Els fitxers estan composts per una entrada per línia. Cada entrada
-conté la informació següent:
+Los ficheros están compuestos por una entrada por línea. Cada entrada
+contiene la información siguiente:
 
 \begin{center}
-% use packages: array
+% uso packages: array
 \begin{tabular}{lllll}
-\textit{exemples} & \textit{nombre de paradigmes} & \textit{paradigmes\_model} & \textit{(nombres)} & \textit{(gèneres)}
+\textit{ejemplos} & \textit{número de paradigmas} & \textit{paradigmas\_modelo} & \textit{(números)} & \textit{(géneros)}
 \end{tabular}
 \end{center}
 
 
-El separador utilitzat per a les diferents parts de l'entrada es el
+El separador utilizado para las diferentes partes de la entrada es el
 tabulador.
 \begin{itemize}
-\item \textit{Exemples}: són les terminacions que s'utilitzaran per a
-  generar els exemples quan escollim aquest paradigma com a prototip
-  per a una determinada paraula a inserir.
-\item \textit{Nombre de paradigmes}: és el nombre de paradigmes del
-  diccionari que s'utilitzaran per a flexionar adequadament aquest
-  model de flexió en particular.
-\item \textit{Paradigmes model}: és el nom del paradigma o paradigmes
-  que estan al diccionari i que són els que s'utilitzaran per a
-  flexionar la nova entrada.
-\item \textit{(Nombres)}: Només es posa en el cas de noms, adjectius i
-  acrònims. Fa referència al nombre del paradigma.
-\item \textit{(Gèneres)}: Només es posa en el cas de noms, adjectius i
-  acrònims. Fa referència al gènere del paradigma.
+\item \textit{Ejemplos}: son las terminacions que se utilizarán para
+  generar los ejemplos cuando escogemos este paradigma como prototipo
+  para una determinada palabra a inserir.
+\item \textit{Número de paradigmas}: es el número de paradigmas del
+  diccionario que se utilizarán para flexionar adecuadamente este
+  modelo de flexión en particular.
+\item \textit{Paradigmas modelo}: es el nombre del paradigma o paradigmas
+  que están en el diccionario y que son los que se utilizarán para
+  flexionar la nueva entrada.
+\item \textit{(Números)}: Sólo se pone en el caso de nombres, adjetivos y acrónimos.
+  Hace referencia al número del paradigma.
+\item \textit{(Géneros)}: Sólo se pone en el caso de nombres, adjetivos y acrónimos.
+  Hace referencia al género del paradigma.
 \end{itemize}
 
-Així per exemple, al traductor espanyol-català tindríem el directori  \texttt{/private\-/paradigmas.es-ca} 
-on trobaríem dos fitxers \texttt{XML}: \texttt{paradig.es-ca.es.xml}
-i \texttt{paradig.es-ca.ca.xml} amb l'especificació dels paradigmes
-utilitzats en cada llengua. A partir d'aquests fitxers es poden generar tots 
-els fitxers de paradigmes per un parell de llengües concret amb l'ordre:
+Así por ejemplo, en el traductor español-catalán tendríamos el directorio  \texttt{/private\-/paradigmas.es-ca} 
+donde encontraríamos dos ficheros \texttt{XML}: \texttt{paradig.es-ca.es.xml}
+y \texttt{paradig.es-ca.ca.xml} con la especificación de los paradigmas
+utilizados en cada lengua. A partir de estos ficheros se pueden generar todos 
+los ficheros de paradigmas para un par de lenguas concreto con la orden:
 \begin{alltt}
    #  cd private/paradigmas.es-ca
    #  xsltproc ../paradigmas.xsl paradig.es-ca.es.xml 
@@ -8944,19 +8951,20 @@ els fitxers de paradigmes per un parell de llengües concret amb l'ordre:
                                     | ../creaparadig.awk
 \end{alltt}
 
-O bé, es poden generar automàticament per a tots els parells de llengües amb:
+
+O bien, se pueden generar automáticamente para todos los pares de lenguas con:
 \begin{alltt}
    #  ./private/gen\_paradig.sh
 \end{alltt}
 
-Entre els fitxers de treball generats hi hauria un anomenat \texttt{paradigverb\_ca} que conté
-els possibles paradigmes de verbs per al català, on una possible línia seria la següent:
+Entre los ficheros de trabajo generados, habría uno, por ejemplo, denominado \texttt{paradigverb\_ca} que contendría
+los posibles paradigmas de verbos para el catalán, donde una posible línea sería la siguiente:
 
 \begin{center}
 \texttt{abra/çar /ço /ci        1       abalan/çar\_\_vblex}
 \end{center}
 
-que deriva de l'entrada en \texttt{XML}:
+que deriva de la entrada en \texttt{XML}:
 
 \begin{alltt}
 <entry PoS="verb">
@@ -8972,122 +8980,126 @@ que deriva de l'entrada en \texttt{XML}:
 </entry>
 \end{alltt}
 
-\section{Utilització dels formularis}
+
+
+\section{Utilización de los formularios}
 \label{ss:formus}
-\subsection{Introducció}
+\subsection{Introducción}
 
-\notavisible{Intentar evitar el llenguatge sexista en tot el document:
-\emph{usuari}, etc.}
-Quan la persona usuària vulga inserir noves entrades a un diccionari ha de connectar-se mitjançant un client navegador a l'adreça on s'haja instal·lat el servidor de
- formularis, per exemple:
+\notavisible{ATENCIÓN, TEXTO TRADUCIDO AUTOMÁTICAMENTE, PENDIENTE DE REVISIÓN}
+
+\nota{Intentar evitar el lenguaje sexista en todo el documento:
+\emph{usuario}, etc.}
+Cuando la persona usuaria quiera inserir nuevas entradas a un diccionario tiene que conectarse mediante un cliente navegador a la dirección donde se haya instalado el servidor de formularios,
+ por ejemplo:
 \begin{center}
-\texttt{http://xixona.dlsi.ua.es/forms}
+\texttt{http://xixona.dlsi.ua.se/forms}
 \end{center}
-S'obrirà una pàgina web amb el portal d'entrada a \texttt{Opentrad\- Apertium\- Insertion\- Form}. En el marc de l'esquerra hi ha enllaços per a obtenir més \textit{informació} , \textit{descarregar} els programes i \textit{contacte} per a sol·licitar
-incriure's com a usuari del sistema. Per a inscriure's com a usuari cal enviar un correu electrònic al
-\emph{webmaster} encarregat dels formularis.
+Se abrirá una página web con el portal de entrada a \texttt{Opentrad\- Apertium\- Insertion\- Form}. En el marco de la izquierda hay enllaços para obtener más \textit{información} , \textit{descargar} los programas y \textit{contacto} para solicitar
+incriure's como usuario del sistema. Para inscribirse como usuario hace falta enviar un correo electrónico al
+\emph{webmaster} encargado de los formularios.
 
-\notavisible{Canviar a tot arreu \emph{registrar} per \emph{inscriure}.}
-Per a inserir noves paraules, s'omplirà el formulari amb les dades corresponents i
-es polsarà el botó \textit{'Go On'}; en aquest moment caldrà identificar-s'hi com a usuari
-inscrit o no es podrà continuar amb el procediment d'inserir paraules. Quan
-una persona s'inscriu es pot escriure de dues maneres: com a
-\emph{professional} o com a \emph{no professional}. Cada modalitat té unes habilitacions
-diferents, que s'explicaran en apartats següents.
+\notavisible{Cambiar en todas partes \emph{registrar} por \emph{inscribir}.}
+Para inserir nuevas palabras, se llenará el formulario con los datos correspondientes y se
+polsarà el botón \textit{'Go Dónde'}; en este momento hará falta identificarse como usuario
+inscrito o no se podrá continuar con el procedimiento de inserir palabras. Cuando
+una persona se inscribe se puede escribir de dos maneras: como
+\emph{profesional} o como \emph{no profesional}. Cada modalidad tiene unas habilitacions
+diferentes, que se explicarán en apartados siguientes.
 
-\subsection{Inserció d'entrades}
+\subsection{Inserción de entradas}
 
-\subsubsection{Perfil professional}
+\subsubsection{Perfil profesional}
 
-Quan es vol inserir una nova entrada als diccionaris cal dirigir-se a
-l'apartat corresponent al parell de llengües que es vulga ampliar. Aleshores
-s'especifica el lema en llengua origen i en llengua meta i es tria la
-categoria gramatical de les entrades que s'inseriran. Seguidament, es polsa el
-botó \textit{Go on} per a seguir amb el procés d'inserció.
+Cuando se quiere inserir una nueva entrada a los diccionarios hace falta dirigirse al
+apartado correspondiente al par de lenguas que se quiera ampliar. Entonces
+se especifica el lema en lengua origen y en lengua meta y se elige la categoría
+gramatical de las entradas que se inseriran. Seguidament, se polsa el
+botón \textit{Go donde} para seguir con el proceso de inserción.
 
-En aquest punt apareix una nova finestra on mostra els lemes i uns
-paràmetres que caracteritzen la nova entrada al diccionari. Si l'entrada ja
-hi és en algun dels diccionaris, s'avisarà a la persona usuària i el sistema
-automàticament escollirà sentit unidireccional (d'esquerra a dreta o a
-l'inrevés). Si no és en cap, triarà doble sentit de traducció. 
+En este punto aparece una nueva ventana donde muestra los lemas y unos
+parámetros que caracterizan la nueva entrada al diccionario. Si la entrada ya
+ es en alguno de los diccionarios, se avisará a la persona usuaria y el sistema
+automáticamente escogerá sentido unidireccional (de izquierda a derecha o a la
+inrevés). Si no es en ninguno, elegirá doble sentido de traducción. 
 
-En aquesta
-nova finestra es poden fer estes tres accions, si s'escau:
+En esta
+nueva ventana se pueden hacer estas tres acciones, si se escau:
 
 
-\notavisible{Cal repassar la primera oració del paràgraf següent; sembla que
-hi ha algun material que hauria de ser esborrat; Una altra cosa, els
-formularis en l'actualitat no tenen suport per a traduccions múltiples,
-segons sembla. Caldria fer constar aquesta circumstància en algun lloc.}
+\notavisible{Hace falta repasar la primera oración del párrafo siguiente; parece que
+hay algún material que tendría que ser borrado; Otra cosa, los
+formularios en la actualidad no tienen apoyo para traducciones múltiples,
+según parece. Haría falta hacer constar esta circunstancia en algún lugar.}
 \begin{itemize}
-\item Escollir el paradigma corresponent per al lema en llengua origen
-   i també en llengua meta (aquesta acció és obligatòria, la resta
-  no).\footnote{Escollir el paradigma és un procés amb el que s'ha
-    d'anar amb molta cura. Cal triar el paradigma exacte que descriu
-    el comportament del lema que estem inserint. En el cas
-    d'adjectius, noms i acrònims, cal escollir el paradigma que
-    s'ajusti a la flexió desitjada i també als gèneres admesos. En el
-    cas d'acrònims cal fixar-se en el gènere i nombre que admeteix
-    cada paradigma dels que podem escollir; per exemple BBC serveix
-    per a acrònims femenins singulars i SA per a acrònims femenins que
-    admeteixen plural). En el cas de noms propis cal escollir el
-    paradigma corresponent depenent de si es tracta d'un nom propi de
-    cosa (un diari), de persona o de lloc.}
-\item Escollir la direcció de traducció de l'entrada si és diferent de
-  la proposada automàticament.
-\item Afegir comentaris en l'entrada que quedaran al diccionari final.
+\item Escoger el paradigma correspondiente para el lema en lengua origen
+   y también en lengua meta (esta acción es obligatoria, el resto
+  no).footnote/*footnote{Escoger el paradigma es un proceso con el que se tiene que ir
+    con mucha cura. Hace falta elegir el paradigma exacto que describe
+    el comportamiento del lema que estamos inserint. En
+    el caso de adjetivos, nombres y acrònims, hace falta escoger el paradigma que
+    se ajuste a la flexió deseada y también a los géneros admitidos. En
+    el caso de acrònims hace falta fijarse en el género y número que admeteix
+    cada paradigma de los que podemos escoger; por ejemplo BBC sirve
+    para acrònims femeninos singulares y SANO para acrònims femeninos que
+    admeteixen plural). En el caso de nombres propios hace falta escoger el
+    paradigma correspondiente dependiente de si se trata de un nombre propio de cosa
+    (un diario), de persona o de lugar.}
+\item Escoger la dirección de traducción de la entrada si es diferente de la
+  propuesta automáticamente.
+\item Añadir comentarios en la entrada que quedarán al diccionario final.
 \end{itemize}
 
-Una vegada hem fet les operacions corresponents, polsem el botó
-\textit{'Go on'} si volem confirmar l'entrada o \textit{'Close'} si
-senzillament volem cancelar l'operació d'inserció.
+Una vez hemos hecho las operaciones correspondientes, polsem el botón
+\textit{'Go donde'} si queremos confirmar la entrada o \textit{'Close'} si
+sencillamente queremos cancelar la operación de inserción.
 
-La següent i última pantalla que se'ns mostra conté les tres entrades
-en format \texttt{XML} generades per als diccionaris monolingüe
-llengua origen, bilingüe i monolingüe llengua meta. Aquestes entrades
-es mostren en tres finestres de text i es poden editar per si cal fer
-alguna modificació. Una vegada revisades les entrades, polsarem el
-botó \textit{'Insert'} per a inserir-les definitivament als
-diccionaris corresponents. També tenim la possibilitat de polsar el
-botó \textit{'Go back'} en cas que volguérem tornar al pas anterior.
+La siguiente y última pantalla que se nos muestra contiene las tres entradas
+en formato \texttt{XML} generadas para los diccionarios monolingüe
+lengua origen, bilingüe y monolingüe lengua meta. Estas entradas
+se muestran en tres ventanas de texto y se pueden editar por si hace falta hacer
+alguna modificación. Una vez revisadas las entradas, polsarem el
+botón \textit{'Insert'} para inserir-las definitivamente a los
+diccionarios correspondientes. También tenemos la posibilidad de polsar el
+botón \textit{'Go back'} en caso de que quisimos volver al paso anterior.
 
-\subsubsection{Usuari no professional}
+\subsubsection{Usuario no profesional}
 
-Quan un usuari entra al sistema d'inserció com a usuari no
-professional, el procediment d'inserció de paraules és el mateix que
-per a l'usuari professional, però les entrades inserides no es guarden
-als diccionaris generats pels formularis sinó que queden en una cua
-d'entrades pendents de validació. Per inserir les paraules d'aquesta
-cua als diccionaris cal que un usuari professional les valide.
+Cuando un usuario entra al sistema de inserción como usuario no
+profesional, el procedimiento de inserción de palabras es el mismo que
+para el usuario profesional, pero las entradas inserides no se guardan
+a los diccionarios generados por los formularios sino que quedan en una cola
+de entradas pendientes de validació. Por inserir las palabras de esta
+cola a los diccionarios hace falta que un usuario profesional las valide.
 
-\subsection{Validació d'entrades pendents d'aprovació}
+\subsection{Validació de entradas pendientes de aprobación}
 
-Els usuaris professionals, en la pantalla on s'escull el paradigma
-dels lemes inserits, tenen dos enllaços addicionals:
+Los usuarios profesionales, en la pantalla donde se escoge el paradigma
+de los lemas inserits, tienen dos enllaços adicionales:
 \begin{itemize}
-\item \textit{See pairs to be validated}: Ací obrirem una finestra on
-  podrem veure el contingut del fitxer amb les paraules que estan
-  pendents de validació; paraules que hauran estat inserides per
-  usuaris no professionals. Aquesta finestra és merament informativa i
-  es tanca polsant el botó \textit{'Close'}.
-\item \textit{Validate pairs}: Aquesta opció permet a un usuari
-  professional validar una a una les entrades pendents. Quan polsem
-  este botó, s'obri la finestra de selecció de paradigmes que s'ha
-  vist en l'apartat d'inserció de noves paraules. Esta finestra es
-  mostra amb les dades que havia escollit l'usuari que havia afegit
-  eixa entrada. Ara, l'usuari professional podrà modificar els lemes,
-  esborrar l'entrada (botó \textit{'Delete'}) o seguir amb el procés
-  d'inserció. Si segueix amb l'inserció de l'entrada, el procés és el
-  mateix que en una inserció normal, sols que quan l'entrada queda
-  definitivament afegida als diccionaris de formulari el control torna
-  a mostrar la següent entrada a validar de la cua
+\item \textit{See pairs tono be validated}: Aquí abriremos una ventana donde
+  podremos ver el contenido del fichero con las palabras que están
+  pendientes de validació; palabras que habrán sido inserides por
+  usuarios no profesionales. Esta ventana es meramente informativa y se
+  cierra polsant el botón \textit{'Close'}.
+\item \textit{Validate pairs}: Esta opción permite a un usuario
+  profesional validar una a una las entradas pendientes. Cuando polsem
+  este botón, se abre la ventana de selección de paradigmas que se ha
+  visto en el apartado de inserción de nuevas palabras. Esta ventana se
+  muestra con los datos que había escogido el usuario que había añadido
+  esa entrada. Ahora, el usuario profesional podrá modificar los lemas,
+  borrar la entrada (botón \textit{'Delete'}) o seguir con el proceso
+  de inserción. Si sigue con la inserción de la entrada, el proceso es el
+  mismo que en una inserción normal, sólo que cuando la entrada queda
+  definitivamente añadida a los diccionarios de formulario el control vuelve
+  a mostrar la siguiente entrada a validar de la cola
 
-Aquest procés és repeteix fins que es validen totes les paraules de la cua o finalitzem el procés en polsar el botó \textit{'Close'}.
+Este proceso es repite hasta que se validen todas las palabras de la cola o finalizamos el proceso en polsar el botón \textit{'Close'}.
 
 \end {itemize}
 
 
-\notavisible{FIN DEL TEXTO EN CATALÁN, PENDIENTE DE TRADUCCIÓN}
+\notavisible{FIN DEL TEXTO TRADUCIDO AUTOMÁTICAMENTE, PENDIENTE DE REVISIÓN}
 
 \newpage
 \appendix
