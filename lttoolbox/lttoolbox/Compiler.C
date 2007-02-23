@@ -658,7 +658,7 @@ Compiler::procEntry()
     else if(name == "#text" && allBlanks())
     {
     }
-    else if(name == "#comment)
+    else if(name == "#comment")
     {
       // skip
     }
