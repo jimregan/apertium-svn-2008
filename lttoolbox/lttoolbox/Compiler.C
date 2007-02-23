@@ -658,6 +658,10 @@ Compiler::procEntry()
     else if(name == "#text" && allBlanks())
     {
     }
+    else if(name == "#comment)
+    {
+      // skip
+    }
     else
     {
       cerr << "Error (" << xmlTextReaderGetParserLineNumber(reader);
