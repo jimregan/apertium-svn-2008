@@ -304,13 +304,16 @@ Compiler::readString(list<string> &result, string const &name)
 void
 Compiler::skipBlanks(string &name)
 {
-  if(name == "#text")
+  if(name == "#text" || name == "#comment")
   {
-    if(!allBlanks())
+    if(name != "#comment")
     {
-      cerr << "Error (" << xmlTextReaderGetParserLineNumber(reader); 
-      cerr << "): Invalid construction." << endl;
-      exit(EXIT_FAILURE);
+      if(!allBlanks())
+      {
+        cerr << "Error (" << xmlTextReaderGetParserLineNumber(reader); 
+        cerr << "): Invalid construction." << endl;
+        exit(EXIT_FAILURE);
+      }
     }
     xmlTextReaderRead(reader);
     name = latin1(xmlTextReaderConstName(reader));
@@ -323,13 +326,16 @@ Compiler::skip(string &name, string const &elem)
   xmlTextReaderRead(reader);
   name = latin1(xmlTextReaderConstName(reader));
   
-  if(name == "#text")
+  while(name == "#text" || name == "#comment")
   {
-    if(!allBlanks())
+    if(name != "#comment")
     {
-      cerr << "Error (" << xmlTextReaderGetParserLineNumber(reader);
-      cerr << "): Invalid construction." << endl;
-      exit(EXIT_FAILURE);
+      if(!allBlanks())
+      {
+        cerr << "Error (" << xmlTextReaderGetParserLineNumber(reader);
+        cerr << "): Invalid construction." << endl;
+        exit(EXIT_FAILURE);
+      }
     }
     xmlTextReaderRead(reader);
     name = latin1(xmlTextReaderConstName(reader));
