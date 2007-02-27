@@ -132,7 +132,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
            $(BASENAME).$(LANG2).tsx $(BASENAME).trules-$(PREFIX1).xml \
            $(BASENAME).trules-$(PREFIX2).xml $(PREFIX1).prob $(PREFIX2).prob \
-           buscaPar.xsl principal.xsl \
+           buscaPar.xsl principal.xsl apertium-fr-es.fr.metadix \
            $(PREFIX1).lextor $(PREFIX2).lextor \
            $(PREFIX1)-supervised.make $(PREFIX1)-unsupervised.make \
            $(PREFIX2)-supervised.make $(PREFIX2)-unsupervised.make \
@@ -142,7 +142,12 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
            $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
            modes.xml
-           	            	            	            	            	            	  	 
+
+apertium-fr-es.fr.dix: apertium-fr-es.fr.metadix
+	@xsltproc buscaPar.xsl apertium-fr-es.fr.metadix | uniq > $$gen.xsl
+	@xsltproc $$gen.xsl apertium-fr-es.fr.metadix >$@
+	@rm $$gen.xsl
+                                                 	            	            	            	            	            	  	 
 modes: modes.xml
 	apertium-gen-modes modes.xml
 	
