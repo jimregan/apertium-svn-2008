@@ -304,7 +304,7 @@ Compiler::readString(list<string> &result, string const &name)
 void
 Compiler::skipBlanks(string &name)
 {
-  if(name == "#text" || name == "#comment")
+  while(name == "#text" || name == "#comment")
   {
     if(name != "#comment")
     {
