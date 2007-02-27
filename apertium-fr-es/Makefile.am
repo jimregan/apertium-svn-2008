@@ -102,4 +102,4 @@ apertium_fr_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    modes
 		  
 
-CLEANFILES = apertium-fr-es.fr.dix
+CLEANFILES = $(TARGETS_COMMON) apertium-fr-es.fr.dix
