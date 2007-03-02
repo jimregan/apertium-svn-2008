@@ -1879,7 +1879,12 @@ mismo ni directa ni indirectamente.
 Los paradigmas se usan en los diccionarios morfológicos para el
 análisis y la generación de formas léxicas. Para los
 pares de lenguas de este proyecto, no es necesaria la 
-definición de paradigmas en los diccionarios bilingües (página~\pageref{ss:bil}). 
+definición de paradigmas en los diccionarios bilingües (véase la página~\pageref{ss:bil}). 
+
+A partir de Apertium 2 existe un nuevo tipo de paradigma, llamado metaparadigma,
+que permite definir paradigmas con variaciones según el valor de un atributo
+especificado en cada entrada que haga referencia al metaparadigma. En el apartado
+\ref{ss:metaparadigmas} se explican sus características y utilización.
 
 
 
@@ -2717,6 +2722,297 @@ elemento \texttt{<\textbf{g}>} en la cadena correspondiente a la lengua meta.
   grupos \texttt{<\textbf{g}>} en correspondencia.} 
 \label{fig:menosfaltar}
 \end{figure}
+
+\subsubsection{Metaparadigmas}
+\label{ss:metaparadigmas}
+
+
+\nota{Marco diu: Especificar la DTD?}
+
+
+Al desarrollar los diccionarios para el traductor de occitano surgió
+la necesidad de crear una herramienta que permitiera la especificación
+de paradigmas para verbos que tenían una misma flexión pero cuya raíz
+cambiaba en las diferentes formas flexionadas.  Con el sistema de
+especificación de paradigmas existente, era necesario crear un
+paradigma diferente para cada verbo, puesto que los paradigmas sólo
+permitían especificar regularidades en la flexión de verbos con raíz
+invariable. Con los metaparadigmas, se puede especificar la
+regularidad de flexión junto con variaciones en la raíz del verbo.
+
+Asimismo, los metaparadigmas permiten también especificar, en un mismo
+paradigma, variación de símbolos gramaticales para determinados lemas.
+Es decir, varios lemas pueden hacer referencia a un mismo
+metaparadigma aunque tengan algún símbolo gramatical diferente. Así
+como en el caso del occitano, los metaparadigmas han servido para
+tener un mismo paradigma para entradas con variaciones en la raíz,
+para el inglés, éstos han servido para tener un mismo paradigma para
+entradas con variaciones en los símbolos gramaticales.
+
+
+A partir de ahí se ha creado el concepto de metadiccionario: un
+diccionari que contiene tanto metaparadigmas como paradigmas con el
+formato utilizado hasta ahora. El nombre de un diccionario de este
+tipo es
+\texttt{apertium-}$L_1$\texttt{-}$L_2$\texttt{.}$L_1$\texttt{.metadix}
+(por ejemplo, para el diccionario monolingüe inglés de Apertium-en-ca,
+\texttt{apertium-en-ca.en.metadix}).
+Estos diccionarios son preprocesados cuando se compilan los datos lingüísticos
+de modo que tengan un formato apto para el compilador de diccionarios.
+
+\paragraph{Especificación de metaparadigmas}
+
+Los metaparadigmas se definen en la sección
+\texttt{<\textbf{pardefs}>} del diccionario monolingüe, que es donde se
+definen también los demás paradigmas del diccionario. Un metaparadigma, al igual que un
+paradigma, tiene un nombre especificado en el atributo \texttt{n}.
+Este nombre tendrá las mismas características que en los demás
+paradigmas, con la diferencia de que la parte variable del lema estará
+entre corchetes y con las letras en mayúsculas, como se ve en este
+ejemplo:
+
+\begin{alltt}
+<\textbf{pardef} n="m/é[T]er\_\_vblex">
+\end{alltt}
+
+Esto define un paradigma para verbo, donde las terminaciones de flexión presentan una parte variable en la raíz. 
+La flexión que se especifique en este metaparadigma tiene que ser tal que flexione sólo la parte que hay a la derecha de los 
+corchetes, por ejemplo la que se especifica en el paradigma:
+
+\begin{alltt}
+<\textbf{par} n="mét/er\_\_vblex"/>
+\end{alltt}
+
+
+De este modo, un ejemplo entero de elemento de definición de metaparadigma mediante \texttt{<\textbf{pardef}>} sería:
+
+
+\begin{alltt}
+<\textbf{pardef} n="m/é[T]er__vblex">
+  <\textbf{e}>
+    <\textbf{p}>
+       <\textbf{l}>e</\textbf{l}>
+       <\textbf{r}>é</\textbf{r}>
+    </\textbf{p}>
+    <\textbf{i}><prm/></\textbf{i}>
+    <\textbf{par} n="sent/eria__vblex"/>
+  </\textbf{e}>
+  <\textbf{e}>
+    <\textbf{i}>é<prm/></\textbf{i}>
+    <\textbf{par} n="mét/er__vblex"/>
+  </\textbf{e}>
+</\textbf{pardef}>     
+
+\end{alltt}
+
+
+La etiqueta \texttt{<\textbf{prm}/>} es el indicativo que sirve para
+situar la parte de texto variable (la terminación variable de la raíz)
+dentro de la definición del paradigma.
+
+
+Así es como se define un metaparadigma. Si ahora queremos que un verbo
+lo utilice, en la entrada del verbo (dentro de un
+elemento \texttt{<\textbf{e}>}) debe indicarse el metaparadigma correspondiente
+y , mediante el atributo \texttt{prm}, especificar por qué letras se debe
+sustituir la parte variable cerrada entre corchetes. Por ejemplo:
+
+\begin{alltt}
+<\textbf{e} lm="acuélher">
+  <\textbf{i}>acu</\textbf{i}>
+  <\textbf{par} n="m/é[T]er__vblex" prm="lh"/>
+</\textbf{e}>    
+
+\end{alltt}		
+
+Esta entrada define el verbo \emph{acuélher} y especifica que el paradigma
+de flexión que debe seguir es el indicado por el metaparadigma
+\texttt{m/é[T]er\_\_vblex} pero sustituyendo \texttt{T} por
+\texttt{lh}; es decir, las letras que vienen después de
+\emph{acu} serán \emph{élher} en lugar de \emph{éter}.
+
+
+
+Como se ha apuntado antes, los metaparadigmas
+pueden utilizarse también para entradas que presenten alguna variación
+en los símbolos morfológicos. El modo de especificarlos es básicamente el mismo:
+la parte variable debe especificarse en la entrada correspondiente,
+mediante un atributo \texttt{sa}, y en el paradigma debe colocarse la etiqueta 
+\texttt{<\textbf{sa}>} en el lugar en el que debe situarse el símbolo morfológico opcional.
+
+Por ejemplo, tenemos el siguiente metaparadigma:
+
+\begin{alltt}
+<\textbf{pardef} n="house__n">
+  <\textbf{e}>
+    <\textbf{p}>
+      <\textbf{l}/>
+      <\textbf{r}><\textbf{s} n="n"/><sa/><\textbf{s} n="sg"/></\textbf{r}>
+    </\textbf{p}>
+ </\textbf{e}>
+ <\textbf{e}>
+   <\textbf{p}>
+     <\textbf{l}>s</\textbf{l}>
+     <\textbf{r}><\textbf{s} n="n"/><sa/><\textbf{s} n="pl"/></r>
+   </\textbf{p}>
+ </\textbf{e}>
+</\textbf{pardef}>
+
+\end{alltt}
+
+
+y una entrada como la que sigue:
+
+\begin{alltt}
+<\textbf{e} lm="time">
+  <\textbf{i}>time</\textbf{i}>
+  <\textbf{par} n="house__n" sa="unc"/>
+</\textbf{e}>
+\end{alltt}
+
+en la que \emph{unc} especifica que el nombre es incontable.
+
+En el metaparadigma, la etiqueta \texttt{<\textbf{sa}>} indica el lugar que debe ocupar
+la etiqueta, en el caso de que una entrada contenga el atributo \texttt{sa} con un valor, como es
+el caso de la entrada para \emph{time}.
+
+
+Un diccionario que presenta entradas como las descritas se denomina
+metadiccionario y tiene que ser procesado para generar un diccionario
+que siga la DTD de Apertium 2, puesto que el motor no permite el uso
+directo de estos metaparadigmas. A continuación se explica en qué
+consiste este procesamiento.
+
+
+
+
+\paragraph{Procesamiento del metadiccionario}
+
+
+El metadiccionario es un fichero escrito en XML al que, para procesar
+los metaparadigmas, se aplican dos hojas de estilo XSLT para obtener
+el diccionario con todos los paradigmas derivados de los
+metaparadigmas.  Con una primera hoja de estilo,
+\texttt{buscaPar.xsl}, se obtienen los verbos que hacen uso de
+metaparadigmas y se eliminan posibles repeticiones de metaparadigmas a
+expandir. Esta hoja de estilo genera, en combinacio con la hoja
+\texttt{principal.xsl}, una segunda hoja de estilo llamada \texttt{gen.xsl}, que procesa
+el metadiccionario con la lista de paradigmas a expandir para generar
+un diccionario con formato de Apertium 2. Básicamente lo que hace esta hoja de
+estilo generada es:
+
+\begin{enumerate}
+
+
+\item En las entradas de verbos, si el verbo utiliza la flexión de un metaparadigma, se sustituye el metaparadigma por su correspondiente 
+paradigma expandido y desparametrizado. Así, la entrada del ejemplo anterior:
+
+\begin{alltt}
+<\textbf{e} lm="acuélher">
+  <\textbf{i}>acu</\textbf{i}>
+  <\textbf{par} n="m/é[T]er__vblex" prm="lh"/>
+</\textbf{e}>
+\end{alltt}
+
+	se desparametrizaría y expandiría a:
+
+\begin{alltt}
+<\textbf{e} lm="acuélher">
+  <\textbf{i}>acu</\textbf{i}>
+  <\textbf{par} n="m/élher__vblex"/>
+</\textbf{e}>
+        
+\end{alltt}
+
+
+\item Por otro lado, como de la primera pasada ya se sabe qué
+  paradigmas se tienen que crear a partir de los metaparadigmas, éstos
+  se crean.  En el caso del ejemplo anterior, a partir del metaparadigma
+
+\begin{alltt}
+<\textbf{pardef} n="m/é[T]er__vblex">
+  <\textbf{e}>
+    <\textbf{p}>
+      <\textbf{l}>e</\textbf{l}>
+      <\textbf{r}>é</\textbf{r}>
+    </\textbf{p}>
+    <\textbf{i}><prm/></\textbf{i}>
+    <\textbf{par} n="sent/eria__vblex"/>
+  </\textbf{e}>
+  <\textbf{e}>
+    <\textbf{i}>é<prm/></\textbf{i}>
+    <\textbf{par} n="mét/er__vblex"/>
+  </\textbf{e}>
+</\textbf{pardef}>     
+\end{alltt}
+
+	se generaría el paradigma  \texttt{<\textbf{pardef} n="m/élher\_\_vblex"/>} :
+
+\begin{alltt}
+<\textbf{pardef} n="m/élher__vblex">
+  <\textbf{e}>
+    <\textbf{p}>
+      <\textbf{l}>e</\textbf{l}>
+      <\textbf{r}>é</\textbf{r}>
+    </\textbf{p}>
+    <\textbf{i}>lh/></\textbf{i}>
+    <\textbf{par} n="sent/eria__vblex"/>
+  </\textbf{e}>
+  <\textbf{e}>
+    <\textbf{i}>élh</\textbf{i}>
+    <\textbf{par} n="mét/er__vblex"/>
+  </\textbf{e}>
+</\textbf{pardef}>  
+
+\end{alltt}
+
+
+Después de haber procesado el metadiccionario de esta forma se genera
+un diccionario .dix que sigue la DTD de Apertium 2 y que ya se puede
+compilar.
+
+ 
+En el segundo ejemplo que hemos dado, en el que 
+la parte variable era la secuencia de símbolos morfológicos del paradigma, a
+ partir de la especificación del atributo \texttt{sa} como \emph{unc} y de la aplicación
+de las hojas de estilo, se generaría el paradigma:
+
+\begin{alltt}
+<\textbf{pardef} n="house__n__unc">
+  <\textbf{e}>
+    <\textbf{p}>
+      <\textbf{l}/>
+      <\textbf{r}><\textbf{s} n="n"/><\textbf{s} n="unc"/><\textbf{s} n="sg"/></\textbf{r}>
+    </\textbf{p}>
+ </\textbf{e}>
+ <\textbf{e}>
+   <\textbf{p}>
+     <\textbf{l}>s</\textbf{l}>
+     <\textbf{r}><\textbf{s} n="n"/><\textbf{s} n="unc"/><\textbf{s} n="pl"/></r>
+   </\textbf{p}>
+ </\textbf{e}>
+</\textbf{pardef}>
+
+\end{alltt}
+
+para nombres cuyo análisis morfológico deba ser (en formato del flujo de datos):
+
+
+\begin{alltt}
+time<n><unc><sg>
+\end{alltt}
+
+La utilización de metaparadigmas permite, en este caso, aprovechar un mismo paradigma para entradas con misma flexión pero con análisis
+morfológico ligeramente diferente.
+
+Es importante tener en cuenta que, cuando un diccionario 
+utilice metaparadigmas y, por lo tanto, tenga un nombre con extensión
+\texttt{.metadix}, éste será el fichero en el que deben realizarse todos los
+cambios en el diccionario (modificación, adición y borrado de entradas o paradigmas),
+puesto que el fichero \texttt{.dix}  se genera automáticamente a partir del primero
+cada vez que se compilan los datos lingüísticos y, por lo tanto, cualquier cambio realizado
+directamente en este último será sobrescrito al realizarse la compilación.
+
 
 
 \subsection[Generación automática de los módulos]{Generación automática de los módulos de procesamiento léxico}
