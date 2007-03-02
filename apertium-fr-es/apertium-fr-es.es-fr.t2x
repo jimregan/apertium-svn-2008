@@ -63,37 +63,9 @@
       <cat-item tags="SV.reporting.*"/>
     </def-cat>
     
-    <def-cat n="there">
-      <cat-item lemma="there" tags="adv"/>
-    </def-cat>
-
-     <def-cat n="thereis">
-      <cat-item tags="Vcop.*"/>
-      <cat-item lemma="verbcj" tags="SV.vbser.*"/>
-      <cat-item lemma="auxmod_inf" tags="SV.vbser.*"/>
-      <cat-item lemma="auxmod_mod_inf" tags="SV.vbser.*"/>
-      <cat-item lemma="mod_inf" tags="SV.vbser.*"/>
-      <cat-item lemma="mod_inf_perif" tags="SV.vbser.*"/>
-      <cat-item lemma="have_pp" tags="SV.vbser.*"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbser.*"/> 
-    </def-cat>
-
-
-	 <def-cat n="pro_vblike">
-		 <cat-item lemma="pro_verbcj" tags="SV.like.*"/>
-		 <cat-item lemma="pro_verbcj_perif" tags="SV.like.*"/>
-		 <cat-item lemma="pro_auxmod_inf" tags="SV.like.*"/>
-		 <cat-item lemma="pro_mod_inf" tags="SV.like.*"/>
-		 <cat-item lemma="pro_mod_inf_perif" tags="SV.like.*"/>
-		 <cat-item lemma="pro_auxmod_mod_inf" tags="SV.like.*"/>
-		 <cat-item lemma="pro_have_pp" tags="SV.like.*"/>
-		 <cat-item lemma="pro_be_ger" tags="SV.like.*"/>
-		<cat-item lemma="pro_do_inf" tags="SV.like.*"/>
-	 </def-cat>
-
      <def-cat n="ADV">
-      <cat-item lemma="adv" tags="adv"/>
-      <cat-item lemma="adv" tags="adv.*"/>
+      <cat-item tags="adv"/>
+      <cat-item tags="adv.*"/>
     </def-cat>
 
     <def-cat n="PRNS">
@@ -199,6 +171,33 @@
   </section-def-vars>
 
 <section-def-macros>
+
+<def-macro n="envia_pas" npar="1">
+	<choose>
+		<when>
+			<test>
+				<equal>
+					<clip pos="1" part="lem"/>
+					<lit v="no"/>
+				</equal>
+			</test>
+			<out>
+				<b/>
+				<chunk>
+					<lit v="adv_neg"/>
+					<lit-tag v="adv"/>
+					<lit v="{^"/>
+					<get-case-from pos="1">
+						<lit v="pas"/>
+					</get-case-from>
+					<lit-tag v="adv"/>
+					<lit v="$}"/>
+				</chunk>
+			</out>
+		</when>
+	</choose>
+</def-macro>
+
 
 <def-macro n="nombre_SN" npar="1">
  <choose><!--To determine value of variables of gender and
@@ -642,6 +641,212 @@
 			</out>
 		</otherwise>
 	</choose>	
+	<call-macro n="nombre_SN">
+		<with-param pos="1"/>
+	</call-macro>
+</action>
+</rule>
+
+<rule comment="REGLA: SN adv SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="ADV"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<choose>
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				</out>
+			<call-macro n="posa_subj">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<call-macro n="envia_pas">
+		<with-param pos="2"/>
+	</call-macro>
+	<call-macro n="nombre_SN">
+		<with-param pos="1"/>
+	</call-macro>
+</action>
+</rule>
+
+<rule comment="REGLA: SN adv SV adv">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="ADV"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="ADV"/>
+	</pattern>
+	<action>
+	<choose>
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				</out>
+			<call-macro n="posa_subj">
+				<with-param pos="3"/>
+			</call-macro>
+		</otherwise>
+	</choose>
+				<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+	<choose>
+		<when>
+			<test>
+				<equal>
+					<clip pos="3" part="lem"/>
+					<lit v="adv"/>
+				</equal>
+			</test>
+			<call-macro n="envia_pas">
+				<with-param pos="2"/>
+			</call-macro>
+		</when>
+	</choose>
+	<out>
+		<b pos="3"/>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
 	<call-macro n="nombre_SN">
 		<with-param pos="1"/>
 	</call-macro>
