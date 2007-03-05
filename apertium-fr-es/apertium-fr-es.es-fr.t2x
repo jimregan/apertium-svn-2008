@@ -647,6 +647,128 @@
 </action>
 </rule>
 
+<rule comment="REGLA: SN sprep adv SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="ADV"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<choose>
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="5" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="5" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="5" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="5" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+				<b pos="4"/>
+				<chunk>
+					<clip pos="5" part="lem"/>
+					<clip pos="5" part="tags"/>
+					<clip pos="5" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="5"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+				<b pos="4"/>
+				<chunk>
+					<clip pos="5" part="lem"/>
+					<clip pos="5" part="tags"/>
+					<clip pos="5" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<call-macro n="nombre_SN">
+		<with-param pos="1"/>
+	</call-macro>
+</action>
+</rule>
+
 <rule comment="REGLA: SN adv SV">
 	<pattern>
 		<pattern-item n="SN"/>
@@ -852,6 +974,32 @@
 		</out>
 	</action>
 </rule>
+
+<rule comment="REGLA: ADV SV"> <!--per quan hagi fet totes les regles possibles i quedi un SV solet-->
+	<pattern>
+		<pattern-item n="ADV"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+		<call-macro n="posa_subj">
+			<with-param pos="2"/>
+		</call-macro>
+		<out>
+			<chunk>
+				<clip pos="1" part="lem"/>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+			</chunk>
+			<b pos="1"/>
+			<chunk>
+				<clip pos="2" part="lem"/>
+				<clip pos="2" part="tags"/>
+				<clip pos="2" part="chcontent"/>
+			</chunk>
+		</out>
+	</action>
+</rule>
+
 <!--
 <rule comment="REGLA: SN SV SA (they live happy - viuen feli�s)">
 	<pattern>

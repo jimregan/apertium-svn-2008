@@ -5070,7 +5070,7 @@
 					</lu>
 				</chunk>
 				<b pos="1"/>
-				<chunk name="haver_aux_pp" case="caseFirstWord">
+				<chunk name="haver_aux_adv_pp" case="caseFirstWord">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -5103,7 +5103,7 @@
 		</when>
 		<otherwise>
 			<out>
-				<chunk name="haver_aux_pp" case="caseFirstWord">
+				<chunk name="haver_aux_adv_pp" case="caseFirstWord">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -5693,6 +5693,190 @@
 	</action>
 </rule>
 
+<rule comment="adv auxinf-enc pp">
+	<pattern>
+		<pattern-item n="adv"/>
+		<pattern-item n="auxinf"/>
+		<pattern-item n="prnenc"/>
+		<pattern-item n="pp"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="vauxiliar">
+		<with-param pos="2"/>
+		<with-param pos="4"/>
+	</call-macro>
+	<call-macro n="f_concord_prn_pp">
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+	</call-macro>
+		<choose>
+			<when>
+				<test>
+					<in caseless="yes">
+						<clip pos="1" side="tl" part="lem"/>
+						<list n="adv_neg"/>
+					</in>
+				</test>
+				<out>
+				<chunk name="adv" case="caseFirstWord">
+					<tags>
+					<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+				</tags>
+				<lu>
+					<lit v="ne"/> 
+					<lit-tag v="adv"/> 
+				</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="pro_auxinf_adv_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="2" side="tl" part="temps"/></tag>
+						<tag><clip pos="2" side="tl" part="pers"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="3" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="3" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="2"/>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/> 
+					<clip pos="1" side="tl" part="a_adv"/>
+				</lu>
+				<b/>
+						<lu>
+							<clip pos="4" side="tl" part="lemh"/> 
+							<clip pos="4" side="tl" part="a_pp"/>
+							<clip pos="4" side="tl" part="gen"/>
+							<clip pos="4" side="tl" part="nbr"/>
+							<clip pos="4" side="tl" part="lemq"/>    
+						</lu> 
+				</chunk>
+			</out>
+	</when>
+	<otherwise>
+		<choose>
+			<when>
+				<test>
+					<equal>
+					<clip pos="1" side="sl" part="lem"/>
+					<lit v="no"/>
+				</equal>
+			</test>
+			<out>
+				<chunk name="adv" case="caseFirstWord">
+					<tags>
+						<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/>
+						<clip pos="1" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="pro_auxinf_adv_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="2" side="tl" part="temps"/></tag>
+						<tag><clip pos="2" side="tl" part="pers"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="3" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="3" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<lit v="pas"/> 
+						<lit-tag v="adv"/>
+					</lu>
+					<b/>
+						<lu>
+							<clip pos="4" side="tl" part="lemh"/> 
+							<clip pos="4" side="tl" part="a_pp"/>
+							<clip pos="4" side="tl" part="gen"/>
+							<clip pos="4" side="tl" part="nbr"/>
+							<clip pos="4" side="tl" part="lemq"/>    
+						</lu> 
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk name="pro_auxinf_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="2" side="tl" part="temps"/></tag>
+						<tag><clip pos="2" side="tl" part="pers"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="3" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="3" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/> 
+						<clip pos="1" side="tl" part="a_adv"/>
+					</lu>
+					<b pos="2"/>
+						<lu>
+							<clip pos="4" side="tl" part="lemh"/> 
+							<clip pos="4" side="tl" part="a_pp"/>
+							<clip pos="4" side="tl" part="gen"/>
+							<clip pos="4" side="tl" part="nbr"/>
+							<clip pos="4" side="tl" part="lemq"/>    
+						</lu> 
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+		</otherwise>
+	</choose>
+	<let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	</let>
+	</action>
+</rule>
+
 <rule comment="auxinf-enc-enc pp">
 	<pattern>
 		<pattern-item n="auxinf"/>
@@ -5758,6 +5942,209 @@
 	</action>
 </rule>
 
+
+<rule comment="adv auxinf-enc-enc pp">
+	<pattern>
+		<pattern-item n="adv"/>
+		<pattern-item n="auxinf"/>
+		<pattern-item n="prnenc"/>
+		<pattern-item n="prnenc"/>
+		<pattern-item n="pp"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="vauxiliar">
+		<with-param pos="2"/>
+		<with-param pos="5"/>
+	</call-macro>
+	<call-macro n="f_concord_prn_pp">
+		<with-param pos="4"/>
+		<with-param pos="5"/>
+	</call-macro>
+		<choose>
+			<when>
+				<test>
+					<in caseless="yes">
+						<clip pos="1" side="tl" part="lem"/>
+						<list n="adv_neg"/>
+					</in>
+				</test>
+				<out>
+				<chunk name="adv" case="caseFirstWord">
+					<tags>
+					<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+				</tags>
+				<lu>
+					<lit v="ne"/> 
+					<lit-tag v="adv"/> 
+				</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="pro_auxinf_adv_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="5" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="2" side="tl" part="temps"/></tag>
+						<tag><clip pos="2" side="tl" part="pers"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="3" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="3" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="4" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="4" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="2"/>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/> 
+					<clip pos="1" side="tl" part="a_adv"/>
+				</lu>
+				<b/>
+						<lu>
+							<clip pos="5" side="tl" part="lemh"/> 
+							<clip pos="5" side="tl" part="a_pp"/>
+							<clip pos="5" side="tl" part="gen"/>
+							<clip pos="5" side="tl" part="nbr"/>
+							<clip pos="5" side="tl" part="lemq"/>    
+						</lu> 
+				</chunk>
+			</out>
+	</when>
+	<otherwise>
+		<choose>
+			<when>
+				<test>
+					<equal>
+					<clip pos="1" side="sl" part="lem"/>
+					<lit v="no"/>
+				</equal>
+			</test>
+			<out>
+				<chunk name="adv" case="caseFirstWord">
+					<tags>
+						<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/>
+						<clip pos="1" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="pro_auxinf_adv_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="5" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="2" side="tl" part="temps"/></tag>
+						<tag><clip pos="2" side="tl" part="pers"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="3" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="3" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="4" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="4" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<lit v="pas"/> 
+						<lit-tag v="adv"/>
+					</lu>
+					<b/>
+						<lu>
+							<clip pos="5" side="tl" part="lemh"/> 
+							<clip pos="5" side="tl" part="a_pp"/>
+							<clip pos="5" side="tl" part="gen"/>
+							<clip pos="5" side="tl" part="nbr"/>
+							<clip pos="5" side="tl" part="lemq"/>    
+						</lu> 
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk name="pro_auxinf_adv_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="5" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="2" side="tl" part="temps"/></tag>
+						<tag><clip pos="2" side="tl" part="pers"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="3" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="3" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="4" side="tl" part="lem"/> 
+						<lit-tag v="prn.pro"/>
+						<clip pos="4" side="tl" part="tipoenc_pro"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/> 
+						<clip pos="1" side="tl" part="a_adv"/>
+					</lu>
+					<b pos="2"/>
+						<lu>
+							<clip pos="5" side="tl" part="lemh"/> 
+							<clip pos="5" side="tl" part="a_pp"/>
+							<clip pos="5" side="tl" part="gen"/>
+							<clip pos="5" side="tl" part="nbr"/>
+							<clip pos="5" side="tl" part="lemq"/>    
+						</lu> 
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+		</otherwise>
+	</choose>
+	<let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	</let>
+	</action>
+</rule>
 
     <!--************************************ ALTRES ************************************************ -->
 	<rule comment="ADV">
