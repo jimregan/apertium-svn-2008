@@ -202,6 +202,8 @@ la información organizada de la siguiente manera:
 % MLF 20060328 elimina
 % y el compilador
 % correspondiente (apartado \ref{ss:gentagger})
+
+\nota{falta parlar del lextor, i afegir-ho a tot arreu on es parli dels mòduls del sistema}
      
   \item [-]sección \ref{se:pretransfer}: \emph{Módulo de preproceso
       del transfer}, en la que se describe el módulo que se ejecuta
@@ -209,7 +211,7 @@ la información organizada de la siguiente manera:
     operaciones en las unidades multipalabra
   \item [-]sección \ref{ss:transfer}: \emph{Módulo de transferencia
       estructural}, en la que se describe el funcionamiento del módulo
-    (apartado \ref{functransfer}), el formato de las reglas de
+    (apartado \ref{functransfer}) y el formato de las reglas de
     transferencia estructural (apartado \ref{formatotransfer}).
 % MLF 20060328 
 % y el
@@ -2966,6 +2968,7 @@ paradigma expandido y desparametrizado. Así, la entrada del ejemplo anterior:
 
 \end{alltt}
 
+\end{enumerate}
 
 Después de haber procesado el metadiccionario de esta forma se genera
 un diccionario .dix que sigue la DTD de Apertium 2 y que ya se puede
@@ -4010,42 +4013,41 @@ de un equivalente de traducción en los diccionarios):
 \subsection{Introducción}
 
 A partir de 2007, Apertium dispone de un sistema
-de transferencia estructural más avanzado que el que existía
-hasta el momento, cuya necesidad aparece con el
-requerimiento de la implementación de traductores para pares de
-lenguas menos emparentados que los que se habían tratado hasta el
+de transferencia estructural más avanzado que el que utilizaba anteriormente,
+cuya necesidad aparece con el desarrollo
+de traductores para pares de
+lenguas menos emparentadas entre sí que los que se habían tratado hasta el
 momento, como por ejemplo el par \emph{inglés}--\emph{catalán}.
 
 Este sistema de transferencia se compone de tres módulos, el primero
 de los cuales puede utilitzarse aisladamente cuando se desee ejecutar
-un sistema de \textbf{transferencia sintática superficial}, como es
-el caso para los pares de lenguas emparentadas
-\emph{español}--\emph{catalán} o \emph{español}--\emph{gallego}.
-Cuando el sistema se utiliza para pares de lenguas más alejados y se
+un sistema de \textbf{transferencia sintática superficial}, es decir, el sistema
+de transferencia utilizado ya para pares de lenguas emparentadas como 
+{español}--\emph{catalán} o \emph{español}--\emph{gallego}.
+Cuando el sistema se utiliza para pares de lenguas más alejadas y se
 desee, por lo tanto, realizar una \textbf{transferencia sintáctica
-  avanzada}, se ejecutarán los tres módulos de transferencia en lo que
-denominamos sistema Apertium 2.
+  avanzada}, se ejecutarán los tres módulos de transferencia.
 
-El sistema de transferencia inicial o superficial realiza las
-transformaciones estructurales en una única pasada de las reglas, las
-cuales detectan secuencias o \emph{patrones} de formas léxicas y
-realizan sobre ellas las comprobacions y cambios pertinentes.
-
-El sistema de transferencia avanzado o Apertium 2 funciona con una
-nueva arquitectura de transferencia que permite detectar
-\emph{patrones de patrones} de formas léxicas mediante tres pasadas,
-que realizan sus tres módulos.
+Los dos sistemas de transferencia se diferencian por el número de
+pasadas que se realizan sobre el texto de entrada.  El sistema de
+transferencia superficial realiza las transformaciones estructurales
+en una única pasada de las reglas, las cuales detectan secuencias o
+\emph{patrones} de formas léxicas y realizan sobre ellas las
+comprobacions y cambios pertinentes. Por otro lado, el sistema de
+transferencia avanzado funciona con una nueva arquitectura de
+transferencia que permite detectar \emph{patrones de patrones} de
+formas léxicas mediante tres pasadas, que realizan sus tres módulos.
 
 A continuación se describen sus características.  En el apartado
-\ref{functransfer} se describe el sistema de transferencia
-superficial, que funciona con un sólo módulo de transferencia, y en el
-apartado \ref{apertium2}, el sistema de transferencia avanzada, que
-funciona con tres módulos de transferencia, con lo que la
-descripción del primer apartado es válida también para el sistema de
-transferencia avanzada, con las diferencias que se exponen en el
-apartado correspondiente. Finalmente, en el apartado
-\ref{formatotransfer} se describe el formato utilizado para crear
-reglas en ambos sistemas.
+\ref{functransfer} se describe el sistema de transferencia superficial
+y en el apartado \ref{apertium2}, el sistema de transferencia avanzada.
+La descripción del sistema de transferencia superficial es aplicable también 
+al funcionamiento del primero módulo del sistema de transferencia avanzada, con las
+diferencias que se exponen en el apartado correspondiente. 
+En el apartado \ref{formatotransfer} se describe el formato utilizado
+para crear reglas en ambos sistemas. En el apartado \ref{noutransfer} se describe en detalle el funcionamiento
+de los tres módulos del sistema de transferencia avanzada y finalmente, en el apartado \ref{ss:preproceso_transfer}
+se explica el preprocesamiento de los módulos para su ejecución.
 
 
 \subsection{Transferencia sintáctica superficial}
@@ -4054,7 +4056,7 @@ reglas en ambos sistemas.
 
 Este sistema utiliza únicamente el primero de los tres módulos de los
 que se compone el sistema de transferencia avanzada. Este módulo lo
-hemos denominado \textrm{transfer} o \emph{chunker}.
+hemos denominado \emph{chunker}.
 
 El diseño del lenguaje y del compilador que se usan para generar el módulo encargado de
 la transferencia estructural está fuertemente inspirado en el lenguaje
@@ -4151,7 +4153,7 @@ hay que determinar el género o el número en la LM debido a que en la LO era ambi
 alguna de las palabras (por ejemplo, el determinante \emph{cap} en catalán se puede traducir al español por 
 \emph{ningún} (masc.) o \emph{ninguna} (fem.) según el nombre al que acompañe: \emph{cap cotxe} 
 (\texttt{ca}) $\rightarrow$ \emph{ningún coche} (\texttt{es}) y \emph{cap casa} (\texttt{ca}) 
-$\rightarrow$ \emph{ninguna casa} (\texttt{es}). Además, hay definidas otras reglas para solucionar problemas
+$\rightarrow$ \emph{ninguna casa} (\texttt{es})). Además, hay definidas otras reglas para solucionar problemas
 frecuentes de transferencia entre el español, el catalán y el gallego, como, entre otras:
 
 \begin{itemize}
@@ -4220,7 +4222,7 @@ demás FL.
 \end{itemize}
 
 
-\subsection{Transferencia sintáctica avanzada (Apertium 2)}
+\subsection{Transferencia sintáctica avanzada}
 \label{apertium2}
 
 La arquitectura de transferencia superficial descrita en el apartado
@@ -4240,7 +4242,7 @@ detectado. Todo este procesamiento de detección y manipulación léxica
 y de patrones se lleva a cabo en una única pasada.  
 
 Como contraste, la
-nueva arquitectura de transferencia avanzada de Apertium 2 se
+nueva arquitectura de transferencia avanzada  se
 define como un sistema de transferencia en tres
 niveles y tres pasadas. Los dos primeros niveles, el nivel léxico y el
 de patrones, son homólogos a los del sistema de transferencia superficial. El nuevo
@@ -4259,21 +4261,22 @@ sistema anterior. Por esta razón utilizaremos el término \textit{segmento}
 (en inglés \textit{chunk}), para referirnos a las secuencias de
 palabras del sistema de transferencia avanzada. 
 
-La arquitectura de transferencia avanzada de Apertium 2
+La arquitectura de transferencia avanzada
 se organiza en tres pasadas. Siguiendo el modelo de procesamiento de
 Apertium, estas tres pasadas son realizadas por tres módulos
 (programas) diferentes:
 
 \begin{itemize} 
-\item \texttt{chunker} (\texttt{transfer}): identifica los segmentos,
-  realiza la traducción palabra por palabra, así como ciertas
-  operaciones de reordenamiento y propagación de información
-  morfosintáctica dentro del segmento (por ejemplo, para establecer la
-  concordancia). Además, crea los segmentos para que sean tratados por
-  el módulo siguiente. Este módulo tiene la opción de funcionar como
-  módulo independiente en un sistema de transferencia sintáctica
-  superficial; ello se controla mediante un atributo del elemento
-  \texttt{<transfer>}.
+\item \texttt{chunker}: identifica los segmentos, realiza la
+  traducción palabra por palabra, así como ciertas operaciones de
+  reordenamiento y propagación de información morfosintáctica dentro
+  del segmento (por ejemplo, para establecer la concordancia). Además,
+  crea los segmentos para que sean tratados por el módulo siguiente.
+  El \texttt{chunker} tiene la opción de funcionar como único módulo
+  en un sistema de transferencia sintáctica superficial.  Ello se
+  controla mediante un atributo del elemento \texttt{<transfer>}.
+
+
 \item \texttt{interchunk}: este módulo recibe los segmentos
   construidos por el \texttt{chunker} y permite reordenarlos,
   modificar la ``información sintáctica'' asociada a cada segmento y,
@@ -4289,17 +4292,18 @@ Apertium, estas tres pasadas son realizadas por tres módulos
 
 
 A continuación se especifica el formato de los segmentos que circulan entre los tres
-módulos del sistema de transferencia (sección \ref{sec:format}, el tratamiento de 
+módulos del sistema de transferencia (sección \ref{sec:format}) y el tratamiento de 
 mayúsculas y minúsculas en los segmentos (sección \ref{ss:majuscules}), que difiere del 
-que se da para las formas léxicas individuales en el caso de un sistema de transferencia superficial, 
-y finalmente se describe el funcionamiento de cada uno de los tres módulos (secciones 
-\ref{ss:chunker}, \ref{ss:interchunk} y  \ref{ss:postchunk} respectivamente).
+que se da para las formas léxicas individuales en el caso de un sistema de transferencia superficial.
 
-) 
-En la sección \ref{formatotransfer} se describe el formato de las reglas de
-transferencia, que es común para los tres módulos con algunas diferencias, y finalmente
-en la sección \ref{noutransfer} se recalcan algunas de las características diferenciadas de los
-tres módulos en cuanto al formato y el funcionamiento de las reglas.
+
+El siguiente apartado, \ref{formatotransfer},  está dedicado a la descripción del 
+formato de las reglas de
+transferencia, que es común para los tres módulos y para los dos modos de transferencia, con algunas diferencias.
+Finalmente, tras esta descripción, en \ref{noutransfer} se describen en más detalle los tres módulos de los que
+se compone un sistema de transferencia sintáctiva avanzada.
+
+
 
 
 \subsubsection{Formato de los segmentos}
@@ -4383,231 +4387,6 @@ perder la mayúscula, si la hay. Esta tarea corresponde al módulo
 \texttt{chunker} y se hace mediante una macro o
 algún mecanismo similar.
 
-\subsubsection{Programa \texttt{chunker} (\texttt{transfer})}
-\label{ss:chunker}
-
-
-Este programa es el heredero más directo del módulo de transferencia
-sintáctica superficial de Apertium. De hecho, este módulo puede
-utilizarse individualmente como sistema de transferencia sintáctica
-superficial, o en combinación con los otros dos módulos de transferencia
-para construir un sistema de transferencia sintáctica
-avanzada.
-
-\paragraph{Entrada/salida}
-
-\begin{itemize}
-\item Entrada: datos con el formato de salida del \texttt{pretransfer}, es decir,
-  con las colas invariantes de las multipalabras desplazadas a una posición
-  anterior a cualquier etiqueta.
-
-\item Salida:
-\begin{itemize}
-\item[-] si se utiliza en un sistema de transferencia avanzada: segmentos (chunks),
-  para que el módulo siguiente los detecte y realice operaciones con ellos
-\item[-]  si se utiliza en un sistema de transferencia superficial: formas léxicas que constituyen
-la entrada del módulo de generación.
-\end{itemize}
-
-\end{itemize}
-
-
-\paragraph{Ficheros de datos}
-
-\nota{Explicar millor això de l'únic fitxer de configuració}
-
-Este programa usa un único fichero de configuración y un fichero
-precompilado de detección de patrones calculado a partir del primero, de manera
-idéntica a Apertium \nota{MG: caldria canviar les
-  referències a 'Apertium' com si fos una altra cosa}. El nombre del
-fichero de patrones (el fichero de configuración) tendrá la extensión  \texttt{.t1x}. 
-Como el 
-\texttt{chunker} es quien hace la consulta del diccionario bilingüe, éste
-(en forma compilada) también se tiene que aportar al programa.
-
-\nota{Potser seria bona idea esmentar en quina secció s'explica el
-compilador a què es fa referència}
-
-La DTD de este fichero de datos se especifica en el apéndice 
-\ref{ss:dtdtransfer}, y en el apartado \ref{formatotransfer} se describen
-los elementos utilizados para crear las reglas del fichero.
-
-\paragraph{Detección de patrones}
-
-El sistema de detección de reglas de este módulo será el mismo que en
-el módulo de transferencia actual de Apertium \nota{ídem sobre 'Apertium', canviar-ho}. El programa
-\texttt{a\-per\-tium-pre\-trans\-fer}  
-\nota{Vacil·lació terminològica \texttt{pretransfer}.}
-es necesario para adaptar el formato
-de salida del etiquetador a la entrada que reconoce el módulo de transferencia.
-En posteriores versiones de Apertium no se descarta que se modifique el
-\textit{desambiguador categorial} para que haga el trabajo del
-\texttt{apertium-pretransfer}.
-\nota{També hem d'unificar la terminologia d'altres mòduls:
-\emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
-el paràgraf es podria pensar que són dues coses diferents.}
-
-
-\paragraph{Acción implícita}
-
-Los \textit{superblancos} aislados, que no son detectados por ningún patrón
-de este módulo, se escriben en el mismo orden en el que llegan.
-
-El elemento raíz del fichero \texttt{.t1x} de reglas del
-\texttt{chunker}, \texttt{<transfer>}, tiene un
-atributo opcional \texttt{default} que puede tomar los valores
-\begin{itemize}
-\item \texttt{chunk}: cuando el módulo funcione en Apertium 2
-  (transferencia sintáctiva avanzada), para que se generen segmentos
-  triviales con las palabras que no son detectadas por ninguna regla,
-  para que a la salida no haya ninguna palabra no integrada en un
-  segmento.  El nuevo segmento se creará mediante la traducción de la
-  palabra por el diccionario bilingüe.  El lema fijo de los chunks
-  creados implícitamente es \texttt{default}.
-\item \texttt{lu} (valor implícito): cuando el módulo funcione como
-  único módulo de transferencia en Apertium 1 (transferencia
-  sintáctica superficial), para que no se creen segmentos para las
-  palabras no detectadas por reglas, y simplemente se traduzcan con el
-  diccionario bilingüe.
-
-\end{itemize}
-
-A continuación se muestra el segmento generado automáticamente con una forma léxica no
-detectada por ninguna regla  del
-\texttt{chunker} cuando el atributo \texttt{default} tiene el valor \texttt{chunk}:
-
-
-\begin{alltt}
-^default\verb!{!^that<cnjsub>$\verb!}!$
-\end{alltt}
-
-\nota{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
-
-
-\subsubsection{Programa \texttt{interchunk}}
-\label{ss:interchunk}
-
-
-\nota{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
-
-El programa \texttt{interchunk} trata los segmentos, los reordena y hace los
-cambios pertinentes en la información morfosintáctica. Esto se hace
-mediante la detección de patrones de segmentos (secuencias de segmentos).
-Las instrucciones que se usan para controlar
-su funcionamiento son, con pocas diferencias, las mismas que usa
-el programa \texttt{chunker}, pero tiene que quedar claro que se utiliza un archivo
-diferente. Los segmentos son tratados de forma similar a como se
-tratan las palabras en el transfer o \texttt{chunker} de Apertium.
-\nota{Comprovar la denominació dels programes}
-
-\paragraph{Entrada/salida}
-
-\begin{itemize}
-\item Entrada: segmentos procedentes de \texttt{chunker}.
-\item Salida: segmentos posiblemente reordenados y con la información del
-  pseudolema del segmento posiblemente modificada.
-\end{itemize}
-
-\paragraph{Ficheros de datos}
-
-Este módulo usa dos ficheros de datos. Un fichero de especificación del
-comportamiento del programa \texttt{in\-ter\-chunk}, con extensión
-\texttt{.t2x} por analogía con el módulo anterior, y un
-fichero de patrones precalculados para acelerar el análisis de la entrada.
-No se  incluye el fichero binario del diccionario bilingüe porque no
-se usa.
-\nota{Citar el compilador?}
-
-La sintaxi del fichero de especificación es muy similar a la del módulo
-\texttt{chunker}. Su DTD se especifica en el Apéndice
-\ref{ss:dtdinterchunk}, y en el apartado \ref{formatotransfer} se describen
-los elementos utilizados para crear las reglas del fichero.
-
-
-\paragraph{Detección de reglas}
-
-Las reglas detectan patrones que están definidos mediante secuencias
-de pseudopalabras. Estas pseudopalabras tienen un formato basado en
-el formato de la forma léxica de las palabras. Desde el punto de vista
-práctico, este pseudolema es visto de manera equivalente a como se
-\nota{La alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
-ve la forma léxica de una palabra en el módulo
-\texttt{chunker} para realizar la detección.
-De esta forma, se usará una detección de patrones con atributos definidos
-sobre las pseudopalabras y no sobre las palabras del patrón original.
-
-\paragraph{Acción implícita}
-
-Al igual que en el módulo anterior, se ha establecido una acción
-implícita que escribe sin modificar los segmentos no reconocidos por ningún
-patrón del fichero de especificación de este módulo. Esta acción implícita
-escribe exactamente lo que lee, tanto si se trata de chunks como
-de blancos.
-\nota{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
-
-
-\subsubsection{Programa \texttt{postchunk}}
-\label{ss:postchunk}
-
-El programa \texttt{postchunk} detecta segmentos individuales, y para
-cada uno de ellos, ejecuta unas acciones especificadas. La detección se
-basa en los lemas del segmento,
-\nota{Seria \emph{en el lema}?}
-y no en patrones (no en las etiquetas);
-esto hará que la detección en este módulo sea específica para cada
-``nombre'' de segmento.\nota{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
-
-
-Por otro lado, el funcionamiento de la detección y del procesamiento de las
-reglas se basa en que las referencias a parámetros se resuelven
-inmediatamente después de la detección, es decir, las etiquetas
-\texttt{<1>}, \texttt{<2>}, etc. son sustituidas automáticamente por el
-valor de los parámetros antes de empezar el procesamiento. Las posiciones
-(atributo \texttt{pos}) a las que se hace referencia con las
-instrucciones \texttt{<clip>}, etc. corresponden a la posición de las
-palabras en el interior del segmento.
-
-También aplica automáticamente la política de mayúsculas (ver sección
-\ref{ss:majuscules}) de los lemas de las pseudopalabras hacia las
-palabras que están dentro del segmento.
-
-
-
-\paragraph{Entrada/salida}
-
-\begin{itemize}
-\item Entrada: segmentos procedentes de\texttt{in\-ter\-chunk}.
-\item Salida: entrada válida para el módulo de generación morfológica de Apertium.
-\end{itemize}
-
-\paragraph{Ficheros de datos}
-
-Este programa tiene su propio archivo de especificación, que tendrá
-extensión \texttt{.t3x}. La sintaxis está basada igualmente en el
-\texttt{chunker} i en el \texttt{in\-ter\-chunk} de Apertium 2. 
-\nota{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
-
-\paragraph{Detección de reglas}
-
-La detección de los segmentos se basa en el nombre de los segmentos. Los
-segmentos no detectados reciben el procesamiento implícito.
-
-
-\paragraph{Acción implícita}
-
-
-En este módulo la acción implícita es la de escribir las palabras de dentro
-del segmento, sustituyendo las referencias por los parámetros del
-segmento. Será usada para la mayor parte de segmentos, ya que se prevé
-que este módulo se utilice para casos muy específicos en los que
-sea necesario hacer algún procesamiento concreto.
-
-También se aplica implícitamente la política de mayúsculas (sección
-\ref{ss:majuscules}).
-
-En cualquier caso, los blancos externos a los segmentos son copiados en
-el mismo orden en que son leídos, puesto que la detección de segmentos es
-unitaria (este módulo no los agrupa).
 
 %\settocdepth{subsection}
 \subsection{Especificación del formato de las reglas de transferencia estructural}
@@ -4693,24 +4472,25 @@ A continuación se explican detalladamente las características de cada uno de los
 
 \subsubsection{Elemento \texttt{<transfer>}}
 
-(\textit{Sólo en el módulo transfer/chunker})
+(\textit{Sólo en el módulo chunker})
 
 Es el elemento raíz  del
-módulo \texttt{transfer/chunker} y contiene todos los demás
+módulo \texttt{chunker} y contiene todos los demás
 elementos del archivo de reglas de transferencia estructural de este
 módulo.
 
 Su atributo \texttt{default} puede tomar dos valores: 
 \begin{itemize}
 
-\item \texttt{lu}: indica que funcionará como único módulo de
+\item \texttt{lu}: indica que funcionará en modo superficial, es decir, como único módulo de
   transferencia en un sistema de transferencia sintáctica superficial
   y que, por lo tanto, las palabras implícitas deben dejarse intactas
 
-\item \texttt{chunk}: indica que, cuando una palabra no es
+\item \texttt{chunk}: indica que funcionará en modo avanzado y, por lo tanto, cuando una palabra no es
 reconocida por ninguna regla,  se creará de oficio un segmento que encapsule
-esta palabra para que pueda ser tratada por los siguientes módulos de transferencia en Apertium 2 (transferencia
-sintáctica avanzada).
+esta palabra para que pueda ser tratada por los siguientes módulos de transferencia 
+de un sisema de transferencia
+sintáctica avanzada.
 
 \end{itemize}
 
@@ -4758,7 +4538,7 @@ de la categoría no puede contener acentos.
 Este elemento tiene dos usos marcadamente diferenciados según el 
 módulo en el que se utilice.
 
-\paragraph{Uso en el módulo transfer/chunker}
+\paragraph{Uso en el módulo chunker (transferencia superficial y transferencia avanzada)}
 
 
 Mediante este elemento se definen las categorías léxicas que se
@@ -5254,17 +5034,17 @@ la figura \ref{fig:clip}):
   símbolos gramaticales, que pueden haber sido modificados en la parte
   precedente de la regla).
 
-\item \texttt{link-to} \textit{(sólo en \texttt{chunker} en un sistema de
-transferencia sintáctica avanzada)} sustituye
-  el valor que se derivaría de la consulta del resto de atributos del
-  clip por el valor especificado en este atributo, que ha de ser un
-  número natural ($>0$). Este número indica con qué etiqueta
-  \texttt{<\textbf{tag}>} del \texttt{<\textbf{chunk}>} se enlaza el
-  contenido del clip, siendo el número el orden que ocupa esta
-  etiqueta dentro de \texttt{<\textbf{tags}>}. El resto de atributos
-  del clip quedan únicamente como información, pues son sobrescritos
-  por el valor de la etiqueta enlazada. Puede verse un ejemplo de su
-  uso en la figura \ref{fig:chunkintrachunk}.
+\item \texttt{link-to} \textit{(sólo en \texttt{chunker} en modo
+    avanzado)} sustituye el valor que se derivaría de la consulta del
+  resto de atributos del clip por el valor especificado en este
+  atributo, que ha de ser un número natural ($>0$). Este número indica
+  con qué etiqueta \texttt{<\textbf{tag}>} del
+  \texttt{<\textbf{chunk}>} se enlaza el contenido del clip, siendo el
+  número el orden que ocupa esta etiqueta dentro de
+  \texttt{<\textbf{tags}>}. El resto de atributos del clip quedan
+  únicamente como información, pues son sobrescritos por el valor de
+  la etiqueta enlazada. Puede verse un ejemplo de su uso en la figura
+  \ref{fig:chunkintrachunk}.
    
 \end{itemize}
 
@@ -5674,7 +5454,7 @@ para modificar los segmentos sin modificar su parte interna.
 
 \begin{enumerate}
 
-\item \textbf{Uso en \texttt{chunker} como módulo único y en \texttt{postchunk}}
+\item \textbf{Uso en \texttt{chunker} en modo superficial y en \texttt{postchunk}}
 
   La instrucción envía cada forma léxica dentro de un conjunto
   \texttt{<\textbf{lu}>}, que a su vez puede estar contenido dentro de
@@ -5710,7 +5490,7 @@ para modificar los segmentos sin modificar su parte interna.
 \end{figure}
 
 
-\item \textbf{Uso en \texttt{chunker} en un sistema de transferencia avanzada}
+\item \textbf{Uso en \texttt{chunker} en modo avanzado}
 
   La salida de este módulo se espera que sea una secuencia de uno o
   más chunks (enviados con el elemento \texttt{<\textbf{chunk}>})
@@ -5909,13 +5689,15 @@ conjugados.
 
 Es el elemento con el que se envían los chunks a la salida del módulo
 dentro de un elemento \texttt{<\textbf{out}>}.  Este elemento sólo
-está definido en los módulos \texttt{chunker} e \texttt{interchunk}.
+se utiliza en el módulo \texttt{chunker} en modo avanzado y en el módulo \texttt{interchunk}.
 En el módulo \texttt{postchunk} no se usa porque no es necesario crear
-ningú chunk a la salida.
+ningú chunk a la salida. En el módulo \texttt{chunker} en modo superficial
+tampoco seusa porque a la salida no se envían chunks sino unidades léxicas individuales
+y blancos.
 
 \begin{enumerate}
 
-\item \textbf{Uso en el módulo chunker}
+\item \textbf{Uso en el módulo chunker en modo avanzado}
 
 
 En este modo, el elemento \texttt{<\textbf{chunk}>} debe tener un atributo
@@ -5952,7 +5734,7 @@ Se puede ver un ejemplo de uso del elemento en la figura
 
 \subsubsection{Elemento de sección de enlace de etiquetas \texttt{<tags>}}
 
-\textit{Sólo en chunker con transferencia sintáctiva avanzada}. 
+\textit{Sólo en chunker en modo avanzado}. 
 
 Este elemento sirve para especificar una lista de etiquetas o
 elementos \texttt{<\textbf{tag}>} que serán las pseudoetiquetas del
@@ -5963,7 +5745,7 @@ figura \ref{fig:chunkintrachunk}.
 
 \subsubsection{Elemento de enlace de etiquetas \texttt{<tag>}}
 
-\textit{Sólo en chunker con transferencia sintáctiva avanzada}. 
+\textit{Sólo en chunker en modo avanzado}. 
 
 El elemento  \texttt{<\textbf{tag}>} tiene que contener una
 una etiqueta morfológica, que se puede especificar mediante una
@@ -5989,36 +5771,96 @@ transferencia estructural tiene más o menos elementos léxicos que el
 original o bien ha sido sometido a algún tipo de reordenación.
 
 
-\subsection{Formato de las reglas en los tres módulos del sistema de transferencia avanzada}
+\subsection{Especificación de los tres módulos del sistema de transferencia avanzada} 
 \label{noutransfer}
 
 A continuación se describen las características diferenciadas del formato
 de los reglas en los tres módulos de un sistema
 de transferencia sintáctica avanzada. Cuando Apertium funcione con un sistema
 de transferencia sintáctica superficial, sólo entra en acción el
-primero módulo, llamado \texttt{chunker}, que se comunica con el
+primero módulo, llamado \texttt{chunker}, que se comunica directamente con el
 módulo de generación.
 
 
-\subsubsection{Programa \texttt{chunker} (\texttt{transfer})}
+\subsubsection{Programa \texttt{chunker}}
 \label{ss:chunker}
 
-El funcionamiento es básicamente similar al actual módulo de transferencia de Apertium \nota{canviar referència a ``l'actual
-mòdul de transferència d'Apertium''},
-con las siguientes incorporaciones:
+
+Este módulo puede
+utilizarse individualmente como sistema de transferencia sintáctica
+superficial, o en combinación con los otros dos módulos de transferencia
+para construir un sistema de transferencia sintáctica
+avanzada. Un atributo del elemento \texttt{<transfer>} controla
+su modo de funcionamiento.
+
+\paragraph{Entrada/salida}
 
 \begin{itemize}
-\item Especificación de la acción implícita en el elemento raíz
-  \texttt{<transfer>}. Este elemento tiene el atributo opcional
-  \texttt{default} que puede tener los valores \texttt{lu} (valor por
-  defecto) o \texttt{chunk} dependiendo de si se quiere que el transfer
-  funcione a la manera de Apertium 1 (transferencia sintáctica
-  superficial) o de Apertium 2 (transferencia sintáctiva avanzada),
-  respectivamente.
-\item Atributo \texttt{comment} (opcional) para los elementos
-  \texttt{<rule>}. Las reglas tendrán a partir de ahora un comentario que
-  permitirá incluir información que se usará para documentación.
-\item Generación de segmentos (chunks): la etiqueta \texttt{<chunk>} es una etiqueta de un nivel más alto
+\item Entrada: datos con el formato de salida del \texttt{pretransfer}, es decir,
+  con las colas invariantes de las multipalabras desplazadas a una posición
+  anterior a cualquier etiqueta.
+
+\item Salida:
+\begin{itemize}
+\item[-] en modo avanzado (en un sistema de transferencia avanzada): segmentos (chunks),
+  para que el módulo siguiente los detecte y realice operaciones con ellos
+\item[-]  en modo superficial (en un sistema de transferencia superficial): formas léxicas que constituyen
+la entrada del módulo de generación.
+\end{itemize}
+
+\end{itemize}
+
+
+\paragraph{Ficheros de datos}
+
+\nota{Explicar millor això de l'únic fitxer de configuració}
+
+Este programa usa un único fichero de configuración y un fichero
+precompilado de detección de patrones calculado a partir del primero. El nombre del
+fichero de patrones (el fichero de configuración) tendrá la extensión  \texttt{.t1x}. 
+Como el 
+\texttt{chunker} es quien hace la consulta del diccionario bilingüe, éste
+(en forma compilada) también se tiene que aportar al programa.
+
+\nota{Potser seria bona idea esmentar en quina secció s'explica el
+compilador a què es fa referència}
+
+La DTD de este fichero de datos se especifica en el apéndice 
+\ref{ss:dtdtransfer}, y en el apartado \ref{formatotransfer} se describen
+los elementos utilizados para crear las reglas del fichero.
+
+\paragraph{Detección de patrones}
+
+El sistema de detección de reglas de este módulo será el 
+que se ha explicado en \ref{functransfer}
+pues es el mismo en modo de transferencia avanzada y en modo de 
+transferencia superficial. El programa
+\texttt{a\-per\-tium-pre\-trans\-fer}  
+\nota{Vacil·lació terminològica \texttt{pretransfer}.}
+es necesario para adaptar el formato
+de salida del etiquetador a la entrada que reconoce el módulo de transferencia.
+En posteriores versiones de Apertium no se descarta que se modifique el
+\textit{desambiguador categorial} para que haga el trabajo del
+\texttt{apertium-pretransfer}.
+\nota{També hem d'unificar la terminologia d'altres mòduls:
+\emph{desambiguador categorial}, \emph{etiquetador}; tal com està redactat
+el paràgraf es podria pensar que són dues coses diferents.}
+
+
+\paragraph{Funcionamiento}
+
+El funcionamiento es básicamente similar en el modo
+superificial y en el modo avanzado, con estas diferencias:
+
+\begin{itemize}
+\item Para que el módulo funcione como primer módulo
+de un sistema de transferencia sintáctica avanzada, en el atributo
+opcional \texttt{default}  del elemento raíz \texttt{<transfer>}
+debe especificarse el valor \texttt{chunk}. El valor por defecto
+es \texttt{lu}, que implica que el \texttt{chunker} funcione
+en modo de transferencia sintáctica superficial (como único módulo).
+
+\item Generación de segmentos (chunks) a la salida: la etiqueta \texttt{<chunk>} es una etiqueta de un nivel más alto
   que \texttt{<lu>} (\textit{lexical unit}) que
   permite generar segmentos con las características que han sido
   especificadas en \ref{sec:format}; tiene los siguientes atributos:
@@ -6082,8 +5924,95 @@ Veamos con un ejemplo el uso del elemento \texttt{<chunk>}:
 \end{alltt}
 
 
+\paragraph{Acción implícita}
+
+Los \textit{superblancos} aislados, que no son detectados por ningún patrón
+de este módulo, se escriben en el mismo orden en el que llegan.
+
+El elemento raíz del fichero \texttt{.t1x} de reglas del
+\texttt{chunker}, \texttt{<transfer>}, tiene un
+atributo opcional \texttt{default} que puede tomar los valores
+\begin{itemize}
+\item \texttt{chunk}: cuando el módulo funcione en modo avanzado
+  (transferencia sintáctiva avanzada), para que se generen segmentos
+  triviales con las palabras que no son detectadas por ninguna regla,
+  para que a la salida no haya ninguna palabra no integrada en un
+  segmento.  El nuevo segmento se creará mediante la traducción de la
+  palabra por el diccionario bilingüe.  El lema fijo de los chunks
+  creados implícitamente es \texttt{default}.
+\item \texttt{lu} (valor implícito): cuando el módulo funcione como
+  único módulo de transferencia en modo superficial (transferencia
+  sintáctica superficial), para que no se creen segmentos para las
+  palabras no detectadas por reglas, y simplemente se traduzcan con el
+  diccionario bilingüe.
+
+\end{itemize}
+
+A continuación se muestra el segmento generado automáticamente con una forma léxica no
+detectada por ninguna regla  del
+\texttt{chunker} cuando el atributo \texttt{default} tiene el valor \texttt{chunk}:
+
+
+\begin{alltt}
+^default\verb!{!^that<cnjsub>$\verb!}!$
+\end{alltt}
+
+\nota{Va sense etiquetes entre \texttt{default} i \texttt{\{}? No caldria dir-ho explícitament?}
+
 
 \subsubsection{Programa \texttt{interchunk}}
+\label{ss:interchunk}
+
+
+\nota{És \texttt{apertium-interchunk} o \texttt{interchunk} només?}
+
+El programa \texttt{interchunk} trata los segmentos, los reordena y hace los
+cambios pertinentes en la información morfosintáctica. Esto se hace
+mediante la detección de patrones de segmentos (secuencias de segmentos).
+Las instrucciones que se usan para controlar
+su funcionamiento son, con pocas diferencias, las mismas que usa
+el programa \texttt{chunker}, pero tiene que quedar claro que se utiliza un archivo
+diferente. Los segmentos son tratados de forma similar a como se
+tratan las palabras en el transfer o \texttt{chunker} de Apertium.
+\nota{Comprovar la denominació dels programes}
+
+\paragraph{Entrada/salida}
+
+\begin{itemize}
+\item Entrada: segmentos procedentes de \texttt{chunker}.
+\item Salida: segmentos posiblemente reordenados y con la información del
+  pseudolema del segmento posiblemente modificada.
+\end{itemize}
+
+\paragraph{Ficheros de datos}
+
+Este módulo usa dos ficheros de datos. Un fichero de especificación del
+comportamiento del programa \texttt{in\-ter\-chunk}, con extensión
+\texttt{.t2x} por analogía con el módulo anterior, y un
+fichero de patrones precalculados para acelerar el análisis de la entrada.
+No se  incluye el fichero binario del diccionario bilingüe porque no
+se usa.
+\nota{Citar el compilador?}
+
+La sintaxi del fichero de especificación es muy similar a la del módulo
+\texttt{chunker}. Su DTD se especifica en el Apéndice
+\ref{ss:dtdinterchunk}, y en el apartado \ref{formatotransfer} se describen
+los elementos utilizados para crear las reglas del fichero.
+
+
+\paragraph{Detección de reglas}
+
+Las reglas detectan patrones que están definidos mediante secuencias
+de pseudopalabras. Estas pseudopalabras tienen un formato basado en
+el formato de la forma léxica de las palabras. Desde el punto de vista
+práctico, este pseudolema es visto de manera equivalente a como se
+\nota{La alternança \emph{pseudolema} i \emph{pseudoparaula} s'ha de resoldre}
+ve la forma léxica de una palabra en el módulo
+\texttt{chunker} para realizar la detección.
+De esta forma, se usará una detección de patrones con atributos definidos
+sobre las pseudopalabras y no sobre las palabras del patrón original.
+
+\paragraph{Funcionamiento}
 
 Las modificaciones en el juego de instrucciones de este módulo ---respecto del
 juego de instrucciones utilizado en
@@ -6114,8 +6043,62 @@ se permite imprimir otra cosa que \texttt{<chunk>}s en las
 \end{itemize}
 
 
-\subsubsection{Programa \texttt{postchunk}}
+\paragraph{Acción implícita}
 
+Al igual que en el módulo anterior, se ha establecido una acción
+implícita que escribe sin modificar los segmentos no reconocidos por ningún
+patrón del fichero de especificación de este módulo. Esta acción implícita
+escribe exactamente lo que lee, tanto si se trata de chunks como
+de blancos.
+\nota{Atenció a la vacil·lació \emph{regla}/\emph{acció} en la resta del document. Sempre havia cregut que era \emph{regla}=\emph{patró}+\emph{acció}.}
+
+
+\subsubsection{Programa \texttt{postchunk}}
+\label{ss:postchunk}
+
+El programa \texttt{postchunk} detecta segmentos individuales, y para
+cada uno de ellos, ejecuta unas acciones especificadas. La detección se
+basa en el lema del segmento,
+y no en patrones (no en las etiquetas);
+esto hará que la detección en este módulo sea específica para cada
+``nombre'' de segmento.\nota{Quan fixem bé la terminologia hem d'assegurar-nos que la redacció d'aquesta part és l'adequada.}
+
+
+Por otro lado, el funcionamiento de la detección y del procesamiento de las
+reglas se basa en que las referencias a parámetros se resuelven
+inmediatamente después de la detección, es decir, las etiquetas
+\texttt{<1>}, \texttt{<2>}, etc. son sustituidas automáticamente por el
+valor de los parámetros antes de empezar el procesamiento. Las posiciones
+(atributo \texttt{pos}) a las que se hace referencia con las
+instrucciones \texttt{<clip>}, etc. corresponden a la posición de las
+palabras en el interior del segmento.
+
+También aplica automáticamente la política de mayúsculas (ver sección
+\ref{ss:majuscules}) de los lemas de las pseudopalabras hacia las
+palabras que están dentro del segmento.
+
+
+
+\paragraph{Entrada/salida}
+
+\begin{itemize}
+\item Entrada: segmentos procedentes de \texttt{in\-ter\-chunk}.
+\item Salida: entrada válida para el módulo de generación morfológica de Apertium.
+\end{itemize}
+
+\paragraph{Ficheros de datos}
+
+Este programa tiene su propio archivo de especificación, que tendrá
+extensión \texttt{.t3x}. La sintaxis está basada igualmente en el
+\texttt{chunker} i en el \texttt{in\-ter\-chunk}. 
+\nota{Explicar que no ha de llegir cap fitxer compilat de patrons perquè usa noms i no patrons?}
+
+\paragraph{Detección de reglas}
+
+La detección de los segmentos se basa en el nombre de los segmentos. Los
+segmentos no detectados reciben el procesamiento implícito.
+
+\paragraph{Funcionamiento}
 
 Las diferencias en las acciones en comparación con
 \texttt{in\-ter\-chunk} son las siguientes:
@@ -6136,9 +6119,27 @@ Las diferencias en las acciones en comparación con
 \nota{MG: però llavors això no és una diferència respecte de \texttt{interchunk} no?}
 \end{itemize}
 
+\paragraph{Acción implícita}
+
+
+En este módulo la acción implícita es la de escribir las palabras de dentro
+del segmento, sustituyendo las referencias por los parámetros del
+segmento. Será usada para la mayor parte de segmentos, ya que se prevé
+que este módulo se utilice para casos muy específicos en los que
+sea necesario hacer algún procesamiento concreto.
+
+También se aplica implícitamente la política de mayúsculas (sección
+\ref{ss:majuscules}).
+
+En cualquier caso, los blancos externos a los segmentos son copiados en
+el mismo orden en que son leídos, puesto que la detección de segmentos es
+unitaria (este módulo no los agrupa).
+
+
 
 
 \subsection{Preproceso del módulo de transferencia estructural}
+\label{ss:preproceso_transfer}
 
 Los ficheros de especificación de los módulos de transferencia
 estructural, también llamados \emph{ficheros de reglas de
