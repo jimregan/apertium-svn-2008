@@ -344,7 +344,7 @@ void printBuffer(int ind=-1, string end_tag="")
       fputs_unlocked(tag, formatfile);
       fputs_unlocked(buffer.c_str(), formatfile);
       sprintf(tag, "]&gt;&lt;/format-tag&gt;\n"); 
-      fputc_unlockec(']', formatfile);
+      fputc_unlocked(']', formatfile);
       fputs_unlocked(tag, formatfile);
     }
     else if(buffer.size() == 1 &amp;&amp; buffer[0] != ' ') {

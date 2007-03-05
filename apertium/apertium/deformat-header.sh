@@ -6,7 +6,7 @@ then if [ $# != 3 ]
           echo "  -m: matxin standard mode";
           echo "  -M: matxin optimized mode"; 
           exit 1;
-     elif [ $1 != "-a" && $1 != "-A" && $1 != "-m" && $1 != "-M"]
+     elif [ $1 != "-a" ] && [ $1 != "-A" ] && [ $1 != "-m" ] && [ $1 != "-M" ]
      then echo "USAGE: $(basename $0) -[AaMm] <input file> <output_file>";
           echo "  -a: apertium standard mode";
           echo "  -A: apertium optimized mode (default mode)";
@@ -26,6 +26,8 @@ then if [ ! -e $1 ]
           exit 1;
      fi 
 fi
+
+MODE="apertium" # default mode
 
 if [ $# = 3 ]
 then if [ ! -e $2 ]
