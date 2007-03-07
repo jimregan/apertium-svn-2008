@@ -25,7 +25,7 @@ GENERATEDSCRIPTS = apertium-gen-deformat apertium-gen-reformat \
                    apertium-gen-lextormono apertium-gen-wlist-lextor \
                    apertium-preprocess-corpus-lextor \
                    apertium-gen-stopwords-lextor \
-                   apertium-translator-lextor apertium-validate-interchunk \
+                   apertium-validate-interchunk \
                    apertium-validate-postchunk apertium \
                    apertium-gen-modes
 
@@ -228,13 +228,13 @@ apertium: Makefile.am apertium-header.sh
 	@cat apertium-header.sh >>$@
 	@chmod a+x $@
 
-apertium-translator-lextor: Makefile.am trans-lextor-header.sh
-	@echo "Creating apertium-translator-lextor script"
-	@echo "#!$(BASH)" > $@
-	@echo "APERTIUM_PATH=\"$(prefix)/bin\"" >>$@
-	@echo "LTTOOLBOX_PATH=\"$(prefix)/bin\"" >>$@
-	@cat trans-lextor-header.sh >>$@
-	@chmod a+x $@
+#apertium-translator-lextor: Makefile.am trans-lextor-header.sh
+#	@echo "Creating apertium-translator-lextor script"
+#	@echo "#!$(BASH)" > $@
+#	@echo "APERTIUM_PATH=\"$(prefix)/bin\"" >>$@
+#	@echo "LTTOOLBOX_PATH=\"$(prefix)/bin\"" >>$@
+#	@cat trans-lextor-header.sh >>$@
+#	@chmod a+x $@
 
 apertium-gen-oldbil: Makefile.am transformdicbil-header.sh
 	@echo "Creating apertium-gen-oldbil script"
@@ -305,5 +305,5 @@ EXTRA_DIST = gen-header.sh deformat-header.sh \
              html-format.xml rtf-format.xml trans-header.sh apertium-header.sh $(man_MANS) \
              validate-header.sh transformdic-header.sh transformdicbil-header.sh \
              gen-wlist-lextor-header.sh gen-stopwords-lextor.sh preprocess-corpus-lextor.sh \
-             trans-lextor-header.sh interchunk.dtd postchunk.dtd modes.dtd \
-             modes-header.sh apertium-createmodes.awk modes2bash.xsl
+             interchunk.dtd postchunk.dtd modes.dtd \
+             modes-header.sh apertium-createmodes.awk modes2bash.xsl ###trans-lextor-header.sh 
