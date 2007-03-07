@@ -14,42 +14,18 @@
       <cat-item tags="PREP"/>
     </def-cat>
     
-
+<!--
      <def-cat n="SN_nopron">
       <cat-item tags="SN.DET.*"/>
       <cat-item tags="SN.UNDET.*"/>
       <cat-item tags="SN.NUM.*"/>
-    </def-cat>
+    </def-cat>-->
 
-    <def-cat n="SV"><!--Verb conjugat, i tb infinitiu per quan el tagger s'equivoca. -->
-      <cat-item lemma="verbcj" tags="SV.*"/>
-      <cat-item tags="Vcop.*"/>
-      <cat-item lemma="mod" tags="SV.*"/><!--MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: s�que � 'haig de'. -->
-      <cat-item lemma="auxmod_inf" tags="SV.*"/>
-      <cat-item lemma="auxmod_mod_inf" tags="SV.*"/>
-      <cat-item lemma="do_inf" tags="SV.*"/>
-      <cat-item lemma="mod_inf" tags="SV.*"/>
-      <cat-item lemma="mod_perif" tags="SV.*"/>
-      <cat-item lemma="mod_inf_perif" tags="SV.*"/>
-      <cat-item lemma="aux_mod" tags="SV.*"/><!--Aquests van davant desconegudes o sent (I will have to.) -->
-      <cat-item lemma="have_pp" tags="SV.*"/>
-      <cat-item lemma="be_ger" tags="SV.*"/>
-      <cat-item lemma="be_ger_enc" tags="SV.*"/>
-      <cat-item tags="SV.vblex.inf.*"/>
-      <cat-item tags="SV.vbmod.inf.*"/>
-		<cat-item lemma="verbcj_perif" tags="SV.*"/>
-		<cat-item lemma="pro_verbcj" tags="SV.*"/>
-		<cat-item lemma="pro_verbcj_perif" tags="SV.*"/>
-		<cat-item lemma="pro_auxmod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_mod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_mod_inf_perif" tags="SV.*"/>
-		<cat-item lemma="pro_auxmod_mod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_have_pp" tags="SV.*"/>
-		<cat-item lemma="pro_be_ger" tags="SV.*"/>
-		<cat-item lemma="pro_do_inf" tags="SV.*"/>
-      
-    </def-cat>
-	 
+    <def-cat n="SV">
+				<cat-item tags="SV.*"/>
+</def-cat>
+
+ 
     <def-cat n="vbcop">
       <cat-item tags="Vcop.*"/>
       <cat-item tags="SV.vbser.*"/>
@@ -394,14 +370,84 @@
 </action>
 </rule>
 
-<!--
-<rule comment="REGLA: SN SV SA (they live happy - viuen feli�s)">
+<rule comment="REGLA: SN adv SV">
 	<pattern>
 		<pattern-item n="SN"/>
+		<pattern-item n="ADV"/>
 		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<choose>
+		<when>
+			<test>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</test>
+			<out>
+			<chunk>
+					<get-case-from pos="1">
+						<clip pos="2" part="lem"/>
+					</get-case-from>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<chunk><!--el pronom no l'envio, nom� el 2n chunk -->
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--Quan SN no � pronom subjecte, per tant, quan � qualsevol altre SN -->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<call-macro n="nombre_SN">
+		<with-param pos="1"/>
+	</call-macro>
+</action>
+</rule>
+
+
+<rule comment="REGLA: SN vbcop SA">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
 		<pattern-item n="SA"/>
 	</pattern>
 	<action>
+	<call-macro n="concord">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -455,71 +501,170 @@
 		</chunk>
 	</out>
 </action>
-</rule>	 -->
-	 <!-- això només per als cop
-<rule comment="REGLA: SN SP SV SA">
+</rule>	
+
+<rule comment="REGLA: SN vbcop SA">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="concord">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</test>
+			<out>
+				<chunk>
+					<get-case-from pos="1">
+						<clip pos="2" part="lem"/>
+					</get-case-from>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<call-macro n="concord">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	</call-macro>
+	<out>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="whole"/>
+		</chunk>
+	</out>
+</action>
+</rule>	
+
+<rule comment="REGLA: SN SP vbcop SA">
 	<pattern>
 		<pattern-item n="SN"/>
 		<pattern-item n="pr"/>
 		<pattern-item n="SN"/>
-		<pattern-item n="SV"/>
+		<pattern-item n="vbcop"/>
 		<pattern-item n="SA"/>
 	</pattern>
 	<action>
-	<choose>
-		<when>
-			<test>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnsubj"/>
-				</equal>
-				<equal>
-					<clip pos="2" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="2" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</test>
-			<out>
-				<chunk>
-					<get-case-from pos="1">
-						<clip pos="2" part="lem"/>
-					</get-case-from>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
 	<call-macro n="concord">
 		<with-param pos="1"/>
-		<with-param pos="3"/>
+		<with-param pos="5"/>
 	</call-macro>
 	<out>
+		<chunk>
+			<clip pos="1" part="lem"/>
+			<clip pos="1" part="tags"/>
+			<clip pos="1" part="chcontent"/>
+		</chunk>
+		<b pos="1"/>
+		<chunk>
+			<clip pos="2" part="lem"/>
+			<clip pos="2" part="tags"/>
+			<clip pos="2" part="chcontent"/>
+		</chunk>
 		<b pos="2"/>
 		<chunk>
-			<clip pos="3" part="whole"/>
+			<clip pos="3" part="lem"/>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
 		</chunk>
+		<b pos="3"/>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+		<b pos="4"/>
+		<chunk>
+			<clip pos="5" part="lem"/>
+			<clip pos="5" part="tags"/>
+			<clip pos="5" part="chcontent"/>
+		</chunk>
+
 	</out>
 </action>
-</rule>	 -->
+</rule>
+	 
+
+<rule comment="REGLA: SN SP vbcop SA">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="concord">
+		<with-param pos="1"/>
+		<with-param pos="5"/>
+	</call-macro>
+	<out>
+		<chunk>
+			<clip pos="1" part="lem"/>
+			<clip pos="1" part="tags"/>
+			<clip pos="1" part="chcontent"/>
+		</chunk>
+		<b pos="1"/>
+		<chunk>
+			<clip pos="2" part="lem"/>
+			<clip pos="2" part="tags"/>
+			<clip pos="2" part="chcontent"/>
+		</chunk>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="lem"/>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
+		</chunk>
+		<b pos="3"/>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+		<b pos="4"/>
+		<chunk>
+			<clip pos="5" part="lem"/>
+			<clip pos="5" part="tags"/>
+			<clip pos="5" part="chcontent"/>
+		</chunk>
+
+	</out>
+</action>
+</rule>
 	 
 
 
