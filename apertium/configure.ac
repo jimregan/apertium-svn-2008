@@ -94,19 +94,7 @@ if test x$ac_cv_path_XMLLINT = xno
 then
   AC_MSG_ERROR([You don't have xmllint installed.])
 fi
-
-if test x$ARCH = xppc
-then
-  AC_PATH_PROG(XSLTPROC, sabcmd, no)
-  if test x$ac_cv_path_XSLTPROC = x
-  then
-    AC_MSG_ERROR([You don't have sablotron installed.])
-  fi
-  if test x$ac_cv_path_XSLTPROC = xno
-  then
-    AC_MSG_ERROR([You don't have sablotron installed.])
-  fi
-else 
+ 
   AC_PATH_PROG(XSLTPROC, xsltproc, no)
   if test x$ac_cv_path_XSLTPROC = x
   then
@@ -116,7 +104,7 @@ else
   then
     AC_MSG_ERROR([You don't have xsltproc installed.])
   fi
-fi
+
 
 AC_PATH_PROG(BASH, bash, no)
 if test x$ac_cv_path_BASH = x
