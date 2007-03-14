@@ -227,16 +227,59 @@
 	</choose> 
 </def-macro>
 
-<def-macro n="concord" npar="2">
+<def-macro n="concord_sa" npar="2"><!--assinga el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tía es interesante" -> "interesante" concordarà amb "aperçu")-->
+					<choose>
+						<when> 
+							<test>
+								<equal>
+									<clip pos="1" part="gen"/>
+									<lit-tag v="f"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" part="gen"/>
+								<lit-tag v="f"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<clip pos="2" part="gen"/>
+								<lit-tag v="m"/>
+							</let>
+						</otherwise>
+					</choose>
+	
+					<choose>
+						<when> 
+							<test>
+								<equal>
+									<clip pos="1" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" part="nbr"/>
+								<lit-tag v="pl"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<clip pos="2" part="nbr"/>
+								<lit-tag v="sg"/>
+							</let>
+						</otherwise>
+					</choose>
+	
+</def-macro>
+
+<def-macro n="concord_sn" npar="2"> <!--asgina gen i nbr en els sn GD o ND quan van seguits de vcop. (p.ex. "esta chica es mi ayudante)-->
 	<choose>
 		<when> 
 			<test>
-				<not>
 					<equal>
 						<clip pos="2" part="gen"/>
-						<lit-tag v="mf"/>
+						<lit-tag v="GD"/>
 					</equal>
-				</not>
 			</test>
 					<choose>
 						<when> 
@@ -263,12 +306,10 @@
 	<choose>
 		<when> 
 			<test>
-				<not>
 					<equal>
 						<clip pos="2" part="nbr"/>
-						<lit-tag v="sp"/>
+						<lit-tag v="ND"/>
 					</equal>
-				</not>
 			</test>
 					<choose>
 						<when> 
@@ -1000,14 +1041,17 @@
 	</action>
 </rule>
 
-<!--
-<rule comment="REGLA: SN SV SA (they live happy - viuen feli�s)">
+<rule comment="REGLA: SN vbcop SA">
 	<pattern>
 		<pattern-item n="SN"/>
-		<pattern-item n="SV"/>
+		<pattern-item n="vbcop"/>
 		<pattern-item n="SA"/>
 	</pattern>
 	<action>
+	<call-macro n="concord_sa">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -1050,10 +1094,6 @@
 			</out>
 		</otherwise>
 	</choose>	
-	<call-macro n="concord">
-		<with-param pos="1"/>
-		<with-param pos="3"/>
-	</call-macro>
 	<out>
 		<b pos="2"/>
 		<chunk>
@@ -1061,8 +1101,68 @@
 		</chunk>
 	</out>
 </action>
-</rule>	 -->
-	 <!-- això només per als cop
+</rule>	
+<rule comment="REGLA: SN vbcop SN">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</test>
+			<out>
+				<chunk>
+					<get-case-from pos="1">
+						<clip pos="2" part="lem"/>
+					</get-case-from>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<out>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="whole"/>
+		</chunk>
+	</out>
+</action>
+</rule>	
 <rule comment="REGLA: SN SP SV SA">
 	<pattern>
 		<pattern-item n="SN"/>
@@ -1080,11 +1180,11 @@
 					<lit v="prnsubj"/>
 				</equal>
 				<equal>
-					<clip pos="2" part="pers"/>
+					<clip pos="4" part="pers"/>
 					<clip pos="1" part="pers"/>
 				</equal>
 				<equal>
-					<clip pos="2" part="nbr"/>
+					<clip pos="4" part="nbr"/>
 					<clip pos="1" part="nbr"/>
 				</equal>
 			</test>
@@ -1114,7 +1214,7 @@
 			</out>
 		</otherwise>
 	</choose>	
-	<call-macro n="concord">
+	<call-macro n="concord_sa">
 		<with-param pos="1"/>
 		<with-param pos="3"/>
 	</call-macro>
@@ -1125,7 +1225,7 @@
 		</chunk>
 	</out>
 </action>
-</rule>	 -->
+</rule>	
 	 
 
 
