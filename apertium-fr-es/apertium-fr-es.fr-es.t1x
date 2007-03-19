@@ -35,6 +35,9 @@
       <!-- <cat-item tags="num.*"/> -->
     </def-cat>
 
+   <def-cat n="percent">
+      <cat-item tags="num.percent"/>
+    </def-cat>
     <def-cat n="num">
       <cat-item tags="num.*"/>
       <cat-item tags="num"/>
@@ -3939,6 +3942,48 @@
 		</let>
 	</action>
 </rule>
+
+<rule comment="REGLA: prep X% -> prep el X% ">
+	<pattern>
+		<pattern-item n="prep"/>
+		<pattern-item n="percent"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>	
+<!--		<call-macro n="f_concord1">
+			<with-param pos="1"/>
+		</call-macro>	-->
+		<out>
+			<chunk name="pr" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="PREP"/></tag>
+				</tags>
+				<lu>   
+					<clip pos="1" side="tl" part="whole"/> 
+				</lu> 
+			</chunk>
+			<b pos="1"/>
+			<chunk name="det_percent" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="SN"/></tag>
+					<tag><lit-tag v="m.sg"/></tag>
+				</tags>
+				<lu>
+					<lit v="el"/> 
+					<lit-tag v="det.def.m.sg"/> 
+				</lu> 
+				<b/>
+				<lu><clip pos="2" side="tl" part="whole"/></lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule> 
 
 <rule comment="REGLA: ADJECTIU (quan no acompanya res o va amb desconeguda)">
 	<pattern>
