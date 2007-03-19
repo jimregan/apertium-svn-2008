@@ -201,7 +201,7 @@
 	</choose>
 </def-macro>
 
-<def-macro n="assinga_gen_nbr" npar="1">
+<def-macro n="assigna_gen_nbr" npar="1">
  <choose><!--To determine value of variables of gender and
                  number and propagate to other rules.  Variables are
                  not used again in this rule -->
@@ -281,7 +281,7 @@
 
 </def-macro>
 
-<def-macro n="concord_sa" npar="2"><!--assinga el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tía es interesante" -> "interesante" concordarà amb "aperçu")-->
+<def-macro n="concord_sa" npar="2"><!--assigna el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tía es interesante" -> "interesante" concordarà amb "aperçu")-->
 					<choose>
 						<when> 
 							<test>
@@ -555,7 +555,7 @@
 		<pattern-item n="SN"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 			<out>
@@ -572,7 +572,7 @@
 		<pattern-item n="SA"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 			<out>
@@ -584,14 +584,30 @@
 			</out>
 </action>
 </rule>
-
+<rule comment="REGLA: det">
+	<pattern>
+		<pattern-item n="DET"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+</action>
+</rule>
 <rule comment="REGLA: SN SV">
 	<pattern>
 		<pattern-item n="SN"/>
 		<pattern-item n="SV"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -676,10 +692,10 @@
 		<pattern-item n="SV"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="3"/>
 	</call-macro>
 	<choose>
@@ -789,10 +805,10 @@
 		<pattern-item n="SV"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="3"/>
 	</call-macro>
 
@@ -913,7 +929,7 @@
 		<pattern-item n="SV"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -1010,7 +1026,7 @@
 		<pattern-item n="adv"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -1148,7 +1164,7 @@
 		<with-param pos="1"/>
 		<with-param pos="3"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -1214,7 +1230,7 @@
 		<with-param pos="1"/>
 		<with-param pos="4"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -1285,7 +1301,7 @@
 		<with-param pos="1"/>
 		<with-param pos="3"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -1351,7 +1367,7 @@
 		<with-param pos="1"/>
 		<with-param pos="4"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -1422,10 +1438,10 @@
 		<pattern-item n="SA"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="3"/>
 	</call-macro>
 	<choose>
@@ -1548,10 +1564,10 @@
 		<pattern-item n="SA"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="3"/>
 	</call-macro>
 	<choose>
@@ -1679,10 +1695,10 @@
 		<pattern-item n="SN"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="3"/>
 	</call-macro>
 	<choose>
@@ -1805,10 +1821,10 @@
 		<pattern-item n="SN"/>
 	</pattern>
 	<action>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
-	<call-macro n="assinga_gen_nbr">
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="3"/>
 	</call-macro>
 	<choose>

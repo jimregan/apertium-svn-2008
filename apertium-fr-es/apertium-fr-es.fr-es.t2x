@@ -173,48 +173,144 @@
   <section-def-vars>
     <def-var n="uno"/>
     <def-var n="nombre"/>
+		<def-var n="genere"/>
   </section-def-vars>
 
 <section-def-macros>
 
-<def-macro n="nombre_SN" npar="1">
+<def-macro n="assigna_gen_nbr" npar="1">
  <choose><!--To determine value of variables of gender and
                  number and propagate to other rules.  Variables are
                  not used again in this rule -->
-          <when> 
-            <test>
-              <equal>
-                <clip pos="1" part="nbr"/>
-                <lit-tag v="sg"/>
-              </equal>
-            </test>
-            <let><var n="nombre"/><lit-tag v="sg"/></let>
-          </when>
-	  <when>
-            <test>
-              <equal>
-                <clip pos="1" part="nbr"/>
-                <lit-tag v="pl"/>
-              </equal>
-            </test>
-            <let><var n="nombre"/><lit-tag v="pl"/></let>
-          </when>
-	  <otherwise>
-	    <let><var n="nombre"/><lit-tag v="sg"/></let>
-	  </otherwise>
+		<when> 
+			<test>
+				<equal>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v="pl"/>
+				</equal>
+			</test>
+			<let><var n="nombre"/><lit-tag v="pl"/></let>
+		</when>
+		<when>
+			<test>
+				<or>
+				<equal>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v="sg"/>
+				</equal>
+				<equal>
+					<var n="nombre"/>
+					<lit v=""/>
+				</equal>
+				</or>
+			</test>
+			<let><var n="nombre"/><lit-tag v="sg"/></let>
+		</when>
 	</choose> 
-</def-macro>
-
-<def-macro n="concord" npar="2">
 	<choose>
 		<when> 
 			<test>
-				<not>
+				<equal>
+					<clip pos="1" part="gen"/>
+					<lit-tag v="f"/>
+				</equal>
+			</test>
+			<let><var n="genere"/><lit-tag v="f"/></let>
+		</when>
+		<when> 
+			<test>
+				<or>
+				<equal>
+					<clip pos="1" part="gen"/>
+					<lit-tag v="m"/>
+				</equal>
+				<equal>
+					<var n="genere"/>
+					<lit v=""/>
+				</equal>
+				</or>
+			</test>
+			<let><var n="genere"/><lit-tag v="m"/></let>
+		</when>
+	</choose> 
+	<choose>
+		<when> 
+			<test>
+				<equal>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v="ND"/>
+				</equal>
+			</test>
+			<let><clip pos="1" part="nbr"/><var n="nombre"/></let>
+		</when>
+	</choose>
+	<choose>
+		<when> 
+			<test>
+				<equal>
+					<clip pos="1" part="gen"/>
+					<lit-tag v="GD"/>
+				</equal>
+			</test>
+			<let><clip pos="1" part="gen"/><var n="genere"/></let>
+		</when>
+	</choose>
+
+</def-macro>
+
+<def-macro n="concord_sa" npar="2"><!--assinga el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tía es interesante" -> "interesante" concordarà amb "aperçu")-->
+					<choose>
+						<when> 
+							<test>
+								<equal>
+									<clip pos="1" part="gen"/>
+									<lit-tag v="f"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" part="gen"/>
+								<lit-tag v="f"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<clip pos="2" part="gen"/>
+								<lit-tag v="m"/>
+							</let>
+						</otherwise>
+					</choose>
+	
+					<choose>
+						<when> 
+							<test>
+								<equal>
+									<clip pos="1" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" part="nbr"/>
+								<lit-tag v="pl"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<clip pos="2" part="nbr"/>
+								<lit-tag v="sg"/>
+							</let>
+						</otherwise>
+					</choose>
+	
+</def-macro>
+
+<def-macro n="concord_sn" npar="2"> <!--asgina gen i nbr en els sn GD o ND quan van seguits de vcop. (p.ex. "esta chica es mi ayudante)-->
+	<choose>
+		<when> 
+			<test>
 					<equal>
 						<clip pos="2" part="gen"/>
-						<lit-tag v="mf"/>
+						<lit-tag v="GD"/>
 					</equal>
-				</not>
 			</test>
 					<choose>
 						<when> 
@@ -241,12 +337,10 @@
 	<choose>
 		<when> 
 			<test>
-				<not>
 					<equal>
 						<clip pos="2" part="nbr"/>
-						<lit-tag v="sp"/>
+						<lit-tag v="ND"/>
 					</equal>
-				</not>
 			</test>
 					<choose>
 						<when> 
@@ -271,8 +365,6 @@
 		</when>
 	</choose>
 </def-macro>
-
-
   <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc cont�o no format. Cal posar aquesta funci�en les regles en qu�desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont�format cal conservar-la, si no en cont�cal eliminar-la perqu�no apareguin dos espais seguits. -->
      	<choose>
      	  <when>
@@ -316,6 +408,57 @@
 					<b pos="1"/>-->
 
 <!--REGLES GENERALS -->
+<rule comment="REGLA: SN">
+	<pattern>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+</action>
+</rule>
+<rule comment="REGLA: SA">
+	<pattern>
+		<pattern-item n="SA"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+</action>
+</rule>
+<rule comment="REGLA: det">
+	<pattern>
+		<pattern-item n="DET"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+</action>
+</rule>
 
 <rule comment="REGLA: SN SV">
 	<pattern>
@@ -323,6 +466,9 @@
 		<pattern-item n="SV"/>
 	</pattern>
 	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -365,9 +511,6 @@
 			</out>
 		</otherwise>
 	</choose>	
-	<call-macro n="nombre_SN">
-		<with-param pos="1"/>
-	</call-macro>
 </action>
 </rule>
 
@@ -378,6 +521,9 @@
 		<pattern-item n="SV"/>
 	</pattern>
 	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -402,6 +548,7 @@
 					<clip pos="2" part="tags"/>
 					<clip pos="2" part="chcontent"/>
 				</chunk>
+				<b pos="2"/>
 				<chunk><!--el pronom no l'envio, nom� el 2n chunk -->
 					<clip pos="3" part="lem"/>
 					<clip pos="3" part="tags"/>
@@ -431,9 +578,6 @@
 			</out>
 		</otherwise>
 	</choose>	
-	<call-macro n="nombre_SN">
-		<with-param pos="1"/>
-	</call-macro>
 </action>
 </rule>
 
@@ -445,9 +589,12 @@
 		<pattern-item n="SA"/>
 	</pattern>
 	<action>
-	<call-macro n="concord">
+	<call-macro n="concord_sa">
 		<with-param pos="1"/>
 		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
 	</call-macro>
 	<choose>
 		<when>
@@ -491,10 +638,6 @@
 			</out>
 		</otherwise>
 	</choose>	
-	<call-macro n="concord">
-		<with-param pos="1"/>
-		<with-param pos="3"/>
-	</call-macro>
 	<out>
 		<b pos="2"/>
 		<chunk>
@@ -504,16 +647,19 @@
 </action>
 </rule>	
 
-<rule comment="REGLA: SN vbcop SA">
+<rule comment="REGLA: SN vbcop SN">
 	<pattern>
 		<pattern-item n="SN"/>
 		<pattern-item n="vbcop"/>
 		<pattern-item n="SN"/>
 	</pattern>
 	<action>
-	<call-macro n="concord">
+	<call-macro n="concord_sn">
 		<with-param pos="1"/>
 		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
 	</call-macro>
 	<choose>
 		<when>
@@ -557,10 +703,6 @@
 			</out>
 		</otherwise>
 	</choose>	
-	<call-macro n="concord">
-		<with-param pos="1"/>
-		<with-param pos="3"/>
-	</call-macro>
 	<out>
 		<b pos="2"/>
 		<chunk>
@@ -579,7 +721,13 @@
 		<pattern-item n="SA"/>
 	</pattern>
 	<action>
-	<call-macro n="concord">
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="concord_sa">
 		<with-param pos="1"/>
 		<with-param pos="5"/>
 	</call-macro>
@@ -619,7 +767,7 @@
 </rule>
 	 
 
-<rule comment="REGLA: SN SP vbcop SA">
+<rule comment="REGLA: SN SP vbcop SN">
 	<pattern>
 		<pattern-item n="SN"/>
 		<pattern-item n="pr"/>
@@ -628,7 +776,13 @@
 		<pattern-item n="SN"/>
 	</pattern>
 	<action>
-	<call-macro n="concord">
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="concord_sn">
 		<with-param pos="1"/>
 		<with-param pos="5"/>
 	</call-macro>
@@ -662,7 +816,6 @@
 			<clip pos="5" part="tags"/>
 			<clip pos="5" part="chcontent"/>
 		</chunk>
-
 	</out>
 </action>
 </rule>
