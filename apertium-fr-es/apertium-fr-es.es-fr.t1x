@@ -981,10 +981,10 @@
           </let>
         </otherwise>-->
       </choose>
-      <choose>
+         <choose>
         <when>
-<!-- Which is the rule general number? -->
           <test>
+<!-- Which is the rule general gender? -->
             <equal>
               <clip pos="1" side="tl" part="nbr"/>
               <lit-tag v="sg"/>
@@ -1007,19 +1007,7 @@
             <lit-tag v="pl"/>
           </let>
         </when>
-                <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="ND"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="ND"/>
-          </let>
-        </when>
- <when>
+        <when>
           <test>
             <equal>
               <clip pos="2" side="tl" part="nbr"/>
@@ -1043,6 +1031,7 @@
             <lit-tag v="pl"/>
           </let>
         </when>
+  
         <when>
           <test>
             <and>
@@ -1083,15 +1072,33 @@
             <clip pos="2" side="sl" part="nbr"/>
           </let>
         </when>
-        <otherwise>
+				<when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="2" side="tl" part="nbr"/>
+                <lit-tag v="ND"/>
+              </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="nbr"/>
+                  <lit-tag v="ND"/>
+                </equal>
+            </and>
+          </test>
           <let>
             <var n="numero"/>
-            <lit-tag v="sg"/>
+            <lit-tag v="ND"/>
           </let>
-        </otherwise>
+        </when>
+ <!--       <otherwise>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="m"/>
+          </let>
+        </otherwise>-->
       </choose>
- <choose>
 <!-- Determine gender and number value if they are undetermined -->
+			<choose>
         <when>
           <test>
             <equal>
@@ -1468,19 +1475,6 @@
             <lit-tag v="f"/>
           </let>
         </when>
-         <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="gen"/>
-              <lit-tag v="GD"/>
-            </equal>
-          </test>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="GD"/>
-          </let>
-        </when>
-
         <when>
           <test>
             <equal>
@@ -1589,14 +1583,32 @@
             <clip pos="3" side="sl" part="gen"/>
           </let>
         </when>
-        <otherwise>
+       
+			<when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="GD"/>
+              </equal>
+             <equal>
+                <clip pos="2" side="tl" part="gen"/>
+                <lit-tag v="GD"/>
+              </equal>
+              <equal>
+                <clip pos="3" side="tl" part="gen"/>
+                <lit-tag v="GD"/>
+              </equal>
+            </and>
+          </test>
           <let>
             <var n="genero"/>
-            <lit-tag v="m"/>
+            <lit-tag v="GD"/>
           </let>
-        </otherwise>
+        </when>
       </choose>
-      <choose>
+
+    <choose>
 <!-- Determine the rule general number. Priority order: main, second and third element -->
         <when>
           <test>
@@ -1620,18 +1632,6 @@
           <let>
             <var n="numero"/>
             <lit-tag v="pl"/>
-          </let>
-        </when>
-     <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="ND"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="ND"/>
           </let>
         </when>
         <when>
@@ -1742,12 +1742,29 @@
             <clip pos="3" side="sl" part="nbr"/>
           </let>
         </when>
-        <otherwise>
+			<when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="ND"/>
+              </equal>
+             <equal>
+                <clip pos="2" side="tl" part="nbr"/>
+                <lit-tag v="ND"/>
+              </equal>
+              <equal>
+                <clip pos="3" side="tl" part="nbr"/>
+                <lit-tag v="ND"/>
+              </equal>
+            </and>
+          </test>
           <let>
             <var n="numero"/>
-            <lit-tag v="sg"/>
+            <lit-tag v="ND"/>
           </let>
-        </otherwise>
+        </when>
+       
       </choose>
    <choose>
 <!-- Assign values to GD and ND -->
@@ -1836,7 +1853,7 @@
       </choose>
     </def-macro>
     
-    <def-macro n="f_concord4" npar="4">
+  <def-macro n="f_concord4" npar="4">
       <choose>
         <when>
           <test>
@@ -2268,96 +2285,104 @@
             <lit-tag v="f"/>
           </let>
         </when>
-     <when>
+        <when>
           <test>
+            <equal>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="m"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="m"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="f"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="f"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="3" side="tl" part="gen"/>
+              <lit-tag v="m"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="m"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="3" side="tl" part="gen"/>
+              <lit-tag v="f"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="f"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="4" side="tl" part="gen"/>
+              <lit-tag v="m"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="m"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="4" side="tl" part="gen"/>
+              <lit-tag v="f"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="f"/>
+          </let>
+        </when>
+ 				<when>
+          <test>
+						<and>
             <equal>
               <clip pos="1" side="tl" part="gen"/>
               <lit-tag v="GD"/>
             </equal>
+           <equal>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="GD"/>
+            </equal>
+           <equal>
+              <clip pos="3" side="tl" part="gen"/>
+              <lit-tag v="GD"/>
+            </equal>
+           <equal>
+              <clip pos="4" side="tl" part="gen"/>
+              <lit-tag v="GD"/>
+            </equal>
+						</and>
           </test>
           <let>
             <var n="genero"/>
             <lit-tag v="GD"/>
           </let>
         </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="2" side="tl" part="gen"/>
-              <lit-tag v="m"/>
-            </equal>
-          </test>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="m"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="2" side="tl" part="gen"/>
-              <lit-tag v="f"/>
-            </equal>
-          </test>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="f"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="3" side="tl" part="gen"/>
-              <lit-tag v="m"/>
-            </equal>
-          </test>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="m"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="3" side="tl" part="gen"/>
-              <lit-tag v="f"/>
-            </equal>
-          </test>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="f"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="4" side="tl" part="gen"/>
-              <lit-tag v="m"/>
-            </equal>
-          </test>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="m"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="4" side="tl" part="gen"/>
-              <lit-tag v="f"/>
-            </equal>
-          </test>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="f"/>
-          </let>
-        </when>
-        <otherwise>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="m"/>
-          </let>
-        </otherwise>
       </choose>
       <choose>
         <when>
@@ -2384,97 +2409,104 @@
             <lit-tag v="pl"/>
           </let>
         </when>
-    <when>
+        <when>
           <test>
+            <equal>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="sg"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sg"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="pl"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="sg"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sg"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="pl"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="4" side="tl" part="nbr"/>
+              <lit-tag v="sg"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sg"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="4" side="tl" part="nbr"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="pl"/>
+          </let>
+        </when>
+				<when>
+          <test>
+						<and>
             <equal>
               <clip pos="1" side="tl" part="nbr"/>
               <lit-tag v="ND"/>
             </equal>
+           <equal>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="ND"/>
+            </equal>
+           <equal>
+              <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="ND"/>
+            </equal>
+           <equal>
+              <clip pos="4" side="tl" part="nbr"/>
+              <lit-tag v="ND"/>
+            </equal>
+						</and>
           </test>
           <let>
             <var n="numero"/>
             <lit-tag v="ND"/>
           </let>
         </when>
-
-        <when>
-          <test>
-            <equal>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="sg"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="sg"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="pl"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="pl"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="sg"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="sg"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="pl"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="pl"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="4" side="tl" part="nbr"/>
-              <lit-tag v="sg"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="sg"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="4" side="tl" part="nbr"/>
-              <lit-tag v="pl"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="pl"/>
-          </let>
-        </when>
-        <otherwise>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="sg"/>
-          </let>
-        </otherwise>
       </choose>
   <choose>
         <when>
@@ -2589,6 +2621,8 @@
         </when>
       </choose>
     </def-macro>
+
+ 
 
     <def-macro n="vauxiliar" npar="2">
 			<choose>
@@ -6289,6 +6323,57 @@
 	</action>
 </rule>
 
+<rule comment="aux + pp adv">
+	<pattern>
+		<pattern-item n="aux"/>
+		<pattern-item n="pp"/>
+		<pattern-item n="adv_preadv"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="vauxiliar">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+	</call-macro>
+			<out>
+				<chunk name="haver_aux_adv_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SV"/></tag>
+						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="lemh"/>
+						<clip pos="1" side="tl" part="a_verb"/>
+						<clip pos="1" side="tl" part="temps"/>
+						<clip pos="1" side="tl" part="pers"/>
+						<clip pos="1" side="tl" part="nbr"/>
+						<clip pos="1" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="3" side="tl" part="lem"/> 
+						<clip pos="3" side="tl" part="a_adv"/>
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_pp"/>
+						<lit-tag v="m.sg"/>
+						<clip pos="2" side="tl" part="lemq"/>    
+					</lu> 
+				</chunk>
+			</out>
+	<let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	</let>
+	</action>
+</rule>
 
 
 <rule comment="prnpro auxpers + pp">
@@ -6519,6 +6604,68 @@
 	</choose>
 		</otherwise>
 	</choose>
+	<let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	</let>
+	</action>
+</rule>
+
+<rule comment="prnpro auxpers + pp adv">
+	<pattern>
+		<pattern-item n="prnpro"/>
+		<pattern-item n="auxpers"/>
+		<pattern-item n="pp"/>
+		<pattern-item n="adv_preadv"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="vauxiliar">
+		<with-param pos="2"/>
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="f_concord_prn_pp">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	</call-macro>
+			<out>
+				<chunk name="pro_haver_adv_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SV"/></tag>
+						<tag><clip pos="3" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="2" side="tl" part="temps"/></tag>
+						<tag><clip pos="2" side="tl" part="pers"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/> 
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/>
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="4" side="tl" part="lem"/> 
+						<clip pos="4" side="tl" part="a_adv"/>
+					</lu>
+					<b pos="3"/>
+					<lu>
+						<clip pos="3" side="tl" part="lemh"/> 
+						<clip pos="3" side="tl" part="a_pp"/>
+						<clip pos="3" side="tl" part="gen"/>
+						<clip pos="3" side="tl" part="nbr"/>
+						<clip pos="3" side="tl" part="lemq"/>    
+					</lu> 
+				</chunk>
+			</out>
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
@@ -6779,7 +6926,73 @@
 	</action>
 </rule>
 
-<!-- fins aquí -->
+<rule comment="prnpro prnpro auxpers pp adv">
+	<pattern>
+		<pattern-item n="prnpro"/>
+		<pattern-item n="prnpro"/>
+		<pattern-item n="auxpers"/>
+		<pattern-item n="pp"/>
+		<pattern-item n="adv_preadv"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+		<with-param pos="2"/>
+	</call-macro>
+	<call-macro n="vauxiliar">
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+	</call-macro>
+	<call-macro n="f_concord_prn_pp">
+		<with-param pos="1"/>
+		<with-param pos="4"/>
+	</call-macro>
+			<out>
+				<chunk name="pro_pro_haver_adv_pp" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SV"/></tag>
+						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="3" side="tl" part="temps"/></tag>
+						<tag><clip pos="3" side="tl" part="pers"/></tag>
+						<tag><clip pos="3" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/> 
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" side="tl" part="whole"/> 
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="3" side="tl" part="lemh"/>
+						<clip pos="3" side="tl" part="a_verb"/>
+						<clip pos="3" side="tl" part="temps"/>
+						<clip pos="3" side="tl" part="pers"/>
+						<clip pos="3" side="tl" part="nbr"/>
+						<clip pos="3" side="tl" part="lemq"/> 
+					</lu>
+					<b pos="3"/>
+					<lu>
+						<clip pos="5" side="tl" part="lem"/> 
+						<clip pos="5" side="tl" part="a_adv"/>
+					</lu>
+					<b pos="4"/>
+					<lu>
+						<clip pos="4" side="tl" part="lemh"/> 
+						<clip pos="4" side="tl" part="a_pp"/>
+						<clip pos="4" side="tl" part="gen"/>
+						<clip pos="4" side="tl" part="nbr"/>
+						<clip pos="4" side="tl" part="lemq"/>    
+					</lu> 
+				</chunk>
+			</out>
+	<let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	</let>
+	</action>
+</rule>
+
 <rule comment="auxinf-enc pp">
 	<pattern>
 		<pattern-item n="auxinf"/>
