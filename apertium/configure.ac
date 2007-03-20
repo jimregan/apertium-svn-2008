@@ -8,7 +8,7 @@ m4_define([required_libxml_version], [2.6.17])
 
 #m4_define([required_pkg_config_version], [0.15])
 
-AC_INIT([apertium], [2.0.0], [sortiz@users.sourceforge.net])
+AC_INIT([apertium], [2.0.1], [sortiz@users.sourceforge.net])
 AC_CONFIG_HEADER([apertium/ApertiumConfig.H])
 
 GENERIC_LIBRARY_NAME=apertium
@@ -16,7 +16,7 @@ GENERIC_LIBRARY_NAME=apertium
 # Release versioning
 GENERIC_MAJOR_VERSION=2
 GENERIC_MINOR_VERSION=0
-GENERIC_MICRO_VERSION=0
+GENERIC_MICRO_VERSION=1
 
 # API version (often = GENERIC_MAJOR_VERSION.GENERIC_MINOR_VERSION)
 GENERIC_API_VERSION=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION

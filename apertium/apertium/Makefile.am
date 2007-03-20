@@ -21,7 +21,7 @@ GENERATEDSCRIPTS = apertium-gen-deformat apertium-gen-reformat \
                    apertium-translator apertium-validate-tagger \
                    apertium-validate-transfer apertium-validate-dictionary \
                    apertium-validate-modes \
-                   apertium-gen-oldbil apertium-gen-lextorbil \
+                   apertium-gen-lextorbil \
                    apertium-gen-lextormono apertium-gen-wlist-lextor \
                    apertium-preprocess-corpus-lextor \
                    apertium-gen-stopwords-lextor \
@@ -35,7 +35,7 @@ bin_PROGRAMS = apertium-pretransfer apertium-destxt apertium-retxt \
                apertium-preprocess-transfer apertium-transfer \
                apertium-filter-ambiguity apertium-lextor \
                apertium-gen-wlist-lextor-translation \
-               apertium-unchunker apertium-interchunk apertium-postchunk \
+               apertium-interchunk apertium-postchunk \
                apertium-lextor-eval apertium-tagger-apply-new-rules 
                ###pruebas-lextor apertium-lextor-search
 
@@ -100,9 +100,6 @@ apertium_tagger_apply_new_rules_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_AP
 
 apertium_gen_wlist_lextor_translation_SOURCES = apertium-gen-wlist-lextor-translation.C
 apertium_gen_wlist_lextor_translation_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
-
-apertium_unchunker_SOURCES = unchunker.C
-apertium_unchunker_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
 
 INCLUDES = -I$(top_srcdir) $(APERTIUM_CFLAGS)
 CLEANFILES = *~ apertium-destxt.C apertium-retxt.C apertium-deshtml.C \
@@ -236,15 +233,15 @@ apertium: Makefile.am apertium-header.sh
 #	@cat trans-lextor-header.sh >>$@
 #	@chmod a+x $@
 
-apertium-gen-oldbil: Makefile.am transformdicbil-header.sh
-	@echo "Creating apertium-gen-oldbil script"
-	@echo "#!$(BASH)" >$@
-	@echo "APERTIUM_PATH=\"$(prefix)/bin\"" >>$@
-	@echo "LTTOOLBOX_PATH=\"$(prefix)/bin\"" >>$@
-	@echo "XSLTPROC_OPTIONS=\"\"">>$@
-	@echo "STYLESHEET=\"$(apertiumdir)/new2old.xsl\"">>$@
-	@cat transformdicbil-header.sh >>$@
-	@chmod a+x $@
+#apertium-gen-oldbil: Makefile.am transformdicbil-header.sh
+#	@echo "Creating apertium-gen-oldbil script"
+#	@echo "#!$(BASH)" >$@
+#	@echo "APERTIUM_PATH=\"$(prefix)/bin\"" >>$@
+#	@echo "LTTOOLBOX_PATH=\"$(prefix)/bin\"" >>$@
+#	@echo "XSLTPROC_OPTIONS=\"\"">>$@
+#	@echo "STYLESHEET=\"$(apertiumdir)/new2old.xsl\"">>$@
+#	@cat transformdicbil-header.sh >>$@
+#	@chmod a+x $@
 
 apertium-gen-lextorbil: Makefile.am transformdic-header.sh
 	@echo "Creating apertium-gen-lextorbil script"
@@ -297,7 +294,10 @@ man_MANS=apertium.1 apertium-deshtml.1 apertium-desrtf.1 apertium-destxt.1 \
          apertium-preprocess-transfer.1 apertium-pretransfer.1 apertium-rehtml.1 \
          apertium-rertf.1 apertium-retxt.1 apertium-tagger.1 apertium-transfer.1 \
          apertium-translator.1 apertium-validate-dictionary.1 apertium-validate-tagger.1 \
-         apertium-validate-transfer.1 ###apertium-lextor-eval.1 
+         apertium-validate-transfer.1 apertium-gen-modes.1 apertium-interchunk.1 \
+         apertium-postchunk.1 apertium-validate-interchunk.1 \
+         apertium-validate-postchunk.1 apertium-validate-modes.1 
+         ###apertium-lextor-eval.1 
 
 EXTRA_DIST = gen-header.sh deformat-header.sh \
              reformat.xsl deformat.xsl new2old.xsl lexchoice.xsl lexchoicebil.xsl \
