@@ -87,6 +87,36 @@
 </xsl:template>
 
 
+<xsl:template match="i">
+  <p>
+  <xsl:choose>
+    <xsl:when test="not($r2l=string('yes'))">
+      <xsl:choose>
+	<xsl:when test="not($r2l=string('yes')) and not(count(../@srl)=0)">
+	  <l><xsl:apply-templates select="text()|*[not(name(.)=string('s'))]"/>__<xsl:apply-templates select="../@srl"/><xsl:apply-templates select="*[name(.)=string('s')]"/></l>
+	</xsl:when>
+	<xsl:otherwise>
+	  <l><xsl:apply-templates select="*|text()"/></l>
+	</xsl:otherwise>
+      </xsl:choose>
+      <r><xsl:apply-templates select="*|text()"/></r>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:choose>
+        <xsl:when test="($r2l=string('yes')) and not(count(../@slr)=0)">
+          <l><xsl:apply-templates select="text()|*[not(name(.)=string('s'))]"/>__<xsl:apply-templates select="../@slr"/><xsl:apply-templates select="*[name(.)=string('s')]"/></l>
+        </xsl:when>
+        <xsl:otherwise>
+	  <l><xsl:apply-templates select="*|text()"/></l>
+        </xsl:otherwise>
+      </xsl:choose>
+      <r><xsl:apply-templates select="*|text()"/></r>
+    </xsl:otherwise>
+  </xsl:choose>
+  </p>
+</xsl:template>
+
+
 <xsl:template match="e">
   <xsl:choose>
     <xsl:when test="not($r2l=string('yes'))">
