@@ -14,6 +14,9 @@
       <cat-item tags="adj.*"/>
       <cat-item tags="adj.pos.*"/>
     </def-cat>
+ <def-cat n="querel">
+      <cat-item lemma="que" tags="rel.*"/>
+    </def-cat>
    <def-cat n="adjec">
       <cat-item tags="adj.*"/>
       <cat-item tags="adj.pos.*"/>
@@ -341,6 +344,10 @@
 
     <def-attr n="a_prn">
       <attr-item tags="prn"/>
+    </def-attr>
+
+    <def-attr n="a_rel">
+      <attr-item tags="rel"/>
     </def-attr>
 
     <def-attr n="tipus_prn">
@@ -4031,6 +4038,36 @@
 					<clip pos="1" side="tl" part="a_det"/>
 					<clip pos="1" side="tl" part="gen" link-to="2"/>
 					<clip pos="1" side="tl" part="nbr" link-to="3"/>
+				</lu> 
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule> 
+
+<rule comment="REGLA: que relatiu (s'enxunca a part)">
+	<pattern>
+		<pattern-item n="querel"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>	
+		<out>
+			<chunk name="que" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="querel"/></tag>
+					<tag><clip pos="1" side="tl" part="gen"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+				</tags>
+				<lu>   
+					<clip pos="1" side="tl" part="lem"/> 
+					<clip pos="1" side="tl" part="a_rel"/>
+					<clip pos="1" side="tl" part="gen"/>
+					<clip pos="1" side="tl" part="nbr"/>
 				</lu> 
 			</chunk>
 		</out>

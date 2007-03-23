@@ -49,7 +49,12 @@
 		<cat-item lemma="pro_do_inf" tags="SV.*"/>-->
       <cat-item tags="SV.*"/>
     </def-cat>
-	 
+
+
+<def-cat n="QUEREL">
+      <cat-item tags="querel.*"/>
+    </def-cat>
+
     <def-cat n="vbcop">
       <cat-item tags="Vcop.*"/>
       <cat-item tags="SV.vbser.*"/>
@@ -1110,6 +1115,245 @@
 </action>
 </rule>
 
+<rule comment="REGLA: SN QUE SV SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+	<b pos="3"/>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+			</out>
+		</otherwise>
+	</choose>
+	<choose> <!--després mirem si el SN és el subj de la principal-->
+		<when>
+			<test>
+				<not>
+					<or>
+						<and>
+							<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="prnsubj"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="pers"/>
+							<clip pos="1" part="pers"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="nbr"/>
+							<clip pos="1" part="nbr"/>
+						</equal>
+					</and>
+					<and>
+						<equal>
+							<clip pos="4" part="pers"/>
+							<lit-tag v="p3"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="nbr"/>
+							<clip pos="1" part="nbr"/>
+						</equal>
+					</and>
+				</or>
+			</not>
+		</test> <!--si no ho és, li posem un subj-->
+		<call-macro n="posa_subj">
+			<with-param pos="4"/>
+		</call-macro>
+	</when>
+</choose>
+	<out><!--finalment, enviem el SV de la pral-->
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
+</action>
+</rule>
+
+<rule comment="REGLA: SN QUE SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+</action>
+</rule>
+
 <rule comment="REGLA: SV"> <!--per quan hagi fet totes les regles possibles i quedi un SV solet-->
 	<pattern>
 		<pattern-item n="SV"/>
@@ -1218,6 +1462,157 @@
 </action>
 </rule>	
 
+<rule comment="REGLA: SN querel SV vbcop SA">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SA"/>
+	</pattern>
+	<action>
+	<call-macro n="concord_sa">
+		<with-param pos="1"/>
+		<with-param pos="5"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<out>
+	<chunk>
+		<clip pos="1" part="lem"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	</chunk>
+	<b pos="1"/>
+	</out>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+				<and>
+					<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+	</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			<b pos="3"/>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			<b pos="3"/>
+			</out>
+		</otherwise>
+	</choose>			
+	<choose> <!-- mirem si el SN és el subj de la pral-->
+		<when>
+			<test>
+				<not>
+					<or>
+					<and>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="prnsubj"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="pers"/>
+							<clip pos="1" part="pers"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="nbr"/>
+							<clip pos="1" part="nbr"/>
+						</equal>
+					</and>
+					<and>
+							<equal>
+								<clip pos="4" part="pers"/>
+								<lit-tag v="p3"/>
+							</equal>
+							<equal>
+								<clip pos="4" part="nbr"/>
+								<clip pos="1" part="nbr"/>
+							</equal>
+						</and>
+					</or>
+				</not>
+			</test>
+		 <!--si no l'és, cal posar un subj al SV pral-->
+			<call-macro n="posa_subj">
+				<with-param pos="4"/>
+			</call-macro>
+		</when>
+	</choose>
+	<out>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
+	<out>
+		<b pos="4"/>
+		<chunk>
+			<clip pos="5" part="whole"/>
+		</chunk>
+	</out>
+</action>
+</rule>	
+
 <rule comment="REGLA: SN vbcop ADV SA">
 	<pattern>
 		<pattern-item n="SN"/>
@@ -1290,6 +1685,162 @@
 </action>
 </rule>	
 
+<rule comment="REGLA: SN querel SV vbcop adv SA">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="adv"/>
+		<pattern-item n="SA"/>
+	</pattern>
+	<action>
+	<call-macro n="concord_sa">
+		<with-param pos="1"/>
+		<with-param pos="6"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<out>
+	<chunk>
+		<clip pos="1" part="lem"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	</chunk>
+	<b pos="1"/>
+	</out>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+				<and>
+					<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+	</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			<b pos="3"/>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			<b pos="3"/>
+			</out>
+		</otherwise>
+	</choose>			
+	<choose> <!-- mirem si el SN és el subj de la pral-->
+		<when>
+			<test>
+				<not>
+					<or>
+					<and>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="prnsubj"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="pers"/>
+							<clip pos="1" part="pers"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="nbr"/>
+							<clip pos="1" part="nbr"/>
+						</equal>
+					</and>
+					<and>
+							<equal>
+								<clip pos="4" part="pers"/>
+								<lit-tag v="p3"/>
+							</equal>
+							<equal>
+								<clip pos="4" part="nbr"/>
+								<clip pos="1" part="nbr"/>
+							</equal>
+						</and>
+					</or>
+				</not>
+			</test>
+		 <!--si no l'és, cal posar un subj al SV pral-->
+			<call-macro n="posa_subj">
+				<with-param pos="4"/>
+			</call-macro>
+		</when>
+	</choose>
+	<out>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
+	<out>
+		<b pos="4"/>
+		<chunk>
+			<clip pos="5" part="whole"/>
+		</chunk>
+		<b pos="5"/>
+		<chunk>
+			<clip pos="6" part="whole"/>
+		</chunk>
+	</out>
+</action>
+</rule>	
+
 <rule comment="REGLA: SN vbcop SN">
 	<pattern>
 		<pattern-item n="SN"/>
@@ -1354,6 +1905,158 @@
 	</out>
 </action>
 </rule>	
+
+<rule comment="REGLA: SN querel SV vbcop SN">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="5"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<out>
+	<chunk>
+		<clip pos="1" part="lem"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	</chunk>
+	<b pos="1"/>
+	</out>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+				<and>
+					<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+	</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			<b pos="3"/>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			<b pos="3"/>
+			</out>
+		</otherwise>
+	</choose>			
+	<choose> <!-- mirem si el SN és el subj de la pral-->
+		<when>
+			<test>
+				<not>
+					<or>
+					<and>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="prnsubj"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="pers"/>
+							<clip pos="1" part="pers"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="nbr"/>
+							<clip pos="1" part="nbr"/>
+						</equal>
+					</and>
+					<and>
+							<equal>
+								<clip pos="4" part="pers"/>
+								<lit-tag v="p3"/>
+							</equal>
+							<equal>
+								<clip pos="4" part="nbr"/>
+								<clip pos="1" part="nbr"/>
+							</equal>
+						</and>
+					</or>
+				</not>
+			</test>
+		 <!--si no l'és, cal posar un subj al SV pral-->
+			<call-macro n="posa_subj">
+				<with-param pos="4"/>
+			</call-macro>
+		</when>
+	</choose>
+	<out>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
+	<out>
+		<b pos="4"/>
+		<chunk>
+			<clip pos="5" part="whole"/>
+		</chunk>
+	</out>
+</action>
+</rule>	
+
 	
 <rule comment="REGLA: SN vbcop adv SN">
 	<pattern>
@@ -1426,6 +2129,450 @@
 			<clip pos="4" part="chcontent"/>
 		</chunk>
 	</out>
+</action>
+</rule>	
+
+<rule comment="REGLA: SN querel SV vbcop adv SN">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="adv"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="6"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<out>
+	<chunk>
+		<clip pos="1" part="lem"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	</chunk>
+	<b pos="1"/>
+	</out>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+				<and>
+					<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="3" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+	</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			<b pos="3"/>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			<b pos="3"/>
+			</out>
+		</otherwise>
+	</choose>			
+	<choose> <!-- mirem si el SN és el subj de la pral-->
+		<when>
+			<test>
+				<not>
+					<or>
+					<and>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="prnsubj"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="pers"/>
+							<clip pos="1" part="pers"/>
+						</equal>
+						<equal>
+							<clip pos="4" part="nbr"/>
+							<clip pos="1" part="nbr"/>
+						</equal>
+					</and>
+					<and>
+							<equal>
+								<clip pos="4" part="pers"/>
+								<lit-tag v="p3"/>
+							</equal>
+							<equal>
+								<clip pos="4" part="nbr"/>
+								<clip pos="1" part="nbr"/>
+							</equal>
+						</and>
+					</or>
+				</not>
+			</test>
+		 <!--si no l'és, cal posar un subj al SV pral-->
+			<call-macro n="posa_subj">
+				<with-param pos="4"/>
+			</call-macro>
+		</when>
+	</choose>
+	<out>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
+	<out>
+		<b pos="4"/>
+		<chunk>
+			<clip pos="5" part="whole"/>
+		</chunk>
+		<b pos="5"/>
+		<chunk>
+			<clip pos="6" part="whole"/>
+		</chunk>
+	</out>
+</action>
+</rule>	
+<rule comment="REGLA: SN vbcop SN querel SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</test>
+			<out>
+				<chunk>
+					<get-case-from pos="1">
+						<clip pos="2" part="lem"/>
+					</get-case-from>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<out>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="whole"/>
+		</chunk>
+	</out>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="3" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="5" part="pers"/>
+					<clip pos="3" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="5" part="nbr"/>
+					<clip pos="3" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="3" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="5" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="5" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<b pos="3"/>
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+				<b pos="4"/>
+				<chunk>
+					<clip pos="5" part="lem"/>
+					<clip pos="5" part="tags"/>
+					<clip pos="5" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+				<b pos="4"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="5"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="5" part="lem"/>
+					<clip pos="5" part="tags"/>
+					<clip pos="5" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+</action>
+</rule>	
+
+<rule comment="REGLA: SN vbcop adv SN querel SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="adv"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="4"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</test>
+			<out>
+				<chunk>
+					<get-case-from pos="1">
+						<clip pos="2" part="lem"/>
+					</get-case-from>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<out>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="lem"/>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
+		</chunk>
+		<b pos="3"/>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="4" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="6" part="pers"/>
+					<clip pos="4" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="6" part="nbr"/>
+					<clip pos="4" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="4" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="6" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="6" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<b pos="4"/>
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="5" part="tags"/>
+					<clip pos="5" part="chcontent"/>
+				</chunk>
+				<b pos="5"/>
+				<chunk>
+					<clip pos="6" part="lem"/>
+					<clip pos="6" part="tags"/>
+					<clip pos="6" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<b pos="4"/>
+				<chunk>
+					<clip pos="5" part="lem"/>
+					<clip pos="5" part="tags"/>
+					<clip pos="5" part="chcontent"/>
+				</chunk>
+				<b pos="5"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="6"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="6" part="lem"/>
+					<clip pos="6" part="tags"/>
+					<clip pos="6" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
 </action>
 </rule>	
 	
@@ -1811,6 +2958,206 @@
 </action>
 </rule> 
 
+<rule comment="REGLA: SN sprep vbcop SN querel SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="3"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="4" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="4" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="4" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="4" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="4"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="5"/>
+	</call-macro>
+	<out>
+		<b pos="4"/>
+			<chunk>
+				<clip pos="5" part="lem"/>
+				<clip pos="5" part="tags"/>
+				<clip pos="5" part="chcontent"/>
+			</chunk>
+	</out>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="5" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="7" part="pers"/>
+					<clip pos="5" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="7" part="nbr"/>
+					<clip pos="5" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="5" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="7" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="7" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<b pos="5"/>
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="6" part="tags"/>
+					<clip pos="6" part="chcontent"/>
+				</chunk>
+				<b pos="6"/>
+				<chunk>
+					<clip pos="7" part="lem"/>
+					<clip pos="7" part="tags"/>
+					<clip pos="7" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<b pos="5"/>
+				<chunk>
+					<clip pos="6" part="lem"/>
+					<clip pos="6" part="tags"/>
+					<clip pos="6" part="chcontent"/>
+				</chunk>
+				<b pos="6"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="7"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="7" part="lem"/>
+					<clip pos="7" part="tags"/>
+					<clip pos="7" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+</action>
+</rule> 
+
 <rule comment="REGLA: SN sprep vbcop adv SN">
 	<pattern>
 		<pattern-item n="SN"/>
@@ -1940,6 +3287,213 @@
 				<clip pos="6" part="chcontent"/>
 			</chunk>
 	</out>
+</action>
+</rule> 
+
+<rule comment="REGLA: SN sprep vbcop adv SN querel SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="adv"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="QUEREL"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="3"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="4" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="4" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="1" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="4" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="4" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="4"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>	
+	<call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="6"/>
+	</call-macro>
+	<out>
+		<b pos="4"/>
+			<chunk>
+				<clip pos="5" part="lem"/>
+				<clip pos="5" part="tags"/>
+				<clip pos="5" part="chcontent"/>
+			</chunk>
+		<b pos="5"/>
+			<chunk>
+				<clip pos="6" part="lem"/>
+				<clip pos="6" part="tags"/>
+				<clip pos="6" part="chcontent"/>
+			</chunk>
+	</out>
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
+		<when>
+			<test>
+			<or>
+			<and>
+				<equal caseless="yes">
+					<clip pos="6" part="lem"/>
+					<lit v="prnsubj"/>
+				</equal>
+				<equal>
+					<clip pos="8" part="pers"/>
+					<clip pos="6" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="8" part="nbr"/>
+					<clip pos="6" part="nbr"/>
+				</equal>
+			</and>
+			<and>
+				<not>
+					<equal caseless="yes">
+						<clip pos="6" part="lem"/>
+						<lit v="prnsubj"/>
+					</equal>
+				</not>
+				<equal>
+					<clip pos="8" part="pers"/>
+					<lit-tag v="p3"/>
+				</equal>
+				<equal>
+					<clip pos="8" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+		</or>
+			</test>
+			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
+				<b pos="6"/>
+				<chunk>
+					<lit v="qui"/>
+					<clip pos="7" part="tags"/>
+					<clip pos="7" part="chcontent"/>
+				</chunk>
+				<b pos="7"/>
+				<chunk>
+					<clip pos="8" part="lem"/>
+					<clip pos="8" part="tags"/>
+					<clip pos="8" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->
+			<out>
+				<b pos="6"/>
+				<chunk>
+					<clip pos="7" part="lem"/>
+					<clip pos="7" part="tags"/>
+					<clip pos="7" part="chcontent"/>
+				</chunk>
+				<b pos="7"/>
+			</out>
+			<call-macro n="posa_subj">
+				<with-param pos="8"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="8" part="lem"/>
+					<clip pos="8" part="tags"/>
+					<clip pos="8" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
 </action>
 </rule> 
 

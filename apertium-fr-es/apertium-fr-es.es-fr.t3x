@@ -7,8 +7,8 @@
       <cat-item name="inf"/>
     </def-cat>
 
-    <def-cat n="be">
-      <cat-item name="be"/>
+    <def-cat n="qui">
+      <cat-item name="qui"/>
     </def-cat>
 
     <def-cat n="nom">
@@ -136,6 +136,10 @@
       <attr-item tags="n"/>
       <attr-item tags="np"/> 
     </def-attr>
+		
+<def-attr n="a_rel">
+      <attr-item tags="rel"/>
+    </def-attr>
 
 <def-attr n="a_np">
       <attr-item tags="np.ant"/>
@@ -178,22 +182,21 @@
 
   <section-rules>
 		
-		<rule comment="CHUNK: regla que no fa res">
+		<rule comment="CHUNK: arregla en cv de relatiu que/qui">
 			<pattern>
-				<pattern-item n="det_nom"/>
+				<pattern-item n="qui"/>
 			</pattern>
 			<action>
 				<out>
 					<lu>
-						<clip pos="1" part="whole"/>
-					</lu> 
-					<b pos="1"/>
-					<lu>
-						<clip pos="2" part="whole"/>
+						<lit v="qui"/>
+						<clip pos="1" part="a_rel"/>
+						<clip pos="1" part="gen"/>
+						<clip pos="1" part="nbr"/>
 					</lu>
 				</out>   
 			</action>
 		</rule> 
-<!--ja anirem veient què s'hi posa, aquí-->
+
 </section-rules>
 </postchunk>
