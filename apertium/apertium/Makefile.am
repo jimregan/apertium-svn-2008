@@ -36,8 +36,8 @@ bin_PROGRAMS = apertium-pretransfer apertium-destxt apertium-retxt \
                apertium-filter-ambiguity apertium-lextor \
                apertium-gen-wlist-lextor-translation \
                apertium-interchunk apertium-postchunk \
-               apertium-lextor-eval apertium-tagger-apply-new-rules 
-               ###pruebas-lextor apertium-lextor-search
+               apertium-tagger-apply-new-rules 
+               ###pruebas-lextor apertium-lextor-search apertium-lextor-eval
 
 bin_SCRIPTS =  $(GENERATEDSCRIPTS)
 
@@ -87,8 +87,8 @@ apertium_postchunk_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
 apertium_lextor_SOURCES = apertium-lextor.C
 apertium_lextor_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
 
-apertium_lextor_eval_SOURCES = apertium-lextor-eval.C
-apertium_lextor_eval_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
+#apertium_lextor_eval_SOURCES = apertium-lextor-eval.C
+#apertium_lextor_eval_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
 
 apertium_tagger_apply_new_rules_SOURCES = apertium-tagger-apply-new-rules.C
 apertium_tagger_apply_new_rules_LDADD = $(APERTIUM_LIBS) -lapertium-$(GENERIC_API_VERSION)
@@ -297,7 +297,7 @@ man_MANS=apertium.1 apertium-deshtml.1 apertium-desrtf.1 apertium-destxt.1 \
          apertium-translator.1 apertium-validate-dictionary.1 apertium-validate-tagger.1 \
          apertium-validate-transfer.1 apertium-gen-modes.1 apertium-interchunk.1 \
          apertium-postchunk.1 apertium-validate-interchunk.1 \
-         apertium-validate-postchunk.1 apertium-validate-modes.1 
+         apertium-validate-postchunk.1 apertium-validate-modes.1 apertium-tagger-apply-new-rules.1
          ###apertium-lextor-eval.1 
 
 EXTRA_DIST = gen-header.sh deformat-header.sh \
