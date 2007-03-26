@@ -39,7 +39,7 @@ bin_PROGRAMS = apertium-pretransfer apertium-destxt apertium-retxt \
                apertium-lextor-eval apertium-tagger-apply-new-rules 
                ###pruebas-lextor apertium-lextor-search
 
-bin_SCRIPTS =  $(GENERATEDSCRIPTS) apertium-createmodes.awk
+bin_SCRIPTS =  $(GENERATEDSCRIPTS)
 
 instdir = apertium
 
@@ -53,7 +53,8 @@ apertiumlib = $(prefix)/lib
 
 apertium_DATA = deformat.xsl reformat.xsl new2old.xsl lexchoice.xsl \
                 lexchoicebil.xsl tagger.dtd interchunk.dtd format.dtd \
-                transfer.dtd dix.dtd postchunk.dtd modes.dtd modes2bash.xsl
+                transfer.dtd dix.dtd postchunk.dtd modes.dtd modes2bash.xsl \
+                apertium-createmodes.awk
 
 apertium_pretransfer_SOURCES = apertium-pretransfer.C
 apertium_destxt_SOURCES = apertium-destxt.C
@@ -204,8 +205,8 @@ apertium-gen-modes: Makefile.am modes-header.sh
 	@cat modes-header.sh >> $@
 	@echo "$(XMLLINT) --dtdvalid $(apertiumdir)/modes.dtd --noout \$$FILE1 && \\" >> $@
 	@if [ `basename $(XSLTPROC)` == xsltproc ]; \
-	  then echo "$(XSLTPROC) --stringparam prefix $(prefix)/bin --stringparam dataprefix \$$FULLDIRNAME  $(apertiumdir)/modes2bash.xsl \$$FILE1 | $(prefix)/bin/apertium-createmodes.awk PARAM=\$$FULLDIRNAME"; \
-          else echo "$(XSLTPROC) $(apertiumdir)/modes2bash.xsl \$$FILE1 \\\$$prefix=$(prefix)/bin \\\$$dataprefix=\$$FULLDIRNAME| $(prefix)/bin/apertium-createmodes.awk PARAM=\$$FULLDIRNAME"; \
+	  then echo "$(XSLTPROC) --stringparam prefix $(prefix)/bin --stringparam dataprefix \$$FULLDIRNAME  $(apertiumdir)/modes2bash.xsl \$$FILE1 | awk -f $(apertiumdir)/apertium-createmodes.awk PARAM=\$$FULLDIRNAME"; \
+          else echo "$(XSLTPROC) $(apertiumdir)/modes2bash.xsl \$$FILE1 \\\$$prefix=$(prefix)/bin \\\$$dataprefix=\$$FULLDIRNAME| awk -f $(apertiumdir)/apertium-createmodes.awk PARAM=\$$FULLDIRNAME"; \
           fi >> $@ 
 	@chmod a+x $@
 
