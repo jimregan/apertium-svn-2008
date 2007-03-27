@@ -63,20 +63,18 @@
       <cat-item lemma="ir" tags="vblex.*"/>
     </def-cat>
 
-    <def-cat n="prnsubj">
+    <def-cat n="prnperssubj"><!-- pronoms personals-->
       <cat-item lemma="yo" tags="prn.*"/>
       <cat-item lemma="tu" tags="prn.*"/>
       <cat-item lemma="él" tags="prn.*"/>
       <cat-item lemma="nosotros" tags="prn.*"/>
       <cat-item lemma="vosotros" tags="prn.*"/>
     </def-cat>
-
-    <def-cat n="tn_itg_pos"><!--Aqu?no hi entren els pronoms personals, caldr?fer-ne un xunc a part. -->
-      <cat-item tags="prn.tn.m.*"/>
-      <cat-item tags="prn.tn.f.*"/>
-      <cat-item tags="prn.tn.mf.*"/>
-      <cat-item tags="prn.itg.*"/>
-      <cat-item tags="prn.pos.*"/>
+   <def-cat n="prnsubj"><!-- prn no personals que poden ser subjecte-->
+      <cat-item tags="prn.tn.*"/>
+      <cat-item lemma="quel" tags="prn.itg.*"/>
+      <cat-item lemma="qui" tags="prn.itg.*"/>
+      <cat-item lemma="lequel" tags="prn.itg.*"/><!--falta afegir als dicos-->
     </def-cat>
     
     <def-cat n="prnenc">
@@ -8660,7 +8658,40 @@
 		</action>
 	</rule>
 
-	<rule comment="PRN que pot ser subjecte">
+	<rule comment="PRN personal que pot ser subjecte">
+		<pattern>
+			<pattern-item n="prnperssubj"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+			<chunk name="prnperssubj" case="caseFirstWord">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+				<tag><clip pos="1" side="tl" part="pers"/></tag>
+				<tag><clip pos="1" side="tl" part="gen"/></tag>
+				<tag><clip pos="1" side="tl" part="nbr"/></tag>
+			</tags>
+			<lu>
+				<clip pos="1" side="tl" part="lem"/>  
+				<clip pos="1" side="tl" part="a_prn"/>
+				<clip pos="1" side="tl" part="tipus_prn"/> 
+				<clip pos="1" side="tl" part="pers"/>
+				<clip pos="1" side="tl" part="gen"/>
+				<clip pos="1" side="tl" part="nbr"/>
+			</lu> 
+			</chunk>
+		</out>  
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+	<rule comment="PRN no personal que pot ser subjecte">
 		<pattern>
 			<pattern-item n="prnsubj"/>
 		</pattern>
