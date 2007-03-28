@@ -240,9 +240,9 @@
     </def-cat>
 
     <def-cat n="cnjcoo">
-      <cat-item lemma="i" tags="cnjcoo"/>
+      <cat-item lemma="y" tags="cnjcoo"/>
       <cat-item lemma="o" tags="cnjcoo"/>
-      <cat-item lemma="mais" tags="cnjcoo"/>
+      <cat-item lemma="pero" tags="cnjcoo"/>
     </def-cat>
 
      <def-cat n="cnj">
@@ -5577,6 +5577,39 @@
 	</action>
 </rule>
 
+<rule comment="REGLA: INF">
+	<pattern>
+		<pattern-item n="inf"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>
+		<out>
+			<chunk name="inf" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="SN"/></tag>
+					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="1" side="tl" part="temps"/></tag>
+					<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="lemh"/> 
+					<clip pos="1" side="tl" part="a_verb"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="pers"/>
+					<clip pos="1" side="tl" part="nbr"/>
+					<clip pos="1" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
 <rule comment="inf enc">
 	<pattern>
 		<pattern-item n="inf"/>
@@ -5592,8 +5625,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="1" side="tl" part="temps"/></tag>
-						<tag><clip pos="1" side="tl" part="pers"/></tag>
-						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="2" side="tl" part="lem"/> 
@@ -5652,8 +5684,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -5699,8 +5730,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -5765,8 +5795,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -5822,8 +5851,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -5893,8 +5921,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="1" side="tl" part="temps"/></tag>
-						<tag><clip pos="1" side="tl" part="pers"/></tag>
-						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="2" side="tl" part="lem"/> 
@@ -5961,8 +5988,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -6015,8 +6041,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -6088,8 +6113,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -6151,8 +6175,7 @@
 							<tag><lit-tag v="SN"/></tag>
 							<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 							<tag><clip pos="2" side="tl" part="temps"/></tag>
-							<tag><clip pos="2" side="tl" part="pers"/></tag>
-							<tag><clip pos="2" side="tl" part="nbr"/></tag>
+							<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 						</tags>
 						<lu>
 							<clip pos="3" side="tl" part="lem"/> 
@@ -6875,7 +6898,7 @@
 		<with-param pos="1"/>
 	</call-macro>
 					<out>
-						<chunk name="inf_enc_enc" case="caseFirstWord">
+						<chunk name="imp_enc_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -6942,7 +6965,7 @@
 				</lu>
 				</chunk>
 				<b pos="1"/>
-						<chunk name="inf_enc_enc" case="caseFirstWord">
+						<chunk name="imp_enc_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -6995,7 +7018,7 @@
 					</lu>
 					</chunk>
 					<b pos="1"/>
-						<chunk name="inf_enc_enc" case="caseFirstWord">
+						<chunk name="imp_enc_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7068,7 +7091,7 @@
 				</lu>
 				</chunk>
 				<b pos="1"/>
-						<chunk name="inf_enc_enc" case="caseFirstWord">
+						<chunk name="imp_enc_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7131,7 +7154,7 @@
 					</lu>
 					</chunk>
 					<b pos="1"/>
-						<chunk name="inf_enc_enc" case="caseFirstWord">
+						<chunk name="imp_enc_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -8095,8 +8118,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="3" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="1" side="tl" part="temps"/></tag>
-						<tag><clip pos="1" side="tl" part="pers"/></tag>
-						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="2" side="tl" part="lem"/> 
@@ -8172,8 +8194,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -8230,8 +8251,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -8270,8 +8290,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -8338,8 +8357,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="1" side="tl" part="temps"/></tag>
-						<tag><clip pos="1" side="tl" part="pers"/></tag>
-						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="2" side="tl" part="lem"/> 
@@ -8423,8 +8441,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="5" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -8487,8 +8504,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="5" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -8533,8 +8549,7 @@
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="5" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="2" side="tl" part="temps"/></tag>
-						<tag><clip pos="2" side="tl" part="pers"/></tag>
-						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
 						<clip pos="3" side="tl" part="lem"/> 
@@ -8718,6 +8733,31 @@
 			</lu> 
 			</chunk>
 		</out>  
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="cnjcoo">
+	<pattern>
+		<pattern-item n="cnjcoo"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>	
+		<out>
+			<chunk name="cnjcoo" case="caseFirstWord">
+				<tags>
+					<tag><clip pos="1" side="tl" part="tags"/></tag>		
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="whole"/>
+				</lu>
+			</chunk>
+		</out>
 		<let>
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>

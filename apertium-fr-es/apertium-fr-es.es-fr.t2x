@@ -176,6 +176,7 @@
     <def-var n="uno"/>
     <def-var n="nombre"/>
 		<def-var n="genere"/>
+		<def-var n="concord"/>
   </section-def-vars>
 
 <section-def-macros>
@@ -203,6 +204,122 @@
 				</chunk>
 			</out>
 		</when>
+	</choose>
+</def-macro>
+
+<def-macro n="comprova_concord_2" npar="3">
+	<choose>
+		<when>
+			<test>
+				<equal>
+					<clip pos="3" part="nbr"/>
+					<lit-tag v="pl"/>
+				</equal>
+			</test>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="3" part="pers"/>
+							<lit-tag v="p1"/>
+						</equal>	
+					</test>
+					<choose>
+						<when>
+							<test>
+								<or>
+									<equal>
+										<clip pos="1" part="pers"/>
+										<lit-tag v="p1"/>
+									</equal>
+									<equal>
+										<clip pos="2" part="pers"/>
+										<lit-tag v="p1"/>
+									</equal>
+								</or>
+							</test>
+							<let><var n="concord"/><lit-tag v="yes"/></let>
+						</when>
+						<otherwise>
+							<let><var n="concord"/><lit-tag v="no"/></let>
+						</otherwise>
+					</choose>
+				</when> <!--no és 1a pers-->
+				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<clip pos="3" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>	
+							</test>
+							<choose>
+								<when>
+									<test>
+									<or>
+										<equal>
+											<clip pos="1" part="pers"/>
+											<lit-tag v="p3"/>
+										</equal>
+										<equal>
+											<clip pos="2" part="pers"/>
+											<lit-tag v="p2"/>
+										</equal>
+									</or>
+									</test>
+									<let><var n="concord"/><lit-tag v="yes"/></let>
+								</when>
+								<otherwise>
+									<let><var n="concord"/><lit-tag v="no"/></let>
+								</otherwise>
+							</choose>
+						</when> <!--no és 2a pers-->
+						<otherwise><!--és 3a pers-->
+							<choose>
+								<when>
+									<test>
+										<and>
+										<not>
+											<equal>
+												<clip pos="1" part="pers"/>
+												<lit-tag v="p1"/>
+											</equal>
+										</not>
+										<not>
+											<equal>
+												<clip pos="2" part="pers"/>
+												<lit-tag v="p1"/>
+											</equal>
+										</not>
+										<not>
+											<equal>
+												<clip pos="1" part="pers"/>
+												<lit-tag v="p2"/>
+											</equal>
+										</not>
+										<not>
+											<equal>
+												<clip pos="2" part="pers"/>
+												<lit-tag v="p2"/>
+											</equal>
+										</not>
+										</and>
+									</test>
+									<let><var n="concord"/><lit-tag v="yes"/></let>
+								</when>
+								<otherwise>
+									<let><var n="concord"/><lit-tag v="no"/></let>
+								</otherwise>
+							</choose>
+						</otherwise>
+					</choose>
+				</otherwise>
+			</choose>
+		</when><!--no és pl-->
+		<otherwise>
+			<let><var n="concord"/><lit-tag v="no"/></let>
+		</otherwise>
 	</choose>
 </def-macro>
 
@@ -1112,6 +1229,65 @@
 			<clip pos="4" part="chcontent"/>
 		</chunk>
 	</out>
+</action>
+</rule>
+
+<rule comment="REGLA: SN cnjcoo SN SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="cnjcoo"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="comprova_concord_2">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+	</call-macro>
+	<out>
+		<chunk>
+			<clip pos="1" part="lem"/>
+			<clip pos="1" part="tags"/>
+			<clip pos="1" part="chcontent"/>
+		</chunk>
+		<b pos="1"/>
+		<chunk>
+			<clip pos="2" part="whole"/>
+		</chunk>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="lem"/>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
+		</chunk>
+		<b pos="3"/>
+		</out>
+			<choose><!--si no hi ha concordança enviem un subj-->
+				<when>
+					<test>
+						<equal><var n="concord"/><lit-tag v="no"/></equal>
+					</test>
+					<call-macro n="posa_subj">
+						<with-param pos="4"/>
+					</call-macro>
+				</when>
+			</choose>
+			<let><var n="concord"/><lit-tag v="no"/></let>
+			<out>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+			</out>
+
 </action>
 </rule>
 
