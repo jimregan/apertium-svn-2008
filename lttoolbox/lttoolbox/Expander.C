@@ -21,6 +21,7 @@
 #include <lttoolbox/Expander.H>
 #include <lttoolbox/LtLocale.H>
 #include <lttoolbox/XMLParseUtil.H>
+#include <lttoolbox/MyStdio.H>
 
 #include <cstdlib>
 #include <iostream>
