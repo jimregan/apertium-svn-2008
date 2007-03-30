@@ -22,7 +22,9 @@
 #include <lttoolbox/LtLocale.H>
 
 #include <cstdlib>
+#if HAVE_GETOPT_LONG
 #include <getopt.h>
+#endif
 #include <iostream>
 #include <libgen.h>
 
@@ -67,6 +69,7 @@ int main(int argc, char *argv[])
 {
   int cmd = 0;
 
+#if HAVE_GETOPT_LONG
   static struct option long_options[]=
     {
       {"analysis",        0, 0, 'a'},
@@ -78,7 +81,7 @@ int main(int argc, char *argv[])
       {"version",	  0, 0, 'v'},
       {"help",            0, 0, 'h'}
     };
-
+#endif
   while(true)
   {
 #if HAVE_GETOPT_LONG
