@@ -263,6 +263,13 @@
       <cat-item tags="sent"/>
     </def-cat>
 
+    <def-cat n="coma">
+      <cat-item tags="cm"/>
+    </def-cat>
+    <def-cat n="lquest">
+      <cat-item tags="lquest"/>
+    </def-cat>
+
   </section-def-cats>
   <section-def-attrs>
     <def-attr n="a_nom">
@@ -2770,9 +2777,41 @@
 	  <chunk name="ant" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
+				<tag><lit-tag v="sg"/></tag>
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: 2 ANTROPÒNIMS (px. maria lópez)">
+      <pattern>
+	<pattern-item n="ant"/>
+	<pattern-item n="ant"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="ant" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+				<tag><lit-tag v="sg"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+      <b pos="1"/>
+      <lu>   
+	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -2827,7 +2866,95 @@
       </action>
     </rule>
 
- <rule comment="REGLA: DET NOM">
+    <rule comment="REGLA: PREDET DET NOM">
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="det"/>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="f_concord3">
+	  <with-param pos="3"/>
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+	</call-macro>
+	<out>
+	  <chunk name="predet_det_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+        <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+				<clip pos="1" side="tl" part="gen" link-to="2"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="3"/>
+	    </lu> 
+	    <b pos="1"/>
+	    <lu>
+        <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_det"/>
+				<clip pos="2" side="tl" part="gen" link-to="2"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="3"/>
+	    </lu> 
+	    <b pos="2"/>
+	    <lu>     
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+				<clip pos="3" side="tl" part="gen" link-to="2"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="3"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>	  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+   <rule comment="REGLA: DET NUM">
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="num"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk name="det_num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+        <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+				<clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu> 
+	    <b pos="1"/>
+	    <lu>     
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+				<clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>	  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+ <rule comment="REGLA: DET PERCENT">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="percent"/>
@@ -8859,6 +8986,35 @@
 				</lu>
 			</chunk>
 		</out>
+	</action>
+</rule>
+
+<rule> <!-- REGLA: coma-->
+	<pattern>
+		<pattern-item n="coma"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="coma">
+				<tags>
+					<tag><lit-tag v="cm"/></tag>
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="whole"/>
+				</lu>
+			</chunk>
+		</out>
+	</action>
+</rule>
+
+<rule> <!-- REGLA: elimina ? i !-->
+	<pattern>
+		<pattern-item n="lquest"/>
+	</pattern>
+	<action>
+		<call-macro n="f_bcond">
+			<with-param pos="1"/>
+		</call-macro>
 	</action>
 </rule>
 
