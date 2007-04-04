@@ -2871,6 +2871,42 @@
 	  <with-param pos="2"/>
 		<with-param pos="1"/>
 	</call-macro>
+		<choose>
+			<when>
+				<test>
+					<in caseless="yes">
+					<clip pos="2" side="sl" part="lem"/>
+					<list n="mois"/>
+					</in>
+				</test>
+				<out>
+					<chunk name="num_prep_nom" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="2" side="tl" part="gen"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>   
+						<clip pos="1" side="tl" part="lem"/> 
+						<clip pos="1" side="tl" part="tags"/>
+					</lu> 
+					<b pos="1"/>
+					<lu>
+						<lit v="de"/>
+						<lit-tag v="pr"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_nom"/>
+						<clip pos="2" side="tl" part="gen" link-to="2"/>
+						<clip pos="2" side="tl" part="nbr" link-to="3"/>
+						<clip pos="2" side="tl" part="lemq"/>
+					</lu>
+				</chunk>
+			</out>
+		</when>
+	<otherwise>
 	<out>  
 	  <chunk name="num_nom" case="caseFirstWord">
 	    <tags>
@@ -2891,7 +2927,10 @@
 	      <clip pos="2" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
-	</out>       
+	</out>      
+ 			</otherwise>
+		</choose>
+
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -8087,6 +8126,33 @@
 		</let>
 	</action>
 </rule>
+
+<rule comment="NUMERAL">
+	<pattern>
+		<pattern-item n="num"/>
+	</pattern>
+	<action>
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>
+		<out>
+			<chunk name="num" case="caseFirstWord">
+				<tags>
+					<tag><clip pos="1" side="tl" part="gen"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="whole"/>
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
 <rule> <!-- REGLA: coma-->
 	<pattern>
 		<pattern-item n="coma"/>
