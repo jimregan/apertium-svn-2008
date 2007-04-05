@@ -492,6 +492,125 @@
 
 
   <section-def-macros>
+<def-macro n="f_lexicadj" npar="1">
+	<choose>
+		<when>
+			<test>
+				<and>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="bon"/>
+					</equal>
+					<equal>
+						<clip pos="1" side="tl" part="gen"/>
+						<lit-tag v="m"/>
+					</equal>
+					<equal>
+						<clip pos="1" side="tl" part="nbr"/>
+						<lit-tag v="sg"/>
+					</equal>
+				</and>
+			</test>
+			<let>
+				<clip pos="1" side="tl" part="lem"/>
+				<lit v="buen"/>
+			</let>
+		</when>
+	</choose>
+	<choose>
+		<when>
+			<test>
+				<and>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="grand"/>
+					</equal>
+					<equal>
+						<clip pos="1" side="tl" part="nbr"/>
+						<lit-tag v="sg"/>
+					</equal>
+				</and>
+			</test>
+			<let>
+				<clip pos="1" side="tl" part="lem"/>
+				<lit v="gran"/>
+			</let>
+		</when>
+	</choose>
+	<choose>
+		<when>
+			<test>
+				<and>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="premier"/>
+					</equal>
+					<equal>
+						<clip pos="1" side="tl" part="gen"/>
+						<lit-tag v="m"/>
+					</equal>
+					<equal>
+						<clip pos="1" side="tl" part="nbr"/>
+						<lit-tag v="sg"/>
+					</equal>
+				</and>
+			</test>
+			<let>  
+				<clip pos="1" side="tl" part="lem"/>
+				<lit v="primer"/>
+			</let>
+		</when>
+	</choose>
+	<choose>
+		<when>
+			<test>
+				<and>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="mauvais"/>
+					</equal>
+					<equal> 
+						<clip pos="1" side="tl" part="gen"/>
+						<lit-tag v="m"/>
+					</equal>
+					<equal> 
+						<clip pos="1" side="tl" part="nbr"/>
+						<lit-tag v="sg"/>
+					</equal>
+				</and>
+			</test>
+			<let>
+				<clip pos="1" side="tl" part="lem"/>
+				<lit v="mal"/>
+			</let>
+		</when>
+	</choose>
+	<choose>
+		<when>
+			<test>
+				<and>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="troisième"/>
+					</equal>
+					<equal> 
+						<clip pos="1" side="tl" part="gen"/>
+						<lit-tag v="m"/>
+					</equal>
+					<equal> 
+						<clip pos="1" side="tl" part="nbr"/>
+						<lit-tag v="sg"/>
+					</equal>
+				</and>
+			</test>
+			<let>
+				<clip pos="1" side="tl" part="lem"/>
+				<lit v="tercer"/>
+			</let>
+		</when>
+	</choose>
+</def-macro>
+
 
     <def-macro n="comprova_auxiliar" npar="2">
 			<choose>
@@ -2993,6 +3112,9 @@
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>	
+		<call-macro n="f_lexicadj">
+			<with-param pos="1"/>
+		</call-macro>	
 		<call-macro n="f_concord2">
 			<with-param pos="2"/>
 			<with-param pos="1"/>
@@ -3038,6 +3160,12 @@
 	<action>
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
+		</call-macro>	
+		<call-macro n="f_lexicadj">
+			<with-param pos="2"/>
+		</call-macro>	
+		<call-macro n="f_lexicadj">
+			<with-param pos="3"/>
 		</call-macro>	
 		<call-macro n="f_concord3">
 			<with-param pos="4"/>
@@ -3431,6 +3559,9 @@
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>	
+		<call-macro n="f_lexicadj">
+			<with-param pos="2"/>
+		</call-macro>	
 		<call-macro n="f_concord3">
 			<with-param pos="3"/>
 			<with-param pos="2"/>
@@ -3486,6 +3617,9 @@
 	<action>
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
+		</call-macro>	
+		<call-macro n="f_lexicadj">
+			<with-param pos="4"/>
 		</call-macro>	
 		<call-macro n="f_concord4">
 			<with-param pos="5"/>
@@ -3554,6 +3688,9 @@
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>	
+		<call-macro n="f_lexicadj">
+			<with-param pos="3"/>
+		</call-macro>	
 		<call-macro n="f_concord3">
 			<with-param pos="4"/>
 			<with-param pos="3"/>
@@ -3607,6 +3744,9 @@
 	<action>
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
+		</call-macro>	
+		<call-macro n="f_lexicadj">
+			<with-param pos="2"/>
 		</call-macro>	
 		<call-macro n="f_concord3">
 			<with-param pos="3"/>
@@ -3666,6 +3806,9 @@
 			<with-param pos="2"/>
 			<with-param pos="4"/>
 			<with-param pos="1"/>
+		</call-macro>	
+		<call-macro n="f_lexicadj">
+			<with-param pos="4"/>
 		</call-macro>	
 		<out>
 			<chunk name="det_adj_cnjcoo_adj_nom" case="caseFirstWord">
