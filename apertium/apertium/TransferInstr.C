@@ -15,7 +15,8 @@ TransferInstr::destroy()
 {
 }
 
-TransferInstr::TransferInstr(TransferInstrType t, string const &c, int const p, void *ptr, bool cond)
+TransferInstr::TransferInstr(TransferInstrType t, string const &c, 
+                             int const p, void *ptr, bool cond)
 {
   type = t;
   content = c;

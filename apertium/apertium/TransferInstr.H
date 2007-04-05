@@ -15,7 +15,9 @@ enum TransferInstrType
   ti_b,
   ti_get_case_from,
   ti_case_of_sl,
-  ti_case_of_tl
+  ti_case_of_tl,
+  ti_linkto_sl,
+  ti_linkto_tl
 };
 
 class TransferInstr
@@ -31,7 +33,8 @@ private:
   void destroy();
 public:
   TransferInstr(){};
-  TransferInstr(TransferInstrType t, string const &c, int const p, void *ptr=NULL, bool cond = true);
+  TransferInstr(TransferInstrType t, string const &c, int const p, 
+                void *ptr=NULL, bool cond = true);
   ~TransferInstr();
   TransferInstr(TransferInstr const &o);
   TransferInstr & operator =(TransferInstr const &o);

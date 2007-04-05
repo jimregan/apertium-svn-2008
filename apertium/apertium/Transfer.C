@@ -294,6 +294,26 @@ Transfer::evalString(xmlNode *element)
 
       case ti_clip_tl:
         return word[ti.getPos()]->target(ti.getContent().c_str(), ti.getCondition());
+      
+      case ti_linkto_sl:
+        if(word[ti.getPos()]->source(ti.getContent().c_str(), ti.getCondition()) != "")
+        {
+          return "<" + XMLParseUtil::latin1((xmlChar *) ti.getPointer()) + ">";
+        }        
+        else
+        {
+          return "";
+        }
+      
+      case ti_linkto_tl:
+        if(word[ti.getPos()]->target(ti.getContent().c_str(), ti.getCondition()) != "")
+        {
+          return "<" + XMLParseUtil::latin1((xmlChar *) ti.getPointer()) + ">";
+        }        
+        else
+        {
+          return "";
+        }
 
       case ti_var:
         return variables[ti.getContent()];
@@ -359,7 +379,14 @@ Transfer::evalString(xmlNode *element)
 
     if(as != NULL)
     {
-      evalStringCache[element] = TransferInstr(ti_lit_tag, tags((const char *) as), 0);
+      if(!xmlStrcmp(side, (const xmlChar *) "sl"))
+      {
+        evalStringCache[element] = TransferInstr(ti_linkto_sl, attr_items[(const char *) part], pos, (void *) as, queue);
+      }
+      else
+      {
+        evalStringCache[element] = TransferInstr(ti_linkto_tl, attr_items[(const char *) part], pos, (void *) as, queue);
+      }      
     }      
     else if(!xmlStrcmp(side, (const xmlChar *) "sl"))
     {
