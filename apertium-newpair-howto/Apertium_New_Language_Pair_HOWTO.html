@@ -8,32 +8,34 @@
 <body>
 
 <h2>Apertium New Language Pair HOWTO</h2>
-
+<p>
 This HOWTO document will describe how to start a new language pair
 for the Apertium machine translation system from scratch.
-<p/>
+</p>
+<p>
 It does not assume any knowledge of linguistics, or machine 
 translation above the level of being able to distinguish nouns
 from verbs (and prepositions etc.)
-
+</p>
 <h3>Authors</h3>
 
 
 <h3>Introduction</h3>
-
+<p>
 Apertium is, as you've probably realised by now a machine translation
 system. Well, not quite, its a machine translation platform. It 
 provides and engine and toolbox which allow you to build your own 
 machine translation systems. The only thing you need to do is 
 write the data. The data consists on a basic level of three dictionaries
 and a few rules (to deal word re-ordering and other grammatical stuff).
-<p/>
+</p>
+<p>
 For a more detailed introduction into how it all works, there are 
 some excellent papers on the project's website <a href="http://apertium.sourceforge.net/">
 apertium.sourceforge.net</a>. 
-
+</p>
 <h3>You will need</h3>
-
+<p>
 <ul>
 <li>lttoolbox</li>
 <li>libxml utils (xmllint etc.)</li>
@@ -43,13 +45,14 @@ apertium.sourceforge.net</a>.
 This document will not describe how to install these packages, for
 more information on that, please see the documentation section of
 the Apertium website.
-
+</p>
 <h3>What does a language pair consist of?</h3>
-
+<p>
 The Apertium machine translation system is of the shallow-transfer 
 type, this basically means it works on dictionaries and transfer 
 rules. On a basic level, there are three main dictionaries:
-<p/>
+</p>
+<p>
 <ul>
 <li><b>Source language morphological dictionary</b>: this contains the rules 
   of how words in the source language are inflected. In our example 
@@ -73,31 +76,34 @@ etc. These files are:
   rules for how the target language will be changed into the source
   language. In our example this will be: apertium-sh-en.trules-en-sh.xml</li>
 </ul>
-
+</p>
+<p>
 Many of the language pairs currently available have other files, but 
 we won't cover them here. These files are the only ones required to 
 generate a functional system.
-
+</p>
 <h3>Language pair</h3>
-
+<p>
 As may have been alluded by the file names, this HOWTO will use the 
 example of translating Serbo-Croatian to English to explain how to 
 create a basic system. This is not an ideal pair, as the system works
 better for more closely related languages, but that shouldn't present
 a problem for the simple examples we'll have here.
-
+</p>
 <h3>A brief note on terms</h3>
-
+<p>
 There are number of terms that will need to be understood before we
 continue.
-<p/>
+</p>
+<p>
 The first is 'lemma'. A lemma is the citation form of a word. It is 
 the word stripped of any grammatical information. For example, the 
 lemma of the word 'cats' is 'cat'. In English nouns this will typically 
 be the singular form of the word in question. For verbs, the lemma
 is the infinitive stripped of 'to', e.g. the lemma of 'was' would 
 be 'be'.
-<p/>
+</p>
+<p>
 The second is 'symbol'. In the context of the Apertium system, 'symbol'
 refers to a grammatical label. The word 'cats' is a plural noun, 
 therefore it will have the 'noun' symbol and the 'plural' symbol. In 
@@ -110,13 +116,15 @@ Other examples of symbols are &lt;sg&gt; singular, &lt;p1&gt; first person, &lt;
 present indicative etc. When written in angle brackets, the symbols 
 may also be referred to as 'tags'. Symbols are defined in &lt;sdef&gt; tags
 and used in &lt;s&gt; tags.
-<p/>
+</p>
+<p>
 The third word is 'paradigm'. In the context of the Apertium system,
 'paradigm' refers to a example of how a particular group of words 
 inflect. In the morphological dictionary, lemmas (see above) are linked
 to paradigms which allows us to describe how a given lemma inflects
 without having to write out all of the endings. 
-<p/>
+</p>
+<p>
 An example of the utility of this is, if we wanted to store the two 
 adjectives 'happy' and 'lazy', instead of storing two lots of the 
 same thing:
@@ -128,11 +136,12 @@ We can simply store one, and then say "lazy, inflects like happy". In
 this example, happy would be the paradigm. The precise description of 
 how this is defined will be explained shortly. Paradigms are
 defined in &lt;pardef&gt; tags, and used in &lt;par&gt; tags.
-
+</p>
 <h3>Getting started</h3>
-
+<p>
 Lets start by making our first source language dictionary. The dictionary
 is an XML file. Fire up your text editor and type the following:
+</p>
 <p>
 <tt>
 &lt;?xml version="1.0" encoding="ISO-8859-2"?&gt;<br/>
@@ -144,21 +153,26 @@ is an XML file. Fire up your text editor and type the following:
 Save the file as 'apertium-sh-en.sh.dix' with an ISO-8859-2 encoding. A 
 short note on encoding: currently (as of April 2007), Apertium only 
 supports single byte encodings. There is work ongoing to port it to Unicode.
-<p/>
+</p>
+<p>
 So, the file so far defines that we want to start a dictionary. In order
 for it to be useful, we need to add some more entries, the first is an
 alphabet. This defines the set of letters that may be used in the dictionary,
 for Serbo-Croatian, it will look something like:
+</p>
 <p>
 <tt>
 &lt;alphabet&gt;ABCČĆDDžĐEFGHIJKLLjMNNjOPRSŠTUVZŽabcčćddžđefghijklljmnnjoprsštuvzž&lt;/alphabet&gt;
 </tt>
 </p>
+<p>
 Place this below the <tt>&lt;dictionary&gt;</tt> tag.
-<p/>
+</p>
+<p>
 Next we need to define some symbols. Lets start off with the simple stuff,
 noun (n) in singular (sg) and plural (pl).
-<p/>
+</p>
+<p>
 <tt>
 &lt;sdefs&gt; <br/>
 &nbsp;&nbsp;  &lt;sdef n="n"/&gt; <br/>
@@ -166,18 +180,22 @@ noun (n) in singular (sg) and plural (pl).
 &nbsp;&nbsp;  &lt;sdef n="pl"/&gt; <br/>
 &lt;/sdefs&gt; <br/>
 </tt>
-<p/>
+</p>
+<p>
 The symbol names do not have to be so small, in fact they could be just
 written our in full, but as you'll be typing them a lot, it makes sense 
 to abbreviate.
-<p/>
+</p>
+<p>
 Unfortunately, it isn't quite so simple, nouns in Serbo-Croatian inflect
 for more than just number, they also inflect for gender and case. However, 
 we'll assume for the purposes of this example that the noun is masculine
 and in the nominative case (a full example may be found at the end of 
 this document).
-<p/>
+</p>
+<p>
 Next thing is to define a section for the paradigms,
+</p>
 <p>
 <tt>
 &lt;pardefs&gt; <br/>
@@ -185,7 +203,9 @@ Next thing is to define a section for the paradigms,
 &lt;/pardefs&gt; <br/>
 </tt>
 </p>
+<p>
 and a section for mapping lemmas to paradigms:
+</p>
 <p>
 <tt>
 &lt;section id="main" type="standard"&gt; <br/>
@@ -193,7 +213,9 @@ and a section for mapping lemmas to paradigms:
 &lt;/section&gt;<br/>
 </tt>
 </p>
+<p>
 So, our file should now look something like:
+</p>
 <p>
 <tt>
 &lt;?xml version="1.0" encoding="ISO-8859-2"?&gt; <br/>
@@ -212,14 +234,18 @@ So, our file should now look something like:
 &lt;/dictionary&gt;
 </tt>
 </p>
+<p>
 Now we've got the skeleton in place, we can start by adding a noun. The noun
 in question will be 'gramofon' (which means 'gramophone' or 'record player').
-<p/>
+</p>
+<p>
 The first thing we need to do, as we have no prior paradigms, is to define a 
 paradigm.
-<p/>
+</p>
+<p>
 Remember we're assuming masculine gender and nominative case. The singular 
 form of the noun is 'gramofon', and the plural is 'gramofoni'. So:
+</p>
 <p>
 <tt>
 &lt;pardef n="gramofon__n"&gt; <br/>
@@ -238,8 +264,10 @@ form of the noun is 'gramofon', and the plural is 'gramofoni'. So:
 &lt;/pardef&gt;
 </tt>
 </p>
+<p>
 Note: the '&lt;l/&gt;' denotes that there is no extra stem.
-<p/>
+</p>
+<p>
 This may seem like a rather verbose way of describing it, but there are 
 reasons for it and it quickly becomes second nature. You're probably 
 wondering what the &lt;e&gt;, &lt;p&gt;, &lt;l&gt; and &lt;r&gt; stand for. Well,
@@ -249,7 +277,8 @@ wondering what the &lt;e&gt;, &lt;p&gt;, &lt;l&gt; and &lt;r&gt; stand for. Well
 <li> l, is for 'left'.</li>
 <li> r, is for 'right'.</li>
 </ul>
-
+</p>
+<p>
 Why 'left' and 'right'? Well, the morphological dictionaries are implemented
 as finite state machines. Compiling them left to right produces analyses from
 words, and from right to left produces words from analyses. For example:
@@ -259,13 +288,16 @@ words, and from right to left produces words from analyses. For example:
 </ul>
 Now we've defined a paradigm, we need to link it to its lemma, 'gramofon'. We
 put this in the 'section' that we've defined.
-<p/>
+</p>
+<p>
 The entry to put in will look like:
+</p>
 <p>
 <tt>
 &lt;e lm="gramofon"&gt;&lt;i&gt;gramofon&lt;/i&gt;&lt;par n="gramofon__n"/&gt;&lt;/e&gt;
 </tt>
 </p>
+<p>
 A quick run down on the abbreviations:
 <ul>
 <li> lm, is for 'lemma'.</li>
@@ -277,7 +309,8 @@ the paradigm with which it inflects 'gramofon__n'. The difference between
 the lemma and the root is that the lemma is the citation form of the word,
 while the root is the substring of the lemma to which stems are added. This
 will become clearer later when we show an entry where the two are different.
-<p/>
+</p>
+<p>
 We're now ready to test the dictionary. Save it, and then return to the 
 shell. We first need to compile it (with lt-comp), then we can test it (with
 lt-proc).
@@ -307,7 +340,9 @@ Now, for the English dictionary, do the same thing, but substitute the
 English word 'gramophone' for 'gramofon'. What if you want to use the 
 more correct word 'record player', well, we'll explain how to do that 
 later.
-<p/>
+</p>
+
+<p>
 You should now have two files in the directory:
 <ul>
 <li> apertium-sh-en.sh.dix which contains a (very) basic Serbo-Croatian
@@ -316,12 +351,15 @@ You should now have two files in the directory:
   morphological dictionary.</li>
 </ul>
 There may be some .bin files, you can delete them for now.
-<p/>
+</p>
+<p>
 So we now have two morphological dictionaries, next thing to make is the 
 bilingual dictionary. This describes mappings between words. All dictionaries
 use the same format (which is specified in the DTD, dix.dtd).
-<p/>
+</p>
+<p>
 Create a new file, apertium-sh-en.sh-en.dix and add the basic skeleton:
+</p>
 <p>
 <tt>
 &lt;?xml version="1.0" encoding="ISO-8859-2"?&gt; <br/>
@@ -339,8 +377,10 @@ Create a new file, apertium-sh-en.sh-en.dix and add the basic skeleton:
 &lt;/dictionary&gt;
 </tt>
 </p>
+<p>
 Now we need to add an entry to 'translate' between the two words. Something 
 like:
+</p>
 <p>
 <tt>
 &lt;e&gt;&lt;p&gt;&lt;l&gt;gramofon&lt;s n="n"/&gt;&lt;/l&gt;&lt;r&gt;gramophone&lt;s n="n"/&gt;&lt;/r&gt;&lt;/p&gt;&lt;/e&gt;
@@ -351,7 +391,8 @@ line to facilitate easier reading of the file. Again with the 'l' and 'r'
 right? Well, we compile it left to right to produce the Serbo-Croatian ->
 English dictionary, and right to left to produce the English -> Serbo-Croatian
 dictionary.
-<p/>
+</p>
+<p>
 So, once this is done, run the following commands:
 <pre>
 $ lt-comp lr apertium-sh-en.sh.dix sh-en.automorf.bin
@@ -365,15 +406,17 @@ $ lt-comp rl apertium-sh-en.sh-en.dix en-sh.autobil.bin
 </pre>
 To generate the morphological analysers (automorf), the morphological 
 generators (autogen) and the word lookups (autobil).
-
+</p>
 <h3>Transfer rules</h3>
-
+<p>
 So, now we have two morphological dictionaries, and a bilingual dictionary.
 All that we need now is a transfer rule for nouns. Transfer rule files
 have their own DTD (transfer.dtd) which can be found in the Apertium 
 package.
-
+</p>
+<p>
 Start out like all the others with a basic skeleton:
+</p>
 <p>
 <tt>
 &lt;?xml version="1.0" encoding="ISO-8859-2"?&gt; <br/>
@@ -382,15 +425,19 @@ Start out like all the others with a basic skeleton:
 &lt;/transfer&gt; <br/>
 </tt>
 </p>
+<p>
 At the moment, because we're ignoring case, we just need to make a rule that
 takes the grammatical symbols input and outputs them again.
-
+</p>
+<p>
 We first need to define categories and attributes. Categories and attributes
 both allow us to group grammatical symbols. Categories allow us to group
 kinds of symbols as a 'catch-all', and attributes allow us to define the 
 symbols that those symbols can have. <!-- THIS NEEDS TO BE SERIOUSLY FIXED -->
-<p/>
+</p>
+<p>
 Lets add the necessary sections:
+</p>
 <p>
 <tt>
 &lt;section-def-cats&gt; <br/>
@@ -404,8 +451,10 @@ Lets add the necessary sections:
 As we're only inflecting, nouns in singular and plural then we need to add
 a category for nouns, and with an attribute of number. Something like the 
 following will suffice:
-<p/>
+</p>
+<p>
 Into 'section-def-cats' add:
+</p>
 <p>
 <tt>
 &lt;def-cat n="nom"&gt; <br/>
@@ -415,8 +464,10 @@ Into 'section-def-cats' add:
 </p>
 This catches all nouns (lemmas followed by &lt;n&gt; then anything) and refers to
 them as "nom" (we'll see how thats used later).
-<p/>
+</p>
+<p>
 Into the section 'section-def-attrs', add:
+</p>
 <p>
 <tt>
 &lt;def-attr n="nbr"&gt; <br/>
@@ -425,7 +476,9 @@ Into the section 'section-def-attrs', add:
 &lt;/def-attr&gt;
 </tt>
 </p>
+<p>
 and then
+</p>
 <p>
 <tt>
 &lt;def-attr n="a_nom"&gt; <br/>
@@ -433,12 +486,16 @@ and then
 &lt;/def-attr&gt;
 </tt>
 </p>
+<p>
 The first defines the attribute nbr (number), which can be either singular (sg)
 or plural (pl).
-<p/>
+</p>
+<p>
 The second defines the attribute a_nom (attribute noun).
-<p/>
+</p>
+<p>
 Next we need to add a section for global variables:
+</p>
 <p>
 <tt>
 &lt;section-def-vars&gt; <br/>
@@ -446,6 +503,7 @@ Next we need to add a section for global variables:
 &lt;/section-def-vars&gt;
 </tt>
 </p>
+<p>
 These variables are used to transfer attributes between rules. We need only 
 one for now, 
 <pre>
@@ -453,6 +511,7 @@ one for now,
 </pre>
 Finally, we need to add a rule, to take in the noun and then output it in
 the correct form. We'll need a rules section...
+</p>
 <p>
 <tt>
 &lt;section-rules&gt; <br/>
@@ -460,8 +519,10 @@ the correct form. We'll need a rules section...
 &lt;/section-rules&gt;
 </tt>
 </p>
+<p>
 Changing the pace from the previous examples, I'll just paste this rule, then
 go through it, rather than the other way round.
+</p>
 <p>
 <tt>
 &lt;rule&gt; <br/>
@@ -480,26 +541,32 @@ go through it, rather than the other way round.
 &lt;/rule&gt;
 </tt>
 </p>
+<p>
 The first tag is obvious, it defines a rule. The second tag, 'pattern' 
 basically says, apply this rule, if this pattern is found. In this example
 the pattern consists of a single noun (defined by the category item "nom").
-<p/>
+</p>
+<p>
 For each pattern, there is an associated action, which produces an associated
 output, 'out'. The output, is a lexical unit (lu).
-<p/>
+</p>
+<p>
 The 'clip' tag, allows a user to output attributes and parts of the source, 
 or target language lexical item.
-<p/>
+</p>
+<p>
 Lets compile it and test it. Transfer rules are compiled with:
 <pre>
 $ apertium-preprocess-transfer apertium-sh-en.trules-sh-en.xml trules-sh-en.bin
 </pre>
 Which will generate a trules-sh-en.bin file. 
-<p/>
+</p>
+<p>
 Now we're ready to test our machine translation system. There is one crucial
 part missing, the POS tagger, but that will be explained shortly. In the 
 meantime we can test it as is:
-<p/>
+</p>
+<p>
 First, lets analyse a word, "gramofoni":
 <pre>
 $ echo "gramofoni" | lt-proc sh-en.automorf.bin 
@@ -523,14 +590,17 @@ It will output:
 <pre>
 ^gramophone&lt;n&gt;&lt;pl&gt;$^@
 </pre>
+</p>
 
+<p>
 <ul>
 <li> 'gramophone' is the target language (tl) lemma (lem) at position 1.</li>
 <li> '&lt;n&gt;' is the target language 'a_nom' at position 1.</li>
 <li> '&lt;pl&gt;' is the target language attribute of 'number' (nbr) at position 1.</li>
 </ul>
 Try commenting out one of these clip statements, recompiling and seeing what happens.
-<p/>
+</p>
+<p>
 So, now we have the output from the transfer, the only thing that remains is to 
 generate the target language inflected forms. For this, we use lt-proc, but in 
 generation, not analysis mode.
@@ -545,13 +615,14 @@ gramophones\@
 And c'est ca. You now have a machine translation system that translates 
 a Serbo-Croatian noun into an English noun. Obviously this isn't very useful,
 but we'll get onto the more complex stuff soon.
-<p/>
+</p>
+<p>
 Think of a few other words that inflect the same as gramofon. How about adding
 those. We don't need to add any paradigms, just the entries in the main section of 
 the monolingual and bilingual dictionaries.
-
+</p>
 <h3>Bring on the verbs</h3>
-
+<p>
 Ok, so we have a system that translates nouns, but thats pretty useless, we want
 to translate verbs too, and even whole sentences! How about we start with the
 verb 'to see'. In Serbo-Croatian this is 'videti'. Serbo-Croatian is a null-subject
@@ -564,31 +635,37 @@ would be translated as "Vidim" in Serbo-Croatian.
 * I see
 </pre>
 Note: &lt;p1&gt; denotes 'first person'
-<p/>
+</p>
+<p>
 This will be important when we come to write the transfer rule for verbs. Other 
 examples of null-subject languages include: Spanish, Romanian and Polish. The also
 has the effect that while we only need to add the verb in the Serbo-Croatian
 morphological dictionary, we need to add both the verb, and the personal pronouns
 in the English morpohlogical dictionary. We'll go through both of these.
 </p>
+<p>
 The other forms of the verb 'videti' are: vidiš, vidi, vidimo, vidite, and 
 vide; which correspond to: you see, he sees, we see, you see, and they see.
-<p/>
+</p>
+<p>
 There are two forms of 'you see', one is plural and formal (vidite) and the
 other is singular and informal (vidiš).
-<p/>
+</p>
+<p>
 We're going to try and translate the sentence: "Vidim gramofoni" into "I see
 gramophones". In the interests of space, we'll just add enough information
 to do the translation and will leave filling out the paradigms (adding the other
 conjugations of the verb) as an exercise to the reader.
-<p/>
+</p>
+<p>
 The astute reader will have realised by this point that we can't just translate
 'vidim gramofoni' because it is not a grammatically correct sentence in
 Serbo-Croatian. The correct sentence would be 'Vidim gramofone', as the noun takes
 the accusative case. We'll have to add that form too, no need to add the case 
 information for now though, we just add it as another option for plural. So, just
 copy the 'e' block for 'i' and change the 'i' to 'e' there.
-<p/>
+</p>
+<p>
 First thing we need to do is add some more symbols. We need to first add a symbol
 for 'verb', which we'll call "vblex" (this means lexical verb, as opposed to modal
 verbs and other types). Verbs have 'person', and 'tense' along with number, so 
@@ -601,15 +678,19 @@ we should add "p1", or 'first person', and for tense "pri", or 'present indicati
 </pre>
 After we've done this, the same with the nouns, we add a paradigm for the verb 
 conjugation. The first line will be:
+</p>
 <p>
 <tt>
 &lt;pardef n="vid/eti__vblex"&gt;
 </tt>
 </p>
+<p>
 The '/' is used to demarcate where the stems (the parts between the &lt;l&gt; &lt;/l&gt;
 tags) are added to. 
-<p/>
+</p>
+<p>
 Then the inflection for first person singular:
+</p>
 <p>
 <tt>
 &lt;e&gt; <br/>
@@ -620,20 +701,25 @@ Then the inflection for first person singular:
 &lt;/e&gt;
 </tt>
 </p>
+<p>
 The 'im' denotes the ending (as in 'vidim'), it is necessary to add 'eti' 
 to the <r> section, as this will be chopped off by the definition. The rest
 is fairly straightforward, 'vblex' is lexical verb, 'pri' is present indicative
 tense, 'p1' is first person and 'sg' is singular. We can also add the plural
 which will be the same, except 'imo' instead of 'im' and 'pl' instead of 'sg'.
-<p/>
+</p>
+<p>
 After this we need to add a lemma, paradigm mapping to the main section:
+</p>
 <p>
 <tt>
 &lt;e lm="videti"&gt;&lt;i&gt;vid&lt;/i&gt;&lt;par n="vid/eti__vblex"/&gt;&lt;/e&gt;
 </tt>
 </p>
+<p>
 Note: the content of &lt;i&gt; &lt;/i&gt; is the root, not the lemma.
-<p/>
+</p>
+<p>
 Thats the work on the Serbo-Croatian dictionary done for now. Lets compile it
 then test it.
 <pre>
@@ -646,17 +732,21 @@ $ echo "vidimo" | lt-proc sh-en.automorf.bin
 </pre>
 Ok, so now we do the same for the English dictionary (remember to add the same 
 symbol definitions here as you added to the Serbo-Croatian one).
-<p/>
+</p>
+<p>
 The paradigm is:
+</p>
 <p>
 <tt>
 &lt;pardef n="s/ee__vblex"&gt;
 </tt>
 </p>
+<p>
 because the past tense is 'saw'. Now, we can do one of two things, we can 
 add both first and second person, but they are the same form. In fact, all
 forms (except third person singular) of the verb 'to see' are 'see'. So instead
 we make one entry for 'see' and give it only the 'pri' symbol.
+</p>
 <p>
 <tt>
 &lt;e&gt; <br/>
@@ -667,12 +757,15 @@ we make one entry for 'see' and give it only the 'pri' symbol.
 &lt;/e&gt;
 </tt>
 </p>
+<p>
 and as always, an entry in the main section:
+</p>
 <p>
 <tt>
 &lt;e lm="see"&gt;&lt;i&gt;s&lt;/i&gt;&lt;par n="s/ee__vblex"/&gt;&lt;/e&gt;
 </tt>
 </p>
+<p>
 Then lets save, recompile and test:
 <pre>
 $ lt-comp lr apertium-sh-en.en.dix en-sh.automorf.bin
@@ -686,7 +779,9 @@ Now for the obligatory entry in the bilingual dictionary:
 &lt;e&gt;&lt;p&gt;&lt;l&gt;videti&lt;s n="vblex"/&gt;&lt;/l&gt;&lt;r&gt;see&lt;s n="vblex"/&gt;&lt;/r&gt;&lt;/p&gt;&lt;/e&gt;
 </pre>
 (again, don't forget to add the sdefs from earlier)
-<p/>
+</p>
+
+<p>
 And recompile:
 <pre>
 $ lt-comp lr apertium-sh-en.sh-en.dix sh-en.autobil.bin
@@ -713,16 +808,20 @@ $ echo "vidim" | lt-proc sh-en.automorf.bin | \
 </pre>
 This '#' means that the generator cannot generate the correct lexical form because
 it does not contain it. Why is this? 
-<p/>
+</p>
+<p>
 Basically the analyses don't match, the 'see' in the dictionary is see&lt;vblex&gt;&lt;pri&gt;,
 but the see delivered by the transfer is see&lt;vblex&gt;&lt;pri&gt;&lt;p1&gt;&lt;sg&gt;. The Serbo-Croatian
 side has more information than the English side requires. You can test this by adding
 the missing symbols to the English dictionary, and then recompiling, and testing again.
-<p/>
+</p>
+<p>
 However, a more paradigmatic way of taking care of this is by writing a rule. So, we 
 open up the rules file (apertium-sh-en.trules-sh-en.xml in case you forgot). 
-<p/>
+</p>
+<p>
 We need to add a new category for 'verb'.
+</p>
 <p>
 <tt>
 &lt;def-cat n="vrb"&gt; <br/>
@@ -730,8 +829,10 @@ We need to add a new category for 'verb'.
 &lt;/def-cat&gt;
 </tt>
 </p>
+<p>
 We also need to add attributes for tense and for person. We'll make it really simple
 for now, you can add p2 and p3, but I won't in order to save space.
+</p>
 <p>
 <tt>
 &lt;def-attr n="temps"&gt; <br/>
@@ -743,7 +844,9 @@ for now, you can add p2 and p3, but I won't in order to save space.
 &lt;/def-attr&gt;
 </tt>
 </p>
+<p>
 We should also add an attribute for verbs.
+</p>
 <p>
 <tt>
 &lt;def-attr n="a_verb"&gt; <br/>
@@ -751,7 +854,9 @@ We should also add an attribute for verbs.
 &lt;/def-attr&gt;
 </tt>
 </p>
+<p>
 Now onto the rule:
+</p>
 <p>
 <tt>
 &lt;rule&gt; <br/>
@@ -770,11 +875,13 @@ Now onto the rule:
 &lt;/rule&gt; <br/>
 </tt>
 </p>
+<p>
 Remember when you tried commenting out the 'clip' tags in the previous rule
 example and they disappeared from the transfer, well, thats pretty much
 what we're doing here. We take in a verb with a full analysis, but only output
 a partial analysis (lemma + verb tag + tense tag).
-<p/>
+</p>
+<p>
 So now, if we recompile that, we get:
 <pre>
 $ echo "vidim" | lt-proc sh-en.automorf.bin | \
@@ -791,7 +898,8 @@ $ echo "vidim" | lt-proc sh-en.automorf.bin  | \
 see\@
 </pre>
 Try it with 'vidimo' (we see) to see if you get the correct output.
-<p/>
+</p>
+<p>
 Now try it with "vidim gramofone":
 <pre>
 $ echo "vidim gramofoni" | lt-proc sh-en.automorf.bin | \
@@ -800,24 +908,29 @@ $ echo "vidim gramofoni" | lt-proc sh-en.automorf.bin | \
   lt-proc -g sh-en.autogen.bin
 see gramophones\@
 </pre>
-
+</p>
 <h3>But what about personal pronouns?</h3>
-
+<p>
 Well, thats great, but we're still missing the personal pronoun that is necessary in English. In
 order to add it in, we first need to edit the English morphological dictionary.
-<p/>
+</p>
+<p>
 As before, the first thing to do is add the necessary symbols:
+</p>
 <p>
 <tt>
 &lt;sdef n="prn"/&gt; <br/>
 &lt;sdef n="subj"/&gt;
 </tt>
 </p>
+<p>
 Of the two symbols, prn is pronoun, and subj is subject (as in the subject of 
 a sentence).
-<p/>
+</p>
+<p>
 Because there is no root, or 'lemma' for personal subject pronouns, we just add 
 the pardef as follows:
+</p>
 <p>
 <tt>
 &lt;pardef n="prsubj__prn"&gt; <br/>
@@ -830,9 +943,11 @@ the pardef as follows:
 &lt;/pardef&gt; 
 </tt>
 </p>
+<p>
 With 'prsubj' being 'personal subject'. The rest of them (You, We etc.) are left as an
 exercise to the reader.
-<p/>
+</p>
+<p>
 We can add an entry to the main section as follows:
 <pre>
 &lt;e lm="personal subject pronouns"&gt;&lt;i/&gt;&lt;par n="prsubj__prn"/&gt;&lt;/e&gt;
@@ -843,11 +958,14 @@ $ echo "I" | lt-proc en-sh.automorf.bin
 ^I/PRPERS&lt;prn&gt;&lt;subj&gt;&lt;p1&gt;&lt;sg&gt;$
 </pre>
 (Note: its in capitals because 'I' is in capitals).
-<p/>
+</p>
+<p>
 Now we need to amend the 'verb' rule to output the subject personal pronoun along
 with the correct verb form.
-<p/>
+</p>
+<p>
 First, add a category (this must be getting pretty pedestrian by now):
+</p>
 <p>
 <tt>
 &lt;def-cat n="prpers"&gt; <br/>
@@ -855,8 +973,10 @@ First, add a category (this must be getting pretty pedestrian by now):
 &lt;/def-cat&gt;
 </tt>
 </p>
+<p>
 Now add the types of pronoun as attributes, we might as well add the 'obj' type as 
 we're at it, although we won't need to use it for now:
+</p>
 <p>
 <tt>
 &lt;def-attr n="tipus_prn"&gt; <br/>
@@ -865,7 +985,9 @@ we're at it, although we won't need to use it for now:
 &lt;/def-attr&gt;
 </tt>
 </p>
+<p>
 And now to input the rule:
+</p>
 <p>
 <tt>
 &lt;rule&gt; <br/>
@@ -892,18 +1014,23 @@ And now to input the rule:
 &lt;/rule&gt;
 </tt>
 </p>
+<p>
 This is pretty much the same rule as before, only we made a couple of small
 changes.
-<p/>
+</p>
+<p>
 We needed to output:
+</p>
 <p>
 <tt>
 ^prpers&lt;prn&gt;&lt;subj&gt;&lt;p1&gt;&lt;sg&gt;$ ^see&lt;vblex&gt;&lt;pri&gt;$
 </tt>
 </p>
+<p>
 so that the generator could choose the right pronoun and the right form
 of the verb.
-<p/>
+</p>
+<p>
 So, a quick rundown:
 <ul>
 <li> &lt;lit&gt;, prints a literal string, in this case "prpers"</li>
@@ -914,7 +1041,8 @@ So, a quick rundown:
 </ul>
 Note that we retrieved the information for number and tense directly from
 the verb.
-<p/>
+</p>
+<p>
 So, now if we recompile and test that again:
 <pre>
 $ echo "vidim gramofone" | lt-proc sh-en.automorf.bin  | \
@@ -925,6 +1053,6 @@ I see gramophones
 </pre>
 Which, while it isn't exactly prize-winning prose (much like this HOWTO), is a
 fairly accurate translation.
-
+</p>
 </body>
 </html>
