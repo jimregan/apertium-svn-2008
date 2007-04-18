@@ -87,8 +87,9 @@ generate a functional system.
 As may have been alluded by the file names, this HOWTO will use the 
 example of translating Serbo-Croatian to English to explain how to 
 create a basic system. This is not an ideal pair, as the system works
-better for more closely related languages, but that shouldn't present
-a problem for the simple examples we'll have here.
+better for more closely related languages, and furthermore it does
+not currently support the full Serbo-Croatian alphabet, but that shouldn't 
+present a problem for the simple examples we'll have here.
 </p>
 <h3>A brief note on terms</h3>
 <p>
@@ -148,22 +149,31 @@ is an XML file. Fire up your text editor and type the following:
 </p>
 <p>
 <tt>
-&lt;?xml version="1.0" encoding="ISO-8859-2"?&gt;<br/>
+&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;<br/>
 &lt;dictionary&gt;<br/>
 <br/>
 &lt;/dictionary&gt;
 </tt>
 </p>
 <p>
-Save the file as 'apertium-sh-en.sh.dix' with an ISO-8859-2 encoding. A 
+Save the file as 'apertium-sh-en.sh.dix' with an ISO-8859-1 encoding. A 
 short note on encoding: currently (as of April 2007), Apertium only 
-supports single byte encodings. There is work ongoing to port it to Unicode.
+supports the ISO-8859-1 single byte encoding. There is work ongoing to port 
+it to Unicode (indeed an experimental version of lttoolbox with UTF-8 support 
+is available from SVN on the project site).
+</p>
+<p>
+Note: It is important to have your locale set up correctly when writing/reading
+files, you can find out your current locale setting by doing <tt>echo $LANG</tt>
+from a shell.
+</p>
 </p>
 <p>
 So, the file so far defines that we want to start a dictionary. In order
 for it to be useful, we need to add some more entries, the first is an
 alphabet. This defines the set of letters that may be used in the dictionary,
-for Serbo-Croatian, it will look something like:
+for Serbo-Croatian. Normally it would look something like the following,
+containing all the letters of the Serbo-Croatian alphabet:
 </p>
 <p>
 <tt>
@@ -171,7 +181,25 @@ for Serbo-Croatian, it will look something like:
 </tt>
 </p>
 <p>
-Place this below the <tt>&lt;dictionary&gt;</tt> tag.
+However in our example, it will look like this:
+</p>
+<p>
+<tt>
+&lt;alphabet&gt;ABCDEFGHIJKLMNOPRSTUVZabcdefghijklljmnnjoprstuvz&lt;/alphabet&gt;
+</tt>
+</p>
+<p>
+The reason for this is that, as mentioned above, lttoolbox requires ISO-8859-1 
+encoding, and Č, Ć, Dž, Đ, Lj, Nj, Š, and Ž (along with their miniscule forms)
+are not found in this encoding. Some languages have got round this by choosing
+other characters from ISO-8859-1 to represent the missing letters, and then
+transliterating. For example, using the character 'ç' (c with cedilla) to 
+represent 'ć' (c with acute accent), or using 'ð' (eth) to represent 'đ' (d
+with stroke).
+</p>
+</p>
+<p>
+Place the alphabet below the <tt>&lt;dictionary&gt;</tt> tag.
 </p>
 <p>
 Next we need to define some symbols. Lets start off with the simple stuff,
