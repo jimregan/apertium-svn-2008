@@ -154,6 +154,7 @@ is an XML file. Fire up your text editor and type the following:
 &lt;/dictionary&gt;
 </tt>
 </p>
+<p>
 Save the file as 'apertium-sh-en.sh.dix' with an ISO-8859-2 encoding. A 
 short note on encoding: currently (as of April 2007), Apertium only 
 supports single byte encodings. There is work ongoing to port it to Unicode.
@@ -322,28 +323,38 @@ will become clearer later when we show an entry where the two are different.
 We're now ready to test the dictionary. Save it, and then return to the 
 shell. We first need to compile it (with lt-comp), then we can test it (with
 lt-proc).
+</p>
 <pre>
 $ lt-comp lr apertium-sh-en.sh.dix sh-en.automorf.bin
 </pre>
+<p>
 Should produce the output:
+</p>
 <pre>
 main@standard 12 12
 </pre>
+<p>
 As we are compiling it left to right, we're producing an analyser. Lets 
 make a generator too. 
+</p>
 <pre>
 $ lt-comp rl apertium-sh-en.sh.dix sh-en.autogen.bin
 </pre>
+<p>
 The same output should be produced.
 <p/>
 We can now test these. Run lt-proc on the analyser.
+</p>
 <pre>
 $ lt-proc sh-en.automorf.bin
 </pre>
+<p>
 Now try it out, type in 'gramofoni', 'gramophones', and see the output:
+</p>
 <pre>
 ^gramofoni/gramofon&lt;n&gt;&lt;pl&gt;$
 </pre>
+<p>
 Now, for the English dictionary, do the same thing, but substitute the
 English word 'gramophone' for 'gramofon'. What if you want to use the 
 more correct word 'record player', well, we'll explain how to do that 
@@ -404,6 +415,7 @@ dictionary.
 </p>
 <p>
 So, once this is done, run the following commands:
+</p>
 <pre>
 $ lt-comp lr apertium-sh-en.sh.dix sh-en.automorf.bin
 $ lt-comp rl apertium-sh-en.sh.dix sh-en.autogen.bin
@@ -414,6 +426,7 @@ $ lt-comp rl apertium-sh-en.en.dix en-sh.autogen.bin
 $ lt-comp lr apertium-sh-en.sh-en.dix sh-en.autobil.bin
 $ lt-comp rl apertium-sh-en.sh-en.dix en-sh.autobil.bin
 </pre>
+<p>
 To generate the morphological analysers (automorf), the morphological 
 generators (autogen) and the word lookups (autobil).
 </p>
@@ -516,9 +529,11 @@ Next we need to add a section for global variables:
 <p>
 These variables are used to transfer attributes between rules. We need only 
 one for now, 
+</p>
 <pre>
 &lt;def-var n="number"/&gt;
 </pre>
+<p>
 Finally, we need to add a rule, to take in the noun and then output it in
 the correct form. We'll need a rules section...
 </p>
@@ -566,9 +581,11 @@ or target language lexical item.
 </p>
 <p>
 Lets compile it and test it. Transfer rules are compiled with:
+</p>
 <pre>
 $ apertium-preprocess-transfer apertium-sh-en.trules-sh-en.xml trules-sh-en.bin
 </pre>
+<p>
 Which will generate a trules-sh-en.bin file. 
 </p>
 <p>
@@ -578,29 +595,35 @@ meantime we can test it as is:
 </p>
 <p>
 First, lets analyse a word, "gramofoni":
+</p>
 <pre>
 $ echo "gramofoni" | lt-proc sh-en.automorf.bin 
 ^gramofon/gramofon&lt;n&gt;&lt;pl&gt;$
 </pre>
+<p>
 Now, normally here the POS tagger would choose the right version based on the 
 part of speech, but we don't have a POS tagger yet, so we can use this little
 perl script that will just output the first item retrieved.
+</p>
 <pre>
 $ echo "gramofoni" | lt-proc sh-en.automorf.bin | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
 ^gramofon&lt;n&gt;&lt;pl&gt;$
 </pre>
+<p>
 Now lets process that with the transfer rule:
+</p>
 <pre>
 $ echo "gramofoni" | lt-proc sh-en.automorf.bin | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
   apertium-transfer apertium-sh-en.trules-sh-en.xml trules-sh-en.bin sh-en.autobil.bin
 </pre>
+<p>
 It will output:
+</p>
 <pre>
 ^gramophone&lt;n&gt;&lt;pl&gt;$^@
 </pre>
-</p>
 
 <ul>
 <li> 'gramophone' is the target language (tl) lemma (lem) at position 1.</li>
@@ -614,6 +637,7 @@ Try commenting out one of these clip statements, recompiling and seeing what hap
 So, now we have the output from the transfer, the only thing that remains is to 
 generate the target language inflected forms. For this, we use lt-proc, but in 
 generation, not analysis mode.
+</p>
 <pre>
 $ echo "gramofoni" | lt-proc sh-en.automorf.bin | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
@@ -622,6 +646,7 @@ $ echo "gramofoni" | lt-proc sh-en.automorf.bin | \
 
 gramophones\@
 </pre>
+<p>
 And c'est ca. You now have a machine translation system that translates 
 a Serbo-Croatian noun into an English noun. Obviously this isn't very useful,
 but we'll get onto the more complex stuff soon.
@@ -639,11 +664,13 @@ verb 'to see'. In Serbo-Croatian this is 'videti'. Serbo-Croatian is a null-subj
 language, this means that it doesn't typically use personal pronouns before
 the conjugated form of the verb. English is not. So for example: "I see" in English
 would be translated as "Vidim" in Serbo-Croatian.
+</p>
 <pre>
 *   Vidim
 *   see&lt;p1&gt;&lt;sg&gt;
 * I see
 </pre>
+<p>
 Note: &lt;p1&gt; denotes 'first person'
 </p>
 <p>
@@ -681,11 +708,13 @@ for 'verb', which we'll call "vblex" (this means lexical verb, as opposed to mod
 verbs and other types). Verbs have 'person', and 'tense' along with number, so 
 lets add a couple of those aswell. We need to translate "I see", so for person 
 we should add "p1", or 'first person', and for tense "pri", or 'present indicative'.
+</p>
 <pre>
 &lt;sdef n="vblex"/&gt;
 &lt;sdef n="p1"/&gt;
 &lt;sdef n="pri"/&gt;
 </pre>
+<p>
 After we've done this, the same with the nouns, we add a paradigm for the verb 
 conjugation. The first line will be:
 </p>
@@ -732,6 +761,7 @@ Note: the content of &lt;i&gt; &lt;/i&gt; is the root, not the lemma.
 <p>
 Thats the work on the Serbo-Croatian dictionary done for now. Lets compile it
 then test it.
+</p>
 <pre>
 $ lt-comp lr apertium-sh-en.sh.dix sh-en.automorf.bin
 main@standard 23 25
@@ -740,6 +770,7 @@ $ echo "vidim" | lt-proc sh-en.automorf.bin
 $ echo "vidimo" | lt-proc sh-en.automorf.bin
 ^vidimo/videti&lt;vblex&gt;&lt;pri&gt;&lt;p1&gt;&lt;pl&gt;$
 </pre>
+<p>
 Ok, so now we do the same for the English dictionary (remember to add the same 
 symbol definitions here as you added to the Serbo-Croatian one).
 </p>
@@ -777,6 +808,7 @@ and as always, an entry in the main section:
 </p>
 <p>
 Then lets save, recompile and test:
+</p>
 <pre>
 $ lt-comp lr apertium-sh-en.en.dix en-sh.automorf.bin
 main@standard 18 19
@@ -784,22 +816,28 @@ main@standard 18 19
 $ echo "see" | lt-proc en-sh.automorf.bin
 ^see/see&lt;vblex&gt;&lt;pri&gt;$
 </pre>
+<p>
 Now for the obligatory entry in the bilingual dictionary:
+</p>
 <pre>
 &lt;e&gt;&lt;p&gt;&lt;l&gt;videti&lt;s n="vblex"/&gt;&lt;/l&gt;&lt;r&gt;see&lt;s n="vblex"/&gt;&lt;/r&gt;&lt;/p&gt;&lt;/e&gt;
 </pre>
+<p>
 (again, don't forget to add the sdefs from earlier)
 </p>
 
 <p>
 And recompile:
+</p>
 <pre>
 $ lt-comp lr apertium-sh-en.sh-en.dix sh-en.autobil.bin
 main@standard 18 18
 $ lt-comp rl apertium-sh-en.sh-en.dix en-sh.autobil.bin
 main@standard 18 18
 </pre>
+<p>
 Now to test:
+</p>
 <pre>
 $ echo "vidim" | lt-proc sh-en.automorf.bin | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
@@ -807,8 +845,10 @@ $ echo "vidim" | lt-proc sh-en.automorf.bin | \
 
 ^see&lt;vblex&gt;&lt;pri&gt;&lt;p1&gt;&lt;sg&gt;$^@
 </pre>
+<p>
 We get the analysis passed through correctly, but when we try
 and generate a surface form from this, we get a '#', like below:
+</p>
 <pre>
 $ echo "vidim" | lt-proc sh-en.automorf.bin | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
@@ -816,6 +856,7 @@ $ echo "vidim" | lt-proc sh-en.automorf.bin | \
   lt-proc -g sh-en.autogen.bin
 #see\@
 </pre>
+<p>
 This '#' means that the generator cannot generate the correct lexical form because
 it does not contain it. Why is this? 
 </p>
@@ -893,13 +934,16 @@ a partial analysis (lemma + verb tag + tense tag).
 </p>
 <p>
 So now, if we recompile that, we get:
+</p>
 <pre>
 $ echo "vidim" | lt-proc sh-en.automorf.bin | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
   apertium-transfer apertium-sh-en.trules-sh-en.xml trules-sh-en.bin sh-en.autobil.bin
 ^see&lt;vblex&gt;&lt;pri&gt;$^@
 </pre>
+<p>
 and:
+</p>
 <pre>
 $ echo "vidim" | lt-proc sh-en.automorf.bin  | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
@@ -907,10 +951,12 @@ $ echo "vidim" | lt-proc sh-en.automorf.bin  | \
   lt-proc -g sh-en.autogen.bin
 see\@
 </pre>
+<p>
 Try it with 'vidimo' (we see) to see if you get the correct output.
 </p>
 <p>
 Now try it with "vidim gramofone":
+</p>
 <pre>
 $ echo "vidim gramofoni" | lt-proc sh-en.automorf.bin | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
@@ -918,7 +964,6 @@ $ echo "vidim gramofoni" | lt-proc sh-en.automorf.bin | \
   lt-proc -g sh-en.autogen.bin
 see gramophones\@
 </pre>
-</p>
 <h3>But what about personal pronouns?</h3>
 <p>
 Well, thats great, but we're still missing the personal pronoun that is necessary in English. In
@@ -959,14 +1004,18 @@ exercise to the reader.
 </p>
 <p>
 We can add an entry to the main section as follows:
+</p>
 <pre>
 &lt;e lm="personal subject pronouns"&gt;&lt;i/&gt;&lt;par n="prsubj__prn"/&gt;&lt;/e&gt;
 </pre>
+<p>
 So, save, recompile and test, and we should get something like:
+</p>
 <pre>
 $ echo "I" | lt-proc en-sh.automorf.bin
 ^I/PRPERS&lt;prn&gt;&lt;subj&gt;&lt;p1&gt;&lt;sg&gt;$
 </pre>
+<p>
 (Note: its in capitals because 'I' is in capitals).
 </p>
 <p>
@@ -1056,6 +1105,7 @@ the verb.
 </p>
 <p>
 So, now if we recompile and test that again:
+</p>
 <pre>
 $ echo "vidim gramofone" | lt-proc sh-en.automorf.bin  | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
@@ -1063,6 +1113,7 @@ $ echo "vidim gramofone" | lt-proc sh-en.automorf.bin  | \
   lt-proc -g sh-en.autogen.bin
 I see gramophones
 </pre>
+<p>
 Which, while it isn't exactly prize-winning prose (much like this HOWTO), is a
 fairly accurate translation.
 </p>
