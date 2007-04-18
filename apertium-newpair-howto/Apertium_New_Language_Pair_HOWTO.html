@@ -1,7 +1,10 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <html>
 <head> 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Apertium New Language Pair HOWTO</h2>
+  <title>Apertium New Language Pair HOWTO</title>
 </head>
 <body>
 
@@ -13,6 +16,9 @@ for the Apertium machine translation system from scratch.
 It does not assume any knowledge of linguistics, or machine 
 translation above the level of being able to distinguish nouns
 from verbs (and prepositions etc.)
+
+<h3>Authors</h3>
+
 
 <h3>Introduction</h3>
 
@@ -155,13 +161,13 @@ Next we need to define some symbols. Lets start off with the simple stuff,
 noun (n) in singular (sg) and plural (pl).
 <p/>
 <tt>
-&lt;sdefs> <br/>
+&lt;sdefs&gt; <br/>
 &nbsp;&nbsp;  &lt;sdef n="n"/&gt; <br/>
 &nbsp;&nbsp;  &lt;sdef n="sg"/&gt; <br/>
 &nbsp;&nbsp;  &lt;sdef n="pl"/&gt; <br/>
 &lt;/sdefs&gt; <br/>
 </tt>
-</p>
+<p/>
 The symbol names do not have to be so small, in fact they could be just
 written our in full, but as you'll be typing them a lot, it makes sense 
 to abbreviate.
@@ -558,7 +564,7 @@ would be translated as "Vidim" in Serbo-Croatian.
 *   see&lt;p1&gt;&lt;sg&gt;
 * I see
 </pre>
-Note: <p1> denotes 'first person'
+Note: &lt;p1&gt; denotes 'first person'
 <p/>
 This will be important when we come to write the transfer rule for verbs. Other 
 examples of null-subject languages include: Spanish, Romanian and Polish. The also
@@ -601,7 +607,7 @@ conjugation. The first line will be:
 &lt;pardef n="vid/eti__vblex"&gt;
 </tt>
 </p>
-The '/' is used to demarcate where the stems (the parts between the <l> </l> 
+The '/' is used to demarcate where the stems (the parts between the &lt;l&gt; &lt;/l&gt;
 tags) are added to. 
 <p/>
 Then the inflection for first person singular:
@@ -835,7 +841,7 @@ We can add an entry to the main section as follows:
 So, save, recompile and test, and we should get something like:
 <pre>
 $ echo "I" | lt-proc en-sh.automorf.bin
-^I/PRPERS<prn><subj><p1><sg>$
+^I/PRPERS&lt;prn&gt;&lt;subj&gt;&lt;p1&gt;&lt;sg&gt;$
 </pre>
 (Note: its in capitals because 'I' is in capitals).
 <p/>
