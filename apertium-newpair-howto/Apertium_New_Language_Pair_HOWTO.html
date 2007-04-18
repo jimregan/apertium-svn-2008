@@ -23,7 +23,7 @@ from verbs (and prepositions etc.)
 </ul>
 <h3>Licence</h3>
 <p>
-Copyright (c) Francis Tyers<br/>
+Copyright (c) 2007 Francis Tyers<br/>
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2
 or any later version published by the Free Software Foundation;
@@ -200,7 +200,7 @@ However in our example, it will look like this:
 </p>
 <p>
 <tt>
-&lt;alphabet&gt;ABCDEFGHIJKLMNOPRSTUVZabcdefghijklljmnnjoprstuvz&lt;/alphabet&gt;
+&lt;alphabet&gt;ABCDEFGHIJKLMNOPRSTUVZabcdefghijklmnoprstuvz&lt;/alphabet&gt;
 </tt>
 </p>
 <p>
@@ -501,8 +501,9 @@ takes the grammatical symbols input and outputs them again.
 <p>
 We first need to define categories and attributes. Categories and attributes
 both allow us to group grammatical symbols. Categories allow us to group
-kinds of symbols as a 'catch-all', and attributes allow us to define the 
-symbols that those symbols can have. <!-- THIS NEEDS TO BE SERIOUSLY FIXED -->
+symbols for the purposes of matching (for example 'n.*' is all nouns). Attributes
+allow us to group a set of symbols that can be chosen from. For example ('sg' and
+'pl' may be grouped a an attribute 'number').
 </p>
 <p>
 Lets add the necessary sections:
@@ -617,7 +618,11 @@ go through it, rather than the other way round.
 <p>
 The first tag is obvious, it defines a rule. The second tag, 'pattern' 
 basically says, apply this rule, if this pattern is found. In this example
-the pattern consists of a single noun (defined by the category item "nom").
+the pattern consists of a single noun (defined by the category item "nom"). Note
+that patterns are matched in a longest-match first. So if you have three rules,
+the first catches "&lt;prn&gt;&lt;vblex&gt;&lt;n&gt;", the second catches 
+"&lt;prn&gt;&lt;vblex&gt;" and the third catches "&lt;n&gt;", the pattern matched, 
+and rule executed will be the first.
 </p>
 <p>
 For each pattern, there is an associated action, which produces an associated
@@ -1164,6 +1169,45 @@ I see gramophones
 <p>
 Which, while it isn't exactly prize-winning prose (much like this HOWTO), is a
 fairly accurate translation.
+</p>
+<h3>So tell me about the record player</h3>
+<p>
+While gramophone is an English word, it isn't the best translation. A better
+translation would be 'record player'. Although this is more than one word, 
+we can treat it as if it is one word by using multiword (<i>multipalabra</i>)
+constructions.
+</p>
+<p>
+We don't need to touch the Serbo-Croatian dictionary, just the English one and
+the bilingual one this, so open it up. 
+</p>
+<p>
+The plural of 'record player' is 'record players', so it takes the same paradigm
+as gramophone (gramophone__n) &mdash; just add 's'. All we need to do is add
+a new element to the main section. 
+</p>
+<p>
+<tt>
+&lt;e lm="record player"&gt;&lt;i&gt;record&lt;b/&gt;player&lt;/i&gt;&lt;par n="gramophone__n"/&gt;&lt;/e&gt;
+</tt>
+</p>
+<p>
+The only thing different about this is the use of the &lt;b/&gt; tag, although 
+this isn't entirely new as we saw it in use in the rules file.
+</p>
+<p>
+So, recompile and test in the orthodox fashion:
+</p>
+<pre>
+$ echo "vidim gramofone" | lt-proc sh-en.automorf.bin | \
+  perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
+  apertium-transfer apertium-sh-en.trules-sh-en.xml trules-sh-en.bin sh-en.autobil.bin  | \
+  lt-proc -g sh-en.autogen.bin
+I see record players
+</pre>
+<p>
+Perfect. A big benefit of using multiwords is that you can translate idiomatic
+expressions verbatim, without having to do word-by-word translation. 
 </p>
 </body>
 </html>
