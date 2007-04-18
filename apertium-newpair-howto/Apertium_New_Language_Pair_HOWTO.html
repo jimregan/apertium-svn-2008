@@ -52,7 +52,6 @@ The Apertium machine translation system is of the shallow-transfer
 type, this basically means it works on dictionaries and transfer 
 rules. On a basic level, there are three main dictionaries:
 </p>
-<p>
 <ul>
 <li><b>Source language morphological dictionary</b>: this contains the rules 
   of how words in the source language are inflected. In our example 
@@ -64,10 +63,12 @@ rules. On a basic level, there are three main dictionaries:
   symbols in the two languages. In our example this will be 
   called: apertium-sh-en.sh-en.dix</li>
 </ul>
+<p>
 There are also two files for transfer rules. These are the rules which
 govern how words are re-ordered in sentences, e.g. chat noir -> cat 
 black -> black cat. It also governs agreement of gender, number 
 etc. These files are:
+</p>
 <ul>
 <li><b>Source language to target language transfer rules</b>: this file contains 
   rules for how the source language will be changed into the target 
@@ -76,7 +77,6 @@ etc. These files are:
   rules for how the target language will be changed into the source
   language. In our example this will be: apertium-sh-en.trules-en-sh.xml</li>
 </ul>
-</p>
 <p>
 Many of the language pairs currently available have other files, but 
 we won't cover them here. These files are the only ones required to 
@@ -108,10 +108,12 @@ The second is 'symbol'. In the context of the Apertium system, 'symbol'
 refers to a grammatical label. The word 'cats' is a plural noun, 
 therefore it will have the 'noun' symbol and the 'plural' symbol. In 
 Apertium these are typically written between angle brackets, as so: 
+</p>
 <ul>
 <li> &lt;n&gt; for noun.</li>
 <li> &lt;pl&gt; for plural.</li>
 </ul>
+<p>
 Other examples of symbols are &lt;sg&gt; singular, &lt;p1&gt; first person, &lt;pri&gt;
 present indicative etc. When written in angle brackets, the symbols 
 may also be referred to as 'tags'. Symbols are defined in &lt;sdef&gt; tags
@@ -128,10 +130,12 @@ without having to write out all of the endings.
 An example of the utility of this is, if we wanted to store the two 
 adjectives 'happy' and 'lazy', instead of storing two lots of the 
 same thing:
+</p>
 <ul>
 <li> happy, happ (y, ier, iest)</li>
 <li> lazy, laz (y, ier, iest)</li>
 </ul>
+<p>
 We can simply store one, and then say "lazy, inflects like happy". In
 this example, happy would be the paradigm. The precise description of 
 how this is defined will be explained shortly. Paradigms are
@@ -271,21 +275,23 @@ Note: the '&lt;l/&gt;' denotes that there is no extra stem.
 This may seem like a rather verbose way of describing it, but there are 
 reasons for it and it quickly becomes second nature. You're probably 
 wondering what the &lt;e&gt;, &lt;p&gt;, &lt;l&gt; and &lt;r&gt; stand for. Well,
+</p>
 <ul>
 <li> e, is for 'entry'. </li>
 <li> p, is for 'pair'.</li>
 <li> l, is for 'left'.</li>
 <li> r, is for 'right'.</li>
 </ul>
-</p>
 <p>
 Why 'left' and 'right'? Well, the morphological dictionaries are implemented
 as finite state machines. Compiling them left to right produces analyses from
 words, and from right to left produces words from analyses. For example:
+</p>
 <ul>
 <li> gramofoni        (left to right)   gramofon&lt;n&gt;&lt;pl&gt; </li>
 <li> gramofon&lt;n&gt;&lt;pl&gt;  (right to left)   gramofoni </li>
 </ul>
+<p>
 Now we've defined a paradigm, we need to link it to its lemma, 'gramofon'. We
 put this in the 'section' that we've defined.
 </p>
@@ -299,11 +305,13 @@ The entry to put in will look like:
 </p>
 <p>
 A quick run down on the abbreviations:
+</p>
 <ul>
 <li> lm, is for 'lemma'.</li>
 <li> i, is for ' '.</li>
 <li> par, is for 'paradigm'.</li>
 </ul>
+<p>
 This entry states the lemma of the word, 'gramofon', the root, 'gramofon' and
 the paradigm with which it inflects 'gramofon__n'. The difference between
 the lemma and the root is that the lemma is the citation form of the word,
@@ -344,12 +352,14 @@ later.
 
 <p>
 You should now have two files in the directory:
+</p>
 <ul>
 <li> apertium-sh-en.sh.dix which contains a (very) basic Serbo-Croatian
   morphological dictionary, and</li>
 <li> apertium-sh-en.en.dix which contains a (very) basic English
   morphological dictionary.</li>
 </ul>
+<p>
 There may be some .bin files, you can delete them for now.
 </p>
 <p>
@@ -592,12 +602,12 @@ It will output:
 </pre>
 </p>
 
-<p>
 <ul>
 <li> 'gramophone' is the target language (tl) lemma (lem) at position 1.</li>
 <li> '&lt;n&gt;' is the target language 'a_nom' at position 1.</li>
 <li> '&lt;pl&gt;' is the target language attribute of 'number' (nbr) at position 1.</li>
 </ul>
+<p>
 Try commenting out one of these clip statements, recompiling and seeing what happens.
 </p>
 <p>
@@ -1032,6 +1042,7 @@ of the verb.
 </p>
 <p>
 So, a quick rundown:
+</p>
 <ul>
 <li> &lt;lit&gt;, prints a literal string, in this case "prpers"</li>
 <li> &lt;lit-tag&gt;, prints a literal tag, because we can't get the tags from
@@ -1039,6 +1050,7 @@ So, a quick rundown:
   subject.</li>
 <li> &lt;b/&gt;, prints a blank, a space. </li>
 </ul>
+<p>
 Note that we retrieved the information for number and tense directly from
 the verb.
 </p>
