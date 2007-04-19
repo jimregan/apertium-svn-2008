@@ -62,18 +62,25 @@ shallow-transfer type, this basically means it works on
 dictionaries and transfer rules. On a basic level, there are three
 main dictionaries:</p>
 <ul>
-<li><b>Source language morphological dictionary</b>: this contains
-the rules of how words in the source language are inflected. In our
+<li><b>The morphological dictionary for language <em>xx</em></b>: this contains
+the rules of how words in language <em>xx</em> are inflected. In our
 example this will be called:
 <code>apertium-sh-en.sh.dix</code></li>
-<li><b>Target language morphological dictionary</b>: this contains
-the rules of how words in the target language are inflected. In our
+<li><b>The morphological dictionary for language <em>yy</em></b>: this contains
+the rules of how words in language <em>yy</em> are inflected. In our
 example this will be called:
 <code>apertium-sh-en.en.dix</code></li>
 <li><b>Bilingual dictionary</b>: contains correspondences between
 words and symbols in the two languages. In our example this will be
 called: <code>apertium-sh-en.sh-en.dix</code></li>
 </ul>
+<p>
+In a translation pair, both languages can be either source or 
+target for translation. So, in our example we will typically
+refer to language <em>xx</em> as the 'source' and language 
+<em>yy</em> as the 'target'. It is worth remembering that 
+these can be reversed. 
+</p>
 <div class="comment"><em>source</em> and <em>target</em> may get
 reversed; I was thinking of a better name but could not come up
 with one. Perhaps <em>left</em> and <em>right</em>?</div>
@@ -83,16 +90,17 @@ pairs.</div>
 <p>There are also two files for transfer rules. These are the rules
 which govern how words are re-ordered in sentences, e.g.<cite>chat
 noir</cite> -&gt; <cite>cat black</cite> -&gt; <cite>black
-cat</cite>. It also governs agreement of gender, number etc. These
-files are:</p>
+cat</cite>. It also governs agreement of gender, number etc. The rules 
+can also be used to insert or delete lexical items, as will be described
+later. These files are:</p>
 <ul>
-<li><b>Source language to target language transfer rules</b>: this
-file contains rules for how the source language will be changed
-into the target language. In our example this will be:
+<li><b>language <em>xx</em> to language <em>yy</em> transfer rules</b>: this
+file contains rules for how language <em>xx</em> will be changed
+into language <em>yy</em>. In our example this will be:
 <code>apertium-sh-en.trules-sh-en.xml</code></li>
-<li><b>Target language to source language transfer rules</b>: this
-file contains rules for how the target language will be changed
-into the source language. In our example this will be:
+<li><b>language <em>yy</em> to <em>xx</em> language transfer rules</b>: this
+file contains rules for how language <em>yy</em> will be changed
+into language <em>xx</em>. In our example this will be:
 <code>apertium-sh-en.trules-en-sh.xml</code></li>
 </ul>
 <div class="comment">As worded, this seems to imply that transfer
