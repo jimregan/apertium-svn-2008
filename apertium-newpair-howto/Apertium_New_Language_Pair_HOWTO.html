@@ -2,6 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<meta name="generator" content="Bluefish 1.0.7"/>
 <meta http-equiv="Content-Type" content=
 "text/html; charset=utf-8" />
 <title>Apertium New Language Pair HOWTO</title>
@@ -19,6 +20,20 @@ pair for the Apertium machine translation system from scratch.</p>
 <p>It does not assume any knowledge of linguistics, or machine
 translation above the level of being able to distinguish nouns from
 verbs (and prepositions etc.)</p>
+<div class="comment">In one of my papers I have: "As a result of
+this, and of the intuitive approach to machine translation used in
+Apertium, the amount of linguistic knowledge necessary about the
+source and target language to build data for Apertium is kept to a
+minimum, and it may be easily learned on top of basic high-school
+grammar skills such as: morphological analysis of words:
+parts-of-speech or lexical categories (noun, verb, preposition,
+etc.) and basic morphology (number, gender, case, person, etc.;
+agreement (such as gender and number agreement between nouns and
+their modifiers: adjectives, determiners, etc.); main local
+structural differences between the source and target language:
+position of adjectives with respect to nouns (e.g, adjective after
+noun in Spanish, before noun in English), prepositional regime,
+etc." You may want to integrate this in the text somehow.</div>
 <h3>Authors</h3>
 <ul>
 <li>Francis Tyers</li>
@@ -36,22 +51,23 @@ License</a>".</p>
 <p>Any extracts of code are released under the GNU GPL, Version
 2.0</p>
 <h3>Introduction</h3>
-<p>Apertium is, as you've probably realised by now a machine
+<p>Apertium is, as you've probably realised by now, a machine
 translation system. Well, not quite, its a machine translation
 platform. It provides and engine and toolbox which allow you to
-build your own machine translation systems. The only thing you need
-to do is write the data. The data consists on a basic level of
-three dictionaries and a few rules (to deal word re-ordering and
-other grammatical stuff).</p>
+build your own machine translation systems. The <em>only</em> thing
+you need to do is write the data. The data consists on a basic
+level, of three dictionaries and a few rules (to deal word
+re-ordering and other grammatical stuff).</p>
 <p>For a more detailed introduction into how it all works, there
 are some excellent papers on the project's website <a href=
 "http://apertium.sourceforge.net/">apertium.sourceforge.net</a>.</p>
 <h3>You will need</h3>
 <ul>
-<li>lttoolbox</li>
-<li>libxml utils (xmllint etc.)</li>
-<li>apertium</li>
-<li>a text editor</li>
+<li><code>lttoolbox</code></li>
+<li><code>libxml</code> utils (<code>xmllint</code> etc.)</li>
+<li><code>apertium</code></li>
+<li>a text editor (or a specialized XML editor if you prefer
+to)</li>
 </ul>
 <p>This document will not describe how to install these packages,
 for more information on that, please see the documentation section
@@ -59,54 +75,51 @@ of the Apertium website.</p>
 <h3>What does a language pair consist of?</h3>
 <p>The Apertium machine translation system is of the
 shallow-transfer type, this basically means it works on
-dictionaries and transfer rules. On a basic level, there are three
-main dictionaries:</p>
+dictionaries and shallow transfer rules. On a basic level, there
+are three main dictionaries:</p>
+<div class="comment">Perhaps it would be a good idea to try to
+explain what "deep transfer" would mean (full syntactic parsing with rules specifying 
+operations on parse [sub]trees, etc.) 
+so that the readers get an idea of what "shallow" would mean.</div>
 <ul>
-<li><b>The morphological dictionary for language <em>xx</em></b>: this contains
-the rules of how words in language <em>xx</em> are inflected. In our
-example this will be called:
+<li><b>The morphological dictionary for language <em>xx</em></b>:
+this contains the rules of how words in language <em>xx</em> are
+inflected. In our example this will be called:
 <code>apertium-sh-en.sh.dix</code></li>
-<li><b>The morphological dictionary for language <em>yy</em></b>: this contains
-the rules of how words in language <em>yy</em> are inflected. In our
-example this will be called:
+<li><b>The morphological dictionary for language <em>yy</em></b>:
+this contains the rules of how words in language <em>yy</em> are
+inflected. In our example this will be called:
 <code>apertium-sh-en.en.dix</code></li>
 <li><b>Bilingual dictionary</b>: contains correspondences between
 words and symbols in the two languages. In our example this will be
 called: <code>apertium-sh-en.sh-en.dix</code></li>
 </ul>
-<p>
-In a translation pair, both languages can be either source or 
-target for translation. So, in our example we will typically
-refer to language <em>xx</em> as the 'source' and language 
-<em>yy</em> as the 'target'. It is worth remembering that 
-these can be reversed. 
-</p>
-<div class="comment"><em>source</em> and <em>target</em> may get
-reversed; I was thinking of a better name but could not come up
-with one. Perhaps <em>left</em> and <em>right</em>?</div>
-<div class="comment">No mention of post-generation? Perhaps it is
-not needed for this example pair but it is very useful for other
-pairs.</div>
+<p>In a translation pair, both languages can be either source or
+target for translation. So, in our example we will typically refer
+to language <em>xx</em> as the 'source' and language <em>yy</em> as
+the 'target'. It is worth remembering that these can be
+reversed.</p>
+<div class="comment">Not that <em>xx</em> and <em>yy</em> are being used, why cannot
+we use these instead of sh and en (for the initial examples discussion)? Also,
+I would advocate for using <em>source</em> and <em>target</em> as <em>relative</em>
+terms; this was the initial motivation for using <em>xx</em> and <em>yy</em>.</div>
 <p>There are also two files for transfer rules. These are the rules
-which govern how words are re-ordered in sentences, e.g.<cite>chat
+which govern how words are re-ordered in sentences, e.g. <cite>chat
 noir</cite> -&gt; <cite>cat black</cite> -&gt; <cite>black
-cat</cite>. It also governs agreement of gender, number etc. The rules 
-can also be used to insert or delete lexical items, as will be described
-later. These files are:</p>
+cat</cite>. It also governs agreement of gender, number etc. The
+rules can also be used to insert or delete lexical items, as will
+be described later. These files are:</p>
 <ul>
-<li><b>language <em>xx</em> to language <em>yy</em> transfer rules</b>: this
-file contains rules for how language <em>xx</em> will be changed
-into language <em>yy</em>. In our example this will be:
-<code>apertium-sh-en.trules-sh-en.xml</code></li>
-<li><b>language <em>yy</em> to <em>xx</em> language transfer rules</b>: this
-file contains rules for how language <em>yy</em> will be changed
-into language <em>xx</em>. In our example this will be:
-<code>apertium-sh-en.trules-en-sh.xml</code></li>
+<li><b>language <em>xx</em> to language <em>yy</em> transfer
+rules</b>: this file contains rules for how language <em>xx</em>
+will be changed into language <em>yy</em>. In our example this will
+be: <code>apertium-sh-en.trules-sh-en.xml</code></li>
+<li><b>language <em>yy</em> to <em>xx</em> language transfer
+rules</b>: this file contains rules for how language <em>yy</em>
+will be changed into language <em>xx</em>. In our example this will
+be: <code>apertium-sh-en.trules-en-sh.xml</code></li>
 </ul>
-<div class="comment">As worded, this seems to imply that transfer
-rules are only for reordering or agreement, but they can also be
-used to insert or delete lexical items. But maybe this is too
-advanced for this document. Also, perhaps one should note that this
+<div class="comment">Perhaps one should note that this
 is Apertium "level 1".</div>
 <p>Many of the language pairs currently available have other files,
 but we won't cover them here. These files are the only ones
@@ -119,48 +132,56 @@ works better for more closely related languages, and furthermore it
 does not currently support the full Serbo-Croatian alphabet, but
 that shouldn't present a problem for the simple examples we'll have
 here.</p>
+<div class="comment">We can remove the sentence "As may have been alluded..." if we use <em>xx</em>
+and <em>yy</em> for the examples up to here.</div>
 <h3>A brief note on terms</h3>
 <p>There are number of terms that will need to be understood before
 we continue.</p>
-<p>The first is <em>lemma</em>. A lemma is the citation form of a word. It
-is the word stripped of any grammatical information. For example,
-the lemma of the word <em>cats</em> is <em>cat</em>. In English nouns this will
-typically be the singular form of the word in question. For verbs,
-the lemma is the infinitive stripped of <em>to</em>, e.g. the lemma of
-<em>was</em> would be <em>be</em>.</p>
-<p>The second is <em>symbol</em>. In the context of the Apertium system,
-'symbol' refers to a grammatical label. The word 'cats' is a plural
-noun, therefore it will have the 'noun' symbol and the 'plural'
-symbol. In Apertium these are typically written between angle
-brackets, as so:</p>
+<p>The first is <em>lemma</em>. A lemma is the citation form of a
+word. It is the word stripped of any grammatical information. For
+example, the lemma of the word <em>cats</em> is <em>cat</em>. In
+English nouns this will typically be the singular form of the word
+in question. For verbs, the lemma is the infinitive stripped of
+<em>to</em>, e.g. the lemma of <em>was</em> would be
+<em>be</em>.</p>
+<p>The second is <em>symbol</em>. In the context of the Apertium
+system, <em>symbol</em> refers to a grammatical label. The word <cite>cats</cite> is
+a plural noun, therefore it will have the <em>noun</em> symbol and the
+<em>plural</em> symbol. In Apertium these are typically written between
+angle brackets, as so:</p>
 <ul>
-<li>&lt;n&gt; for noun.</li>
-<li>&lt;pl&gt; for plural.</li>
+<li><code>&lt;n&gt;</code> for noun.</li>
+<li><code>&lt;pl&gt</code>; for plural.</li>
 </ul>
-<p>Other examples of symbols are &lt;sg&gt; singular, &lt;p1&gt;
-first person, &lt;pri&gt; present indicative etc. When written in
-angle brackets, the symbols may also be referred to as 'tags'.
-Symbols are defined in &lt;sdef&gt; tags and used in &lt;s&gt;
+<div class="comment">Make it clear that symbols appear in angle brackets in 
+the input and the output of modules, but not in dictionaries?</div>
+<p>Other examples of symbols are <code>&lt;sg&gt</code>; singular, <code>&lt;p1&gt;</code>
+first person, <code>&lt;pri&gt;</code> present indicative etc. When written in
+angle brackets, the symbols may also be referred to as <em>tags</em>.
+Symbols are defined in <code>&lt;sdef&gt;</code> tags and used in <code>&lt;s&gt;</code>
 tags.</p>
-<p>The third word is <em>paradigm</em>. In the context of the Apertium
-system, 'paradigm' refers to a example of how a particular group of
-words inflect. In the morphological dictionary, lemmas (see above)
-are linked to paradigms which allows us to describe how a given
-lemma inflects without having to write out all of the endings.</p>
+<div class="comment">Should we warn the reader that symbol names in many of the available language
+pair packages are in Catalan?</div>
+<p>The third word is <em>paradigm</em>. In the context of the
+Apertium system, <em></em>paradigm</em> refers to a example of how a particular
+group of words inflect. In the morphological dictionary, lemmas
+(see above) are linked to paradigms which allows us to describe how
+a given lemma inflects without having to write out all of the
+endings.</p>
 <p>An example of the utility of this is, if we wanted to store the
-two adjectives 'happy' and 'lazy', instead of storing two lots of
+two adjectives <em>happy</em> and <em>lazy</em>, instead of storing two lots of
 the same thing:</p>
 <ul>
-<li>happy, happ (y, ier, iest)</li>
-<li>lazy, laz (y, ier, iest)</li>
+<li><em>happy</em>, <em>happ</em> (<em>y</em>, <em>ier</em>, <em>iest</em>)</li>
+<li><em>lazy</em>, <em>laz</em> (<em>y</em>, <em>ier</em>, <em>iest</em>)</li>
 </ul>
-<p>We can simply store one, and then say "lazy, inflects like
-happy", or indeed "shy inflects like happy", "naughty inflects like
-happy", "friendly inflects like happy" etc.. In 
-this example, happy would be the paradigm, the model for how the 
-others inflect. The precise description of how this is defined will 
-be explained shortly. Paradigms are defined in &lt;pardef&gt; tags, 
-and used in &lt;par&gt; tags.</p>
+<p>We can simply store one, and then say "<em>lazy</em>, inflects like
+<em>happy</em>", or indeed "<em>shy</em> inflects like <em>happy</em>", "<em>naughty</em> inflects like
+<em>happy</em>", "<em>friendly</em> inflects like <em>happy</em>" etc. In this example, happy
+would be the paradigm, the model for how the others inflect. The
+precise description of how this is defined will be explained
+shortly. Paradigms are defined in <code>&lt;pardef&gt;</code> tags, and used in
+<code>&lt;par&gt;</code> tags.</p>
 <h3>Getting started</h3>
 <h4>Monolingual dictionaries</h4>
 <p>Lets start by making our first source language dictionary. The
@@ -170,15 +191,15 @@ following:</p>
 &lt;dictionary&gt;<br />
 <br />
 &lt;/dictionary&gt;</tt></p>
-<p>Save the file as 'apertium-sh-en.sh.dix' with an ISO-8859-1
+<p>Save the file as <code>apertium-sh-en.sh.dix</code> with an ISO-8859-1
 encoding. A short note on encoding: currently (as of April 2007),
 Apertium only supports the ISO-8859-1 single byte encoding. There
 is work ongoing to port it to Unicode (indeed an experimental
-version of lttoolbox with UTF-8 support is available from SVN on
-the project site).</p>
+version of <code>lttoolbox</code> with UTF-8 support is available from the SVN repository on
+the Apertium project site).</p>
 <p>Note: It is important to have your locale set up correctly when
 writing/reading files, you can find out your current locale setting
-by doing <tt>echo $LANG</tt> from a shell.</p>
+by doing <code>echo $LANG</code> from a shell.</p>
 <p>So, the file so far defines that we want to start a dictionary.
 In order for it to be useful, we need to add some more entries, the
 first is an alphabet. This defines the set of letters that may be
@@ -190,18 +211,21 @@ Serbo-Croatian alphabet:</p>
 <p>However in our example, it will look like this:</p>
 <p>
 <tt>&lt;alphabet&gt;ABCDEFGHIJKLMNOPRSTUVZabcdefghijklmnoprstuvz&lt;/alphabet&gt;</tt></p>
-<p>The reason for this is that, as mentioned above, lttoolbox
-requires ISO-8859-1 encoding, and Č, Ć, Dž, Đ, Lj, Nj, Š, and Ž
-(along with their miniscule forms) are not found in this encoding.
+<p>The reason for this is that, as mentioned above, <code>lttoolbox</code>
+requires ISO-8859-1 encoding, and <em>Č</em>, <em>Ć</em>, <em>Dž</em>, <em>Đ</em>, 
+<em>Lj</em>, <em>Nj</em>, <em>Š</em>, and <em><em>Ž</em></em>
+(along with their minuscule forms) are not found in this encoding.
 Some languages have got round this by choosing other characters
 from ISO-8859-1 to represent the missing letters, and then
 transliterating. For example, using the character 'ç' (c with
 cedilla) to represent 'ć' (c with acute accent), or using 'ð' (eth)
 to represent 'đ' (d with stroke).</p>
+<div class="comment">I don't think <em>lj</em> and <em>nj</em> pose any problem, since they are not 
+special letters but digraphs. Are you really going to use these transliterations?</div>
 <p>Place the alphabet below the <tt>&lt;dictionary&gt;</tt>
 tag.</p>
 <p>Next we need to define some symbols. Lets start off with the
-simple stuff, noun (n) in singular (sg) and plural (pl).</p>
+simple stuff, noun (<code>n</code>) in singular (<code>sg</code>) and plural (<code>pl</code>).</p>
 <p><tt>&lt;sdefs&gt;<br />
 &nbsp;&nbsp; &lt;sdef n="n"/&gt;<br />
 &nbsp;&nbsp; &lt;sdef n="sg"/&gt;<br />
@@ -223,6 +247,11 @@ may be found at the end of this document).</p>
 <p><tt>&lt;section id="main" type="standard"&gt;<br />
 <br />
 &lt;/section&gt;<br /></tt></p>
+<div class="comment">Perhaps we should say that each <code>&lt;section&gt;</code> is a dictionary section with
+certain properties; for instance, a <code>standard</code> section contains words that will 
+only be segmented if the next character is out of the alphabet, whereas a <code>unconditional</code> section
+contains words that will be segmented regardless of the following character, etc. What is
+called "a section for mapping lemmas to paradigms" is simply a "dictionary section".</div>
 <p>So, our file should now look something like:</p>
 <p><tt>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;<br />
 &lt;dictionary&gt;<br />
@@ -262,45 +291,46 @@ n="pl"/&gt;&lt;/r&gt;<br />
 &nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br />
 &nbsp;&nbsp; &lt;/e&gt;<br />
 &lt;/pardef&gt;</tt></p>
-<p>Note: the '&lt;l/&gt;' denotes that there is no extra stem.</p>
+<p>Note: the '&lt;l/&gt;' (equivalent to &lt;l&gt;&lt;/l&gt;) 
+denotes that there is no extra material to be added to the stem for the singular.</p>
 <p>This may seem like a rather verbose way of describing it, but
 there are reasons for it and it quickly becomes second nature.
 You're probably wondering what the &lt;e&gt;, &lt;p&gt;, &lt;l&gt;
 and &lt;r&gt; stand for. Well,</p>
 <ul>
-<li>e, is for 'entry'.</li>
-<li>p, is for 'pair'.</li>
-<li>l, is for 'left'.</li>
-<li>r, is for 'right'.</li>
+<li><code>e</code>, is for <em>entry</em>.</li>
+<li><code>p</code>, is for <em>pair</em>.</li>
+<li><code>l</code>, is for <em>left</em>.</li>
+<li><code>r</code>, is for <em>right</em>.</li>
 </ul>
-<p>Why 'left' and 'right'? Well, the morphological dictionaries are
-implemented as finite state machines. Compiling them left to right
+<p>Why <em>left</em> and <em>right</em>? Well, the morphological dictionaries will later be compiled
+into finite state machines. Compiling them left to right
 produces analyses from words, and from right to left produces words
 from analyses. For example:</p>
 <ul>
-<li>gramofoni (left to right) gramofon&lt;n&gt;&lt;pl&gt;</li>
-<li>gramofon&lt;n&gt;&lt;pl&gt; (right to left) gramofoni</li>
+<li><code>gramofoni</code> (left to right) <code>gramofon&lt;n&gt;&lt;pl&gt;</code> (analysis)</li> 
+<li><code>gramofon&lt;n&gt;&lt;pl&gt;</code> (right to left) <code>gramofoni</code> (generation)</li>
 </ul>
 <p>Now we've defined a paradigm, we need to link it to its lemma,
-'gramofon'. We put this in the 'section' that we've defined.</p>
+<em>gramofon</em>. We put this in the <code>section</code> that we've defined.</p>
 <p>The entry to put in will look like:</p>
 <p><tt>&lt;e lm="gramofon"&gt;&lt;i&gt;gramofon&lt;/i&gt;&lt;par
 n="gramofon__n"/&gt;&lt;/e&gt;</tt></p>
 <p>A quick run down on the abbreviations:</p>
 <ul>
-<li>lm, is for 'lemma'.</li>
-<li>i, is for ' '.</li>
-<li>par, is for 'paradigm'.</li>
+<li><code>lm</code>, is for <em>lemma</em>.</li>
+<li><code>i</code>, is for <em>identity</em> (the left and the right are the same).</li>
+<li><code>par</code>, is for <em>paradigm</em>.</li>
 </ul>
-<p>This entry states the lemma of the word, 'gramofon', the root,
-'gramofon' and the paradigm with which it inflects 'gramofon__n'.
+<p>This entry states the lemma of the word, <code>gramofon</code>, the root,
+<code>gramofon</code> and the paradigm with which it inflects <code>gramofon__n</code>.
 The difference between the lemma and the root is that the lemma is
 the citation form of the word, while the root is the substring of
 the lemma to which stems are added. This will become clearer later
 when we show an entry where the two are different.</p>
 <p>We're now ready to test the dictionary. Save it, and then return
-to the shell. We first need to compile it (with lt-comp), then we
-can test it (with lt-proc).</p>
+to the shell. We first need to compile it (with <code>lt-comp</code>), then we
+can test it (with <code>lt-proc</code>).</p>
 <pre>
 $ lt-comp lr apertium-sh-en.sh.dix sh-en.automorf.bin
 </pre>
@@ -309,32 +339,37 @@ $ lt-comp lr apertium-sh-en.sh.dix sh-en.automorf.bin
 main@standard 12 12
 </pre>
 <p>As we are compiling it left to right, we're producing an
-analyser. Lets make a generator too.</p>
+<em>analyser</em>. Lets make a <em>generator</em> too.</p>
 <pre>
 $ lt-comp rl apertium-sh-en.sh.dix sh-en.autogen.bin
 </pre>
 <p>The same output should be produced.</p>
-<p>We can now test these. Run lt-proc on the analyser.</p>
+<div class="comment">Not necessarily true for the examples below in which you 
+equate <em>gramofoni</em> (nominative) and <em>gramophone</em> (accusative); when generating, you should decide which one...
+</div>
+<p>We can now test these. Run <code>lt-proc</code> on the analyser.</p>
 <pre>
 $ lt-proc sh-en.automorf.bin
 </pre>
-<p>Now try it out, type in 'gramofoni', 'gramophones', and see the
+<p>Now try it out, type in <code>gramofoni</code> (<em>gramophones</em>), and see the
 output:</p>
 <pre>
 ^gramofoni/gramofon&lt;n&gt;&lt;pl&gt;$
 </pre>
 <p>Now, for the English dictionary, do the same thing, but
-substitute the English word 'gramophone' for 'gramofon'. What if
+substitute the English word <em>gramophone</em> for <em>gramofon</em>. What if
 you want to use the more correct word 'record player', well, we'll
 explain how to do that later.</p>
+<div class="comment">Check</div>
 <p>You should now have two files in the directory:</p>
 <ul>
-<li>apertium-sh-en.sh.dix which contains a (very) basic
+<li><code>apertium-sh-en.sh.dix</code> which contains a (very) basic
 Serbo-Croatian morphological dictionary, and</li>
-<li>apertium-sh-en.en.dix which contains a (very) basic English
+<li><code>apertium-sh-en.en.dix</code> which contains a (very) basic English
 morphological dictionary.</li>
 </ul>
-<p>There may be some .bin files, you can delete them for now.</p>
+<p>There may be some <code>.bin</code> files, you can delete them for now.</p>
+<div class="comment">???</div>
 <h4>Bilingual dictionary</h4>
 <p>So we now have two morphological dictionaries, next thing to
 make is the bilingual dictionary. This describes mappings between
@@ -383,11 +418,11 @@ morphological generators (autogen) and the word lookups
 <p>So, now we have two morphological dictionaries, and a bilingual
 dictionary. All that we need now is a transfer rule for nouns.
 Transfer rule files have their own DTD (transfer.dtd) which can be
-found in the Apertium package. If you need to implement a rule
-it is often a good idea to look in the rule files of other language
+found in the Apertium package. If you need to implement a rule it
+is often a good idea to look in the rule files of other language
 pairs first. Many rules can be recycled/reused between languages.
-For example the one described below would be useful for any null-subject
-language.</p>
+For example the one described below would be useful for any
+null-subject language.</p>
 <p>Start out like all the others with a basic skeleton:</p>
 <p><tt>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;<br />
 &lt;transfer&gt;<br />
