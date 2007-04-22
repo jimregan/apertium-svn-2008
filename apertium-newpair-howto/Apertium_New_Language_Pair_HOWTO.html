@@ -77,13 +77,23 @@ of the Apertium website.</p>
 <h3>What does a language pair consist of?</h3>
 <p>The Apertium machine translation system is of the
 shallow-transfer type, this basically means it works on
-dictionaries and shallow transfer rules. On a basic level, there
-are three main dictionaries:</p>
+dictionaries and shallow transfer rules. Shallow transfer
+is distinguished from "deep transfer" in that it doesn't do
+full syntactic parsing, the rules are typically operations on
+groups of lexical units, rather than operations on parse trees.
+On a basic level, there are three main dictionaries:</p>
+<!--
 <div class="comment">Perhaps it would be a good idea to try to
-explain what "deep transfer" would mean (full syntactic parsing
-with rules specifying operations on parse [sub]trees, etc.) so that
-the readers get an idea of what "shallow" would mean.</div>
-<ul>
+explain what "deep transfer" would mean (full syntactic parsing with rules specifying
+operations on parse [sub]trees, etc.)
+so that the readers get an idea of what "shallow" would mean.</div>
+
+  :: I added something above, but it is difficult (for me) to
+     explain without using terminology that the readers would
+     be unfamiliar with. If it can be refined great, if not
+     I'm not sure... ~fran
+-->
+
 <li><b>The morphological dictionary for language <em>xx</em></b>:
 this contains the rules of how words in language <em>xx</em> are
 inflected. In our example this will be called:
@@ -97,16 +107,18 @@ words and symbols in the two languages. In our example this will be
 called: <code>apertium-sh-en.sh-en.dix</code></li>
 </ul>
 <p>In a translation pair, both languages can be either source or
-target for translation. So, in our example we will typically refer
-to language <em>xx</em> as the 'source' and language <em>yy</em> as
-the 'target'. It is worth remembering that these can be
-reversed.</p>
-<div class="comment">Not that <em>xx</em> and <em>yy</em> are being
-used, why cannot we use these instead of sh and en (for the initial
-examples discussion)? Also, I would advocate for using
-<em>source</em> and <em>target</em> as <em>relative</em> terms;
-this was the initial motivation for using <em>xx</em> and
-<em>yy</em>.</div>
+target for translation, these are relative terms.
+<!--
+<div class="comment">Not that <em>xx</em> and <em>yy</em> are being used, why cannot
+we use these instead of sh and en (for the initial examples discussion)? Also,
+I would advocate for using <em>source</em> and <em>target</em> as <em>relative</em>
+terms; this was the initial motivation for using <em>xx</em> and <em>yy</em>.</div>
+
+  :: About the filenames: I wanted to give a concrete example. Regarding
+     the source/target, you're right, I've removed the 'typically we will
+     use' part. ~fran
+-->
+
 <p>There are also two files for transfer rules. These are the rules
 which govern how words are re-ordered in sentences, e.g. <cite>chat
 noir</cite> -&gt; <cite>cat black</cite> -&gt; <cite>black
@@ -123,8 +135,16 @@ rules</b>: this file contains rules for how language <em>yy</em>
 will be changed into language <em>xx</em>. In our example this will
 be: <code>apertium-sh-en.trules-en-sh.xml</code></li>
 </ul>
-<div class="comment">Perhaps one should note that this is Apertium
-"level 1".</div>
+<!--
+<div class="comment">Perhaps one should note that this
+is Apertium "level 1".</div>
+
+   :: I need to note the version, but I think I'll re-do the
+      examples etc. from an Apertium 2 point of view. I remember
+      using HOWTOs before and being annoyed that they were out of
+      date! ~fran
+-->
+
 <p>Many of the language pairs currently available have other files,
 but we won't cover them here. These files are the only ones
 required to generate a functional system.</p>
@@ -136,9 +156,14 @@ works better for more closely related languages, and furthermore it
 does not currently support the full Serbo-Croatian alphabet, but
 that shouldn't present a problem for the simple examples we'll have
 here.</p>
-<div class="comment">We can remove the sentence "As may have been
-alluded..." if we use <em>xx</em> and <em>yy</em> for the examples
-up to here.</div>
+<!--
+<div class="comment">We can remove the sentence "As may have been alluded..." if we use <em>xx</em>
+and <em>yy</em> for the examples up to here.</div>
+
+    :: I reckon its alright, and good to give concrete examples,
+       although this may get removed when i do a re-write ~fran
+-->
+
 <h3>A brief note on terms</h3>
 <p>There are number of terms that will need to be understood before
 we continue.</p>
@@ -150,25 +175,36 @@ in question. For verbs, the lemma is the infinitive stripped of
 <em>to</em>, e.g. the lemma of <em>was</em> would be
 <em>be</em>.</p>
 <p>The second is <em>symbol</em>. In the context of the Apertium
-system, <em>symbol</em> refers to a grammatical label. The word
-<cite>cats</cite> is a plural noun, therefore it will have the
-<em>noun</em> symbol and the <em>plural</em> symbol. In Apertium
-these are typically written between angle brackets, as so:</p>
+system, <em>symbol</em> refers to a grammatical label. The word <cite>cats</cite> is
+a plural noun, therefore it will have the <em>noun</em> symbol and the
+<em>plural</em> symbol. In the input and output of Apertium modules these are
+typically given between angle brackets, as follows:</p>
 <ul>
 <li><code>&lt;n&gt;</code> for noun.</li>
-<li><code>&lt;pl&gt;</code>; for plural.</li>
+<li><code>&lt;pl&gt</code>; for plural.</li>
 </ul>
-<div class="comment">Make it clear that symbols appear in angle
-brackets in the input and the output of modules, but not in
-dictionaries?</div>
-<p>Other examples of symbols are <code>&lt;sg&gt;</code>; singular,
-<code>&lt;p1&gt;</code> first person, <code>&lt;pri&gt;</code>
-present indicative etc. When written in angle brackets, the symbols
-may also be referred to as <em>tags</em>. Symbols are defined in
-<code>&lt;sdef&gt;</code> tags and used in <code>&lt;s&gt;</code>
-tags.</p>
-<div class="comment">Should we warn the reader that symbol names in
-many of the available language pair packages are in Catalan?</div>
+<!--
+<div class="comment">Make it clear that symbols appear in angle brackets in
+the input and the output of modules, but not in dictionaries?</div>
+
+    :: Good point, done. Feel free to rephrase. ~fran
+-->
+
+<p>Other examples of symbols are <code>&lt;sg&gt;</code>; singular, <code>&lt;p1&gt;</code>
+first person, <code>&lt;pri&gt;</code> present indicative etc. When written in
+angle brackets, the symbols may also be referred to as <em>tags</em>. It is worth
+noting that in many of the currently available language pairs the symbol definitions
+are acronyms or contractions of words in Catalan. For example, <em>vbhaver</em>
+&mdash; from <em>vb</em> (verb) and <em>haver</em> ("to have" in Catalan).
+Symbols are defined in <code>&lt;sdef&gt;</code> tags and used in <code>&lt;s&gt;</code>
+tags. </p>
+<!--
+<div class="comment">Should we warn the reader that symbol names in many of the available language
+pair packages are in Catalan?</div>
+
+    :: Good idea, done. Feel free to rephrase. ~fran
+-->
+
 <p>The third word is <em>paradigm</em>. In the context of the
 Apertium system, paradigm refers to a example of how a particular
 group of words inflect. In the morphological dictionary, lemmas
@@ -232,10 +268,17 @@ have got round this by choosing other characters from ISO-8859-1 to
 represent the missing letters, and then transliterating. For
 example, using the character 'ç' (c with cedilla) to represent 'ć'
 (c with acute accent), or using 'ð' (eth) to represent 'đ' (d with
-stroke).</p>
-<div class="comment">I don't think <em>lj</em> and <em>nj</em> pose
-any problem, since they are not special letters but digraphs. Are
-you really going to use these transliterations?</div>
+stroke). We will not be using this method, although an example of 
+its use may be found in the Romanian-Spanish translation pair.</p>
+<!--
+<div class="comment">I don't think <em>lj</em> and <em>nj</em> pose any problem, since they are not
+special letters but digraphs. Are you really going to use these transliterations?</div>
+
+  :: lj and nj can be written as both digraphs (or, more 'properly' as
+     paired characters, like æ - note that we won't use them  or the
+     transliterations. ~fran
+-->
+
 <p>Place the alphabet below the <tt>&lt;dictionary&gt;</tt>
 tag.</p>
 <p>Next we need to define some symbols. Lets start off with the
@@ -258,18 +301,27 @@ may be found at the end of this document).</p>
 <p><tt>&lt;pardefs&gt;<br />
 <br />
 &lt;/pardefs&gt;<br /></tt></p>
-<p>and a section for mapping lemmas to paradigms:</p>
+<p>and a dictionary section:</p>
 <p><tt>&lt;section id="main" type="standard"&gt;<br />
 <br />
 &lt;/section&gt;<br /></tt></p>
-<div class="comment">Perhaps we should say that each
-<code>&lt;section&gt;</code> is a dictionary section with certain
-properties; for instance, a <code>standard</code> section contains
-words that will only be segmented if the next character is out of
-the alphabet, whereas a <code>unconditional</code> section contains
-words that will be segmented regardless of the following character,
-etc. What is called "a section for mapping lemmas to paradigms" is
-simply a "dictionary section".</div>
+<p>
+There are two types of sections, the first is a <code>standard</code>
+section, which contains words, enclitics etc. The second type is an
+<code>inconditional</code> section which typically contains
+punctuation etc. We don't have an inconditional section here, although
+it will be demonstrated later.
+</p>
+<!--
+<div class="comment">Perhaps we should say that each <code>&lt;section&gt;</code> is a dictionary section withcertain properties; for instance, a <code>standard</code> section contains words that will
+only be segmented if the next character is out of the alphabet, whereas a <code>unconditional</code> section
+contains words that will be segmented regardless of the following character, etc. What is
+called "a section for mapping lemmas to paradigms" is simply a "dictionary section".</div>
+
+  :: we should include an example of 'splitting up' / i'm not
+     quite sure how this works. ~fran
+
+-->
 <p>So, our file should now look something like:</p>
 <p><tt>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;<br />
 &lt;dictionary&gt;<br />
@@ -368,11 +420,16 @@ main@standard 12 12
 <pre>
 $ lt-comp rl apertium-sh-en.sh.dix sh-en.autogen.bin
 </pre>
-<p>The same output should be produced.</p>
-<div class="comment">Not necessarily true for the examples below in
-which you equate <em>gramofoni</em> (nominative) and
-<em>gramophone</em> (accusative); when generating, you should
-decide which one...</div>
+<p>At this stage, the command should produce the same output.</p>
+<!--
+<div class="comment">Not necessarily true for the examples below in which you
+equate <em>gramofoni</em> (nominative) and <em>gramophone</em> (accusative); when generating, you should decide which one...
+</div>
+
+  :: at the moment we're not dealing with generating serbo-croatian, and
+     the 'output' refers to the 'main@standard 12 12' part. I've clarified this
+     somewhat ~fran
+-->
 <p>We can now test these. Run <code>lt-proc</code> on the
 analyser.</p>
 <pre>
@@ -384,10 +441,15 @@ $ lt-proc sh-en.automorf.bin
 ^gramofoni/gramofon&lt;n&gt;&lt;pl&gt;$
 </pre>
 <p>Now, for the English dictionary, do the same thing, but
-substitute the English word <em>gramophone</em> for
-<em>gramofon</em>. What if you want to use the more correct word
-'record player', well, we'll explain how to do that later.</p>
+substitute the English word <em>gramophone</em> for <em>gramofon</em>, and
+change the plural inflection. What if you want to use the more correct
+word 'record player', well, we'll explain how to do that later.</p>
+<!--
 <div class="comment">Check</div>
+
+  :: I added that they should change the plural inflection (i -> s),
+     what this what the check referred to ? ~fran
+-->
 <p>You should now have two files in the directory:</p>
 <ul>
 <li><code>apertium-sh-en.sh.dix</code> which contains a (very)
@@ -395,9 +457,6 @@ basic Serbo-Croatian morphological dictionary, and</li>
 <li><code>apertium-sh-en.en.dix</code> which contains a (very)
 basic English morphological dictionary.</li>
 </ul>
-<p>There may be some <code>.bin</code> files, you can delete them
-for now.</p>
-<div class="comment">???</div>
 <h4>Bilingual dictionary</h4>
 <p>So we now have two morphological dictionaries, next thing to
 make is the bilingual dictionary. This describes mappings between
@@ -423,8 +482,12 @@ two words. Something like:</p>
 <p><tt>&lt;e&gt;&lt;p&gt;&lt;l&gt;gramofon&lt;s
 n="n"/&gt;&lt;/l&gt;&lt;r&gt;gramophone&lt;s
 n="n"/&gt;&lt;/r&gt;&lt;/p&gt;&lt;/e&gt;</tt></p>
+<!--
 <div class="comment">Some of this could be done with
 &lt;i&gt;</div>
+  
+  :: How do you mean? ~fran
+-->
 <p>Because there are a lot of these entries, they're typically
 written on one line to facilitate easier reading of the file. Again
 with the '<code>l</code>' and '<code>r</code>' right? Well, we
@@ -444,10 +507,16 @@ $ lt-comp rl apertium-sh-en.sh-en.dix en-sh.autobil.bin
 </pre>
 <p>To generate the morphological analysers (<code>automorf</code>),
 the morphological generators (<code>autogen</code>) and the word
-lookups (<code>autobil</code>).</p>
+lookups (<code>autobil</code>), the <em>bil</em> is for "bilingual".</p>
+<!--
 <div class="comment">These three names come from interNOSTRUM but I
 am not sure I like them much... unfortunately, they are used all
 over...</div>
+
+   :: Aye, they're a bit cryptic, but a lot of the stuff is,
+      when you know what they mean, or where they come from 
+      it makes more sense. ~fran
+-->
 <h3>Transfer rules</h3>
 <p>So, now we have two morphological dictionaries, and a bilingual
 dictionary. All that we need now is a transfer rule for nouns.
@@ -488,8 +557,13 @@ Something like the following will suffice:</p>
 &lt;/def-cat&gt;</tt></p>
 <p>This catches all nouns (lemmas followed by &lt;n&gt; then
 anything) and refers to them as "<code>nom</code>" (we'll see how
-thats used later).</p>
+thats used later). </p>
+<!--
 <div class="comment">Catalan names again</div>
+
+    :: I think its fine for now, we note that the 
+       names are fairly arbitrary. ~fran
+-->
 <p>Into the section <code>section-def-attr</code>s, add:</p>
 <p><tt>&lt;def-attr n="nbr"&gt;<br />
 &nbsp;&nbsp; &lt;attr-item tags="sg"/&gt;<br />
@@ -508,15 +582,22 @@ can be either singular (<code>sg</code>) or plural
 <p><tt>&lt;section-def-vars&gt;<br />
 <br />
 &lt;/section-def-vars&gt;</tt></p>
-<p>These variables are used to transfer attributes between rules.
-We need only one for now,</p>
+<p>These variables are used to store or transfer attributes 
+between rules. We need only one for now,</p>
 <pre>
 &lt;def-var n="number"/&gt;
 </pre>
+<!--
 <div class="comment">Perhaps we should be more specific and say
 that these are <em>state</em> variables which may be used to
 propagate information computed in a certain application of a rule,
 to later applications of the same or other rules.</div>
+
+    :: Hmm, I think this is getting a bit complicated. Although
+       it would be good to give a concrete example of where
+       they are used. But I haven't used these yet. I'll dig
+       around in the manual. ~fran
+-->
 <p>Finally, we need to add a rule, to take in the noun and then
 output it in the correct form. We'll need a rules section...</p>
 <p><tt>&lt;section-rules&gt;<br />
@@ -553,10 +634,14 @@ rules, the first catches "&lt;prn&gt;&lt;vblex&gt;&lt;n&gt;", the
 second catches "&lt;prn&gt;&lt;vblex&gt;" and the third catches
 "&lt;n&gt;", the pattern matched, and rule executed will be the
 first.</p>
+<!--
 <div class="comment">I would rather use an example in which rules
 match whole lexical units, because that is the way the transfer
 works. One cannot write patterns matching parts of lexical units,
 as far as I know</div>
+
+    :: Not sure I understand, could you re-write this part? ~fran
+-->
 <p>For each pattern, there is an associated action, which produces
 an associated output, <code>out</code>. The output, is a lexical
 unit (<code>lu</code>).</p>
@@ -579,20 +664,26 @@ is:</p>
 $ echo "gramofoni" | lt-proc sh-en.automorf.bin 
 ^gramofon/gramofon&lt;n&gt;&lt;pl&gt;$
 </pre>
-<p>Now, normally here the PoS tagger would choose the right version
+<p>Now, normally here the POS tagger would choose the right version
 based on the part of speech, but we don't have a POS tagger yet, so
 we can use this little perl script that will just output the first
 item retrieved.</p>
+<!--
 <div class="comment">I am not sure the reader would understand what
 <em>version</em> means here unless we have an example in which the
 morphological analyser derives more than one lexical form for a
 given source form... Perhaps we should explain that, and give an
 example...</div>
+
+    :: Good idea. I'll try and work an example in. ~fran
+
+-->
 <pre>
 $ echo "gramofoni" | lt-proc sh-en.automorf.bin | \
   perl -ne 's,^([^/]*/)(.*)$,\^\2,; s,^(.*\$\s\^)[^/]+/(.*)$,\1\2,; print' | \
 ^gramofon&lt;n&gt;&lt;pl&gt;$
 </pre>
+<!--
 <div class="comment">We are writing the pipelines ourselves, but
 Apertium uses <code>modes.xml</code> file to control this; perhaps
 a later version of this howto can explain how to write
@@ -600,6 +691,10 @@ a later version of this howto can explain how to write
 <code>apertium-en-ca</code>, you will see that the
 <code>modes.xml</code> file contains many modes, to use parts of
 the pipeline for diagnostics and testsing.</div>
+
+    :: I'll add something on modes.xml at the end. ~fran
+
+-->
 <p>Now let's process that with the transfer rule:</p>
 <pre>
 $ echo "gramofoni" | lt-proc sh-en.automorf.bin | \
@@ -633,11 +728,17 @@ $ echo "gramofoni" | lt-proc sh-en.automorf.bin | \
 
 gramophones\@
 </pre>
+<!--
 <div class="comment">What is the "\@"?</div>
+
+    :: I think it is as a result of not having any
+       punctuation defined. ~fran
+-->
 <p>And c'est ca. You now have a machine translation system that
 translates a Serbo-Croatian noun into an English noun. Obviously
 this isn't very useful, but we'll get onto the more complex stuff
-soon.</p>
+soon. Oh, and don't worry about the '@' symbol, I'll explain that
+soon too.</p>
 <p>Think of a few other words that inflect the same as gramofon.
 How about adding those. We don't need to add any paradigms, just
 the entries in the main section of the monolingual and bilingual
@@ -687,7 +788,9 @@ add the case information for now though, we just add it as another
 option for plural. So, just copy the '<code>e</code>' block for
 '<code>i</code>' and change the '<code>i</code>' to
 '<code>e</code>' there.</p>
+<!--
 <div class="comment">Mikel's comments so far end here.</div>
+-->
 <p>First thing we need to do is add some more symbols. We need to
 first add a symbol for 'verb', which we'll call "vblex" (this means
 lexical verb, as opposed to modal verbs and other types). Verbs
