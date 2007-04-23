@@ -10,3 +10,9 @@ apertium-en-af.en.dix           -- English morphological dictionary
 apertium-en-af.trules-af-en.xml -- Transfer rules for Afrikaans-English translation
 apertium-en-af.trules-en-af.xml -- Transfer rules for English-Afrikaans translation
 
+
+==Pipeline==
+
+===af -> en===
+
+apertium-destxt | lt-proc af-en.automorf.bin | apertium-pretransfer |  apertium-tagger --tagger ../apertium-en-de/de-en.prob | apertium-transfer trules-af-en.xml trules-af-en.bin af-en.autobil.bin | lt-proc -g af-en.autogen.bin | apertium-retxt
