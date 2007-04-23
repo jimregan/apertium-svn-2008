@@ -278,10 +278,10 @@ void
 Tagger::tagger()
 {
   FILE *ftdata = fopen(filenames[0].c_str(), "r");
-  if(ferror(ftdata))
-  {
+  if (!ftdata) {
     filerror(filenames[0]);
   }
+
   TaggerData td;
   td.read(ftdata);
   fclose(ftdata);
@@ -295,8 +295,7 @@ Tagger::tagger()
   else
   {
     FILE *finput = fopen(filenames[1].c_str(), "r");
-    if(ferror(finput))
-    {
+    if (!finput) {
       filerror(filenames[1]);
     }
     if(filenames.size() == 2)
@@ -306,10 +305,10 @@ Tagger::tagger()
     else
     {
       FILE *foutput = fopen(filenames[2].c_str(), "w");
-      if(ferror(foutput))
-      {
+      if (!foutput) {
         filerror(filenames[2]);
       }
+
       hmm.tagger(finput, foutput);
       fclose(foutput);
     }
@@ -320,7 +319,7 @@ Tagger::tagger()
 void
 Tagger::filerror(string const &filename)
 {
-  cerr << "Error: cannot open dictionary file '" << filenames[0] << "'\n";
+  cerr << "Error: cannot open file '" << filenames[0] << "'\n\n";
   help();
 }
 
@@ -336,7 +335,7 @@ Tagger::train()
   
   cerr << "Calculating ambiguity classes...\n";
   FILE *fdic = fopen(filenames[0].c_str(), "r");
-  if(!ferror(fdic))
+  if(fdic)
   {
     hmm.read_dictionary(fdic);
   }
@@ -346,7 +345,7 @@ Tagger::train()
   }
   cerr << "Kupiec's initialization of transition and emission probabilities...\n";
   FILE *fcrp = fopen(filenames[1].c_str(), "r");
-  if(!ferror(fcrp))
+  if(fcrp)
   {
     hmm.init_probabilities_kupiec(fcrp);               
   }
@@ -384,7 +383,7 @@ Tagger::trainSupervised()
   
   cerr << "Calculating ambiguity classes...\n";
   FILE *fdic = fopen(filenames[0].c_str(), "r");
-  if(!ferror(fdic))
+  if(fdic)
   {
     hmm.read_dictionary(fdic);
   }
@@ -395,7 +394,7 @@ Tagger::trainSupervised()
   cerr << "Kupiec's initialization of transition and emission probabilities...\n";
   FILE *ftagged = fopen(filenames[4].c_str(), "r");
   FILE *funtagged = fopen(filenames[5].c_str(), "r");
-  if(!ferror(ftagged) && !ferror(funtagged))
+  if(ftagged && funtagged)
   {
     cerr << "Initializing transition and emission probabilities from a hand-tagged corpus...\n";
     hmm.init_probabilities_from_tagged_text(ftagged, funtagged);
@@ -412,7 +411,7 @@ Tagger::trainSupervised()
   
   cerr << "Training (Baum-Welch)...\n";
   FILE *fcrp = fopen(filenames[1].c_str(), "r");
-  if(!ferror(fcrp))
+  if(fcrp)
   {
     for(int i=0; i != nit; i++)
     {
@@ -437,7 +436,7 @@ Tagger::retrain()
 {
   TaggerData td;
   FILE *ftdata = fopen(filenames[1].c_str(), "r");
-  if(ferror(ftdata))
+  if(!ftdata)
   {
     filerror(filenames[1]);
   }
@@ -450,7 +449,7 @@ Tagger::retrain()
   TaggerWord::setArrayTags(td.getArrayTags());
 
   FILE *fcrp = fopen(filenames[0].c_str(), "r");
-  if(ferror(fcrp))
+  if(!fcrp)
   {
     filerror(filenames[0]);
   }
@@ -465,7 +464,7 @@ Tagger::retrain()
   fclose(fcrp);
 
   ftdata = fopen(filenames[1].c_str(), "w");
-  if(ferror(ftdata))
+  if(!ftdata)
   {
     filerror(filenames[1]);
   }
