@@ -49,17 +49,15 @@
     <sdef n="adv"/>	<!-- adverb -->
 
     <sdef n="adj"/>
+    <sdef n="sint"/>
     <sdef n="sup"/>
     <sdef n="comp"/>
-
-    <sdef n="nom"/>
-    <sdef n="acc"/>
-    <sdef n="dat"/>
-    <sdef n="gen"/>
 
     <sdef n="vbser"/> 	<!-- the verb 'to be' -->
     <sdef n="vbhaver"/>	<!-- the verb 'to have' -->
     <sdef n="vblex"/>   <!-- all other regular verbs -->
+    <sdef n="vbmod"/>	<!-- modal verb -->
+    <sdef n="vaux"/>	<!-- auxiliary verb -->
 
     <sdef n="p1"/> 	<!-- first person -->
     <sdef n="p2"/> 	<!-- second person -->
@@ -68,6 +66,7 @@
     <sdef n="pres"/> 	<!-- present tense -->
     <sdef n="pri"/>	<!-- present indicative -->
     <sdef n="past"/>	<!-- past tense (preterite) -->
+    <sdef n="inf"/>	<!-- infinitive -->
   </sdefs>
 
   <pardefs>
@@ -246,6 +245,14 @@
       </e>
     </pardef>
 
+    <pardef n="elke__det">
+      <e>
+        <p>
+          <l/>
+	  <r><s n="det"/><s n="ind"/><s n="sg"/></r>
+	</p>
+      </e>
+    </pardef>
 
     <!-- Adverbs -->
 
@@ -286,6 +293,26 @@
         <p>
 	  <l>utste</l>
 	  <r>ut<s n="adj"/><s n="sup"/></r>
+	</p>
+      </e>
+    </pardef>
+    <pardef n="/goed__adj">
+      <e>
+        <p>
+	  <l>goed</l>
+	  <r>goed<s n="adj"/><s n="sint"/></r>
+	</p>
+      </e>
+      <e>
+        <p>
+	  <l>beter</l>
+	  <r>goed<s n="adj"/><s n="sint"/><s n="comp"/></r>
+	</p>
+      </e>
+      <e>
+        <p>
+	  <l>beste</l>
+	  <r>goed<s n="adj"/><s n="sint"/><s n="sup"/></r>
 	</p>
       </e>
     </pardef>
@@ -376,7 +403,7 @@
       </e>
       <e>
         <p>
-          <l>ae</l>
+          <l>e</l>
 	  <r>ag<s n="n"/><s n="pl"/></r>
 	</p>
       </e>
@@ -790,6 +817,31 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="k/an__vbmod">
+      <e>
+        <p>
+          <l>an</l>
+          <r>an<s n="vaux"/><s n="pres"/></r>
+        </p>
+      </e>
+
+      <e r="RL">
+        <p>
+          <l>an</l>
+          <r>an<s n="vaux"/><s n="inf"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>ou</l>
+          <r>an<s n="vaux"/><s n="past"/></r>
+        </p>
+      </e>
+
+</pardef>
+
   </pardefs>
 
   <section id="main" type="standard">
@@ -800,6 +852,7 @@
     <e lm="'n"><i>'n</i><par n="'n__det"/></e>
 
     <e lm="ander"><i>ander</i><par n="ander__det"/></e>
+    <e lm="elke"><i>elke</i><par n="elke__det"/></e>
 
     <e lm="baie"><i>baie</i><par n="baie__det"/></e>
 
@@ -813,12 +866,14 @@
     <e lm="in"><i>in</i><par n="met__pr"/></e>
     <e lm="deur"><i>deur</i><par n="met__pr"/></e>
     <e lm="vir"><i>vir</i><par n="met__pr"/></e>
+    <e lm="op"><i>op</i><par n="met__pr"/></e>
 
     <e lm="en"><i>en</i><par n="en__cnjcoo"/></e>
     <e lm="nietemin"><i>nietemin</i><par n="en__cnjcoo"/></e>
     <e lm="of"><i>of</i><par n="en__cnjcoo"/></e>
 
     <e lm="want"><i>want</i><par n="want__cnjadv"/></e>
+    <e lm="siende dat"><i>siende<b/>dat</i><par n="want__cnjadv"/></e>
 
 
     <e lm="een"><i>een</i><par n="een__num"/></e>
@@ -835,6 +890,7 @@
     <e lm="omtrent"><i>omtrent</i><par n="miskien__adv"/></e>
     <e lm="merendeels"><i>merendeels</i><par n="miskien__adv"/></e>
     <e lm="nie"><i>nie</i><par n="miskien__adv"/></e>
+    <e lm="ook"><i>ook</i><par n="miskien__adv"/></e>
 
     <e lm="in totaal"><i>in<b/>totaal</i><par n="miskien__adv"/></e>
     <e lm="in die aand"><i>in<b/>die<b/>aand</i><par n="miskien__adv"/></e>
@@ -850,6 +906,7 @@
     <e lm="stad"><i>st</i><par n="hoofst/ad__n"/></e>
     <e lm="projekt"><i>projekt</i><par n="bier__n"/></e>
     <e lm="mens"><i>mens</i><par n="bier__n"/></e>
+    <e lm="klomp"><i>klomp</i><par n="bier__n"/></e>
 
     <e lm="lys"><i>lys</i><par n="lys__n"/></e>
 
@@ -860,6 +917,9 @@
     <e lm="provinsie"><i>provinsie</i><par n="artikel__n"/></e>
     <e lm="museum"><i>museum</i><par n="artikel__n"/></e>
     <e lm="programmeerder"><i>programmeerder</i><par n="artikel__n"/></e>
+    <e lm="kletskamer"><i>kletskamer</i><par n="artikel__n"/></e>
+    <e lm="ontwikkelaar"><i>ontwikkelaar</i><par n="artikel__n"/></e>
+    <e lm="idee"><i>idee</i><par n="artikel__n"/></e>
 
     <e lm="taal"><i>ta</i><par n="ta/al__n"/></e>
 
@@ -877,6 +937,9 @@
     <e lm="telefoonkode"><i>telefoonkode</i><par n="artikel__n"/></e>
     <e lm="groep"><i>groep</i><par n="bier__n"/></e>
     <e lm="aand"><i>aand</i><par n="bier__n"/></e>
+
+    <e lm="naweek"><i>nawe</i><par n="stre/ek__n"/></e>
+    
 
     <e lm="DNA"><i>DNA</i><par n="DNA__n"/></e>
     <e lm="BBP"><i>BBP</i><par n="DNA__n"/></e>
@@ -979,8 +1042,10 @@
     <e lm="verskillende"><i>verskillende</i><par n="noordelike__adj"/></e>
 
     <e lm="nuut"><i>nu</i><par n="nu/ut__adj"/></e>
+    <e lm="goed"><i/><par n="/goed__adj"/></e>
 
     <e lm="Engels"><i>Engels</i><par n="noordelike__adj"/></e>
+    <e lm="Afrikaanse"><i>Afrikaanse</i><par n="noordelike__adj"/></e>
 
     <!-- Verbs -->
     <e lm="hê"><i>h</i><par n="h/ê__vbhaver"/></e>
@@ -989,7 +1054,91 @@
     <e lm="vasmaak"><i>breek</i><par n="breek__vblex"/></e>
     <e lm="leer"><i>leer</i><par n="breek__vblex"/></e>
 
+    <!-- Unchecked Verbs -->
 
+    <e lm="aanvaar"><i>aanvaar</i><par n="breek__vblex"/></e>
+    <e lm="laat"><i>laat</i><par n="breek__vblex"/></e>
+    <e lm="vra"><i>vra</i><par n="breek__vblex"/></e>
+    <e lm="glo"><i>glo</i><par n="breek__vblex"/></e>
+    <e lm="leen"><i>leen</i><par n="breek__vblex"/></e>
+    <e lm="pouse"><i>pouse</i><par n="breek__vblex"/></e>
+    <e lm="bring"><i>bring</i><par n="breek__vblex"/></e>
+    <e lm="koop"><i>koop</i><par n="breek__vblex"/></e>
+    <e lm="kanselleer"><i>kanselleer</i><par n="breek__vblex"/></e>
+    <e lm="verander"><i>verander</i><par n="breek__vblex"/></e>
+    <e lm="suiwer"><i>suiwer</i><par n="breek__vblex"/></e>
+    <e lm="kam"><i>kam</i><par n="breek__vblex"/></e>
+    <e lm="kla"><i>kla</i><par n="breek__vblex"/></e>
+    <e lm="hoes"><i>hoes</i><par n="breek__vblex"/></e>
+    <e lm="tel"><i>tel</i><par n="breek__vblex"/></e>
+    <e lm="afskakel"><i>afskakel</i><par n="breek__vblex"/></e>
+    <e lm="dans"><i>dans</i><par n="breek__vblex"/></e>
+    <e lm="gelykheid"><i>gelykheid</i><par n="breek__vblex"/></e>
+    <e lm="suip"><i>suip</i><par n="breek__vblex"/></e>
+    <e lm="dryf"><i>dryf</i><par n="breek__vblex"/></e>
+    <e lm="eet"><i>eet</i><par n="breek__vblex"/></e>
+    <e lm="verklaar"><i>verklaar</i><par n="breek__vblex"/></e>
+    <e lm="afval"><i>afval</i><par n="breek__vblex"/></e>
+    <e lm="eindig"><i>eindig</i><par n="breek__vblex"/></e>
+    <e lm="pas"><i>pas</i><par n="breek__vblex"/></e>
+    <e lm="vasstel"><i>vasstel</i><par n="breek__vblex"/></e>
+    <e lm="vlieg"><i>vlieg</i><par n="breek__vblex"/></e>
+    <e lm="vergeet"><i>vergeet</i><par n="breek__vblex"/></e>
+    <e lm="aangee"><i>aangee</i><par n="breek__vblex"/></e>
+    <e lm="hoor"><i>hoor</i><par n="breek__vblex"/></e>
+    <e lm="seer"><i>seer</i><par n="breek__vblex"/></e>
+    <e lm="ken"><i>ken</i><par n="breek__vblex"/></e>
+    <e lm="leer"><i>leer</i><par n="breek__vblex"/></e>
+    <e lm="verlof"><i>verlof</i><par n="breek__vblex"/></e>
+    <e lm="luister"><i>luister</i><par n="breek__vblex"/></e>
+    <e lm="woon"><i>woon</i><par n="breek__vblex"/></e>
+    <e lm="lyk"><i>lyk</i><par n="breek__vblex"/></e>
+    <e lm="verloor"><i>verloor</i><par n="breek__vblex"/></e>
+    <e lm="maak"><i>maak</i><par n="breek__vblex"/></e>
+    <e lm="nodig"><i>nodig</i><par n="breek__vblex"/></e>
+    <e lm="oopmaak"><i>oopmaak</i><par n="breek__vblex"/></e>
+    <e lm="innig"><i>innig</i><par n="breek__vblex"/></e>
+    <e lm="betaal"><i>betaal</i><par n="breek__vblex"/></e>
+    <e lm="speel"><i>speel</i><par n="breek__vblex"/></e>
+    <e lm="sit"><i>sit</i><par n="breek__vblex"/></e>
+    <e lm="lees"><i>lees</i><par n="breek__vblex"/></e>
+    <e lm="antwoord"><i>antwoord</i><par n="breek__vblex"/></e>
+    <e lm="strek"><i>strek</i><par n="breek__vblex"/></e>
+    <e lm="verkoop"><i>verkoop</i><par n="breek__vblex"/></e>
+    <e lm="stuur"><i>stuur</i><par n="breek__vblex"/></e>
+    <e lm="teken"><i>teken</i><par n="breek__vblex"/></e>
+    <e lm="sing"><i>sing</i><par n="breek__vblex"/></e>
+    <e lm="broei"><i>broei</i><par n="breek__vblex"/></e>
+    <e lm="rook"><i>rook</i><par n="breek__vblex"/></e>
+    <e lm="praat"><i>praat</i><par n="breek__vblex"/></e>
+    <e lm="oordra"><i>oordra</i><par n="breek__vblex"/></e>
+    <e lm="opstaan"><i>opstaan</i><par n="breek__vblex"/></e>
+    <e lm="begin"><i>begin</i><par n="breek__vblex"/></e>
+    <e lm="studie"><i>studie</i><par n="breek__vblex"/></e>
+    <e lm="slaag"><i>slaag</i><par n="breek__vblex"/></e>
+    <e lm="swem"><i>swem</i><par n="breek__vblex"/></e>
+    <e lm="aanneem"><i>aanneem</i><par n="breek__vblex"/></e>
+    <e lm="praat"><i>praat</i><par n="breek__vblex"/></e>
+    <e lm="oplei"><i>oplei</i><par n="breek__vblex"/></e>
+    <e lm="vertel"><i>vertel</i><par n="breek__vblex"/></e>
+    <e lm="dink"><i>dink</i><par n="breek__vblex"/></e>
+    <e lm="vertaal"><i>vertaal</i><par n="breek__vblex"/></e>
+    <e lm="reis"><i>reis</i><par n="breek__vblex"/></e>
+    <e lm="probeer"><i>probeer</i><par n="breek__vblex"/></e>
+    <e lm="draai"><i>draai</i><par n="breek__vblex"/></e>
+    <e lm="tipe"><i>tipe</i><par n="breek__vblex"/></e>
+    <e lm="besef"><i>besef</i><par n="breek__vblex"/></e>
+    <e lm="gebruik"><i>gebruik</i><par n="breek__vblex"/></e>
+    <e lm="verwag"><i>verwag</i><par n="breek__vblex"/></e>
+    <e lm="wil"><i>wil</i><par n="breek__vblex"/></e>
+    <e lm="polshorlosie"><i>polshorlosie</i><par n="breek__vblex"/></e>
+    <e lm="skryf"><i>skryf</i><par n="breek__vblex"/></e>
+    <e lm="waardeer"><i>waardeer</i><par n="breek__vblex"/></e>
+    <e lm="kies"><i>kies</i><par n="breek__vblex"/></e>
+    <e lm="kan"><i>k</i><par n="k/an__vbmod"/></e>
+
+
+    <!-- Nouns from bilingual list. -->
 
     <e lm="abakus"><i>abakus</i><par n="abakus__n"/></e>
     <e lm="fout"><i>fout</i><par n="bier__n"/></e>
