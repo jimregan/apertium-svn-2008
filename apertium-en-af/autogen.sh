@@ -32,7 +32,7 @@ fi
 rm -f config.cache acconfig.h
 
 echo "- aclocal."		&& \
-aclocal-1.9				&& \
+aclocal				&& \
 echo "- autoconf."		&& \
 autoconf			&& \
 echo "- autoheader."		&& \
