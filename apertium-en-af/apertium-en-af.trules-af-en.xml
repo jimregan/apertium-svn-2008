@@ -26,6 +26,9 @@
     <def-cat n="prep"> <!-- preposition -->
       <cat-item tags="pr"/>
     </def-cat>
+    <def-cat n="adv"> <!-- adverbs -->
+      <cat-item tags="adv"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -38,6 +41,7 @@
       <attr-item tags="m"/>
       <attr-item tags="f"/>
       <attr-item tags="mf"/>
+      <attr-item tags="nt"/>
     </def-attr>
     <def-attr n="a_nom">
       <attr-item tags="n"/>
@@ -95,7 +99,8 @@
       </action>
     </rule>
 
-    <rule>
+    <rule> <!-- In <PRN><VBLEX> constructions, propagate the person / number of
+                the personal pronoun to the verb. -->
       <pattern>
 	<pattern-item n="prpers"/>
         <pattern-item n="verbnm"/>
@@ -103,9 +108,9 @@
       <action>
         <choose>
           <when>
-            <test>
+            <test>     <!-- If it is third person singular in the present tense -->
 	      <and>
-                <equal>
+                <equal> 
 		  <clip pos="1" side="tl" part="pers"/>
 		  <lit-tag v="p3"/>
                 </equal>
@@ -130,12 +135,32 @@
                 <clip pos="2" side="tl" part="lem"/>
     	        <clip pos="2" side="tl" part="a_verb"/>
 		<lit-tag v="pri"/>
-    	        <clip pos="2" side="tl" part="pers"/>
-    	        <clip pos="2" side="tl" part="nbr"/>
+    	        <clip pos="1" side="tl" part="pers"/>
+    	        <clip pos="1" side="tl" part="nbr"/>
 	      </lu>
 	    </out>
 	  </when>
-
+          <when>
+	    <test>
+              <equal>
+                <clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+            <out>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/>
+	        <clip pos="1" side="tl" part="tipus_prn"/>
+	        <clip pos="1" side="tl" part="pers"/>
+	        <clip pos="1" side="tl" part="gen"/>
+	        <clip pos="1" side="tl" part="nbr"/>
+		<lit v="$ ^"/>
+                <clip pos="2" side="tl" part="lem"/>
+    	        <clip pos="2" side="tl" part="a_verb"/>
+	        <lit-tag v="pres"/>
+              </lu>
+            </out>
+	  </when>
 	  <otherwise> 
             <out>
               <lu>
@@ -151,6 +176,91 @@
               </lu>
             </out>
 	  </otherwise>
+	</choose>
+      </action>
+    </rule>
+
+    <rule> <!-- In <ADV><VBSER><DET> constructions, propagate the number of the
+                determiner to the verb. -->
+      <pattern>
+        <pattern-item n="adv"/>
+        <pattern-item n="verbnm"/>
+        <pattern-item n="det"/>
+      </pattern>
+      <action>
+        <choose>
+	  <when>
+	    <test> <!-- When the determiner is singular -->
+	      <equal>
+                <clip pos="3" side="tl" part="nbr"/>
+                <lit-tag v="sg"/>
+	      </equal>
+	    </test>
+	    <out>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/> <!-- Adverb -->
+		<lit-tag v="adv"/>
+		<lit v="$ ^"/>
+                <clip pos="2" side="tl" part="lem"/> <!-- Verb -->
+		<clip pos="2" side="tl" part="a_verb"/>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="p3"/>
+    	        <clip pos="3" side="tl" part="nbr"/>
+		<lit v="$ ^"/>
+		<clip pos="3" side="tl" part="lem"/> <!-- Determiner -->
+	        <clip pos="3" side="tl" part="a_det"/>
+		<clip pos="3" side="tl" part="nbr"/>
+	      </lu>
+	    </out>
+	  </when>
+          <otherwise>
+	    <out>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/> <!-- Adverb -->
+		<lit-tag v="adv"/>
+                <clip pos="2" side="tl" part="lem"/> <!-- Verb -->
+		<clip pos="2" side="tl" part="a_verb"/>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit v="$ ^"/>
+		<clip pos="3" side="tl" part="lem"/> <!-- Determiner -->
+	        <clip pos="3" side="tl" part="a_det"/>
+		<clip pos="3" side="tl" part="nbr"/>
+              </lu>
+	    </out>
+	  </otherwise>
+        </choose>
+      </action>
+    </rule>
+
+    <rule>  <!-- "nie" at the end of a sentence - remove it. -->
+      <pattern>
+        <pattern-item n="adv"/>
+        <pattern-item n="sent"/>
+      </pattern>
+      <action>
+        <choose>
+        <when>
+          <test>
+	    <equal>
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="nie"/>
+	    </equal>
+	  </test>
+	  <out>
+            <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </out>
+	</when>
+	<otherwise>
+	  <out>
+	    <lu>
+              <clip pos="1" side="tl" part="whole"/>
+	      <lit v="$ ^"/>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </out>
+	</otherwise>
 	</choose>
       </action>
     </rule>

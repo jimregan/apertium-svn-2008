@@ -9,6 +9,7 @@ BASENAME=apertium-$(PREFIX1)
 TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
      $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
      $(PREFIX2).autogen.bin \
+     $(PREFIX2).autopgen.bin \
      trules-$(PREFIX1).bin \
      trules-$(PREFIX2).bin \
      modes
@@ -59,9 +60,9 @@ $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp rl $(BASENAME).$(LANG1).dix $@
 
-#$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-#	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
-#	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
+$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
+	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
+	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
 
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
@@ -82,6 +83,7 @@ apertium_en_afdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
 apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
+		    $(PREFIX2).autopgen.bin \ 
                     trules-$(PREFIX1).bin \
                     trules-$(PREFIX2).bin \
 		    modes
@@ -89,4 +91,4 @@ apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 #                    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin 
 #                    $(PREFIX1).prob $(PREFIX2).prob 
 
-CLEANFILES = -r $(TARGETS_COMMON) 
+CLEANFILES = -r $(TARGETS_COMMON)  trules-af-en.xml trules-en-af.xml
