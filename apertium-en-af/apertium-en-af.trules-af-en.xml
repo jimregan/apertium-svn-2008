@@ -8,6 +8,10 @@
     <def-cat n="sent">
       <cat-item tags="sent"/>
     </def-cat>
+    <def-cat n="send_punct">		<!-- end of sentence punctuation -->
+      <cat-item tags="rpar"/>
+      <cat-item tags="sent"/>
+    </def-cat>
     <def-cat n="det">
       <cat-item tags="det.ind.*"/>
       <cat-item tags="det.def.*"/>
@@ -76,6 +80,10 @@
        <attr-item tags="past"/>
        <attr-item tags="pres"/>
      </def-attr>
+     <def-attr n="a_punct">
+       <attr-item tags="rpar"/>
+       <attr-item tags="sent"/>
+     </def-attr>
   </section-def-attrs>
 
   <section-def-vars>
@@ -98,6 +106,57 @@
             </out>
       </action>
     </rule>
+<!--
+    <rule> 
+      <pattern>
+	<pattern-item n="verbnm"/>
+        <pattern-item n="adv"/>
+        <pattern-item n="adv"/>
+      </pattern>
+      <action>
+        <choose>
+        <when>
+          <test>
+	    <and>
+	      <equal>
+                <clip pos="3" side="sl" part="lem"/>
+                <lit v="nie"/>
+	      </equal>
+	      <equal>
+                <clip pos="1" side="sl" part="a_verb"/>
+                <lit-tag v="vbhaver"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <out>
+            <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	      <lit v="$ ^"/>
+	      <clip pos="1" side="tl" part="whole"/>
+	      <lit v="$ ^"/>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	  </out>
+	</when>
+	<otherwise>
+	  <out>
+	    <lu>
+              <clip pos="1" side="tl" part="whole"/>
+	      <lit v="$ ^"/>
+	      <clip pos="2" side="tl" part="whole"/>
+	      <lit v="$ ^"/>
+	      <clip pos="3" side="tl" part="whole"/>
+	      <lit v="blah"/>
+	    </lu>
+	  </out>
+	</otherwise>
+	</choose>
+      </action>
+    </rule>
+
+-->
+
+
 
     <rule> <!-- In <PRN><VBLEX> constructions, propagate the person / number of
                 the personal pronoun to the verb. -->
@@ -126,13 +185,13 @@
 	    </test>
 	    <out>
               <lu>
-	        <clip pos="1" side="tl" part="lem"/>
+	        <clip pos="1" side="tl" part="lem"/>		<!-- Pronoun -->
 	        <clip pos="1" side="tl" part="tipus_prn"/>
 	        <clip pos="1" side="tl" part="pers"/>
 	        <clip pos="1" side="tl" part="gen"/>
 	        <clip pos="1" side="tl" part="nbr"/>
 		<lit v="$ ^"/>
-                <clip pos="2" side="tl" part="lem"/>
+                <clip pos="2" side="tl" part="lem"/>		<!-- Verb -->
     	        <clip pos="2" side="tl" part="a_verb"/>
 		<lit-tag v="pri"/>
     	        <clip pos="1" side="tl" part="pers"/>
@@ -235,7 +294,7 @@
     <rule>  <!-- "nie" at the end of a sentence - remove it. -->
       <pattern>
         <pattern-item n="adv"/>
-        <pattern-item n="sent"/>
+        <pattern-item n="send_punct"/>
       </pattern>
       <action>
         <choose>
@@ -256,7 +315,7 @@
 	  <out>
 	    <lu>
               <clip pos="1" side="tl" part="whole"/>
-	      <lit v="$ ^"/>
+	      <lit v="$ ^"/> 
 	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
 	  </out>
@@ -264,7 +323,6 @@
 	</choose>
       </action>
     </rule>
-
 
     <rule> <!-- REGLA: reset variables-->
       <pattern>
