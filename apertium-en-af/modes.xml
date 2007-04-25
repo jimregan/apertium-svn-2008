@@ -14,68 +14,15 @@
         <file name="trules-en-af.bin"/>
         <file name="en-af.autobil.bin"/>
       </program>
-      <program name="lt-proc $1">
+      <program name="lt-proc -g">
         <file name="en-af.autogen.bin"/>
       </program>
-<!--      <program name="lt-proc -p">
+<!--  <program name="lt-proc -p">
         <file name="en-af.autopgen.bin"/>
       </program> -->
     </pipeline>
   </mode>
 
-  <mode name="en-af-anmor">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="en-af.automorf.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="en-af-tagger">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="en-af.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g">
-        <file name="en-af.prob"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="en-af-pretransfer">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="en-af.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g">
-        <file name="en-af.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-    </pipeline>
-  </mode>
-
-  <mode name="en-af-generador">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="en-af.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g">
-        <file name="en-af.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
-        <file name="apertium-en-af.trules-en-af.xml"/>
-        <file name="trules-en-af.bin"/>
-        <file name="en-af.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="en-af.autogen.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-  
-
-  
   <mode name="af-en">
     <pipeline>
       <program name="lt-proc">
@@ -90,64 +37,13 @@
         <file name="trules-af-en.bin"/>
         <file name="af-en.autobil.bin"/>
       </program>
-      <program name="lt-proc $1">
+      <program name="lt-proc -g">
         <file name="af-en.autogen.bin"/>
       </program>
-<!--      <program name="lt-proc -p">
+      <program name="lt-proc -p">
         <file name="af-en.autopgen.bin"/>
-      </program> -->
-    </pipeline>
-  </mode>
-
-  <mode name="af-en-anmor">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="af-en.automorf.bin"/>
       </program>
     </pipeline>
   </mode>
 
-  <mode name="af-en-tagger">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="af-en.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g">
-        <file name="af-en.prob"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="af-en-pretransfer">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="af-en.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g">
-        <file name="af-en.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-    </pipeline>
-  </mode>
-
-  <mode name="af-en-generador">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="af-en.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g">
-        <file name="af-en.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
-        <file name="apertium-en-af.af-en.t1x"/>
-        <file name="af-en.t1x.bin"/>
-        <file name="af-en.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="af-en.autogen.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-  
 </modes>
