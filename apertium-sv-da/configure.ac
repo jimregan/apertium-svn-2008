@@ -4,7 +4,7 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_apertium_version], [1.0.0])
+m4_define([required_apertium_version], [2.0.0])
 
 AC_INIT([apertium-sv-da], [1.0], [sortiz@users.sourceforge.net])
 AM_INIT_AUTOMAKE([apertium-sv-da], [1.0], no-define)
@@ -13,6 +13,6 @@ AC_PROG_AWK
 AC_CONFIG_HEADER([config])
 
 PKG_CHECK_MODULES(apertium, [dnl
-  apertium-1.0 >= required_apertium_version])
+  apertium-2.0 >= required_apertium_version])
   
 AC_OUTPUT([Makefile])
