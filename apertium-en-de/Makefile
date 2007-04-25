@@ -4,8 +4,8 @@ PREFIX1=$(LANG1)-$(LANG2)
 PREFIX2=$(LANG2)-$(LANG1)
 
 all: clean
-#	apertium-validate-dictionary apertium-en-de.en.dix
-#	lt-comp lr apertium-en-de.en.dix en-de.automorf.bin
+	apertium-validate-dictionary apertium-en-de.en.dix
+	lt-comp lr apertium-en-de.en.dix en-de.automorf.bin
 
 	apertium-validate-dictionary apertium-en-de.de.dix
 	lt-comp lr apertium-en-de.de.dix de-en.automorf.bin
@@ -25,10 +25,14 @@ all: clean
 	apertium-preprocess-transfer apertium-en-de.trules-de-en.xml trules-de-en.bin
 	ln -s apertium-en-de.trules-de-en.xml trules-de-en.xml
 
+	apertium-validate-transfer apertium-en-de.trules-en-de.xml
+	apertium-preprocess-transfer apertium-en-de.trules-en-de.xml trules-en-de.bin
+	ln -s apertium-en-de.trules-en-de.xml trules-en-de.xml
+
 	lt-comp lr apertium-en-de.post-en.dix de-en.autopgen.bin
 
 clean:
-	rm -rf *.bin trules-de-en.xml wordmirror/*.pyc
+	rm -rf *.bin trules-de-en.xml trules-en-de.xml wordmirror/*.pyc
 
 
 test:
