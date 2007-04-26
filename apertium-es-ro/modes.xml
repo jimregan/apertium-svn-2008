@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<modes>
+  <mode name="es-ro">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="es-ro.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="es-ro.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-ro.trules-es-ro.xml"/>
+        <file name="trules-es-ro.bin"/>
+        <file name="es-ro.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="es-ro.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="es-ro.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+ <mode name="ro-es">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ro-es.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-ro.trules-ro-es.xml"/>
+        <file name="trules-ro-es.bin"/>
+        <file name="ro-es.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ro-es.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="ro-es.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode> 
+</modes>
