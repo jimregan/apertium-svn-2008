@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<modes>
+  <mode name="ca-oc">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-oc-ca.trules-ca-oc.xml"/>
+        <file name="trules-ca-oc.bin"/>
+        <file name="ca-oc.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ca-oc.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="ca-oc.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="oc-ca">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-oc-ca.trules-oc-ca.xml"/>
+        <file name="trules-oc-ca.bin"/>
+        <file name="oc-ca.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="oc-ca.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="oc-ca.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+</modes>
