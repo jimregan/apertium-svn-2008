@@ -498,7 +498,7 @@ Tagger::help()
   out << "And FILES are:" << endl;          
   out << "  DIC:         full expanded dictionary file" << endl;
   out << "  CRP:         training text corpus file" << endl;
-  out << "  TSX:         tagger specificacion file, in XML format" << endl;
+  out << "  TSX:         tagger specification file, in XML format" << endl;
   out << "  TAGGER_DATA: tagger data file, built in the training and used while" << endl;
   out << "               tagging" << endl;
   out << "  HTAG:        hand-tagged text corpus" << endl;
