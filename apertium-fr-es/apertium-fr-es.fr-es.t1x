@@ -63,6 +63,12 @@
       <cat-item lemma="lequel" tags="prn.itg.*"/><!--falta afegir als dicos-->
       <cat-item tags="prn.tn.*"/>
     </def-cat>
+ <def-cat n="prnitg">
+      <cat-item tags="prn.itg.*"/>
+    </def-cat>
+<def-cat n="rel">
+      <cat-item tags="prn.rel.*"/>
+    </def-cat>
  
     <def-cat n="prnenc">
       <cat-item tags="prn.enc.*"/>
@@ -80,21 +86,6 @@
  		<def-cat n="aux"><!--verbs que fan d'aux seguits de pp-->
       <cat-item tags="vbhaver.*"/>
       <cat-item tags="vbser.*"/>
-    </def-cat>
-
-    <def-cat n="verbnm_inf_ger"><!--verb no modal, infinitiu i gerundi -->
-      <cat-item tags="vblex.inf"/>
-      <cat-item tags="vblex.pron.inf"/>
-      <cat-item tags="vbser.inf"/>
-      <cat-item tags="vbser.pron.inf"/>
-      <cat-item tags="vbhaver.inf"/>
-      <cat-item tags="vbhaver.pron.inf"/>
-      <cat-item tags="vblex.ger"/>
-      <cat-item tags="vblex.pron.ger"/>
-      <cat-item tags="vbser.ger"/>
-      <cat-item tags="vbser.pron.ger"/>
-      <cat-item tags="vbhaver.ger"/>
-      <cat-item tags="vbhaver.pron.ger"/>
     </def-cat>
 
     <def-cat n="imp">
@@ -2969,6 +2960,11 @@
 	<pattern-item n="num"/>
       </pattern>
       <action>
+		<call-macro n="f_concord2">
+			<with-param pos="2"/>
+			<with-param pos="1"/>
+		</call-macro>
+		
 	<out>
 	  <chunk name="det_num" case="caseFirstWord">
 	    <tags>
@@ -3272,6 +3268,18 @@
 		<pattern-item n="num"/>
 	</pattern>
 	<action>
+	<call-macro n="f_concord1">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="f_concord1">
+		<with-param pos="2"/>
+	</call-macro>
+	<call-macro n="f_concord1">
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="f_concord1">
+		<with-param pos="4"/>
+	</call-macro>
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>	
@@ -3389,6 +3397,12 @@
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>	
+		<call-macro n="f_concord3">
+			<with-param pos="3"/>
+			<with-param pos="1"/>
+			<with-param pos="2"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
@@ -4540,13 +4554,39 @@
 		<pattern-item n="inf"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
-		</call-macro>
 		<out>
 			<chunk name="inf" case="caseFirstWord">
 				<tags>
 					<tag><lit-tag v="SN"/></tag>
+					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="1" side="tl" part="temps"/></tag>
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="lemh"/> 
+					<clip pos="1" side="tl" part="a_verb"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="pers"/>
+					<clip pos="1" side="tl" part="nbr"/>
+					<clip pos="1" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="REGLA: ger">
+	<pattern>
+		<pattern-item n="ger"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="ger" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="ger"/></tag>
 					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 					<tag><clip pos="1" side="tl" part="temps"/></tag>
 				</tags>
@@ -8894,6 +8934,72 @@
 		</let>
 	</action>
 </rule>
+<rule comment="PRNITG">
+		<pattern>
+			<pattern-item n="prnitg"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_concord1">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+			<chunk name="prnitg" case="caseFirstWord">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+				<tag><clip pos="1" side="tl" part="gen"/></tag>
+				<tag><clip pos="1" side="tl" part="nbr"/></tag>
+			</tags>
+			<lu>
+				<clip pos="1" side="tl" part="lem"/>  
+				<clip pos="1" side="tl" part="a_prn"/>
+				<clip pos="1" side="tl" part="tipus_prn"/> 
+				<clip pos="1" side="tl" part="gen"/>
+				<clip pos="1" side="tl" part="nbr"/>
+			</lu> 
+			</chunk>
+		</out>  
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="PRNITG">
+		<pattern>
+			<pattern-item n="rel"/>
+		</pattern>
+		<action>
+	<!--		<call-macro n="f_concord1">
+				<with-param pos="1"/>
+			</call-macro>-->
+			<out>
+			<chunk name="rel" case="caseFirstWord">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+				<tag><clip pos="1" side="tl" part="gen"/></tag>
+				<tag><clip pos="1" side="tl" part="nbr"/></tag>
+			</tags>
+			<lu>
+				<clip pos="1" side="tl" part="lem"/>  
+				<clip pos="1" side="tl" part="a_prn"/>
+				<clip pos="1" side="tl" part="tipus_prn"/> 
+				<clip pos="1" side="tl" part="gen"/>
+				<clip pos="1" side="tl" part="nbr"/>
+			</lu> 
+			</chunk>
+		</out>  
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
 
 <rule comment="cnjcoo">
 	<pattern>
@@ -8973,7 +9079,7 @@
 		<pattern-item n="num"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
+		<call-macro n="f_concord1">
 			<with-param pos="1"/>
 		</call-macro>
 		<out>
