@@ -68,6 +68,7 @@
     </def-cat>
 <def-cat n="rel">
       <cat-item tags="prn.rel.*"/>
+ 			<cat-item tags="rel.*"/>
     </def-cat>
  
     <def-cat n="prnenc">
@@ -281,6 +282,7 @@
       <attr-item tags="adj.sint.sup"/>
       <attr-item tags="adj.pos"/>
       <attr-item tags="adj.ind"/>
+      <attr-item tags="adj.itg"/>
       <attr-item tags="vblex.pp"/>
       <attr-item tags="vbmod.pp"/>
       <attr-item tags="vbhaver.pp"/>
@@ -343,8 +345,10 @@
 
     <def-attr n="tipus_prn">
       <attr-item tags="subj"/>
+     <attr-item tags="rel"/>
       <attr-item tags="obj"/>
       <attr-item tags="tn"/>
+      <attr-item tags="tn.ref"/>
       <attr-item tags="itg"/>
       <attr-item tags="pos"/>
     </def-attr>
@@ -4447,9 +4451,6 @@
 		<pattern-item n="adjec"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
-		</call-macro>	
 		<call-macro n="f_concord1">
 			<with-param pos="1"/>
 		</call-macro>	
@@ -4907,7 +4908,7 @@
 		<pattern-item n="verbpers"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
+		<call-macro n="f_concord1">
 		<with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -8869,7 +8870,7 @@
 			<pattern-item n="prnperssubj"/>
 		</pattern>
 		<action>
-			<call-macro n="firstWord">
+			<call-macro n="f_concord1">
 				<with-param pos="1"/>
 			</call-macro>
 			<out>
@@ -8969,7 +8970,7 @@
 	</action>
 </rule>
 
-<rule comment="PRNITG">
+<rule comment="PRNREL">
 		<pattern>
 			<pattern-item n="rel"/>
 		</pattern>
