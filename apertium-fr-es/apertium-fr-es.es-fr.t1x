@@ -157,6 +157,7 @@
       <cat-item tags="vblex.pis.*"/>
       <cat-item tags="vblex.pri.*"/>
       <cat-item tags="vblex.prs.*"/>
+      <cat-item tags="vblex.fts.*"/>
       <cat-item tags="vbser.cni.*"/>
       <cat-item tags="vbser.fti.*"/>
       <cat-item tags="vbser.ifi.*"/>
@@ -165,6 +166,7 @@
       <cat-item tags="vbser.pis.*"/>
       <cat-item tags="vbser.pri.*"/>
       <cat-item tags="vbser.prs.*"/>
+      <cat-item tags="vbser.fts.*"/>
       <cat-item tags="vbhaver.cni.*"/>
       <cat-item tags="vbhaver.fti.*"/>
       <cat-item tags="vbhaver.ifi.*"/>
@@ -173,6 +175,7 @@
       <cat-item tags="vbhaver.pis.*"/>
       <cat-item tags="vbhaver.pri.*"/>
       <cat-item tags="vbhaver.prs.*"/>
+      <cat-item tags="vbhaver.fts.*"/>
       <cat-item tags="vbmod.cni.*"/>
       <cat-item tags="vbmod.fti.*"/>
       <cat-item tags="vbmod.ifi.*"/>
@@ -181,6 +184,7 @@
       <cat-item tags="vbmod.pis.*"/>
       <cat-item tags="vbmod.pri.*"/>
       <cat-item tags="vbmod.prs.*"/>
+      <cat-item tags="vbmod.fts.*"/>
       <cat-item tags="vblex.pron.cni.*"/>
       <cat-item tags="vblex.pron.fti.*"/>
       <cat-item tags="vblex.pron.ifi.*"/>
@@ -428,6 +432,7 @@
     </def-attr>
     <def-attr n="temps">
       <attr-item tags="cni"/>
+      <attr-item tags="fts"/>
       <attr-item tags="fti"/>  
       <attr-item tags="ifi"/>
       <attr-item tags="imp"/>
@@ -538,6 +543,23 @@
 					</lu>
 				</chunk>
 			</out>
+		</when>
+	</choose>
+</def-macro>
+
+<def-macro n="fts" npar="1">
+	<choose>
+		<when>
+			<test>
+				<equal>
+					<clip pos="1" side="sl" part="temps"/>
+					<lit-tag v="fts"/>
+				</equal>
+			</test>
+			<let>
+				<clip pos="1" side="tl" part="temps"/>
+				<lit-tag v="pii"/>
+			</let>
 		</when>
 	</choose>
 </def-macro>
@@ -4490,7 +4512,7 @@
 		<pattern-item n="ser"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
+		<call-macro n="fts">
 			<with-param pos="1"/>
 		</call-macro>
 		<out>
@@ -4624,8 +4646,8 @@
 		<pattern-item n="verbpers"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
+		<call-macro n="fts">
+			<with-param pos="2"/>
 		</call-macro>
 		<choose>
 			<when>
@@ -4724,8 +4746,8 @@
 		<pattern-item n="adv_preadv"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
+		<call-macro n="fts">
+			<with-param pos="2"/>
 		</call-macro>
 		<choose>
 			<when>
@@ -4856,7 +4878,7 @@
 		<pattern-item n="verbpers"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
+		<call-macro n="fts">
 			<with-param pos="1"/>
 		</call-macro>
 		<out>
@@ -6624,8 +6646,8 @@
 		<pattern-item n="verbpers"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-		<with-param pos="1"/>
+		<call-macro n="fts">
+			<with-param pos="2"/>
 		</call-macro>
 			<out>
 				<chunk name="pro_verb" case="caseFirstWord">
@@ -6667,8 +6689,8 @@
 		<pattern-item n="verbpers"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-		<with-param pos="1"/>
+		<call-macro n="fts">
+			<with-param pos="3"/>
 		</call-macro>
 		<choose>
 			<when>
@@ -6780,8 +6802,8 @@
 		<pattern-item n="adv_preadv"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-		<with-param pos="1"/>
+		<call-macro n="fts">
+		<with-param pos="3"/>
 		</call-macro>
 		<choose>
 			<when>
@@ -6926,8 +6948,8 @@
 		<pattern-item n="verbpers"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-		<with-param pos="1"/>
+		<call-macro n="fts">
+		<with-param pos="3"/>
 	</call-macro>
 					<out>
 						<chunk name="pro_pro_verb" case="caseFirstWord">
@@ -6971,8 +6993,8 @@
 		<pattern-item n="verbpers"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-		<with-param pos="1"/>
+		<call-macro n="fts">
+		<with-param pos="3"/>
 	</call-macro>
 		<choose>
 			<when>
@@ -7089,8 +7111,8 @@
 		<pattern-item n="adv_preadv"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-		<with-param pos="1"/>
+		<call-macro n="fts">
+		<with-param pos="3"/>
 	</call-macro>
 		<choose>
 			<when>
