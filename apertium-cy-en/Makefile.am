@@ -1,4 +1,4 @@
-VERSION=0.7
+VERSION=0.1
 LANG1=cy
 LANG2=en
 PREFIX1=$(LANG1)-$(LANG2)
@@ -9,12 +9,11 @@ BASENAME=apertium-$(PREFIX1)
 TARGETS_COMMON = $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1)-$(LANG2).dix \
      $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
      $(PREFIX1).autopgen.bin $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
-     $(PREFIX2).autogen.bin modes
-     
-#     $(PREFIX2).autopgen.bin 
+     $(PREFIX2).autogen.bin \
+     $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
 
-#TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
-#          trules-$(PREFIX1).xml trules-$(PREFIX2).xml
+#    $(PREFIX2).autopgen.bin 
 
 $(BASENAME).$(LANG1).dix:
 	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
@@ -23,6 +22,7 @@ $(BASENAME).$(LANG2).dix:
 $(BASENAME).$(LANG1)-$(LANG2).dix:
 	xmllint --xinclude $(BASENAME).$(LANG1)-$(LANG2).dix.xml > $(BASENAME).$(LANG1)-$(LANG2).dix
 
+     
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp lr $(BASENAME).$(LANG1).dix $@
@@ -55,42 +55,56 @@ $(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
 	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
 
-#trules-$(PREFIX1).bin: $(BASENAME).trules-$(PREFIX1).xml
-#	apertium-validate-transfer $(BASENAME).trules-$(PREFIX1).xml
-#	apertium-preprocess-transfer $(BASENAME).trules-$(PREFIX1).xml \
-#	                             trules-$(PREFIX1).bin
-	                             
-#trules-$(PREFIX2).bin: $(BASENAME).trules-$(PREFIX2).xml
-#	apertium-validate-transfer $(BASENAME).trules-$(PREFIX2).xml
-#	apertium-preprocess-transfer $(BASENAME).trules-$(PREFIX2).xml \
-#	                             trules-$(PREFIX2).bin
+$(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
+	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $@
 
-#trules-$(PREFIX1).xml: $(BASENAME).trules-$(PREFIX1).xml
-#	ln -s $(BASENAME).trules-$(PREFIX1).xml trules-$(PREFIX1).xml
+$(PREFIX1).t2x.bin: $(BASENAME).$(PREFIX1).t2x
+	apertium-validate-interchunk $(BASENAME).$(PREFIX1).t2x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t2x $@
 
-#trules-$(PREFIX2).xml: $(BASENAME).trules-$(PREFIX2).xml
-#	ln -s $(BASENAME).trules-$(PREFIX2).xml trules-$(PREFIX2).xml
+$(PREFIX1).t3x.bin: $(BASENAME).$(PREFIX1).t3x
+	apertium-validate-postchunk $(BASENAME).$(PREFIX1).t3x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t3x $@
+
+$(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
+	apertium-validate-transfer $(BASENAME).$(PREFIX2).t1x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t1x $@
+
+$(PREFIX2).t2x.bin: $(BASENAME).$(PREFIX2).t2x
+	apertium-validate-interchunk $(BASENAME).$(PREFIX2).t2x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t2x $@
+
+$(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
+	apertium-validate-postchunk $(BASENAME).$(PREFIX2).t3x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t3x $@
+
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
            $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
            $(BASENAME).$(LANG2).tsx  \
            $(PREFIX1).prob $(PREFIX2).prob \
+           $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
+           $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
+           $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
            modes.xml
 
-#	   $(BASENAME).trules-$(PREFIX1).xml $(BASENAME).trules-$(PREFIX2).xml
-           
+#           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
+
 modes: modes.xml
 	apertium-gen-modes modes.xml
-           
+	
 apertium_cy_endir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
 apertium_cy_en_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
                     $(PREFIX1).autopgen.bin \
-                    $(PREFIX1).prob $(PREFIX2).prob modes
-
+                    $(PREFIX1).prob $(PREFIX2).prob \
+		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
+		    modes
+		  
 #                   $(PREFIX2).autopgen.bin 
-#                   trules-$(PREFIX1).xml trules-$(PREFIX2).xml trules-$(PREFIX1).bin trules-$(PREFIX2).bin
 
-CLEANFILES = $(TARGETS) $(TARGETS_COMMON) modes/*
+CLEANFILES = $(TARGETS_COMMON) apertium-cy-en.fr.dix
