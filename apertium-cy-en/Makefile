@@ -1,9 +1,9 @@
 PROB=/home/spectre/source/apertium-en-de/de-en.prob
 
 all: clean
-	xmllint --xinclude apertium-cy-en.cy.dix.in > apertium-cy-en.cy.dix
-	xmllint --xinclude apertium-cy-en.en.dix.in > apertium-cy-en.en.dix
-	xmllint --xinclude apertium-cy-en.cy-en.dix.in > apertium-cy-en.cy-en.dix
+	xmllint --xinclude apertium-cy-en.cy.dix.xml > apertium-cy-en.cy.dix
+	xmllint --xinclude apertium-cy-en.en.dix.xml > apertium-cy-en.en.dix
+	xmllint --xinclude apertium-cy-en.cy-en.dix.xml > apertium-cy-en.cy-en.dix
 
 	apertium-validate-dictionary apertium-cy-en.cy.dix
 	apertium-validate-dictionary apertium-cy-en.en.dix
