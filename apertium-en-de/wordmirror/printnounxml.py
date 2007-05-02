@@ -2,65 +2,54 @@
 
 from WordMirror import WordMirrorNounInflection
 
-def print_xml(inflection, noun): #{
+def print_xml(inflection, noun): 
+
+	casesymbols = { "Nominative": "nom",
+	                "Dative": "dat",
+	                "Accusative": "acc",
+	                "Genitive": "gen" }
+
+	numbersymbols = { "No Article": "sg",
+	                  "Plural No Article": "pl" }
+
 	print '    <pardef n="' + noun +  '__n">';
 
 	gender = inflection['Gender'];
-	if(gender == 'n'): #{
+	if(gender == 'n'): 
 		gender = 'nt';
-	#}
-	number = "";
+	
+	for key in inflection.keys(): 
+		if(key in ['Gender', 'Word Type', 'Plural']): 
+			continue
 
-	for key in inflection.keys(): #{
-		if(key != 'Gender' and key != 'Word Type' and key != 'Plural'): #{
-			for item in inflection[key].iteritems(): #{
-				if(key == 'No Article' or key == 'Plural No Article'): #{	
-					if(key == 'No Article'): #{
-						number = 'sg'
-					#}
-					if(key == 'Plural No Article'): #{
-						number = 'pl';
-					#}
-					print '      <e> <!-- ' + key + ' -->';
-					print '        <p>';
-					if(item[1] == noun): #{
-						print '          <l/>';
-					#}
-					if(item[1] != noun): #{
-						print '          <l>' + item[1].replace(noun, '') + '</l>';
-					#}
-					if(item[0] == 'Nominative'): #{
-						print '          <r><s n="n"/><s n="' + gender + '"/><s n="nom"/><s n="' + number + '"/></r>';
-					#}
-					if(item[0] == 'Dative'): #{
-						print '          <r><s n="n"/><s n="' + gender + '"/><s n="dat"/><s n="' + number + '"/></r>';
-					#}
-		
-					if(item[0] == 'Accusative'): #{
-						print '          <r><s n="n"/><s n="' + gender + '"/><s n="acc"/><s n="' + number + '"/></r>';
-					#}
+		for (case, infl1) in inflection[key].items(): 
+			if(key not in numbersymbols.keys()):
+				continue
 
-					if(item[0] == 'Genitive'): #{
-						print '          <r><s n="n"/><s n="' + gender + '"/><s n="gen"/><s n="' + number + '"/></r>';
-					#}
-					print '        </p>';
-					print '      </e>';
-				#}
-			#}
-		#}
-	#}
+			for infl2 in infl1.split("/"):
+				print '      <e> <!-- ' + key + ' -->'
+				print '        <p>'
+
+				if(infl2 == noun): 
+					print '          <l/>'
+				else: 
+					print '          <l>' + infl2.replace(noun, '') + '</l>'
+
+				print '          <r><s n="n"/><s n="' + gender + '"/><s n="' + casesymbols[case] +'"/><s n="' + numbersymbols[key] + '"/></r>'
+				print '        </p>'
+				print '      </e>'
+	
 	print '    </pardef>'
-#}
 
-def usage(): #{
-	print 'python printnounxml.py <noun>';
-#}
+def usage(): 
+	print 'python printnounxml.py <noun>'
 
 if __name__ == "__main__":
-	import sys;
-	if(len(sys.argv) <= 1): #{
-		usage();
-		sys.exit();
-	#}
-	inflect = WordMirrorNounInflection(sys.argv[1]);
-	print_xml(inflect, sys.argv[1]);
+	import sys
+
+	if(len(sys.argv) <= 1): 
+		usage()
+		sys.exit()
+	
+	inflect = WordMirrorNounInflection(sys.argv[1])
+	print_xml(inflect, sys.argv[1])
