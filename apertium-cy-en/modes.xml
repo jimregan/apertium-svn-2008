@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<modes>
+  <mode name="cy-en">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="cy-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="cy-en.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-cy-en.trules-cy-en.xml"/>
+        <file name="trules-cy-en.bin"/>
+        <file name="cy-en.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="cy-en.autogen.bin"/>
+      </program>
+<!--  <program name="lt-proc -p">
+        <file name="cy-en.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
+  <mode name="en-cy">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="en-cy.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="en-cy.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-cy-en.trules-en-cy.xml"/>
+        <file name="trules-en-cy.bin"/>
+        <file name="en-cy.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="en-cy.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="en-cy.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+</modes>
