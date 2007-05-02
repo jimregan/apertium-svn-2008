@@ -1,8 +1,12 @@
 
-
 == Resources ==
 
 * http://www.geiriadur.net
 * http://www.rhedadur.org.uk/konj_verb.php
 * http://www.cs.cf.ac.uk/fun/welsh/LexiconWE.html
 * http://kevindonnelly.org.uk/eurfa/index.php?lg=en
+
+== Test ==
+
+        echo "Genir pawb yn rhydd ac yn gydradd â'i gilydd mewn urddas a hawliau." | lt-proc cy-en.automorf.bin | apertium-tagger -g $(PROB) | apertium-pretransfer | apertium-transfer apertium-cy-en.cy-en.t1x cy-en.t1x.bin cy-en.autobil.bin | apertium-interchunk apertium-cy-en.cy-en.t2x cy-en.t2x.bin | apertium-postchunk apertium-cy-en.cy-en.t3x cy-en.t3x.bin | lt-proc -g cy-en.autogen.bin
+
