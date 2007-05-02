@@ -6,6 +6,9 @@ def print_xml(inflection, noun): #{
 	print '    <pardef n="' + noun +  '__n">';
 
 	gender = inflection['Gender'];
+	if(gender == 'n'): #{
+		gender = 'nt';
+	#}
 	number = "";
 
 	for key in inflection.keys(): #{
