@@ -1,3 +1,12 @@
+== Notes ==
+
+* Differently from most other pairs, .dix files are generated from .dix.xml and
+  .xml files using xmllint. When you edit a file, make sure you are editing the 
+  source files (.dix.xml, .xml) and not the .dix file directly, as it will be
+  overwritten next time you make.
+
+* The tagger files (.prob) are taken from en-ca.prob and will need retraining 
+  when the dictionary is larger.
 
 == Resources ==
 
@@ -8,5 +17,5 @@
 
 == Test ==
 
-        echo "Genir pawb yn rhydd ac yn gydradd â'i gilydd mewn urddas a hawliau." | lt-proc cy-en.automorf.bin | apertium-tagger -g $(PROB) | apertium-pretransfer | apertium-transfer apertium-cy-en.cy-en.t1x cy-en.t1x.bin cy-en.autobil.bin | apertium-interchunk apertium-cy-en.cy-en.t2x cy-en.t2x.bin | apertium-postchunk apertium-cy-en.cy-en.t3x cy-en.t3x.bin | lt-proc -g cy-en.autogen.bin
+echo "Genir pawb yn rhydd ac yn gydradd â'i gilydd mewn urddas a hawliau." | lt-proc cy-en.automorf.bin | apertium-tagger -g $(PROB) | apertium-pretransfer | apertium-transfer apertium-cy-en.cy-en.t1x cy-en.t1x.bin cy-en.autobil.bin | apertium-interchunk apertium-cy-en.cy-en.t2x cy-en.t2x.bin | apertium-postchunk apertium-cy-en.cy-en.t3x cy-en.t3x.bin | lt-proc -g cy-en.autogen.bin
 
