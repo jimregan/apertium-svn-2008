@@ -91,33 +91,21 @@
     <def-cat n="prnpro">
       <cat-item tags="prn.pro.*"/>
     </def-cat>
-   <def-cat n="verb"><!--tots els verbs -->
-      <cat-item tags="vblex.*"/>
-      <cat-item tags="vbser.*"/>
-      <cat-item tags="vbhaver.*"/>
-      <cat-item tags="vbmod.*"/>
-    </def-cat>
- 		 <def-cat n="ser">
-      <cat-item tags="vbser.*"/>
-    </def-cat>
+ 	 <def-cat n="ser">
+      <cat-item tags="vbser.prs.*"/>
+      <cat-item tags="vbser.fts.*"/>
+      <cat-item tags="vbser.pis.*"/>
+      <cat-item tags="vbser.pii.*"/>
+      <cat-item tags="vbser.ifi.*"/>
+      <cat-item tags="vbser.imp.*"/>
+      <cat-item tags="vbser.fti.*"/>
+      <cat-item tags="vbser.cni.*"/>
+      <cat-item tags="vbser.pri.*"/>
+     </def-cat>
  		<def-cat n="aux"><!--verbs que fan d'aux seguits de pp-->
       <cat-item tags="vbhaver.*"/>
     </def-cat>
 
-    <def-cat n="verbnm_inf_ger"><!--verb no modal, infinitiu i gerundi -->
-      <cat-item tags="vblex.inf"/>
-      <cat-item tags="vblex.pron.inf"/>
-      <cat-item tags="vbser.inf"/>
-      <cat-item tags="vbser.pron.inf"/>
-      <cat-item tags="vbhaver.inf"/>
-      <cat-item tags="vbhaver.pron.inf"/>
-      <cat-item tags="vblex.ger"/>
-      <cat-item tags="vblex.pron.ger"/>
-      <cat-item tags="vbser.ger"/>
-      <cat-item tags="vbser.pron.ger"/>
-      <cat-item tags="vbhaver.ger"/>
-      <cat-item tags="vbhaver.pron.ger"/>
-    </def-cat>
 
     <def-cat n="imp">
       <cat-item tags="vblex.imp.*"/>
@@ -215,7 +203,7 @@
       <cat-item tags="vbhaver.prs.*"/>
     </def-cat>
 		<def-cat n="auxinf">
-      <cat-item tags="vbser.inf"/>
+<!--       <cat-item tags="vbser.inf"/> -->
       <cat-item tags="vbhaver.inf"/>
     </def-cat>
     <def-cat n="pp">
@@ -4509,7 +4497,7 @@
 </rule> 
 
     <!-- *************************************** REGLES DE SV *********************************************** -->
-
+<!--
 <rule comment="REGLA: VERBser">
 	<pattern>
 		<pattern-item n="ser"/>
@@ -4641,7 +4629,7 @@
 			<lit v="aa"/>
 		</let>
 	</action>
-</rule>
+</rule>-->
 
 <rule comment="REGLA: adv VERB">
 	<pattern>
@@ -7326,9 +7314,6 @@
 		<pattern-item n="prnenc"/>
 	</pattern>
 	<action>
-		<call-macro n="firstWord">
-		<with-param pos="1"/>
-	</call-macro>
 			<out>
 				<chunk name="pro_inf" case="caseFirstWord">
 					<tags>
@@ -7338,13 +7323,17 @@
 						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
-						<clip pos="2" side="tl" part="lem"/> 
+						<get-case-from pos="1">
+							<clip pos="2" side="tl" part="lem"/> 
+						</get-case-from>
 						<lit-tag v="prn.pro"/>
 						<clip pos="2" side="tl" part="tipoenc_pro"/>
 					</lu>
 					<b/>
 					<lu>
-						<clip pos="1" side="tl" part="lemh"/> 
+						<get-case-from pos="2">
+							<clip pos="1" side="tl" part="lemh"/> 
+						</get-case-from>
 						<clip pos="1" side="tl" part="a_verb"/>
 						<clip pos="1" side="tl" part="temps"/>
 						<clip pos="1" side="tl" part="pers"/>
@@ -7634,7 +7623,9 @@
 						<tag><lit-tag v="sg"/></tag><!--com a sn és sg ("cantar és important") -->
 					</tags>
 					<lu>
-						<clip pos="2" side="tl" part="lem"/> 
+						<get-case-from pos="1">
+							<clip pos="2" side="tl" part="lem"/> 
+						</get-case-from>
 						<lit-tag v="prn.pro"/>
 						<clip pos="2" side="tl" part="tipoenc_pro"/>
 					</lu>
@@ -7646,7 +7637,9 @@
 					</lu>
 					<b/>
 					<lu>
-						<clip pos="1" side="tl" part="lemh"/> 
+						<get-case-from pos="2">
+							<clip pos="1" side="tl" part="lemh"/> 
+						</get-case-from>
 						<clip pos="1" side="tl" part="a_verb"/>
 						<clip pos="1" side="tl" part="temps"/>
 						<clip pos="1" side="tl" part="pers"/>
