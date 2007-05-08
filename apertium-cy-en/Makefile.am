@@ -93,6 +93,9 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 
 modes: modes.xml
+	rm $(BASENAME).$(LANG1).dix
+	rm $(BASENAME).$(LANG2).dix
+	rm $(BASENAME).$(PREFIX1).dix
 	apertium-gen-modes modes.xml
 	
 apertium_cy_endir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
