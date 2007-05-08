@@ -9,8 +9,8 @@ all:
 	lt-comp lr apertium-id-ms.id-ms.dix id-ms.autobil.bin
 	lt-comp rl apertium-id-ms.id-ms.dix ms-id.autobil.bin
 
-	lt-comp rl apertium-id-ms.ms.dix id-ms.autogms.bin
-	lt-comp rl apertium-id-ms.id.dix ms-id.autogms.bin
+	lt-comp rl apertium-id-ms.ms.dix id-ms.autogen.bin
+	lt-comp rl apertium-id-ms.id.dix ms-id.autogen.bin
 	
 	apertium-validate-transfer apertium-id-ms.id-ms.t1x
 	apertium-preprocess-transfer apertium-id-ms.id-ms.t1x id-ms.t1x.bin
