@@ -59,6 +59,47 @@
                                 </out>
                         </action>
                 </rule>
-<!--ja anirem veient què s'hi posa, aquí-->
+   <rule comment="CHUNK: nom">
+      <pattern>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="0" part="a_SN"/>
+                  <lit-tag v="PDET"/>
+                </equal>
+                <not>
+                  <equal>
+                    <clip pos="1" part="a_nom"/>
+                    <lit-tag v="np"/>
+                  </equal>
+                </not>
+              </and>
+            </test>
+            <out>
+              <lu>
+                <get-case-from pos="1">
+                <lit v="el"/>
+                </get-case-from>
+                <lit-tag v="det.def"/>
+                <clip pos="1" part="gen"/>
+                <clip pos="1" part="nbr"/>
+              </lu>
+              <b/>
+            </out>
+          </when>
+        </choose>
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
 </section-rules>
 </postchunk>
