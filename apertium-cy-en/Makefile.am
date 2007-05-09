@@ -110,4 +110,4 @@ apertium_cy_en_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		  
 #                   $(PREFIX2).autopgen.bin 
 
-CLEANFILES = $(TARGETS_COMMON) apertium-cy-en.fr.dix
+CLEANFILES = -r $(TARGETS_COMMON) 
