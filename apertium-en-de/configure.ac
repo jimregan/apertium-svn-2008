@@ -8,7 +8,7 @@ AC_INIT([apertium-en-af], [0.1], [sortiz@users.sourceforge.net])
 AM_INIT_AUTOMAKE([apertium-en-af], [0.1], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
-AC_CONFIG_HEADER([config])
+AC_CONFIG_HEADER(config)
 
 AC_DEFUN(PKG_CHECK_APERTIUM, [
   APERTIUM_VER=0
