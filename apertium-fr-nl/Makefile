@@ -18,11 +18,14 @@ all:
 #	apertium-preprocess-transfer apertium-fr-nl.fr-nl.t2x fr-nl.t2x.bin
 #	apertium-validate-postchunk apertium-fr-nl.fr-nl.t3x
 #	apertium-preprocess-transfer apertium-fr-nl.fr-nl.t3x fr-nl.t3x.bin
+#
+	apertium-preprocess-transfer apertium-fr-nl.trules-fr-nl.xml trules-fr-nl.bin
 
 	#clean up temp files
 	rm apertium-fr-nl.fr.dix apertium-fr-nl.nl.dix apertium-fr-nl.fr-nl.dix
+
 clean:
-	rm -f *.bin apertium-fr-nl.fr.dix apertium-fr-nl.nl.dix apertium-fr-nl.fr-nl.dix
+	rm -f *.bin apertium-fr-nl.fr.dix apertium-fr-nl.nl.dix apertium-fr-nl.fr-nl.dix trules-fr-nl.bin
 
 test:
 	echo "J'ai deux bières" | lt-proc fr-nl.automorf.bin | apertium-tagger -g fr-nl.prob | apertium-pretransfer | apertium-transfer apertium-fr-nl.fr-nl.t1x fr-nl.t1x.bin fr-nl.autobil.bin | apertium-interchunk apertium-fr-nl.fr-nl.t2x fr-nl.t2x.bin | apertium-postchunk apertium-fr-nl.fr-nl.t3x fr-nl.t3x.bin | lt-proc -g fr-nl.autognl.bin
