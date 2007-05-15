@@ -18,38 +18,20 @@
  * 02111-1307, USA.
  */
 
-package dictools;
+package dics.elements.utils;
 
-import dics.elements.dtd.DictionaryElement;
+import java.util.HashMap;
+import dics.elements.dtd.EElement;
 
 /**
  * 
  * @author Enrique Benimeli Bofarull
- * 
+ *
  */
-public class DicReverse {
+public class EHashMap extends HashMap<String, EElement> {
 
 	/**
 	 * 
 	 */
-	private DictionaryElement dicOrig;
-
-	/**
-	 * 
-	 * @param dic
-	 */
-	public DicReverse(final DictionaryElement dic) {
-		dicOrig = dic;
-
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public final DictionaryElement reverse() {
-		dicOrig.reverse();
-		return dicOrig;
-	}
-
+    static final long serialVersionUID = 0;
 }

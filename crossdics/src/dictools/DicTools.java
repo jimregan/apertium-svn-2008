@@ -83,7 +83,7 @@ public class DicTools {
          * @param entries
          * @return
          */
-    public static final HashMap<String, EElementList> buildHash(
+    public static final EElementMap buildHash(
 	    final ArrayList<EElement> entries) {
 	final EElementMap entriesMap = new EElementMap();
 	for (final EElement e : entries) {
@@ -108,7 +108,7 @@ public class DicTools {
          * @param side
          * @return
          */
-    public static final HashMap<String, EElementList> buildHash(
+    public static final EElementMap buildHash(
 	    final ArrayList<EElement> entries, final String side) {
 	final EElementMap entriesMap = new EElementMap();
 	for (final EElement e : entries) {
@@ -135,7 +135,7 @@ public class DicTools {
          * @param restriction
          * @return
          */
-    public static final HashMap<String, EElementList> buildHashMon(
+    public static final EElementMap buildHashMon(
 	    final ArrayList<EElement> entries) {
 	final EElementMap entriesMap = new EElementMap();
 
@@ -161,7 +161,7 @@ public class DicTools {
          * @param entries
          * @return
          */
-    public static final HashMap<String, EElementList> buildHashMonLowerCase(
+    public static final EElementMap buildHashMonLowerCase(
 	    final ArrayList<EElement> entries) {
 	final EElementMap entriesMap = new EElementMap();
 
@@ -414,14 +414,14 @@ public class DicTools {
 	final EElementList[] consistentMons = new EElementList[2];
 	final ArrayList<EElement> elements = bilAB.getEntries();
 
-	final HashMap<String, EElementList> bilABMapL = DicTools.buildHash(
+	final EElementMap bilABMapL = DicTools.buildHash(
 		elements, "L");
-	final HashMap<String, EElementList> bilABMapR = DicTools.buildHash(
+	final EElementMap bilABMapR = DicTools.buildHash(
 		elements, "R");
 
-	final HashMap<String, EElementList> monAMap = DicTools
+	final EElementMap monAMap = DicTools
 		.buildHashMon(monA.getEntries());
-	final HashMap<String, EElementList> monBMap = DicTools
+	final EElementMap monBMap = DicTools
 		.buildHashMon(monB.getEntries());
 
 	final EElementList monAConsistent = DicTools.makeConsistent(bilABMapL,
@@ -445,8 +445,8 @@ public class DicTools {
          * @param monMap
          */
     private static EElementList makeConsistent(
-	    final HashMap<String, EElementList> bilABMap, final String side,
-	    final HashMap<String, EElementList> monMap) {
+	    final EElementMap bilABMap, final String side,
+	    final EElementMap monMap) {
 	final EElementList consistentMon = new EElementList();
 	final Set<String> keySet = monMap.keySet();
 	final Iterator<String> it = keySet.iterator();

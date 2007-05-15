@@ -20,7 +20,6 @@
 
 package dictools;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -90,13 +89,13 @@ public class DicConsistent {
 	differentA = new EElementMap();
 	differentC = new EElementMap();
 
-	final HashMap<String, EElementList> bilAMap = DicTools.buildHash(bil1
+	final EElementMap bilAMap = DicTools.buildHash(bil1
 		.getEntries());
-	final HashMap<String, EElementList> bilCMap = DicTools.buildHash(bil2
+	final EElementMap bilCMap = DicTools.buildHash(bil2
 		.getEntries());
-	final HashMap<String, EElementList> monAMap = DicTools
+	final EElementMap monAMap = DicTools
 		.buildHashMon(mon1.getEntries());
-	final HashMap<String, EElementList> monCMap = DicTools
+	final EElementMap monCMap = DicTools
 		.buildHashMon(mon2.getEntries());
 
 	// markCommonEntries(bilAMap, bilCMap, monAMap, commonA, differentA);
@@ -145,9 +144,9 @@ public class DicConsistent {
          * @param comm
          */
     private final void markCommonEntries(
-	    final HashMap<String, EElementList> bil1Map,
-	    final HashMap<String, EElementList> bil2Map,
-	    final HashMap<String, EElementList> monMap,
+	    final EElementMap bil1Map,
+	    final EElementMap bil2Map,
+	    final EElementMap monMap,
 	    final EElementMap common, final EElementMap different) {
 
 	final Set<String> keysBil1 = bil1Map.keySet();
@@ -173,7 +172,7 @@ public class DicConsistent {
          * @param monA
          */
     private final void markShared(final EElementMap common, final String str,
-	    final HashMap<String, EElementList> mon) {
+	    final EElementMap mon) {
 	final String k = DicTools.clearTags(str);
 	final EElementList list = common.get(k);
 	for (final EElement e : list) {
