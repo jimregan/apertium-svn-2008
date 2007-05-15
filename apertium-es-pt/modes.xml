@@ -33,12 +33,35 @@
       </program>
       <program name="apertium-pretransfer"/>
       <program name="apertium-transfer">
-        <file name="apertium-es-pt.trules-es-pt.xml"/>
+        <file name="trules-es-pt.xml"/>
         <file name="trules-es-pt.bin"/>
         <file name="es-pt.autobil.bin"/>
       </program>
       <program name="lt-proc $1">
         <file name="es-pt.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="es-pt.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="es-pt_BR">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="es-pt.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="es-pt.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="trules-es-pt_BR.xml"/>
+        <file name="trules-es-pt_BR.bin"/>
+        <file name="es-pt_BR.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="es-pt_BR.autogen.bin"/>
       </program>
       <program name="lt-proc -p">
         <file name="es-pt.autopgen.bin"/>

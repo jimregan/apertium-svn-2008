@@ -4,8 +4,8 @@
 
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-es-pt], [0.9.2], [sortiz@users.sourceforge.net])
-AM_INIT_AUTOMAKE([apertium-es-pt], [0.9.2], no-define)
+AC_INIT([InterNostrum], [2], [sortiz@users.sourceforge.net])
+AM_INIT_AUTOMAKE([InterNostrum], [2], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
@@ -28,7 +28,7 @@ AC_DEFUN(PKG_CHECK_APERTIUM, [
   ])
   AC_SUBST(APERTIUM_VER)
 ])
-
+                          
 PKG_CHECK_APERTIUM
 
 if test $APERTIUM_VER = 10;
