@@ -101,7 +101,7 @@ apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
                     $(PREFIX1b).autogen.bin $(PREFIX1b).autobil.bin \
                     trules-$(PREFIX2).bin trules-$(PREFIX1b).bin \
-                    trules-$(PREFIX1b).xml $(MODES)
+                    trules-$(PREFIX1b).xml modes
 
 CLEANFILES = $(TARGETS) pt.dix pt_BR.dix es-pt.dix es-pt_BR.dix 
 
