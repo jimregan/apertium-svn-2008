@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
 <transfer>
   <section-def-cats>
+    <def-cat n="adj">
+      <cat-item tags="adj"/>
+      <cat-item tags="adj.*"/>
+    </def-cat>
     <def-cat n="nom">
       <cat-item tags="n.*"/>
       <cat-item tags="np.*"/>
@@ -48,6 +52,12 @@
       <attr-item tags="f"/>
       <attr-item tags="mf"/>
       <attr-item tags="nt"/>
+    </def-attr>
+    <def-attr n="a_adj">
+      <attr-item tags="adj"/>
+      <attr-item tags="adj.comp"/>
+      <attr-item tags="adj.sup"/>
+      <attr-item tags="adj.sint"/>
     </def-attr>
     <def-attr n="a_nom">
       <attr-item tags="n"/>
@@ -108,6 +118,21 @@
             </out>
       </action>
     </rule>
+   <rule>
+      <pattern>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+            <out>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/>
+    	        <clip pos="1" side="tl" part="a_adj"/>
+              </lu>
+            </out>
+      </action>
+    </rule>
+
+
 <!--
     <rule> 
       <pattern>
