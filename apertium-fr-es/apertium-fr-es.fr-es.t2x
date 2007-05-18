@@ -12,6 +12,7 @@
     
     <def-cat n="pr"><!-- BCN-->
       <cat-item tags="PREP"/>
+      <cat-item tags="PREP.*"/>
     </def-cat>
     
 <!--
@@ -31,42 +32,6 @@
       <cat-item tags="SV.vbser.*"/>
     </def-cat>
 	 
-    <def-cat n="vblike">
-      <cat-item tags="SV.like.*"/>
-    </def-cat>
-    
-    <def-cat n="vbreporting"><!-- BCN-->
-      <cat-item tags="SV.reporting.*"/>
-    </def-cat>
-    
-    <def-cat n="there">
-      <cat-item lemma="there" tags="adv"/>
-    </def-cat>
-
-     <def-cat n="thereis">
-      <cat-item tags="Vcop.*"/>
-      <cat-item lemma="verbcj" tags="SV.vbser.*"/>
-      <cat-item lemma="auxmod_inf" tags="SV.vbser.*"/>
-      <cat-item lemma="auxmod_mod_inf" tags="SV.vbser.*"/>
-      <cat-item lemma="mod_inf" tags="SV.vbser.*"/>
-      <cat-item lemma="mod_inf_perif" tags="SV.vbser.*"/>
-      <cat-item lemma="have_pp" tags="SV.vbser.*"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbser.*"/> 
-    </def-cat>
-
-
-	 <def-cat n="pro_vblike">
-		 <cat-item lemma="pro_verbcj" tags="SV.like.*"/>
-		 <cat-item lemma="pro_verbcj_perif" tags="SV.like.*"/>
-		 <cat-item lemma="pro_auxmod_inf" tags="SV.like.*"/>
-		 <cat-item lemma="pro_mod_inf" tags="SV.like.*"/>
-		 <cat-item lemma="pro_mod_inf_perif" tags="SV.like.*"/>
-		 <cat-item lemma="pro_auxmod_mod_inf" tags="SV.like.*"/>
-		 <cat-item lemma="pro_have_pp" tags="SV.like.*"/>
-		 <cat-item lemma="pro_be_ger" tags="SV.like.*"/>
-		<cat-item lemma="pro_do_inf" tags="SV.like.*"/>
-	 </def-cat>
-
      <def-cat n="ADV">
       <cat-item lemma="adv" tags="adv"/>
       <cat-item lemma="adv" tags="adv.*"/>
@@ -115,6 +80,17 @@
 
   <section-def-attrs>
 
+	<def-attr n="tverb">
+        <attr-item tags="est"/>
+			  <attr-item tags="mov"/>
+	</def-attr>
+	<def-attr n="tnom">
+        <attr-item tags="loc"/>
+	</def-attr>
+	<def-attr n="tprep">
+        <attr-item tags="a"/>
+        <attr-item tags="en"/>
+	</def-attr>
 <def-attr n="pers">
           <attr-item tags="p1"/>
 	  <attr-item tags="p2"/>
@@ -383,6 +359,40 @@
      	</choose>
      </def-macro>
 
+<def-macro n="cv_prep" npar="3">
+	<choose>
+		<when>
+			<test>
+				<equal>
+					<clip pos="3" part="tnom"/>
+					<lit-tag v="loc"/>
+				</equal>
+			</test>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="1" part="tverb"/>
+							<lit-tag v="mov"/>
+						</equal>
+					</test>
+					<let>
+						<clip pos="2" part="tprep"/>
+						<lit-tag v="a"/>
+					</let>
+				</when>
+				<otherwise>
+					<let>
+						<clip pos="2" part="tprep"/>
+						<lit-tag v="en"/>
+					</let>
+				</otherwise>
+			</choose>
+		</when>
+	</choose>
+
+</def-macro>
+
 </section-def-macros>
 
   <section-rules>
@@ -585,7 +595,86 @@
 </action>
 </rule>
 
-
+<rule comment="REGLA: SN SV pr SN">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="4"/>
+	</call-macro>
+	<call-macro n="cv_prep">
+		<with-param pos="2"/>
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnperssubj"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			</test>
+			<out>
+				<chunk><!--el pronom no l'envio, nom� el 2n chunk -->
+					<get-case-from pos="1">
+						<clip pos="2" part="lem"/>
+					</get-case-from>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--Quan SN no � pronom subjecte, per tant, quan � qualsevol altre SN -->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+	<out>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="lem"/>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
+		</chunk>
+		<b pos="3"/>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
+	
+</action>
+</rule>
 <rule comment="REGLA: SN vbcop SA">
 	<pattern>
 		<pattern-item n="SN"/>

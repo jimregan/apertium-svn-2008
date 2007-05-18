@@ -2,7 +2,11 @@
 <postchunk>
   <section-def-cats>
 
-    
+     <def-cat n="prep">
+      <cat-item name="pr"/>
+    </def-cat>
+
+   
     <def-cat n="inf">
       <cat-item name="inf"/>
     </def-cat>
@@ -55,28 +59,14 @@
 		 <cat-item name="pro_auxmod_mod_inf"/>
 	 </def-cat>
 	 
-
-
-
-
-	 <def-cat n="pro_vblike">
-		 <cat-item name="pro_vblike"/>
-	 </def-cat>
-	 <def-cat n="pro_vblike2">
-		 <cat-item name="pro_vblike2"/>
-	 </def-cat>
-	 <def-cat n="pro_vblike3">
-		 <cat-item name="pro_vblike3"/>
-	 </def-cat>
-
-	 <def-cat n="hi">
-	   <cat-item name="hi"/>
-	 </def-cat>
-
   </section-def-cats>
 
   <section-def-attrs>
 
+		<def-attr n="tprep">
+          <attr-item tags="a"/>
+          <attr-item tags="en"/>
+		</def-attr>
 <def-attr n="pers">
           <attr-item tags="p1"/>
           <attr-item tags="p2"/>
@@ -97,22 +87,6 @@
           <attr-item tags="pl"/>
           <attr-item tags="sp"/>
           <attr-item tags="ND"/>
-      </def-attr>
-
-		<def-attr n="tipus_verb">
-          <attr-item tags="SV.pron"/>
-			 <attr-item tags="SV"/>
-		 </def-attr>
-		 
-      <def-attr n="temps">
-          <attr-item tags="inf"/>
-          <attr-item tags="pres"/>
-          <attr-item tags="past"/>
-          <attr-item tags="pri"/>
-          <attr-item tags="pp"/>
-          <attr-item tags="ger"/>
-          <attr-item tags="pprs"/>
-          <attr-item tags="subs"/>
       </def-attr>
 
 <def-attr n="a_SN">
@@ -146,6 +120,10 @@
     <def-attr n="a_prnpro">
       <attr-item tags="prn.pro"/>
     </def-attr>
+		
+		<def-attr n="a_pr">
+      <attr-item tags="pr"/>
+    </def-attr>
 
   </section-def-attrs>
 <section-def-vars>
@@ -177,7 +155,7 @@
 
   <section-rules>
 		
-		<rule comment="CHUNK: regla que no fa res">
+	<!--	<rule comment="CHUNK: regla que no fa res">
 			<pattern>
 				<pattern-item n="det_nom"/>
 			</pattern>
@@ -192,7 +170,7 @@
 					</lu>
 				</out>   
 			</action>
-		</rule> 
+		</rule> -->
 		
 			<rule comment="CHUNK:">
 			<pattern>
@@ -204,6 +182,49 @@
 						<clip pos="1" part="whole"/>
 					</lu> 
 				</out>   
+			</action>
+		</rule> 
+		
+		<rule comment="fa els canvis de prepo">
+			<pattern>
+				<pattern-item n="prep"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="tprep"/>
+								<lit-tag v="a"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="tprep"/>
+								<lit-tag v="en"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="lem"/>
+						<clip pos="1" part="a_pr"/>
+					</lu> 
+				</out> 				
+				
 			</action>
 		</rule> 
 <!--ja anirem veient què s'hi posa, aquí-->
