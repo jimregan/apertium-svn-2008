@@ -12,7 +12,8 @@ TARGETS_COMMON = $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$
      $(PREFIX2).autogen.bin \
      $(PREFIX2).autopgen.bin \
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
+     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes \
+     clean-dicts
 
 
 $(BASENAME).$(LANG1).dix:
@@ -93,10 +94,12 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 
 modes: modes.xml
+	apertium-gen-modes modes.xml
+
+clean-dicts:
 	rm $(BASENAME).$(LANG1).dix
 	rm $(BASENAME).$(LANG2).dix
 	rm $(BASENAME).$(PREFIX1).dix
-	apertium-gen-modes modes.xml
 	
 apertium_en_afdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
 apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
@@ -107,7 +110,7 @@ apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
-		    modes
+		    modes clean-dicts
 		  
 
 CLEANFILES = -r $(TARGETS_COMMON) 
