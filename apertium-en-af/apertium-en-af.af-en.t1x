@@ -49,6 +49,10 @@
        <cat-item tags="cm"/>
        <cat-item tags="rpar"/>
     </def-cat>
+    <def-cat n="prefix">
+       <cat-item tags="pref"/>
+       <cat-item tags="pref.*"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -515,6 +519,28 @@
         </out>
      </action>
    </rule>
+
+   <rule> 
+      <pattern>
+        <pattern-item n="prefix"/>
+        <pattern-item n="verbnm"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="V">
+	    <tags>
+	      <tag><lit-tag v="participle"/></tag>
+	    </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="temps"/>
+            </lu>
+          </chunk>
+        </out>
+     </action>
+   </rule>
+
 
 
     <rule> <!-- REGLA: reset variables-->
