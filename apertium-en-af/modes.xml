@@ -2,47 +2,65 @@
 <modes>
   <mode name="en-af">
     <pipeline>
+<!--      <program name="apertium-destxt"/> -->
       <program name="lt-proc">
         <file name="en-af.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g">
         <file name="en-af.prob"/>
-      </program> 
+      </program>
       <program name="apertium-pretransfer"/>
       <program name="apertium-transfer">
-        <file name="apertium-en-af.trules-en-af.xml"/>
-        <file name="trules-en-af.bin"/>
+        <file name="apertium-en-af.en-af.t1x"/>
+        <file name="en-af.t1x.bin"/>
         <file name="en-af.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-en-af.en-af.t2x"/>
+        <file name="en-af.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-en-af.en-af.t3x"/>
+        <file name="en-af.t3x.bin"/>
       </program>
       <program name="lt-proc -g">
         <file name="en-af.autogen.bin"/>
       </program>
-<!--  <program name="lt-proc -p">
+      <program name="lt-proc -p">
         <file name="en-af.autopgen.bin"/>
-      </program> -->
+      </program>
     </pipeline>
   </mode>
 
   <mode name="af-en">
     <pipeline>
+<!--      <program name="apertium-destxt"/> -->
       <program name="lt-proc">
         <file name="af-en.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g">
         <file name="af-en.prob"/>
-      </program> 
+      </program>
       <program name="apertium-pretransfer"/>
       <program name="apertium-transfer">
-        <file name="apertium-en-af.trules-af-en.xml"/>
-        <file name="trules-af-en.bin"/>
+        <file name="apertium-en-af.af-en.t1x"/>
+        <file name="af-en.t1x.bin"/>
         <file name="af-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-en-af.af-en.t2x"/>
+        <file name="af-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-en-af.af-en.t3x"/>
+        <file name="af-en.t3x.bin"/>
       </program>
       <program name="lt-proc -g">
         <file name="af-en.autogen.bin"/>
       </program>
       <program name="lt-proc -p">
         <file name="af-en.autopgen.bin"/>
-      </program>
+      </program> 
     </pipeline>
   </mode>
 

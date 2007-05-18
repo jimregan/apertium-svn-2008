@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
-<transfer>
-  <section-def-cats>
+<transfer default="chunk">
+<section-def-cats>
     <def-cat n="adj">
       <cat-item tags="adj"/>
       <cat-item tags="adj.*"/>
@@ -84,26 +83,66 @@
   </section-def-attrs>
 
   <section-def-vars>
+    <def-var n="numero"/>
+    <def-var n="caseFirstWord"/>
     <def-var n="nombre"/>
-    <def-var n="genere"/>
   </section-def-vars>
 
   <section-rules>
-    <rule>
+    <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
       <pattern>
-        <pattern-item n="verbnm"/>
+        <pattern-item n="nom"/>
       </pattern>
       <action>
-            <out>
-              <lu>
-                <clip pos="1" side="tl" part="lem"/>
-    	        <clip pos="1" side="tl" part="a_verb"/>
-    	        <clip pos="1" side="tl" part="temps"/>
-              </lu>
-            </out>
+        <out>
+          <chunk name="nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
       </action>
     </rule>
 
+    <rule comment="REGLA: DET NOM">
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="det_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="2" side="tl" part="nbr"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
 
     <rule>
       <pattern>
@@ -143,7 +182,25 @@
       </action>
     </rule>
 
-
+    <rule>
+      <pattern>
+        <pattern-item n="verbnm"/>
+      </pattern>
+      <action>
+            <out>
+              <chunk name="verb">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <clip pos="1" side="tl" part="temps"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
 
      <rule> <!-- REGLA: reset variables-->
        <pattern>
@@ -153,10 +210,6 @@
         <let>
           <var n="nombre"/>
           <lit-tag v="sg"/>
-        </let>
-        <let>
-          <var n="genere"/>
-          <lit-tag v="m"/>
         </let>
         <out>
           <lu>

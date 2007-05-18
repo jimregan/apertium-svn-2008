@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<interchunk>
+  <section-def-cats>
+
+    <def-cat n="SN">
+      <cat-item tags="SN.*"/>
+    </def-cat>
+  </section-def-cats>
+
+  <section-def-attrs>
+   <def-attr n="nbr">
+          <attr-item tags="sg"/>
+          <attr-item tags="pl"/>
+          <attr-item tags="sp"/>
+          <attr-item tags="ND"/>
+      </def-attr>
+  </section-def-attrs>
+  <section-def-vars>
+    <def-var n="nombre"/>
+                <def-var n="genere"/>
+                <def-var n="numero"/>
+  </section-def-vars>
+  <section-def-macros>
+<def-macro n="nombre_SN" npar="1">
+ <choose><!--To determine value of variables of gender and
+                 number and propagate to other rules.  Variables are
+                 not used again in this rule -->
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" part="nbr"/>
+                <lit-tag v="sg"/>
+              </equal>
+            </test>
+            <let><var n="nombre"/><lit-tag v="sg"/></let>
+          </when>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" part="nbr"/>
+                <lit-tag v="pl"/>
+              </equal>
+            </test>
+            <let><var n="nombre"/><lit-tag v="pl"/></let>
+          </when>
+          <otherwise>
+            <let><var n="nombre"/><lit-tag v="sg"/></let>
+          </otherwise>
+        </choose>
+</def-macro>
+
+  </section-def-macros>
+  <section-rules>
+<rule comment="REGLA: SN (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)">
+      <pattern>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" part="gen"/>
+                <lit-tag v="GD"/>
+              </equal>
+            </test>
+            <let>
+              <clip pos="1" part="gen"/>
+              <lit-tag v="m"/>
+            </let>
+          </when>
+        </choose>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" part="nbr"/>
+                <lit-tag v="ND"/>
+              </equal>
+            </test>
+            <let>
+              <clip pos="1" part="nbr"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+        </out>
+        <call-macro n="nombre_SN">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+</rule>
+
+
+  </section-rules>
+</interchunk>
