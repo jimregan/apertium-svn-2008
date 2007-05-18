@@ -48,8 +48,6 @@
     <def-attr n="a_adj">
       <attr-item tags="adj"/>
       <attr-item tags="adj.sint"/>
-      <attr-item tags="adj.attr"/>
-      <attr-item tags="adj.pred"/>
       <attr-item tags="comp"/>
       <attr-item tags="sup"/>
     </def-attr>
@@ -79,6 +77,7 @@
        <attr-item tags="pri"/>
        <attr-item tags="past"/>
        <attr-item tags="pres"/>
+       <attr-item tags="inf"/>
      </def-attr>
   </section-def-attrs>
 
@@ -144,7 +143,48 @@
       </action>
     </rule>
 
-    <rule>
+    <rule comment="REGLA: DET ADJ NOM">
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="det_adj_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+	    <b pos="1"/>
+              <lu>
+                <clip pos="2" side="tl" part="lem"/>
+    	        <clip pos="2" side="tl" part="a_adj"/>
+	        <lit-tag v="attr"/>
+              </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: ADJ NOM">
       <pattern>
         <pattern-item n="adj"/>
         <pattern-item n="nom"/>
@@ -166,6 +206,26 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: ADJ">
+      <pattern>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+            <out>
+              <chunk name="adj">
+                <tags>
+                  <tag><lit-tag v="ADJ"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_adj"/>
+	          <lit-tag v="pred"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
 
     <rule>
       <pattern>
@@ -182,7 +242,7 @@
       </action>
     </rule>
 
-    <rule>
+    <rule comment="REGLA: VERBNM">
       <pattern>
         <pattern-item n="verbnm"/>
       </pattern>
@@ -202,22 +262,29 @@
       </action>
     </rule>
 
-     <rule> <!-- REGLA: reset variables-->
-       <pattern>
-         <pattern-item n="sent"/>
-       </pattern>
-       <action>
-        <let>
-          <var n="nombre"/>
-          <lit-tag v="sg"/>
-        </let>
+    <rule> <!-- REGLA: reset variables-->
+      <pattern>
+        <pattern-item n="sent"/>
+      </pattern>
+      <action>
+       <let>
+         <var n="nombre"/>
+         <lit-tag v="sg"/>
+       </let>
         <out>
-          <lu>
-            <clip pos="1" side="tl" part="whole"/>
-          </lu>
+          <chunk name="punt">
+            <tags>
+              <tag><lit-tag v="sent"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
         </out>
-      </action>
-    </rule>
+
+     </action>
+   </rule>
+
 
   </section-rules>
 

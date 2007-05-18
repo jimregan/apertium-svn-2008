@@ -21,6 +21,9 @@
     </def-cat>
     <def-cat n="prpers">
       <cat-item lemma="prpers" tags="prn.*"/>
+      <cat-item lemma="Prpers" tags="prn.*"/>
+      <cat-item tags="prn.subj.*"/>
+      <cat-item tags="prn.obj.*"/> 
     </def-cat>
     <def-cat n="verbnm"><!--verb no modal -->
       <cat-item tags="vblex.*"/>
@@ -30,7 +33,7 @@
     <def-cat n="prep"> <!-- preposition -->
       <cat-item tags="pr"/>
     </def-cat>
-    <def-cat n="send_punct">
+    <def-cat n="end_punct">
        <cat-item tags="sent"/>
        <cat-item tags="cm"/>
        <cat-item tags="rpar"/>
@@ -57,8 +60,8 @@
     <def-attr n="a_adj">
       <attr-item tags="adj"/>
       <attr-item tags="adj.sint"/>
-      <attr-item tags="adj.attr"/>
-      <attr-item tags="adj.pred"/>
+<!--      <attr-item tags="adj.attr"/>
+      <attr-item tags="adj.pred"/> -->
       <attr-item tags="comp"/>
       <attr-item tags="sup"/>
     </def-attr>
@@ -193,16 +196,22 @@
       </action>
     </rule>
 
-   <rule>
+   <rule comment="REGLA: ADJ">
       <pattern>
         <pattern-item n="adj"/>
       </pattern>
       <action>
             <out>
-              <lu>
-                <clip pos="1" side="tl" part="lem"/>
-    	        <clip pos="1" side="tl" part="a_adj"/>
-              </lu>
+	      <chunk name="adj">
+	        <tags>
+		  <tag><lit-tag v="ADJ"/></tag>
+                </tags>
+               
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+    	          <clip pos="1" side="tl" part="a_adj"/>
+                </lu>
+              </chunk>
             </out>
       </action>
     </rule>
@@ -233,6 +242,11 @@
 	      </and>
 	    </test>
 	    <out>
+	      <chunk name="prn_verb">
+	        <tags>
+                  <tag><lit-tag v="PRN"/></tag>
+                  <tag><lit-tag v="V"/></tag>
+		</tags>
               <lu>
 	        <clip pos="1" side="tl" part="lem"/>		<!-- Pronoun -->
 	        <clip pos="1" side="tl" part="tipus_prn"/>
@@ -246,6 +260,7 @@
     	        <clip pos="1" side="tl" part="pers"/>
     	        <clip pos="1" side="tl" part="nbr"/>
 	      </lu>
+	      </chunk>
 	    </out>
 	  </when>
           <when>
@@ -256,6 +271,11 @@
 	      </equal>
 	    </test>
             <out>
+              <chunk name="prn_verb">
+                <tags>
+                  <tag><lit-tag v="PRN"/></tag>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
               <lu>
                 <clip pos="1" side="tl" part="lem"/>
 	        <clip pos="1" side="tl" part="tipus_prn"/>
@@ -266,11 +286,17 @@
                 <clip pos="2" side="tl" part="lem"/>
     	        <clip pos="2" side="tl" part="a_verb"/>
 	        <lit-tag v="pres"/>
-              </lu>
+              </lu> 
+              </chunk>
             </out>
 	  </when>
 	  <otherwise> 
             <out>
+              <chunk name="prn_verb">
+                <tags>
+                  <tag><lit-tag v="PRN"/></tag>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
               <lu>
                 <clip pos="1" side="tl" part="lem"/>
 	        <clip pos="1" side="tl" part="tipus_prn"/>
@@ -282,16 +308,17 @@
     	        <clip pos="2" side="tl" part="a_verb"/>
     	        <clip pos="2" side="tl" part="temps"/>
               </lu>
+              </chunk>
             </out>
 	  </otherwise>
 	</choose>
       </action>
     </rule>
 
-    <rule>  <!-- "nie" at the end of a sentence - remove it. -->
+    <rule>  <!-- "nie" at the end of a phrase - remove it. this is a hack-->
       <pattern>
         <pattern-item n="adv"/>
-        <pattern-item n="send_punct"/>
+        <pattern-item n="end_punct"/>
       </pattern>
       <action>
         <choose>
@@ -303,9 +330,14 @@
 	    </equal>
 	  </test>
 	  <out>
+          <chunk name="punt">
+            <tags>
+              <tag><lit-tag v="cm"/></tag>
+            </tags>
             <lu>
 	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
+          </chunk>
 	  </out>
 	</when>
 	<otherwise>
@@ -334,11 +366,17 @@
          <var n="genere"/>
          <lit-tag v="m"/>
        </let>
-       <out>
-         <lu>
-           <clip pos="1" side="tl" part="whole"/>
-         </lu>
-       </out>
+        <out>
+          <chunk name="punt">
+            <tags>
+              <tag><lit-tag v="sent"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+
      </action>
    </rule>
 
