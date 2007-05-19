@@ -6,8 +6,33 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="apertium-fr-nl.symbols.xml"/>
 
   <pardefs>
+  <!-- Punctuation -->
+
 
   <!-- Naamwoorden -->
+    <pardef n="coma">
+      <e><re>,</re><p><l/><r><s n="cm"/></r></p></e>
+    </pardef>
+    <pardef n="numeros">
+      <e><re>[0-9]+([.,][0-9]+)?%</re><p><l/><r><s n="num"/><s n="percent"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)?</re><p><l/><r><s n="num"/></r></p></e>
+    </pardef>
+    <pardef n="pardret">
+      <e><re>[\)\]]</re><p><l/><r><s n="rpar"/></r></p></e>
+    </pardef>
+    <pardef n="paresq">
+      <e><re>[\(\[]</re><p><l/><r><s n="lpar"/></r></p></e>
+    </pardef>
+    <pardef n="separ">
+      <e><re>¿</re><p><l/><r><s n="lquest"/></r></p></e>
+    </pardef>
+    <pardef n="separa">
+      <e r="LR"><re>[.\?;:!]</re><p><l/><r><s n="sent"/></r></p></e>
+      <e r="RL"><p><l><a/></l><r/></p><re>[.\?;:!]</re><p><l/><r><s n="sent"/></r></p></e>
+    </pardef>
+
+
+
  
  <pardef n="kind__n">
    <e>
@@ -238,13 +263,13 @@
    <e>
       <p> 
         <l/> 
-        <r><s n="n"/><s n="mf"/><s n="sg"/></r> 
+        <r><s n="n"/><s n="m"/><s n="sg"/></r> 
       </p> 
     </e> 
     <e> 
       <p> 
         <l>s</l> 
-        <r><s n="n"/><s n="mf"/><s n="pl"/></r> 
+        <r><s n="n"/><s n="m"/><s n="pl"/></r> 
       </p> 
     </e> 
   </pardef>
@@ -7557,4 +7582,19 @@
     <!-- Voornaamwoorden -->
 
   </section>
+<section id="final" type="inconditional">
+                                  <e><par n="coma"/></e>
+
+                                  <e><par n="numeros"/></e>
+
+                                  <e><par n="pardret"/></e>
+
+                                  <e><par n="paresq"/></e>
+
+                                  <e><par n="separ"/></e>
+
+                                  <e><par n="separa"/></e>
+
+  </section>
+
 </dictionary>
