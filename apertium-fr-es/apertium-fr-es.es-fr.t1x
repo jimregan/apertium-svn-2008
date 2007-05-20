@@ -59,6 +59,10 @@
 		<def-cat n="acabar">
       <cat-item lemma="acabar" tags="vblex.*"/>
     </def-cat>
+		<def-cat n="continuar">
+      <cat-item lemma="continuar" tags="vblex.*"/>
+      <cat-item lemma="seguir" tags="vblex.*"/>
+    </def-cat>
 		<def-cat n="ir">
       <cat-item lemma="ir" tags="vblex.*"/>
     </def-cat>
@@ -5507,6 +5511,148 @@
 					<clip pos="3" side="tl" part="a_verb"/>
 					<clip pos="3" side="tl" part="temps"/>
 					<clip pos="3" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="REGLA: continuar ger -> continuer à inf">
+	<pattern>
+		<pattern-item n="continuar"/>
+		<pattern-item n="ger"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="continuer_a_inf">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="1" side="tl" part="temps"/></tag>
+					<tag><clip pos="1" side="tl" part="pers"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/>
+					<clip pos="1" side="tl" part="a_verb"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="pers"/>
+					<clip pos="1" side="tl" part="nbr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="à"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b pos="1"/>
+				<lu>
+					<clip pos="2" side="tl" part="lemh"/>
+					<clip pos="2" side="tl" part="a_verb"/>
+					<lit-tag v="inf"/>
+					<clip pos="2" side="tl" part="lemq"/>
+				</lu>
+			</chunk>
+		</out>
+	</action>
+</rule>
+
+<rule comment="REGLA: continuar ger enc -> continuer à pro inf">
+	<pattern>
+		<pattern-item n="continuar"/>
+		<pattern-item n="ger"/>
+		<pattern-item n="prnenc"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="continuer_a_pro_ger">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="1" side="tl" part="temps"/></tag>
+					<tag><clip pos="1" side="tl" part="pers"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/>
+					<clip pos="1" side="tl" part="a_verb"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="pers"/>
+					<clip pos="1" side="tl" part="nbr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="à"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b pos="1"/>
+				<lu>
+					<clip pos="3" side="tl" part="lem"/>
+					<lit-tag v="prn.pro"/>
+					<clip pos="3" side="tl" part="tipoenc_pro"/>
+				</lu>
+				<b pos="2"/>
+				<lu>
+					<clip pos="2" side="tl" part="lemh"/>
+					<clip pos="2" side="tl" part="a_verb"/>
+					<lit-tag v="inf"/>
+					<clip pos="2" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+	</action>
+</rule>
+
+<rule comment="REGLA: continuar ger enc enc-> continuer à pro pro inf">
+	<pattern>
+		<pattern-item n="continuar"/>
+		<pattern-item n="ger"/>
+		<pattern-item n="prnenc"/>
+		<pattern-item n="prnenc"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="continuer_a_pro_pro_inf">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="1" side="tl" part="temps"/></tag>
+					<tag><clip pos="1" side="tl" part="pers"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/>
+					<clip pos="1" side="tl" part="a_verb"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="pers"/>
+					<clip pos="1" side="tl" part="nbr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="à"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b pos="1"/>
+				<lu>
+					<clip pos="3" side="tl" part="lem"/>
+					<lit-tag v="prn.pro"/>
+					<clip pos="3" side="tl" part="tipoenc_pro"/>
+				</lu>
+				<b pos="2"/>
+				<lu>
+					<clip pos="4" side="tl" part="lem"/>
+					<lit-tag v="prn.pro"/>
+					<clip pos="4" side="tl" part="tipoenc_pro"/>
+				</lu>
+				<b/>
+				<lu>
+					<clip pos="2" side="tl" part="lemh"/>
+					<clip pos="2" side="tl" part="a_verb"/>
+					<lit-tag v="inf"/>
+					<clip pos="2" side="tl" part="lemq"/> 
 				</lu>
 			</chunk>
 		</out>
