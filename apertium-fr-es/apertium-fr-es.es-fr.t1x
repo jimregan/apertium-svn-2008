@@ -2741,6 +2741,67 @@
 			</choose>
 		</def-macro>
 
+	<def-macro n="vauxiliar_pro" npar="3">
+			<choose>
+				<when>
+					<test>
+						<or>
+							<in caseless="yes">
+								<clip pos="3" side="tl" part="lem"/>
+								<list n="vbambser"/>
+							</in>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="tipoenc_pro"/>
+									<lit-tag v="ref.p3.mf.sp"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p3"/>
+								</equal>
+							</and>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="nbr"/>
+									<clip pos="2" side="sl" part="nbr"/>
+								</equal>
+							</and>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="pers"/>
+									<lit-tag v="p1"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p1"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="nbr"/>
+									<clip pos="2" side="sl" part="nbr"/>
+								</equal>
+							</and>
+						</or>
+					</test>
+					<let>
+						<clip pos="2" side="tl" part="lem"/>
+						<lit v="être"/>
+					</let>
+					<let>
+						<clip pos="2" side="tl" part="a_verb"/>
+						<lit-tag v="vbser"/>
+					</let>
+				</when>
+			</choose>
+		</def-macro>
+
 <def-macro n="aux_ifi" npar="1">
 			<choose>
 				<when>
@@ -2785,6 +2846,12 @@
                   <lit-tag v="mf"/>
                 </equal>
               </not>
+             <not>
+                <equal>
+                  <clip pos="1" side="tl" part="gen"/>
+                  <lit-tag v="nt"/>
+                </equal>
+              </not>
               <not>
                 <equal>
                   <clip pos="1" side="tl" part="gen"/>
@@ -2819,7 +2886,13 @@
               <not>
                 <equal>
                   <clip pos="1" side="tl" part="nbr"/>
-                  <lit-tag v="PD"/>
+                  <lit-tag v="ND"/>
+                </equal>
+              </not>
+             <not>
+                <equal>
+                  <clip pos="1" side="tl" part="gen"/>
+                  <lit-tag v="nt"/>
                 </equal>
               </not>
             </and>
@@ -10636,7 +10709,8 @@
 		<pattern-item n="pp"/>
 	</pattern>
 	<action>
-	<call-macro n="vauxiliar">
+	<call-macro n="vauxiliar_pro">
+		<with-param pos="1"/>
 		<with-param pos="2"/>
 		<with-param pos="3"/>
 	</call-macro>
@@ -10691,7 +10765,8 @@
 		<pattern-item n="pp"/>
 	</pattern>
 	<action>
-	<call-macro n="vauxiliar">
+	<call-macro n="vauxiliar_pro">
+		<with-param pos="2"/>
 		<with-param pos="3"/>
 		<with-param pos="4"/>
 	</call-macro>
@@ -10866,7 +10941,8 @@
 		<pattern-item n="adv_preadv"/>
 	</pattern>
 	<action>
-	<call-macro n="vauxiliar">
+	<call-macro n="vauxiliar_pro">
+		<with-param pos="1"/>
 		<with-param pos="2"/>
 		<with-param pos="3"/>
 	</call-macro>
@@ -10926,7 +11002,8 @@
 		<pattern-item n="pp"/>
 	</pattern>
 	<action>
-	<call-macro n="vauxiliar">
+	<call-macro n="vauxiliar_pro">
+		<with-param pos="1"/>
 		<with-param pos="3"/>
 		<with-param pos="4"/>
 	</call-macro>
@@ -10985,7 +11062,8 @@
 		<pattern-item n="pp"/>
 	</pattern>
 	<action>
-	<call-macro n="vauxiliar">
+	<call-macro n="vauxiliar_pro">
+		<with-param pos="2"/>
 		<with-param pos="4"/>
 		<with-param pos="5"/>
 	</call-macro>
@@ -11173,7 +11251,8 @@
 		<pattern-item n="adv_preadv"/>
 	</pattern>
 	<action>
-	<call-macro n="vauxiliar">
+	<call-macro n="vauxiliar_pro">
+		<with-param pos="1"/>
 		<with-param pos="3"/>
 		<with-param pos="4"/>
 	</call-macro>
