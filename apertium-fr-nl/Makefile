@@ -20,6 +20,7 @@ all:
 #	apertium-preprocess-transfer apertium-fr-nl.fr-nl.t3x fr-nl.t3x.bin
 #
 	apertium-preprocess-transfer apertium-fr-nl.trules-fr-nl.xml trules-fr-nl.bin
+	apertium-preprocess-transfer apertium-fr-nl.trules-nl-fr.xml trules-nl-fr.bin
 
 	#clean up temp files
 	rm apertium-fr-nl.fr.dix apertium-fr-nl.nl.dix apertium-fr-nl.fr-nl.dix
