@@ -22,6 +22,10 @@ all:
 	apertium-preprocess-transfer apertium-fr-nl.trules-fr-nl.xml trules-fr-nl.bin
 	apertium-preprocess-transfer apertium-fr-nl.trules-nl-fr.xml trules-nl-fr.bin
 
+	apertium-validate-dictionary apertium-fr-nl.post-fr.dix
+	lt-comp lr apertium-fr-nl.post-fr.dix nl-fr.autopgen.bin
+
+
 	#clean up temp files
 	rm apertium-fr-nl.fr.dix apertium-fr-nl.nl.dix apertium-fr-nl.fr-nl.dix
 
