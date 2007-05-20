@@ -1,0 +1,15 @@
+#!/usr/bin/python
+#Dateiname: Nomen.py
+
+englischWort = raw_input(">> Wort auf Englisch: ")
+hollaendischWort = raw_input(">> Wort auf Hollaendisch: ")
+ntJaNein = raw_input(">> Neutral (J/n): ")
+
+if ntJaNein == "J":
+	fileHandle = open ( 'neueWoerter.txt', 'a' )
+	fileHandle.write ( '\n    <e><p><l>' + englischWort + '<s n="n"/></l><r>' + hollaendischWort + '<s n="n"/></r></p></e> <!-- nt -->' )
+	fileHandle.close()
+else:
+	fileHandle = open ( 'neueWoerter.txt', 'a' )
+	fileHandle.write ( '\n    <e><p><l>' + englischWort + '<s n="n"/></l><r>' + hollaendischWort + '<s n="n"/></r></p></e> <!-- mf -->' )
+	fileHandle.close()
