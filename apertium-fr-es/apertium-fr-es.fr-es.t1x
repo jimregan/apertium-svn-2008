@@ -716,20 +716,44 @@
 						<lit-tag v="a"/>
 					</let>
 				</when>
-			</choose>
-			<choose>
-				<when>
-					<test>
-						<equal>
-							<clip pos="1" side="sl" part="lem"/>
-							<lit v="en"/>
-						</equal>
-					</test>
-					<let>
-						<var n="tipusprep"/>
-						<lit-tag v="en"/>
-					</let>
-				</when>
+				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<clip pos="1" side="sl" part="lem"/>
+									<lit v="en"/>
+								</equal>
+							</test>
+							<let>
+								<var n="tipusprep"/>
+								<lit-tag v="en"/>
+							</let>
+						</when>
+						<otherwise>
+							<choose>
+								<when>
+									<test>
+										<equal>
+											<clip pos="1" side="sl" part="lem"/>
+											<lit v="de"/>
+										</equal>
+									</test>
+									<let>
+										<var n="tipusprep"/>
+										<lit-tag v="de"/>
+									</let>
+								</when>
+								<otherwise>
+									<let>
+										<var n="tipusprep"/>
+										<lit-tag v=""/>
+									</let>
+								</otherwise>
+							</choose>
+						</otherwise>
+					</choose>
+				</otherwise>
 			</choose>
 		</def-macro>
 
