@@ -49,7 +49,10 @@
   <def-label name="DETMF" closed="true">
     <tags-item tags="det.*.mf.*"/>
   </def-label>
-  <def-label name="INTERJ">
+  <def-label name="DETNT">
+    <tags-item tags="detnt"/>
+  </def-label>
+   <def-label name="INTERJ">
     <tags-item tags="ij"/>
   </def-label> 
   <def-label name="ANTROPONIM">
