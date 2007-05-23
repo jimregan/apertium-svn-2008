@@ -664,27 +664,47 @@
 			<choose>
 				<when>
 					<test>
-						<and>
-							<equal>
+						<equal>
+							<clip pos="1" side="tl" part="lem"/>
+							<lit v="ser"/>
+						</equal>
+					</test>
+					<choose>
+						<when>
+							<test>
+								<in caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<list n="vbambser"/>
+								</in>
+							</test>
+							<let>
+								<clip pos="1" side="tl" part="lem"/>
+								<lit v="haber"/>
+							</let>
+							<let>
+								<clip pos="1" side="tl" part="a_verb"/>
+								<lit-tag v="vbhaver"/>
+							</let>
+							<let>
+								<clip pos="2" side="tl" part="gen"/>
+								<lit-tag v="m"/>
+							</let>
+							<let>
+								<clip pos="2" side="tl" part="nbr"/>
+								<lit-tag v="sg"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
 								<clip pos="1" side="tl" part="lem"/>
 								<lit v="ser"/>
-							</equal>
-							<not>
-								<in caseless="yes">
-								<clip pos="2" side="sl" part="lem"/>
-								<list n="vbambser"/>
-								</in>
-							</not>
-						</and>
-					</test>
-					<let>
-						<clip pos="1" side="tl" part="lem"/>
-						<lit v="haber"/>
-					</let>
-					<let>
-						<clip pos="1" side="tl" part="a_verb"/>
-						<lit-tag v="vbhaver"/>
-					</let>
+							</let>
+							<let>
+								<clip pos="1" side="tl" part="a_verb"/>
+								<lit-tag v="vbser"/>
+							</let>
+						</otherwise>
+					</choose>
 				</when>
 				<otherwise>
 					<let>
