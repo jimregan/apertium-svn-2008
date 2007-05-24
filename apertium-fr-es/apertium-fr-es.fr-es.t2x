@@ -90,6 +90,7 @@
 	<def-attr n="tprep">
         <attr-item tags="a"/>
         <attr-item tags="en"/>
+       <attr-item tags="para"/>
 	</def-attr>
 <def-attr n="pers">
           <attr-item tags="p1"/>
@@ -138,10 +139,7 @@
     </def-attr>
       
   <def-attr n="a_SN">
-          <attr-item tags="DET"/>
-	  <attr-item tags="UNDET"/>
-	  <attr-item tags="NUM"/>
-	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaci�que far�el postchunk detectant els PDET. -->
+          <attr-item tags="SN"/>
       </def-attr>
 
   </section-def-attrs>
@@ -360,7 +358,7 @@
      </def-macro>
 
 <def-macro n="cv_prep" npar="3">
-	<choose>
+	<choose> <!--canvia la prepo de lloc-->
 		<when>
 			<test>
 				<equal>
@@ -389,8 +387,39 @@
 				</otherwise>
 			</choose>
 		</when>
+		<when><!--canvia SN à inf per SN para inf-->
+			<test>
+				<and>
+					<equal>
+						<clip pos="1" part="a_SN"/>
+						<lit-tag v="SN"/>
+					</equal>
+					<equal>
+						<clip pos="2" part="tprep"/>
+						<lit-tag v="a"/>
+					</equal>
+					<or>
+						<equal>
+							<clip pos="3" part="lem"/>
+							<lit v="inf"/>
+						</equal>
+						<equal>
+							<clip pos="3" part="lem"/>
+							<lit v="pro_inf"/>
+						</equal>
+						<equal>
+							<clip pos="3" part="lem"/>
+							<lit v="pro_pro_inf"/>
+						</equal>
+					</or>
+				</and>
+			</test>
+			<let>
+				<clip pos="2" part="tprep"/>
+				<lit-tag v="para"/>
+			</let>
+		</when>	
 	</choose>
-
 </def-macro>
 
 </section-def-macros>
@@ -452,6 +481,24 @@
 			</out>
 </action>
 </rule>
+<rule comment="REGLA: SV">
+	<pattern>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+</action>
+</rule>
+
 <rule comment="REGLA: det">
 	<pattern>
 		<pattern-item n="DET"/>
@@ -467,6 +514,46 @@
 					<clip pos="1" part="chcontent"/>
 				</chunk>
 			</out>
+</action>
+</rule>
+
+<rule comment="REGLA: SN SP">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="cv_prep">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+		<with-param pos="3"/>
+	</call-macro>
+	<out>
+		<chunk>
+			<clip pos="1" part="lem"/>
+			<clip pos="1" part="tags"/>
+			<clip pos="1" part="chcontent"/>
+		</chunk>
+		<b pos="1"/>
+		<chunk>
+			<clip pos="2" part="lem"/>
+			<clip pos="2" part="tags"/>
+			<clip pos="2" part="chcontent"/>
+		</chunk>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="lem"/>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
+		</chunk>
+	</out>
 </action>
 </rule>
 
@@ -672,9 +759,104 @@
 			<clip pos="4" part="chcontent"/>
 		</chunk>
 	</out>
-	
 </action>
 </rule>
+
+<rule comment="REGLA: SN SV SN pr SN">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="5"/>
+	</call-macro>
+	<call-macro n="cv_prep">
+		<with-param pos="2"/>
+		<with-param pos="4"/>
+		<with-param pos="5"/>
+	</call-macro>
+	<call-macro n="cv_prep">
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+		<with-param pos="5"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnperssubj"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			</test>
+			<out>
+				<chunk><!--el pronom no l'envio, nom� el 2n chunk -->
+					<get-case-from pos="1">
+						<clip pos="2" part="lem"/>
+					</get-case-from>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--Quan SN no � pronom subjecte, per tant, quan � qualsevol altre SN -->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+	<out>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="lem"/>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
+		</chunk>
+		<b pos="3"/>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+		<b pos="4"/>
+		<chunk>
+			<clip pos="5" part="lem"/>
+			<clip pos="5" part="tags"/>
+			<clip pos="5" part="chcontent"/>
+		</chunk>
+	</out>
+</action>
+</rule>
+
 <rule comment="REGLA: SN vbcop SA">
 	<pattern>
 		<pattern-item n="SN"/>
@@ -828,6 +1010,11 @@
 		<with-param pos="1"/>
 		<with-param pos="5"/>
 	</call-macro>
+	<call-macro n="cv_prep">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+		<with-param pos="3"/>
+	</call-macro>
 	<out>
 		<chunk>
 			<clip pos="1" part="lem"/>
@@ -882,6 +1069,11 @@
 	<call-macro n="concord_sn">
 		<with-param pos="1"/>
 		<with-param pos="5"/>
+	</call-macro>
+	<call-macro n="cv_prep">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+		<with-param pos="3"/>
 	</call-macro>
 	<out>
 		<chunk>

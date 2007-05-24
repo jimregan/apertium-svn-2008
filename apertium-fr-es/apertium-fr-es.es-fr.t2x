@@ -132,16 +132,14 @@
 
       <def-attr n="temps">
           <attr-item tags="inf"/>
-	  <attr-item tags="pres"/>
-	  <attr-item tags="past"/>
 	  <attr-item tags="pri"/>
-	  <attr-item tags="ifip"/>
+	  <attr-item tags="prs"/>
+	  <attr-item tags="ifi"/>
 	  <attr-item tags="cni"/>
 	  <attr-item tags="fti"/>
 	  <attr-item tags="pp"/>
 	  <attr-item tags="ger"/>
-	  <attr-item tags="pprs"/>
-	  <attr-item tags="subs"/>
+	  <attr-item tags="imp"/>
 	  
       </def-attr>
 
@@ -503,6 +501,16 @@
 </def-macro>
 
 <def-macro n="posa_subj" npar="1">
+<choose>
+	<when>
+		<test>
+			<not>
+				<equal>
+					<clip pos="1" part="temps"/>
+					<lit-tag v="imp"/>
+				</equal>
+			</not>
+		</test>
 	<choose>
 		<when>
 			<test>
@@ -617,6 +625,8 @@
 		</choose>
 	</otherwise>
 	</choose>
+	</when>
+</choose>
 </def-macro>
 
   <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc cont�o no format. Cal posar aquesta funci�en les regles en qu�desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont�format cal conservar-la, si no en cont�cal eliminar-la perqu�no apareguin dos espais seguits. -->

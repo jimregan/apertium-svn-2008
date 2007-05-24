@@ -659,6 +659,71 @@
 	</choose>
 </def-macro>
 
+		<def-macro n="verb_ref" npar="2"><!-- aquesta macro canvia el significat de certs verbs reflexius-->
+
+			<choose> <!--si el prn és ref...-->
+				<when>
+					<test>
+						<or>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="tipoenc_pro"/>
+									<lit-tag v="ref.p3.mf.sp"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p3"/>
+								</equal>
+							</and>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="nbr"/>
+									<clip pos="2" side="sl" part="nbr"/>
+								</equal>
+							</and>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="pers"/>
+									<lit-tag v="p1"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p1"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="nbr"/>
+									<clip pos="2" side="sl" part="nbr"/>
+								</equal>
+							</and>
+						</or>
+					</test>
+					<choose> <!-- canvia aquests verbs-->
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="refuser"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="negar"/>
+							</let>
+						</when>
+					</choose>
+				</when>
+			</choose>
+
+
+		</def-macro>
 
     <def-macro n="comprova_auxiliar" npar="2">
 			<choose>
@@ -5194,6 +5259,10 @@
 		<with-param pos="1"/>
 	</call-macro>
 	<call-macro n="tipus_verb">
+		<with-param pos="2"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+		<with-param pos="1"/>
 		<with-param pos="2"/>
 	</call-macro>
 	<choose>
