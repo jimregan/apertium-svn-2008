@@ -240,18 +240,18 @@
       <cat-item lemma="ne" tags="adv"/>
     </def-cat>
 
-    <def-cat n="cnjcoo">
-      <cat-item lemma="et" tags="cnjcoo"/>
-      <cat-item lemma="o" tags="cnjcoo"/>
-      <cat-item lemma="mais" tags="cnjcoo"/>
+     <def-cat n="cnjcoo">
+      <cat-item tags="cnjcoo"/>
     </def-cat>
 
-     <def-cat n="cnj">
-      <cat-item tags="cnjcoo"/>
+    <def-cat n="cnjsub">
       <cat-item tags="cnjsub"/>
+    </def-cat>
+<def-cat n="cnjadv">
       <cat-item tags="cnjadv"/>
     </def-cat>
 
+    
     <def-cat n="per">
       <cat-item lemma="per" tags="pr"/>
     </def-cat>
@@ -10469,11 +10469,32 @@
 </rule>
 <rule comment="CNJ">
 	<pattern>
-		<pattern-item n="cnj"/>
+		<pattern-item n="cnjsub"/>
 	</pattern>
 	<action>
 		<out>
-			<chunk name="cnj">
+			<chunk name="cnjsub">
+				<tags>
+					<tag><clip pos="1" side="tl" part="tags"/></tag>		
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="whole"/>
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+<rule comment="CNJ">
+	<pattern>
+		<pattern-item n="cnjadv"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="cnjadv">
 				<tags>
 					<tag><clip pos="1" side="tl" part="tags"/></tag>		
 				</tags>
