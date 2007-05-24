@@ -96,7 +96,7 @@
         <out>
           <chunk name="nom" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="SN"/></tag>
+              <tag><lit-tag v="NP"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
             <lu>
@@ -118,7 +118,7 @@
         <out>
           <chunk name="det_nom" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="SN"/></tag>
+              <tag><lit-tag v="NP"/></tag>
               <tag><clip pos="2" side="sl" part="gen"/></tag>
               <tag><var n="nombre"/></tag>
             </tags>
@@ -153,7 +153,7 @@
         <out>
           <chunk name="det_adj_nom" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="SN"/></tag>
+              <tag><lit-tag v="NP"/></tag>
               <tag><clip pos="2" side="sl" part="gen"/></tag>
               <tag><var n="nombre"/></tag>
             </tags>
@@ -191,6 +191,12 @@
       </pattern>
       <action>
             <out>
+          <chunk name="adj_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+	    </tags>
               <lu>
                 <clip pos="1" side="tl" part="lem"/>
     	        <clip pos="1" side="tl" part="a_adj"/>
@@ -202,6 +208,7 @@
     	        <clip pos="2" side="tl" part="a_nom"/>
     	        <clip pos="2" side="tl" part="nbr"/>
               </lu>
+            </chunk>
             </out>
       </action>
     </rule>
