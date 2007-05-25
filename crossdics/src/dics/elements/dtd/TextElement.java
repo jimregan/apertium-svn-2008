@@ -29,30 +29,34 @@ import java.io.IOException;
  */
 public class TextElement extends Element {
 
-    /**
-         * 
-         */
-    private String value;
+	/**
+	 * 
+	 */
+	private String value;
 
-    /**
-         * 
-         * @param str
-         */
-    public TextElement(final String str) {
-	setTagName("");
-	value = str;
-    }
+	/**
+	 * 
+	 * @param str
+	 */
+	public TextElement(final String str) {
+		setTagName("");
+		value = str;
+	}
 
-    @Override
-    public final void printXML(final DataOutputStream dos) throws IOException {
-	dos.writeBytes(value);
-    }
+	@Override
+	public final void printXML(final DataOutputStream dos) throws IOException {
+		dos.writeBytes(value);
+	}
 
-    /**
-         * 
-         * @return
-         */
-    public final String getValue() {
-	return value;
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public final String getValue() {
+		return value;
+	}
+
+	public final void setValue(final String v) {
+		value = v;
+	}
 }

@@ -26,12 +26,12 @@ package dics.elements.dtd;
  */
 public class AElement extends Element {
 
-    /**
-         * 
-         * 
-         */
-    public AElement() {
-	setTagName("a");
-    }
+	/**
+	 * 
+	 * 
+	 */
+	public AElement() {
+		setTagName("a");
+	}
 
 }

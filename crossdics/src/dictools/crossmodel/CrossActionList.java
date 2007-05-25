@@ -18,20 +18,19 @@
  * 02111-1307, USA.
  */
 
-package dics.elements.utils;
+package dictools.crossmodel;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * 
  * @author Enrique Benimeli Bofarull
  * 
  */
-public class EElementMap extends HashMap<String, EElementList> {
+public class CrossActionList extends ArrayList<CrossAction> {
 
 	/**
 	 * 
 	 */
 	static final long serialVersionUID = 0;
-
 }

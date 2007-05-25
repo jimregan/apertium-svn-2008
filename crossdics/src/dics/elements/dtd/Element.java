@@ -30,95 +30,95 @@ import java.io.IOException;
  */
 public class Element implements Cloneable {
 
-    /**
-         * 
-         */
-    private String TAGNAME;
+	/**
+	 * 
+	 */
+	private String TAGNAME;
 
-    /**
-         * 
-         */
-    protected String comments;
+	/**
+	 * 
+	 */
+	protected String comments;
 
-    /**
-         * 
-         * @param dos
-         * @throws IOException
-         */
-    protected void printXML(final DataOutputStream dos) throws IOException {
-	dos.writeBytes("<" + getTagName() + "/>");
-    }
-
-    /**
-         * 
-         * @param nTabs
-         * @return
-         */
-    protected String tab(final int nTabs) {
-	String sTabs = "";
-	for (int i = 0; i < nTabs; i++) {
-	    sTabs += "  ";
-	}
-	return sTabs;
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    protected void setTagName(final String value) {
-	TAGNAME = value;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    protected String getTagName() {
-	return TAGNAME;
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public void addComments(final String value) {
-	if (comments == null) {
-	    comments = "";
-	}
-	comments += tab(3) + value + "\n";
-    }
-
-    /**
-         * 
-         * @param value
-         * @param side
-         */
-    public void setComments(final String value) {
-	comments = value;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public String getComments() {
-	return comments;
-    }
-
-    /**
-         * 
-         */
-
-    @Override
-    public Object clone() {
-	try {
-	    final Element cloned = (Element) super.clone();
-	    return cloned;
-	} catch (final CloneNotSupportedException ex) {
-	    return null;
+	/**
+	 * 
+	 * @param dos
+	 * @throws IOException
+	 */
+	protected void printXML(final DataOutputStream dos) throws IOException {
+		dos.writeBytes("<" + getTagName() + "/>");
 	}
 
-    }
+	/**
+	 * 
+	 * @param nTabs
+	 * @return
+	 */
+	protected String tab(final int nTabs) {
+		String sTabs = "";
+		for (int i = 0; i < nTabs; i++) {
+			sTabs += "  ";
+		}
+		return sTabs;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 */
+	protected void setTagName(final String value) {
+		TAGNAME = value;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	protected String getTagName() {
+		return TAGNAME;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 */
+	public void addComments(final String value) {
+		if (comments == null) {
+			comments = "";
+		}
+		comments += tab(3) + value + "\n";
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @param side
+	 */
+	public void setComments(final String value) {
+		comments = value;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getComments() {
+		return comments;
+	}
+
+	/**
+	 * 
+	 */
+
+	@Override
+	public Object clone() {
+		try {
+			final Element cloned = (Element) super.clone();
+			return cloned;
+		} catch (final CloneNotSupportedException ex) {
+			return null;
+		}
+
+	}
 
 }

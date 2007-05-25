@@ -30,91 +30,91 @@ import java.io.IOException;
  */
 public class PElement extends Element {
 
-    /**
-         * 
-         */
-    private LElement l;
+	/**
+	 * 
+	 */
+	private LElement l;
 
-    /**
-         * 
-         */
-    private RElement r;
+	/**
+	 * 
+	 */
+	private RElement r;
 
-    /**
-         * 
-         * 
-         */
-    public PElement() {
-	setTagName("p");
-    }
-
-    /**
-         * 
-         * @param pE
-         */
-    public PElement(final PElement pE) {
-	setTagName("p");
-	// l = new LElement(pE.getL());
-	l = (LElement) pE.getL().clone();
-	// r = new RElement(pE.getR());
-	r = (RElement) pE.getR().clone();
-    }
-
-    /**
-         * 
-         * @param l
-         */
-    public final void setLElement(final LElement l) {
-	this.l = l;
-    }
-
-    /**
-         * 
-         * @param r
-         */
-    public final void setRElement(final RElement r) {
-	this.r = r;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public final LElement getL() {
-	return l;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public final RElement getR() {
-	return r;
-    }
-
-    /**
-         * 
-         * @param value
-         * @param side
-         */
-    public final void setComments(final String value, final String side) {
-	if (side.equals("L")) {
-	    l.setComments(value);
+	/**
+	 * 
+	 * 
+	 */
+	public PElement() {
+		setTagName("p");
 	}
-	if (side.equals("R")) {
-	    r.setComments(value);
-	}
-    }
 
-    /**
-         * 
-         */
-    @Override
-    public final void printXML(final DataOutputStream dos) throws IOException {
-	dos.writeBytes(tab(3) + "<" + getTagName() + ">\n");
-	l.printXML(dos);
-	r.printXML(dos);
-	dos.writeBytes(tab(3) + "</" + getTagName() + ">\n");
-    }
+	/**
+	 * 
+	 * @param pE
+	 */
+	public PElement(final PElement pE) {
+		setTagName("p");
+		// l = new LElement(pE.getL());
+		l = (LElement) pE.getL().clone();
+		// r = new RElement(pE.getR());
+		r = (RElement) pE.getR().clone();
+	}
+
+	/**
+	 * 
+	 * @param l
+	 */
+	public final void setLElement(final LElement l) {
+		this.l = l;
+	}
+
+	/**
+	 * 
+	 * @param r
+	 */
+	public final void setRElement(final RElement r) {
+		this.r = r;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public final LElement getL() {
+		return l;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public final RElement getR() {
+		return r;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @param side
+	 */
+	public final void setComments(final String value, final String side) {
+		if (side.equals("L")) {
+			l.setComments(value);
+		}
+		if (side.equals("R")) {
+			r.setComments(value);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public final void printXML(final DataOutputStream dos) throws IOException {
+		dos.writeBytes(tab(3) + "<" + getTagName() + ">\n");
+		l.printXML(dos);
+		r.printXML(dos);
+		dos.writeBytes(tab(3) + "</" + getTagName() + ">\n");
+	}
 
 }

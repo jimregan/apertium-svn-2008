@@ -23,6 +23,7 @@ package dics.elements.utils;
 import java.util.Vector;
 
 import dics.elements.dtd.SElement;
+import dictools.crossmodel.ConstantMap;
 
 /**
  * 
@@ -31,96 +32,125 @@ import dics.elements.dtd.SElement;
  */
 public class SElementList extends Vector<SElement> {
 
-    /**
-         * 
-         */
-    static final long serialVersionUID = 0;
+	/**
+	 * 
+	 */
+	static final long serialVersionUID = 0;
 
-    /**
-         * 
-         * 
-         */
-    public SElementList() {
-	super();
-    }
+	/**
+	 * 
+	 * 
+	 */
+	public SElementList() {
+		super();
+	}
 
-    /**
-         * 
-         * @param sList
-         */
-    public SElementList(final SElementList sList) {
-	// super((SElementList) sList.clone());
-	super(sList);
-    }
+	/**
+	 * 
+	 * @param sList
+	 */
+	public SElementList(final SElementList sList) {
+		super(sList);
+	}
 
-    /**
-         * 
-         * @param sEList
-         * @return
-         */
-    public final boolean equals(final SElementList sEList) {
-	if (size() != sEList.size()) {
-	    return false;
-	} else {
-	    for (int i = 0; i < size(); i++) {
-		final SElement sE1 = get(i);
-		final SElement sE2 = sEList.get(i);
-		if (!sE1.equals(sE2)) {
-		    return false;
+	/**
+	 * 
+	 * @param sEList
+	 * @return
+	 */
+	public final boolean equals(final SElementList sEList) {
+		if (size() != sEList.size()) {
+			return false;
+		} else {
+			for (int i = 0; i < size(); i++) {
+				final SElement sE1 = get(i);
+				final SElement sE2 = sEList.get(i);
+				if (!sE1.equals(sE2)) {
+					return false;
+				}
+			}
 		}
-	    }
+		return true;
 	}
-	return true;
-    }
 
-    /**
-         * 
-         */
-    @Override
-    public final String toString() {
-	String str = "";
-	for (final SElement s : this) {
-	    str += s.toString();
-	}
-	return str;
-    }
-    
-    /**
-     * 
-     * @param sEList2
-     * @return
-     */
-    public final boolean matches(final SElementList sEList2) {
-	int i = 0;
-	if ((sEList2.size() - size()) >= 0) {
-	    for (SElement sE1 : this) {
-		if (sE1.getValue().charAt(0) == 'k') {
-		    System.err.println("OK (k)!");
-		    return true;
+	/**
+	 * 
+	 */
+	@Override
+	public final String toString() {
+		String str = "";
+		for (final SElement s : this) {
+			str += s.toString();
 		}
-		SElement sE2 = sEList2.get(i);
-		if (!sE1.equals(sE2)) {
-		    return false;
+		return str;
+	}
+
+	/**
+	 * 
+	 * @param sEList2
+	 * @return
+	 */
+	public final boolean matches(final SElementList sEList2) {
+		int i = 0;
+
+		/*
+		 * System.err.println("pattern..."); this.print();
+		 * System.err.println("tagged..."); sEList2.print();
+		 */
+
+		if ((sEList2.size() - size()) >= 0) {
+			for (final SElement sE2 : sEList2) {
+				if (i < size()) {
+					final SElement sE1 = get(i);
+					if (sE1.getValue().charAt(0) == 'k') {
+						// System.err.println("OK (k)!");
+						return true;
+					}
+
+					if (!sE1.equals(sE2)) {
+						return false;
+					}
+					// System.err.println(sE1.toString() + " = " +
+					// sE2.toString());
+					i++;
+				} else {
+					return false;
+				}
+			}
+			// System.err.println("OK!");
+			return true;
+		} else {
+			return false;
 		}
-		//System.err.println(sE1.toString() + " = " + sE2.toString());
-		i++;
-	    }
-	    System.err.println("OK!");
-	    return true;
-	} else {
-	    return false;
 	}
-    }
-    
-    /**
-     * 
-     *
-     */
-    public final void print() {
-	for (SElement s : this) {
-	    System.err.print(s.toString());
+
+	/**
+	 * 
+	 * 
+	 */
+	public final void print() {
+		for (final SElement s : this) {
+			System.err.print(s.toString());
+		}
+		System.err.println("");
 	}
-	System.err.println("");
-    }
+
+	/**
+	 * 
+	 * @param constants
+	 */
+	public final ElementList assignValues(final ConstantMap constants,
+			final ConstantMap constants2) {
+		final ElementList sEList2 = new ElementList();
+		for (final SElement s : this) {
+			String key = constants.getKey(s.getValue());
+			if (key == null) {
+				key = constants2.getKey(s.getValue());
+			}
+			final SElement sE2 = SElement.get(key);
+			sEList2.add(sE2);
+		}
+		return sEList2;
+	}
 
 }

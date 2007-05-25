@@ -30,41 +30,41 @@ import java.io.IOException;
  */
 public class GElement extends ContentElement {
 
-    /**
-         * 
-         * 
-         */
-    public GElement() {
-	super();
-	setTagName("g");
-    }
+	/**
+	 * 
+	 * 
+	 */
+	public GElement() {
+		super();
+		setTagName("g");
+	}
 
-    /**
-         * 
-         */
-    @Override
-    public final void printXML(final DataOutputStream dos) throws IOException {
-	if (getTagName() != null) {
-	    dos.writeBytes("<" + getTagName() + ">");
-	} else {
-	    dos.writeBytes("<!-- error tagname -->\n");
-	}
-	if (children != null) {
-	    for (final Element e : children) {
-		if (e != null) {
-		    e.printXML(dos);
+	/**
+	 * 
+	 */
+	@Override
+	public final void printXML(final DataOutputStream dos) throws IOException {
+		if (getTagName() != null) {
+			dos.writeBytes("<" + getTagName() + ">");
+		} else {
+			dos.writeBytes("<!-- error tagname -->\n");
 		}
-	    }
+		if (children != null) {
+			for (final Element e : children) {
+				if (e != null) {
+					e.printXML(dos);
+				}
+			}
+		}
+		String c = "";
+		if (getComments() != null) {
+			c = getComments();
+		}
+		if (getTagName() != null) {
+			dos.writeBytes("</" + getTagName() + ">" + c + "");
+		} else {
+			dos.writeBytes("<!-- error tagname -->\n");
+		}
 	}
-	String c = "";
-	if (getComments() != null) {
-	    c = getComments();
-	}
-	if (getTagName() != null) {
-	    dos.writeBytes("</" + getTagName() + ">" + c + "");
-	} else {
-	    dos.writeBytes("<!-- error tagname -->\n");
-	}
-    }
 
 }

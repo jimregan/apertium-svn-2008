@@ -21,17 +21,18 @@
 package dics.elements.utils;
 
 import java.util.HashMap;
+
 import dics.elements.dtd.EElement;
 
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class EHashMap extends HashMap<String, EElement> {
 
 	/**
 	 * 
 	 */
-    static final long serialVersionUID = 0;
+	static final long serialVersionUID = 0;
 }

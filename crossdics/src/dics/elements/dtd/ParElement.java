@@ -30,67 +30,67 @@ import java.io.IOException;
  */
 public class ParElement extends Element {
 
-    /**
-         * 
-         */
-    private String n;
+	/**
+	 * 
+	 */
+	private String n;
 
-    /**
-         * 
-         * 
-         */
-    public ParElement() {
-	setTagName("par");
+	/**
+	 * 
+	 * 
+	 */
+	public ParElement() {
+		setTagName("par");
 
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public ParElement(final String value) {
-	setTagName("par");
-	n = value;
-    }
-
-    public ParElement(final ParElement pE) {
-	n = new String(pE.getValue());
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public final void setValue(final String value) {
-	n = value;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public final String getValue() {
-	return n;
-    }
-
-    /**
-         * 
-         */
-    @Override
-    public final void printXML(final DataOutputStream dos) throws IOException {
-	if (comments == null) {
-	    comments = "";
 	}
-	dos.writeBytes(tab(4) + "<" + getTagName() + " n=\"" + n + "\"/> "
-		+ getComments() + "\n");
-    }
 
-    /**
-         * 
-         */
-    @Override
-    public final String toString() {
-	return "<" + getTagName() + " n=\"" + n + "\"/> ";
-    }
+	/**
+	 * 
+	 * @param value
+	 */
+	public ParElement(final String value) {
+		setTagName("par");
+		n = value;
+	}
+
+	public ParElement(final ParElement pE) {
+		n = new String(pE.getValue());
+	}
+
+	/**
+	 * 
+	 * @param value
+	 */
+	public final void setValue(final String value) {
+		n = value;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public final String getValue() {
+		return n;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public final void printXML(final DataOutputStream dos) throws IOException {
+		if (comments == null) {
+			comments = "";
+		}
+		dos.writeBytes(tab(4) + "<" + getTagName() + " n=\"" + n + "\"/> "
+				+ getComments() + "\n");
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public final String toString() {
+		return "<" + getTagName() + " n=\"" + n + "\"/> ";
+	}
 
 }

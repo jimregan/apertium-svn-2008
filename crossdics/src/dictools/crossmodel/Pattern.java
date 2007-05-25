@@ -18,61 +18,103 @@
  * 02111-1307, USA.
  */
 
-package dics.elements.dtd;
+package dictools.crossmodel;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import dics.elements.dtd.EElement;
 
 /**
  * 
  * @author Enrique Benimeli Bofarull
  * 
  */
-public class SdefElement extends Element {
+public class Pattern {
 
 	/**
 	 * 
 	 */
-	private String n;
+	private EElement e1;
 
 	/**
 	 * 
-	 * @param value
 	 */
-	public SdefElement(final String value) {
-		setTagName("sdef");
-		n = value;
+	private EElement e2;
+
+	/**
+	 * 
+	 * 
+	 */
+	public Pattern() {
+
+	}
+
+	/**
+	 * 
+	 * @param ab
+	 * @param bc
+	 */
+	public Pattern(final EElement ab, final EElement bc) {
+		e1 = ab;
+		e2 = bc;
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public final String getValue() {
-		return n;
+	public EElement getAB() {
+		return e1;
 	}
 
 	/**
 	 * 
-	 * @param dos
-	 * @throws IOException
+	 * @return
 	 */
-	@Override
-	public final void printXML(final DataOutputStream dos) throws IOException {
-		if (comments == null) {
-			setComments("");
+	public EElement getBC() {
+		return e2;
+	}
+
+	/**
+	 * 
+	 * @param ab
+	 */
+	public void setAB(final EElement ab) {
+		e1 = ab;
+	}
+
+	/**
+	 * 
+	 * @param bc
+	 */
+	public void setBC(final EElement bc) {
+		e2 = bc;
+	}
+
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public final boolean matches(final Pattern p) {
+		final EElement p1e1 = getAB();
+		final EElement p1e2 = getBC();
+
+		final EElement p2e1 = p.getAB();
+		final EElement p2e2 = p.getBC();
+
+		if (p1e1.matches(p2e1) && p1e2.matches(p2e2)) {
+			return true;
 		}
-		dos.writeBytes(tab(2) + "<" + getTagName() + " n=\"" + getValue()
-				+ "\"/> " + getComments() + "\n");
+		return false;
 	}
 
 	/**
 	 * 
+	 * 
 	 */
-	@Override
-	public final String toString() {
-		final String str = "<" + getValue() + ">";
-		return str;
+	public final void print() {
+		getAB().print("L");
+		getAB().print("R");
+		getBC().print("L");
+		getBC().print("R");
 	}
-
 }

@@ -31,34 +31,34 @@ import dics.elements.dtd.Element;
  */
 public class ElementList extends ArrayList<Element> implements Cloneable {
 
-    /**
-         * 
-         */
-    static final long serialVersionUID = 0;
+	/**
+	 * 
+	 */
+	static final long serialVersionUID = 0;
 
-    /**
-         * 
-         * 
-         */
-    public ElementList() {
-	super();
-    }
-
-    /**
-         * 
-         */
-    @Override
-    public Object clone() {
-	try {
-	    final ElementList cloned = (ElementList) super.clone();
-	    for (int i = 0; i < size(); i++) {
-		final Element eCloned = (Element) cloned.get(i).clone();
-		cloned.set(i, eCloned);
-	    }
-	    return cloned;
-	} catch (final Exception ex) {
-	    return null;
+	/**
+	 * 
+	 * 
+	 */
+	public ElementList() {
+		super();
 	}
-    }
+	
+	/**
+	 * 
+	 */
+	@Override
+	public Object clone() {
+		try {
+			final ElementList cloned = (ElementList) super.clone();
+			for (int i = 0; i < size(); i++) {
+				final Element eCloned = (Element) cloned.get(i).clone();
+				cloned.set(i, eCloned);
+			}
+			return cloned;
+		} catch (final Exception ex) {
+			return null;
+		}
+	}
 
 }

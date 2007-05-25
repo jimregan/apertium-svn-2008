@@ -32,107 +32,107 @@ import dics.elements.utils.EElementList;
  */
 public class SectionElement extends Element {
 
-    /**
-         * 
-         */
-    private String id;
+	/**
+	 * 
+	 */
+	private String id;
 
-    /**
-         * 
-         */
-    private String type;
+	/**
+	 * 
+	 */
+	private String type;
 
-    /**
-         * 
-         */
-    private EElementList eElements;
+	/**
+	 * 
+	 */
+	private EElementList eElements;
 
-    /**
-         * 
-         * 
-         */
-    public SectionElement() {
-	setTagName("section");
-	eElements = new EElementList();
-    }
-
-    /**
-         * 
-         * @param id
-         * @param type
-         */
-    public SectionElement(final String id, final String type) {
-	setTagName("section");
-	eElements = new EElementList();
-	this.id = id;
-	this.type = type;
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public final void setID(final String value) {
-	id = value;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public String getID() {
-	return id;
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public final void setType(final String value) {
-	type = value;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public String getType() {
-	return type;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public EElementList getEElements() {
-	return eElements;
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public void addEElement(final EElement value) {
-	eElements.add(value);
-    }
-
-    /**
-         * 
-         */
-    @Override
-    public final void printXML(final DataOutputStream dos) throws IOException {
-	String attributes = "";
-	if (getID() != null) {
-	    attributes += " id=\"" + getID() + "\"";
+	/**
+	 * 
+	 * 
+	 */
+	public SectionElement() {
+		setTagName("section");
+		eElements = new EElementList();
 	}
-	if (getType() != null) {
-	    attributes += " type=\"" + getType() + "\"";
+
+	/**
+	 * 
+	 * @param id
+	 * @param type
+	 */
+	public SectionElement(final String id, final String type) {
+		setTagName("section");
+		eElements = new EElementList();
+		this.id = id;
+		this.type = type;
 	}
-	dos.writeBytes(tab(1) + "<" + getTagName() + "" + attributes + ">\n");
-	for (final EElement e : eElements) {
-	    e.printXML(dos);
+
+	/**
+	 * 
+	 * @param value
+	 */
+	public final void setID(final String value) {
+		id = value;
 	}
-	dos.writeBytes(tab(1) + "</" + getTagName() + ">\n");
-    }
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getID() {
+		return id;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 */
+	public final void setType(final String value) {
+		type = value;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public EElementList getEElements() {
+		return eElements;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 */
+	public void addEElement(final EElement value) {
+		eElements.add(value);
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public final void printXML(final DataOutputStream dos) throws IOException {
+		String attributes = "";
+		if (getID() != null) {
+			attributes += " id=\"" + getID() + "\"";
+		}
+		if (getType() != null) {
+			attributes += " type=\"" + getType() + "\"";
+		}
+		dos.writeBytes(tab(1) + "<" + getTagName() + "" + attributes + ">\n");
+		for (final EElement e : eElements) {
+			e.printXML(dos);
+		}
+		dos.writeBytes(tab(1) + "</" + getTagName() + ">\n");
+	}
 
 }

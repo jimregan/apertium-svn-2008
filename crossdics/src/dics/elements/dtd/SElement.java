@@ -31,153 +31,137 @@ import java.util.HashMap;
  */
 public class SElement extends Element {
 
-    public static int nSElements = 0;
-    
+	/**
+	 * 
+	 */
+	private static final HashMap<String, SElement> sElementList = new HashMap<String, SElement>();
 
-    /**
-     * 
-     */
-    private static HashMap<String,SElement> sElementList = new HashMap<String,SElement>();
-    
+	/**
+	 * 
+	 */
+	private String n;
 
-    /**
-         * 
-         */
-    private String n;
-
-    /**
-         * 
-         * 
-         */
-    public SElement() {
-	setTagName("s");
-	incrSElements();
-	// System.err.println("sElement: " + nSElements);
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public SElement(final String value) {
-	setTagName("s");
-	n = value;
-	incrSElements();
-	// System.err.println("sElement: " + nSElements);
-    }
-
-    /*
-         * 
-         */
-    public SElement(final SElement sE) {
-	// n = new String(sE.getValue());
-	n = sE.getValue();
-	incrSElements();
-	// System.err.println("sElement: " + nSElements);
-    }
-
-    public static final void incrSElements() {
-	nSElements++;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public final String getValue() {
-	return n;
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public final void setValue(final String value) {
-	n = value;
-    }
-
-    @Override
-    public final void printXML(final DataOutputStream dos) throws IOException {
-	dos.writeBytes("<" + getTagName() + " n=\"" + getValue() + "\"/>");
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public final boolean isAdj() {
-	return is("adj");
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public final boolean isN() {
-	return is("n");
-    }
-
-    /**
-         * 
-         * @param value
-         * @return
-         */
-    public final boolean is(final String value) {
-	if (n.equals(value)) {
-	    return true;
+	/**
+	 * 
+	 * 
+	 */
+	public SElement() {
+		setTagName("s");
 	}
-	return false;
-    }
 
-    /**
-         * 
-         */
-    @Override
-    public String toString() {
-	return "<" + getValue() + ">";
-    }
-
-    /**
-         * 
-         * @param sE
-         * @return
-         */
-    public final boolean equals(final SElement sE) {
-	return (getValue().equals(sE.getValue()));
-    }
-    
-    /**
-     * 
-     * @param sE
-     */
-    public static final void putSElement(final SElement sE) {
-	sElementList.put(sE.getValue(), sE);
-    }
-    
-    /**
-     * 
-     * @param str
-     * @return
-     */
-    public static final boolean exists(final String str) {
-	return sElementList.containsKey(str);
-    }
-    
-    /**
-     * 
-     * @param str
-     * @return
-     */
-    public static final SElement get(final String str) {
-	SElement sE = null;
-	if (SElement.exists(str)) {
-	    sE = sElementList.get(str);
-	} else {
-	    sE = new SElement(str);
-	    SElement.putSElement(sE);
+	/**
+	 * 
+	 * @param value
+	 */
+	public SElement(final String value) {
+		setTagName("s");
+		n = value;
 	}
-	return sE;
-    }
-    
+
+	/*
+	 * 
+	 */
+	public SElement(final SElement sE) {
+		n = sE.getValue();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public final String getValue() {
+		return n;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 */
+	public final void setValue(final String value) {
+		n = value;
+	}
+
+	@Override
+	public final void printXML(final DataOutputStream dos) throws IOException {
+		dos.writeBytes("<" + getTagName() + " n=\"" + getValue() + "\"/>");
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public final boolean isAdj() {
+		return is("adj");
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public final boolean isN() {
+		return is("n");
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public final boolean is(final String value) {
+		if (n.equals(value)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return "<" + getValue() + ">";
+	}
+
+	/**
+	 * 
+	 * @param sE
+	 * @return
+	 */
+	public final boolean equals(final SElement sE) {
+		return (getValue().equals(sE.getValue()));
+	}
+
+	/**
+	 * 
+	 * @param sE
+	 */
+	public static final void putSElement(final SElement sE) {
+		SElement.sElementList.put(sE.getValue(), sE);
+	}
+
+	/**
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static final boolean exists(final String str) {
+		return SElement.sElementList.containsKey(str);
+	}
+
+	/**
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static final SElement get(final String str) {
+		SElement sE = null;
+		if (SElement.exists(str)) {
+			sE = SElement.sElementList.get(str);
+		} else {
+			sE = new SElement(str);
+			SElement.putSElement(sE);
+		}
+		return sE;
+	}
 
 }

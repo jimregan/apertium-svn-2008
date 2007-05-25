@@ -31,9 +31,9 @@ import dics.elements.dtd.EElement;
  */
 public class EElementList extends ArrayList<EElement> {
 
-    /**
-         * 
-         */
-    static final long serialVersionUID = 0;
+	/**
+	 * 
+	 */
+	static final long serialVersionUID = 0;
 
 }

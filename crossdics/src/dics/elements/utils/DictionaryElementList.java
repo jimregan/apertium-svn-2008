@@ -31,8 +31,8 @@ import dics.elements.dtd.DictionaryElement;
  */
 public class DictionaryElementList extends ArrayList<DictionaryElement> {
 
-    /**
-         * 
-         */
-    static final long serialVersionUID = 0;
+	/**
+	 * 
+	 */
+	static final long serialVersionUID = 0;
 }

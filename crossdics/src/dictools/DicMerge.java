@@ -77,14 +77,13 @@ public class DicMerge {
 	 * @param dic2
 	 */
 	public DicMerge(final DicSet ds1, final DicSet ds2) {
-		bilAB1 = ds1.getBil1();
-		monA1 = ds1.getMon1();
-		monB1 = ds1.getMon2();
+		setBilAB1(ds1.getBil1());
+		setMonA1(ds1.getMon1());
+		setMonB1(ds1.getMon2());
 
-		bilAB2 = ds2.getBil1();
-		monA2 = ds2.getMon1();
-		monB2 = ds2.getMon2();
-
+		setBilAB2(ds2.getBil1());
+		setMonA1(ds2.getMon1());
+		setMonA2(ds2.getMon2());
 	}
 
 	/**
@@ -94,8 +93,8 @@ public class DicMerge {
 	 */
 	public final void setBils(final DictionaryElement bAB1,
 			final DictionaryElement bAB2) {
-		bilAB1 = bAB1;
-		bilAB2 = bAB2;
+		setBilAB1(bAB1);
+		setBilAB2(bAB2);
 	}
 
 	/**
@@ -105,8 +104,8 @@ public class DicMerge {
 	 */
 	public final void setMonAs(final DictionaryElement mA1,
 			final DictionaryElement mA2) {
-		monA1 = mA1;
-		monA2 = mA2;
+		setMonA1(mA1);
+		setMonA2(mA2);
 	}
 
 	/**
@@ -116,8 +115,8 @@ public class DicMerge {
 	 */
 	public final void setMonBs(final DictionaryElement mB1,
 			final DictionaryElement mB2) {
-		monB1 = mB1;
-		monB2 = mB2;
+		setMonB1(mB1);
+		setMonB2(mB2);
 	}
 
 	/**
@@ -125,41 +124,41 @@ public class DicMerge {
 	 * @return
 	 */
 	public final DicSet merge() {
-		final DictionaryElement bilAB = mergeBils(bilAB1, bilAB2);
-		String fileName = bilAB1.getFileName();
+		final DictionaryElement bilAB = mergeBils(getBilAB1(), getBilAB2());
+		String fileName = getBilAB1().getFileName();
 		fileName = DicTools.removeExtension(fileName);
 		bilAB.setFileName(fileName + "-merged.dix");
 
 		bilAB.countEntries();
-		bilAB1.countEntries();
-		bilAB2.countEntries();
+		getBilAB1().countEntries();
+		getBilAB2().countEntries();
 		bilAB.addComments("\n\tResult of merging 2 dictionaries:");
 		bilAB.addComments("\t" + bilAB.getNEntries() + " entries ("
-				+ bilAB1.getNEntries() + " U " + bilAB2.getNEntries() + ")");
+				+ getBilAB1().getNEntries() + " U " + getBilAB2().getNEntries() + ")");
 
-		final DictionaryElement monA = mergeMonols(monA1, monA2);
-		String monAfn = monA1.getFileName();
+		final DictionaryElement monA = mergeMonols(getMonA1(), getMonA2());
+		String monAfn = getMonA1().getFileName();
 		monAfn = DicTools.removeExtension(monAfn);
 		monA.setFileName(monAfn + "-merged.dix");
 
 		monA.countEntries();
-		monA1.countEntries();
-		monA2.countEntries();
+		getMonA1().countEntries();
+		getMonA2().countEntries();
 		monA.addComments("\n\tResult of merging 2 dictionaries:");
 		monA.addComments("\t" + monA.getNEntries() + " entries ("
-				+ monA1.getNEntries() + " U " + monA2.getNEntries() + ")");
+				+ getMonA1().getNEntries() + " U " + getMonA2().getNEntries() + ")");
 
-		final DictionaryElement monB = mergeMonols(monB1, monB2);
-		String monBfn = monB1.getFileName();
+		final DictionaryElement monB = mergeMonols(getMonB1(), getMonB2());
+		String monBfn = getMonB1().getFileName();
 		monBfn = DicTools.removeExtension(monBfn);
 		monB.setFileName(monBfn + "-merged.dix");
 
 		monB.countEntries();
-		monB1.countEntries();
-		monB2.countEntries();
+		getMonB1().countEntries();
+		getMonB2().countEntries();
 		monB.addComments("\n\tResult of merging 2 dictionaries:");
 		monB.addComments("\t" + monB.getNEntries() + " entries ("
-				+ monB1.getNEntries() + " U " + monA2.getNEntries() + ")");
+				+ getMonB1().getNEntries() + " U " + getMonB2().getNEntries() + ")");
 
 		final DicSet dicSet = new DicSet(bilAB, monA, monB);
 		return dicSet;
@@ -239,7 +238,7 @@ public class DicMerge {
 		sectionElement.setID(sectionE1.getID());
 		sectionElement.setType(sectionE1.getType());
 
-		EElementList elements1 = sectionE1.getEElements();
+		final EElementList elements1 = sectionE1.getEElements();
 		for (final EElement e1 : elements1) {
 			final String e1Key = e1.toString();
 			if (!eMap.containsKey(e1Key)) {
@@ -248,8 +247,7 @@ public class DicMerge {
 			}
 		}
 
-
-		EElementList elements2 = sectionE2.getEElements();
+		final EElementList elements2 = sectionE2.getEElements();
 		for (final EElement e2 : elements2) {
 			final String e2Key = e2.toString();
 			if (!eMap.containsKey(e2Key)) {
@@ -330,6 +328,90 @@ public class DicMerge {
 			}
 		}
 		return pardefs;
+	}
+
+	/**
+	 * @return the bilAB1
+	 */
+	private final DictionaryElement getBilAB1() {
+		return bilAB1;
+	}
+
+	/**
+	 * @param bilAB1 the bilAB1 to set
+	 */
+	private final void setBilAB1(final DictionaryElement bilAB1) {
+		this.bilAB1 = bilAB1;
+	}
+
+	/**
+	 * @return the bilAB2
+	 */
+	private final DictionaryElement getBilAB2() {
+		return bilAB2;
+	}
+
+	/**
+	 * @param bilAB2 the bilAB2 to set
+	 */
+	private final void setBilAB2(final DictionaryElement bilAB2) {
+		this.bilAB2 = bilAB2;
+	}
+
+	/**
+	 * @return the monA1
+	 */
+	private final DictionaryElement getMonA1() {
+		return monA1;
+	}
+
+	/**
+	 * @param monA1 the monA1 to set
+	 */
+	private final void setMonA1(final DictionaryElement monA1) {
+		this.monA1 = monA1;
+	}
+
+	/**
+	 * @return the monA2
+	 */
+	private final DictionaryElement getMonA2() {
+		return monA2;
+	}
+
+	/**
+	 * @param monA2 the monA2 to set
+	 */
+	private final void setMonA2(final DictionaryElement monA2) {
+		this.monA2 = monA2;
+	}
+
+	/**
+	 * @return the monB1
+	 */
+	private final DictionaryElement getMonB1() {
+		return monB1;
+	}
+
+	/**
+	 * @param monB1 the monB1 to set
+	 */
+	private final void setMonB1(final DictionaryElement monB1) {
+		this.monB1 = monB1;
+	}
+
+	/**
+	 * @return the monB2
+	 */
+	private final DictionaryElement getMonB2() {
+		return monB2;
+	}
+
+	/**
+	 * @param monB2 the monB2 to set
+	 */
+	private final void setMonB2(final DictionaryElement monB2) {
+		this.monB2 = monB2;
 	}
 
 }

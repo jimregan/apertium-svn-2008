@@ -66,7 +66,7 @@ public class DictionaryReader extends XMLReader {
 		analize();
 		final DictionaryElement dic = new DictionaryElement();
 
-		Element root = document.getDocumentElement();
+		Element root = getDocument().getDocumentElement();
 
 		final NodeList children = root.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
@@ -95,7 +95,7 @@ public class DictionaryReader extends XMLReader {
 			}
 		}
 		root = null;
-		document = null;
+		setDocument(null);
 		return dic;
 	}
 
@@ -128,11 +128,11 @@ public class DictionaryReader extends XMLReader {
 	public SdefsElement readSdefs(final Element e) {
 		final SdefsElement sdefsElement = new SdefsElement();
 
-		for (Element childElement : readChildren(e)) {
+		for (final Element childElement : readChildren(e)) {
 			final String childElementName = childElement.getNodeName();
 			if (childElementName.equals("sdef")) {
 				final SdefElement sdefElement = readSdef(childElement);
-				SElement sE = SElement.get(sdefElement.getValue());
+				final SElement sE = SElement.get(sdefElement.getValue());
 				sdefsElement.addSdefElement(sdefElement);
 			}
 		}
@@ -157,7 +157,7 @@ public class DictionaryReader extends XMLReader {
 	public PardefsElement readPardefs(final Element e) {
 		final PardefsElement pardefsElement = new PardefsElement();
 
-		for (Element childElement : readChildren(e)) {
+		for (final Element childElement : readChildren(e)) {
 			final String childElementName = childElement.getNodeName();
 			if (childElementName.equals("pardef")) {
 				final PardefElement pardefElement = readPardef(childElement);
@@ -177,7 +177,7 @@ public class DictionaryReader extends XMLReader {
 		final String n = getAttributeValue(e, "n");
 		final PardefElement pardefElement = new PardefElement(n);
 
-		for (Element childElement : readChildren(e)) {
+		for (final Element childElement : readChildren(e)) {
 			final String childElementName = childElement.getNodeName();
 			if (childElementName.equals("e")) {
 				final EElement eElement = readEElement(childElement);
@@ -221,6 +221,7 @@ public class DictionaryReader extends XMLReader {
 	 * @param e
 	 * @return
 	 */
+	@Override
 	public IElement readIElement(final Element e) {
 		final IElement iElement = new IElement();
 		final IElement iE = (IElement) readContentElement(e, iElement);
@@ -232,6 +233,7 @@ public class DictionaryReader extends XMLReader {
 	 * @param e
 	 * @return
 	 */
+	@Override
 	public LElement readLElement(final Element e) {
 		final LElement lElement = new LElement();
 		final LElement lE = (LElement) readContentElement(e, lElement);
@@ -243,6 +245,7 @@ public class DictionaryReader extends XMLReader {
 	 * @param e
 	 * @return
 	 */
+	@Override
 	public RElement readRElement(final Element e) {
 		final RElement rElement = new RElement();
 		final RElement rE = (RElement) readContentElement(e, rElement);
@@ -254,6 +257,7 @@ public class DictionaryReader extends XMLReader {
 	 * @param e
 	 * @return
 	 */
+	@Override
 	public GElement readGElement(final Element e) {
 		final GElement gElement = new GElement();
 		final GElement gE = (GElement) readContentElement(e, gElement);
@@ -265,6 +269,7 @@ public class DictionaryReader extends XMLReader {
 	 * @param e
 	 * @return
 	 */
+	@Override
 	public PElement readPElement(final Element e) {
 		final PElement pElement = new PElement();
 
@@ -296,6 +301,7 @@ public class DictionaryReader extends XMLReader {
 	 * @param e
 	 * @return
 	 */
+	@Override
 	public ParElement readParElement(final Element e) {
 		final String n = getAttributeValue(e, "n");
 		final ParElement parElement = new ParElement(n);
@@ -307,6 +313,7 @@ public class DictionaryReader extends XMLReader {
 	 * @param e
 	 * @return
 	 */
+	@Override
 	public ReElement readReElement(final Element e) {
 		String value = "";
 		// Si contiene elementos 'e'

@@ -31,26 +31,26 @@ import dics.elements.dtd.DictionaryElement;
  */
 public class DicFormat {
 
-    /**
-         * 
-         */
-    private DictionaryElement dicFormatted;
+	/**
+	 * 
+	 */
+	private DictionaryElement dicFormatted;
 
-    /**
-         * 
-         * @param dic
-         */
-    public DicFormat(final DictionaryElement dic) {
-	dicFormatted = dic;
-    }
+	/**
+	 * 
+	 * @param dic
+	 */
+	public DicFormat(final DictionaryElement dic) {
+		dicFormatted = dic;
+	}
 
-    /**
-         * 
-         * @return
-         */
-    public final DictionaryElement format() {
-	Collections.sort(dicFormatted.getEntries());
-	return dicFormatted;
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public final DictionaryElement format() {
+		Collections.sort(dicFormatted.getEntries());
+		return dicFormatted;
+	}
 
 }

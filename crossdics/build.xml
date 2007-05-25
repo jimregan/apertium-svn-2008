@@ -6,54 +6,36 @@
 	<property name="dics.dir" location="dics" />
 	<property name="crp.dir" location="crp" />
 
-	<!-- ca-pt crossing -->
+	<!-- Dictionaries to cross -->
+	<!--
+		 <property name="bil-AB" value="bilAB.dix" />
+		 <property name="bil-BC" value="bilBC.dix" />
+		 <property name="monol-A" value="monA.dix" />
+		 <property name="monol-C" value="monC.dix" />
+		 <property name="mod-AB" value="-n" />
+		 <property name="mod-BC" value="-n" />
+		 -->
+
+	<!-- Dictionaries to cross (ca-pt example) -->
+	<!--
 	<property name="bil-AB" value="${dics.dir}/apertium-es-ca.es-ca.dix" />
 	<property name="bil-BC" value="${dics.dir}/apertium-es-pt.es-pt.dix" />	
 	<property name="monol-A" value="${dics.dir}/apertium-es-ca.ca.dix" />
 	<property name="monol-C" value="${dics.dir}/apertium-es-pt.pt.dix" />
 	<property name="mod-AB" value="-n" />
 	<property name="mod-BC" value="-n" />
-
-	<!--
-	<property name="bil-AB" value="bilAB.dix" />
-	<property name="bil-BC" value="bilBC.dix" />
-	<property name="monol-A" value="monA.dix" />
-	<property name="monol-C" value="monC.dix" />
-	<property name="mod-AB" value="-n" />
-	<property name="mod-BC" value="-n" />
 	-->
 	
-	<!-- fr-es crossing -->
-	<!--
+	<!-- Dictionaries to cross (fr-es example) -->
 	<property name="bil-BC" value="${dics.dir}/apertium-fr-ca.fr-ca.dix" />
 	<property name="mod-BC" value="-r" />
 	<property name="bil-AB" value="${dics.dir}/apertium-es-ca.es-ca.dix" />
 	<property name="mod-AB" value="-r" />	
 	<property name="monol-C" value="${dics.dir}/apertium-fr-ca.fr.metadix" />
 	<property name="monol-A" value="${dics.dir}/apertium-es-ca.es.dix" />
-	-->
 
-	<!-- fr-oc crossing -->
-	<!--
-	<property name="bil-AB" value="${dics.dir}/apertium-fr-ca.fr-ca.dix" />
-	<property name="mod-AB" value="-r" />
-	<property name="bil-BC" value="${dics.dir}/apertium-oc-ca.oc-ca.dix" />
-	<property name="mod-BC" value="-r" />	
-	<property name="monol-A" value="${dics.dir}/apertium-fr-ca.fr.metadix" />
-	<property name="monol-C" value="${dics.dir}/apertium-oc-ca.oc.metadix" />
-	-->
 	
-	<!-- ro-pt-->
-	<!--
-	<property name="bil-AB" value="${dics.dir}/apertium-es-ro.es-ro.dix" />
-	<property name="bil-BC" value="${dics.dir}/apertium-es-pt.es-pt.dix" />	
-	<property name="monol-A" value="${dics.dir}/apertium-es-ro.ro.dix" />
-	<property name="monol-C" value="${dics.dir}/apertium-es-pt.pt.dix" />
-	<property name="mod-AB" value="-n" />
-	<property name="mod-BC" value="-n" />
-	-->
-	
-	<!-- for merging -->
+	<!-- Dictionaries to merge -->
 	<!--
 	<property name="bil-AB1" value="${dics.dir}/apertium-aa-bb.aa-bb-1.dix" />
 	<property name="mod-AB1" value="-n" />	
@@ -66,7 +48,7 @@
 	<property name="monol-B2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
 	-->
 	
-	<!-- An example -->	
+	<!-- Dictionaries to merge (example) -->
 	<property name="bil-AB1" value="dix/apertium-es-fr.es-fr-crossed.dix" />
 	<property name="mod-AB1" value="-n" />
 	<property name="monol-A1" value="dix/apertium-es-fr.es-crossed.dix" />
@@ -92,22 +74,26 @@
 	<property name="zip.file" value="crossdics" />
 	<property name="appName" value="cross-dics" />
 	
+	
+	<!-- PROPERTIES -->
 	<!-- Memory -->
 	<property name="minMem" value="32" />
 	<property name="maxMem" value="150" />
-
 	<!-- Time Stamp -->
 	<tstamp>
 		<format property="pack.timestamp" pattern="yyMMdd-HHmm" />
 	</tstamp>
-	
-
 	<!-- Main class -->
 	<property name="mainClass" value="ProcessDics" />
-
 	<!-- Log files -->
 	<property name="outputFile" value="${log.dir}/cross-dics.log" />
+	<!-- Use pattern detection for crossing? -->
+	<property name="use-patterns" value="no" />
+	<property name="cross-model" value="cross-model.xml" />	
 
+	
+	<!-- TASKS -->
+	
 	<!-- Prepare Consistent -->
 	<target name="prepare-consistent">
 		<echo message="Preparing to enhance..." />
@@ -249,6 +235,11 @@
 			<arg value="-monC" />
 			<arg value="${monol-C}" />
 			
+			<arg value="-use-patterns" />
+			<arg value="${use-patterns}" />
+
+			<arg value="-cross-model" />
+			<arg value="${cross-model}" />
 		</java>
 		<antcall target="clean" />
 		<echo message="Results in '${log.dir}/${outputFile}'" />
@@ -335,8 +326,10 @@
 				<include name="cross-dics/build.xml"/>
 				<include name="cross-dics/src/*.java"/>
 				<include name="cross-dics/src/dictools/*.java"/>
+				<include name="cross-dics/src/dictools/crossmodel/*.java"/>
 				<include name="cross-dics/src/dics/elements/dtd/*.java"/>
 				<include name="cross-dics/src/dics/elements/utils/*.java"/>
+				<include name="cross-dics/src/dics/elements/extras/*.java"/>
 				<include name="cross-dics/dics"/>
 				<include name="cross-dics/dix"/>
 				<include name="cross-dics/lib/cross-dics.jar"/>

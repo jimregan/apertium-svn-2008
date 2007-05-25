@@ -26,11 +26,11 @@ package dics.elements.dtd;
  */
 public class BElement extends Element {
 
-    /**
-         * 
-         * 
-         */
-    public BElement() {
-	setTagName("b");
-    }
+	/**
+	 * 
+	 * 
+	 */
+	public BElement() {
+		setTagName("b");
+	}
 }

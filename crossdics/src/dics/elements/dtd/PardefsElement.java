@@ -31,59 +31,59 @@ import java.util.ArrayList;
  */
 public class PardefsElement extends Element {
 
-    /**
-         * 
-         */
-    private ArrayList<PardefElement> pardefElements;
+	/**
+	 * 
+	 */
+	private ArrayList<PardefElement> pardefElements;
 
-    /**
-         * 
-         * 
-         */
-    public PardefsElement() {
-	pardefElements = new ArrayList<PardefElement>();
-    }
-
-    /**
-         * 
-         * @param value
-         */
-    public final void addPardefElement(final PardefElement value) {
-	pardefElements.add(value);
-    }
-
-    /**
-         * 
-         */
-    @Override
-    public final void printXML(final DataOutputStream dos) throws IOException {
-	dos.writeBytes(tab(1) + "<pardefs>\n");
-	for (final PardefElement e : pardefElements) {
-	    e.printXML(dos);
+	/**
+	 * 
+	 * 
+	 */
+	public PardefsElement() {
+		pardefElements = new ArrayList<PardefElement>();
 	}
-	dos.writeBytes(tab(1) + "</pardefs>\n\n");
-    }
 
-    /**
-         * 
-         * @param parName
-         * @return
-         */
-    public final PardefElement getParadigmDefinition(final String parName) {
-	for (final PardefElement pardefE : pardefElements) {
-	    if (pardefE.getName().equals(parName)) {
-		return pardefE;
-	    }
+	/**
+	 * 
+	 * @param value
+	 */
+	public final void addPardefElement(final PardefElement value) {
+		pardefElements.add(value);
 	}
-	return null;
-    }
 
-    /**
-         * 
-         * @return
-         */
-    public ArrayList<PardefElement> getPardefElements() {
-	return pardefElements;
-    }
+	/**
+	 * 
+	 */
+	@Override
+	public final void printXML(final DataOutputStream dos) throws IOException {
+		dos.writeBytes(tab(1) + "<pardefs>\n");
+		for (final PardefElement e : pardefElements) {
+			e.printXML(dos);
+		}
+		dos.writeBytes(tab(1) + "</pardefs>\n\n");
+	}
+
+	/**
+	 * 
+	 * @param parName
+	 * @return
+	 */
+	public final PardefElement getParadigmDefinition(final String parName) {
+		for (final PardefElement pardefE : pardefElements) {
+			if (pardefE.getName().equals(parName)) {
+				return pardefE;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<PardefElement> getPardefElements() {
+		return pardefElements;
+	}
 
 }

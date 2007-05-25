@@ -27,14 +27,13 @@ package dics.elements.dtd;
  */
 public class IElement extends ContentElement {
 
-    /**
-         * 
-         * 
-         */
-    public IElement() {
-	super();
-	setTagName("i");
-    }
-   
+	/**
+	 * 
+	 * 
+	 */
+	public IElement() {
+		super();
+		setTagName("i");
+	}
 
 }

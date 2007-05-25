@@ -30,38 +30,38 @@ import java.io.IOException;
  */
 public class ReElement extends Element {
 
-    /**
-         * 
-         */
-    private String value;
+	/**
+	 * 
+	 */
+	private String value;
 
-    /**
-         * 
-         * @param value
-         */
-    public ReElement(final String value) {
-	setTagName("re");
-	this.value = value;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public String getValue() {
-	return value;
-    }
-
-    /**
-         * 
-         */
-    @Override
-    public final void printXML(final DataOutputStream dos) throws IOException {
-	if (value == null) {
-	    value = "";
+	/**
+	 * 
+	 * @param value
+	 */
+	public ReElement(final String value) {
+		setTagName("re");
+		this.value = value;
 	}
-	dos.writeBytes(tab(3) + "<" + getTagName() + ">" + getValue() + "</"
-		+ getTagName() + ">\n");
-    }
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public final void printXML(final DataOutputStream dos) throws IOException {
+		if (value == null) {
+			value = "";
+		}
+		dos.writeBytes(tab(3) + "<" + getTagName() + ">" + getValue() + "</"
+				+ getTagName() + ">\n");
+	}
 
 }
