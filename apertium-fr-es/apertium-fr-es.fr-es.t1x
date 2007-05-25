@@ -109,6 +109,14 @@
       <cat-item tags="vbhaver.ger"/>
       <cat-item tags="vbmod.ger"/>
     </def-cat>
+    
+      
+    <def-cat n="ppres">
+      <cat-item tags="vblex.ppres"/>
+      <cat-item tags="vbser.ppres"/>
+      <cat-item tags="vbhaver.ppres"/>
+      <cat-item tags="vbmod.ppres"/>
+    </def-cat>
 
     <def-cat n="verbm"><!--verb modal -->
       <cat-item tags="vbmod.*"/>
@@ -439,9 +447,10 @@
       <attr-item tags="pis"/>
       <attr-item tags="pri"/>
       <attr-item tags="prs"/>
-      <attr-item tags="pp"/><!-- ? -->
-      <attr-item tags="ger"/><!-- ? -->
-      <attr-item tags="inf"/><!-- ? -->
+      <attr-item tags="pp"/>
+      <attr-item tags="ppres"/>
+      <attr-item tags="ger"/>
+      <attr-item tags="inf"/>
     </def-attr>
 
 
@@ -4950,6 +4959,82 @@
 	</action>
 </rule>
 
+<rule comment="REGLA: ppres">
+	<pattern>
+		<pattern-item n="ppres"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="que_verb">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><lit-tag v="pri"/></tag>
+					<tag><lit-tag v="p3"/></tag>
+					<tag><lit-tag v="ND"/></tag>
+				</tags>
+				<lu>
+					<lit v="que"/> 
+					<lit-tag v="cnjsub"/>
+				</lu>
+				<b/>
+				<lu>
+					<clip pos="1" side="tl" part="lemh"/> 
+					<clip pos="1" side="tl" part="a_verb"/>
+					<lit-tag v="2"/>
+					<lit-tag v="3"/>
+					<lit-tag v="4"/>
+					<clip pos="1" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+<rule comment="REGLA: prnpro ppres">
+	<pattern>
+		<pattern-item n="prnpro"/>
+		<pattern-item n="ppres"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="que_pro_verb">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><lit-tag v="pri"/></tag>
+					<tag><lit-tag v="p3"/></tag>
+					<tag><lit-tag v="ND"/></tag>
+
+				</tags>
+				<lu>
+					<lit v="que"/> 
+					<lit-tag v="cnjsub"/>
+				</lu>
+				<b/>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/> 
+					<lit-tag v="prn.pro"/>
+					<clip pos="1" side="tl" part="tipoenc_pro"/>
+				</lu>
+					<b pos="1"/>
+				<lu>
+					<clip pos="2" side="tl" part="lemh"/> 
+					<clip pos="2" side="tl" part="a_verb"/>
+					<lit-tag v="2"/>
+					<lit-tag v="3"/>
+					<lit-tag v="4"/>
+					<clip pos="2" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
 <rule comment="REGLA: ALLER INF">
 	<pattern>
 		<pattern-item n="aller"/>
