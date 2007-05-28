@@ -33,6 +33,16 @@ public class Element implements Cloneable {
 	/**
 	 * 
 	 */
+	private String value;
+	
+	/**
+	 * 
+	 */
+	private String valueNoTags = "";
+	
+	/**
+	 * 
+	 */
 	private String TAGNAME;
 
 	/**
@@ -119,6 +129,30 @@ public class Element implements Cloneable {
 			return null;
 		}
 
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	protected String getValue() {
+		return value;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 */
+	protected void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getValueNoTags() {
+		return valueNoTags;
+	}
+
+	public void setValueNoTags(String valueNoTags) {
+		this.valueNoTags = valueNoTags;
 	}
 
 }

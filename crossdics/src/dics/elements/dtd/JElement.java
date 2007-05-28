@@ -32,6 +32,7 @@ public class JElement extends Element {
 	 */
 	public JElement() {
 		setTagName("j");
+		setValue("<j/>");
 	}
 
 }

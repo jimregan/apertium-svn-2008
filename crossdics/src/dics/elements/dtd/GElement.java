@@ -37,6 +37,7 @@ public class GElement extends ContentElement {
 	public GElement() {
 		super();
 		setTagName("g");
+		setValueNoTags("");
 	}
 
 	/**

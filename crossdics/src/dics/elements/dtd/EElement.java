@@ -896,6 +896,27 @@ public class EElement extends Element implements Cloneable,
 		return str;
 	}
 
+	public final String toString2() {
+		String str = "";
+		for (final Element e : children) {
+			if (e instanceof IElement) {
+				final IElement i = (IElement) e;
+				str += i.toString2();
+			}
+			if (e instanceof PElement) {
+				final PElement p = (PElement) e;
+
+				final LElement lE = p.getL();
+				str += lE.toString2();
+
+				final RElement rE = p.getR();
+				str += rE.toString2();
+			}
+
+		}
+		return str;
+	}
+
 	/**
 	 * 
 	 * @return

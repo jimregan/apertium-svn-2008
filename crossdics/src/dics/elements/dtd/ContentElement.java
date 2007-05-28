@@ -92,8 +92,32 @@ public class ContentElement extends Element implements Cloneable {
 	 * 
 	 * @return
 	 */
+	public final String getValueNoTags() {
+		String str = "";
+		for (Element e : this.children) {
+			if (!(e instanceof SElement)) {
+				str += e.getValue();
+			}
+		}
+		return str;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
 	public final String getValue() {
-		return value;
+		String str = "";
+		for (Element e : this.children) {
+			if( !(e instanceof SElement)) {
+			if (e instanceof GElement) {
+				str += "<g>" + ((GElement)e).getValue() + "</g>";
+			} else {
+				str += e.getValue();
+			}
+			}
+		}
+		return str;
 	}
 
 	/**
@@ -254,6 +278,26 @@ public class ContentElement extends Element implements Cloneable {
 		final String str = "<" + tagName + ">" + v + "</" + tagName + ">" + sList;
 		return str;
 	}
+	
+	/**
+	 * toString() without lemma
+	 * @return
+	 */
+	public String toString2() {
+		String tagName = getTagName();
+		if (tagName == null) {
+			tagName = "";
+		}
+
+		String sList = getString();
+		if (sList == null) {
+			sList = "";
+		}
+
+		final String str = "<" + tagName + ">" + "</" + tagName + ">" + sList;
+		return str;
+	}
+
 
 	/**
 	 * 

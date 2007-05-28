@@ -623,16 +623,16 @@ public class DictionaryElement extends Element {
 
 			for (final Element e : children) {
 				if (e instanceof PElement) {
-					final LElement lE = ((PElement) e).getL();
-					final RElement rE = ((PElement) e).getR();
+					LElement lE = ((PElement) e).getL();
+					RElement rE = ((PElement) e).getR();
 
-					final String auxValue = lE.getValue();
-					final ElementList auxChildren = lE.getChildren();
+					//final String auxValue = lE.getValue();
+					ElementList auxChildren = lE.getChildren();
 
-					lE.setValue(rE.getValue());
+					//lE.setValue(rE.getValue());
 					lE.setChildren(rE.getChildren());
 
-					rE.setValue(auxValue);
+					//rE.setValue(auxValue);
 					rE.setChildren(auxChildren);
 
 					((PElement) e).setLElement(lE);

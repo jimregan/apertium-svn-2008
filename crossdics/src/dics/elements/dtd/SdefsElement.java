@@ -85,9 +85,11 @@ public class SdefsElement extends Element {
 		}
 		dos.writeBytes(tab(1) + "</" + getTagName() + ">\n");
 
+		if (comments != null) {
 		dos.writeBytes(tab(1) + "<!-- \n");
 		dos.writeBytes(tab(1) + getComments());
 		dos.writeBytes(tab(1) + " -->\n");
+		}
 	}
 
 	/**

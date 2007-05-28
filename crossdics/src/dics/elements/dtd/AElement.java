@@ -32,6 +32,7 @@ public class AElement extends Element {
 	 */
 	public AElement() {
 		setTagName("a");
+		setValue("<a/>");
 	}
 
 }
