@@ -104,6 +104,7 @@
 	  <attr-item tags="p2"/>
 	  <attr-item tags="p3"/>
 	  <attr-item tags="PD"/>
+    <attr-item tags="NP"/>
 </def-attr>
 
       <def-attr n="gen">
@@ -119,6 +120,7 @@
 	  <attr-item tags="pl"/>
 	  <attr-item tags="sp"/>
 	  <attr-item tags="ND"/>
+    <attr-item tags="NN"/>
       </def-attr>
 
       <def-attr n="temps">
@@ -429,6 +431,38 @@
 	</choose>
 </def-macro>
 
+<def-macro n="elimina" npar="1">
+	<choose>
+		<when>
+			<test>
+				<equal>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v="NN"/>
+				</equal>
+			</test>
+			<let>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v=""/>
+			</let>
+		</when>	
+	</choose>
+<choose>
+		<when>
+			<test>
+				<equal>
+					<clip pos="1" part="pers"/>
+					<lit-tag v="NP"/>
+				</equal>
+			</test>
+			<let>
+					<clip pos="1" part="pers"/>
+					<lit-tag v=""/>
+			</let>
+		</when>	
+	</choose>
+	
+</def-macro>
+
 </section-def-macros>
 
   <section-rules>
@@ -496,6 +530,9 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
+<!--	<call-macro n="elimina">
+		<with-param pos="1"/>
+	</call-macro>-->
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
