@@ -20,6 +20,9 @@
 
 package dictools.crossmodel;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 /**
  * 
  * @author Enrique Benimeli Bofarull
@@ -182,6 +185,22 @@ public class CrossAction {
 		if (action != null) {
 			getAction().print();
 		}
+	}
+
+	/**
+	 * 
+	 * @param dos
+	 */
+	public final void printXML(DataOutputStream dos, int id) throws IOException {
+		dos.writeBytes("<cross-action id=\"ND-" + id + "\">\n");
+		getPattern().printXML(dos);
+		if (this.constants != null) {
+			getConstants().printXML(dos);
+		}
+		if (this.action != null) {
+			getAction().printXML(dos);
+		}
+		dos.writeBytes("</cross-action>\n\n");
 	}
 
 }

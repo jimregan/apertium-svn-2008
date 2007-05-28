@@ -20,6 +20,8 @@
 
 package dictools.crossmodel;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -65,6 +67,24 @@ public class ConstantMap extends HashMap<String, String> {
 			System.out.print("<" + key + "," + value + "> ");
 		}
 		System.out.println("");
+	}
+
+	/**
+	 * 
+	 * @param dos
+	 */
+	public final void printXML(DataOutputStream dos) throws IOException {
+		final Set keySet = keySet();
+		final Iterator it = keySet.iterator();
+
+		dos.writeBytes("\t<constants>\n");
+		while (it.hasNext()) {
+			final String key = (String) it.next();
+			final String value = get(key);
+			dos.writeBytes("\t\t<constant n=\"" + value + "\">" + key
+					+ "</constant>\n");
+		}
+		dos.writeBytes("\t<constants>\n");
 	}
 
 	/**

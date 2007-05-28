@@ -20,12 +20,18 @@
 
 package dictools.crossmodel;
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import dics.elements.dtd.ContentElement;
 import dics.elements.dtd.EElement;
 import dics.elements.dtd.LElement;
 import dics.elements.dtd.PElement;
 import dics.elements.dtd.RElement;
 import dics.elements.dtd.SElement;
+import dics.elements.dtd.SectionElement;
 
 /**
  * 
@@ -160,9 +166,11 @@ public class CrossModel {
 			// <f>
 			final String sValue = s.getValue();
 			// <f,w1>
+			if (!constants.containsKey(sValue)) {
+				i++;
+			}
 			var = constants.insert(sValue, var);
 			sETagged = SElement.get(var);
-			i++;
 			// System.err.print("<" + sETagged.getValue() + ">");
 			cENew.addChild(sETagged);
 		}
@@ -177,10 +185,9 @@ public class CrossModel {
 	 * @return
 	 */
 	public final String matches(final CrossAction cA) {
-		/*
-		 * System.err.println("tagged..."); cA.print();
-		 * System.err.println("-----------------");
-		 */
+		System.err.println("tagged...");
+		cA.print();
+		System.err.println("-----------------");
 		for (final CrossAction crossAction : getCrossActions()) {
 			/*
 			 * System.err.println("pattern..."); crossAction.print();
@@ -207,6 +214,39 @@ public class CrossModel {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 
+	 * @param fileName
+	 */
+	public void printXML(final String fileName) {
+		BufferedOutputStream bos;
+		FileOutputStream fos;
+		DataOutputStream dos;
+
+		try {
+			fos = new FileOutputStream(fileName);
+			bos = new BufferedOutputStream(fos);
+			dos = new DataOutputStream(bos);
+			dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
+			dos.writeBytes("<cross-model>\n");
+			int i = 0;
+			for (CrossAction crossAction : getCrossActions()) {
+				crossAction.printXML(dos, i);
+				i++;
+			}
+			dos.writeBytes("</cross-model>\n");
+
+			fos = null;
+			bos = null;
+			dos.close();
+			dos = null;
+		} catch (final IOException e) {
+			e.printStackTrace();
+		} catch (final Exception eg) {
+			eg.printStackTrace();
+		}
 	}
 
 }

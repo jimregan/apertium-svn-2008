@@ -33,4 +33,5 @@ public class CrossActionList extends ArrayList<CrossAction> {
 	 * 
 	 */
 	static final long serialVersionUID = 0;
+
 }

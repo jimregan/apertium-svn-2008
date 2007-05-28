@@ -20,6 +20,9 @@
 
 package dictools.crossmodel;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import dics.elements.dtd.EElement;
 
 /**
@@ -60,6 +63,20 @@ public class Action {
 			getE().print("L");
 			getE().print("R");
 		}
+	}
+
+	/**
+	 * 
+	 * @param dos
+	 * @throws IOException
+	 */
+	public final void printXML(DataOutputStream dos) throws IOException {
+		if (e != null) {
+			dos.writeBytes("\t<action>\n");
+			this.getE().printXML(dos);
+			dos.writeBytes("\t</action>\n");
+		}
+
 	}
 
 	/**

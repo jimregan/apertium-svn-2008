@@ -20,6 +20,9 @@
 
 package dictools.crossmodel;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import dics.elements.dtd.EElement;
 
 /**
@@ -116,5 +119,27 @@ public class Pattern {
 		getAB().print("R");
 		getBC().print("L");
 		getBC().print("R");
+	}
+
+	/**
+	 * 
+	 */
+	public final String toString() {
+		String e1 = this.getAB().toString2();
+		String e2 = this.getBC().toString2();
+		String str = e1 + "/" + e2;
+		System.out.println("cA: " + str);
+		return str;
+	}
+
+	/**
+	 * 
+	 * @param dos
+	 */
+	public final void printXML(DataOutputStream dos) throws IOException {
+		dos.writeBytes("\t<pattern>\n");
+		e1.printXML(dos);
+		e2.printXML(dos);
+		dos.writeBytes("\t</pattern>\n");
 	}
 }
