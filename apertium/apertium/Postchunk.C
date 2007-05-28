@@ -1653,6 +1653,7 @@ Postchunk::splitWordsAndBlanks(string const &chunk, vector<string *> &words,
   string case_info = caseOf(pseudolemma(chunk));
   bool uppercase_all = false;
   bool uppercase_first = false;
+  bool lastblank = true;
  
   if(case_info == "AA")
   {
@@ -1672,13 +1673,13 @@ Postchunk::splitWordsAndBlanks(string const &chunk, vector<string *> &words,
     }
     else if(chunk[i] == '^')
     {
-      if(result != "")
+      if(lastblank != true)
       {
         string * myblank = new string(result);
         blanks.push_back(myblank);
         result = "";
       }
-      
+      lastblank = false;
       string *myword = new string();
       string &ref = *myword;
     
@@ -1754,11 +1755,13 @@ Postchunk::splitWordsAndBlanks(string const &chunk, vector<string *> &words,
       }
       ref += chunk[i];
       blanks.push_back(myblank);
+      lastblank = true;
     }
     else if(chunk[i]== ' ')
     {
       string *myblank = new string(" ");
       blanks.push_back(myblank);
+      lastblank = true;
     }    
   }
 }
