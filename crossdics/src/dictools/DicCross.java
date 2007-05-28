@@ -45,6 +45,7 @@ import dics.elements.utils.SElementList;
 import dictools.crossmodel.Action;
 import dictools.crossmodel.ConstantMap;
 import dictools.crossmodel.CrossAction;
+import dictools.crossmodel.CrossActionList;
 import dictools.crossmodel.CrossModel;
 import dictools.crossmodel.CrossModelReader;
 
@@ -129,6 +130,17 @@ public class DicCross {
 	 * 
 	 */
 	private String crossModelFileName;
+	
+	/**
+	 * 
+	 */
+	private HashMap<String,CrossAction> nDCrossActions;
+	
+	/**
+	 * 
+	 */
+	private CrossModel nDCrossModel;
+
 
 	/**
 	 * 
@@ -140,6 +152,9 @@ public class DicCross {
 		processed = new EHashMap();
 		speculProcessed = new EHashMap();
 		regExProcessed = new EHashMap();
+		nDCrossActions = new HashMap<String,CrossAction>();
+		nDCrossModel = new CrossModel();
+		
 		
 	}
 
@@ -224,6 +239,10 @@ public class DicCross {
 		}
 
 		Collections.sort(dic.getEntries());
+		
+		if (isCrossWithPatterns()) {
+			getNDCrossModel().printXML("ND-cross-model.xml");
+		}
 
 		dics[0] = dic;
 		dics[1] = specul;
@@ -275,7 +294,7 @@ public class DicCross {
 	public final SdefsElement crossSdefs(final SdefsElement sdefs1,
 			final SdefsElement sdefs2) {
 		final SdefsElement sdefs = new SdefsElement();
-		sdefs.addComments("edit method 'getSdefDescriptions()' in class 'dictools.DicCross' in case you want to change any description");
+		//sdefs.addComments("edit method 'getSdefDescriptions()' in class 'dictools.DicCross' in case you want to change any description");
 
 		HashMap<String, SdefElement> sdefList = new HashMap<String, SdefElement>();
 
@@ -438,12 +457,21 @@ public class DicCross {
 		if (candidates != null) {
 			for (final EElement e2 : candidates) {
 				if ((e1 != null) && (e2 != null)) {
-					final EElement e = crossWithPatterns(e1, e2, dir);
+					EElement e = crossWithPatterns(e1, e2, dir);
 					if (e != null) {
 						final String str = e.getHash();
 						if (!getProcessed().containsKey(str)) {
 							section.addEElement(e);
 							getProcessed().put(str, e);
+						}
+					} else {
+						e = crossSafely(e1, e2, dir, MATCH_CATEGORY, "SPECULATION");
+						if (e != null) {
+							final String strSpecul = e.getHash();
+							if (!getSpeculProcessed().containsKey(strSpecul)) {
+								speculSection.addEElement(e);
+								getSpeculProcessed().put(strSpecul, e);
+							}
 						}
 					}
 				}
@@ -458,15 +486,16 @@ public class DicCross {
 	 * @param dir
 	 * @return
 	 */
-	public final EElement crossWithPatterns(final EElement a, final EElement b,
+	private final EElement crossWithPatterns(EElement a, EElement b,
 			final int dir) {
-		EElement e1, e2;
+		EElement e1,e2;
+		
 		if (dir == 0) {
 			e1 = a;
 			e2 = b;
 		} else {
-			e2 = a;
 			e1 = b;
+			e2 = a;
 		}
 
 		final EElement e = null;
@@ -477,72 +506,86 @@ public class DicCross {
 			final String actionID = getCrossModel().matches(crossAction);
 
 			if (actionID != null) {
-				System.err.println("R: " + e1.getRestriction());
-				e1.print("L");
-				e1.print("R");
-				System.err.println("R: " + e2.getRestriction());
-				e2.print("L");
-				e2.print("R");
-				System.err.println("----------------");
-
-				// cross-model
-				final CrossAction cA = getCrossModel().getCrossAction(actionID);
-				final Action action = cA.getAction();
-				final EElement actionElement = action.getE();
-				final ConstantMap constants = cA.getConstants();
-
-				final EElement actionE = new EElement();
-				//actionE.setRestriction(actionElement.getRestriction());
-				
-				// restrictions
-				final int iR = resolveRestriction(e1.getRestriction(), e2.getRestriction());
-				if (iR != NONE) {
-					final String restriction = getRestrictionString(iR);
-					actionE.setRestriction(restriction);
-				} else {
-					return null;
-				}
-				
-				// comments & author
-				final String author = mergeAttributes(e1.getAuthor(), e2
-						.getAuthor());
-				actionE.setAuthor(author);
-				final String comment = mergeAttributes(e1.getComment(), e2
-						.getComment());
-				actionE.setComment(comment);
-				
-				actionE.addComments(actionID);
-				final PElement pE = new PElement();
-				actionE.addChild(pE);
-
-				final ElementList sListL = actionElement.getSElements("L")
-						.assignValues(crossAction.getConstants(), constants);
-				final ElementList sListR = actionElement.getSElements("R")
-						.assignValues(crossAction.getConstants(), constants);
-
-				final LElement lE = new LElement();
-				lE.setChildren(sListL);
-				lE.setValue(e1.getValue("R"));
-				pE.setLElement(lE);
-
-				final RElement rE = new RElement();
-				rE.setChildren(sListR);
-				rE.setValue(e2.getValue("R"));
-				pE.setRElement(rE);
-
-				System.err.println("Action...");
-				actionE.print("L");
-				actionE.print("R");
-
+				EElement actionE = applyCrossAction(e1, e2, actionID, crossAction);
 				return actionE;
+			} else {
+				insertNDCrossAction(crossAction);
+				return null;
 
 			}
-
-			crossAction = null;
 		} catch (final NullPointerException excep) {
 		}
 		return e;
 
+	}
+	
+	/**
+	 * 
+	 * @param e1
+	 * @param e2
+	 * @param actionID
+	 * @param crossAction
+	 * @return
+	 */
+	private final EElement applyCrossAction(final EElement e1, final EElement e2, final String actionID, final CrossAction crossAction) {
+		System.err.println("R: " + e1.getRestriction());
+		e1.print("L");
+		e1.print("R");
+		System.err.println("R: " + e2.getRestriction());
+		e2.print("L");
+		e2.print("R");
+		System.err.println("----------------");
+
+		// cross-model
+		final CrossAction cA = getCrossModel().getCrossAction(actionID);
+		final Action action = cA.getAction();
+		final EElement actionElement = action.getE();
+		final ConstantMap constants = cA.getConstants();
+
+		final EElement actionE = new EElement();
+		//actionE.setRestriction(actionElement.getRestriction());
+		
+		// restrictions
+		final int iR = resolveRestriction(e1.getRestriction(), e2.getRestriction());
+		if (iR != NONE) {
+			final String restriction = getRestrictionString(iR);
+			actionE.setRestriction(restriction);
+		} else {
+			return null;
+		}
+		
+		// comments & author
+		final String author = mergeAttributes(e1.getAuthor(), e2
+				.getAuthor());
+		actionE.setAuthor(author);
+		final String comment = mergeAttributes(e1.getComment(), e2
+				.getComment());
+		actionE.setComment(comment);
+		
+		actionE.addComments(actionID);
+		final PElement pE = new PElement();
+		actionE.addChild(pE);
+
+		final ElementList sListL = actionElement.getSElements("L")
+				.assignValues(crossAction.getConstants(), constants);
+		final ElementList sListR = actionElement.getSElements("R")
+				.assignValues(crossAction.getConstants(), constants);
+
+		final LElement lE = new LElement();
+		lE.setChildren(sListL);
+		lE.setValue(e1.getValue("R"));
+		pE.setLElement(lE);
+
+		final RElement rE = new RElement();
+		rE.setChildren(sListR);
+		rE.setValue(e2.getValue("R"));
+		pE.setRElement(rE);
+
+		System.err.println("Action...");
+		actionE.print("L");
+		actionE.print("R");
+
+		return actionE;
 	}
 
 	/**
@@ -553,10 +596,10 @@ public class DicCross {
 	 * @param sameCategory
 	 * @return
 	 */
-	public final EElement crossSafely(final EElement a, final EElement b,
+	private final EElement crossSafely(EElement a, EElement b,
 			final int dir, final boolean sameCategory, final String type) {
-
-		EElement e1, e2;
+		EElement e1,e2;
+		
 		if (dir == 0) {
 			e1 = a;
 			e2 = b;
@@ -670,7 +713,7 @@ public class DicCross {
 	public final EElement crossEntries_Case1(final EElement e1,
 			final EElement e2, final ArrayList<Object> vars) {
 		final EElement e = crossEntries(e1, e2);
-		e.addComments("CROSSING CASE 1");
+		//e.addComments("CROSSING CASE 1");
 		return e;
 	}
 
@@ -689,7 +732,7 @@ public class DicCross {
 		for (final SElement s : sEs) {
 			lE.addChild(s);
 		}
-		e.addComments("CROSSING CASE 2");
+		//e.addComments("CROSSING CASE 2");
 		return e;
 	}
 
@@ -708,7 +751,7 @@ public class DicCross {
 		for (final SElement s : V) {
 			rE.addChild(s);
 		}
-		e.addComments("CROSSING CASE 3");
+		//e.addComments("CROSSING CASE 3");
 		return e;
 	}
 
@@ -728,7 +771,7 @@ public class DicCross {
 		for (final SElement s : V2) {
 			rE.addChild(s);
 		}
-		e.addComments("CROSSING CASE 4");
+		//e.addComments("CROSSING CASE 4");
 		return e;
 	}
 
@@ -748,7 +791,7 @@ public class DicCross {
 		for (final SElement s : W2) {
 			lE.addChild(s);
 		}
-		e.addComments("CROSSING CASE 5");
+		//e.addComments("CROSSING CASE 5");
 		return e;
 	}
 
@@ -1014,19 +1057,19 @@ public class DicCross {
 				return null;
 			}
 
-			final PElement pE = new PElement();
-			final LElement lE = new LElement();
+			PElement pE = new PElement();
+			LElement lE = new LElement();
 			pE.setLElement(lE);
-			final RElement rE = new RElement();
+			RElement rE = new RElement();
 			pE.setRElement(rE);
 			e.addChild(pE);
 			e.getP().getL().setValue(e1.getValue("R"));
 			e.getP().getL().setChildren(e1.getChildren("R"));
 
-			final String author = mergeAttributes(e1.getAuthor(), e2
+			String author = mergeAttributes(e1.getAuthor(), e2
 					.getAuthor());
 			e.setAuthor(author);
-			final String comment = mergeAttributes(e1.getComment(), e2
+			String comment = mergeAttributes(e1.getComment(), e2
 					.getComment());
 			e.setComment(comment);
 
@@ -1049,8 +1092,7 @@ public class DicCross {
 				r1 = "LR";
 			}
 
-			e.addComments("A-C = " + restriction + " ::: A-B = " + r1
-					+ " X B-C = " + r2);
+			//e.addComments("A-C = " + restriction + " ::: A-B = " + r1 + " X B-C = " + r2);
 
 			return e;
 		} else {
@@ -1284,5 +1326,36 @@ public class DicCross {
 		this.crossModelFileName = crossModelFileName;
 	}
 
+	/**
+	 * @return the ndCrossActions
+	 */
+	private final void insertNDCrossAction(final CrossAction cA) {
+		if (!nDCrossActions.containsKey(cA.getPattern().toString())) {
+			this.nDCrossActions.put(cA.getPattern().toString(), cA);
+			this.nDCrossModel.addCrossAction(cA);
+		}
+	}
+
+	/**
+	 * 
+	 *
+	 */
+	private final void printNDCrossActions() {
+		Set keySet = this.nDCrossActions.keySet();
+		Iterator it = keySet.iterator();
+		int i = 0;
+		while (it.hasNext()) {
+			it.next();
+			i++;
+		}
+		System.out.println("Non-defined cross actions: " + i );
+	}
+
+	/**
+	 * @return the nDCrossModel
+	 */
+	private final CrossModel getNDCrossModel() {
+		return nDCrossModel;
+	}
 
 }

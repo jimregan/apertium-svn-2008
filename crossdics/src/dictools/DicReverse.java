@@ -20,7 +20,10 @@
 
 package dictools;
 
+import java.util.Collections;
+
 import dics.elements.dtd.DictionaryElement;
+import dics.elements.utils.EElementList;
 
 /**
  * 
@@ -48,7 +51,16 @@ public class DicReverse {
 	 * @return
 	 */
 	public final DictionaryElement reverse() {
-		dicOrig.reverse();
+		getDicOrig().reverse();
+		Collections.sort(getDicOrig().getEntries());
+		return getDicOrig();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private final DictionaryElement getDicOrig() {
 		return dicOrig;
 	}
 

@@ -284,7 +284,7 @@ public class XMLReader {
 	 * @return
 	 */
 	protected ContentElement readContentElement(final Element e,
-			final ContentElement cElement) {
+			ContentElement cElement) {
 
 		String text = "";
 
@@ -310,7 +310,7 @@ public class XMLReader {
 		} else {
 			text = "";
 		}
-		cElement.setValue(text);
+		//cElement.setValue(text);
 		return cElement;
 	}
 
@@ -322,6 +322,7 @@ public class XMLReader {
 	 */
 	protected final String processTagText(final String tag, final Node child) {
 		String text = "";
+		/*
 		if (tag.equals("b")) {
 			text = text + "<b/>";
 		}
@@ -331,6 +332,7 @@ public class XMLReader {
 		if (tag.equals("a")) {
 			text = text + "<a/>";
 		}
+		*/
 		if (tag.equals("g")) {
 			text = text + loadGElementText(child);
 		}
@@ -395,8 +397,8 @@ public class XMLReader {
 	 * @return
 	 */
 	protected GElement readGElement(final Element e) {
-		final GElement gElement = new GElement();
-		final GElement gE = (GElement) readContentElement(e, gElement);
+		GElement gElement = new GElement();
+		GElement gE = (GElement) readContentElement(e, gElement);
 		return gE;
 	}
 
