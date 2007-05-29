@@ -1279,6 +1279,113 @@
 		</action>
 </rule>
 
+<rule comment="REGLA: SN SV pr SN">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="ADV"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="4"/>
+	</call-macro>
+	<choose>
+		<when>
+			<test>
+			<and>
+				<equal caseless="yes">
+					<clip pos="1" part="lem"/>
+					<lit v="prnperssubj"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="pers"/>
+					<clip pos="1" part="pers"/>
+				</equal>
+				<equal>
+					<clip pos="2" part="nbr"/>
+					<clip pos="1" part="nbr"/>
+				</equal>
+			</and>
+			</test>
+			<out>
+				<chunk><!--el pronom no l'envio, nom� el 2n chunk -->
+					<get-case-from pos="1">
+						<clip pos="2" part="lem"/>
+					</get-case-from>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise><!--Quan SN no � pronom subjecte, per tant, quan � qualsevol altre SN -->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+	<choose>
+		<when>
+			<test>
+				<or>
+					<equal>
+						<clip pos="4" part="lem"/>
+						<lit v="inf"/>
+					</equal>
+					<equal>
+						<clip pos="4" part="lem"/>
+						<lit v="inf_enc"/>
+					</equal>
+				</or>
+			</test>
+			<out>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</when>
+		<otherwise>
+			<out>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+			</out>
+		</otherwise>
+	</choose>
+</action>
+</rule>
+
 <rule comment="REGLA: SN vbcop SA">
 	<pattern>
 		<pattern-item n="SN"/>

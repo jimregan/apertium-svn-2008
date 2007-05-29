@@ -498,12 +498,17 @@
 
 		<def-list n="vbmov">
 			<list-item v="aller"/>
+			<list-item v="soumettre"/>
 			<list-item v="arriver"/>
 			<list-item v="venir"/>
    </def-list>
 
 <def-list n="vbestat">
 			<list-item v="entrer"/>
+			<list-item v="fêter"/>
+			<list-item v="célébrer"/>
+			<list-item v="vivre"/>
+			<list-item v="habiter"/>
 			<list-item v="mourir"/>
 			<list-item v="naître"/>
 			<list-item v="être"/>
@@ -511,6 +516,7 @@
 
 		<def-list n="vbambser">
 			<list-item v="aller"/>
+			<list-item v="impliquer"/>
 			<list-item v="arriver"/>
 			<list-item v="décéder"/>
 			<list-item v="entrer"/>
@@ -533,6 +539,10 @@
 			<list-item v="sortir"/>
 			<list-item v="passer"/>
 			<list-item v="imposer"/>
+			<list-item v="limiter"/>
+  		<list-item v="relier"/>
+  		<list-item v="efforcer"/>
+  		<list-item v="composer"/>
    </def-list>
 
 		<def-list n="mois">
@@ -950,20 +960,28 @@
 						<lit-tag v="mov"/>
 					</let>
 				</when>
-			</choose>
-			<choose>
-				<when>
-					<test>
-						<in caseless="yes">
-							<clip pos="1" side="sl" part="lem"/>
-							<list n="vbestat"/>
-						</in>
-					</test>
-					<let>
-						<var n="tipusverb"/>
-						<lit-tag v="est"/>
-					</let>
-				</when>
+				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<in caseless="yes">
+									<clip pos="1" side="sl" part="lem"/>
+									<list n="vbestat"/>
+								</in>
+							</test>
+							<let>
+								<var n="tipusverb"/>
+								<lit-tag v="est"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<var n="tipusverb"/>
+								<lit-tag v="nodef"/>
+							</let>
+						</otherwise>
+					</choose>
+				</otherwise>
 			</choose>
 		</def-macro>
 
@@ -10834,6 +10852,10 @@
 		<let>
 			<var n="genero"/>
 			<lit-tag v="m"/>
+		</let>
+		<let>
+			<var n="tipusverb"/>
+			<lit-tag v="nodef"/>
 		</let>
 		<choose>
 			<when>
