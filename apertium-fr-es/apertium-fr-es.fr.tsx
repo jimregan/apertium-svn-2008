@@ -1460,7 +1460,180 @@
      <label-sequence>
       <label-item label="PRNTN"/>
       <label-item label="VSERINF"/>
-    </label-sequence>   
+    </label-sequence>
+ 
+ 
+ <!--prova 29-05-07-->   
+     <label-sequence>
+      <label-item label="VHABERPFCI"/>
+      <label-item label="NOMM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERPFCI"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPFCI"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERIPI"/>
+      <label-item label="NOMM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERIPI"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERIPI"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERSUBJ"/>
+      <label-item label="NOMM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERSUBJ"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERSUBJ"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERINF"/>
+      <label-item label="NOMM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERINF"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERINF"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERGER"/>
+      <label-item label="NOMM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERGER"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERGER"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPARTPI"/>
+      <label-item label="NOMM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERPARTPI"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPARTPI"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPPRES"/>
+      <label-item label="NOMM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERPPRES"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPPRES"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    
+        
+     <label-sequence>
+      <label-item label="VHABERPFCI"/>
+      <label-item label="ADJM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERPFCI"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPFCI"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERIPI"/>
+      <label-item label="ADJM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERIPI"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERIPI"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERSUBJ"/>
+      <label-item label="ADJM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERSUBJ"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERSUBJ"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERINF"/>
+      <label-item label="ADJM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERINF"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERINF"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERGER"/>
+      <label-item label="ADJM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERGER"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERGER"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPARTPI"/>
+      <label-item label="ADJM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERPARTPI"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPARTPI"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPPRES"/>
+      <label-item label="ADJM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="VHABERPPRES"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VHABERPPRES"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
     
   </forbid>
 
