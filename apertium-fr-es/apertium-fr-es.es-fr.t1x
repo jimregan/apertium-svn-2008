@@ -148,8 +148,8 @@
       <cat-item tags="vbhaver.*"/>
     </def-cat>
 
-    <def-cat n="caldre">
-      <cat-item lemma="caldre" tags="vbmod.*"/>
+    <def-cat n="estar">
+      <cat-item lemma="estar" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="verbpers">
@@ -5641,6 +5641,180 @@
 				<b/>
 				<lu>
 					<lit v="à"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b pos="1"/>
+				<lu>
+					<clip pos="3" side="tl" part="lem"/>
+					<lit-tag v="prn.pro"/>
+					<clip pos="3" side="tl" part="tipoenc_pro"/>
+				</lu>
+				<b pos="2"/>
+				<lu>
+					<clip pos="4" side="tl" part="lem"/>
+					<lit-tag v="prn.pro"/>
+					<clip pos="4" side="tl" part="tipoenc_pro"/>
+				</lu>
+				<b/>
+				<lu>
+					<clip pos="2" side="tl" part="lemh"/>
+					<clip pos="2" side="tl" part="a_verb"/>
+					<lit-tag v="inf"/>
+					<clip pos="2" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="REGLA: estar ger -> être en train de inf">
+	<pattern>
+		<pattern-item n="estar"/>
+		<pattern-item n="ger"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="etre_en_train_de_inf">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="1" side="tl" part="temps"/></tag>
+					<tag><clip pos="1" side="tl" part="pers"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+				</tags>
+				<lu>
+					<get-case-from pos="1">
+						<lit v="être"/>
+					</get-case-from>
+					<lit-tag v="vbser"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="pers"/>
+					<clip pos="1" side="tl" part="nbr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="en"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="train"/>
+					<lit-tag v="n.m.sg"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="de"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b pos="1"/>
+				<lu>
+					<clip pos="2" side="tl" part="lemh"/>
+					<clip pos="2" side="tl" part="a_verb"/>
+					<lit-tag v="inf"/>
+					<clip pos="2" side="tl" part="lemq"/>
+				</lu>
+			</chunk>
+		</out>
+	</action>
+</rule>
+
+<rule comment="REGLA: estar ger enc -> être en train de pro inf">
+	<pattern>
+		<pattern-item n="estar"/>
+		<pattern-item n="ger"/>
+		<pattern-item n="prnenc"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="etre_en_train_de_pro_inf">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="1" side="tl" part="temps"/></tag>
+					<tag><clip pos="1" side="tl" part="pers"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/>
+					<clip pos="1" side="tl" part="a_verb"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="pers"/>
+					<clip pos="1" side="tl" part="nbr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="en"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="train"/>
+					<lit-tag v="n.m.sg"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="de"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b pos="1"/>
+				<lu>
+					<clip pos="3" side="tl" part="lem"/>
+					<lit-tag v="prn.pro"/>
+					<clip pos="3" side="tl" part="tipoenc_pro"/>
+				</lu>
+				<b pos="2"/>
+				<lu>
+					<clip pos="2" side="tl" part="lemh"/>
+					<clip pos="2" side="tl" part="a_verb"/>
+					<lit-tag v="inf"/>
+					<clip pos="2" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+	</action>
+</rule>
+
+<rule comment="REGLA: estar ger enc enc-> être en train de pro pro inf">
+	<pattern>
+		<pattern-item n="estar"/>
+		<pattern-item n="ger"/>
+		<pattern-item n="prnenc"/>
+		<pattern-item n="prnenc"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="etre_in_train_de_pro_pro_inf">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="1" side="tl" part="temps"/></tag>
+					<tag><clip pos="1" side="tl" part="pers"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+				</tags>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/>
+					<clip pos="1" side="tl" part="a_verb"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="pers"/>
+					<clip pos="1" side="tl" part="nbr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="en"/>
+					<lit-tag v="pr"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="train"/>
+					<lit-tag v="n.m.sg"/>
+				</lu>
+				<b/>
+				<lu>
+					<lit v="de"/>
 					<lit-tag v="pr"/>
 				</lu>
 				<b pos="1"/>
