@@ -17,6 +17,9 @@
  <def-cat n="querel">
       <cat-item lemma="que" tags="rel.*"/>
     </def-cat>
+ <def-cat n="cuyo">
+      <cat-item lemma="cuyo" tags="rel.*"/>
+    </def-cat>
   <def-cat n="no">
       <cat-item lemma="no" tags="adv"/>
     </def-cat>
@@ -80,7 +83,7 @@
 
     <def-cat n="prnperssubj"><!-- pronoms personals-->
       <cat-item lemma="yo" tags="prn.*"/>
-      <cat-item lemma="tu" tags="prn.*"/>
+      <cat-item lemma="tú" tags="prn.*"/>
       <cat-item lemma="él" tags="prn.*"/>
       <cat-item lemma="nosotros" tags="prn.*"/>
       <cat-item lemma="vosotros" tags="prn.*"/>
@@ -464,6 +467,7 @@
   </section-def-attrs>
   <section-def-vars>
     <def-var n="etiq_aux"/>
+    <def-var n="etiq_det"/>
     <def-var n="concorden"/>
     <def-var n="numero"/>
     <def-var n="genero"/>
@@ -544,7 +548,7 @@
 	<choose>
 		<when>
 			<test>
-				<equal>
+				<equal caseless="yes">
 					<clip pos="1" side="sl" part="lem"/>
 					<lit v="no"/>
 				</equal>
@@ -562,6 +566,78 @@
 				</chunk>
 			</out>
 		</when>
+	</choose>
+</def-macro>
+
+<def-macro n="def_det" npar="2">
+	<choose>
+		<when>
+			<test>
+				<equal>
+					<clip pos="2" side="tl" part="nbr"/>
+					<lit-tag v="pl"/>
+				</equal>
+			</test>
+			<let>
+				<var n="etiq_det"/>
+				<lit-tag v="det.def.mf.pl"/>
+			</let>
+		</when>
+		<otherwise>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="2" side="tl" part="gen"/>
+							<lit-tag v="f"/>
+						</equal>
+					</test>
+					<let>
+						<var n="etiq_det"/>
+						<lit-tag v="det.def.f.sg"/>
+					</let>
+				</when>
+				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<clip pos="2" side="tl" part="gen"/>
+									<lit-tag v="m"/>
+								</equal>
+							</test>
+							<let>
+								<var n="etiq_det"/>
+								<lit-tag v="det.def.m.sg"/>
+							</let>
+						</when>
+						<otherwise>
+							<choose>
+								<when>
+									<test>
+										<equal>
+											<clip pos="1" side="sl" part="gen"/>
+											<lit-tag v="f"/>
+										</equal>
+									</test>
+									<let>
+										<var n="etiq_det"/>
+										<lit-tag v="det.def.f.sg"/>
+									</let>
+								</when>
+								<otherwise>
+									<let>
+										<var n="etiq_det"/>
+										<lit-tag v="det.def.m.sg"/>
+									</let>
+
+								</otherwise>
+							</choose>
+						</otherwise>
+					</choose>
+				</otherwise>
+			</choose>
+		</otherwise>
 	</choose>
 </def-macro>
 
@@ -4787,7 +4863,7 @@
 						<choose>
 							<when>
 								<test>
-									<equal>
+									<equal caseless="yes">
 										<clip pos="1" side="sl" part="lem"/>
 										<lit v="no"/>
 									</equal>
@@ -4993,7 +5069,7 @@
 					<choose>
 						<when>
 							<test>
-								<equal>
+								<equal caseless="yes">
 									<clip pos="1" side="sl" part="lem"/>
 									<lit v="no"/>
 								</equal>
@@ -5997,7 +6073,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -6171,7 +6247,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -6372,7 +6448,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -6512,7 +6588,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -6780,7 +6856,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -6988,7 +7064,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -7612,7 +7688,7 @@
 						<choose>
 							<when>
 								<test>
-									<equal>
+									<equal caseless="yes">
 										<clip pos="1" side="sl" part="lem"/>
 										<lit v="no"/>
 									</equal>
@@ -7880,7 +7956,7 @@
 				<choose>
 						<when>
 							<test>
-								<equal>
+								<equal caseless="yes">
 									<clip pos="1" side="sl" part="lem"/>
 									<lit v="no"/>
 								</equal>
@@ -8484,7 +8560,7 @@
 						<choose>
 							<when>
 								<test>
-									<equal>
+									<equal caseless="yes">
 										<clip pos="1" side="sl" part="lem"/>
 										<lit v="no"/>
 									</equal>
@@ -8769,7 +8845,7 @@
 				<choose>
 						<when>
 							<test>
-								<equal>
+								<equal caseless="yes">
 									<clip pos="1" side="sl" part="lem"/>
 									<lit v="no"/>
 								</equal>
@@ -11077,7 +11153,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 					<clip pos="1" side="sl" part="lem"/>
 					<lit v="no"/>
 				</equal>
@@ -11348,7 +11424,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 					<clip pos="1" side="sl" part="lem"/>
 					<lit v="no"/>
 				</equal>
@@ -11649,7 +11725,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 					<clip pos="1" side="sl" part="lem"/>
 					<lit v="no"/>
 				</equal>
@@ -11952,7 +12028,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 					<clip pos="1" side="sl" part="lem"/>
 					<lit v="no"/>
 				</equal>
@@ -12199,7 +12275,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 					<clip pos="1" side="sl" part="lem"/>
 					<lit v="no"/>
 				</equal>
@@ -12509,7 +12585,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -12717,7 +12793,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -12947,7 +13023,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -13108,7 +13184,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -13419,7 +13495,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -13662,7 +13738,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="no"/>
 					</equal>
@@ -14100,6 +14176,203 @@
 			</lu> 
 			</chunk>
 		</out>  
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="cuyo nombre -> dont le nom">
+	<pattern>
+		<pattern-item n="cuyo"/>
+		<pattern-item n="nom"/>
+	</pattern>
+	<action>
+	<call-macro n="f_concord2">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+	</call-macro>
+	<call-macro n="def_det">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+	</call-macro>
+	<out>
+		<chunk name="rel">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+				<tag><var n="genero"/></tag>
+				<tag><var n="numero"/></tag>
+			</tags>
+			<lu>
+				<clip pos="1" side="tl" part="lem"/>  
+				<clip pos="1" side="tl" part="a_prn"/>
+				<clip pos="1" side="tl" part="tipus_prn"/> 
+				<clip pos="1" side="tl" part="gen"/>
+				<clip pos="1" side="tl" part="nbr"/>
+			</lu> 
+		</chunk>
+		<b pos="1"/>
+		<chunk name="det_nom">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><clip pos="2" side="tl" part="gen"/></tag>
+				<tag><clip pos="2" side="tl" part="nbr"/></tag>
+			</tags>
+			<lu>
+				<lit v="le"/>
+				<var n="etiq_det"/>
+			</lu> 
+			<b/>
+			<lu>
+				<clip pos="2" side="tl" part="lem"/>  
+				<clip pos="2" side="tl" part="a_nom"/>
+				<clip pos="2" side="tl" part="gen" link-to="2"/>
+				<clip pos="2" side="tl" part="nbr" link-to="3"/>
+			</lu> 
+		</chunk>
+	</out>  
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="cuyo nom adj -> dont le nom adj">
+	<pattern>
+		<pattern-item n="cuyo"/>
+		<pattern-item n="nom"/>
+		<pattern-item n="adj"/>
+	</pattern>
+	<action>
+	<call-macro n="f_concord2">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+		<with-param pos="3"/>
+	</call-macro>
+	<call-macro n="def_det">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+	</call-macro>
+	<out>
+		<chunk name="rel">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+				<tag><var n="genero"/></tag>
+				<tag><var n="numero"/></tag>
+			</tags>
+			<lu>
+				<clip pos="1" side="tl" part="lem"/>  
+				<clip pos="1" side="tl" part="a_prn"/>
+				<clip pos="1" side="tl" part="tipus_prn"/> 
+				<clip pos="1" side="tl" part="gen"/>
+				<clip pos="1" side="tl" part="nbr"/>
+			</lu> 
+		</chunk>
+		<b pos="1"/>
+		<chunk name="det_nom_adj">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><var n="genero"/></tag>
+				<tag><var n="numero"/></tag>
+			</tags>
+			<lu>
+				<lit v="le"/>
+				<var n="etiq_det"/>
+			</lu> 
+			<b/>
+			<lu>
+				<clip pos="2" side="tl" part="lem"/>  
+				<clip pos="2" side="tl" part="a_nom"/>
+				<clip pos="2" side="tl" part="gen" link-to="2"/>
+				<clip pos="2" side="tl" part="gen_mf"/>	 
+				<clip pos="2" side="tl" part="nbr" link-to="3"/>
+				<clip pos="2" side="tl" part="gen_mf"/>	 
+			</lu> 
+			<b pos="2"/>
+			<lu>
+				<clip pos="3" side="tl" part="lem"/>  
+				<clip pos="3" side="tl" part="a_adj"/>
+				<clip pos="3" side="tl" part="gen" link-to="2"/>
+				<clip pos="3" side="tl" part="gen_mf"/>	 
+				<clip pos="3" side="tl" part="nbr" link-to="3"/>
+				<clip pos="3" side="tl" part="gen_mf"/>	 
+			</lu> 
+		</chunk>
+	</out>  
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="cuyo adj nom -> dont le adj nom">
+	<pattern>
+		<pattern-item n="cuyo"/>
+		<pattern-item n="adj"/>
+		<pattern-item n="nom"/>
+	</pattern>
+	<action>
+	<call-macro n="f_concord2">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+		<with-param pos="2"/>
+	</call-macro>
+	<call-macro n="def_det">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+	</call-macro>
+	<out>
+		<chunk name="rel">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+				<tag><var n="genero"/></tag>
+				<tag><var n="numero"/></tag>
+			</tags>
+			<lu>
+				<clip pos="1" side="tl" part="lem"/>  
+				<clip pos="1" side="tl" part="a_prn"/>
+				<clip pos="1" side="tl" part="tipus_prn"/> 
+				<clip pos="1" side="tl" part="gen"/>
+				<clip pos="1" side="tl" part="nbr"/>
+			</lu> 
+		</chunk>
+		<b pos="1"/>
+		<chunk name="det_nom_adj">
+			<tags>
+				<tag><lit-tag v="SN"/></tag>
+				<tag><var n="genero"/></tag>
+				<tag><var n="numero"/></tag>
+			</tags>
+			<lu>
+				<lit v="le"/>
+				<var n="etiq_det"/>
+			</lu> 
+			<b/>
+			<lu>
+				<clip pos="2" side="tl" part="lem"/>  
+				<clip pos="2" side="tl" part="a_adj"/>
+				<clip pos="2" side="tl" part="gen" link-to="2"/>
+				<clip pos="2" side="tl" part="gen_mf"/>	 
+				<clip pos="2" side="tl" part="nbr" link-to="3"/>
+				<clip pos="2" side="tl" part="gen_mf"/>	 
+			</lu> 
+			<b pos="2"/>
+			<lu>
+				<clip pos="3" side="tl" part="lem"/>  
+				<clip pos="3" side="tl" part="a_nom"/>
+				<clip pos="3" side="tl" part="gen" link-to="2"/>
+				<clip pos="3" side="tl" part="gen_mf"/>	 
+				<clip pos="3" side="tl" part="nbr" link-to="3"/>
+				<clip pos="3" side="tl" part="gen_mf"/>	 
+			</lu> 
+		</chunk>
+	</out>  
 		<let>
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
