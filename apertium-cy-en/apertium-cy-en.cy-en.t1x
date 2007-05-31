@@ -3,6 +3,7 @@
     <def-cat n="nom">
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
       <cat-item tags="np.loc"/>
+      <cat-item tags="n"/>
     </def-cat>
     <def-cat n="adj">
       <cat-item tags="adj"/>
@@ -62,13 +63,13 @@
             <lu>
               <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="a_nom"/>
-<!--              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/> -->
               <clip pos="1" side="tl" part="nbr"/>
             </lu>
           </chunk>
         </out>
       </action>
     </rule>
+
     <rule comment="REGLA: NOM ADJ">
       <pattern>
         <pattern-item n="nom"/>
@@ -94,10 +95,9 @@
             </lu>
             <b pos="1"/>
             <lu>
-              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="a_nom"/>
               <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="1" side="tl" part="lemq"/>
             </lu>
           </chunk>
         </out>
@@ -107,6 +107,8 @@
         </let>
       </action>
     </rule>
+
+
     <rule comment="REGLA: NOM ADJ ADJ">
       <pattern>
         <pattern-item n="nom"/>
@@ -138,10 +140,9 @@
             </lu>
             <b pos="2"/>
             <lu>
-              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="a_nom"/>
               <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="1" side="tl" part="lemq"/>
             </lu>
           </chunk>
         </out>
