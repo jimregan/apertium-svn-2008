@@ -60,6 +60,11 @@
 <def-cat n="rien">
       <cat-item lemma="rien" tags="prn.*"/>
     </def-cat>
+   
+   <def-cat n="tout">
+      <cat-item lemma="tout" tags="predet.*"/>
+      <cat-item lemma="tout" tags="prn"/>
+    </def-cat>
 
     <def-cat n="prnperssubj">
       <cat-item lemma="je" tags="prn.*"/>
@@ -5473,8 +5478,11 @@
 		<call-macro n="f_ppres">
 			<with-param pos="1"/>
 		</call-macro>
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>
 		<out>
-			<chunk name="verb">
+			<chunk name="verb" case="caseFirstWord">
 				<tags>
 					<tag><lit-tag v="SV"/></tag>
 					<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -5834,6 +5842,45 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="1"/>
+		</call-macro>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+<rule comment="REGLA: tout en ger-> ger">
+	<pattern>
+		<pattern-item n="tout"/>
+		<pattern-item n="enprep"/>
+		<pattern-item n="ger"/>
+	</pattern>
+	<action>
+		<call-macro n="tipus_verb">
+			<with-param pos="3"/>
+		</call-macro>
+		<out>
+			<chunk name="ger">
+				<tags>
+					<tag><lit-tag v="ger"/></tag>
+					<tag><clip pos="3" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="3" side="tl" part="temps"/></tag>
+					<tag><var n="tipusverb"/></tag>
+				</tags>
+				<lu>
+					<clip pos="3" side="tl" part="lemh"/> 
+					<clip pos="3" side="tl" part="a_verb"/>
+					<clip pos="3" side="tl" part="temps"/>
+					<clip pos="3" side="tl" part="lemq"/> 
+				</lu>
+			</chunk>
+		</out>
+		<call-macro n="f_bcond">
+			<with-param pos="1"/>
+		</call-macro>
+		<call-macro n="f_bcond">
+			<with-param pos="2"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
