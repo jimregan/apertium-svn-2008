@@ -574,6 +574,38 @@
 	</choose>
 </def-macro>
 
+<!-- aquesta macro és per si no resolem el problmema haber/hay via tagger -->
+<def-macro n="haber" npar="1">
+	<choose>
+		<when>
+			<test>
+				<and>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="haber"/>
+					</equal>
+					<equal>
+						<clip pos="1" side="sl" part="pers"/>
+						<lit-tag v="p3"/>
+					</equal>
+					<equal>
+						<clip pos="1" side="sl" part="nbr"/>
+						<lit-tag v="sg"/>
+					</equal>
+				</and>
+			</test>
+			<let>
+				<clip pos="1" side="tl" part="lem"/>
+				<lit v="y avoir"/>
+			</let>
+			<let>
+				<clip pos="1" side="tl" part="a_verb"/>
+				<lit-tag v="vblex"/>
+			</let>
+		</when>
+	</choose>
+</def-macro>
+
 <def-macro n="def_det" npar="2">
 	<choose>
 		<when>
@@ -5400,6 +5432,10 @@
 		<call-macro n="f_imp">
 			<with-param pos="2"/>
 		</call-macro>
+		<call-macro n="haber">
+			<with-param pos="2"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
@@ -5658,6 +5694,10 @@
 		<call-macro n="f_imp">
 			<with-param pos="2"/>
 		</call-macro>
+		<call-macro n="haber">
+			<with-param pos="2"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
@@ -5984,6 +6024,9 @@
 			<with-param pos="1"/>
 		</call-macro>
 		<call-macro n="f_imp">
+			<with-param pos="1"/>
+		</call-macro>
+		<call-macro n="haber">
 			<with-param pos="1"/>
 		</call-macro>
 		<choose>
@@ -8062,6 +8105,10 @@
 		<call-macro n="f_imp">
 			<with-param pos="2"/>
 		</call-macro>
+		<call-macro n="haber">
+			<with-param pos="2"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
@@ -8184,6 +8231,10 @@
 		<call-macro n="f_imp">
 			<with-param pos="3"/>
 		</call-macro>
+		<call-macro n="haber">
+			<with-param pos="3"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
@@ -8516,6 +8567,10 @@
 		<call-macro n="f_imp">
 			<with-param pos="3"/>
 		</call-macro>
+		<call-macro n="haber">
+			<with-param pos="3"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
@@ -8919,6 +8974,10 @@
 		<call-macro n="f_imp">
 			<with-param pos="3"/>
 		</call-macro>
+		<call-macro n="haber">
+			<with-param pos="3"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
@@ -9052,6 +9111,10 @@
 		<call-macro n="f_imp">
 			<with-param pos="4"/>
 		</call-macro>
+		<call-macro n="haber">
+			<with-param pos="4"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
@@ -9405,6 +9468,10 @@
 		<call-macro n="f_imp">
 			<with-param pos="4"/>
 		</call-macro>
+		<call-macro n="haber">
+			<with-param pos="4"/>
+		</call-macro>
+
 		<choose>
 			<when>
 				<test>
