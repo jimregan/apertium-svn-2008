@@ -1614,7 +1614,7 @@ is decided by the linguist according to how he/she wishes to
 characterise morphologically the LF in the dictionaries, and must be
 the same in all the dictionaries of a system if we want that the
 lexical and structural transfer operations work correctly. So, for
-example, in the Romance languages dictionaries of this project, a noun
+example, in the Romance language dictionaries of this project, a noun
 has in the first place the symbol for part of speech (\textit{n},
 noun), then for gender (\textit{m}, masculine, \textit{f}, feminine,
 \textit{mf}, masculine--feminine), and finally for number
@@ -1628,7 +1628,7 @@ In morphological dictionaries, references to symbols are used in
 paradigms as well as in entries which do not include any reference to
 a paradigm. In bilingual dictionaries, usually only the first symbol
 of each LF is specified, since the rest is automatically copied from
-the source language LF to the target language LF (if they are
+the source language LF to the target language LF (in the case they are
 identical in both languages).
 
 To specify which symbol we are referring to, we use the (mandatory)
@@ -1781,7 +1781,7 @@ inflect like \emph{abuelo}, such as \emph{alumno}, \emph{amigo} or
 dictionary entries.  In general, paradigms can be applied to any
 position of a dictionary entry (if it makes sense, of course).  We can
 think of paradigms as transducers that are inserted at the point where
-they specified.  Figure \ref{fig:pardef2} shows an example of paradigm
+they are specified.  Figure \ref{fig:pardef2} shows an example of paradigm
 defined to be used as a prefix. It is the paradigm used to analyse and
 generate Spanish words beginning with \emph{ex}, \emph{ex-}, etc.,
 like \emph{ex-presidente}, \emph{exministro}, \emph{ex director},
@@ -1812,7 +1812,7 @@ case to analyse and generate the word without the prefix \emph{ex}.
 
 
 Entries in a paradigm can contain references to other paradigms
-provided that these have been defined upper in the file.  In the other
+provided that these have been defined upper in the file.  On the other
 hand, for the moment a paradigm definition can not include itself
 neither directly nor indirectly.
 
@@ -1835,7 +1835,7 @@ characteristics and use of metaparadigms.
 It is used inside an entry to indicate which inflection paradigm,
 among the ones defined in \texttt{<\textbf{pardefs}>}, follows the
 entry. Thanks to the references to paradigms there is no need to write
-all the inflected forms of the lemma in a morphological dictionary
+all the inflected forms of a lemma in a morphological dictionary
 entry.  The attribute \texttt{\textsl{n}} is used to specify the name
 of the paradigm we want to refer to.
 
@@ -2006,7 +2006,7 @@ presence of the tag \texttt{<\textbf{a}/>} causes the activation of
 the post-generator, which checks whether the preposition is followed
 by one of the words that cause it to contract and, if it is so, makes
 the contraction (see page~\pageref{ss:postgen} for more details). The
-restriction \texttt{RL} indicates that this is only a generation
+restriction \texttt{RL} indicates that this is an only-generation
 entry, since it does not make any sense for the analysis.
 
 \begin{figure}
@@ -2033,7 +2033,7 @@ This element is used, inside the \texttt{<\textbf{l}>} and
 \texttt{<\textbf{r}>} elements, to define groups that require a
 special treatment beyond the normal word by word processing. It is
 used in inflective multiwords to signal the beginning and the end of
-the group of lexical forms (one or more) that are adjacent to the
+the group of invariable lexical forms (one or more) that are adjacent to the
 inflected word and that, together with it, build an inseparable
 unit. In Section~\ref{ss:multipalabras} you will find a detailed
 explanation of the different multiword types, and in Figure
@@ -2393,7 +2393,7 @@ generated, may undergo contraction, apostrophation or other
 transformations, depending of which words are in contact with them in
 the output text, must have the post-generator activation mark
 (\texttt{<\textbf{a}/>}, see page \pageref{ss:a}) in the generation
-entry (\texttt{LR} direction).  It is essential that the surface forms
+entry (\texttt{RL} direction).  It is essential that the surface forms
 marked with the post-generator activation mark are identical in the
 morphological and the post-generation dictionaries of the same
 translator. In the post-generation dictionary, all entries begin with
@@ -2408,11 +2408,11 @@ non-alphabetic characters that can appear in a text. We can see in the
 example that the entry for the preposition \emph{de} has the mark
 \texttt{<\textbf{a}/>}. The paradigm assigned to this entry,
 "\texttt{el}", is the one defined just above. According to this entry,
-when the system receives as input the left string of the entry (what
-is between \texttt{<\textbf{l}>}) concatenated to the left string of
+when the system receives as input the left string of the entry (the part
+between \texttt{<\textbf{l}>}) concatenated to the left string of
 the paradigm (that is, when the input is
 \texttt{"}\texttt{<a/>\textbf{de}<b/>\textbf{el}<b/>"} or
-\texttt{"}\texttt{<a/>\textbf{de}<b/>\textbf{el}[puntuación]}\texttt{"}),
+\texttt{"}\texttt{<a/>\textbf{de}\\<b/>\textbf{el}[puntuación]}\texttt{"}),
 the module delivers as output string (the part between \texttt{<r>}
 elements) the string \texttt{"}\textbf{del}\texttt{"} followed by the
 blanks represented with \texttt{<b/>} or by the symbols represented
@@ -2699,11 +2699,11 @@ variations in their grammatical symbols.
 Related with this, we created the concept of metadictionary: it is a
 dictionary which contains metaparadigms as well as the normal
 paradigms used so far. The name of a metadictionary is
-\texttt{apertium-}$L_1$\texttt{-}$L_2$\texttt{.}$L_1$\texttt{.metadix}
+\texttt{apertium-PAIR.}$L_1$\texttt{.metadix}
 (for example, for the English monolingual dictionary in the
 Apertium-en-ca system, \texttt{apertium-en-ca.en.metadix}).  When
 linguistic data are compiled these dictionaries are pre-processed, so
-that they have the format appropriate for the dictionary compiler.
+that they have the appropriate format for the dictionary compiler.
 
 \paragraph{Specification of metaparadigms}
 
@@ -2712,7 +2712,7 @@ of the monolingual dictionary, the same section where also the rest of
 the dictionary paradigms are defined. A metaparadigm, just like a
 paradigm, has a name specified in the attribute \texttt{n}.  This name
 will have the same characteristics as in the other paradigms, with the
-difference that the variable part of the lemma will be in brackets and
+difference that the variable part of the lemma root will be in brackets and
 in capital letters, as you can see in this example:
 
 \begin{alltt} 
@@ -2833,13 +2833,13 @@ how is this pre-processing like.
 
 
 
-\paragraph{Processing of the metadictionary}
+\paragraph{Pre-processing of the metadictionary}
 
 
-A metadictionary is a XML file to which two XSLT style sheets are
+A metadictionary is an XML file to which two XSLT style sheets are
 applied, in order to pre-process the metaparadigms and obtain a
 dictionary with all the paradigms derived from the metaparadigms.  The
-first style sheet, \texttt{buscaPar.xsl}, obtains the list of verbs
+first style sheet, \texttt{buscaPar.xsl}, produces the list of verbs
 that use metaparadigms and deletes the possible repetitions of
 metaparadigms to be expanded. This style sheet generates, in
 combination with the sheet \texttt{principal.xsl}, a second style
@@ -2893,7 +2893,7 @@ created.  In the previous example, from the metaparadigm:
 \end{alltt}
 
 	the system would generate the paradigm
-	\texttt{<\textbf{pardef} n="m/élher\_\_vblex"/>} :
+	\texttt{"m/élher\_\_vblex"} :
 
 \begin{alltt}
 <\textbf{pardef} n="m/élher__vblex">
@@ -2971,7 +2971,7 @@ of the lexical processing modules}
 
 The four lexical processing modules (morphological analyser, lexical
 transfer, morphological generator and post-generator) are compiled
-from dictionaries by means of a single compiler % \cite{Sergio}, based
+from dictionaries by means of a single compiler based
 on letter transducers \cite{roche97}. This compiler is much faster
 than the ones used in the systems \textsf{interNOSTRUM}
 \cite{canals01b,garridoalenda01p,garrido99j} and \textsf{Traductor
@@ -3119,11 +3119,11 @@ the ones used in the morphological analyser. Usually, the information
 delivered by the analyser is too detailed for the purposes of the
 part-of-speech disambiguation (for example, for most purposes, it
 suffices to group in the same category all common nouns, regardless of
-their gender and number). The use of finer tags does not improve the
+their gender and number). The use of finer-grained tags does not improve the
 results, whereas it increases the number of parameters to be estimated
 and intensifies the problem of lack of linguistic resources such as
 manually disambiguated texts. For this reason, in the tagger file one
-has to specify how to group the \emph{fine} tags delivered by the
+has to specify how to group the \emph{fine-grained} tags delivered by the
 morphological analyser into more general \emph{coarse} tags ---which
 we will call \emph{categories}--- that will be used in the
 part-of-speech disambiguation. Apart from coarse categories, one can
@@ -3134,17 +3134,17 @@ Markov model~\cite{pla04}; the tagger in Apertium uses the latter
 lexicalization type.
 
 It is important to note that, in spite of working with \emph{coarse}
-categories, the tagger outputs fine tags like the ones from the
+categories, the tagger outputs fine-grained tags like the ones from the
 morphological analyser. Sometimes it may occur that the morphological
-analyser delivers, for a certain word, two or more fine tags that can
+analyser delivers, for a certain word, two or more fine-grained tags that can
 be grouped under the same tagger category: e.g. in Spanish
 \emph{cante} can be the 1st or the 3rd singular person of the
-subjunctive present of the verb \emph{cantar} ("to sing"); both fine
+subjunctive present of the verb \emph{cantar} ("to sing"); both fine-grained
 tags, \texttt{\emph{<vblex><prs><p1><sg>}} and
 \texttt{\emph{<vblex><prs><p3><sg>}}, are grouped under the tagger
 category \ \texttt{VLEXSUBJ} (\emph{subjunctive verb}). In this case,
 one of both fine tags is discarded; in the tagger definition file it
-is possible to define which fine tag, among the ones that compose a
+is possible to define which fine-grained tag, among the ones that compose a
 coarse tag, will be delivered after disambiguation.
 
 
@@ -3154,12 +3154,12 @@ coarse tag, will be delivered after disambiguation.
 \label{datostagger}
 \subsubsection{Introduction}
 \label{ss:introtagger} We describe next the format of the files that
-specify how to group the \emph{fine} tags delivered by the
+specify how to group the \emph{fine-grained} tags delivered by the
 morphological analyser into more general \emph{coarse} tags.  In this
 files, moreover, one can specify \emph{restrictions} that help in the
 estimation of the statistical model underlying the process of lexical
 disambiguation, as well as preference rules to be applied when two
-fine tags belong to the same category.
+fine-grained tags belong to the same category.
 
 
 The tagger assumes that, in the input stream, lexical forms will be
@@ -3193,7 +3193,7 @@ multiwords (like the Spanish expression \emph{cántale las cuarenta}).
 \item \emph{lexicalforms}\footnote{Separated from each other by a
 delimiter which corresponds to the \texttt{<j/>} element (see page
 \pageref{ss:j}).} are units made of one lemma and one or more
-grammatical symbols (which compose the fine tag) with the output
+grammatical symbols (which compose the fine-grained tag) with the output
 information of the analyser
 \item \emph{lemma-queue} is made of one or more lemmas
   \footnote{Separated from each other by the \texttt{<b/>} element
@@ -3236,8 +3236,8 @@ The meaning of the different tags is the following:
 \texttt{name} is used to specify the name of the tagger generated from
 the file.
 \item[\texttt{tagset}]: defines the \emph{coarse} tagset or categories
-with which the tagger works. Categories are defined by the fine tags
-delivered by the morphological analyser in its output.
+with which the tagger works. Categories are defined by the fine-grained tags
+output by the morphological analyser.
 \item[\texttt{def-label}]: defines a category or coarse tag (whose
   name is specified in the mandatory attribute \texttt{name}) by means
   of a list of fine tags defined with one or more \texttt{tags-item}
@@ -3253,7 +3253,7 @@ delivered by the morphological analyser in its output.
   understood that it refers to all cases \emph{except} the ones
   defined by the more specific category.
  
-\item[\texttt{tags-item}]: is used to define a fine tag by means of a
+\item[\texttt{tags-item}]: is used to define a fine-grained tag by means of a
 sequence of grammatical symbols. The sequence of grammatical symbols
 that make up the fine tag is specified in the mandatory attribute
 \texttt{tags}. In this sequence, symbols are separated by a dot, and
@@ -3267,12 +3267,12 @@ attribute \texttt{lemma}.
 deal with entries with more than one lexical form, like in the example
 given in the previous section. Each category is defined as a set of
 valid sequences (\texttt{sequence}) of previously defined categories
-or of fine tags.  It is designed for contractions, verbs with enclitic
+or of fine-grained tags.  It is designed for contractions, verbs with enclitic
 pronouns, etc.
 
 \item[\texttt{sequence}]: defines a sequence of elements, which can be
-categories (\texttt{label-item}) or fine tags
-(\texttt{tags-item}). Using fine tags directly is useful if one wishes
+categories (\texttt{label-item}) or fine-grained tags
+(\texttt{tags-item}). Using fine-grained tags directly is useful if one wishes
 to use a sequence of grammatical symbols that is not part of any
 previously defined fine tag \nota{MG: en comptes de 'fine tag' no es
 refereix aquí a 'category'?} or that represents a greater
@@ -3308,11 +3308,11 @@ used very cautiously.
 (\texttt{label-items}).
 
 \item[\texttt{preferences}]: used to define priorities in terms of
-which fine tag must be delivered in the tagger output when two or more
+which fine-grained tag must be delivered in the tagger output when two or more
 fine tags are assigned to the same category.
   
 \item[\texttt{prefer}]: specifies that, in case of conflict between
-different fine tags assigned to the same category, the tagger must
+different fine-grained tags assigned to the same category, the tagger must
 output the tag specified in the mandatory attribute \texttt{tags}. If
 a category contains more than one of the fine tags included in these
 \texttt{prefer} elements, the tag defined in the first place will be
@@ -3397,8 +3397,8 @@ just described.
    <!-- ... -->
 </\textbf{enforce-rules}>
 <\textbf{preferences}>
-   <\textbf{prefer} \textsl{tags}="vblex.pii.3.sg"/>
-   <\textbf{prefer} \textsl{tags}="vbser.pii.3.sg"/>
+   <\textbf{prefer} \textsl{tags}="vblex.pii.p3.sg"/>
+   <\textbf{prefer} \textsl{tags}="vbser.pii.p3.sg"/>
    <!-- ... -->
 </\textbf{preferences}>
 </\textbf{tagger}>
@@ -3415,7 +3415,7 @@ a supervised manner, using manually disambiguated texts, and a
 unsupervised manner, using ambiguous texts.
 
 When the training is made with ambiguous texts (unsupervised), the
-format of the needed text can be automatically obtained from a plain
+format of the required text can be automatically obtained from a plain
 text corpus in the chosen language using the system's morphological
 analyser; in this case, the format of the text forms will be like the
 one defined in the figure~\ref{eq:formaanalizada2} (its description
@@ -3493,12 +3493,13 @@ necessary for different reasons:
 \begin{itemize}
 \item So that the transfer module can process these units separately
 in order to deal with, for example, the movement of clitic pronouns
-from enclitic to proclitic and vice versa.
+when changing from enclitic to proclitic and vice versa.
 \item So that the bilingual dictionary only has to store information
 about the lemmas to be translated.  If the particles that make up a
 multiword are included jointly in the bilingual dictionary, the
-dictionary has to store an entry for each of the different
-combinations.  By separating compound multiwords we can avoid having
+dictionary would have to store an entry for each of the different
+combinations.  By separating compound multiwords and processing multiwords with
+inner inflection, we can avoid having
 entries including inflection variations in the bilingual dictionary.
 \end{itemize}
 
@@ -3511,9 +3512,9 @@ with split lemma, the queue is moved to the position between the first
 word of the multiword and its first grammatical symbol.
 
 The task of generating an output which has the original order accepted
-by the generator, is left to the appropriate rules of the transfer
+by the generator, is left to the rules of the transfer
 module, which are also responsible for creating the compound
-multiwords which may be needed in the target language.  In general,
+multiwords which may be required in the target language.  In general,
 the generator works with the same multiwords as the morphological
 analyser, and with the elements in the same order; that is the reason
 why this task has to be done in the transfer module.
@@ -3561,7 +3562,7 @@ with own meaning.
 
 
 When the Apertium system is used to translate between less related
-languages as the ones dealt with in the first stages of the engine,
+languages than the ones dealt with in the first stages of the engine,
 the question of lexical selection becomes significant, because there
 are more cases, and more critical, in which a source language word can
 have more than one different translation in the target language. For
@@ -3574,7 +3575,7 @@ possible translation in target language for a source language lexical
 form) are tackled in Apertium in two ways.
 
 On the one hand, we have the situation where there is no big
-difference in meaning between the multiple equivalents in target
+difference in meaning between the multiple equivalents in the target
 language, and the fact of choosing one or the other can not lead to
 any translation error. We could say that between these equivalents
 there is a synonymy or quasi-synonymy relation. In such a case, the
@@ -3586,7 +3587,7 @@ where there are multiple equivalents.
 
 
 On the other hand, we have the case where there is a clear difference
-in meaning between the multiple equivalents which can lead to
+in meaning between the multiple equivalents, which can lead to
 translation errors if the inappropriate lemma is chosen. These are the
 cases dealt with the new lexical selection module. The linguist has to
 encode entries with the attributes \texttt{slr} or \texttt{srl}
@@ -3604,7 +3605,7 @@ language, but we think that the lexical selection module will not be
 capable of choosing the right translation by means of the context, we
 will follow the first method: choose a fixed translation (the most
 general, the most suitable in the maximum number of situations) and
-add a direction restriction in the rest of translations.  In the other
+add a direction restriction to the rest of translations.  In the other
 cases, we will encode the entries so that the decision is left to the
 lexical selection module.
 
@@ -3615,8 +3616,8 @@ first one, that is, choosing an only translation and marking the other
 equivalences with a direction restriction.  In the event that we use
 bilingual dictionaries with multiple translations, encoded with the
 attributes \texttt{slr} or \texttt{srl}, in a system that does not
-have any lexical selection module, a style sheet is responsible for
-converting these entries designed for a lexical selection module into
+have any lexical selection module, a style sheet will
+convert these entries designed for a lexical selection module into
 entries with direction restrictions \texttt{LR} or \texttt{RL}, so
 that one of the multiple equivalents (the one chosen as default entry
 by the linguist) becomes the fixed translation of the source language
@@ -3690,9 +3691,9 @@ works only with source language information.
 
 
 Section~\ref{se:preprocessament} next describes the pre-processing
-that must be done on a bilingual dictionary that contains more than
-one translation per entry, regardless of whether the system uses a
-lexical selector or not; finally, Section~\ref{se:lextor} describes
+that must be done on a bilingual dictionary  containing more than
+one translation per entry (whether the system uses a
+lexical selector or not), and Section~\ref{se:lextor} describes
 how the lexical selector works and how it has to be trained.
 
 
@@ -3703,7 +3704,7 @@ how the lexical selector works and how it has to be trained.
 Bilingual dictionaries have been modified to allow the specification
 of more than one translation per entry (refer to Section
 \ref{dic_lextor} to learn how to write such dictionary entries); this
-fact makes it necessary to pre-process those dictionaries, since the
+fact makes it necessary to pre-process these dictionaries, since the
 Apertium engine works with compiled dictionaries in which there is
 only one possible translation for each word.
 
@@ -3852,7 +3853,7 @@ that can have more than one translation in the target language.
 
 The word co-occurrence models
 calculated for each translation mark as described in the previous
-section provide the information necessary to perform lexical selection
+section provide the information required to perform lexical selection
 with information from the context.
 
 Lexical selection is done by \texttt{apertium-lextor --lextor}; the
