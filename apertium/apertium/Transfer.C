@@ -575,7 +575,7 @@ void
 Transfer::processChunk(xmlNode *localroot)
 {
   string name = "", namefrom = "",
-         caseofchunk = "aa";
+         caseofchunk = "";
   
   for(xmlAttr *i = localroot->properties; i != NULL; i = i->next)
   {
