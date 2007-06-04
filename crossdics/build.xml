@@ -74,6 +74,7 @@
 	<property name="zip" value="compara-entradas" />
 	<property name="zip.file" value="crossdics" />
 	<property name="appName" value="cross-dics" />
+	<property name="root-folder" value="svn-cross-dics" />
 	
 	
 	<!-- PROPERTIES -->
@@ -89,8 +90,8 @@
 	<!-- Log files -->
 	<property name="outputFile" value="${log.dir}/cross-dics.log" />
 	<!-- Use pattern detection for crossing? -->
-	<property name="use-patterns" value="no" />
-	<property name="cross-model" value="cross-model.xml" />	
+	<property name="use-patterns" value="yes" />
+	<property name="cross-model" value="cross-model-test.xml" />	
 
 	
 	<!-- TASKS -->
@@ -324,21 +325,27 @@
 		
 		<tar tarfile="${zip.dir}/${zip.file}.tar">
 			<tarfileset dir="../">
-				<include name="cross-dics/build.xml"/>
-				<include name="cross-dics/src/*.java"/>
-				<include name="cross-dics/src/dictools/*.java"/>
-				<include name="cross-dics/src/dictools/crossmodel/*.java"/>
-				<include name="cross-dics/src/dics/elements/dtd/*.java"/>
-				<include name="cross-dics/src/dics/elements/utils/*.java"/>
-				<include name="cross-dics/src/dics/elements/extras/*.java"/>
-				<include name="cross-dics/dics"/>
-				<include name="cross-dics/dix"/>
-				<include name="cross-dics/lib/cross-dics.jar"/>
-				<include name="cross-dics/log"/>
-				<include name="cross-dics/META-INF/manifest.mf"/>
-				<include name="cross-dics/AUTHORS"/>
-				<include name="cross-dics/COPYING"/>
-				<include name="cross-dics/README"/>								
+				<include name="${root-folder}/build.xml"/>
+				<!-- root -->
+				<include name="${root-folder}/src/*.java"/>
+				<!-- dictools -->
+				<include name="${root-folder}/src/dictools/*.java"/>
+				<include name="${root-folder}/src/dictools/crossmodel/*.java"/>
+				<!-- dics -->
+				<include name="${root-folder}/src/dics/elements/dtd/*.java"/>
+				<include name="${root-folder}/src/dics/elements/utils/*.java"/>
+				<include name="${root-folder}/src/dics/elements/extras/*.java"/>
+				<!-- fst -->
+				<include name="${root-folder}/src/fst/*.java"/>
+
+				<include name="${root-folder}/dics"/>
+				<include name="${root-folder}/dix"/>
+				<include name="${root-folder}/lib/cross-dics.jar"/>
+				<include name="${root-folder}/log"/>
+				<include name="${root-folder}/META-INF/manifest.mf"/>
+				<include name="${root-folder}/AUTHORS"/>
+				<include name="${root-folder}/COPYING"/>
+				<include name="${root-folder}/README"/>								
 			</tarfileset>
 		</tar>
 		<gzip zipfile="${zip.dir}/${zip.file}.tar.gz" src="${zip.dir}/${zip.file}.tar"/>
@@ -364,12 +371,14 @@
 		<echo message="  help       (shows this help file)" />
 	</target>
 
+   <!-- Jar -->
 	<target name="jar">
 		<mkdir dir="lib"/>
 		<jar destfile="lib/${appName}.jar" basedir="${build.dir}/"
 		manifest="META-INF/manifest.mf"/>
 	</target>
 
+   <!-- HowTo-->
 	<target name="howto" depends="compile">
 		<echo message="Crossing dictionaries..." />
 
@@ -380,6 +389,17 @@
 		</java>
 		<antcall target="clean" />
 		<echo message="Results in '${log.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Test -->
+	<target name="test" depends="compile">
+		<echo message="Testing..." />
+		<java classname="Test" classpath="${lib.dir}/${appName}.jar" fork="true">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+		</java>
+		<antcall target="clean" />
 		<echo message="Done!" />
 	</target>
 
