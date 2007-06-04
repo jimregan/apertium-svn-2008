@@ -27,8 +27,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import dics.elements.dtd.AlphabetElement;
+import dics.elements.dtd.ContentElement;
 import dics.elements.dtd.DictionaryElement;
 import dics.elements.dtd.EElement;
+import dics.elements.dtd.Element;
 import dics.elements.dtd.LElement;
 import dics.elements.dtd.PElement;
 import dics.elements.dtd.RElement;
@@ -36,6 +38,7 @@ import dics.elements.dtd.SElement;
 import dics.elements.dtd.SdefElement;
 import dics.elements.dtd.SdefsElement;
 import dics.elements.dtd.SectionElement;
+import dics.elements.dtd.TextElement;
 import dics.elements.utils.DicSet;
 import dics.elements.utils.EElementList;
 import dics.elements.utils.EElementMap;
@@ -48,6 +51,8 @@ import dictools.crossmodel.CrossAction;
 import dictools.crossmodel.CrossActionList;
 import dictools.crossmodel.CrossModel;
 import dictools.crossmodel.CrossModelReader;
+import dictools.crossmodel.CrossModelFST;
+import dictools.crossmodel.Pattern;
 
 /**
  * 
@@ -124,18 +129,23 @@ public class DicCross {
 	/**
 	 * 
 	 */
+	private CrossModelFST crossModelFST;
+
+	/**
+	 * 
+	 */
 	private boolean crossWithPatterns = false;
-	
+
 	/**
 	 * 
 	 */
 	private String crossModelFileName;
-	
+
 	/**
 	 * 
 	 */
 	private HashMap<String,CrossAction> nDCrossActions;
-	
+
 	/**
 	 * 
 	 */
@@ -154,8 +164,6 @@ public class DicCross {
 		regExProcessed = new EHashMap();
 		nDCrossActions = new HashMap<String,CrossAction>();
 		nDCrossModel = new CrossModel();
-		
-		
 	}
 
 	/**
@@ -166,12 +174,16 @@ public class DicCross {
 		try {
 			final CrossModelReader cmr = new CrossModelReader(getCrossModelFileName());
 			setCrossModel(cmr.readCrossModel());
+			CrossModelFST fst = new CrossModelFST(getCrossModel());
+			setCrossModelFST(fst);
 			final int nCrossActions = getCrossModel().getCrossActions().size();
 			System.err.println("Cross actions: " + nCrossActions);
 		} catch (final Exception e) {
 			e.printStackTrace();
+			System.err.println("Error reading cross model.");
 		}
 	}
+
 
 	/**
 	 * 
@@ -239,9 +251,9 @@ public class DicCross {
 		}
 
 		Collections.sort(dic.getEntries());
-		
+
 		if (isCrossWithPatterns()) {
-			getNDCrossModel().printXML("ND-cross-model.xml");
+			getNDCrossModel().printXML("dix/ND-cross-model.xml");
 		}
 
 		dics[0] = dic;
@@ -340,7 +352,7 @@ public class DicCross {
 
 		final SectionElement section = new SectionElement();
 		final SectionElement speculSection = new SectionElement("main",
-				"standard");
+		"standard");
 
 		section.setID(section1.getID());
 		section.setType(section1.getType());
@@ -418,7 +430,7 @@ public class DicCross {
 
 				if ((e1 != null) && (e2 != null)) {
 					EElement e = crossSafely(e1, e2, dir, MATCH_CATEGORY,
-							"SAFE");
+					"SAFE");
 					if (e != null) {
 						final String str = e.getHash();
 						if (!getProcessed().containsKey(str)) {
@@ -427,7 +439,7 @@ public class DicCross {
 						}
 					} else {
 						e = crossSafely(e1, e2, dir, DO_NOT_MATCH_CATEGORY,
-								"SPECULATION");
+						"SPECULATION");
 						if (e != null) {
 							final String strSpecul = e.getHash();
 							if (!getSpeculProcessed().containsKey(strSpecul)) {
@@ -465,7 +477,7 @@ public class DicCross {
 							getProcessed().put(str, e);
 						}
 					} else {
-						e = crossSafely(e1, e2, dir, MATCH_CATEGORY, "SPECULATION");
+						e = speculate(e1, e2, MATCH_CATEGORY, dir);
 						if (e != null) {
 							final String strSpecul = e.getHash();
 							if (!getSpeculProcessed().containsKey(strSpecul)) {
@@ -481,6 +493,35 @@ public class DicCross {
 
 	/**
 	 * 
+	 * @param e1
+	 * @param e2
+	 * @param matchCategory
+	 * @return
+	 */
+	public final EElement speculate(final EElement a, final EElement b, boolean matchCategory, int dir) {
+		EElement e1,e2;
+		EElement e = null;
+
+		if (dir == 0) {
+			e1 = a;
+			e2 = b;
+		} else {
+			e2 = a;
+			e1 = b;
+		}
+
+		if (matchCategory) {
+			if (e1.getCategory("L").equals(e2.getCategory("L"))) {
+				e = crossEntries(e1, e2);	
+			} } else {
+				e = crossEntries(e1, e2);
+			}
+
+		return e;
+	}
+
+	/**
+	 * 
 	 * @param a
 	 * @param b
 	 * @param dir
@@ -488,37 +529,36 @@ public class DicCross {
 	 */
 	private final EElement crossWithPatterns(EElement a, EElement b,
 			final int dir) {
-		EElement e1,e2;
-		
+		EElement e1,e2,e1Rev;
+
 		if (dir == 0) {
-			e1 = a;
-			e2 = b;
+			e1 = (EElement)a.clone();
+			e2 = (EElement)b.clone();
 		} else {
-			e1 = b;
-			e2 = a;
+			e1 = (EElement)b.clone();
+			e2 = (EElement)a.clone();
 		}
+			CrossAction crossAction = new CrossAction();
+			e1Rev = e1.reverse();
+			Pattern entriesPattern = new Pattern(e1Rev,e2);
+			crossAction.setPattern(entriesPattern);
+			Action actionFST = getCrossModelFST().getAction(crossAction);
+			
+			//System.out.println("Pattern " +  actionFST.getName() + " detected.");
+			//final String actionID = getCrossModel().matches(crossAction);
 
-		final EElement e = null;
-
-		try {
-			final CrossModel cm = new CrossModel();
-			CrossAction crossAction = cm.tagElements(e1, e2);
-			final String actionID = getCrossModel().matches(crossAction);
-
-			if (actionID != null) {
-				EElement actionE = applyCrossAction(e1, e2, actionID, crossAction);
+			if (actionFST != null) {
+				final String actionID = actionFST.getName();
+				EElement actionE = applyCrossAction(e1, e2, actionID, crossAction, dir);
 				return actionE;
 			} else {
 				insertNDCrossAction(crossAction);
+				//System.err.println("No pattern!");
 				return null;
 
 			}
-		} catch (final NullPointerException excep) {
-		}
-		return e;
-
 	}
-	
+
 	/**
 	 * 
 	 * @param e1
@@ -527,65 +567,83 @@ public class DicCross {
 	 * @param crossAction
 	 * @return
 	 */
-	private final EElement applyCrossAction(final EElement e1, final EElement e2, final String actionID, final CrossAction crossAction) {
-		System.err.println("R: " + e1.getRestriction());
-		e1.print("L");
-		e1.print("R");
-		System.err.println("R: " + e2.getRestriction());
-		e2.print("L");
-		e2.print("R");
-		System.err.println("----------------");
+	private final EElement applyCrossAction(EElement e1, EElement e2, final String actionID, final CrossAction entries, int dir) {
 
-		// cross-model
 		final CrossAction cA = getCrossModel().getCrossAction(actionID);
-		final Action action = cA.getAction();
-		final EElement actionElement = action.getE();
-		final ConstantMap constants = cA.getConstants();
+		Action action = cA.getAction();
 
-		final EElement actionE = new EElement();
-		//actionE.setRestriction(actionElement.getRestriction());
-		
+		EElement eAction = action.getE();
+
 		// restrictions
+		final String restriction;
 		final int iR = resolveRestriction(e1.getRestriction(), e2.getRestriction());
 		if (iR != NONE) {
-			final String restriction = getRestrictionString(iR);
-			actionE.setRestriction(restriction);
+			restriction = getRestrictionString(iR);
 		} else {
+			//System.err.println("No crossing is possible!");
 			return null;
 		}
+
+		EElement actionE = assignValues(e1, e2, eAction, entries, dir);
+		actionE.setRestriction(restriction);
+		
 		
 		// comments & author
-		final String author = mergeAttributes(e1.getAuthor(), e2
-				.getAuthor());
+		final String author = mergeAttributes(e1.getAuthor(), e2.getAuthor());
 		actionE.setAuthor(author);
-		final String comment = mergeAttributes(e1.getComment(), e2
-				.getComment());
+		final String comment = mergeAttributes(e1.getComment(), e2.getComment());
 		actionE.setComment(comment);
-		
+
 		actionE.addComments(actionID);
-		final PElement pE = new PElement();
-		actionE.addChild(pE);
 
-		final ElementList sListL = actionElement.getSElements("L")
-				.assignValues(crossAction.getConstants(), constants);
-		final ElementList sListR = actionElement.getSElements("R")
-				.assignValues(crossAction.getConstants(), constants);
-
-		final LElement lE = new LElement();
-		lE.setChildren(sListL);
-		lE.setValue(e1.getValue("R"));
-		pE.setLElement(lE);
-
-		final RElement rE = new RElement();
-		rE.setChildren(sListR);
-		rE.setValue(e2.getValue("R"));
-		pE.setRElement(rE);
-
-		System.err.println("Action...");
-		actionE.print("L");
-		actionE.print("R");
 
 		return actionE;
+	}
+
+	/**
+	 * 
+	 * @param eAction
+	 * @param entries
+	 * @return
+	 */
+	private final EElement assignValues(EElement e1, EElement e2, EElement eAction, CrossAction entries, int dir) {
+		ConstantMap constants = entries.getConstants();
+		EElement eCrossed = new EElement();
+		ContentElement lE = (ContentElement)eAction.getSide("L").clone();
+		ContentElement rE = (ContentElement)eAction.getSide("R").clone();
+
+		LElement lE2 = new LElement();
+		lE2.addChild(new TextElement(e1.getSide("R").getValue()));
+		for (Element e : lE.getSElements()) {
+			if (!constants.containsKey(e.getValue())) {
+				lE2.addChild(new SElement(e.getValue()));
+			} else {
+				String value = constants.get(e.getValue());
+				lE2.addChild(new SElement(value));
+			}
+
+		}
+
+		RElement rE2 = new RElement();
+		rE2.addChild(new TextElement(e2.getSide("R").getValue()));
+		for (Element e : rE.getSElements()) {
+			if (!constants.containsKey(e.getValue())) {
+				rE2.addChild(new SElement(e.getValue()));
+			} else {
+				String value = constants.get(e.getValue());
+				rE2.addChild(new SElement(value));
+			}
+		}
+
+		PElement pE = new PElement();
+		pE.setLElement(lE2);
+		pE.setRElement(rE2);
+
+		eCrossed.addChild(pE);
+
+		return eCrossed;
+
+
 	}
 
 	/**
@@ -599,7 +657,7 @@ public class DicCross {
 	private final EElement crossSafely(EElement a, EElement b,
 			final int dir, final boolean sameCategory, final String type) {
 		EElement e1,e2;
-		
+
 		if (dir == 0) {
 			e1 = a;
 			e2 = b;
@@ -1356,6 +1414,20 @@ public class DicCross {
 	 */
 	private final CrossModel getNDCrossModel() {
 		return nDCrossModel;
+	}
+
+	/**
+	 * @return the crossModelFST
+	 */
+	public final CrossModelFST getCrossModelFST() {
+		return crossModelFST;
+	}
+
+	/**
+	 * @param crossModelFST the crossModelFST to set
+	 */
+	public final void setCrossModelFST(CrossModelFST crossModelFST) {
+		this.crossModelFST = crossModelFST;
 	}
 
 }

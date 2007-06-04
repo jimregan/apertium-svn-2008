@@ -1032,8 +1032,9 @@ public class EElement extends Element implements Cloneable,
 	 */
 	public final EElement reverse() {
 
-		final EElement eRev = (EElement) clone();
+		//EElement eRev = (EElement) this.clone();
 
+		EElement eRev = new EElement();
 		if (getRestriction() != null) {
 			if (getRestriction().equals("LR")) {
 				eRev.setRestriction("RL");
@@ -1043,22 +1044,52 @@ public class EElement extends Element implements Cloneable,
 				}
 			}
 		}
-		for (final Element e : eRev.children) {
+		for (Element e : getChildren()) {
 			if (e instanceof PElement) {
-				final LElement lE = ((PElement) e).getL();
-				final RElement rE = ((PElement) e).getR();
-
-				final String auxValue = lE.getValue();
-				final ElementList auxChildren = lE.getChildren();
-
-				lE.setValue(rE.getValue());
-				lE.setChildren(rE.getChildren());
-
-				rE.setValue(auxValue);
-				rE.setChildren(auxChildren);
+				PElement pE = new PElement();
+				eRev.addChild(pE);
+				LElement newLE = new LElement();
+				RElement newRE = new RElement();
+				pE.setLElement(newLE);
+				pE.setRElement(newRE);
+				
+				LElement lE = ((PElement) e).getL();
+				RElement rE = ((PElement) e).getR();
+				
+				ElementList auxChildren = lE.getChildren();
+				
+				eRev.getSide("L").setChildren(rE.getChildren());
+				eRev.getSide("R").setChildren(auxChildren);
+			}
+			if (e instanceof IElement) {
+				IElement iE = new IElement();
+				iE.setChildren(((IElement)e).getChildren());
+				eRev.addChild(iE);
 			}
 		}
 		return eRev;
 	}
+	
+	public final void reverse2() {
+		for (final Element e : children) {
+			if (e instanceof PElement) {
+				LElement lE = ((PElement) e).getL();
+				RElement rE = ((PElement) e).getR();
+
+				//final String auxValue = lE.getValue();
+				ElementList auxChildren = lE.getChildren();
+
+				//lE.setValue(rE.getValue());
+				lE.setChildren(rE.getChildren());
+
+				//rE.setValue(auxValue);
+				rE.setChildren(auxChildren);
+
+				((PElement) e).setLElement(lE);
+				((PElement) e).setRElement(rE);
+			}
+		}		
+	}
+	
 
 }

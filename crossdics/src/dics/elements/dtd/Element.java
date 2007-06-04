@@ -135,7 +135,7 @@ public class Element implements Cloneable {
 	 * 
 	 * @return
 	 */
-	protected String getValue() {
+	public String getValue() {
 		return value;
 	}
 

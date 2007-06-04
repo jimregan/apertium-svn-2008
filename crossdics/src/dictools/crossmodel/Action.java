@@ -36,6 +36,22 @@ public class Action {
 	 * 
 	 */
 	private EElement e;
+	
+	/**
+	 * 
+	 */
+	private String name;
+	
+	/**
+	 * 
+	 */
+	private Integer patternLength;
+
+	/**
+	 * 
+	 */
+	private int numberOfConstants = 0;
+
 
 	/**
 	 * 
@@ -94,4 +110,52 @@ public class Action {
 	public void setE(final EElement e) {
 		this.e = e;
 	}
+
+	/**
+	 * @return the name
+	 */
+	public final String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public final void setName(String name) {
+		this.name = name;
+	}
+
+	public final Integer getPatternLength() {
+		return patternLength;
+	}
+
+	public final void setPatternLength(Integer patternLength) {
+		this.patternLength = patternLength;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public final int getNumberOfConstants() {
+		return numberOfConstants;
+	}
+
+	/**
+	 * 
+	 * @param numberOfConstants
+	 */
+	public final void setNumberOfConstants(int numberOfConstants) {
+		this.numberOfConstants = numberOfConstants;
+	}
+	
+	/**
+	 * 
+	 *
+	 */
+	public final void incrementNumberOfConstants() {
+		this.numberOfConstants++;
+	}
+	
+
 }

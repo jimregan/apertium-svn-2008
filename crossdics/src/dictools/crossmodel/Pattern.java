@@ -22,6 +22,7 @@ package dictools.crossmodel;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 import dics.elements.dtd.EElement;
 
@@ -115,6 +116,7 @@ public class Pattern {
 	 * 
 	 */
 	public final void print() {
+		System.out.println("Pattern:");
 		getAB().print("L");
 		getAB().print("R");
 		getBC().print("L");
@@ -128,7 +130,7 @@ public class Pattern {
 		String e1 = this.getAB().toString2();
 		String e2 = this.getBC().toString2();
 		String str = e1 + "/" + e2;
-		System.out.println("cA: " + str);
+		//System.out.println("cA: " + str);
 		return str;
 	}
 
@@ -142,4 +144,5 @@ public class Pattern {
 		e2.printXML(dos);
 		dos.writeBytes("\t</pattern>\n");
 	}
+	
 }

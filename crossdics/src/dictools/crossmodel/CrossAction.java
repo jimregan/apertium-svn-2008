@@ -22,6 +22,14 @@ package dictools.crossmodel;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+
+import dics.elements.dtd.ContentElement;
+import dics.elements.dtd.EElement;
+import dics.elements.dtd.Element;
+import dics.elements.dtd.SElement;
+import dics.elements.dtd.TextElement;
+import dics.elements.utils.ElementList;
 
 /**
  * 
@@ -49,13 +57,14 @@ public class CrossAction {
 	 * 
 	 */
 	private Action action;
-
+	
 	/**
 	 * 
 	 * 
 	 */
 	public CrossAction() {
-
+		constants = new ConstantMap();
+		pattern = new Pattern();
 	}
 
 	/**
@@ -92,6 +101,7 @@ public class CrossAction {
 	 */
 	public void setAction(final Action a) {
 		action = a;
+		action.setName(getId());		
 	}
 
 	/**
@@ -176,6 +186,7 @@ public class CrossAction {
 	 * 
 	 */
 	public final void print() {
+		System.out.println("CROSS-ACTION:");
 		if (pattern != null) {
 			getPattern().print();
 		}
@@ -194,13 +205,206 @@ public class CrossAction {
 	public final void printXML(DataOutputStream dos, int id) throws IOException {
 		dos.writeBytes("<cross-action id=\"ND-" + id + "\">\n");
 		getPattern().printXML(dos);
-		if (this.constants != null) {
-			getConstants().printXML(dos);
-		}
 		if (this.action != null) {
 			getAction().printXML(dos);
 		}
 		dos.writeBytes("</cross-action>\n\n");
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public final ElementList processEntries() {
+		ElementList eList = new ElementList();
+		try {
+		HashMap<String,Integer> hm = new HashMap<String,Integer>();
+		Pattern pattern = getPattern();
+
+		Integer j = new Integer(0);
+
+		EElement e1 = pattern.getAB();
+		ContentElement e1L = (ContentElement)e1.getSide("L").clone();
+		ContentElement e1R = (ContentElement)e1.getSide("R").clone();
+		EElement e2 = pattern.getBC();
+		ContentElement e2L = (ContentElement)e2.getSide("L").clone();
+		ContentElement e2R = (ContentElement)e2.getSide("R").clone();
+
+		j = convertEntriesToNumbers(e1L, eList, j, hm);
+		eList.add(new SElement("b"));
+
+		j = convertEntriesToNumbers(e1R, eList, j, hm);
+		eList.add(new SElement("b"));
+
+		j = convertEntriesToNumbers(e2L, eList, j, hm);
+		eList.add(new SElement("b"));
+
+		j = convertEntriesToNumbers(e2R, eList, j, hm);
+		eList.add(new SElement("j"));
+
+		Action a = getAction();
+
+		if (a != null) {
+			EElement ea = a.getE();
+			j = convertActionToNumbers(ea.getSide("L"), j, hm);
+			j = convertActionToNumbers(ea.getSide("R"), j, hm);
+		}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		return eList;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public final ElementList processVars() {
+		getAction().setNumberOfConstants(0);
+		HashMap<String,Integer> hm = new HashMap<String,Integer>();
+		ElementList eList = new ElementList();
+
+		Pattern pattern = getPattern();
+
+		Integer j = new Integer(0);
+
+		EElement e1 = pattern.getAB();
+		ContentElement e1L = (ContentElement)e1.getSide("L");
+		ContentElement e1R = (ContentElement)e1.getSide("R");
+		EElement e2 = pattern.getBC();
+		ContentElement e2L = (ContentElement)e2.getSide("L");
+		ContentElement e2R = (ContentElement)e2.getSide("R");
+
+		j = convertPatternToNumbers(e1L, eList, j, hm);
+		eList.add(new SElement("b"));
+
+		j = convertPatternToNumbers(e1R, eList, j, hm);
+		eList.add(new SElement("b"));
+
+		j = convertPatternToNumbers(e2L, eList, j, hm);
+		eList.add(new SElement("b"));
+
+		j = convertPatternToNumbers(e2R, eList, j, hm);
+		eList.add(new SElement("j"));
+
+		Action a = getAction();
+
+		if (a != null) {
+			EElement ea = a.getE();
+			j = convertActionToNumbers(ea.getSide("L"), j, hm);
+			j = convertActionToNumbers(ea.getSide("R"), j, hm);
+		}
+
+		return eList;
+	}
+
+	/**
+	 * 
+	 * @param ce
+	 * @param eList
+	 * @param j
+	 * @param hm
+	 */
+	private final Integer convertPatternToNumbers(ContentElement ce, ElementList eList, Integer j, HashMap<String,Integer> hm) {
+		for (int k = 0; k < ce.getChildren().size(); k++) {
+			Element e = ce.getChildren().get(k);
+			if (e instanceof SElement) {
+				SElement sElement = (SElement)e.clone();
+				ce.getChildren().set(k, sElement);
+				String value = sElement.getValue();
+				if (Character.isUpperCase(value.charAt(0)) && Character.isDigit(value.charAt(value.length()-1)) ) {
+					Integer pos;
+					if (hm.containsKey(value)) {
+						pos = hm.get(value);
+					} else {
+						j++;
+						pos = new Integer(j);
+						hm.put(value, pos);
+					}
+					String n = pos.toString();
+					sElement.setValue(n);
+					sElement.setTemp(value);
+				} else {
+					if (!Character.isDigit(value.charAt(0))) {
+						sElement.setValue(value);
+						getAction().incrementNumberOfConstants();
+					}
+					j++;
+				}
+				eList.add(sElement);
+			}
+		}
+		return j;
+	}
+
+
+	/**
+	 * 
+	 * @param ce
+	 * @param eList
+	 * @param j
+	 * @param hm
+	 * @return
+	 */
+	private final Integer convertActionToNumbers(ContentElement ce, Integer j, HashMap<String,Integer> hm) {
+		int i = 0;
+		for (int k = 0; k < ce.getChildren().size(); k++) {
+			Element e = ce.getChildren().get(k);
+			if (e instanceof SElement) {
+				SElement sElement = (SElement)e.clone();
+				ce.getChildren().set(k, sElement);
+				String value = sElement.getValue();
+				if (Character.isUpperCase(value.charAt(0)) && Character.isDigit(value.charAt(value.length()-1)) ) {
+					Integer pos;
+					if (hm.containsKey(value)) {
+						pos = hm.get(value);
+					} else {
+						j++;
+						pos = new Integer(j);
+						hm.put(value, pos);
+					}
+					String n = pos.toString();
+					sElement.setValue(n);
+					sElement.setTemp(value);
+				} else {
+					if (!Character.isDigit(value.charAt(0))) {
+						sElement.setValue(value);
+					}
+				}
+			}
+		}
+		return j;
+	}
+
+	/**
+	 * 
+	 * @param ce
+	 * @param eList
+	 * @param j
+	 * @param hm
+	 * @return
+	 */
+	private final Integer convertEntriesToNumbers(ContentElement ce, ElementList eList, Integer j, HashMap<String,Integer> hm) {
+		for (int k = 0; k < ce.getChildren().size(); k++) {
+			Element e = ce.getChildren().get(k);
+			if (e instanceof SElement) {
+				String value = e.getValue();
+				Integer pos;
+				if (hm.containsKey(value)) {
+					pos = hm.get(value);
+				} else {
+					j++;
+					pos = new Integer(j);
+					hm.put(value, pos);
+					this.getConstants().put(pos.toString(), value);
+				}
+				SElement sElement = (SElement)e;
+				sElement.setValue(pos.toString());
+				sElement.setTemp(value);
+				eList.add(sElement);
+			}
+		}
+		return j;
+	}
 }

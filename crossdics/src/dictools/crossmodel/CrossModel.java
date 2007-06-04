@@ -24,14 +24,17 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 import dics.elements.dtd.ContentElement;
 import dics.elements.dtd.EElement;
+import dics.elements.dtd.Element;
 import dics.elements.dtd.LElement;
 import dics.elements.dtd.PElement;
 import dics.elements.dtd.RElement;
 import dics.elements.dtd.SElement;
 import dics.elements.dtd.SectionElement;
+import dics.elements.utils.ElementList;
 
 /**
  * 
@@ -79,25 +82,26 @@ public class CrossModel {
 		if ((e1 != null) && (e2 != null)) {
 			final CrossAction ca = new CrossAction();
 			final ConstantMap constants = new ConstantMap();
+			int i = 1;
 
 			ContentElement lE1 = e1.getSide("R");
 			final LElement lE1Tagged = (LElement) tagElement(lE1, "w", e1
-					.getValue("R"), constants, "LR");
+					.getValue("R"), constants, "LR", i);
 			lE1 = null;
 
 			ContentElement rE1 = e1.getSide("L");
 			final RElement rE1Tagged = (RElement) tagElement(rE1, "x", e1
-					.getValue("L"), constants, "RL");
+					.getValue("L"), constants, "RL", i);
 			rE1 = null;
 
 			ContentElement lE2 = e2.getSide("L");
 			final LElement lE2Tagged = (LElement) tagElement(lE2, "y", e2
-					.getValue("L"), constants, "LR");
+					.getValue("L"), constants, "LR", i);
 			lE2 = null;
 
 			ContentElement rE2 = e2.getSide("R");
 			final RElement rE2Tagged = (RElement) tagElement(rE2, "z", e2
-					.getValue("R"), constants, "RL");
+					.getValue("R"), constants, "RL", i);
 			rE2 = null;
 
 			final EElement e1Tagged = new EElement();
@@ -144,8 +148,8 @@ public class CrossModel {
 	 */
 	private ContentElement tagElement(final ContentElement cE,
 			final String prefix, final String lemmaTag,
-			final ConstantMap constants, final String side) {
-		int i = 1;
+			final ConstantMap constants, final String side, int i) {
+		//int i = 1;
 		SElement sETagged = null;
 
 		ContentElement cENew = null;
@@ -162,7 +166,8 @@ public class CrossModel {
 		// System.err.print(lemmaTag + " / ");
 		for (final SElement s : cE.getSElements()) {
 			// <w1>
-			String var = prefix + i;
+			//String var = prefix + i;
+			String var = (new Integer(i)).toString();
 			// <f>
 			final String sValue = s.getValue();
 			// <f,w1>
@@ -170,7 +175,7 @@ public class CrossModel {
 				i++;
 			}
 			var = constants.insert(sValue, var);
-			sETagged = SElement.get(var);
+			sETagged = SElement.get(var + "/" + sValue);
 			// System.err.print("<" + sETagged.getValue() + ">");
 			cENew.addChild(sETagged);
 		}
@@ -237,6 +242,7 @@ public class CrossModel {
 				i++;
 			}
 			dos.writeBytes("</cross-model>\n");
+			dos.writeBytes("<!-- " + i + " cross actions. -->\n");
 
 			fos = null;
 			bos = null;
@@ -248,5 +254,5 @@ public class CrossModel {
 			eg.printStackTrace();
 		}
 	}
-
+	
 }

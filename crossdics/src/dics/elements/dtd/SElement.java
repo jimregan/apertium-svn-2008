@@ -24,6 +24,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import dics.elements.utils.ElementList;
+
 /**
  * 
  * @author Enrique Benimeli Bofarull
@@ -40,6 +42,11 @@ public class SElement extends Element {
 	 * 
 	 */
 	private String n;
+	
+	/**
+	 * 
+	 */
+	private String temp;
 
 	/**
 	 * 
@@ -162,6 +169,23 @@ public class SElement extends Element {
 			SElement.putSElement(sE);
 		}
 		return sE;
+	}
+
+	public final String getTemp() {
+		return temp;
+	}
+
+	public final void setTemp(String temp) {
+		this.temp = temp;
+	}
+
+	public Object clone() {
+		try {
+			final SElement cloned = (SElement) super.clone();
+			return cloned;
+		} catch (final Exception ex) {
+			return null;
+		}
 	}
 
 }

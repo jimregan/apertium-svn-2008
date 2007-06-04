@@ -110,11 +110,11 @@ public class ContentElement extends Element implements Cloneable {
 		String str = "";
 		for (Element e : this.children) {
 			if( !(e instanceof SElement)) {
-			if (e instanceof GElement) {
-				str += "<g>" + ((GElement)e).getValue() + "</g>";
-			} else {
-				str += e.getValue();
-			}
+				if (e instanceof GElement) {
+					str += "<g>" + ((GElement)e).getValue() + "</g>";
+				} else {
+					str += e.getValue();
+				}
 			}
 		}
 		return str;
@@ -278,7 +278,7 @@ public class ContentElement extends Element implements Cloneable {
 		final String str = "<" + tagName + ">" + v + "</" + tagName + ">" + sList;
 		return str;
 	}
-	
+
 	/**
 	 * toString() without lemma
 	 * @return

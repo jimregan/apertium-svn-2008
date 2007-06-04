@@ -109,7 +109,7 @@ public class CrossModelReader extends XMLReader {
 		for (final Element childElement : readChildren(e)) {
 			final String childElementName = childElement.getNodeName();
 			if (childElementName.equals("e")) {
-				final EElement eE = readEElement(childElement);
+				EElement eE = readEElement(childElement);
 				if (i == 0) {
 					pattern.setAB(eE);
 				}
