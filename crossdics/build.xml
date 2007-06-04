@@ -208,9 +208,12 @@
 		<echo message="Done" />
 		<fail unless="dics-available">Usage: ant cross -Dbil-AB bilAB.dix -Dbil-BC bilBC.dix -Dmonol-A monA.dix -Dmonol-C monC.dix [-Dmod-AB -r] [-Dmod-BC -r]</fail>
 	</target>
+	<target name="cross">
+		<echo message="Cross task is not available."/>
+	</target>
 
 	<!-- Cross action -->
-	<target name="cross" depends="compile,prepare-cross" if="dics-available">
+	<target name="cross-not-available" depends="compile,prepare-cross" if="dics-available">
 		<echo message="Crossing dictionaries..." />
 		<echo message="  ${monol-A}" />
 		<echo message="  ${monol-C}" />
