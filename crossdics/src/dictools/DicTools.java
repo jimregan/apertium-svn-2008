@@ -28,7 +28,6 @@ import java.util.Set;
 
 import dics.elements.dtd.DictionaryElement;
 import dics.elements.dtd.EElement;
-
 import dics.elements.utils.DicSet;
 import dics.elements.utils.EElementList;
 import dics.elements.utils.EElementMap;
@@ -90,7 +89,6 @@ public class DicTools {
 		final EElementMap entriesMap = new EElementMap();
 		for (final EElement e : entries) {
 			final String value = e.getValue(side);
-			// String temp = e.getValue("L");
 			final String key = DicTools.clearTags(value);
 
 			if (entriesMap.containsKey(key)) {
@@ -130,18 +128,6 @@ public class DicTools {
 			}
 		}
 		return entriesMap;
-	}
-
-	/**
-	 * 
-	 * @param str
-	 */
-	public static void printLogTitle(final String str) {
-		System.err
-				.println("\n---------------------------------------------------------------");
-		System.err.println(str);
-		System.err
-				.println("---------------------------------------------------------------");
 	}
 
 	/**
@@ -251,21 +237,14 @@ public class DicTools {
 		final Set<String> keySet = monMap.keySet();
 		final Iterator<String> it = keySet.iterator();
 
-		// recorremos el monolingüe
 		while (it.hasNext()) {
 			final String key = it.next();
 			final EElementList eList = monMap.get(key);
 			for (final EElement e : eList) {
 				String lemma = e.getLemma();
 				lemma = DicTools.clearTags(lemma);
-				// System.err.println("BIL contiene '" + lemma + "'?");
 
-				if (!bilABMap.containsKey(lemma)) {
-					// e.setShared(false);
-					// System.err.println("Marcamos not-shared '" +
-					// e.getLemma()
-					// + "' del MON por no aparece en el BIL.");
-				} else {
+				if (bilABMap.containsKey(lemma)) {
 					consistentMon.add(e);
 				}
 			}

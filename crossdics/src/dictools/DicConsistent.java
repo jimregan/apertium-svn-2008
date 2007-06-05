@@ -270,7 +270,7 @@ public class DicConsistent {
 	/**
 	 * @param mon1 the mon1 to set
 	 */
-	public final void setMon1(final DictionaryElement mon1) {
+	private final void setMon1(final DictionaryElement mon1) {
 		this.mon1 = mon1;
 	}
 
@@ -284,22 +284,8 @@ public class DicConsistent {
 	/**
 	 * @param mon2 the mon2 to set
 	 */
-	public final void setMon2(final DictionaryElement mon2) {
+	private final void setMon2(final DictionaryElement mon2) {
 		this.mon2 = mon2;
-	}
-
-	/**
-	 * @param differentA the differentA to set
-	 */
-	public final void setDifferentA(final EElementMap differentA) {
-		this.differentA = differentA;
-	}
-
-	/**
-	 * @param differentC the differentC to set
-	 */
-	public final void setDifferentC(final EElementMap differentC) {
-		this.differentC = differentC;
 	}
 
 	/**
@@ -310,24 +296,10 @@ public class DicConsistent {
 	}
 
 	/**
-	 * @param commonA the commonA to set
-	 */
-	public final void setCommonA(final EElementMap commonA) {
-		this.commonA = commonA;
-	}
-
-	/**
 	 * @return the commonC
 	 */
 	public final EElementMap getCommonC() {
 		return commonC;
-	}
-
-	/**
-	 * @param commonC the commonC to set
-	 */
-	public final void setCommonC(final EElementMap commonC) {
-		this.commonC = commonC;
 	}
 
 	/**
@@ -340,7 +312,7 @@ public class DicConsistent {
 	/**
 	 * @param notCommonSuffix the notCommonSuffix to set
 	 */
-	public final void setNotCommonSuffix(final String notCommonSuffix) {
+	private final void setNotCommonSuffix(final String notCommonSuffix) {
 		this.notCommonSuffix = notCommonSuffix;
 	}
 

@@ -21,6 +21,7 @@
 package dictools.crossmodel;
 
 import dics.elements.dtd.Element;
+import dics.elements.dtd.SElement;
 import dics.elements.utils.ElementList;
 
 /**
@@ -46,13 +47,15 @@ public class CrossModelFST {
 	 */
 	public CrossModelFST(final CrossModel crossModel) {
 		initialState = new State("");
+		String str;
 		for (CrossAction crossAction : crossModel.getCrossActions()) {
 			ElementList eList = crossAction.processVars();
-			
+			//str = getElementListString(eList);
+			//System.out.println(crossAction.getId() + ": " + str);
 			Action action = crossAction.getAction();
 			add(eList, action);
 		}
-		
+		//System.out.println("States: " + State.getNStates() );		
 	}
 	
 	
@@ -72,10 +75,13 @@ public class CrossModelFST {
 	 */
 	public final Action getAction(CrossAction entries) {
 		ElementList eList = entries.processEntries();
+		//String str = getElementListString(eList);
+		
 		ActionList actionList = new ActionList();
 		initialState.getAction(eList, 0, actionList);
 		
 		if (actionList.size() > 0)  {
+			//System.out.println(str);
 			//entries.print();			
 			//System.out.print(actionList.size() + " candidate actions: ");
 			//actionList.print();
@@ -87,14 +93,30 @@ public class CrossModelFST {
 		} else {
 			return null;
 		}
-		
+	}
+	
+	/**
+	 * 
+	 * @param eList
+	 */
+	private final String getElementListString(ElementList eList) {
+		String str = "";
+		for (Element e : eList) {
+			String real = ((SElement)e).getTemp();
+			if (real != null) {
+				str += "<" + e.getValue() + "/" + real + ">";
+			} else {
+				str += "<" + e.getValue() + ">";
+			}
+		}
+		return str;
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public final Action getAction() {
+	private final Action getAction() {
 		return action;
 	}
 
@@ -102,7 +124,7 @@ public class CrossModelFST {
 	 * 
 	 * @param action
 	 */
-	public final void setAction(Action action) {
+	private final void setAction(Action action) {
 		this.action = action;
 	}
 

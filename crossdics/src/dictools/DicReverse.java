@@ -23,7 +23,6 @@ package dictools;
 import java.util.Collections;
 
 import dics.elements.dtd.DictionaryElement;
-import dics.elements.utils.EElementList;
 
 /**
  * 

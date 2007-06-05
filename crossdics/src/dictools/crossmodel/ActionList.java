@@ -34,18 +34,23 @@ public class ActionList extends HashMap<String,Action> {
 
 	/**
 	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
 	 *
 	 */
 	public final void print() {
-		Set keySet = this.keySet();
+		Set keySet = keySet();
 		Iterator it = keySet.iterator();
-		int max = this.size();
+		int max = size();
 		int cont = 1;
 		
 		System.out.print("{ ");
 		while (it.hasNext()) {
 			String key = (String)it.next();
-			Action action = (Action)this.get(key);
+			Action action = get(key);
 			System.out.print(action.getName() + " (" + action.getPatternLength() + "/" + action.getNumberOfConstants() + ")");
 			if (cont < max ) {
 				System.out.print(", ");
@@ -63,12 +68,12 @@ public class ActionList extends HashMap<String,Action> {
 		Action bestAction = null;
 		ArrayList<Action> actionList = new ArrayList<Action>();
 		int maxLength = 0;
-		Set keySet = this.keySet();
+		Set keySet = keySet();
 		Iterator it = keySet.iterator();
 		
 		while (it.hasNext()) {
 			String key = (String)it.next();
-			Action action = (Action)this.get(key);
+			Action action = get(key);
 			if (action.getPatternLength() > maxLength) {
 				actionList = new ArrayList<Action>();
 				actionList.add(action);

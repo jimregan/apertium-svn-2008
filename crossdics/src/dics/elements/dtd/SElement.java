@@ -24,8 +24,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import dics.elements.utils.ElementList;
-
 /**
  * 
  * @author Enrique Benimeli Bofarull

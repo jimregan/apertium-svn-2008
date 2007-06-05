@@ -24,22 +24,18 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 
 import dics.elements.dtd.ContentElement;
 import dics.elements.dtd.EElement;
-import dics.elements.dtd.Element;
 import dics.elements.dtd.LElement;
 import dics.elements.dtd.PElement;
 import dics.elements.dtd.RElement;
 import dics.elements.dtd.SElement;
-import dics.elements.dtd.SectionElement;
-import dics.elements.utils.ElementList;
 
 /**
  * 
  * @author Enrique Benimeli Bofarull
- * 
+ *
  */
 public class CrossModel {
 

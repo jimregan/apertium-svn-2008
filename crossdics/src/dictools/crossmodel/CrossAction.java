@@ -28,7 +28,6 @@ import dics.elements.dtd.ContentElement;
 import dics.elements.dtd.EElement;
 import dics.elements.dtd.Element;
 import dics.elements.dtd.SElement;
-import dics.elements.dtd.TextElement;
 import dics.elements.utils.ElementList;
 
 /**
@@ -230,30 +229,45 @@ public class CrossAction {
 		ContentElement e2L = (ContentElement)e2.getSide("L").clone();
 		ContentElement e2R = (ContentElement)e2.getSide("R").clone();
 
-		j = convertEntriesToNumbers(e1L, eList, j, hm);
+		// e1
+		addRestrictionCode(eList, e1);
+		j = tagElements(e1L, eList, j, hm);
+		eList.add(new SElement("b"));
+		j = tagElements(e1R, eList, j, hm);
 		eList.add(new SElement("b"));
 
-		j = convertEntriesToNumbers(e1R, eList, j, hm);
+		// e2
+		addRestrictionCode(eList, e2);
+		j = tagElements(e2L, eList, j, hm);
 		eList.add(new SElement("b"));
-
-		j = convertEntriesToNumbers(e2L, eList, j, hm);
-		eList.add(new SElement("b"));
-
-		j = convertEntriesToNumbers(e2R, eList, j, hm);
+		j = tagElements(e2R, eList, j, hm);
 		eList.add(new SElement("j"));
 
 		Action a = getAction();
 
 		if (a != null) {
 			EElement ea = a.getE();
-			j = convertActionToNumbers(ea.getSide("L"), j, hm);
-			j = convertActionToNumbers(ea.getSide("R"), j, hm);
+			j = tagAction(ea.getSide("L"), j, hm);
+			j = tagAction(ea.getSide("R"), j, hm);
 		}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 
 		return eList;
+	}
+	
+	/**
+	 * 
+	 * @param eList
+	 * @param e
+	 */
+	private final void addRestrictionCode(ElementList eList, final EElement e) {
+		if (e.hasRestriction()) {
+			eList.add(new SElement(e.getRestriction()));	
+		} else {
+			eList.add(new SElement("LR-RL"));
+		}
 	}
 
 	/**
@@ -276,24 +290,24 @@ public class CrossAction {
 		ContentElement e2L = (ContentElement)e2.getSide("L");
 		ContentElement e2R = (ContentElement)e2.getSide("R");
 
-		j = convertPatternToNumbers(e1L, eList, j, hm);
+		addRestrictionCode(eList, e1);
+		j = tagPattern(e1L, eList, j, hm);
+		eList.add(new SElement("b"));
+		j = tagPattern(e1R, eList, j, hm);
 		eList.add(new SElement("b"));
 
-		j = convertPatternToNumbers(e1R, eList, j, hm);
+		addRestrictionCode(eList, e2);
+		j = tagPattern(e2L, eList, j, hm);
 		eList.add(new SElement("b"));
-
-		j = convertPatternToNumbers(e2L, eList, j, hm);
-		eList.add(new SElement("b"));
-
-		j = convertPatternToNumbers(e2R, eList, j, hm);
+		j = tagPattern(e2R, eList, j, hm);
 		eList.add(new SElement("j"));
 
 		Action a = getAction();
 
 		if (a != null) {
 			EElement ea = a.getE();
-			j = convertActionToNumbers(ea.getSide("L"), j, hm);
-			j = convertActionToNumbers(ea.getSide("R"), j, hm);
+			j = tagAction(ea.getSide("L"), j, hm);
+			j = tagAction(ea.getSide("R"), j, hm);
 		}
 
 		return eList;
@@ -306,7 +320,7 @@ public class CrossAction {
 	 * @param j
 	 * @param hm
 	 */
-	private final Integer convertPatternToNumbers(ContentElement ce, ElementList eList, Integer j, HashMap<String,Integer> hm) {
+	private final Integer tagPattern(ContentElement ce, ElementList eList, Integer j, HashMap<String,Integer> hm) {
 		for (int k = 0; k < ce.getChildren().size(); k++) {
 			Element e = ce.getChildren().get(k);
 			if (e instanceof SElement) {
@@ -347,8 +361,7 @@ public class CrossAction {
 	 * @param hm
 	 * @return
 	 */
-	private final Integer convertActionToNumbers(ContentElement ce, Integer j, HashMap<String,Integer> hm) {
-		int i = 0;
+	private final Integer tagAction(ContentElement ce, Integer j, HashMap<String,Integer> hm) {
 		for (int k = 0; k < ce.getChildren().size(); k++) {
 			Element e = ce.getChildren().get(k);
 			if (e instanceof SElement) {
@@ -385,7 +398,7 @@ public class CrossAction {
 	 * @param hm
 	 * @return
 	 */
-	private final Integer convertEntriesToNumbers(ContentElement ce, ElementList eList, Integer j, HashMap<String,Integer> hm) {
+	private final Integer tagElements(ContentElement ce, ElementList eList, Integer j, HashMap<String,Integer> hm) {
 		for (int k = 0; k < ce.getChildren().size(); k++) {
 			Element e = ce.getChildren().get(k);
 			if (e instanceof SElement) {

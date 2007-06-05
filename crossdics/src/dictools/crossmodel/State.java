@@ -20,6 +20,8 @@
 
 package dictools.crossmodel;
 
+import java.util.Vector;
+
 import dics.elements.dtd.Element;
 import dics.elements.dtd.SElement;
 import dics.elements.utils.ElementList;
@@ -35,17 +37,45 @@ public class State {
 	 * 
 	 */
 	private String value;
-	
+
 	/**
 	 * 
 	 */
 	private TransitionSet transitions;
-	
+
 	/**
 	 * 
 	 */
 	private Action action;
-	
+
+	/**
+	 * 
+	 */
+	private static int nStates;
+
+	/**
+	 * 
+	 */
+	private Vector<String> lrrl;
+
+	/**
+	 * 
+	 */
+	private Vector<String> lr;
+
+	/**
+	 * 
+	 */
+	private Vector<String> rl;
+
+	/**
+	 * 
+	 */
+	private boolean restrictionMatched;
+
+	private ElementList entries;
+
+	private ActionList actionList;
 	/**
 	 * 
 	 * @param value
@@ -53,8 +83,17 @@ public class State {
 	public State(final String value) {
 		this.value = value;
 		transitions = new TransitionSet();
+		incrementNStates();
 	}
-	
+
+	/**
+	 * 
+	 *
+	 */
+	private final void incrementNStates() {
+		nStates++;
+	}
+
 	/**
 	 * 
 	 * @param pattern
@@ -85,38 +124,80 @@ public class State {
 	 * @param i
 	 */
 	public final void getAction(final ElementList entries, int i, ActionList actionList) {
-		
-		Action action = null;
 		if (i < entries.size()) {
+			lrrl = new Vector<String>();
+			lrrl.add("LR");
+			lrrl.add("RL");
+			lrrl.add("LR-RL");
+
+			lr = new Vector<String>();
+			lr.add("LR");
+			lr.add("LR-RL");
+
+			rl = new Vector<String>();
+			rl.add("RL");
+			rl.add("LR-RL");
+
+			setRestrictionMatched(false);
+
+			setEntries(entries);
+			setActionList(actionList);
 			final Element e = entries.get(i);
 			SElement sE = (SElement)e;
-			String real = sE.getTemp();
-			
-			State state = null;
-			// si existe uno concreto (1/adj)
-			if (transitions.containsKey(real)) {
-				state = transitions.get(real);
-				if (state != null) {
-					if (state.getValue().equals("j")) {
-						action = state.getAction();
-						actionList.put(action.getName(), action);
-					} else {
-						state.getAction(entries, i+1, actionList);
-					}
-				} 
+			String v = sE.getValue();
+
+			processRestriction(v, "LR-RL", lrrl, i);
+			processRestriction(v, "LR", lr, i);
+			processRestriction(v, "RL", rl, i);
+
+			if (!isRestrictionMatched()) {
+				String real = sE.getTemp();
+				processItem(real, i);
+				processItem(v, i);
 			}
-			// uno general (1)
-			String var = sE.getValue();
-			if (transitions.containsKey(var)) {
-				state = transitions.get(var);
-				if (state != null) {
-					if (state.getValue().equals("j")) {
-						action = state.getAction();
-						actionList.put(action.getName(), action);
-					} else {
+		}
+	}
+
+	/**
+	 * 
+	 * @param v
+	 * @param value
+	 * @param values
+	 * @param state
+	 * @param entries
+	 * @param i
+	 * @param actionList
+	 * @return
+	 */
+	private final void processRestriction(final String v, final String value, final Vector<String> values, int i) {
+		if (!isRestrictionMatched()) {
+			if (v.equals(value)) {
+				setRestrictionMatched(true);
+				for (String val : values) {
+					if (transitions.containsKey(val)) {
+						State state = transitions.get(val);
 						state.getAction(entries, i+1, actionList);
 					}
-				} 
+				}
+			} 
+		}
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @param entries
+	 * @param i
+	 * @param actionList
+	 */
+	private final void processItem(final String value, int i) {
+		if (transitions.containsKey(value)) {
+			State state = transitions.get(value);
+			if (state.getValue().equals("j")) {
+				action = state.getAction();
+				actionList.put(action.getName(), action);
+			} else {
+				state.getAction(entries, i+1, actionList);
 			}
 		}
 	}
@@ -147,5 +228,44 @@ public class State {
 	 */
 	public final void setAction(Action action) {
 		this.action = action;
+	}
+
+	/**
+	 * @return the nStates
+	 */
+	public static final int getNStates() {
+		return nStates;
+	}
+
+	private final TransitionSet getTransitions() {
+		return transitions;
+	}
+
+	private final void setTransitions(TransitionSet transitions) {
+		this.transitions = transitions;
+	}
+
+	private final boolean isRestrictionMatched() {
+		return restrictionMatched;
+	}
+
+	private final void setRestrictionMatched(boolean restrictionMatched) {
+		this.restrictionMatched = restrictionMatched;
+	}
+
+	private final ElementList getEntries() {
+		return entries;
+	}
+
+	private final void setEntries(ElementList entries) {
+		this.entries = entries;
+	}
+
+	private final ActionList getActionList() {
+		return actionList;
+	}
+
+	private final void setActionList(ActionList actionList) {
+		this.actionList = actionList;
 	}
 }
