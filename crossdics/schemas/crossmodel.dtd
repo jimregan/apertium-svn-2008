@@ -1,0 +1,21 @@
+<!ELEMENT cross-model (cross-action*)>
+<!-- Cross action -->
+<!ELEMENT cross-action (pattern, constants?, action)>
+<!ATTLIST cross-action id CDATA #REQUIRED>
+<!ATTLIST cross-action a CDATA #REQUIRED>
+
+<!-- Pattern -->
+<!ELEMENT pattern (e,e)>
+
+<!-- Action -->
+<!ELEMENT action (e)>
+
+<!-- Element -->
+<!ELEMENT e (p)>
+<!ATTLIST e r (LR|RL) #IMPLIED>
+<!ELEMENT p (l,r)>
+<!ELEMENT l (#PCDATA | s)*>
+<!ELEMENT r (#PCDATA | s)*>
+<!ELEMENT s EMPTY>
+<!ATTLIST s n CDATA #REQUIRED>
+
