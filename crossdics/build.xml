@@ -14,7 +14,8 @@
 		 <property name="monol-C" value="monC.dix" />
 		 <property name="mod-AB" value="-n" />
 		 <property name="mod-BC" value="-n" />
-		 -->
+		 <property name="cross-model" value="schemas/cross-model-test.xml" />
+	-->
 
 	<!-- Dictionaries to cross (ca-pt example) -->
 	<property name="bil-AB" value="${dics.dir}/apertium-es-ca.es-ca.dix" />
@@ -23,6 +24,7 @@
 	<property name="monol-C" value="${dics.dir}/apertium-es-pt.pt.dix" />
 	<property name="mod-AB" value="-n" />
 	<property name="mod-BC" value="-n" />
+	<property name="cross-model" value="schemas/cross-model-test.xml" />
 
 	
 	<!-- Dictionaries to cross (fr-es example) -->
@@ -33,6 +35,7 @@
 	<property name="mod-BC" value="-r" />
 	<property name="monol-A" value="${dics.dir}/apertium-es-ca.es.dix" />	
 	<property name="monol-C" value="${dics.dir}/apertium-fr-ca.fr.metadix" />
+	<property name="cross-model" value="schemas/cross-model-test.xml" />
 	-->
 
 	
@@ -58,6 +61,7 @@
 	<property name="mod-AB2" value="-n" />
 	<property name="monol-A2" value="dix/apertium-es-fr.es-crossed-specul.dix" />
 	<property name="monol-B2" value="dix/apertium-es-fr.fr-crossed-specul.dix" />
+
 								
 	
 	<!-- Dictionary -->
@@ -91,7 +95,6 @@
 	<property name="outputFile" value="${log.dir}/cross-dics.log" />
 	<!-- Use pattern detection for crossing? -->
 	<property name="use-patterns" value="yes" />
-	<property name="cross-model" value="schemas/cross-model-test.xml" />	
 
 	
 	<!-- TASKS -->
@@ -206,14 +209,14 @@
 			</and>
 		</condition>
 		<echo message="Done" />
-		<fail unless="dics-available">Usage: ant cross -Dbil-AB bilAB.dix -Dbil-BC bilBC.dix -Dmonol-A monA.dix -Dmonol-C monC.dix [-Dmod-AB -r] [-Dmod-BC -r]</fail>
+		<fail unless="dics-available">Usage: ant cross -Dbil-AB bilAB.dix -Dbil-BC bilBC.dix -Dmonol-A monA.dix -Dmonol-C monC.dix [-Dmod-AB -r] [-Dmod-BC -r] (or indicate de dictionaries in build.xml)</fail>
 	</target>
 	<target name="cross-not-available">
 		<echo message="Cross task is not available."/>
 	</target>
 
 	<!-- Cross action -->
-	<target name="cross" depends="compile,prepare-cross" if="dics-available">
+	<target name="cross" depends="prepare-cross" if="dics-available">
 		<echo message="Crossing dictionaries..." />
 		<echo message="  ${monol-A}" />
 		<echo message="  ${monol-C}" />
@@ -247,7 +250,7 @@
 			<arg value="${cross-model}" />
 		</java>
 		<antcall target="clean" />
-		<echo message="Results in '${log.dir}/${outputFile}'" />
+		<echo message="Results in 'dix' folder." />
 		<echo message="Done!" />
 	</target>
 

@@ -89,37 +89,6 @@ public class ConstantMap extends HashMap<String, String> {
 
 	/**
 	 * 
-	 * @param cm2
-	 * @return
-	 */
-	public final boolean matches(final ConstantMap cm2) {
-		/*
-		 * System.err.println("Comparing constants..."); this.print();
-		 * cm2.print();
-		 */
-		final Set keySet = keySet();
-		final Iterator it = keySet.iterator();
-
-		while (it.hasNext()) {
-			final String key = (String) it.next();
-			final String value = get(key);
-
-			if (!cm2.containsKey(key)) {
-				return false;
-			} else {
-				final String value2 = cm2.get(key);
-				if (!value.equals(value2)) {
-					// System.err.println("Differences for key " + key + ": ("
-					// + value + " <> " + value2 + ")");
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * 
 	 * @param value
 	 * @return
 	 */

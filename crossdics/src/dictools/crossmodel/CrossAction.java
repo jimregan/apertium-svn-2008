@@ -105,35 +105,6 @@ public class CrossAction {
 
 	/**
 	 * 
-	 * @param ca
-	 * @return
-	 */
-	public final boolean matches(final CrossAction ca) {
-		final Pattern pattern1 = getPattern();
-		final Pattern pattern2 = ca.getPattern();
-
-		final ConstantMap cm1 = getConstants();
-		final ConstantMap cm2 = ca.getConstants();
-
-		if (cm1 != null) {
-			if (!cm1.matches(cm2)) {
-				return false;
-			}
-		}
-		/*
-		 * System.out.println("Comparing..."); pattern1.print();
-		 * pattern2.print();
-		 */
-
-		if (!pattern1.matches(pattern2)) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * 
 	 * @return
 	 */
 	public final ConstantMap getConstants() {
@@ -323,19 +294,21 @@ public class CrossAction {
 	private final Integer tagPattern(ContentElement ce, ElementList eList, Integer j, HashMap<String,Integer> hm) {
 		for (int k = 0; k < ce.getChildren().size(); k++) {
 			Element e = ce.getChildren().get(k);
+			
 			if (e instanceof SElement) {
+				Integer pos;
 				SElement sElement = (SElement)e.clone();
 				ce.getChildren().set(k, sElement);
 				String value = sElement.getValue();
+				if (hm.containsKey(value)) {
+					pos = hm.get(value);
+				} else {
+					j++;
+					pos = new Integer(j);
+					hm.put(value, pos);
+				}
 				if (Character.isUpperCase(value.charAt(0)) && Character.isDigit(value.charAt(value.length()-1)) ) {
-					Integer pos;
-					if (hm.containsKey(value)) {
-						pos = hm.get(value);
-					} else {
-						j++;
-						pos = new Integer(j);
-						hm.put(value, pos);
-					}
+					
 					String n = pos.toString();
 					sElement.setValue(n);
 					sElement.setTemp(value);
@@ -344,7 +317,6 @@ public class CrossAction {
 						sElement.setValue(value);
 						getAction().incrementNumberOfConstants();
 					}
-					j++;
 				}
 				eList.add(sElement);
 			}
@@ -410,7 +382,7 @@ public class CrossAction {
 					j++;
 					pos = new Integer(j);
 					hm.put(value, pos);
-					this.getConstants().put(pos.toString(), value);
+					getConstants().put(pos.toString(), value);
 				}
 				SElement sElement = (SElement)e;
 				sElement.setValue(pos.toString());

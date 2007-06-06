@@ -896,6 +896,10 @@ public class EElement extends Element implements Cloneable,
 		return str;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public final String toString2() {
 		String str = "";
 		for (final Element e : children) {
@@ -986,54 +990,10 @@ public class EElement extends Element implements Cloneable,
 
 	/**
 	 * 
-	 * @param e2
-	 * @return
-	 */
-	public final boolean matches(final EElement e2) {
-
-		final String r1 = getRestriction();
-		final String r2 = e2.getRestriction();
-		if (r1 != null) {
-			if (r2 != null) {
-				if (!e2.hasRestriction(r1)) {
-					return false;
-				}
-			}
-		}
-
-		final SElementList sEList1L = getSElements("L");
-		final SElementList sEList2L = e2.getSElements("L");
-
-		final SElementList sEList1R = getSElements("R");
-		final SElementList sEList2R = e2.getSElements("R");
-
-		if ((sEList1L != null) && (sEList2L != null)) {
-			if (!sEList1L.matches(sEList2L)) {
-				return false;
-			}
-		} else {
-			return false;
-		}
-
-		if ((sEList1R != null) && (sEList2R != null)) {
-			if (!sEList1R.matches(sEList2R)) {
-				return false;
-			}
-		} else {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * 
 	 * @return
 	 */
 	public final EElement reverse() {
-
 		//EElement eRev = (EElement) this.clone();
-
 		EElement eRev = new EElement();
 		if (getRestriction() != null) {
 			if (getRestriction().equals("LR")) {
@@ -1068,27 +1028,6 @@ public class EElement extends Element implements Cloneable,
 			}
 		}
 		return eRev;
-	}
-	
-	public final void reverse2() {
-		for (final Element e : children) {
-			if (e instanceof PElement) {
-				LElement lE = ((PElement) e).getL();
-				RElement rE = ((PElement) e).getR();
-
-				//final String auxValue = lE.getValue();
-				ElementList auxChildren = lE.getChildren();
-
-				//lE.setValue(rE.getValue());
-				lE.setChildren(rE.getChildren());
-
-				//rE.setValue(auxValue);
-				rE.setChildren(auxChildren);
-
-				((PElement) e).setLElement(lE);
-				((PElement) e).setRElement(rE);
-			}
-		}		
 	}
 	
 

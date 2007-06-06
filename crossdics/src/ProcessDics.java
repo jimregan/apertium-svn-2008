@@ -566,7 +566,7 @@ public class ProcessDics {
 				if (arg.equals("yes")) {
 					setUsePatterns(true);
 				}
-				System.err.println("Use patterns: " + arg);
+				//System.err.println("Use patterns: " + arg);
 			}
 
 			if (arg.equals("-cross-model")) {

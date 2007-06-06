@@ -20,6 +20,8 @@
 
 package dictools.crossmodel;
 
+import java.util.HashMap;
+
 import dics.elements.dtd.Element;
 import dics.elements.dtd.SElement;
 import dics.elements.utils.ElementList;
@@ -48,12 +50,20 @@ public class CrossModelFST {
 	public CrossModelFST(final CrossModel crossModel) {
 		initialState = new State("");
 		String str;
+		HashMap<String,CrossAction> patterns = new HashMap<String,CrossAction>();
+		
 		for (CrossAction crossAction : crossModel.getCrossActions()) {
 			ElementList eList = crossAction.processVars();
-			//str = getElementListString(eList);
-			//System.out.println(crossAction.getId() + ": " + str);
-			Action action = crossAction.getAction();
-			add(eList, action);
+			str = getElementListString(eList);
+			if (!patterns.containsKey(str)) {
+				patterns.put(str, crossAction);
+				//System.out.println(crossAction.getId() + ": " + str);
+				Action action = crossAction.getAction();
+				add(eList, action);
+			} else {
+				CrossAction cA = (CrossAction)patterns.get(str);
+				System.err.println("Duplicated pattern: '" + crossAction.getId()  + "' is the same as '" + cA.getId() + "' are the same (will be ignored).");
+			}
 		}
 		//System.out.println("States: " + State.getNStates() );		
 	}
@@ -76,7 +86,7 @@ public class CrossModelFST {
 	public final Action getAction(CrossAction entries) {
 		ElementList eList = entries.processEntries();
 		//String str = getElementListString(eList);
-		
+		//System.out.println(str);
 		ActionList actionList = new ActionList();
 		initialState.getAction(eList, 0, actionList);
 		

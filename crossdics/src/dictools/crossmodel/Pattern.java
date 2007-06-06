@@ -94,24 +94,6 @@ public class Pattern {
 
 	/**
 	 * 
-	 * @param p
-	 * @return
-	 */
-	public final boolean matches(final Pattern p) {
-		final EElement p1e1 = getAB();
-		final EElement p1e2 = getBC();
-
-		final EElement p2e1 = p.getAB();
-		final EElement p2e2 = p.getBC();
-
-		if (p1e1.matches(p2e1) && p1e2.matches(p2e2)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * 
 	 * 
 	 */
 	public final void print() {

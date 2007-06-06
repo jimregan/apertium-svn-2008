@@ -173,7 +173,7 @@ public class DicCross {
 			CrossModelFST fst = new CrossModelFST(getCrossModel());
 			setCrossModelFST(fst);
 			final int nCrossActions = getCrossModel().getCrossActions().size();
-			System.err.println("Cross actions: " + nCrossActions);
+			//System.err.println("Cross patterns: " + nCrossActions);
 		} catch (final Exception e) {
 			e.printStackTrace();
 			System.err.println("Error reading cross model.");

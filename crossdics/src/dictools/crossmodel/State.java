@@ -73,9 +73,16 @@ public class State {
 	 */
 	private boolean restrictionMatched;
 
+	/**
+	 * 
+	 */
 	private ElementList entries;
 
+	/**
+	 * 
+	 */
 	private ActionList actionList;
+	
 	/**
 	 * 
 	 * @param value
