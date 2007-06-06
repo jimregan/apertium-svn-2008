@@ -850,6 +850,164 @@
 			</choose>
 		</def-macro>
 
+<def-macro n="comprova_auxiliar_ref" npar="3"> <!--aquesta macro troba l'aux correcte en cast tenint en compte que si el verb és ref i porta l'aux "être" en cast ha de ser "haber". de passada, mira també si cal canviar el lema del verb (com la macro "verb_ref")-->
+			<choose>
+				<when><!--en cas que l'auxiliar sigui "ser":-->
+					<test>
+						<equal>
+							<clip pos="1" side="tl" part="lem"/>
+							<lit v="ser"/>
+						</equal>
+					</test>
+					<choose>
+						<when><!--si és un verb que va amb "être" fes que l'aux sigui "haber"-->
+							<test>
+								<in caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<list n="vbambser"/>
+								</in>
+							</test>
+							<let>
+								<clip pos="1" side="tl" part="lem"/>
+								<lit v="haber"/>
+							</let>
+							<let>
+								<clip pos="1" side="tl" part="a_verb"/>
+								<lit-tag v="vbhaver"/>
+							</let>
+							<let>
+								<clip pos="2" side="tl" part="gen"/>
+								<lit-tag v="m"/>
+							</let>
+							<let>
+								<clip pos="2" side="tl" part="nbr"/>
+								<lit-tag v="sg"/>
+							</let>
+						</when>
+
+						<otherwise>
+							<choose><!--si és ref...-->
+								<when>
+									<test>
+										<or>
+											<and>
+												<equal>
+													<clip pos="3" side="sl" part="tipoenc_pro"/>
+													<lit-tag v="ref.p3.mf.sp"/>
+												</equal>
+												<equal>
+													<clip pos="1" side="sl" part="pers"/>
+													<lit-tag v="p3"/>
+												</equal>
+											</and>
+											<and>
+												<equal>
+													<clip pos="3" side="sl" part="pers"/>
+													<lit-tag v="p2"/>
+												</equal>
+												<equal>
+													<clip pos="1" side="sl" part="pers"/>
+													<lit-tag v="p2"/>
+												</equal>
+												<equal>
+													<clip pos="1" side="sl" part="nbr"/>
+													<clip pos="3" side="sl" part="nbr"/>
+												</equal>
+											</and>
+											<and>
+												<equal>
+													<clip pos="3" side="sl" part="pers"/>
+													<lit-tag v="p1"/>
+												</equal>
+												<equal>
+													<clip pos="1" side="sl" part="pers"/>
+													<lit-tag v="p1"/>
+												</equal>
+												<equal>
+													<clip pos="3" side="sl" part="nbr"/>
+													<clip pos="1" side="sl" part="nbr"/>
+												</equal>
+											</and>
+										</or>
+									</test>						
+									<let><!--... fes que l'aux sigui "haber"-->
+										<clip pos="1" side="tl" part="lem"/>
+										<lit v="haber"/>
+									</let>
+									<let>
+										<clip pos="1" side="tl" part="a_verb"/>
+										<lit-tag v="vbhaver"/>
+									</let>
+									<let>
+										<clip pos="2" side="tl" part="gen"/>
+										<lit-tag v="m"/>
+									</let>
+									<let>
+										<clip pos="2" side="tl" part="nbr"/>
+										<lit-tag v="sg"/>
+									</let>
+									<choose> <!-- i canvia aquests verbs-->
+										<when>
+											<test>
+												<equal caseless="yes">
+													<clip pos="2" side="sl" part="lem"/>
+													<lit v="refuser"/>
+												</equal>
+											</test>
+											<let>
+												<clip pos="2" side="tl" part="lem"/>
+												<lit v="negar"/>
+											</let>
+										</when>
+										<when>
+											<test>
+												<equal caseless="yes">
+													<clip pos="2" side="sl" part="lem"/>
+													<lit v="demander"/>
+												</equal>
+											</test>
+											<let>
+												<clip pos="2" side="tl" part="lem"/>
+												<lit v="preguntar"/>
+											</let>
+										</when>
+									</choose>
+								</when>
+								<otherwise><!--si no és cap dels casos anteriors, acceptem que és passiva, i deixem el verb "ser"-->
+									<let>
+										<clip pos="1" side="tl" part="lem"/>
+										<lit v="ser"/>
+									</let>
+									<let>
+										<clip pos="1" side="tl" part="a_verb"/>
+										<lit-tag v="vbser"/>
+									</let>
+								</otherwise>
+							</choose>
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise><!--si l'orig és "avoir" deixem "haber" en cast-->
+					<let>
+						<clip pos="1" side="tl" part="lem"/>
+						<lit v="haber"/>
+					</let>
+					<let>
+						<clip pos="1" side="tl" part="a_verb"/>
+						<lit-tag v="vbhaver"/>
+					</let>
+					<let>
+						<clip pos="2" side="tl" part="gen"/>
+						<lit-tag v="m"/>
+					</let>
+					<let>
+						<clip pos="2" side="tl" part="nbr"/>
+						<lit-tag v="sg"/>
+					</let>
+				</otherwise>
+			</choose>
+		</def-macro>
+
 	<def-macro n="f_prep" npar="1">
 			<choose>
 				<when>
@@ -13189,9 +13347,10 @@
 	<call-macro n="f_concord1">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="comprova_auxiliar">
+	<call-macro n="comprova_auxiliar_ref">
 		<with-param pos="2"/>
 		<with-param pos="3"/>
+		<with-param pos="1"/>
 	</call-macro>
 	<call-macro n="tipus_verb">
 		<with-param pos="3"/>
@@ -13301,9 +13460,10 @@
 		<call-macro n="f_concord1">
 			<with-param pos="1"/>
 		</call-macro>
-		<call-macro n="comprova_auxiliar">
+		<call-macro n="comprova_auxiliar_ref">
 			<with-param pos="2"/>
 			<with-param pos="4"/>
+			<with-param pos="1"/>
 		</call-macro>
 		<call-macro n="tipus_verb">
 			<with-param pos="4"/>
@@ -13535,9 +13695,10 @@
 		<call-macro n="f_concord1">
 			<with-param pos="1"/>
 		</call-macro>
-		<call-macro n="comprova_auxiliar">
+		<call-macro n="comprova_auxiliar_ref">
 			<with-param pos="2"/>
 			<with-param pos="4"/>
+			<with-param pos="1"/>
 		</call-macro>
 		<call-macro n="tipus_verb">
 			<with-param pos="4"/>
@@ -13671,9 +13832,10 @@
 		<call-macro n="f_concord1">
 			<with-param pos="1"/>
 		</call-macro>
-		<call-macro n="comprova_auxiliar">
+		<call-macro n="comprova_auxiliar_ref">
 			<with-param pos="2"/>
 			<with-param pos="5"/>
+			<with-param pos="1"/>
 		</call-macro>
 		<call-macro n="tipus_verb">
 			<with-param pos="5"/>
@@ -13929,9 +14091,10 @@
 	<call-macro n="f_concord1">
 	  <with-param pos="2"/>
 	</call-macro>
-	<call-macro n="comprova_auxiliar">
+	<call-macro n="comprova_auxiliar_ref">
 		<with-param pos="3"/>
 		<with-param pos="4"/>
+		<with-param pos="1"/>
 	</call-macro>
 	<call-macro n="tipus_verb">
 		<with-param pos="4"/>
@@ -14140,9 +14303,10 @@
 	<call-macro n="f_concord1">
 	  <with-param pos="2"/>
 	</call-macro>
-	<call-macro n="comprova_auxiliar">
+	<call-macro n="comprova_auxiliar_ref">
 		<with-param pos="3"/>
 		<with-param pos="5"/>
+		<with-param pos="1"/>
 	</call-macro>
 	<call-macro n="tipus_verb">
 		<with-param pos="5"/>
@@ -14351,9 +14515,10 @@
 		<call-macro n="f_concord1">
 			<with-param pos="2"/>
 		</call-macro>
-		<call-macro n="comprova_auxiliar">
+		<call-macro n="comprova_auxiliar_ref">
 			<with-param pos="3"/>
 			<with-param pos="5"/>
+			<with-param pos="1"/>
 		</call-macro>
 		<call-macro n="tipus_verb">
 			<with-param pos="5"/>
@@ -14589,9 +14754,10 @@
 		<call-macro n="f_concord1">
 			<with-param pos="2"/>
 		</call-macro>
-		<call-macro n="comprova_auxiliar">
+		<call-macro n="comprova_auxiliar_ref">
 			<with-param pos="3"/>
 			<with-param pos="6"/>
+			<with-param pos="1"/>
 		</call-macro>
 		<call-macro n="tipus_verb">
 			<with-param pos="6"/>
