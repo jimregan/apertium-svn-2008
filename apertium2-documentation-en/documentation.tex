@@ -3894,34 +3894,29 @@ dictionaries):
 
 
 \nota{Faena per fer (mlf):
-  \begin{itemize}
-  \item El document no diu encara res de metaparadigmes. En cal una
-  descripció.
-  \item Caldria demanar comentaris a Marta Villegas com a usuària del
-  document perquè ens indique parts fosques, possibles suggeriments,
-  etc.
+  \begin{itemize} 
   \item Hi ha bastants vacil·lacions en la terminologia usada per a
   referir-se a conceptes i en els noms usats per als programes.
 \item He intentat substituir en cada cas l'expressió \emph{per
 defecte} per una altra més adequada; però caldrà distingir en quin cas
 ens trobem en cada cas.
-  \end{itemize} }
+  \end{itemize}}
 
 \subsection{Introduction}
 
-Since 2007, Apertium incorporates a structural transfer system more
-advanced than the one used previously; its need came with the
-development of machine translators for less related language pairs in
-comparison with the ones dealt with before, for example, for the
-language pair \emph{English}--\emph{Catalan}.
+In 2007, Apertium incorporated a more advanced structural transfer system than 
+the one used until then; it became necessary when we started developing
+ machine translators for less related language pairs in
+comparison with the ones dealt with before, such as 
+the \emph{English}--\emph{Catalan} translator.
 
 This enhanced transfer system is made of three modules, the first one
-of which can be used in isolation if the user wants to run a
+of which can be used in isolation in order to run a
 \textbf{shallow-transfer} system (which is the transfer system used so
-far for related language pairs such as {Spanish}--\emph{Catalan} or
+far for related language pairs such as \emph{Spanish}--\emph{Catalan} or
 \emph{Spanish}--\emph{Galician}).  When the system is used for less
-related language pairs and, therefore, we wish to perform an
-\textbf{advanced transfer}, the three transfer modules will be run.
+related language pairs and, therefore, an 
+\textbf{advanced transfer} becomes necessary, the three transfer modules will be executed.
 
 The two transfer systems differ in the number of passes over the input
 text.  The shallow-transfer system makes structural transformations
@@ -3932,16 +3927,16 @@ system works with a new architecture that allows to detect
 \emph{patterns of patterns} of lexical forms with three passes, done
 by its three modules.
 
-We describe next the characteristics of this module.  Section
+We describe next the characteristics of the structural transfer system.  Section
 \ref{functransfer} describes the shallow-transfer system and Section
 \ref{apertium2}, the advanced transfer system.  The description of the
 shallow-transfer system is also applicable to the first module of the
-advanced transfer system, with the differences presented in that
+advanced transfer system, with the differences mentioned in that
 section.  Section \ref{formatotransfer} describes the format used to
 create rules in both systems. In Section \ref{noutransfer} there is a
 detailed description of how the three modules of the advanced transfer
 system work, and finally, Section \ref{ss:preproceso_transfer}
-explains the required pre-processing of the modules.
+describes the pre-processing required by the modules.
 
 
 \subsection{Shallow-transfer}
@@ -3962,26 +3957,26 @@ systems \textsf{interNOSTRUM}
 Universitat d'Alacant.
 
 
-The transfer process is organised around patterns representing
+The transfer process is organized around patterns representing
 fixed-length sequences of source language lexical forms (SLLFs) (see
 page~\pageref{pg:FSFL} for a description of lexical form (LF)); a
-sequence follows a certain pattern if it contains the lexical forms
-sequence of the pattern.  Patterns do not need to be constituents or
+sequence follows a certain pattern if it contains the sequence of lexical forms
+of the pattern.  Patterns do not need to be constituents or
 phrases in the syntactic sense: they are mere concatenations of
 lexical forms that may need a conjoint processing additional to the
 simple word-for-word translation, due to the grammatical divergences
 between SL and TL (gender and number changes, reorderings,
 prepositional changes, etc). The catalogue of patterns defined for a
-certain language is selected so that the most common structural
-transformations are covered.  When source language and target language
-are syntactically similar, as is the case of Spanish, Catalan and
+certain language is selected with a view to covering the most common structural
+transformations.  When source language and target language
+are syntactically similar, as is the case between Spanish, Catalan and
 Galician, simple rules based on sequences of lexical categories
 achieve a reasonable translation quality.
 
 The transfer module detects, in the SL, sequences of lexical forms
 that match one of the patterns previously defined in the pattern
-catalogue, and processes them applying the suitable structural
-transfer rules, doing at the same time the lexical transfer by reading
+catalogue, and processes them applying the corresponding structural
+transfer rule, doing at the same time the lexical transfer by reading
 the bilingual dictionary.
 
 The \emph{pattern detection} phase occurs as follows: if the transfer
@@ -4015,7 +4010,7 @@ unmistakable signal"), that would go from the tagger to the transfer
 module in the following format~\footnote{The example has been
 presented in a way that it does not contain superblanks with format
 information, so that the linguistic side of the transformation is
-clearer. See Chapter \ref{se:flujodatos}}:\\
+clearer. See Chapter \ref{se:flujodatos}.}:\\
 
 \begin{alltt}
 \begin{small} 
@@ -4119,7 +4114,7 @@ part) to place it after the lemma head (the inflective form), thus
 making possible to find the multiword in the bilingual
 dictionary. This kind of multiwords must be processed by a structural
 transfer rule which replaces the lemma queue in its proper
-position. This is done by using, in output of the rule, the attributes
+position. This is done by using, in the output of the rule, the attributes
 \texttt{lemh} ``lemma head'' and \texttt{lemq} ``lemma queue'') of the
 \texttt{<\textbf{clip}>} element. See page~\pageref{ss:lu} for a more
 detailed description of the use of this element, and page
@@ -4235,7 +4230,7 @@ of words $w_i$ sent by the chunker with the intermediate
 \textit{superblanks} $b_i$. These words have the same format in both
 transfer systems, that is, an individual word
 $w_i=$\verb!^!$l_{i}E_{i}$\verb!$!  contains lemma $l_i$ and
-  morph. symbols $E_i$, some of which can be \emph{references or links
+  grammatical symbols $E_i$, some of which can be \emph{references or links
   to the symbols} of the chunk and are identified with natural numbers
   \texttt{<1>}, \texttt{<2>}, \texttt{<3>}, etc. These references to
   symbols correspond, in the specified order, to the symbols of $E$.
@@ -4304,8 +4299,7 @@ In the \textbf{declaration} part we find:
 
 \item A series of declarations of \emph{lexical categories}, which
 specify those lexical forms that will be treated as a particular
-category and will be detected by patterns.  It should be emphasized
-that the linguist may include any information about the lexical form
+category and will be detected by patterns.  The linguist may include any data about the lexical form
 to define a category; categories can be very generic (i.e. all the
 nouns) or very specific (i.e. only those determiners that are
 demonstrative feminine plural).
@@ -4333,7 +4327,7 @@ used to transfer values of active attributes inside a rule, or from
 one rule to the ones applied subsequently.
 
 \item A section for the \textit{definition of string lists}, generally
-lists of lemmas, which will be used to search in them a certain value
+lists of lemmas, which will be used to make searches on them for a certain value
 to perform a specific transformation.
 
 \item A series of declarations of \emph{macro-instructions};
@@ -4421,7 +4415,7 @@ made with a \texttt{<\textbf{def-cat}>}.
 \subsubsection{Element for category definition \texttt{<def-cat>}}
 
 Each category definition has a mandatory name \texttt{n}
-(i.e. \texttt{det}, \texttt{adv}, \texttt{prep}, etc.) and a list of
+(e.g. \texttt{det}, \texttt{adv}, \texttt{prep}, etc.) and a list of
 categories (\texttt{<\textbf{cat-item}>}) that define it. The name of
 the category can not contain accents.
 
@@ -4556,7 +4550,7 @@ postchunk to detect chunks of determiner-noun.}
 \\\texttt{<section-def-attrs>}}
 
 
-In this section, the attributes are described which will be extracted
+This section is to describe the attributes that will be extracted
 from the categories detected by the pattern and that will be used in
 the action part of the rules. Each attribute is defined by a
 \texttt{<\textbf{def-attr}>} tag.
@@ -4798,7 +4792,7 @@ Figure \ref{fig:macro}.
 <\textbf{/call-macro}>
 \end{alltt}
 \end{small}
-\caption{Call to the macro-instruction \texttt{f-concord2} designed to
+\caption{Call of the macro-instruction \texttt{f-concord2} designed to
 create agreement between two elements in a pattern such as
 determiner--adverb--noun. Propagation of gender and number is done
 from one of the components, in this case, from the noun which is the
@@ -4824,7 +4818,7 @@ The selection instruction consists of one or more conditional options
 This element describes a conditional option (see Section
 \ref{choose}).  It contains the condition to be tested
 \texttt{<\textbf{test}>} and one block of zero or more instructions of
-the king \texttt{<\textbf{choose}>}, \texttt{<\textbf{let}>},
+the kind \texttt{<\textbf{choose}>}, \texttt{<\textbf{let}>},
 \texttt{<\textbf{out}>}, \texttt{<\textbf{modify-case}>},
 \texttt{<\textbf{call-macro}>} or \texttt{<\textbf{append}>}, \nota{OK
 append?} which will be executed if the above condition is met.
@@ -4890,13 +4884,13 @@ string conditional tests have the attribute \texttt{caseless}; also
 \texttt{in} described below}
 
 \item The "search in lists" operator \texttt{<\textbf{in}>} is used to
-search any value (specified as the first parameter of the condition)
+search for any value (specified as the first parameter of the condition)
 in a list referred to by the \texttt{n} attribute of the
 \texttt{<\textbf{list}>} element; this list must be defined in the
-appropriate section (\texttt{<\textbf{section-\\def-lists}}).  The
+appropriate section (\texttt{<\textbf{section-def-lists}}).  The
 search result is true if the value is found in the list.  This
 comparison can also use the attribute \texttt{caseless}: if its value
-es \texttt{yes}, the search is done ignoring case. Figure \ref{fig:in}
+is \texttt{yes}, the search is done ignoring case. Figure \ref{fig:in}
 shows an example of its use.
   
 \end{itemize}
@@ -4911,7 +4905,7 @@ shows an example of its use.
 
 
 The \texttt{<\textbf{clip}>} element represents a substring of a SL or
-TL lexical form, defined by the value of different attributes (see an
+TL lexical form, defined by the value of its different attributes (see an
 example in Figure \ref{fig:clip}):
 
 \begin{itemize}
@@ -4997,7 +4991,7 @@ example of its use can be found in Figure \ref{fig:lit-tag}.
 \end{alltt}
 \end{small}
 \caption{Use of the element \texttt{<\textbf{lit-tag}>}: it is tested
-  whether the number (\texttt{nbr}) tag (or symbol) of the second
+  whether the number (\texttt{nbr}) symbol of the second
   lexical unit in the TL (\texttt{tl}) is \texttt{ND} (number to be
   determined)}
 \label{fig:lit-tag}
@@ -5050,7 +5044,7 @@ represents the reference of the variable and its value can be changed.
 This element is only used as the second parameter of a
 \texttt{<\textbf{in}>} search.  The \texttt{n} attribute refers to the
 specific list defined in the string lists definition section
-\texttt{<section-def-lists>}. An example of its use can be found in
+\texttt{<\textbf{section-def-lists}>}. An example of its use can be found in
 Figure \ref{fig:in}.
 
 
@@ -5113,7 +5107,7 @@ DIR}.
 \subsubsection{Element for case pattern query \texttt{<case-of>}}
 
 It is used to get the case pattern of a string, that is, one of the
-values "\texttt{aa}", "\texttt{Aa"} o "\texttt{AA}". It works like the
+values "\texttt{aa}", "\texttt{Aa"} or "\texttt{AA}". It works like the
 \texttt{<\textbf{clip}>} element, since it has the same attributes:
 \texttt{pos}, the position of the word in the matched pattern;
 \texttt{part}, the specific attribute that we refer to (normally the
@@ -5149,7 +5143,7 @@ it retains the same assigned position in the TL. This lemma is
 assigned the value ``\texttt{aa}'' in the case that the SL lemma has
 the state ``\texttt{Aa}''. There is nothing to specify for the rest of
 the cases, since the case state of the LF in position 1 will be the
-same in the SL and in the TL and, therefore, it is automatically
+same in the SL and in the TL and, therefore, will be automatically
 transferred (see Section~\pageref{mayusc} to obtain more information
 on letter case handling in dictionaries ).
 
@@ -5262,7 +5256,7 @@ variable, etc.). An example of its use can be found in Figure
       <!-- Other gender and number agreement actions -->
 \end{alltt}
 \end{small}
-\caption{Extract from a rule for the pattern determiner--noun
+\caption{Extract from a rule for the pattern \texttt{determiner--noun}
   (continues in Fig. \ref{fig:regla2}): in this part of the rule, the
   gender of the noun is assigned to the determiner in the case that
   the gender of the noun changes from the SL (\texttt{sl}) to the TL
@@ -5367,7 +5361,7 @@ to modify the chunks without modifying its internal part.
   \texttt{<\textbf{mlu}>} element when the output is a multiword made
   of two or more LF. Besides, also the blanks or superblanks
   (\texttt{<\textbf{b}>}) between LF and LF are sent. You can find an
-  example of its use in figures \ref{fig:case} and \ref{fig:regla2}.
+  example of its use in Figures \ref{fig:case} and \ref{fig:regla2}.
 
 \begin{figure}
 \begin{small}
@@ -5440,7 +5434,7 @@ to modify the chunks without modifying its internal part.
 \end{small}
 \caption{Output instruction that sends two chunks separated by a
   blank. The printed sequence is a preposition followed by a noun
-  phrase ("NP"). The tags that are linked outside the chunk are
+  phrase ("NP"). The tags that are linked from the second chunk to the outside are
   pronoun type ("tn"), gender and number of the noun phrase
   (pronoun). The \texttt{<\textbf{tag}>} elements are used to specify
   the tags of the chunk, and the value of the attributes \texttt{name}
@@ -5455,8 +5449,8 @@ to modify the chunks without modifying its internal part.
   only possible to operate with chunks and, therefore, inside an
   \texttt{<\textbf{out}>} element you can only put
   \texttt{<\textbf{chunk}>} elements or blanks \texttt{<\textbf{b}>}.
-  The information on lemma and tags inside a \texttt{<\textbf{chunk}>}
-  element refer exclusively to the lemma (pseudolemma) and the tags of
+  The information on lemma and tags specified here in a \texttt{<\textbf{chunk}>}
+  element refers exclusively to the lemma (pseudolemma) and the tags of
   the chunk.
 
 An example of its use can be found in Figure
@@ -5494,8 +5488,8 @@ An example of its use can be found in Figure
 
 \subsubsection{Element for lexical unit \texttt{<lu>}}
 
-\label{ss:lu} This is the element by means of which each TLLF is sent
-in the output of a rule, inside an \texttt{<\textbf{out}>} element.
+\label{ss:lu} This is the element by means of which each TLLF is sent out at the
+end of a rule, inside an \texttt{<\textbf{out}>} element.
 With this element, one can send the whole lexical form, using the
 attribute \texttt{whole} of a \texttt{<\textbf{clip}>}, or, if
 required, specify its parts separately (lemma plus tags, indicated by
@@ -5506,7 +5500,7 @@ variables \texttt{<\texttt{\textbf{var}}>}, besides case information
 
 
 
-It is important to remember that, as explained before, in the case of
+Please note that, as has been explained before, in the case of
 multiwords with \emph{split lemma} it is necessary to replace the
 lemma queue \emph{after} the grammatical symbols of the inflected word
 (or lemma head), because the \texttt{pretransfer} module has moved the
@@ -5567,7 +5561,7 @@ multiword, that is, can not contain a split lemma.  Compare figures
 \ref{fig:case} and \ref{fig:regla2}. The \texttt{whole} attribute can
 be used in the second example because it contains the lemma
 \texttt{lem} plus all the morphological tags of the lexical forms in
-position 1 and 2 (determiner and noun). Contrarily, in the first
+position 1 and 2 (determiner and noun). \nota{but nouns can also be mw now!}Contrarily, in the first
 example, the lexical form in \texttt{<\textbf{lu}>} is sent in parts,
 with a \texttt{lemh} (lemma head) and a \texttt{lemq} (lemma queue),
 since it may occur that the verb matched in the pattern is a multiword
@@ -5595,7 +5589,7 @@ conjugated verbs.
 
 \subsubsection{Element for chunk encapsulation \texttt{<chunk>}}
 
-This is the element in which chunks are sent, in a
+This is the element in which chunks are sent, in an
 \texttt{<\textbf{out}>} element, on the output of the module.  It is
 only used in the \texttt{chunker} module in advanced mode, and in the
 \texttt{interchunk} module.  It is not used in the \texttt{postchunk}
@@ -5831,18 +5825,19 @@ The following is a use example of the \texttt{<chunk>} element :
 Isolated \textit{superblanks} which are not detected by any pattern in
 this module, are written in the same order in which they arrive.
 
-The root element (\texttt{<transfer>}) of the chunker rules file
-\texttt{.t1x} has an optional attribute \texttt{default} which can
-take the values
+The default action for words not matched by any pattern
+is different depending on the transfer mode (that is, on the value of the
+optional attribute \texttt{default} of the root element \texttt{<transfer>}):
+
 \begin{itemize}
-\item \texttt{chunk}: when the module works in advanced mode (advanced
-transfer system): it will generate trivial chunks with the words not
-matched by any rule, so that in the output there are no words not
-included in a chunk.  The new chunk will be created with the
-translation of the word by the bilingual dictionary.  The fixed lemma
-of these implicitly created chunks is \texttt{default}.
-\item \texttt{lu} (default value): when the module works as single
-module in a shallow-transfer system: it will not create chunks for
+\item if the value is \texttt{chunk} (i.e. the module works in advanced
+  mode): it will generate trivial chunks with the words not matched by
+  any rule, so that in the output there are no words not included in a
+  chunk.  The new chunk will be created with the translation of the
+  word by the bilingual dictionary.  The fixed lemma of these
+  implicitly created chunks is \texttt{default}.
+\item if the value is \texttt{lu} (default value; i.e. the module works as single
+module in a shallow-transfer system): it will not create chunks for
 words not matched by rules, they will just be translated using the
 bilingual dictionary.
 
@@ -5871,7 +5866,7 @@ The \texttt{interchunk} module processes chunks; it may reorder them
 and change its morphosyntactic information. This is done by detecting
 patterns of chunks (sequences of chunks).  The instructions that
 control how it works are, with little differences, the same used by
-the \texttt{chunker} module; they are written, however, a different
+the \texttt{chunker} module; they are written, however, in a different
 file. Chunks are processed here in a similar way as words are
 processed in the \texttt{chunker} of Apertium.  \nota{Comprovar la
 denominació dels programes}
@@ -5934,7 +5929,7 @@ implicit attribute \texttt{chcontent}.\nota{Només imprimir o s'hi pot
 fer referència també?}  \nota{Dir de quin element són aquests
 atributs}
 \item All the values of \texttt{part}, except \texttt{chname}, access
-the pseudolemma and the tags of each chunk.
+the pseudolemma and the tags of the chunk (not of individual words).
 \item Unlike what happens in the \texttt{chunker} module, in the rules
 of this module it is not allowed to print anything else than
 \texttt{<chunk>}s in the \texttt{<out>} instructions, in no case
@@ -5987,7 +5982,7 @@ inside the chunk.
 \paragraph{Data files}
 
 This program has its own specification file, which will have the
-extension \texttt{.t3x}. Syntax is based as well in the
+extension \texttt{.t3x}. Its syntax is based as well on the
 \texttt{chunker} and the \texttt{in\-ter\-chunk}.  \nota{Explicar que
 no ha de llegir cap fitxer compilat de patrons perquè usa noms i no
 patrons?}
@@ -6032,7 +6027,7 @@ Also the case policy is applied by default (see Section
 \ref{ss:majuscules}).
 
 In any case, blanks outside chunks are copied in the same order as are
-written, since chunk matching is done individually (this module does
+read, since chunk matching is done individually (this module does
 not group chunks).
 
 
@@ -6109,7 +6104,7 @@ flow described in Section~\ref{se:flujodatos} , they begin with a left
 square bracket '\texttt{[}' and end with a right square bracket
 '\texttt{]}'.
 \item \textit{Blocks of format with reference to an external file} or
-\textit{extensive superblanks}.  The encapsulate long format fragments
+\textit{extensive superblanks}.  They encapsulate long format fragments
 in a way that improves the translator's performance. In the data flow
 described in Section~\ref{se:flujodatos}, they begin with the
 characters '\texttt{[@}', then there is the name of the file where the
@@ -6180,8 +6175,7 @@ is a paragraph in two lines</p>
 \begin{alltt} 
 \textbf{[<html> 
 <head> 
-<title>]}This is the
-title\textbf{.[][@/tmp/temp35345]}This\textbf{[ 
+<title>]}This is the title\textbf{.[][@/tmp/temp35345]}This\textbf{[ 
 ]}is a paragraph in two lines\textbf{.[][</p> 
 </body> 
 </html>]}
@@ -6227,15 +6221,15 @@ specification is divided in three parts (see its DTD in the Appendix
 \begin{itemize}
 \item \textbf{Configuration options}. Here one specifies the value for
 the maximum length of a non-extensive superblank, the input and output
-encodings, if case must be considered, and the regular expressions for
+encodings, whether case must be considered, and the regular expressions for
 escape characters and space characters.
 
 \item \textbf{Format rules}. Describes the set of tags belonging to a
 specific format which have to be included in a block of format by the
-de-formatter. These tags may, optionally, indicate a sentence end so
-that the de-formatter inserts an artificial punctuation mark (followed
+de-formatter. These tags may, optionally, indicate a sentence end, in which case
+the de-formatter will insert an artificial punctuation mark (followed
 by an empty block of format, as explained in the previous
-section). One has to specify the rules' application priority,
+section). One has to specify the priority of application of the rules,
 although, when this is not relevant, it is possible to give the same
 priority to all the rules by assigning them the same value (any
 number).
@@ -6261,8 +6255,7 @@ contains the name of the format.
 \begin{small}
 \begin{alltt} 
 <?xml version="1.0" encoding="ISO-8859-1"?> 
-<format
-name="html"> 
+<format name="html"> 
   <options> 
   ...  
   </options>
@@ -6399,6 +6392,7 @@ As example of a format specification, we will give that for HTML. The
 explanation given in the following paragraphs can be followed looking
 at Figure \ref{fg:formato-html}.
 
+
 In the first place, we find the format rule that specifies in a
 general way all the HTML tags: it considers as HTML tag everything
 that begins with the sign \textbf{\texttt{<}} and ends with the sign
@@ -6492,9 +6486,9 @@ Thanks to the general specification of formats described in this
 chapter, it has been possible to define specifications for HTML, RTF
 and plain text.  These specifications are in the \texttt{apertium}
 package, in the respective files \texttt{html-format.xml},
-\texttt{rtf-format.xml}, \texttt{txt-format.xml}.  As a matter of
-fact, it is quite simple to define de-formatters and re-formatters for
-any XML format.
+\texttt{rtf-format.xml}, \texttt{txt-format.xml}.  In particular, it
+is quite simple to define de-formatters and re-formatters for any XML
+format.
 
 \chapter{Installing and running the system}
 \label{se:instalacion}
@@ -6507,7 +6501,7 @@ following programs installed:
 
 \begin{itemize}
 \item \texttt{libxml2} version 2.6.17 or later (on Ubuntu you may need
-to install \texttt{libxml2-dev} too
+to install \texttt{libxml2-dev} too)
 
 \item \texttt{xmllint} tool (usually comes with \texttt{libxml2}, but
 may be an independent package on your system, i.e. Debian GNU-Linux)
@@ -6614,7 +6608,7 @@ To install the linguistic data packages, follow these steps:
 \begin{enumerate}
 
 \item Download a data package
-(\texttt{apertium-}$LANG_1$\texttt{-}$LANG_2$\texttt{-}$\textrm{VERSION}$\texttt{.tar.gz})
+(\texttt{apertium-}$LANG_1$\texttt{-}$LANG_2$\texttt{-}$VERSION$\texttt{.tar.gz})
 from Apertium's website in Sourceforge
 (\url{http://apertium.sourceforge.net/}). For example, to get version
 0.9 of the linguistic data for the Spanish--Catalan translator, you
@@ -6647,7 +6641,7 @@ structure is as follows:
 \begin{small}
 \begin{alltt} 
 \$ apertium-translator <directory> <translation> <format> \\ 
-                 < input_file > output_file
+                           < input_file > output_file
 \end{alltt}
 \end{small}
 
@@ -6675,7 +6669,7 @@ current directory:
 If no format is specified, the default format is \texttt{txt}. When
 working with the \texttt{txt}, \texttt{html} and \texttt{rtf} formats,
 unknown words are marked with an asterisk (*) and errors with a symbol
-(@, \# o /); if you wish that neither unknown words nor errors are
+(@, \# or /); if you wish that neither unknown words nor errors are
 marked, you have to add a \texttt{u} to the format name. Therefore,
 the format options are the following:
 
@@ -8060,8 +8054,8 @@ words).
 \item Modify the corpora used to train the tagger.  You can modify the
 manually disambiguated text (\texttt{es.tagged} for Spanish) if you
 think that certain tags have been wrongly selected. You can also add
-sentences to this text (and to \texttt{es.tagged.txt}, used to
-generate automatically the corpus \texttt{es.untagged}) in order to
+sentences to this text (and to \texttt{es.tagged.txt}, used to automatically
+generate the corpus \texttt{es.untagged}) in order to
 add information to the tagger, since it is possible that certain
 combinations are incorrectly disambiguated because the tagger has not
 found them in the training corpora.
@@ -8475,9 +8469,9 @@ different modules to detect where the problem arises.
 dictionaries}\label{integridad}
 
 It is highly advisable to test the integrity of our dictionaries from
-time to time, especially if we changed them significantly (or if we
+time to time, especially if we changed them significantly --or if we
 changed the transfer rules, because some errors can be due to its
-application).
+application.
 
 The test is carried out in one translation direction. For this reason,
 for a given language pair, you will have to perform two tests, one in
@@ -8535,7 +8529,7 @@ This chapter describes the dictionary maintaining system in Apertium
 2.  It is organized in two sections.  Section \ref{ss:formadmin} gives
 the necessary information to install and adjust the web application
 for word insertion.  Section \ref{ss:formus} describes how to use the
-tool to enhance linguistic data.
+tool to add linguistic data.
 
 
 \section{Introduction}
@@ -8588,7 +8582,7 @@ configuration variables:
 dictionaries and the compiled binaries of each dictionary are
 saved. This directory must contain a subdirectory for each dictionary
 with which the form can work. The subdirectory name must have the
-following syntax: \texttt{paradigmes-ll-rr} , where \textit{ll} and
+following structure: \texttt{paradigmes-ll-rr} , where \textit{ll} and
 \textit{rr} are the initials of the language pair involved. Each
 directory must contain the final dictionaries used by the machine
 translation system and the corresponding compiled binaries.  These
@@ -8648,7 +8642,7 @@ words being inserted.  These files are:
 \item \texttt{selecc.php: } This module is in charge of the selection
 of paradigms for the pair of words, the SL word and the TL word. It
 displays a list of paradigms to be chosen from, which depends on the
-part of speech of the entry being inserted. When a new paradigms is
+part of speech of the entry being inserted. When a new paradigm is
 selected for a lemma, it displays some examples of inflected forms of
 the lemma according to the chosen paradigm. If the user accepts the
 chosen paradigms, the module calls \textit{insertarPro.php} or
@@ -8694,8 +8688,8 @@ generated by \textit{selec.php}.
 \item \texttt{paradigmas.xsl:} Style sheet used to generate the
 paradigm files that are used by the form modules. It is used with the
 specification of paradigms of a language written in \texttt{XML}
-format. This question will be explained in more detail in Section
-\textit{Paradigm Files}.
+format. This question will be explained in more detail in Section \ref{paradigm}
+\textit{Paradigm files}.
 \item \texttt{creaparadigma.awk:} \texttt{awk} file used also to
 generate the mentioned paradigm files.
 \item \texttt{gen\_paradig.sh:} Script that can be used if we want to
@@ -8769,8 +8763,10 @@ manage the paths to the auxiliary and the configuration files:
 inserted from the form that are not yet in the final dictionary nor in
 the compiled dictionary.
 \item \texttt{fich\_RL:} target language dictionary with the words
-inserted from the form that are not yet in the final dictionary nor in
-the compiled dictionary.
+  inserted from the form that are not yet in the final dictionary nor
+  in the compiled dictionary.  \nota{MG: I don't like speaking of SL and
+    TL dictionaries, entries are for both directions, I think this is
+    confusing. It should be changed in the whole chapter.}
 \item \texttt{fich\_LRRL:} bilingual dictionary with the words
 inserted from the form that are not yet in the final dictionary nor in
 the compiled dictionary.
@@ -8785,8 +8781,7 @@ inflection paradigms of the target language.
 language to target language.\nota{MG: the original said "binario
 morfológico", I think it's an error, I wrote 'bilingual binary'}
 \item \texttt{aut\_RLLR:} path to the bilingual binary from target
-language to source language.\nota{MG: ídem ("bilingual"). Also,
-confusion with TL and SL, I think it's not clear.}
+language to source language.\nota{MG: ídem ("bilingual").}
 \end{itemize}
 
 Then the html code is inserted with the operations to be performed
@@ -8830,8 +8825,7 @@ lemma.
   ejemplos\_RL}), and these are displayed.
 \item If we arrived to this screen because we were validating words
 (\texttt{va\-li\-da=1}), then a button is added to the form, which
-allows us to delete the current entry if we decide not to validate and
-insert it.
+allows us to delete the current entry if we decide not to validate it.
 \item If the user that arrived to this screen is a professional user,
 then a button is added to the form, which allows the user to select
 the option for the validation of words entered by non-professional
@@ -8840,7 +8834,7 @@ users.
 of the form is pressed, the applicable actions are performed. If the
 chosen action is \textit{"Delete"}, which can only be the case if the
 user is validating entries, the current entry is deleted from the file
-of entries made by non-professional users.  If the chose action is a
+of entries made by non-professional users.  If the chosen action is a
 confirmation (\textit{"Go on"} button), the module
 \texttt{insertarPro.php} or \texttt{insertar.php} is called, depending
 on whether the user is professional or non-professional respectively.
@@ -8916,8 +8910,7 @@ variables and defines some required functions as occurred in
 \item \texttt{esVocalFuerte}: Returns \textit{true} if the vowel is
 strong, that is, \textit{a, e, o}.
 \item \texttt{esVocalDebil}: Returns \textit{true} if the vowel is
-weak, that is \textit{i, u}.\nota{MG: original said "a, e, o",
-corrected to ``i, u''.}
+weak, that is \textit{i, u}.
 \item \texttt{esVocal}: Returns \textit{true} if the character passed
 as an argument is a vowel.
 \item \texttt{diptongo}: Returns \textit{true} if the two letters
@@ -8946,7 +8939,7 @@ first occurrence of \$vocal is returned.
 Now, the same operations as in \textit{selec.php} are
 performed. Firstly, it makes sure that the entry is not yet in the
 dictionaries, and then generates the examples of the word inflected
-according to the paradigm previously selected .  After this, it builds
+according to the paradigm previously selected. After this, it builds
 the string with the \texttt{XML} code that is going to be inserted in
 the source language monolingual dictionary. With the information on
 the lemmas entered in \textit{selec.php}, a text string is generated
@@ -8955,11 +8948,10 @@ monolingual dictionary. This string is displayed in a text box that
 can be manually edited. The same process is done to generate the
 string for the target language monolingual dictionary
 (\texttt{\$cad\_RL}) and for the bilingual dictionary
-(\texttt{\$cad\_bil}). \nota{MG: I think speaking of SL and TL is
-confusing, since translation works in both directions} Then, the
+(\texttt{\$cad\_bil}). Then, the
 possible comments and the name of the user making the entry are
 concatenated to these variables, if applicable.  Finally, the form
-screen is completed adding the buttons for accepting, deleting and go
+screen is completed adding the buttons for accepting, deleting and going
 back.  The code to process each one of the possible actions is at the
 end of the file:
 \begin{itemize}
@@ -9055,6 +9047,7 @@ this file would be: \texttt{es-ca.semi.dic}
 \end{itemize}
 
 \subsection{Paradigm files}
+\label{paradigm}
 
 The paradigms used for each language pair are specified in two
 \texttt{XML} files named \texttt{paradig.ll-rr.xx.xml}, where
@@ -9248,8 +9241,8 @@ that is generated from the \texttt{XML} entry:
 \label{ss:formus}
 \subsection{Introduction}
 
-\nota{Intentar evitar el llenguatge sexista en tot el document:
-\emph{usuari}, etc.}  When a user wants to insert new entries in a
+
+ When a user wants to insert new entries in a
 dictionary, he/she has to use a web navigator to connect to the
 address where the form server has been installed; for example:
 \begin{center} \texttt{http://xixona.dlsi.ua.es/forms}
@@ -9281,8 +9274,8 @@ select their part of speech. Press the \textit{Go on} button to
 continue.
 
 A new window is displayed, with the lemmas and some parameters used to
-define the entries. If the entry already exists in any of the
-dictionaries, a warning is displayed and the system automatically
+define the entries. If the entry already exists in one of the
+dictionaries, a warning message is displayed and the system automatically
 selects one-way translation (from left to right or vice versa). If
 none of the dictionaries contain the entry, the entry will be entered
 for both directions.
@@ -9305,7 +9298,7 @@ algun lloc.}
   in the case of acronyms you have to consider the gender and the
   number admitted by each possible paradigm; the paradigm BBC, for
   example, is for feminine singular acronyms, whereas SA is for
-  feminine acronyms that may have plural form). In the case of proper
+  feminine acronyms that may have plural form. In the case of proper
   nouns, you have to choose a different paradigm depending on whether
   the word is a proper noun of a thing (e.g. a newspaper), a person or
   a place.}
@@ -9338,8 +9331,8 @@ inserted in the dictionaries until a professional user validates them.
 
 \subsection{Validating entries}
 
-Professional users have two additional links in the screen for the
-selection of paradigms:
+Professional users have two additional links in the screen for 
+paradigm selection:
 \begin{itemize}
 \item \textit{See pairs to be validated}: Selecting this option will
 open a screen that displays the content of the file of entries pending
@@ -10198,7 +10191,7 @@ be}
 \end{tabular}
 
 \newpage
-\subsection{Especification of lexical forms}
+\subsection{Specification of lexical forms}
 
 Order for the placement of grammatical symbols in the morphological
 dictionaries of this system (from left to right in the table). The
@@ -10354,7 +10347,7 @@ QUECNJ & Lexicalization of \emph{que} as a conjunction & Yes& \\
 Yes& \\ \hline COMOPR\footnote{The morphological analyser considers
 that \emph{como} can be a preposition since it can be replaced with
 \emph{en calidad de} in some contexts (e.g.- \emph{'Os hablo como
-director de la película'}} & Lexicalization of \emph{como} as a
+director de la película'}).} & Lexicalization of \emph{como} as a
        preposition& Yes& \\
 %!!!!!!!!!!Explicar esto de la preposición porque no es muy estándar que digamos 
 \hline COMOREL & Lexicalization of \emph{como} as a
@@ -10556,7 +10549,9 @@ the standard ISO-8859 \cite{Unicode}.
 \item[SL] Source language
 \item[RTF] Rich text format
 \item[MT] Machine translation
-\item[XML] Extensible markup language.
+\item[XML] Extensible markup language
+\item[POS] Part of speech
+\nota{order alfabetically}
 \end{description}
 
 \newpage \nota{Afegir article de l'EAMT 2005 i citar-lo}
