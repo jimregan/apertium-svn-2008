@@ -30,49 +30,49 @@ import java.io.IOException;
  */
 public class SdefElement extends Element {
 
-	/**
-	 * 
-	 */
-	private String n;
+    /**
+         * 
+         */
+    private String n;
 
-	/**
-	 * 
-	 * @param value
-	 */
-	public SdefElement(final String value) {
-		setTagName("sdef");
-		n = value;
-	}
+    /**
+         * 
+         * @param value
+         */
+    public SdefElement(final String value) {
+	setTagName("sdef");
+	n = value;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public final String getValue() {
-		return n;
-	}
+    /**
+         * 
+         * @return
+         */
+    public final String getValue() {
+	return n;
+    }
 
-	/**
-	 * 
-	 * @param dos
-	 * @throws IOException
-	 */
-	@Override
-	public final void printXML(final DataOutputStream dos) throws IOException {
-		if (comments == null) {
-			setComments("");
-		}
-		dos.writeBytes(tab(2) + "<" + getTagName() + " n=\"" + getValue()
-				+ "\"/> " + getComments() + "\n");
+    /**
+         * 
+         * @param dos
+         * @throws IOException
+         */
+    @Override
+    public final void printXML(final DataOutputStream dos) throws IOException {
+	if (comments == null) {
+	    setComments("");
 	}
+	dos.writeBytes(tab(2) + "<" + getTagName() + " n=\"" + getValue()
+		+ "\"/> " + getComments() + "\n");
+    }
 
-	/**
-	 * 
-	 */
-	@Override
-	public final String toString() {
-		final String str = "<" + getValue() + ">";
-		return str;
-	}
+    /**
+         * 
+         */
+    @Override
+    public final String toString() {
+	final String str = "<" + getValue() + ">";
+	return str;
+    }
 
 }

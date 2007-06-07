@@ -26,13 +26,13 @@ package dics.elements.dtd;
  */
 public class JElement extends Element {
 
-	/**
-	 * 
-	 * 
-	 */
-	public JElement() {
-		setTagName("j");
-		setValue("<j/>");
-	}
+    /**
+         * 
+         * 
+         */
+    public JElement() {
+	setTagName("j");
+	setValue("<j/>");
+    }
 
 }

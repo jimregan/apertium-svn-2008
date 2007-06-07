@@ -30,66 +30,66 @@ import java.io.IOException;
  */
 public class AlphabetElement extends Element {
 
-	/**
-	 * 
-	 */
-	private String alphabet;
+    /**
+         * 
+         */
+    private String alphabet;
 
-	/**
-	 * 
-	 * 
-	 */
-	public AlphabetElement() {
+    /**
+         * 
+         * 
+         */
+    public AlphabetElement() {
 
-	}
+    }
 
-	/**
-	 * 
-	 * @param value
-	 */
-	public AlphabetElement(final String value) {
-		alphabet = value;
-	}
+    /**
+         * 
+         * @param value
+         */
+    public AlphabetElement(final String value) {
+	alphabet = value;
+    }
 
-	/**
-	 * 
-	 * @param value
-	 */
-	public final void setAlphabet(final String value) {
-		alphabet = value;
-	}
+    /**
+         * 
+         * @param value
+         */
+    public final void setAlphabet(final String value) {
+	alphabet = value;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public final String getAlphabet() {
-		return alphabet;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public final boolean isEmpty() {
-		if (getAlphabet() == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    /**
+         * 
+         * @return
+         */
+    public final String getAlphabet() {
+	return alphabet;
+    }
 
-	/**
-	 * 
-	 * @param dos
-	 * @throws IOException
-	 */
-	@Override
-	public final void printXML(final DataOutputStream dos) throws IOException {
-		if (isEmpty()) {
-			setAlphabet("");
-		}
-		dos.writeBytes(tab(1) + "<alphabet>" + getAlphabet() + "</alphabet>\n");
+    /**
+         * 
+         * @return
+         */
+    public final boolean isEmpty() {
+	if (getAlphabet() == null) {
+	    return true;
+	} else {
+	    return false;
 	}
+    }
+
+    /**
+         * 
+         * @param dos
+         * @throws IOException
+         */
+    @Override
+    public final void printXML(final DataOutputStream dos) throws IOException {
+	if (isEmpty()) {
+	    setAlphabet("");
+	}
+	dos.writeBytes(tab(1) + "<alphabet>" + getAlphabet() + "</alphabet>\n");
+    }
 
 }

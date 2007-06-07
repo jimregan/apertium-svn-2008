@@ -27,13 +27,13 @@ package dics.elements.dtd;
  */
 public class LElement extends ContentElement {
 
-	/**
-	 * 
-	 * 
-	 */
-	public LElement() {
-		super();
-		setTagName("l");
-	}
+    /**
+         * 
+         * 
+         */
+    public LElement() {
+	super();
+	setTagName("l");
+    }
 
 }

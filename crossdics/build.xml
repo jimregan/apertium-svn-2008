@@ -7,17 +7,16 @@
 	<property name="crp.dir" location="crp" />
 
 	<!-- Dictionaries to cross -->
-	<!--
-		 <property name="bil-AB" value="bilAB.dix" />
-		 <property name="bil-BC" value="bilBC.dix" />
-		 <property name="monol-A" value="monA.dix" />
-		 <property name="monol-C" value="monC.dix" />
-		 <property name="mod-AB" value="-n" />
-		 <property name="mod-BC" value="-n" />
-		 <property name="cross-model" value="schemas/cross-model-test.xml" />
-	-->
+	<property name="bil-AB" value="${dics.dir}/apertium-bb-aa.bb-aa.dix" />
+	<property name="bil-BC" value="${dics.dir}/apertium-bb-cc.bb-cc.dix" />
+	<property name="monol-A" value="${dics.dir}/apertium-bb-aa.aa.dix" />
+	<property name="monol-C" value="${dics.dir}/apertium-bb-cc.cc.dix" />
+	<property name="mod-AB" value="-n" />
+	<property name="mod-BC" value="-n" />
+	<property name="cross-model" value="schemas/cross-model-test.xml" />
 
 	<!-- Dictionaries to cross (ca-pt example) -->
+	<!--
 	<property name="bil-AB" value="${dics.dir}/apertium-es-ca.es-ca.dix" />
 	<property name="bil-BC" value="${dics.dir}/apertium-es-pt.es-pt.dix" />	
 	<property name="monol-A" value="${dics.dir}/apertium-es-ca.ca.dix" />
@@ -25,8 +24,7 @@
 	<property name="mod-AB" value="-n" />
 	<property name="mod-BC" value="-n" />
 	<property name="cross-model" value="schemas/cross-model-test.xml" />
-
-	
+	-->
 	<!-- Dictionaries to cross (fr-es example) -->
 	<!--
 	<property name="bil-AB" value="${dics.dir}/apertium-es-ca.es-ca.dix" />
@@ -275,7 +273,7 @@
 	</target>
 
 	<!-- Merge action -->
-	<target name="merge" depends="compile,prepare-merge" if="merge-dics-available">
+	<target name="merge" depends="prepare-merge" if="merge-dics-available">
 		<echo message="Merging dictionaries..." />
 		<echo message="  ${bil-AB1}" />	
 		<echo message="  ${monol-A1}" />	

@@ -29,250 +29,391 @@ import dics.elements.utils.ElementList;
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class State {
 
-	/**
-	 * 
-	 */
-	private String value;
+    /**
+         * 
+         */
+    private String value;
 
-	/**
-	 * 
-	 */
-	private TransitionSet transitions;
+    /**
+         * 
+         */
+    private TransitionSet transitions;
 
-	/**
-	 * 
-	 */
-	private Action action;
+    /**
+         * This member will be removed
+         */
+    private Action action;
 
-	/**
-	 * 
-	 */
-	private static int nStates;
+    /**
+         * 
+         */
+    private ActionSet actionSet;
 
-	/**
-	 * 
-	 */
-	private Vector<String> lrrl;
+    /**
+         * 
+         */
+    private static int nStates;
 
-	/**
-	 * 
-	 */
-	private Vector<String> lr;
+    /**
+         * 
+         */
+    private Vector<String> lrrl;
 
-	/**
-	 * 
-	 */
-	private Vector<String> rl;
+    /**
+         * 
+         */
+    private Vector<String> lr;
 
-	/**
-	 * 
-	 */
-	private boolean restrictionMatched;
+    /**
+         * 
+         */
+    private Vector<String> rl;
 
-	/**
-	 * 
-	 */
-	private ElementList entries;
+    /**
+         * 
+         */
+    private boolean restrictionMatched;
 
-	/**
-	 * 
-	 */
-	private ActionList actionList;
-	
-	/**
-	 * 
-	 * @param value
-	 */
-	public State(final String value) {
-		this.value = value;
-		transitions = new TransitionSet();
-		incrementNStates();
+    /**
+         * 
+         */
+    private ElementList entries;
+
+    /**
+         * 
+         */
+    private ActionList actionList;
+
+    /**
+         * 
+         */
+    private ActionSetList actionSetList;
+
+    /**
+         * 
+         * @param value
+         */
+    public State(final String value) {
+	this.value = value;
+	transitions = new TransitionSet();
+	incrementNStates();
+    }
+
+    /**
+         * 
+         * 
+         */
+    private final void incrementNStates() {
+	nStates++;
+    }
+
+    /**
+         * This method will be removed
+         * 
+         * @param pattern
+         * @param i
+         */
+    /*
+         * public final void add(ElementList pattern, Action action, int i) { if
+         * (i < pattern.size()) { final Element e = pattern.get(i); State state;
+         * if (!transitions.containsKey(e.getValue())) { state = new
+         * State(e.getValue()); transitions.put(state.getValue(), state); } else {
+         * state = transitions.get(e.getValue()); } if
+         * (state.getValue().equals("j")) { action.setPatternLength(new
+         * Integer(i)); state.setAction(action); } else { state.add(pattern,
+         * action, i + 1); } } }
+         */
+
+    /**
+         * 
+         * @param pattern
+         * @param actionSet
+         * @param i
+         */
+    public final void add(ElementList pattern, ActionSet actionSet, int i) {
+	if (i < pattern.size()) {
+	    final Element e = pattern.get(i);
+	    State state;
+	    if (!transitions.containsKey(e.getValue())) {
+		state = new State(e.getValue());
+		transitions.put(state.getValue(), state);
+	    } else {
+		state = transitions.get(e.getValue());
+	    }
+	    if (state.getValue().equals("j")) {
+		actionSet.setPatternLength(new Integer(i));
+		state.setActionSet(actionSet);
+		// state.setAction(action);
+	    } else {
+		// state.add(pattern, action, i + 1);
+		state.add(pattern, actionSet, i + 1);
+	    }
 	}
+    }
 
-	/**
-	 * 
-	 *
-	 */
-	private final void incrementNStates() {
-		nStates++;
+    /**
+         * This method will be removed
+         * 
+         * @param entries
+         * @param i
+         */
+    /*
+         * public final void getAction(final ElementList entries, int i,
+         * ActionList actionList) { if (i < entries.size()) { lrrl = new Vector<String>();
+         * lrrl.add("LR"); lrrl.add("RL"); lrrl.add("LR-RL");
+         * 
+         * lr = new Vector<String>(); lr.add("LR"); lr.add("LR-RL");
+         * 
+         * rl = new Vector<String>(); rl.add("RL"); rl.add("LR-RL");
+         * 
+         * setRestrictionMatched(false);
+         * 
+         * setEntries(entries); setActionList(actionList); final Element e =
+         * entries.get(i); SElement sE = (SElement) e; String v = sE.getValue();
+         * 
+         * processRestriction(v, "LR-RL", lrrl, i); processRestriction(v, "LR",
+         * lr, i); processRestriction(v, "RL", rl, i);
+         * 
+         * if (!isRestrictionMatched()) { String real = sE.getTemp();
+         * processItem(real, i); processItem(v, i); } } }
+         */
+
+    public final void getActionSet(final ElementList entries, int i,
+	    ActionSetList actionSetList) {
+	if (i < entries.size()) {
+	    lrrl = new Vector<String>();
+	    lrrl.add("LR");
+	    lrrl.add("RL");
+	    lrrl.add("LR-RL");
+
+	    lr = new Vector<String>();
+	    lr.add("LR");
+	    lr.add("LR-RL");
+
+	    rl = new Vector<String>();
+	    rl.add("RL");
+	    rl.add("LR-RL");
+
+	    setRestrictionMatched(false);
+
+	    setEntries(entries);
+	    // setActionList(actionList);
+	    setActionSetList(actionSetList);
+
+	    final Element e = entries.get(i);
+	    SElement sE = (SElement) e;
+	    String v = sE.getValue();
+
+	    processRestriction(v, "LR-RL", lrrl, i);
+	    processRestriction(v, "LR", lr, i);
+	    processRestriction(v, "RL", rl, i);
+
+	    if (!isRestrictionMatched()) {
+		String real = sE.getTemp();
+		processItem(real, i);
+		processItem(v, i);
+	    }
 	}
+    }
 
-	/**
-	 * 
-	 * @param pattern
-	 * @param i
-	 */
-	public final void add(ElementList pattern, Action action, int i) {
-		if (i < pattern.size()) {
-			final Element e = pattern.get(i);
-			State state;
-			if (!transitions.containsKey(e.getValue())) {
-				state = new State(e.getValue());
-				transitions.put(state.getValue(), state);
-			} else {
-				state = transitions.get(e.getValue());
-			}
-			if (state.getValue().equals("j")) {
-				action.setPatternLength(new Integer(i));
-				state.setAction(action);
-			} else {
-				state.add(pattern, action, i+1);
-			}
+    /**
+         * This method will be removed
+         * 
+         * @param v
+         * @param value
+         * @param values
+         * @param state
+         * @param entries
+         * @param i
+         * @param actionList
+         * @return
+         */
+    private final void processRestriction(final String v, final String value,
+	    final Vector<String> values, int i) {
+	if (!isRestrictionMatched()) {
+	    if (v.equals(value)) {
+		setRestrictionMatched(true);
+		for (String val : values) {
+		    if (transitions.containsKey(val)) {
+			State state = transitions.get(val);
+			state.getActionSet(entries, i + 1, actionSetList);
+		    }
 		}
+	    }
 	}
+    }
 
-	/**
-	 * 
-	 * @param entries
-	 * @param i
-	 */
-	public final void getAction(final ElementList entries, int i, ActionList actionList) {
-		if (i < entries.size()) {
-			lrrl = new Vector<String>();
-			lrrl.add("LR");
-			lrrl.add("RL");
-			lrrl.add("LR-RL");
+    /*
+         * private final void processRestriction_old(final String v, final
+         * String value, final Vector<String> values, int i) { if
+         * (!isRestrictionMatched()) { if (v.equals(value)) {
+         * setRestrictionMatched(true); for (String val : values) { if
+         * (transitions.containsKey(val)) { State state = transitions.get(val);
+         * state.getAction(entries, i + 1, actionList); } } } } }
+         */
 
-			lr = new Vector<String>();
-			lr.add("LR");
-			lr.add("LR-RL");
+    /**
+         * This method will be removed
+         * 
+         * @param value
+         * @param entries
+         * @param i
+         * @param actionList
+         */
+    /*
+         * private final void processItem_old(final String value, int i) { if
+         * (transitions.containsKey(value)) { State state =
+         * transitions.get(value); if (state.getValue().equals("j")) { action =
+         * state.getAction(); actionList.put(action.getName(), action); } else {
+         * state.getAction(entries, i + 1, actionList); } } }
+         */
 
-			rl = new Vector<String>();
-			rl.add("RL");
-			rl.add("LR-RL");
-
-			setRestrictionMatched(false);
-
-			setEntries(entries);
-			setActionList(actionList);
-			final Element e = entries.get(i);
-			SElement sE = (SElement)e;
-			String v = sE.getValue();
-
-			processRestriction(v, "LR-RL", lrrl, i);
-			processRestriction(v, "LR", lr, i);
-			processRestriction(v, "RL", rl, i);
-
-			if (!isRestrictionMatched()) {
-				String real = sE.getTemp();
-				processItem(real, i);
-				processItem(v, i);
-			}
-		}
+    private final void processItem(final String value, int i) {
+	if (transitions.containsKey(value)) {
+	    State state = transitions.get(value);
+	    if (state.getValue().equals("j")) {
+		actionSet = state.getActionSet();
+		actionSetList.put(actionSet.getName(), actionSet);
+	    } else {
+		state.getActionSet(entries, i + 1, actionSetList);
+	    }
 	}
+    }
 
-	/**
-	 * 
-	 * @param v
-	 * @param value
-	 * @param values
-	 * @param state
-	 * @param entries
-	 * @param i
-	 * @param actionList
-	 * @return
-	 */
-	private final void processRestriction(final String v, final String value, final Vector<String> values, int i) {
-		if (!isRestrictionMatched()) {
-			if (v.equals(value)) {
-				setRestrictionMatched(true);
-				for (String val : values) {
-					if (transitions.containsKey(val)) {
-						State state = transitions.get(val);
-						state.getAction(entries, i+1, actionList);
-					}
-				}
-			} 
-		}
-	}
+    /**
+         * @return the value
+         */
+    public final String getValue() {
+	return value;
+    }
 
-	/**
-	 * 
-	 * @param value
-	 * @param entries
-	 * @param i
-	 * @param actionList
-	 */
-	private final void processItem(final String value, int i) {
-		if (transitions.containsKey(value)) {
-			State state = transitions.get(value);
-			if (state.getValue().equals("j")) {
-				action = state.getAction();
-				actionList.put(action.getName(), action);
-			} else {
-				state.getAction(entries, i+1, actionList);
-			}
-		}
-	}
+    /**
+         * @param value
+         *                the value to set
+         */
+    public final void setValue(String value) {
+	this.value = value;
+    }
 
-	/**
-	 * @return the value
-	 */
-	public final String getValue() {
-		return value;
-	}
+    /**
+         * @return the action
+         */
+    public final Action getAction() {
+	return action;
+    }
 
-	/**
-	 * @param value the value to set
-	 */
-	public final void setValue(String value) {
-		this.value = value;
-	}
+    /**
+         * @param action
+         *                the action to set
+         */
+    public final void setAction(Action action) {
+	this.action = action;
+    }
 
-	/**
-	 * @return the action
-	 */
-	public final Action getAction() {
-		return action;
-	}
+    /**
+         * @return the nStates
+         */
+    public static final int getNStates() {
+	return nStates;
+    }
 
-	/**
-	 * @param action the action to set
-	 */
-	public final void setAction(Action action) {
-		this.action = action;
-	}
+    /**
+         * 
+         * @return
+         */
+    private final TransitionSet getTransitions() {
+	return transitions;
+    }
 
-	/**
-	 * @return the nStates
-	 */
-	public static final int getNStates() {
-		return nStates;
-	}
+    /**
+         * 
+         * @param transitions
+         */
+    private final void setTransitions(TransitionSet transitions) {
+	this.transitions = transitions;
+    }
 
-	private final TransitionSet getTransitions() {
-		return transitions;
-	}
+    /**
+         * 
+         * @return
+         */
+    private final boolean isRestrictionMatched() {
+	return restrictionMatched;
+    }
 
-	private final void setTransitions(TransitionSet transitions) {
-		this.transitions = transitions;
-	}
+    /**
+         * 
+         * @param restrictionMatched
+         */
+    private final void setRestrictionMatched(boolean restrictionMatched) {
+	this.restrictionMatched = restrictionMatched;
+    }
 
-	private final boolean isRestrictionMatched() {
-		return restrictionMatched;
-	}
+    /**
+         * 
+         * @return
+         */
+    private final ElementList getEntries() {
+	return entries;
+    }
 
-	private final void setRestrictionMatched(boolean restrictionMatched) {
-		this.restrictionMatched = restrictionMatched;
-	}
+    /**
+         * 
+         * @param entries
+         */
+    private final void setEntries(ElementList entries) {
+	this.entries = entries;
+    }
 
-	private final ElementList getEntries() {
-		return entries;
-	}
+    /**
+         * 
+         * @return
+         */
+    private final ActionList getActionList() {
+	return actionList;
+    }
 
-	private final void setEntries(ElementList entries) {
-		this.entries = entries;
-	}
+    /**
+         * 
+         * @param actionList
+         */
+    private final void setActionList(ActionList actionList) {
+	this.actionList = actionList;
+    }
 
-	private final ActionList getActionList() {
-		return actionList;
-	}
+    /**
+         * 
+         * @return
+         */
+    public final ActionSet getActionSet() {
+	return actionSet;
+    }
 
-	private final void setActionList(ActionList actionList) {
-		this.actionList = actionList;
-	}
+    /**
+         * 
+         * @param actionSet
+         */
+    public final void setActionSet(ActionSet actionSet) {
+	this.actionSet = actionSet;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public final ActionSetList getActionSetList() {
+	return actionSetList;
+    }
+
+    /**
+         * 
+         * @param actionSetList
+         */
+    public final void setActionSetList(ActionSetList actionSetList) {
+	this.actionSetList = actionSetList;
+    }
 }

@@ -32,97 +32,97 @@ import dics.elements.dtd.EElement;
  */
 public class Pattern {
 
-	/**
-	 * 
-	 */
-	private EElement e1;
+    /**
+         * 
+         */
+    private EElement e1;
 
-	/**
-	 * 
-	 */
-	private EElement e2;
+    /**
+         * 
+         */
+    private EElement e2;
 
-	/**
-	 * 
-	 * 
-	 */
-	public Pattern() {
+    /**
+         * 
+         * 
+         */
+    public Pattern() {
 
-	}
+    }
 
-	/**
-	 * 
-	 * @param ab
-	 * @param bc
-	 */
-	public Pattern(final EElement ab, final EElement bc) {
-		e1 = ab;
-		e2 = bc;
-	}
+    /**
+         * 
+         * @param ab
+         * @param bc
+         */
+    public Pattern(final EElement ab, final EElement bc) {
+	e1 = ab;
+	e2 = bc;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public EElement getAB() {
-		return e1;
-	}
+    /**
+         * 
+         * @return
+         */
+    public EElement getAB() {
+	return e1;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public EElement getBC() {
-		return e2;
-	}
+    /**
+         * 
+         * @return
+         */
+    public EElement getBC() {
+	return e2;
+    }
 
-	/**
-	 * 
-	 * @param ab
-	 */
-	public void setAB(final EElement ab) {
-		e1 = ab;
-	}
+    /**
+         * 
+         * @param ab
+         */
+    public void setAB(final EElement ab) {
+	e1 = ab;
+    }
 
-	/**
-	 * 
-	 * @param bc
-	 */
-	public void setBC(final EElement bc) {
-		e2 = bc;
-	}
+    /**
+         * 
+         * @param bc
+         */
+    public void setBC(final EElement bc) {
+	e2 = bc;
+    }
 
-	/**
-	 * 
-	 * 
-	 */
-	public final void print() {
-		System.out.println("Pattern:");
-		getAB().print("L");
-		getAB().print("R");
-		getBC().print("L");
-		getBC().print("R");
-	}
+    /**
+         * 
+         * 
+         */
+    public final void print() {
+	System.out.println("Pattern:");
+	getAB().print("L");
+	getAB().print("R");
+	getBC().print("L");
+	getBC().print("R");
+    }
 
-	/**
-	 * 
-	 */
-	public final String toString() {
-		String e1 = this.getAB().toString2();
-		String e2 = this.getBC().toString2();
-		String str = e1 + "/" + e2;
-		return str;
-	}
+    /**
+         * 
+         */
+    public final String toString() {
+	String e1 = this.getAB().toString2();
+	String e2 = this.getBC().toString2();
+	String str = e1 + "/" + e2;
+	return str;
+    }
 
-	/**
-	 * 
-	 * @param dos
-	 */
-	protected final void printXML(DataOutputStream dos) throws IOException {
-		dos.writeBytes("\t<pattern>\n");
-		e1.printXML(dos);
-		e2.printXML(dos);
-		dos.writeBytes("\t</pattern>\n");
-	}
-	
+    /**
+         * 
+         * @param dos
+         */
+    protected final void printXML(DataOutputStream dos) throws IOException {
+	dos.writeBytes("\t<pattern>\n");
+	e1.printXML(dos);
+	e2.printXML(dos);
+	dos.writeBytes("\t</pattern>\n");
+    }
+
 }

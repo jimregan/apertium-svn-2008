@@ -29,113 +29,110 @@ import dics.elements.utils.ElementList;
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class CrossModelFST {
 
-	/**
-	 * 
-	 */
-	private State initialState;
-	
-	/**
-	 * 
-	 */
-	private Action action;
-	
-	/**
-	 * 
-	 *
-	 */
-	public CrossModelFST(final CrossModel crossModel) {
-		initialState = new State("");
-		String str;
-		HashMap<String,CrossAction> patterns = new HashMap<String,CrossAction>();
-		
-		for (CrossAction crossAction : crossModel.getCrossActions()) {
-			ElementList eList = crossAction.processVars();
-			str = getElementListString(eList);
-			if (!patterns.containsKey(str)) {
-				patterns.put(str, crossAction);
-				//System.out.println(crossAction.getId() + ": " + str);
-				Action action = crossAction.getAction();
-				add(eList, action);
-			} else {
-				CrossAction cA = (CrossAction)patterns.get(str);
-				System.err.println("Duplicated pattern: '" + crossAction.getId()  + "' is the same as '" + cA.getId() + "' are the same (will be ignored).");
-			}
-		}
-		//System.out.println("States: " + State.getNStates() );		
-	}
-	
-	
-	/**
-	 * 
-	 * @param eList
-	 * @param action
-	 */
-	private final void add(final ElementList eList, final Action action) {
-		initialState.add(eList, action, 0);
-	}
+    /**
+         * 
+         */
+    private State initialState;
 
-	/**
-	 * 
-	 * @param entries
-	 * @return
-	 */
-	public final Action getAction(CrossAction entries) {
-		ElementList eList = entries.processEntries();
-		//String str = getElementListString(eList);
-		//System.out.println(str);
-		ActionList actionList = new ActionList();
-		initialState.getAction(eList, 0, actionList);
-		
-		if (actionList.size() > 0)  {
-			//System.out.println(str);
-			//entries.print();			
-			//System.out.print(actionList.size() + " candidate actions: ");
-			//actionList.print();
-			Action bestAction = actionList.getBestAction();
-			setAction(bestAction);
-			//System.out.println("Best action: " + bestAction.getName());
-			//bestAction.print();
-			return bestAction;
-		} else {
-			return null;
-		}
-	}
-	
-	/**
-	 * 
-	 * @param eList
-	 */
-	private final String getElementListString(ElementList eList) {
-		String str = "";
-		for (Element e : eList) {
-			String real = ((SElement)e).getTemp();
-			if (real != null) {
-				str += "<" + e.getValue() + "/" + real + ">";
-			} else {
-				str += "<" + e.getValue() + ">";
-			}
-		}
-		return str;
-	}
+    /**
+         * 
+         */
+    private ActionSet actionSet;
 
-	/**
-	 * 
-	 * @return
-	 */
-	private final Action getAction() {
-		return action;
-	}
+    /**
+         * 
+         * 
+         */
+    public CrossModelFST(final CrossModel crossModel) {
+	initialState = new State("");
+	String str;
+	HashMap<String, CrossAction> patterns = new HashMap<String, CrossAction>();
 
-	/**
-	 * 
-	 * @param action
-	 */
-	private final void setAction(Action action) {
-		this.action = action;
+	for (CrossAction crossAction : crossModel.getCrossActions()) {
+	    ElementList eList = crossAction.processVars();
+	    str = getElementListString(eList);
+	    if (!patterns.containsKey(str)) {
+		patterns.put(str, crossAction);
+		// System.out.println(crossAction.getId() + ": " + str);
+		ActionSet actionSet = crossAction.getActionSet();
+		add(eList, actionSet);
+	    } else {
+		CrossAction cA = patterns.get(str);
+		System.err.println("Duplicated pattern: '"
+			+ crossAction.getId() + "' is the same as '"
+			+ cA.getId() + "' are the same (will be ignored).");
+	    }
 	}
+	// System.out.println("States: " + State.getNStates() );
+    }
+
+    /**
+         * 
+         * @param eList
+         * @param action
+         */
+    private final void add(final ElementList eList, final ActionSet actionSet) {
+	initialState.add(eList, actionSet, 0);
+    }
+
+    /**
+         * 
+         * @param entries
+         * @return
+         */
+    public final ActionSet getActionSet(CrossAction entries) {
+	ElementList eList = entries.processEntries();
+	// String str = getElementListString(eList);
+	// System.out.println(str);
+	ActionSetList actionSetList = new ActionSetList();
+	initialState.getActionSet(eList, 0, actionSetList);
+
+	if (actionSetList.size() > 0) {
+	    // System.out.println(str);
+	    // entries.print();
+	    ActionSet bestActionSet = actionSetList.getBestActionSet();
+	    setActionSet(bestActionSet);
+	    return bestActionSet;
+	} else {
+	    return null;
+	}
+    }
+
+    /**
+         * 
+         * @param eList
+         */
+    private final String getElementListString(ElementList eList) {
+	String str = "";
+	for (Element e : eList) {
+	    String real = ((SElement) e).getTemp();
+	    if (real != null) {
+		str += "<" + e.getValue() + "/" + real + ">";
+	    } else {
+		str += "<" + e.getValue() + ">";
+	    }
+	}
+	return str;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public final ActionSet getActionSet() {
+	return actionSet;
+    }
+
+    /**
+         * 
+         * @param actionSet
+         */
+    public final void setActionSet(ActionSet actionSet) {
+	this.actionSet = actionSet;
+    }
 
 }

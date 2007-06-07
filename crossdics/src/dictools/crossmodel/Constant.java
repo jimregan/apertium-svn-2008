@@ -27,54 +27,54 @@ package dictools.crossmodel;
  */
 public class Constant {
 
-	/**
-	 * 
-	 */
-	private String name;
+    /**
+         * 
+         */
+    private String name;
 
-	/**
-	 * 
-	 */
-	private String value;
+    /**
+         * 
+         */
+    private String value;
 
-	/**
-	 * 
-	 * 
-	 */
-	public Constant() {
+    /**
+         * 
+         * 
+         */
+    public Constant() {
 
-	}
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+         * 
+         * @return
+         */
+    public String getName() {
+	return name;
+    }
 
-	/**
-	 * 
-	 * @param name
-	 */
-	public void setName(final String name) {
-		this.name = name;
-	}
+    /**
+         * 
+         * @param name
+         */
+    public void setName(final String name) {
+	this.name = name;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getValue() {
-		return value;
-	}
+    /**
+         * 
+         * @return
+         */
+    public String getValue() {
+	return value;
+    }
 
-	/**
-	 * 
-	 * @param value
-	 */
-	public void setValue(final String value) {
-		this.value = value;
-	}
+    /**
+         * 
+         * @param value
+         */
+    public void setValue(final String value) {
+	this.value = value;
+    }
 
 }

@@ -26,16 +26,16 @@ package dics.elements.dtd;
  */
 public class BElement extends Element {
 
-	String value;
-	
-	/**
-	 * 
-	 * 
-	 */
-	public BElement() {
-		setTagName("b");
-		setValue("<b/>");
-		setValueNoTags(" ");
-	}
-	
+    String value;
+
+    /**
+         * 
+         * 
+         */
+    public BElement() {
+	setTagName("b");
+	setValue("<b/>");
+	setValueNoTags(" ");
+    }
+
 }

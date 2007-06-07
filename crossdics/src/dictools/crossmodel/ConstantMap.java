@@ -33,76 +33,76 @@ import java.util.Set;
  */
 public class ConstantMap extends HashMap<String, String> {
 
-	/**
-	 * 
-	 */
-	static final long serialVersionUID = 0;
+    /**
+         * 
+         */
+    static final long serialVersionUID = 0;
 
-	/**
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	public final String insert(final String key, final String value) {
-		if (!containsKey(key)) {
-			put(key, value);
-			return value;
-		} else {
-			return get(key);
-		}
+    /**
+         * 
+         * @param key
+         * @param value
+         */
+    public final String insert(final String key, final String value) {
+	if (!containsKey(key)) {
+	    put(key, value);
+	    return value;
+	} else {
+	    return get(key);
 	}
+    }
 
-	/**
-	 * 
-	 * 
-	 */
-	public final void print() {
-		final Set keySet = keySet();
-		final Iterator it = keySet.iterator();
+    /**
+         * 
+         * 
+         */
+    public final void print() {
+	final Set keySet = keySet();
+	final Iterator it = keySet.iterator();
 
-		System.out.print("constants: ");
-		while (it.hasNext()) {
-			final String key = (String) it.next();
-			final String value = get(key);
-			System.out.print("<" + key + "," + value + "> ");
-		}
-		System.out.println("");
+	System.out.print("constants: ");
+	while (it.hasNext()) {
+	    final String key = (String) it.next();
+	    final String value = get(key);
+	    System.out.print("<" + key + "," + value + "> ");
 	}
+	System.out.println("");
+    }
 
-	/**
-	 * 
-	 * @param dos
-	 */
-	public final void printXML(DataOutputStream dos) throws IOException {
-		final Set keySet = keySet();
-		final Iterator it = keySet.iterator();
+    /**
+         * 
+         * @param dos
+         */
+    public final void printXML(DataOutputStream dos) throws IOException {
+	final Set keySet = keySet();
+	final Iterator it = keySet.iterator();
 
-		dos.writeBytes("\t<constants>\n");
-		while (it.hasNext()) {
-			final String key = (String) it.next();
-			final String value = get(key);
-			dos.writeBytes("\t\t<constant n=\"" + value + "\">" + key
-					+ "</constant>\n");
-		}
-		dos.writeBytes("\t<constants>\n");
+	dos.writeBytes("\t<constants>\n");
+	while (it.hasNext()) {
+	    final String key = (String) it.next();
+	    final String value = get(key);
+	    dos.writeBytes("\t\t<constant n=\"" + value + "\">" + key
+		    + "</constant>\n");
 	}
+	dos.writeBytes("\t<constants>\n");
+    }
 
-	/**
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public final String getKey(final String value) {
-		final Set keySet = keySet();
-		final Iterator it = keySet.iterator();
+    /**
+         * 
+         * @param value
+         * @return
+         */
+    public final String getKey(final String value) {
+	final Set keySet = keySet();
+	final Iterator it = keySet.iterator();
 
-		while (it.hasNext()) {
-			final String key = (String) it.next();
-			final String v = get(key);
-			if (v.equals(value)) {
-				return key;
-			}
-		}
-		return null;
+	while (it.hasNext()) {
+	    final String key = (String) it.next();
+	    final String v = get(key);
+	    if (v.equals(value)) {
+		return key;
+	    }
 	}
+	return null;
+    }
 }

@@ -25,95 +25,88 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import dics.elements.dtd.ContentElement;
-import dics.elements.dtd.EElement;
-import dics.elements.dtd.LElement;
-import dics.elements.dtd.PElement;
-import dics.elements.dtd.RElement;
-import dics.elements.dtd.SElement;
-
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class CrossModel {
 
-	/**
-	 * 
-	 */
-	private CrossActionList crossActions;
+    /**
+         * 
+         */
+    private CrossActionList crossActions;
 
-	/**
-	 * 
-	 * 
-	 */
-	public CrossModel() {
-		crossActions = new CrossActionList();
+    /**
+         * 
+         * 
+         */
+    public CrossModel() {
+	crossActions = new CrossActionList();
+    }
+
+    /**
+         * 
+         * @param crossAction
+         */
+    public void addCrossAction(final CrossAction crossAction) {
+	crossActions.add(crossAction);
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public CrossActionList getCrossActions() {
+	return crossActions;
+    }
+
+    /**
+         * 
+         * @param id
+         * @return
+         */
+    public final CrossAction getCrossAction(final String id) {
+	for (final CrossAction ca : getCrossActions()) {
+	    if (ca.getId().equals(id)) {
+		return ca;
+	    }
 	}
+	return null;
+    }
 
-	/**
-	 * 
-	 * @param crossAction
-	 */
-	public void addCrossAction(final CrossAction crossAction) {
-		crossActions.add(crossAction);
+    /**
+         * 
+         * @param fileName
+         */
+    public void printXML(final String fileName) {
+	BufferedOutputStream bos;
+	FileOutputStream fos;
+	DataOutputStream dos;
+
+	try {
+	    fos = new FileOutputStream(fileName);
+	    bos = new BufferedOutputStream(fos);
+	    dos = new DataOutputStream(bos);
+	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
+	    dos.writeBytes("<cross-model>\n");
+	    int i = 0;
+	    for (CrossAction crossAction : getCrossActions()) {
+		crossAction.printXML(dos, i);
+		i++;
+	    }
+	    dos.writeBytes("</cross-model>\n");
+	    dos.writeBytes("<!-- " + i + " cross actions. -->\n");
+
+	    fos = null;
+	    bos = null;
+	    dos.close();
+	    dos = null;
+	} catch (final IOException e) {
+	    e.printStackTrace();
+	} catch (final Exception eg) {
+	    eg.printStackTrace();
 	}
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public CrossActionList getCrossActions() {
-		return crossActions;
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public final CrossAction getCrossAction(final String id) {
-		for (final CrossAction ca : getCrossActions()) {
-			if (ca.getId().equals(id)) {
-				return ca;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * 
-	 * @param fileName
-	 */
-	public void printXML(final String fileName) {
-		BufferedOutputStream bos;
-		FileOutputStream fos;
-		DataOutputStream dos;
-
-		try {
-			fos = new FileOutputStream(fileName);
-			bos = new BufferedOutputStream(fos);
-			dos = new DataOutputStream(bos);
-			dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
-			dos.writeBytes("<cross-model>\n");
-			int i = 0;
-			for (CrossAction crossAction : getCrossActions()) {
-				crossAction.printXML(dos, i);
-				i++;
-			}
-			dos.writeBytes("</cross-model>\n");
-			dos.writeBytes("<!-- " + i + " cross actions. -->\n");
-
-			fos = null;
-			bos = null;
-			dos.close();
-			dos = null;
-		} catch (final IOException e) {
-			e.printStackTrace();
-		} catch (final Exception eg) {
-			eg.printStackTrace();
-		}
-	}
-	
 }

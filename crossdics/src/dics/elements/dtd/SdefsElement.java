@@ -34,87 +34,87 @@ import dictools.DicTools;
  */
 public class SdefsElement extends Element {
 
-	/**
-	 * 
-	 */
-	private ArrayList<SdefElement> sdefsElements;
+    /**
+         * 
+         */
+    private ArrayList<SdefElement> sdefsElements;
 
-	/**
-	 * 
-	 * 
-	 */
-	public SdefsElement() {
-		setTagName("sdefs");
-		sdefsElements = new ArrayList<SdefElement>();
+    /**
+         * 
+         * 
+         */
+    public SdefsElement() {
+	setTagName("sdefs");
+	sdefsElements = new ArrayList<SdefElement>();
+    }
+
+    /**
+         * 
+         * @param value
+         */
+    public final void addSdefElement(final SdefElement value) {
+	setTagName("sdefs");
+	sdefsElements.add(value);
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public final ArrayList<SdefElement> getSdefsElements() {
+	return sdefsElements;
+    }
+
+    /**
+         * 
+         * @param dos
+         * @throws IOException
+         */
+    @Override
+    public final void printXML(final DataOutputStream dos) throws IOException {
+	final HashMap<String, String> descriptions = DicTools
+		.getSdefDescriptions();
+
+	dos.writeBytes(tab(1) + "<" + getTagName() + ">\n");
+	for (final SdefElement e : sdefsElements) {
+	    final String d = descriptions.get(e.getValue());
+	    if (d != null) {
+		e.setComments("\t<!-- " + d + "-->");
+	    }
+	    e.printXML(dos);
 	}
+	dos.writeBytes(tab(1) + "</" + getTagName() + ">\n");
 
-	/**
-	 * 
-	 * @param value
-	 */
-	public final void addSdefElement(final SdefElement value) {
-		setTagName("sdefs");
-		sdefsElements.add(value);
+	if (comments != null) {
+	    dos.writeBytes(tab(1) + "<!-- \n");
+	    dos.writeBytes(tab(1) + getComments());
+	    dos.writeBytes(tab(1) + " -->\n");
 	}
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public final ArrayList<SdefElement> getSdefsElements() {
-		return sdefsElements;
+    /**
+         * 
+         * @return
+         */
+    public final ArrayList<String> getAllCategories() {
+	final ArrayList<String> categories = new ArrayList<String>();
+
+	for (final SdefElement sdef : getSdefsElements()) {
+	    categories.add(sdef.getValue());
 	}
+	return categories;
+    }
 
-	/**
-	 * 
-	 * @param dos
-	 * @throws IOException
-	 */
-	@Override
-	public final void printXML(final DataOutputStream dos) throws IOException {
-		final HashMap<String, String> descriptions = DicTools
-				.getSdefDescriptions();
-
-		dos.writeBytes(tab(1) + "<" + getTagName() + ">\n");
-		for (final SdefElement e : sdefsElements) {
-			final String d = descriptions.get(e.getValue());
-			if (d != null) {
-				e.setComments("\t<!-- " + d + "-->");
-			}
-			e.printXML(dos);
-		}
-		dos.writeBytes(tab(1) + "</" + getTagName() + ">\n");
-
-		if (comments != null) {
-		dos.writeBytes(tab(1) + "<!-- \n");
-		dos.writeBytes(tab(1) + getComments());
-		dos.writeBytes(tab(1) + " -->\n");
-		}
+    /**
+         * 
+         */
+    @Override
+    public final String toString() {
+	String str = "";
+	for (final SdefElement sdef : getSdefsElements()) {
+	    str += sdef.toString();
 	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public final ArrayList<String> getAllCategories() {
-		final ArrayList<String> categories = new ArrayList<String>();
-
-		for (final SdefElement sdef : getSdefsElements()) {
-			categories.add(sdef.getValue());
-		}
-		return categories;
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public final String toString() {
-		String str = "";
-		for (final SdefElement sdef : getSdefsElements()) {
-			str += sdef.toString();
-		}
-		return str;
-	}
+	return str;
+    }
 
 }

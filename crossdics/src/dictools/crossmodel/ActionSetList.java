@@ -30,7 +30,7 @@ import java.util.Set;
  * @author Enrique Benimeli Bofarull
  * 
  */
-public class ActionList extends HashMap<String, Action> {
+public class ActionSetList extends HashMap<String, ActionSet> {
 
     /**
          * 
@@ -50,13 +50,16 @@ public class ActionList extends HashMap<String, Action> {
 	System.out.print("{ ");
 	while (it.hasNext()) {
 	    String key = (String) it.next();
-	    Action action = get(key);
-	    System.out.print(action.getName() + " ("
-		    + action.getPatternLength() + "/"
-		    + action.getNumberOfConstants() + ")");
-	    if (cont < max) {
-		System.out.print(", ");
-		cont++;
+	    ActionSet actionSet = get(key);
+
+	    for (Action action : actionSet) {
+		System.out.print(action.getName() + " ("
+			+ action.getPatternLength() + "/"
+			+ action.getNumberOfConstants() + ")");
+		if (cont < max) {
+		    System.out.print(", ");
+		    cont++;
+		}
 	    }
 	}
 	System.out.println(" }");
@@ -66,35 +69,35 @@ public class ActionList extends HashMap<String, Action> {
          * 
          * @return
          */
-    public final Action getBestAction() {
-	Action bestAction = null;
-	ArrayList<Action> actionList = new ArrayList<Action>();
+    public final ActionSet getBestActionSet() {
+	ActionSet bestActionSet = null;
+	ArrayList<ActionSet> actionSetList = new ArrayList<ActionSet>();
 	int maxLength = 0;
 	Set keySet = keySet();
 	Iterator it = keySet.iterator();
 
 	while (it.hasNext()) {
 	    String key = (String) it.next();
-	    Action action = get(key);
-	    if (action.getPatternLength() > maxLength) {
-		actionList = new ArrayList<Action>();
-		actionList.add(action);
-		maxLength = action.getPatternLength();
+	    ActionSet actionSet = get(key);
+	    if (actionSet.getPatternLength() > maxLength) {
+		actionSetList = new ArrayList<ActionSet>();
+		actionSetList.add(actionSet);
+		maxLength = actionSet.getPatternLength();
 	    } else {
-		if (action.getPatternLength() == maxLength) {
-		    actionList.add(action);
+		if (actionSet.getPatternLength() == maxLength) {
+		    actionSetList.add(actionSet);
 		}
 	    }
 	}
 
 	int maxNConstants = -1;
-	for (Action action : actionList) {
-	    if (action.getNumberOfConstants() > maxNConstants) {
-		bestAction = action;
-		maxNConstants = action.getNumberOfConstants();
+	for (ActionSet actionSet : actionSetList) {
+	    if (actionSet.getNumberOfConstants() > maxNConstants) {
+		bestActionSet = actionSet;
+		maxNConstants = actionSet.getNumberOfConstants();
 	    }
 	}
 
-	return bestAction;
+	return bestActionSet;
     }
 }

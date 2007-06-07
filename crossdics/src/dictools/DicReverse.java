@@ -31,36 +31,36 @@ import dics.elements.dtd.DictionaryElement;
  */
 public class DicReverse {
 
-	/**
-	 * 
-	 */
-	private DictionaryElement dicOrig;
+    /**
+         * 
+         */
+    private DictionaryElement dicOrig;
 
-	/**
-	 * 
-	 * @param dic
-	 */
-	public DicReverse(final DictionaryElement dic) {
-		dicOrig = dic;
+    /**
+         * 
+         * @param dic
+         */
+    public DicReverse(final DictionaryElement dic) {
+	dicOrig = dic;
 
-	}
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public final DictionaryElement reverse() {
-		getDicOrig().reverse();
-		Collections.sort(getDicOrig().getEntries());
-		return getDicOrig();
-	}
+    /**
+         * 
+         * @return
+         */
+    public final DictionaryElement reverse() {
+	getDicOrig().reverse();
+	Collections.sort(getDicOrig().getEntries());
+	return getDicOrig();
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	private final DictionaryElement getDicOrig() {
-		return dicOrig;
-	}
+    /**
+         * 
+         * @return
+         */
+    private final DictionaryElement getDicOrig() {
+	return dicOrig;
+    }
 
 }

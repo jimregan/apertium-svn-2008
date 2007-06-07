@@ -26,13 +26,13 @@ package dics.elements.dtd;
  */
 public class AElement extends Element {
 
-	/**
-	 * 
-	 * 
-	 */
-	public AElement() {
-		setTagName("a");
-		setValue("<a/>");
-	}
+    /**
+         * 
+         * 
+         */
+    public AElement() {
+	setTagName("a");
+	setValue("<a/>");
+    }
 
 }

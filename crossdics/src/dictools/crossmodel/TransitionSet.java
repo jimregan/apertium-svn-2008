@@ -22,17 +22,16 @@ package dictools.crossmodel;
 
 import java.util.HashMap;
 
-
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class TransitionSet extends HashMap<String, State> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+         * 
+         */
+    private static final long serialVersionUID = 1L;
 
 }

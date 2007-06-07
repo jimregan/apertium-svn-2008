@@ -22,20 +22,14 @@ package dictools.crossmodel;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import dics.elements.dtd.EElement;
+import java.util.ArrayList;
 
 /**
  * 
  * @author Enrique Benimeli Bofarull
  * 
  */
-public class Action {
-
-    /**
-         * 
-         */
-    private EElement e;
+public class ActionSet extends ArrayList<Action> {
 
     /**
          * 
@@ -45,100 +39,39 @@ public class Action {
     /**
          * 
          */
-    private Integer patternLength;
-
-    /**
-         * 
-         */
     private int numberOfConstants = 0;
 
     /**
          * 
-         * 
          */
-    public Action() {
-
-    }
-
-    /**
-         * 
-         * @param action
-         */
-    public void setAction(final EElement action) {
-	e = action;
-    }
-
-    /**
-         * 
-         * 
-         */
-    public final void print() {
-	if (e != null) {
-	    System.out.println("action:");
-	    getE().print("L");
-	    getE().print("R");
-	}
-    }
-
-    /**
-         * 
-         * @param dos
-         * @throws IOException
-         */
-    public final void printXML(DataOutputStream dos) throws IOException {
-	if (e != null) {
-	    dos.writeBytes("\t<action>\n");
-	    this.getE().printXML(dos);
-	    dos.writeBytes("\t</action>\n");
-	}
-
-    }
-
-    /**
-         * 
-         * @return
-         */
-    public EElement getE() {
-	return e;
-    }
-
-    /**
-         * 
-         * @param e
-         */
-    public void setE(final EElement e) {
-	this.e = e;
-    }
-
-    /**
-         * @return the name
-         */
-    public final String getName() {
-	return name;
-    }
-
-    /**
-         * @param name
-         *                the name to set
-         */
-    public final void setName(String name) {
-	this.name = name;
-    }
-
-    public final Integer getPatternLength() {
-	return patternLength;
-    }
-
-    public final void setPatternLength(Integer patternLength) {
-	this.patternLength = patternLength;
-    }
+    private Integer patternLength;
 
     /**
          * 
          * @return
          */
     public final int getNumberOfConstants() {
-	return numberOfConstants;
+	int n = 0;
+	for (Action action : this) {
+	    n += action.getNumberOfConstants();
+	}
+	return n;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public final String getName() {
+	return name;
+    }
+
+    /**
+         * 
+         * @param name
+         */
+    public final void setName(String name) {
+	this.name = name;
     }
 
     /**
@@ -155,6 +88,45 @@ public class Action {
          */
     public final void incrementNumberOfConstants() {
 	this.numberOfConstants++;
+    }
+
+    /**
+         * 
+         * 
+         */
+    public final void print() {
+	for (Action action : this) {
+	    action.print();
+	}
+    }
+
+    /**
+         * 
+         * @param dos
+         * @throws IOException
+         */
+    public final void printXML(DataOutputStream dos) throws IOException {
+	dos.writeBytes("<action-set>\n");
+	for (Action action : this) {
+	    action.printXML(dos);
+	}
+	dos.writeBytes("</action-set>\n\n");
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public final Integer getPatternLength() {
+	return patternLength;
+    }
+
+    /**
+         * 
+         * @param patternLength
+         */
+    public final void setPatternLength(Integer patternLength) {
+	this.patternLength = patternLength;
     }
 
 }

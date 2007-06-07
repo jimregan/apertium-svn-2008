@@ -30,129 +30,129 @@ import java.io.IOException;
  */
 public class Element implements Cloneable {
 
-	/**
-	 * 
-	 */
-	private String value;
-	
-	/**
-	 * 
-	 */
-	private String valueNoTags = "";
-	
-	/**
-	 * 
-	 */
-	private String TAGNAME;
+    /**
+         * 
+         */
+    private String value;
 
-	/**
-	 * 
-	 */
-	protected String comments;
+    /**
+         * 
+         */
+    private String valueNoTags = "";
 
-	/**
-	 * 
-	 * @param dos
-	 * @throws IOException
-	 */
-	protected void printXML(final DataOutputStream dos) throws IOException {
-		dos.writeBytes("<" + getTagName() + "/>");
+    /**
+         * 
+         */
+    private String TAGNAME;
+
+    /**
+         * 
+         */
+    protected String comments;
+
+    /**
+         * 
+         * @param dos
+         * @throws IOException
+         */
+    protected void printXML(final DataOutputStream dos) throws IOException {
+	dos.writeBytes("<" + getTagName() + "/>");
+    }
+
+    /**
+         * 
+         * @param nTabs
+         * @return
+         */
+    protected String tab(final int nTabs) {
+	String sTabs = "";
+	for (int i = 0; i < nTabs; i++) {
+	    sTabs += "  ";
+	}
+	return sTabs;
+    }
+
+    /**
+         * 
+         * @param value
+         */
+    protected void setTagName(final String value) {
+	TAGNAME = value;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    protected String getTagName() {
+	return TAGNAME;
+    }
+
+    /**
+         * 
+         * @param value
+         */
+    public void addComments(final String value) {
+	if (comments == null) {
+	    comments = "";
+	}
+	comments += tab(3) + value + "\n";
+    }
+
+    /**
+         * 
+         * @param value
+         * @param side
+         */
+    public void setComments(final String value) {
+	comments = value;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public String getComments() {
+	return comments;
+    }
+
+    /**
+         * 
+         */
+
+    @Override
+    public Object clone() {
+	try {
+	    final Element cloned = (Element) super.clone();
+	    return cloned;
+	} catch (final CloneNotSupportedException ex) {
+	    return null;
 	}
 
-	/**
-	 * 
-	 * @param nTabs
-	 * @return
-	 */
-	protected String tab(final int nTabs) {
-		String sTabs = "";
-		for (int i = 0; i < nTabs; i++) {
-			sTabs += "  ";
-		}
-		return sTabs;
-	}
+    }
 
-	/**
-	 * 
-	 * @param value
-	 */
-	protected void setTagName(final String value) {
-		TAGNAME = value;
-	}
+    /**
+         * 
+         * @return
+         */
+    public String getValue() {
+	return value;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	protected String getTagName() {
-		return TAGNAME;
-	}
+    /**
+         * 
+         * @param value
+         */
+    protected void setValue(String value) {
+	this.value = value;
+    }
 
-	/**
-	 * 
-	 * @param value
-	 */
-	public void addComments(final String value) {
-		if (comments == null) {
-			comments = "";
-		}
-		comments += tab(3) + value + "\n";
-	}
+    public String getValueNoTags() {
+	return valueNoTags;
+    }
 
-	/**
-	 * 
-	 * @param value
-	 * @param side
-	 */
-	public void setComments(final String value) {
-		comments = value;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getComments() {
-		return comments;
-	}
-
-	/**
-	 * 
-	 */
-
-	@Override
-	public Object clone() {
-		try {
-			final Element cloned = (Element) super.clone();
-			return cloned;
-		} catch (final CloneNotSupportedException ex) {
-			return null;
-		}
-
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getValue() {
-		return value;
-	}
-
-	/**
-	 * 
-	 * @param value
-	 */
-	protected void setValue(String value) {
-		this.value = value;
-	}
-
-	public String getValueNoTags() {
-		return valueNoTags;
-	}
-
-	public void setValueNoTags(String valueNoTags) {
-		this.valueNoTags = valueNoTags;
-	}
+    public void setValueNoTags(String valueNoTags) {
+	this.valueNoTags = valueNoTags;
+    }
 
 }

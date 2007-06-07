@@ -31,8 +31,8 @@ import dics.elements.dtd.EElement;
  */
 public class EHashMap extends HashMap<String, EElement> {
 
-	/**
-	 * 
-	 */
-	static final long serialVersionUID = 0;
+    /**
+         * 
+         */
+    static final long serialVersionUID = 0;
 }

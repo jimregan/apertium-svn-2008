@@ -29,9 +29,9 @@ import java.util.HashMap;
  */
 public class EElementMap extends HashMap<String, EElementList> {
 
-	/**
-	 * 
-	 */
-	static final long serialVersionUID = 0;
+    /**
+         * 
+         */
+    static final long serialVersionUID = 0;
 
 }
