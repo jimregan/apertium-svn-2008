@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<modes>
+  <mode name="sh-mk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="sh-mk.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="sh-mk.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-sh-mk.sh-mk.t1x"/>
+        <file name="sh-mk.t1x.bin"/>
+        <file name="sh-mk.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="sh-mk.autogen.bin"/>
+      </program>
+<!--  <program name="lt-proc -p">
+        <file name="sh-mk.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
+  <mode name="mk-sh">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="mk-sh.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="mk-sh.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-sh-mk.mk-sh.t1x"/>
+        <file name="mk-sh.t1x.bin"/>
+        <file name="mk-sh.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="mk-sh.autogen.bin"/>
+      </program>
+<!--      <program name="lt-proc -p">
+        <file name="mk-sh.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
+</modes>
