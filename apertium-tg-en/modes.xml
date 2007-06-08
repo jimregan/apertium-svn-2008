@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<modes>
+  <mode name="tg-en">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="tg-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="tg-en.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-tg-en.tg-en.t1x"/>
+        <file name="tg-en.t1x.bin"/>
+        <file name="tg-en.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="tg-en.autogen.bin"/>
+      </program>
+<!--  <program name="lt-proc -p">
+        <file name="tg-en.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
+  <mode name="en-tg">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="en-tg.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="en-tg.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-tg-en.en-tg.t1x"/>
+        <file name="en-tg.t1x.bin"/>
+        <file name="en-tg.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="en-tg.autogen.bin"/>
+      </program>
+<!--      <program name="lt-proc -p">
+        <file name="en-tg.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
+</modes>
