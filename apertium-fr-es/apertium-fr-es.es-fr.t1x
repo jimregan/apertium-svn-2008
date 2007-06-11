@@ -554,6 +554,7 @@
 			<list-item v="vin"/>
 			<list-item v="bière"/>
 			<list-item v="viande"/>
+			<list-item v="pain"/>
 		</def-list>
  </section-def-lists>
 
@@ -11786,6 +11787,41 @@
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>
+		       <choose>
+		         <when>
+			   <test>
+			     <equal>
+			     	<clip pos="2" side="tl" part="lem"/> 
+			        <lit v="se"/>
+			     </equal>
+			   </test>			
+			<out>
+				<chunk name="imp_enc" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SV"/></tag>
+						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+					</tags>
+					<mlu>
+						<lu>
+							<clip pos="1" side="tl" part="lemh"/> 
+							<clip pos="1" side="tl" part="a_verb"/>
+							<clip pos="1" side="tl" part="temps"/>
+							<clip pos="1" side="tl" part="pers"/>
+							<clip pos="1" side="tl" part="nbr"/>
+						</lu>
+						<lu>
+							<lit v="vous"/>
+							<lit-tag v="prn.enc.p2.mf.pl"/>
+							<clip pos="1" side="tl" part="lemq"/> 
+						</lu>
+					</mlu>
+				</chunk>
+			</out>
+		 </when>
+		 <otherwise>   
 			<out>
 				<chunk name="imp_enc" case="caseFirstWord">
 					<tags>
@@ -11810,6 +11846,9 @@
 					</mlu>
 				</chunk>
 			</out>
+		</otherwise>
+	      </choose>		
+			
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
