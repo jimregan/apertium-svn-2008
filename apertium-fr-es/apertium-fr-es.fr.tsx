@@ -1634,10 +1634,15 @@
       <label-item label="VHABERPPRES"/>
       <label-item label="ADJMF"/>
     </label-sequence>
+      
+     <label-sequence>
+      <label-item label="VHABERPFCI"/>
+      <label-item label="NUM"/>
+    </label-sequence> 
     
   </forbid>
 
-
+<!--
   <enforce-rules>
     <enforce-after label="PRNPROREF">
       <label-set>
@@ -1687,12 +1692,12 @@
 	<label-item label="VMODALPPRES"/>
       </label-set>
     </enforce-after>
-    <enforce-after label="PRNTN">
+   <enforce-after label="PRNTN">
       <label-set>
         <label-item label="PRNPRO"/>
       </label-set>
    </enforce-after>
-  </enforce-rules>
+  </enforce-rules>-->
   
   <preferences>
    <prefer tags="vblex.pri.p3.sg"/>
