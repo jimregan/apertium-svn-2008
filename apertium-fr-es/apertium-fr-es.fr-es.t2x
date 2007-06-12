@@ -373,24 +373,30 @@
 	<choose> <!--canvia la prepo de lloc-->
 		<when>
 			<test>
-				<equal>
-					<clip pos="3" part="tnom"/>
-					<lit-tag v="loc"/>
-				</equal>
+				<and>
+					<equal>
+						<clip pos="3" part="tnom"/>
+						<lit-tag v="loc"/>
+					</equal>
+					<or>
+						<equal>
+							<clip pos="2" part="tprep"/>
+							<lit-tag v="a"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="tprep"/>
+							<lit-tag v="en"/>
+						</equal>
+					</or>
+				</and>
 			</test>
 			<choose>
 				<when>
 					<test>
-<!-- 						<or> -->
 						<equal>
 							<clip pos="1" part="tverb"/>
 							<lit-tag v="vba"/>
 						</equal>
-<!-- 						<equal> 
-							<clip pos="1" part="tverb"/>
-							<lit-tag v="nopart"/>
-						</equal>
- 						</or> -->
 					</test>
 					<let>
 						<clip pos="2" part="tprep"/>
@@ -515,6 +521,79 @@
 				</chunk>
 			</out>
 </action>
+</rule>
+
+<rule comment="REGLA: prep sprep">
+	<pattern>
+		<pattern-item n="pr"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+		<call-macro n="assigna_gen_nbr">
+			<with-param pos="3"/>
+		</call-macro>
+		<choose>
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="2" part="tprep"/>
+							<lit-tag v="de"/>
+						</equal>
+						<or>
+							<equal>
+								<clip pos="3" part="nbr"/>
+								<lit-tag v="pl"/>
+							</equal>
+							<equal>
+								<clip pos="3" part="tnom"/>
+								<lit-tag v="part"/>
+							</equal>
+						</or>
+					</and>
+				</test>
+				<out>
+					<chunk>
+						<clip pos="1" part="lem"/>
+						<clip pos="1" part="tags"/>
+						<clip pos="1" part="chcontent"/>
+					</chunk>
+					<b pos="1"/>
+					<chunk>
+						<clip pos="3" part="lem"/>
+						<clip pos="3" part="tags"/>
+						<lit-tag v="treu_det"/>
+						<clip pos="3" part="chcontent"/>
+					</chunk>
+				</out>
+				<call-macro n="f_bcond">
+					<with-param pos="2"/>
+				</call-macro>
+			</when>
+			<otherwise>
+				<out>
+					<chunk>
+						<clip pos="1" part="lem"/>
+						<clip pos="1" part="tags"/>
+						<clip pos="1" part="chcontent"/>
+					</chunk>
+					<b pos="1"/>
+					<chunk>
+						<clip pos="2" part="lem"/>
+						<clip pos="2" part="tags"/>
+						<clip pos="2" part="chcontent"/>
+					</chunk>
+					<b pos="2"/>
+					<chunk>
+						<clip pos="3" part="lem"/>
+						<clip pos="3" part="tags"/>
+						<clip pos="3" part="chcontent"/>
+					</chunk>
+				</out>
+			</otherwise>
+		</choose>
+	</action>
 </rule>
 
 <rule comment="REGLA: SV sprep">
