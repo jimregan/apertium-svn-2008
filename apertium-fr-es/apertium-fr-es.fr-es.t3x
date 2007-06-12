@@ -30,9 +30,17 @@
      <def-cat n="det_nom">
       <cat-item name="det_nom"/>
     </def-cat>
+ 
+		<def-cat n="det_adv_adj_nom">
+      <cat-item name="det_adv_adj_nom"/>
+    </def-cat>
 
     <def-cat n="adj_nom">
       <cat-item name="adj_nom"/>
+    </def-cat>
+
+    <def-cat n="det_adj_nom">
+      <cat-item name="det_adj_nom"/>
     </def-cat>
 
     <def-cat n="adj_adj_nom">
@@ -92,6 +100,10 @@
           <attr-item tags="pl"/>
           <attr-item tags="sp"/>
           <attr-item tags="ND"/>
+      </def-attr>
+			
+			  <def-attr n="determinant">
+          <attr-item tags="treu_det"/>
       </def-attr>
 
 <def-attr n="a_SN">
@@ -261,6 +273,144 @@
 				
 			</action>
 		</rule> 
-<!--ja anirem veient què s'hi posa, aquí-->
-</section-rules>
+
+		<rule comment="treu el det I">
+			<pattern>
+				<pattern-item n="det_nom"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="determinant"/>
+								<lit-tag v="treu_det"/>
+							</equal>
+						</test>
+						<out>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu> 
+						</out>
+						<call-macro n="f_bcond">
+							<with-param pos="1"/>
+						</call-macro>
+					</when>
+					<otherwise>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu> 
+						</out>
+					</otherwise>
+				</choose>
+			</action>
+		</rule> 
+
+		<rule comment="treu el det II">
+			<pattern>
+				<pattern-item n="det_adv_adj_nom"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="determinant"/>
+								<lit-tag v="treu_det"/>
+							</equal>
+						</test>
+						<call-macro n="f_bcond">
+							<with-param pos="1"/>
+						</call-macro>
+						<out>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu>
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" part="whole"/>
+							</lu>
+							<b pos="3"/>
+							<lu>
+								<clip pos="4" part="whole"/>
+							</lu>
+						</out>
+					</when>
+					<otherwise>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu> 
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" part="whole"/>
+							</lu> 
+							<b pos="3"/>
+							<lu>
+								<clip pos="4" part="whole"/>
+							</lu> 
+						</out>
+					</otherwise>
+				</choose>
+			</action>
+		</rule> 
+
+		<rule comment="treu el det III">
+			<pattern>
+				<pattern-item n="det_adj_nom"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="determinant"/>
+								<lit-tag v="treu_det"/>
+							</equal>
+						</test>
+						<call-macro n="f_bcond">
+							<with-param pos="1"/>
+						</call-macro>
+						<out>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu>
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" part="whole"/>
+							</lu>
+							
+						</out>
+					</when>
+					<otherwise>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu> 
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" part="whole"/>
+							</lu> 
+						
+						</out>
+					</otherwise>
+				</choose>
+			</action>
+		</rule> 
+
+	
+	</section-rules>
 </postchunk>

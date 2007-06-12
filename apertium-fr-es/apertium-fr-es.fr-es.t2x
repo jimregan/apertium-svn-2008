@@ -96,6 +96,7 @@
 	</def-attr>
 	<def-attr n="tprep">
         <attr-item tags="a"/>
+        <attr-item tags="de"/>
         <attr-item tags="en"/>
        <attr-item tags="para"/>
 	</def-attr>
@@ -506,6 +507,76 @@
 				</chunk>
 			</out>
 </action>
+</rule>
+
+<rule comment="REGLA: SV sprep">
+	<pattern>
+		<pattern-item n="SV"/>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+		<call-macro n="assigna_gen_nbr">
+			<with-param pos="1"/>
+		</call-macro>
+		<call-macro n="assigna_gen_nbr">
+			<with-param pos="3"/>
+		</call-macro>
+		<choose>
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="2" part="tprep"/>
+							<lit-tag v="de"/>
+						</equal>
+						<equal>
+							<clip pos="3" part="nbr"/>
+							<lit-tag v="pl"/>
+						</equal>
+					</and>
+				</test>
+				<out>
+					<chunk>
+						<clip pos="1" part="lem"/>
+						<clip pos="1" part="tags"/>
+						<clip pos="1" part="chcontent"/>
+					</chunk>
+					<b pos="1"/>
+					<chunk>
+						<clip pos="3" part="lem"/>
+						<clip pos="3" part="tags"/>
+						<lit-tag v="treu_det"/>
+						<clip pos="3" part="chcontent"/>
+					</chunk>
+				</out>
+				<call-macro n="f_bcond">
+					<with-param pos="2"/>
+				</call-macro>
+			</when>
+			<otherwise>
+				<out>
+					<chunk>
+						<clip pos="1" part="lem"/>
+						<clip pos="1" part="tags"/>
+						<clip pos="1" part="chcontent"/>
+					</chunk>
+					<b pos="1"/>
+					<chunk>
+						<clip pos="2" part="lem"/>
+						<clip pos="2" part="tags"/>
+						<clip pos="2" part="chcontent"/>
+					</chunk>
+					<b pos="2"/>
+					<chunk>
+						<clip pos="3" part="lem"/>
+						<clip pos="3" part="tags"/>
+						<clip pos="3" part="chcontent"/>
+					</chunk>
+				</out>
+			</otherwise>
+		</choose>
+	</action>
 </rule>
 
 <rule comment="REGLA: det">

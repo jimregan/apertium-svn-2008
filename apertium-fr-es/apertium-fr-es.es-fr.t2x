@@ -437,10 +437,16 @@
 	<choose><!--i aquí la pers-->
 		<when>
 			<test>
+				<or>
 				<equal>
 					<var n="pers_subj"/>
 					<lit-tag v="p3"/>
 				</equal>
+				<equal>
+					<var n="pers_subj"/>
+					<lit v=""/>
+				</equal>
+				</or>
 			</test>
 			<choose>
 				<when>
@@ -463,6 +469,7 @@
 							</test>
 							<let><var n="pers_subj"/><lit-tag v="p2"/></let>
 						</when>
+						<otherwise><let><var n="pers_subj"/><lit-tag v="p3"/></let></otherwise>
 					</choose>
 				</otherwise>
 			</choose>
@@ -1025,16 +1032,17 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
+<!-- 	<out> <chunk><var n="pers_subj"/></chunk> 	</out> -->
 	<call-macro n="assigna_nombre_subj">
 		<with-param pos="1"/>
 	</call-macro>
 		<out>
-			<chunk>
+		<chunk>
 				<clip pos="1" part="lem"/>
 				<clip pos="1" part="tags"/>
 				<clip pos="1" part="chcontent"/>
-<!--  <var n="pers_subj"/>  -->
-<!-- <var n="nombre_subj"/> -->
+<!-- <var n="pers_subj"/> 
+<var n="nombre_subj"/>-->
 			</chunk>
 		</out>
 	</action>
@@ -2905,7 +2913,6 @@
 								<clip pos="2" part="lem"/>
 								<lit v="nom"/>
 							</equal>
-
 							<equal>
 								<clip pos="2" part="lem"/>
 								<lit v="part"/>
