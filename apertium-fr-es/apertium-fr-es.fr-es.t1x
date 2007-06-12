@@ -523,12 +523,28 @@
 			<list-item v="hôtel"/>
 	</def-list>
 
+		<def-list n="part_sing">
+			<list-item v="eau"/>
+			<list-item v="beurre"/>
+			<list-item v="limonade"/>
+			<list-item v="vin"/>
+			<list-item v="bière"/>
+			<list-item v="viande"/>
+			<list-item v="pain"/>
+		</def-list>
+
 		<def-list n="v_amb_a">
-			<list-item v="aller"/>
 			<list-item v="soumettre"/>
+   </def-list>
+
+		<def-list n="v_no_part">
+			<list-item v="aller"/>
+			<list-item v="partir"/>
 			<list-item v="arriver"/>
 			<list-item v="venir"/>
-   </def-list>
+ 			<list-item v="passer"/>
+			<list-item v="sortir"/>
+  </def-list>
 
 		<def-list n="vbcop">
 			<list-item v="sembler"/>
@@ -1177,10 +1193,27 @@
 							</let>
 						</when>
 						<otherwise>
-							<let>
-								<var n="tipusverb"/>
-								<lit-tag v="nodef"/>
-							</let>
+							<choose>
+								<when>
+									<test>
+										<in caseless="yes">
+											<clip pos="1" side="sl" part="lem"/>
+											<list n="v_no_part"/>
+										</in>
+									</test>
+									<let>
+										<var n="tipusverb"/>
+										<lit-tag v="nopart"/>
+									</let>
+
+								</when>
+								<otherwise>
+									<let>
+										<var n="tipusverb"/>
+										<lit-tag v="nodef"/>
+									</let>
+								</otherwise>
+							</choose>
 						</otherwise>
 					</choose>
 				</otherwise>
@@ -1219,6 +1252,18 @@
 					<let>
 						<var n="tipusnom"/>
 						<lit-tag v="loc"/>
+					</let>
+				</when>
+				<when>
+					<test>
+						<in caseless="yes">
+							<clip pos="1" side="sl" part="lem"/>
+							<list n="part_sing"/>
+						</in>
+					</test>
+					<let>
+						<var n="tipusnom"/>
+						<lit-tag v="part"/>
 					</let>
 				</when>
 			</choose>
@@ -11037,7 +11082,7 @@
 								<tag><clip pos="5" side="tl" part="pers"/></tag>
 								<tag><clip pos="5" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
-						</tags>
+							</tags>
 							<mlu>
 								<lu>
 									<get-case-from pos="3">
@@ -12767,7 +12812,7 @@
 					<out>
 						<chunk name="imp" case="caseFirstWord">
 							<tags>
-								<tag><lit-tag v="SN"/></tag>
+								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 								<tag><clip pos="1" side="tl" part="temps"/></tag>
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
@@ -12795,7 +12840,7 @@
 					<out>
 						<chunk name="imp_enc" case="caseFirstWord">
 							<tags>
-								<tag><lit-tag v="SN"/></tag>
+								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 								<tag><clip pos="1" side="tl" part="temps"/></tag>
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
@@ -12840,7 +12885,7 @@
 					<out>
 						<chunk name="imp_enc" case="caseFirstWord">
 							<tags>
-								<tag><lit-tag v="SN"/></tag>
+								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 								<tag><clip pos="1" side="tl" part="temps"/></tag>
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
