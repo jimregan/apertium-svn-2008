@@ -23,9 +23,11 @@ all:
 	$(APT) apertium-tg-en.tg-en.t1x tg-en.t1x.bin
 	$(APT) apertium-tg-en.en-tg.t1x en-tg.t1x.bin
 
+	$(LTCOMP) lr apertium-tg-en.post-en.dix tg-en.autopgen.bin
+
 	$(GENMODES) modes.xml
 
-	rm *.dix
+	rm apertium-tg-en.en.dix apertium-tg-en.tg.dix apertium-tg-en.tg-en.dix
 
 clean:
 	rm -rf *.bin modes
