@@ -11,7 +11,7 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      $(PREFIX2).autogen.bin $(PREFIX2).autopgen.bin $(PREFIX1).lextormono.bin $(PREFIX2).lextormono.bin \
      $(PREFIX1).lextorbil.bin $(PREFIX2).lextorbil.bin \
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
+     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes/*
      
 TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
           trules-$(PREFIX1).xml trules-$(PREFIX2).xml \
@@ -151,9 +151,15 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
            modes.xml
            	            	            	            	            	            	  	 
-modes: modes.xml
+modes: modes.xml modes/$(PREFIX1) modes/$(PREFIX2)
 	apertium-gen-modes modes.xml
 	
+modes/$(PREFIX1): modes.xml
+	 apertium-gen-modes modes.xml
+
+modes/$(PREFIX2): modes.xml
+	apertium-gen-modes modes.xml
+  	
 apertium_en_cadir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
 apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
