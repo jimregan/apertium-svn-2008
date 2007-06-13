@@ -3,8 +3,8 @@
 
 <section-def-cats>
   <def-cat n="nom">
-     <cat-item tags="n"/>
      <cat-item tags="n.*"/>
+     <cat-item tags="np.*"/>
   </def-cat>
   <def-cat n="adj">
      <cat-item tags="adj"/>
@@ -13,6 +13,10 @@
   <def-cat n="izafet">
      <cat-item tags="enc.*"/>
      <cat-item tags="enc.iza"/>
+  </def-cat>
+  <def-cat n="num_ind">
+     <cat-item tags="num.sg.ind"/>
+     <cat-item tags="num.pl.ind"/>
   </def-cat>
 </section-def-cats>
 
@@ -28,6 +32,10 @@
   </def-attr>
   <def-attr n="a_nom">
      <attr-item tags="n"/>
+     <attr-item tags="np.loc"/>
+  </def-attr>
+  <def-attr n="a_num">
+     <attr-item tags="num"/>
   </def-attr>
   <def-attr n="a_adj">
      <attr-item tags="adj"/>
@@ -65,6 +73,76 @@
   <rule>
      <pattern>
        <pattern-item n="nom"/>
+       <pattern-item n="izafet"/>
+       <pattern-item n="nom"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <clip pos="3" side="tl" part="lem"/>
+           <clip pos="3" side="tl" part="a_adj"/>
+         </lu>
+	 <b/>
+	 <lu>
+           <lit v="of"/>
+	   <lit-tag v="pr"/>
+	 </lu>
+	 <b/>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_nom"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+       </out>
+     </action>
+  </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="nom"/>
+       <pattern-item n="izafet"/>
+       <pattern-item n="nom"/>
+       <pattern-item n="izafet"/>
+       <pattern-item n="nom"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_nom"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+	 <b/>
+	 <lu>
+           <lit v="of"/>
+	   <lit-tag v="pr"/>
+	 </lu>
+	 <b/>
+         <lu>
+           <clip pos="3" side="tl" part="lem"/>
+           <clip pos="3" side="tl" part="a_nom"/>
+           <clip pos="3" side="tl" part="nbr"/>
+         </lu>
+	 <b/>
+	 <lu>
+           <lit v="of"/>
+	   <lit-tag v="pr"/>
+	 </lu>
+	 <b/>
+         <lu>
+           <clip pos="5" side="tl" part="lem"/>
+           <clip pos="5" side="tl" part="a_nom"/>
+           <clip pos="5" side="tl" part="nbr"/>
+         </lu>
+
+       </out>
+     </action>
+  </rule>
+
+
+  <rule>
+     <pattern>
+       <pattern-item n="nom"/>
      </pattern>
      <action>
        <out>
@@ -76,6 +154,29 @@
        </out>
      </action>
   </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="num_ind"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <lit v="a"/>
+	   <lit-tag v="det"/>
+	   <lit-tag v="ind"/>
+	   <lit-tag v="sg"/>
+	 </lu>
+	 <b/>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_num"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+       </out>
+     </action>
+  </rule>
+
 
 </section-rules>
 
