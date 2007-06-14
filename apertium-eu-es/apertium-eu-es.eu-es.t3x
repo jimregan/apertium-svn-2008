@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<postchunk>
+  <section-def-cats>
+
+    
+ 
+
+    <def-cat n="nom">
+      <cat-item name="nom"/>
+    </def-cat>
+
+
+
+  </section-def-cats>
+
+  <section-def-attrs>
+
+<def-attr n="pers">
+          <attr-item tags="p1"/>
+          <attr-item tags="p2"/>
+          <attr-item tags="p3"/>
+          <attr-item tags="PD"/>
+</def-attr>
+
+      <def-attr n="gen">
+          <attr-item tags="m"/>
+          <attr-item tags="f"/>
+          <attr-item tags="mf"/>
+          <attr-item tags="GD"/>
+          <attr-item tags="nt"/>
+      </def-attr>
+
+   <def-attr n="nbr">
+          <attr-item tags="sg"/>
+          <attr-item tags="pl"/>
+          <attr-item tags="sp"/>
+          <attr-item tags="ND"/>
+      </def-attr>
+
+  
+      <def-attr n="temps">
+          <attr-item tags="inf"/>
+          <attr-item tags="pres"/>
+          <attr-item tags="past"/>
+          <attr-item tags="pri"/>
+          <attr-item tags="pp"/>
+          <attr-item tags="ger"/>
+          <attr-item tags="pprs"/>
+          <attr-item tags="subs"/>
+      </def-attr>
+
+  </section-def-attrs>
+
+<section-def-vars> 
+    <def-var n="genere"/>
+  </section-def-vars>
+
+
+
+<section-def-macros>
+
+  <def-macro n="f_bcond" npar="1">
+        <choose>
+          <when>
+            <test>
+              <not>
+                <equal>
+                  <b pos="1"/>   
+                  <lit v=" "/>
+                </equal>
+              </not>
+            </test>
+            <out>
+              <b pos="1"/>
+            </out>  
+          </when>     
+        </choose>
+     </def-macro>
+
+</section-def-macros>
+
+  <section-rules>
+
+   <rule comment="CHUNK: nom">
+      <pattern>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="0" part="a_SN"/>
+		  <lit-tag v="PDET"/>
+		</equal>
+		<not>
+		  <equal>
+		    <clip pos="1" part="a_nom"/>
+		    <lit-tag v="np"/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>
+	    <out>
+	      <lu>
+		<get-case-from pos="1">
+		<lit v="el"/>
+		</get-case-from>
+		<lit-tag v="det.def"/>
+		<clip pos="1" part="gen"/>
+		<clip pos="1" part="nbr"/>
+	      </lu>
+	      <b/>
+	    </out>
+	  </when>
+	</choose>	 
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu> 
+        </out>   
+      </action>
+    </rule> 
+
+  </section-rules>
+</postchunk>

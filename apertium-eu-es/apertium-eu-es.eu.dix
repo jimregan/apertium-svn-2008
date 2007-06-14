@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<dictionary>
+  <alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜàáâäçèéêëìíîïñòóôöùúûüABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
+
+ <sdefs>
+   <sdef n="n"/>
+   <sdef n="adj"/>
+   <sdef n="pos"/>
+   <sdef n="det"/>
+   <sdef n="art"/>
+   <sdef n="def"/>
+   <sdef n="sg"/>
+   <sdef n="pl"/>   
+   <sdef n="num"/> 
+   <sdef n="sent"/>
+   <sdef n="cm"/>
+   <sdef n="lpar"/>
+   <sdef n="rpar"/>
+   <sdef n="lquest"/>
+   <sdef n="guio"/>
+</sdefs>
+
+  <pardefs>
+ <pardef n="numeros">
+    
+      <e>
+        <re>[0-9]+([.,][0-9]+)?</re>
+        <p>
+          <l/>
+         <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separa">
+    
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+         <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="coma">
+    
+      <e>
+        <re>,</re>
+        <p>
+          <l/>
+         <r><s n="cm"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separ">
+    
+      <e>
+        <re>[¿¡]</re>
+        <p>
+          <l/>
+         <r><s n="lquest"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="paresq">
+    
+      <e>
+        <re>[\(\[]</re>
+        <p>
+          <l/>
+         <r><s n="lpar"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="pardret">
+    
+      <e>
+        <re>[\)\]]</re>
+        <p>
+          <l/>
+         <r><s n="rpar"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="liburu__n">
+      <e>
+        <p>
+          <l/>
+          <r><s n="n"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>a</l>
+          <r><s n="n"/><j/>a<s n="det"/><s n="art"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ak</l>
+          <r><s n="n"/><j/>a<s n="det"/><s n="art"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+    <pardef n="nire__det">
+      <e>
+        <p>
+          <l/>
+          <r><s n="det"/><s n="pos"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>a</l>
+          <r><s n="det"/><s n="pos"/><j/>a<s n="det"/><s n="art"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ak</l>
+          <r><s n="det"/><s n="pos"/><j/>a<s n="det"/><s n="art"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+     <pardef n="gorri__adj">
+      <e>
+        <p>
+          <l/>
+          <r><s n="adj"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>a</l>
+          <r><s n="adj"/><j/>a<s n="det"/><s n="art"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ak</l>
+          <r><s n="adj"/><j/>a<s n="det"/><s n="art"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+ </pardefs>
+
+  <section id="main" type="standard">
+      
+      <e lm="liburu">
+        <i>liburu</i>
+        <par n="liburu__n"/>
+      </e> 
+       <e lm="etxe">
+        <i>etxe</i>
+        <par n="liburu__n"/>
+      </e> 
+      <e lm="kantari">
+        <i>kantari</i>
+        <par n="liburu__n"/>
+      </e>
+      <e lm="nire">
+        <i>nire</i>
+        <par n="nire__det"/>
+      </e>
+      <e lm="gorri">
+        <i>gorri</i>
+        <par n="gorri__adj"/>
+      </e>
+</section>
+
+  <section id="final" type="inconditional">
+     
+      
+      <e>
+        <par n="separa"/>
+      </e>
+      
+      <e>
+        <par n="numeros"/>
+      </e>
+      
+      <e>
+        <par n="coma"/>
+      </e>
+      
+      <e>
+        <par n="paresq"/>
+      </e>
+      
+      <e>
+        <par n="pardret"/>
+      </e>
+      
+      <e>
+        <par n="separ"/>
+      </e>
+     
+  </section>
+
+
+</dictionary>
+
