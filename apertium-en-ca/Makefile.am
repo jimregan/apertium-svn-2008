@@ -1,4 +1,4 @@
-VERSION=0.8
+VERSION=0.8.1
 LANG1=en
 LANG2=ca
 PREFIX1=$(LANG1)-$(LANG2)
@@ -12,12 +12,12 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      $(PREFIX1).lextorbil.bin $(PREFIX2).lextorbil.bin \
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
-     
+
 TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
           trules-$(PREFIX1).xml trules-$(PREFIX2).xml \
           $(BASENAME).$(LANG1)-lextor.dix $(BASENAME).$(LANG2)-lextor.dix \
 	  $(BASENAME).$(PREFIX1)-lextor.dix $(BASENAME).$(PREFIX2)-lextor.dix 
-	  
+
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).metadix
 	@xsltproc buscaPar.xsl apertium-en-ca.en.metadix | uniq > tmp1gen.xsl 	 
 	@xsltproc tmp1gen.xsl apertium-en-ca.en.metadix >$(BASENAME).$(LANG1).dixtmp1 
@@ -68,7 +68,7 @@ trules-$(PREFIX1).bin: $(BASENAME).trules-$(PREFIX1).xml
 	apertium-validate-transfer $(BASENAME).trules-$(PREFIX1).xml
 	apertium-preprocess-transfer $(BASENAME).trules-$(PREFIX1).xml \
 	                             trules-$(PREFIX1).bin
-	                             
+
 trules-$(PREFIX2).bin: $(BASENAME).trules-$(PREFIX2).xml
 	apertium-validate-transfer $(BASENAME).trules-$(PREFIX2).xml
 	apertium-preprocess-transfer $(BASENAME).trules-$(PREFIX2).xml \
@@ -84,14 +84,14 @@ trules-$(PREFIX2).xml: $(BASENAME).trules-$(PREFIX2).xml
 $(BASENAME).$(LANG1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 	apertium-gen-lextormono rl $(BASENAME).$(PREFIX1).dix $@
-	
+
 $(BASENAME).$(LANG2)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 	apertium-gen-lextormono lr $(BASENAME).$(PREFIX1).dix $@
 
 $(PREFIX1).lextormono.bin: $(BASENAME).$(LANG1)-lextor.dix
 	lt-comp lr $(BASENAME).$(LANG1)-lextor.dix $@
-	
+
 $(PREFIX2).lextormono.bin: $(BASENAME).$(LANG2)-lextor.dix
 	lt-comp lr $(BASENAME).$(LANG2)-lextor.dix $@
 
@@ -99,14 +99,14 @@ $(PREFIX2).lextormono.bin: $(BASENAME).$(LANG2)-lextor.dix
 $(BASENAME).$(PREFIX1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 	apertium-gen-lextorbil rl $(BASENAME).$(PREFIX1).dix $@
-	
+
 $(BASENAME).$(PREFIX2)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 	apertium-gen-lextorbil lr $(BASENAME).$(PREFIX1).dix $@
 
 $(PREFIX1).lextorbil.bin: $(BASENAME).$(PREFIX1)-lextor.dix
 	lt-comp lr $(BASENAME).$(PREFIX1)-lextor.dix $@
-	
+
 $(PREFIX2).lextorbil.bin: $(BASENAME).$(PREFIX2)-lextor.dix
 	lt-comp lr $(BASENAME).$(PREFIX2)-lextor.dix $@
 
@@ -135,7 +135,7 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t3x $@
 
 
-EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
+EXTRA_DIST=$(BASENAME).$(LANG1).metadix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
            $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
            $(BASENAME).$(LANG2).tsx $(BASENAME).trules-$(PREFIX1).xml \
@@ -150,16 +150,10 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
            $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
            modes.xml
-           	            	            	            	            	            	  	 
-modes: modes.xml modes/$(PREFIX1) modes/$(PREFIX2)
-	apertium-gen-modes modes.xml
-	
-modes/$(PREFIX1): modes.xml
-	 apertium-gen-modes modes.xml
 
-modes/$(PREFIX2): modes.xml
+modes: modes.xml
 	apertium-gen-modes modes.xml
-  	
+
 apertium_en_cadir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
 apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
@@ -173,6 +167,6 @@ apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
 		    modes
-		  
 
-CLEANFILES = $(TARGETS) modes/*
+CLEANFILES = -r $(TARGETS)
+
