@@ -1057,6 +1057,34 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="2"/>
 	</call-macro>
+	       <choose>
+	         <when>
+		   <test>
+		     <and>
+		      <equal caseless="yes">
+		         <clip pos="1" part="lem"/>
+		         <lit v="en"/>
+		      </equal>
+		      <equal caseless="yes">
+		         <clip pos="2" part="lem"/>
+		         <lit v="det_nom"/>
+		      </equal>
+		    </and>  
+	           </test>
+		    <out>
+			<chunk>
+			        <get-case-from pos="1">
+				  <lit v="dans"/>
+				</get-case-from>
+				<clip pos="1" part="tags"/>
+				<lit v="{^dans"/>
+				<lit-tag v="pr"/>
+				<lit v="$}"/>
+			</chunk>
+			<b pos="1"/>
+		    </out>
+		 </when>  
+		 <otherwise>
 		<out>
 			<chunk>
 				<clip pos="1" part="lem"/>
@@ -1065,6 +1093,9 @@
 			</chunk>
 			<b pos="1"/>
 		</out>
+		</otherwise>
+		</choose>
+		
 		<choose>
 			<when>
 				<test>
@@ -1098,14 +1129,18 @@
 				</test>
 				<out>
 					<chunk>
-						<lit v="partitiu"/>
-							<lit-tag v="part"/>
-							<lit v="{^"/>
-							<get-case-from pos="2">
-								<lit v="le"/>
-							</get-case-from>
-							<lit-tag v="det.def.mf.pl"/>
-						<lit v="$}"/>
+					  <get-case-from pos="2">
+					    <lit v="partitiu"/>
+					  </get-case-from>
+					  <lit-tag v="part"/>	  
+					  					  
+					  <lit v="{^de"/>
+					  <lit-tag v="pr"/>
+					  <lit v="$"/>
+					  <b/>
+					  <lit v="^le"/>
+					  <lit-tag v="det.def.mf.pl"/>
+					  <lit v="$}"/>
 					</chunk>
 					<b/>
 				</out>
@@ -1137,17 +1172,20 @@
 				</test>
 				<out>
 					<chunk>
-					
-						<lit v="partitiu"/>
-							<lit-tag v="part"/>
-							<lit v="{^"/>
-							<get-case-from pos="2">
-								<lit v="le"/>
-							</get-case-from>
-							<lit-tag v="det.def"/>
-							<clip pos="2" part="gen"/>
-							<lit-tag v="sg"/>
-						<lit v="$}"/>
+					  <get-case-from pos="2">
+					    <lit v="partitiu"/>
+					  </get-case-from>
+					  <lit-tag v="part"/>	  
+					  					  
+					  <lit v="{^de"/>
+					  <lit-tag v="pr"/>
+					  <lit v="$"/>
+					  <b/>
+					  <lit v="^le"/>	
+				          <lit-tag v="det.def"/>
+					  <clip pos="2" part="gen"/>
+					  <lit-tag v="sg"/>
+					  <lit v="$}"/>
 					</chunk>
 					<b/>
 				</out>
@@ -1220,14 +1258,20 @@
 				</test>
 				<out>
 					<chunk>
-						<lit v="partitiu"/>
-							<lit-tag v="part"/>
-							<lit v="{^"/>
-							<get-case-from pos="2">
-								<lit v="le"/>
-							</get-case-from>
-							<lit-tag v="det.def.mf.pl"/>
-						<lit v="$}"/>
+					
+					  <get-case-from pos="2">
+					    <lit v="partitiu"/>
+					  </get-case-from>
+					  <lit-tag v="part"/>	  
+					  					  
+					  <lit v="{^de"/>
+					  <lit-tag v="pr"/>
+					  <lit v="$"/>
+					  <b/>
+					  <lit v="^le"/>	
+				          <lit-tag v="det.def.mf.pl"/>
+					  <lit v="$}"/>
+						
 					</chunk>
 					<b/>
 				</out>
@@ -1259,17 +1303,21 @@
 				</test>
 				<out>
 					<chunk>
-					
-						<lit v="partitiu"/>
-							<lit-tag v="part"/>
-							<lit v="{^"/>
-							<get-case-from pos="2">
-								<lit v="le"/>
-							</get-case-from>
-							<lit-tag v="det.def"/>
-							<clip pos="2" part="gen"/>
-							<lit-tag v="sg"/>
-						<lit v="$}"/>
+					  <get-case-from pos="2">
+					    <lit v="partitiu"/>
+					  </get-case-from>
+					  <lit-tag v="part"/>	  
+					  					  
+					  <lit v="{^de"/>
+					  <lit-tag v="pr"/>
+					  <lit v="$"/>
+					  <b/>
+					  <lit v="^le"/>	
+				          <lit-tag v="det.def"/>
+					  <clip pos="2" part="gen"/>
+					  <lit-tag v="sg"/>
+					  <lit v="$}"/>
+							
 					</chunk>
 					<b/>
 				</out>
