@@ -9,14 +9,14 @@ PREFIX2b=$(LANG2)-$(LANG1b)
 
 BASENAME=apertium-$(PREFIX1)
 
-TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1b).automorf.bin \
-                 $(PREFIX2).automorf.bin $(PREFIX2b).automorf.bin \
-                 $(PREFIX1).autobil.bin $(PREFIX1b).autobil.bin \
-                 $(PREFIX2).autobil.bin $(PREFIX2b).autobil.bin \
-                 $(PREFIX1).autogen.bin $(PREFIX1b).autogen.bin \
-                 $(PREFIX2).autogen.bin $(PREFIX2b).autogen.bin \
-                 $(PREFIX1).autopgen.bin $(PREFIX1b).autopgen.bin \
-                 $(PREFIX2).autopgen.bin $(PREFIX2b).autopgen.bin 
+#TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1b).automorf.bin \
+#                 $(PREFIX2).automorf.bin $(PREFIX2b).automorf.bin \
+#                 $(PREFIX1).autobil.bin $(PREFIX1b).autobil.bin \
+#                 $(PREFIX2).autobil.bin $(PREFIX2b).autobil.bin \
+#                 $(PREFIX1).autogen.bin $(PREFIX1b).autogen.bin \
+#                 $(PREFIX2).autogen.bin $(PREFIX2b).autogen.bin \
+#                 $(PREFIX1).autopgen.bin $(PREFIX1b).autopgen.bin \
+#                 $(PREFIX2).autopgen.bin $(PREFIX2b).autopgen.bin 
      
 TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
           trules-$(PREFIX1).xml trules-$(PREFIX2).xml $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
@@ -151,6 +151,10 @@ apertium_oc_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
                     $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
+                    $(PREFIX1b).automorf.bin $(PREFIX2b).automorf.bin \
+                    $(PREFIX1b).autobil.bin $(PREFIX2b).autobil.bin \
+                    $(PREFIX1b).autogen.bin $(PREFIX2b).autogen.bin \
+                    $(PREFIX1b).autopgen.bin $(PREFIX2b).autopgen.bin \
                     $(PREFIX1).prob $(PREFIX2).prob trules-$(PREFIX1).xml \
                     trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
                     trules-$(PREFIX2).bin $(MODES)
