@@ -1,49 +1,115 @@
 VERSION=1.0.2
 LANG1=oc
 LANG2=ca
+LANG1b=oc@aran
 PREFIX1=$(LANG1)-$(LANG2)
+PREFIX1b=$(LANG1b)-$(LANG2)
 PREFIX2=$(LANG2)-$(LANG1)
+PREFIX2b=$(LANG2)-$(LANG1b)
 
 BASENAME=apertium-$(PREFIX1)
 
-TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
-     $(PREFIX1).autopgen.bin $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
-     $(PREFIX2).autogen.bin $(PREFIX2).autopgen.bin $(MODES)
-
+TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1b).automorf.bin \
+                 $(PREFIX2).automorf.bin $(PREFIX2b).automorf.bin \
+                 $(PREFIX1).autobil.bin $(PREFIX1b).autobil.bin \
+                 $(PREFIX2).autobil.bin $(PREFIX2b).autobil.bin \
+                 $(PREFIX1).autogen.bin $(PREFIX1b).autogen.bin \
+                 $(PREFIX2).autogen.bin $(PREFIX2b).autogen.bin \
+                 $(PREFIX1).autopgen.bin $(PREFIX1b).autopgen.bin \
+                 $(PREFIX2).autopgen.bin $(PREFIX2b).autopgen.bin 
+     
 TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
-          trules-$(PREFIX1).xml trules-$(PREFIX2).xml
+          trules-$(PREFIX1).xml trules-$(PREFIX2).xml $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+          $(PREFIX1b).t1x.bin $(PREFIX1b).t2x.bin $(PREFIX1b).t3x.bin \
+          $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin 
 
-$(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
-	lt-comp lr $(BASENAME).$(LANG1).dix $@
+$(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).metadix
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).$(LANG1).metadix >$$$$tmp1 && \
+	xsltproc buscaPar.xsl $$$$tmp1  | uniq > $$$$tmp2 && \
+	xsltproc $$$$tmp2 $$$$tmp1 >$$$$tmp3 && \
+	apertium-validate-dictionary $$$$tmp3 && \
+	lt-comp lr $$$$tmp3 $@ && rm $$$$tmp1 $$$$tmp2 $$$$tmp3
 
-$(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
-	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-	lt-comp lr $(BASENAME).$(PREFIX1).dix $@
-
-$(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp rl $(BASENAME).$(LANG2).dix $@
-
-$(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
-	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
+$(PREFIX1b).automorf.bin: $(BASENAME).$(LANG1).metadix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).$(LANG1).metadix >$$$$tmp1 && \
+	xsltproc buscaPar.xsl $$$$tmp1  | uniq > $$$$tmp2 && \
+	xsltproc $$$$tmp2 $$$$tmp1 >$$$$tmp3 && \
+	apertium-validate-dictionary $$$$tmp3 && \
+	lt-comp lr $$$$tmp3 $@ && rm $$$$tmp1 $$$$tmp2 $$$$tmp3
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp lr $(BASENAME).$(LANG2).dix $@
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).$(LANG2).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX2b).automorf.bin: $(BASENAME).$(LANG2).dix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).$(LANG2).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).$(PREFIX1).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX1b).autobil.bin: $(BASENAME).$(PREFIX1).dix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).$(PREFIX1).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
-	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-	lt-comp rl $(BASENAME).$(PREFIX1).dix $@
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).$(PREFIX1).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp rl $$$$tmp1 $@ && rm $$$$tmp1
 
-$(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
-	lt-comp rl $(BASENAME).$(LANG1).dix $@
+$(PREFIX2b).autobil.bin: $(BASENAME).$(PREFIX1).dix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).$(PREFIX1).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp rl $$$$tmp1 $@ && rm $$$$tmp1
 
-$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
-	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
+$(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).$(LANG2).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp rl $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX1b).autogen.bin: $(BASENAME).$(LANG2).dix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).$(LANG2).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp rl $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).metadix
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).$(LANG1).metadix >$$$$tmp1 && \
+	xsltproc buscaPar.xsl $$$$tmp1  | uniq > $$$$tmp2 && \
+	xsltproc $$$$tmp2 $$$$tmp1 >$$$$tmp3 && \
+	apertium-validate-dictionary $$$$tmp3 && \
+	lt-comp rl $$$$tmp3 $@ && rm $$$$tmp1 $$$$tmp2 $$$$tmp3
+
+$(PREFIX2b).autogen.bin: $(BASENAME).$(LANG1).metadix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).$(LANG1).metadix >$$$$tmp1 && \
+	xsltproc buscaPar.xsl $$$$tmp1  | uniq > $$$$tmp2 && \
+	xsltproc $$$$tmp2 $$$$tmp1 >$$$$tmp3 && \
+	apertium-validate-dictionary $$$$tmp3 && \
+	lt-comp rl $$$$tmp3 $@ && rm $$$$tmp1 $$$$tmp2 $$$$tmp3
+
+$(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG1).dix
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).post-$(LANG1).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX1b).autopgen.bin: $(BASENAME).post-$(LANG1).dix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).post-$(LANG1).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG2).dix
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).post-$(LANG2).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX2b).autopgen.bin: $(BASENAME).post-$(LANG2).dix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).post-$(LANG2).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
 
 trules-$(PREFIX1).bin: $(BASENAME).trules-$(PREFIX1).xml
 	apertium-validate-transfer $(BASENAME).trules-$(PREFIX1).xml
@@ -89,4 +155,4 @@ apertium_oc_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
                     trules-$(PREFIX2).bin $(MODES)
 
-CLEANFILES = $(TARGETS) apertium-oc-ca.oc.dix
+CLEANFILES = -r $(TARGETS) apertium-oc-ca.oc.dix
