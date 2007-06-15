@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-15"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <modes>
   <mode name="ca-oc">
     <pipeline>
@@ -45,4 +45,51 @@
       </program>
     </pipeline>
   </mode>
+
+  <mode name="ca-oc_aran">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc@aran.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc@aran.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-oc-ca.trules-ca-oc@aran.xml"/>
+        <file name="trules-ca-oc@aran.bin"/>
+        <file name="ca-oc@aran.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ca-oc@aran.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="ca-oc@aran.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="oc_aran-ca">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc@aran-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc@aran-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-oc-ca.trules-oc@aran-ca.xml"/>
+        <file name="trules-oc@aran-ca.bin"/>
+        <file name="oc@aran-ca.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="oc@aran-ca.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="oc@aran-ca.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
 </modes>
