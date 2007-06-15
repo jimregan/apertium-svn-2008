@@ -44,11 +44,6 @@ public class State {
     private TransitionSet transitions;
 
     /**
-         * This member will be removed
-         */
-    private Action action;
-
-    /**
          * 
          */
     private ActionSet actionSet;
@@ -86,11 +81,6 @@ public class State {
     /**
          * 
          */
-    private ActionList actionList;
-
-    /**
-         * 
-         */
     private ActionSetList actionSetList;
 
     /**
@@ -108,25 +98,8 @@ public class State {
          * 
          */
     private final void incrementNStates() {
-	nStates++;
+	State.nStates++;
     }
-
-    /**
-         * This method will be removed
-         * 
-         * @param pattern
-         * @param i
-         */
-    /*
-         * public final void add(ElementList pattern, Action action, int i) { if
-         * (i < pattern.size()) { final Element e = pattern.get(i); State state;
-         * if (!transitions.containsKey(e.getValue())) { state = new
-         * State(e.getValue()); transitions.put(state.getValue(), state); } else {
-         * state = transitions.get(e.getValue()); } if
-         * (state.getValue().equals("j")) { action.setPatternLength(new
-         * Integer(i)); state.setAction(action); } else { state.add(pattern,
-         * action, i + 1); } } }
-         */
 
     /**
          * 
@@ -135,6 +108,7 @@ public class State {
          * @param i
          */
     public final void add(ElementList pattern, ActionSet actionSet, int i) {
+	TransitionSet transitions = getTransitions();
 	if (i < pattern.size()) {
 	    final Element e = pattern.get(i);
 	    State state;
@@ -147,41 +121,18 @@ public class State {
 	    if (state.getValue().equals("j")) {
 		actionSet.setPatternLength(new Integer(i));
 		state.setActionSet(actionSet);
-		// state.setAction(action);
 	    } else {
-		// state.add(pattern, action, i + 1);
 		state.add(pattern, actionSet, i + 1);
 	    }
 	}
     }
 
     /**
-         * This method will be removed
          * 
          * @param entries
          * @param i
+         * @param actionSetList
          */
-    /*
-         * public final void getAction(final ElementList entries, int i,
-         * ActionList actionList) { if (i < entries.size()) { lrrl = new Vector<String>();
-         * lrrl.add("LR"); lrrl.add("RL"); lrrl.add("LR-RL");
-         * 
-         * lr = new Vector<String>(); lr.add("LR"); lr.add("LR-RL");
-         * 
-         * rl = new Vector<String>(); rl.add("RL"); rl.add("LR-RL");
-         * 
-         * setRestrictionMatched(false);
-         * 
-         * setEntries(entries); setActionList(actionList); final Element e =
-         * entries.get(i); SElement sE = (SElement) e; String v = sE.getValue();
-         * 
-         * processRestriction(v, "LR-RL", lrrl, i); processRestriction(v, "LR",
-         * lr, i); processRestriction(v, "RL", rl, i);
-         * 
-         * if (!isRestrictionMatched()) { String real = sE.getTemp();
-         * processItem(real, i); processItem(v, i); } } }
-         */
-
     public final void getActionSet(final ElementList entries, int i,
 	    ActionSetList actionSetList) {
 	if (i < entries.size()) {
@@ -201,7 +152,6 @@ public class State {
 	    setRestrictionMatched(false);
 
 	    setEntries(entries);
-	    // setActionList(actionList);
 	    setActionSetList(actionSetList);
 
 	    final Element e = entries.get(i);
@@ -238,48 +188,30 @@ public class State {
 	    if (v.equals(value)) {
 		setRestrictionMatched(true);
 		for (String val : values) {
-		    if (transitions.containsKey(val)) {
-			State state = transitions.get(val);
-			state.getActionSet(entries, i + 1, actionSetList);
+		    if (getTransitions().containsKey(val)) {
+			State state = getTransitions().get(val);
+			state.getActionSet(getEntries(), i + 1,
+				getActionSetList());
 		    }
 		}
 	    }
 	}
     }
 
-    /*
-         * private final void processRestriction_old(final String v, final
-         * String value, final Vector<String> values, int i) { if
-         * (!isRestrictionMatched()) { if (v.equals(value)) {
-         * setRestrictionMatched(true); for (String val : values) { if
-         * (transitions.containsKey(val)) { State state = transitions.get(val);
-         * state.getAction(entries, i + 1, actionList); } } } } }
-         */
-
     /**
-         * This method will be removed
          * 
          * @param value
-         * @param entries
          * @param i
-         * @param actionList
          */
-    /*
-         * private final void processItem_old(final String value, int i) { if
-         * (transitions.containsKey(value)) { State state =
-         * transitions.get(value); if (state.getValue().equals("j")) { action =
-         * state.getAction(); actionList.put(action.getName(), action); } else {
-         * state.getAction(entries, i + 1, actionList); } } }
-         */
-
     private final void processItem(final String value, int i) {
-	if (transitions.containsKey(value)) {
-	    State state = transitions.get(value);
+	if (getTransitions().containsKey(value)) {
+	    State state = getTransitions().get(value);
 	    if (state.getValue().equals("j")) {
-		actionSet = state.getActionSet();
-		actionSetList.put(actionSet.getName(), actionSet);
+		setActionSet(state.getActionSet());
+		getActionSetList().put(this.getActionSet().getName(),
+			this.getActionSet());
 	    } else {
-		state.getActionSet(entries, i + 1, actionSetList);
+		state.getActionSet(getEntries(), i + 1, getActionSetList());
 	    }
 	}
     }
@@ -300,25 +232,10 @@ public class State {
     }
 
     /**
-         * @return the action
-         */
-    public final Action getAction() {
-	return action;
-    }
-
-    /**
-         * @param action
-         *                the action to set
-         */
-    public final void setAction(Action action) {
-	this.action = action;
-    }
-
-    /**
          * @return the nStates
          */
     public static final int getNStates() {
-	return nStates;
+	return State.nStates;
     }
 
     /**
@@ -327,14 +244,6 @@ public class State {
          */
     private final TransitionSet getTransitions() {
 	return transitions;
-    }
-
-    /**
-         * 
-         * @param transitions
-         */
-    private final void setTransitions(TransitionSet transitions) {
-	this.transitions = transitions;
     }
 
     /**
@@ -367,22 +276,6 @@ public class State {
          */
     private final void setEntries(ElementList entries) {
 	this.entries = entries;
-    }
-
-    /**
-         * 
-         * @return
-         */
-    private final ActionList getActionList() {
-	return actionList;
-    }
-
-    /**
-         * 
-         * @param actionList
-         */
-    private final void setActionList(ActionList actionList) {
-	this.actionList = actionList;
     }
 
     /**

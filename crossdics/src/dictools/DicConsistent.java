@@ -83,6 +83,24 @@ public class DicConsistent {
 
     /**
          * 
+         */
+    private String[] arguments;
+
+    /**
+         * 
+         */
+    private DicSet dicSet;
+
+    /**
+         * 
+         * 
+         */
+    public DicConsistent() {
+
+    }
+
+    /**
+         * 
          * 
          */
     public DicConsistent(final DicSet dicset) {
@@ -95,6 +113,15 @@ public class DicConsistent {
 	commonA = new EElementMap();
 	commonC = new EElementMap();
 	setNotCommonSuffix("-not-common.dix");
+    }
+
+    /**
+         * 
+         * 
+         */
+    public final void doConsistent() {
+	this.processArguments();
+	this.actionConsistent("yes");
     }
 
     /**
@@ -323,6 +350,122 @@ public class DicConsistent {
          */
     private final void setNotCommonSuffix(final String notCommonSuffix) {
 	this.notCommonSuffix = notCommonSuffix;
+    }
+
+    /**
+         * 
+         * @param removeNotCommon
+         * @return
+         */
+    private final DicConsistent actionConsistent(String removeNotCommon) {
+	final DicConsistent dicConsistent = new DicConsistent(this.getDicSet());
+	dicConsistent.makeConsistentDictionaries(removeNotCommon);
+	dicSet.printXML("consistent");
+	return dicConsistent;
+    }
+
+    /**
+         * 
+         * 
+         */
+    private void processArguments() {
+	final int nArgs = getArguments().length;
+	String sDicMonA, sDicMonC, sDicBilAB, sDicBilBC;
+	sDicMonA = sDicMonC = sDicBilAB = sDicBilBC = null;
+	boolean bilABReverse, bilBCReverse;
+	bilABReverse = bilBCReverse = false;
+
+	for (int i = 1; i < nArgs; i++) {
+	    String arg = getArguments()[i];
+	    if (arg.equals("-monA")) {
+		i++;
+		arg = getArguments()[i];
+		sDicMonA = arg;
+		System.err.println("Monolingual A: '" + sDicMonA + "'");
+	    }
+
+	    if (arg.equals("-monC")) {
+		i++;
+		arg = getArguments()[i];
+		sDicMonC = arg;
+		System.err.println("Monolingual C: '" + sDicMonC + "'");
+	    }
+
+	    if (arg.equals("-bilAB")) {
+		i++;
+		arg = getArguments()[i];
+		if (arg.equals("-r")) {
+		    bilABReverse = true;
+		    i++;
+		}
+		if (arg.equals("-n")) {
+		    bilABReverse = false;
+		    i++;
+		}
+
+		arg = getArguments()[i];
+		sDicBilAB = arg;
+		System.err.println("Bilingual A-B: '" + sDicBilAB + "'");
+	    }
+
+	    if (arg.equals("-bilBC")) {
+		i++;
+		arg = getArguments()[i];
+
+		if (arg.equals("-r")) {
+		    bilBCReverse = true;
+		    i++;
+		}
+		if (arg.equals("-n")) {
+		    bilBCReverse = false;
+		    i++;
+		}
+		arg = getArguments()[i];
+		sDicBilBC = arg;
+		System.err.println("Bilingual B-C: '" + sDicBilBC + "'");
+	    }
+
+	}
+
+	final DictionaryElement bil1 = DicTools.readBilingual(sDicBilAB,
+		bilABReverse);
+	final DictionaryElement bil2 = DicTools.readBilingual(sDicBilBC,
+		bilBCReverse);
+	final DictionaryElement mon1 = DicTools.readMonolingual(sDicMonA);
+	final DictionaryElement mon2 = DicTools.readMonolingual(sDicMonC);
+
+	DicSet dicSet = new DicSet(mon1, bil1, mon2, bil2);
+	this.setDicSet(dicSet);
+    }
+
+    /**
+         * @return the arguments
+         */
+    private final String[] getArguments() {
+	return arguments;
+    }
+
+    /**
+         * @param arguments
+         *                the arguments to set
+         */
+    public final void setArguments(String[] arguments) {
+	this.arguments = arguments;
+    }
+
+    /**
+         * @return the dicSet
+         */
+    private final DicSet getDicSet() {
+	return dicSet;
+    }
+
+    /**
+         * @param dicSet
+         *                the dicSet to set
+         */
+    private final void setDicSet(DicSet dicSet) {
+	this.dicSet = dicSet;
     }
 
 }

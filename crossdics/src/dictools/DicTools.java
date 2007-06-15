@@ -353,4 +353,44 @@ public class DicTools {
 	return d;
     }
 
+    /**
+         * 
+         * @param sMon
+         * @return
+         */
+    public static DictionaryElement readMonolingual(final String sMon) {
+	DictionaryReader dicReader = new DictionaryReader(sMon);
+	final DictionaryElement mon = dicReader.readDic();
+	mon.setFileName(sMon);
+	dicReader = null;
+	return mon;
+    }
+
+    /**
+         * 
+         * @param sBil
+         * @param reverse
+         * @return
+         */
+    public static DictionaryElement readBilingual(final String sBil,
+	    final boolean reverse) {
+	DictionaryReader dicReaderBil = new DictionaryReader(sBil);
+	final DictionaryElement bil = dicReaderBil.readDic();
+	bil.setFileName(sBil);
+	bil.setType("BIL");
+
+	if (reverse) {
+	    bil.reverse();
+	    final String reverseFileName = DicTools.reverseDicName(sBil);
+	    bil.printXML(reverseFileName);
+	    bil.setFileName(reverseFileName);
+	}
+
+	final String[] st = DicTools.getSourceAndTarget(bil.getFileName());
+	bil.setSL(st[0]);
+	bil.setTL(st[1]);
+	dicReaderBil = null;
+	return bil;
+    }
+
 }

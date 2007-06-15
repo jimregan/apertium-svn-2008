@@ -107,9 +107,10 @@ public class Pattern {
     /**
          * 
          */
+    @Override
     public final String toString() {
-	String e1 = this.getAB().toString2();
-	String e2 = this.getBC().toString2();
+	String e1 = getAB().toString2();
+	String e2 = getBC().toString2();
 	String str = e1 + "/" + e2;
 	return str;
     }

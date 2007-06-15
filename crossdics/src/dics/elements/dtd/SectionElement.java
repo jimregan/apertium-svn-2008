@@ -135,4 +135,12 @@ public class SectionElement extends Element {
 	dos.writeBytes(tab(1) + "</" + getTagName() + ">\n");
     }
 
+    /**
+         * @param elements
+         *                the eElements to set
+         */
+    public final void setEElements(EElementList elements) {
+	eElements = elements;
+    }
+
 }

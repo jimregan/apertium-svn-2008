@@ -61,6 +61,7 @@ public class ParElement extends Element {
          * 
          * @param value
          */
+    @Override
     public final void setValue(final String value) {
 	n = value;
     }
@@ -69,6 +70,7 @@ public class ParElement extends Element {
          * 
          * @return
          */
+    @Override
     public final String getValue() {
 	return n;
     }

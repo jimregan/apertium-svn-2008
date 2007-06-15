@@ -48,6 +48,7 @@ public class SdefElement extends Element {
          * 
          * @return
          */
+    @Override
     public final String getValue() {
 	return n;
     }

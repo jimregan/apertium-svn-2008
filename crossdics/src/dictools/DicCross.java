@@ -39,6 +39,7 @@ import dics.elements.dtd.SdefsElement;
 import dics.elements.dtd.SectionElement;
 import dics.elements.dtd.TextElement;
 import dics.elements.utils.DicSet;
+import dics.elements.utils.DictionaryElementList;
 import dics.elements.utils.EElementList;
 import dics.elements.utils.EElementMap;
 import dics.elements.utils.EHashMap;
@@ -101,11 +102,6 @@ public class DicCross {
     /**
          * 
          */
-    private final boolean DO_NOT_MATCH_CATEGORY = false;
-
-    /**
-         * 
-         */
     private EHashMap processed;
 
     /**
@@ -147,6 +143,16 @@ public class DicCross {
          * 
          */
     private CrossModel nDCrossModel;
+
+    /**
+         * 
+         */
+    private String[] arguments;
+
+    /**
+         * 
+         */
+    private DicSet dicSet;
 
     /**
          * 
@@ -560,8 +566,8 @@ public class DicCross {
 	EElement eCrossed = new EElement();
 	PElement pE = new PElement();
 
-	ContentElement lE = (ContentElement) eAction.getSide("L");
-	ContentElement rE = (ContentElement) eAction.getSide("R");
+	ContentElement lE = eAction.getSide("L");
+	ContentElement rE = eAction.getSide("R");
 
 	LElement lE2 = new LElement();
 	RElement rE2 = new RElement();
@@ -846,8 +852,8 @@ public class DicCross {
          */
     private final void insertNDCrossAction(final CrossAction cA) {
 	if (!nDCrossActions.containsKey(cA.getPattern().toString())) {
-	    this.nDCrossActions.put(cA.getPattern().toString(), cA);
-	    this.nDCrossModel.addCrossAction(cA);
+	    nDCrossActions.put(cA.getPattern().toString(), cA);
+	    nDCrossModel.addCrossAction(cA);
 	}
     }
 
@@ -871,6 +877,231 @@ public class DicCross {
          */
     private final void setCrossModelFST(CrossModelFST crossModelFST) {
 	this.crossModelFST = crossModelFST;
+    }
+
+    /**
+         * 
+         * 
+         */
+    public final void doCross() {
+	processArguments();
+	actionCross();
+    }
+
+    /**
+         * 
+         * @param dicSet
+         */
+    private final void actionCross() {
+	DicSet dicSet = this.getDicSet();
+	actionConsistent(dicSet, "yes");
+
+	final DicCross dc = new DicCross();
+	dc.setCrossWithPatterns(true); // true means uses patterns
+	dc.setCrossModelFileName(getCrossModelFileName());
+
+	final DictionaryElement[] bils = dc.crossDictionaries(dicSet);
+
+	final DictionaryElement bilCrossed = bils[0];
+	final DictionaryElement bilSpecul = bils[1];
+
+	final String sl = dicSet.getBil1().getTL();
+	final String tl = dicSet.getBil2().getTL();
+	bilCrossed.setType("BIL");
+	bilCrossed.setSL(sl);
+	bilCrossed.setTL(tl);
+
+	final EElementList[] commonCrossedMons = DicTools.makeConsistent(
+		bilCrossed, dicSet.getMon1(), dicSet.getMon2());
+	final EElementList crossedMonA = commonCrossedMons[0];
+	final EElementList crossedMonB = commonCrossedMons[1];
+
+	final EElementList[] commonSpeculMons = DicTools.makeConsistent(
+		bilSpecul, dicSet.getMon1(), dicSet.getMon2());
+	final EElementList speculMonA = commonSpeculMons[0];
+	final EElementList speculMonB = commonSpeculMons[1];
+
+	final DictionaryElement monACrossed = new DictionaryElement(dicSet
+		.getMon1());
+	monACrossed.setMainSection(crossedMonA);
+
+	final DictionaryElement monBCrossed = new DictionaryElement(dicSet
+		.getMon2());
+	monBCrossed.setMainSection(crossedMonB);
+
+	final DictionaryElement monASpecul = new DictionaryElement(dicSet
+		.getMon1());
+	monASpecul.setMainSection(speculMonA);
+
+	final DictionaryElement monBSpecul = new DictionaryElement(dicSet
+		.getMon2());
+	monBSpecul.setMainSection(speculMonB);
+
+	final DictionaryElementList del = new DictionaryElementList();
+	del.add(bilCrossed);
+	del.add(bilSpecul);
+	del.add(monACrossed);
+	del.add(monBCrossed);
+	del.add(monASpecul);
+	del.add(monBSpecul);
+
+	printXMLCrossedAndSpecul(del, sl, tl);
+    }
+
+    /**
+         * 
+         * @param del
+         * @param sl
+         * @param tl
+         */
+    private final void printXMLCrossedAndSpecul(
+	    final DictionaryElementList del, final String sl, final String tl) {
+	final DictionaryElement bilCrossed = del.get(0);
+	final DictionaryElement bilSpecul = del.get(1);
+	final DictionaryElement monACrossed = del.get(2);
+	final DictionaryElement monBCrossed = del.get(3);
+	final DictionaryElement monASpecul = del.get(4);
+	final DictionaryElement monBSpecul = del.get(5);
+
+	bilCrossed.printXML("dix/apertium-" + sl + "-" + tl + "." + sl + "-"
+		+ tl + "-crossed.dix");
+
+	bilSpecul.printXML("dix/apertium-" + sl + "-" + tl + "." + sl + "-"
+		+ tl + "-crossed-specul.dix");
+
+	monACrossed.printXML("dix/apertium-" + sl + "-" + tl + "." + sl
+		+ "-crossed.dix");
+	monBCrossed.printXML("dix/apertium-" + sl + "-" + tl + "." + tl
+		+ "-crossed.dix");
+
+	monASpecul.printXML("dix/apertium-" + sl + "-" + tl + "." + sl
+		+ "-crossed-specul.dix");
+	monBSpecul.printXML("dix/apertium-" + sl + "-" + tl + "." + tl
+		+ "-crossed-specul.dix");
+    }
+
+    /**
+         * 
+         * @param dicSet
+         * @param removeNotCommon
+         * @return
+         */
+    private final DicConsistent actionConsistent(final DicSet dicSet,
+	    final String removeNotCommon) {
+	final DicConsistent dicConsistent = new DicConsistent(dicSet);
+	dicConsistent.makeConsistentDictionaries(removeNotCommon);
+	dicSet.printXML("consistent");
+	return dicConsistent;
+    }
+
+    /**
+         * 
+         * @param arguments
+         */
+    private void processArguments() {
+	final int nArgs = getArguments().length;
+	String sDicMonA, sDicMonC, sDicBilAB, sDicBilBC;
+	sDicMonA = sDicMonC = sDicBilAB = sDicBilBC = null;
+	boolean bilABReverse, bilBCReverse;
+	bilABReverse = bilBCReverse = false;
+
+	for (int i = 1; i < nArgs; i++) {
+	    String arg = getArguments()[i];
+	    if (arg.equals("-monA")) {
+		i++;
+		arg = getArguments()[i];
+		sDicMonA = arg;
+		System.err.println("Monolingual A: '" + sDicMonA + "'");
+	    }
+
+	    if (arg.equals("-monC")) {
+		i++;
+		arg = getArguments()[i];
+		sDicMonC = arg;
+		System.err.println("Monolingual C: '" + sDicMonC + "'");
+	    }
+
+	    if (arg.equals("-bilAB")) {
+		i++;
+		arg = getArguments()[i];
+		if (arg.equals("-r")) {
+		    bilABReverse = true;
+		    i++;
+		}
+		if (arg.equals("-n")) {
+		    bilABReverse = false;
+		    i++;
+		}
+
+		arg = getArguments()[i];
+		sDicBilAB = arg;
+		System.err.println("Bilingual A-B: '" + sDicBilAB + "'");
+	    }
+
+	    if (arg.equals("-bilBC")) {
+		i++;
+		arg = getArguments()[i];
+
+		if (arg.equals("-r")) {
+		    bilBCReverse = true;
+		    i++;
+		}
+		if (arg.equals("-n")) {
+		    bilBCReverse = false;
+		    i++;
+		}
+		arg = getArguments()[i];
+		sDicBilBC = arg;
+		System.err.println("Bilingual B-C: '" + sDicBilBC + "'");
+	    }
+
+	    if (arg.equals("-cross-model")) {
+		i++;
+		arg = getArguments()[i];
+		setCrossModelFileName(arg);
+		System.err.println("Cross model: " + arg);
+	    }
+	}
+
+	final DictionaryElement bil1 = DicTools.readBilingual(sDicBilAB,
+		bilABReverse);
+	final DictionaryElement bil2 = DicTools.readBilingual(sDicBilBC,
+		bilBCReverse);
+	final DictionaryElement mon1 = DicTools.readMonolingual(sDicMonA);
+	final DictionaryElement mon2 = DicTools.readMonolingual(sDicMonC);
+
+	DicSet dicSet = new DicSet(mon1, bil1, mon2, bil2);
+	this.setDicSet(dicSet);
+    }
+
+    /**
+         * @return the arguments
+         */
+    public final String[] getArguments() {
+	return arguments;
+    }
+
+    /**
+         * @param arguments
+         *                the arguments to set
+         */
+    public final void setArguments(String[] arguments) {
+	this.arguments = arguments;
+    }
+
+    /**
+         * @return the dicSet
+         */
+    private final DicSet getDicSet() {
+	return dicSet;
+    }
+
+    /**
+         * @param dicSet
+         *                the dicSet to set
+         */
+    private final void setDicSet(DicSet dicSet) {
+	this.dicSet = dicSet;
     }
 
 }

@@ -15,6 +15,24 @@
 	<property name="mod-BC" value="-n" />
 	<property name="cross-model" value="schemas/cross-model-test.xml" />
 
+	<!-- Dictionary (to sort, to reverse, etc) -->
+   <!-- Example: -->
+	<property name="dic" value="dics/apertium-aa-bb.aa.dix" />
+	<property name="dic-type" value="-mon" /> <!-- or -bil -->
+	<property name="out" value="apertium-aa-cc.aa-sorted.dix" />
+	
+	<!-- Dictionaries to merge -->
+	<property name="bil-AB1" value="${dics.dir}/apertium-aa-bb.aa-bb-1.dix" />
+	<property name="mod-AB1" value="-n" />	
+	<property name="monol-A1" value="${dics.dir}/apertium-aa-bb.aa-1.dix" />
+	<property name="monol-B1" value="${dics.dir}/apertium-aa-bb.aa-1.dix" />
+	
+	<property name="bil-AB2" value="${dics.dir}/apertium-aa-bb.aa-bb-2.dix" />
+	<property name="mod-AB2" value="-n" />
+	<property name="monol-A2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
+	<property name="monol-B2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
+	
+	<!-- EXAMPLES -->
 	<!-- Dictionaries to cross (ca-pt example) -->
 	<!--
 	<property name="bil-AB" value="${dics.dir}/apertium-es-ca.es-ca.dix" />
@@ -25,32 +43,9 @@
 	<property name="mod-BC" value="-n" />
 	<property name="cross-model" value="schemas/cross-model-test.xml" />
 	-->
-	<!-- Dictionaries to cross (fr-es example) -->
-	<!--
-	<property name="bil-AB" value="${dics.dir}/apertium-es-ca.es-ca.dix" />
-	<property name="mod-AB" value="-r" />	
-	<property name="bil-BC" value="${dics.dir}/apertium-fr-ca.fr-ca.dix" />
-	<property name="mod-BC" value="-r" />
-	<property name="monol-A" value="${dics.dir}/apertium-es-ca.es.dix" />	
-	<property name="monol-C" value="${dics.dir}/apertium-fr-ca.fr.metadix" />
-	<property name="cross-model" value="schemas/cross-model-test.xml" />
-	-->
 
-	
-	<!-- Dictionaries to merge -->
-	<!--
-	<property name="bil-AB1" value="${dics.dir}/apertium-aa-bb.aa-bb-1.dix" />
-	<property name="mod-AB1" value="-n" />	
-	<property name="monol-A1" value="${dics.dir}/apertium-aa-bb.aa-1.dix" />
-	<property name="monol-B1" value="${dics.dir}/apertium-aa-bb.aa-1.dix" />
-	
-	<property name="bil-AB2" value="${dics.dir}/apertium-aa-bb.aa-bb-2.dix" />
-	<property name="mod-AB2" value="-n" />
-	<property name="monol-A2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
-	<property name="monol-B2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
-	-->
-	
 	<!-- Dictionaries to merge (example) -->
+	<!--
 	<property name="bil-AB1" value="dix/apertium-es-fr.es-fr-crossed.dix" />
 	<property name="mod-AB1" value="-n" />
 	<property name="monol-A1" value="dix/apertium-es-fr.es-crossed.dix" />
@@ -59,13 +54,8 @@
 	<property name="mod-AB2" value="-n" />
 	<property name="monol-A2" value="dix/apertium-es-fr.es-crossed-specul.dix" />
 	<property name="monol-B2" value="dix/apertium-es-fr.fr-crossed-specul.dix" />
-
-								
-	
-	<!-- Dictionary -->
-	<property name="dic" value="dics/apertium-fr-ca.fr-ca.dix" />
-	<property name="out" value="apertium-ca-fr.ca-fr.dix" />
-	
+	-->
+		
 	<!-- Directories -->
 	<property name="build.dir" location="classes" />
 	<property name="src.dir" location="src/" />
@@ -134,7 +124,7 @@
 	</target>
 
 	<!-- Reverse -->
-	<target name="reverse">
+	<target name="reverse" depends="compile">
 		<echo message="Reversing '${dic}'..." />
 		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
 			<jvmarg value="-Xms${minMem}m" />
@@ -155,6 +145,22 @@
 			<jvmarg value="-Xms${minMem}m" />
 			<jvmarg value="-Xmx${maxMem}m" />
 			<arg value="format" />
+			<arg value="${dic}" />
+			<arg value="${out}" />
+		</java>
+		<antcall target="clean" />
+		<echo message="Log in '${docs.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Sort -->
+	<target name="sort" depends="compile">
+		<echo message="Sorting '${dic}'..." />
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="sort" />
+			<arg value="${dic-type}" />
 			<arg value="${dic}" />
 			<arg value="${out}" />
 		</java>
@@ -241,9 +247,6 @@
 			<arg value="-monC" />
 			<arg value="${monol-C}" />
 			
-			<arg value="-use-patterns" />
-			<arg value="${use-patterns}" />
-
 			<arg value="-cross-model" />
 			<arg value="${cross-model}" />
 		</java>
@@ -273,7 +276,7 @@
 	</target>
 
 	<!-- Merge action -->
-	<target name="merge" depends="prepare-merge" if="merge-dics-available">
+	<target name="merge" depends="compile,prepare-merge" if="merge-dics-available">
 		<echo message="Merging dictionaries..." />
 		<echo message="  ${bil-AB1}" />	
 		<echo message="  ${monol-A1}" />	
@@ -344,6 +347,7 @@
 
 				<include name="${root-folder}/dics"/>
 				<include name="${root-folder}/dix"/>
+				<include name="${root-folder}/schemas/*.xml"/>
 				<include name="${root-folder}/lib/cross-dics.jar"/>
 				<include name="${root-folder}/log"/>
 				<include name="${root-folder}/META-INF/manifest.mf"/>

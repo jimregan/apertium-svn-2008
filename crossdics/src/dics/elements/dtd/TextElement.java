@@ -52,10 +52,12 @@ public class TextElement extends Element {
          * 
          * @return
          */
+    @Override
     public final String getValue() {
 	return value;
     }
 
+    @Override
     public final void setValue(final String v) {
 	value = v;
     }

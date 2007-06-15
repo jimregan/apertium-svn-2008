@@ -48,6 +48,7 @@ public class ReElement extends Element {
          * 
          * @return
          */
+    @Override
     public String getValue() {
 	return value;
     }

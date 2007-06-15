@@ -23,6 +23,7 @@ package dictools;
 import java.util.Collections;
 
 import dics.elements.dtd.DictionaryElement;
+import dics.elements.utils.DicSet;
 
 /**
  * 
@@ -35,6 +36,19 @@ public class DicReverse {
          * 
          */
     private DictionaryElement dicOrig;
+
+    /**
+         * 
+         */
+    private String[] arguments;
+
+    /**
+         * 
+         * 
+         */
+    public DicReverse() {
+
+    }
 
     /**
          * 
@@ -61,6 +75,66 @@ public class DicReverse {
          */
     private final DictionaryElement getDicOrig() {
 	return dicOrig;
+    }
+
+    /**
+         * 
+         * 
+         */
+    private void processArguments() {
+	DictionaryReader dicReader = new DictionaryReader(arguments[1]);
+	DictionaryElement bil = dicReader.readDic();
+	dicReader = null;
+	this.setDicOrig(bil);
+    }
+
+    /**
+         * 
+         * 
+         */
+    public final void doReverse() {
+	this.processArguments();
+	this.actionReverse();
+    }
+
+    /**
+         * 
+         * 
+         */
+    public final void actionReverse() {
+	DictionaryElement bil = this.reverse();
+	String reverseFileName = "reversed-dic.dix";
+	if (getArguments().length == 3) {
+	    if (getArguments()[2].equals("out.dix")) {
+		reverseFileName = DicTools.reverseDicName(arguments[1]);
+	    } else {
+		reverseFileName = getArguments()[2];
+	    }
+	    bil.printXML(reverseFileName);
+	}
+    }
+
+    /**
+         * @return the arguments
+         */
+    public final String[] getArguments() {
+	return arguments;
+    }
+
+    /**
+         * @param arguments
+         *                the arguments to set
+         */
+    public final void setArguments(String[] arguments) {
+	this.arguments = arguments;
+    }
+
+    /**
+         * @param dicOrig
+         *                the dicOrig to set
+         */
+    private final void setDicOrig(DictionaryElement dicOrig) {
+	this.dicOrig = dicOrig;
     }
 
 }

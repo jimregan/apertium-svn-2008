@@ -74,6 +74,7 @@ public class SElement extends Element {
          * 
          * @return
          */
+    @Override
     public final String getValue() {
 	return n;
     }
@@ -82,6 +83,7 @@ public class SElement extends Element {
          * 
          * @param value
          */
+    @Override
     public final void setValue(final String value) {
 	n = value;
     }
@@ -177,6 +179,7 @@ public class SElement extends Element {
 	this.temp = temp;
     }
 
+    @Override
     public Object clone() {
 	try {
 	    final SElement cloned = (SElement) super.clone();

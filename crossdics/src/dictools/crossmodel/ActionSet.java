@@ -34,6 +34,11 @@ public class ActionSet extends ArrayList<Action> {
     /**
          * 
          */
+    private static final long serialVersionUID = 1L;
+
+    /**
+         * 
+         */
     private String name;
 
     /**
@@ -87,7 +92,7 @@ public class ActionSet extends ArrayList<Action> {
          * 
          */
     public final void incrementNumberOfConstants() {
-	this.numberOfConstants++;
+	numberOfConstants++;
     }
 
     /**

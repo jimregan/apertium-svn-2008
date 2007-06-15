@@ -92,9 +92,10 @@ public class ContentElement extends Element implements Cloneable {
          * 
          * @return
          */
+    @Override
     public final String getValueNoTags() {
 	String str = "";
-	for (Element e : this.children) {
+	for (Element e : children) {
 	    if (!(e instanceof SElement)) {
 		str += e.getValue();
 	    }
@@ -106,9 +107,10 @@ public class ContentElement extends Element implements Cloneable {
          * 
          * @return
          */
+    @Override
     public final String getValue() {
 	String str = "";
-	for (Element e : this.children) {
+	for (Element e : children) {
 	    if (!(e instanceof SElement)) {
 		if (e instanceof GElement) {
 		    str += "<g>" + ((GElement) e).getValue() + "</g>";
@@ -171,6 +173,7 @@ public class ContentElement extends Element implements Cloneable {
          * 
          * @param value
          */
+    @Override
     public final void setValue(final String value) {
 	boolean textE = false;
 	for (final Element e : getChildren()) {

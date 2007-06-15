@@ -81,17 +81,6 @@ public class HowTo {
 	monAcrossed.printXML("dix/apertium-ca-pt.ca-crossed.dix");
 	monCcrossed.printXML("dix/apertium-ca-pt.pt-crossed.dix");
 
-	// HOW TO JOIN TWO COLLECTIONS
-	final DicSet toMerge = new DicSet(bilACcrossed, monCcrossed,
-		monAcrossed);
-	final DicMerge dm = new DicMerge(toMerge, toMerge);
-	final DicSet merged = dm.merge();
-	// we get the same dicSet
-	final DictionaryElement bilACmerged = merged.getBil1();
-	final DictionaryElement monAmerged = merged.getMon1();
-	final DictionaryElement monCmerged = merged.getMon2();
-	bilACmerged.printXML("dix/apertium-pt-ca.pt-ca-merged.dix");
-
 	// How to iterate over the elements in 'bilACcrossed'
 	// for each <e> tag
 	for (final EElement e : bilACcrossed.getEntries()) {

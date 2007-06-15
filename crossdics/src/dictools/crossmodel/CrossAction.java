@@ -71,18 +71,6 @@ public class CrossAction {
          * 
          * @param p
          * @param cm
-         * @param a
-         */
-    /*
-         * public CrossAction(final Pattern p, final ConstantMap cm, final
-         * Action a) { constants = new ConstantMap(); pattern = new Pattern();
-         * actionSet = new ActionSet(); pattern = p; constants = cm; action = a; }
-         */
-
-    /**
-         * 
-         * @param p
-         * @param cm
          * @param aSet
          */
     public CrossAction(final Pattern p, final ConstantMap cm,
@@ -113,15 +101,6 @@ public class CrossAction {
 
     /**
          * 
-         * @param a
-         */
-    /*
-         * public void setAction(final Action a) { action = a;
-         * action.setName(getId()); }
-         */
-
-    /**
-         * 
          * @return
          */
     public final ConstantMap getConstants() {
@@ -135,14 +114,6 @@ public class CrossAction {
     public final void setConstants(final ConstantMap constants) {
 	this.constants = constants;
     }
-
-    /**
-         * 
-         * @return
-         */
-    /*
-         * public final Action getAction() { return action; }
-         */
 
     /**
          * 
@@ -192,7 +163,7 @@ public class CrossAction {
     public final void printXML(DataOutputStream dos, int id) throws IOException {
 	dos.writeBytes("<cross-action id=\"ND-" + id + "\">\n");
 	getPattern().printXML(dos);
-	if (this.actionSet != null) {
+	if (actionSet != null) {
 	    getActionSet().printXML(dos);
 	}
 	dos.writeBytes("</cross-action>\n\n");
@@ -231,11 +202,6 @@ public class CrossAction {
 	    j = tagElements(e2R, eList, j, hm);
 	    eList.add(new SElement("j"));
 
-	    /*
-                 * ActionSet aSet = getActionSet(); if (aSet != null) { EElement
-                 * ea = a.getE(); j = tagAction(ea.getSide("L"), j, hm); j =
-                 * tagAction(ea.getSide("R"), j, hm); }
-                 */
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -261,7 +227,7 @@ public class CrossAction {
          * @return
          */
     public final ElementList processVars() {
-	this.getActionSet().setNumberOfConstants(0);
+	getActionSet().setNumberOfConstants(0);
 
 	HashMap<String, Integer> hm = new HashMap<String, Integer>();
 	ElementList eList = new ElementList();
@@ -271,11 +237,11 @@ public class CrossAction {
 	Integer j = new Integer(0);
 
 	EElement e1 = pattern.getAB();
-	ContentElement e1L = (ContentElement) e1.getSide("L");
-	ContentElement e1R = (ContentElement) e1.getSide("R");
+	ContentElement e1L = e1.getSide("L");
+	ContentElement e1R = e1.getSide("R");
 	EElement e2 = pattern.getBC();
-	ContentElement e2L = (ContentElement) e2.getSide("L");
-	ContentElement e2R = (ContentElement) e2.getSide("R");
+	ContentElement e2L = e2.getSide("L");
+	ContentElement e2R = e2.getSide("R");
 
 	addRestrictionCode(eList, e1);
 	j = tagPattern(e1L, eList, j, hm);
@@ -289,7 +255,7 @@ public class CrossAction {
 	j = tagPattern(e2R, eList, j, hm);
 	eList.add(new SElement("j"));
 
-	ActionSet aSet = this.getActionSet();
+	ActionSet aSet = getActionSet();
 
 	if (aSet != null) {
 	    for (Action a : aSet) {
@@ -335,7 +301,7 @@ public class CrossAction {
 		} else {
 		    if (!Character.isDigit(value.charAt(0))) {
 			sElement.setValue(value);
-			this.getActionSet().incrementNumberOfConstants();
+			getActionSet().incrementNumberOfConstants();
 		    }
 		}
 		eList.add(sElement);
