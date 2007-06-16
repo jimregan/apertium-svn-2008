@@ -627,7 +627,8 @@ FSTProcessor::analysis(FILE *input, FILE *output)
 
         unsigned int limit = sf.find(' ');
         unsigned int size = sf.size();
-        limit = (limit == string::npos?size:limit);
+        limit = (limit == static_cast<unsigned 
+int>(string::npos)?size:limit);
         input_buffer.back(1+(size-limit));
         printUnknownWord(sf.substr(0, limit), output);
       }
@@ -635,7 +636,8 @@ FSTProcessor::analysis(FILE *input, FILE *output)
       {
         unsigned int limit = sf.find(' ');
         unsigned int size = sf.size();
-        limit = (limit == string::npos?size:limit);
+        limit = (limit == static_cast<unsigned 
+int>(string::npos)?size:limit);
         input_buffer.back(1+(size-limit));
         printUnknownWord(sf.substr(0, limit), output);
       }
@@ -1512,7 +1514,8 @@ FSTProcessor::SAO(FILE *input, FILE *output)
 
         unsigned int limit = sf.find(' ');
         unsigned int size = sf.size();
-        limit = (limit == string::npos?size:limit);
+        limit = (limit == static_cast<unsigned 
+int>(string::npos)?size:limit);
         input_buffer.back(1+(size-limit));
         fwrite_unlocked("<d>", 3, sizeof(char), output);
         fwrite_unlocked(sf.c_str(), limit, sizeof(char), output);
@@ -1523,7 +1526,8 @@ FSTProcessor::SAO(FILE *input, FILE *output)
 
         unsigned int limit = sf.find(' ');
         unsigned int size = sf.size();
-        limit = (limit == string::npos?size:limit);
+        limit = (limit == static_cast<unsigned 
+int>(string::npos)?size:limit);
         input_buffer.back(1+(size-limit));
         fwrite_unlocked("<d>", 3, sizeof(char), output);
         fwrite_unlocked(sf.c_str(), limit, sizeof(char), output);
