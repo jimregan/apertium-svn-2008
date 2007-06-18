@@ -24,6 +24,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import dics.elements.utils.EElementList;
 
@@ -48,6 +49,11 @@ public class SectionElement extends Element {
          * 
          */
     private EElementList eElements;
+    
+    /**
+     * 
+     */
+    protected ArrayList<String> includes;
 
     /**
          * 
@@ -56,6 +62,7 @@ public class SectionElement extends Element {
     public SectionElement() {
 	setTagName("section");
 	eElements = new EElementList();
+	includes = new ArrayList<String>();
     }
 
     /**
@@ -66,6 +73,7 @@ public class SectionElement extends Element {
     public SectionElement(final String id, final String type) {
 	setTagName("section");
 	eElements = new EElementList();
+	includes = new ArrayList<String>();
 	this.id = id;
 	this.type = type;
     }
@@ -141,7 +149,7 @@ public class SectionElement extends Element {
      * 
      * @param fileName
      */
-    public void printXML(final String fileName) {
+    public void printXMLXInclude(final String fileName) {
 	BufferedOutputStream bos;
 	FileOutputStream fos;
 	DataOutputStream dos;
@@ -152,7 +160,10 @@ public class SectionElement extends Element {
 	    dos = new DataOutputStream(bos);
 	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
 
-	    printXML(dos);
+		for (final EElement e : eElements) {
+		    e.printXML(dos);
+		}
+
 
 	    fos = null;
 	    bos = null;
@@ -171,6 +182,24 @@ public class SectionElement extends Element {
          */
     public final void setEElements(EElementList elements) {
 	eElements = elements;
+    }
+    
+    /**
+     * @param includes the includes to set
+     */
+    public final void setIncludes(ArrayList<String> includes) {
+        this.includes = includes;
+    }
+    
+    public final void addXInclude(String xinclude) {
+	this.includes.add(xinclude);
+    }
+
+    /**
+     * @return the includes
+     */
+    public final ArrayList<String> getIncludes() {
+        return includes;
     }
 
 }

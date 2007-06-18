@@ -171,9 +171,9 @@ public class ProcessDics {
 	}
 
 	if (getAction().equals("sort")) {
-	    if (getArguments().length != 4) {
+	    if (getArguments().length != 5) {
 		System.err
-			.println("Usage: java ProcessDics format <dic> <dic-formatted>");
+			.println("Usage: java ProcessDics sort <-mon|-bil> <-xinclude|-same-file> <dic> <dic-sorted>");
 		System.exit(-1);
 	    } else {
 		DicSort dicSort = new DicSort();

@@ -63,11 +63,6 @@ public class DictionaryElement extends Element {
     protected ArrayList<SectionElement> sections;
     
     /**
-     * 
-     */
-    protected ArrayList<String> includes;
-
-    /**
          * 
          */
     protected int nForeignEntries;
@@ -111,6 +106,11 @@ public class DictionaryElement extends Element {
          * 
          */
     private String targetLanguage;
+    
+    /**
+     * 
+     */
+    private String folder;
 
     /**
          * 
@@ -118,7 +118,6 @@ public class DictionaryElement extends Element {
          */
     public DictionaryElement() {
 	sections = new ArrayList<SectionElement>();
-	includes = new ArrayList<String>();
     }
 
     /**
@@ -128,7 +127,6 @@ public class DictionaryElement extends Element {
     public DictionaryElement(final EElementMap elementMap,
 	    final DictionaryElement dic) {
 	sections = new ArrayList<SectionElement>();
-	includes = new ArrayList<String>();
 	final SectionElement sectionElement = new SectionElement("main",
 		"standard");
 	addSection(sectionElement);
@@ -155,7 +153,6 @@ public class DictionaryElement extends Element {
          */
     public DictionaryElement(final DictionaryElement dic) {
 	sections = new ArrayList<SectionElement>();
-	includes = new ArrayList<String>();
 	final SectionElement sectionElement = new SectionElement("main",
 		"standard");
 	addSection(sectionElement);
@@ -463,16 +460,27 @@ public class DictionaryElement extends Element {
 	    if (alphabet != null) {
 		alphabet.printXML(dos);
 	    }
-	    if (sdefs != null) {
-		sdefs.printXML(dos);
-	    }
-	    if (pardefs != null) {
-		pardefs.printXML(dos);
-	    }
+	    dos.writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\"" + this.getFolder() + "/sdefs.xml\"/>\n");
+	    sdefs.printXML( this.getFolder() + "/sdefs.xml");
+	    dos.writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\"" + this.getFolder() + "/pardefs.xml\"/>\n");
+	    pardefs.printXML(this.getFolder() + "/pardefs.xml");
+	    
+	    for (SectionElement section : this.sections) {
+		ArrayList<String> includes = section.getIncludes();
+		String attributes = "";
+		if (section.getID() != null) {
+		    attributes += " id=\"" + section.getID() + "\"";
+		}
+		if (section.getType() != null) {
+		    attributes += " type=\"" + section.getType() + "\"";
+		}
+		dos.writeBytes(tab(1) + "<" + section.getTagName() + "" + attributes + ">\n");
 	    if (includes != null) {
 		for (final String s : includes) {
 		    dos.writeBytes("\t" + s + "\n");
 		}
+	    }
+		dos.writeBytes(tab(1) + "</" + section.getTagName() + ">\n");
 	    }
 	    dos.writeBytes("</dictionary>\n");
 	    fos = null;
@@ -710,21 +718,17 @@ public class DictionaryElement extends Element {
     }
 
     /**
-     * @return the includes
+     * @return the folder
      */
-    public final ArrayList<String> getIncludes() {
-        return includes;
+    public final String getFolder() {
+        return folder;
     }
 
     /**
-     * @param includes the includes to set
+     * @param folder the folder to set
      */
-    public final void setIncludes(ArrayList<String> includes) {
-        this.includes = includes;
-    }
-    
-    public final void addXInclude(String xinclude) {
-	this.includes.add(xinclude);
+    public final void setFolder(String folder) {
+        this.folder = folder;
     }
 
 }

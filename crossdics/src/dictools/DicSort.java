@@ -40,50 +40,60 @@ import dics.elements.utils.SElementList;
 public class DicSort {
 
     /**
-         * 
-         */
+     * 
+     */
     private DictionaryElement dic;
 
     /**
-         * 
-         */
+     * 
+     */
     private String[] arguments;
 
     /**
-         * 
-         */
+     * 
+     */
     public static final int BIL = 0;
 
     /**
-         * 
-         */
+     * 
+     */
     public static final int MON = 1;
 
     /**
-         * 
-         */
+     * 
+     */
+    private boolean xinclude;
+
+    /**
+     * 
+     */
     private int dicType;
 
     /**
-         * 
-         * 
-         */
+     * 
+     */
+    private String out;
+
+    /**
+     * 
+     * 
+     */
     public DicSort() {
 
     }
 
     /**
-         * 
-         * @param dic
-         */
+     * 
+     * @param dic
+     */
     public DicSort(final DictionaryElement dic) {
 	this.dic = dic;
     }
 
     /**
-         * 
-         * @return
-         */
+     * 
+     * @return
+     */
     public final DictionaryElement sort() {
 	DictionaryElement dicSorted = null;
 	System.out.println("Dictype: " + dicType);
@@ -94,40 +104,56 @@ public class DicSort {
 	if (this.dicType == MON) {
 	    dicSorted = sortMon();
 	}
-	
+
 	return dicSorted;
     }
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     public final void doSort() {
 	this.processArguments();
 	this.actionSort();
     }
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     private void processArguments() {
 	if (arguments[1].equals("-mon")) {
 	    this.dicType = MON;
 	} else {
 	    this.dicType = BIL;
 	}
-	DictionaryReader dicReader = new DictionaryReader(arguments[2]);
+
+	if (arguments[2].equals("-xinclude")) {
+	    this.setXinclude(true);
+	    System.out.println("XInclude mode");
+	} else {
+	    this.setXinclude(false);
+	}
+
+	DictionaryReader dicReader = new DictionaryReader(arguments[3]);
 	DictionaryElement dic = dicReader.readDic();
-	dic.setFileName(arguments[2]);
+	dic.setFileName(arguments[3]);
 	dicReader = null;
 	setDic(dic);
+
+	if (getArguments()[4].equals("out.dix")) {
+	    out = DicTools.removeExtension(getArguments()[4]);
+	    out = out + "-sorted.dix";
+	} else {
+	    out = getArguments()[4];
+	}
+
     }
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     public final void actionSort() {
 	DictionaryElement dicSorted = null;
 	//System.out.println("Dictype: " + dicType);
@@ -140,55 +166,49 @@ public class DicSort {
 	}
 
 	if (dicSorted != null) {
-	    String formattedFileName = "sorted-dic.dix";
-	    if (getArguments().length == 4) {
-		if (getArguments()[3].equals("out.dix")) {
-		    formattedFileName = DicTools
-			    .removeExtension(getArguments()[3]);
-		    formattedFileName = formattedFileName + "-sorted.dix";
-		} else {
-		    formattedFileName = getArguments()[3];
-		}
-		//dicSorted.printXMLXInclude(formattedFileName);
-		dicSorted.printXML(formattedFileName);
+	    dicSorted.setFolder(this.getOut() + "-includes");
+	    if (this.isXinclude()) {
+		dicSorted.printXMLXInclude(out);
+	    } else {
+		dicSorted.printXML(out);
 	    }
 	}
     }
 
     /**
-         * @return the dicFormatted
-         */
+     * @return the dicFormatted
+     */
     private final DictionaryElement getDic() {
 	return dic;
     }
 
     /**
-         * @param dicFormatted
-         *                the dicFormatted to set
-         */
+     * @param dicFormatted
+     *                the dicFormatted to set
+     */
     private final void setDic(DictionaryElement dic) {
 	this.dic = dic;
     }
 
     /**
-         * @return the arguments
-         */
+     * @return the arguments
+     */
     public final String[] getArguments() {
 	return arguments;
     }
 
     /**
-         * @param arguments
-         *                the arguments to set
-         */
+     * @param arguments
+     *                the arguments to set
+     */
     public final void setArguments(String[] arguments) {
 	this.arguments = arguments;
     }
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     private final DictionaryElement sortBil() {
 	int lrs = 0;
 	int rls = 0;
@@ -215,7 +235,7 @@ public class DicSort {
 		    if (sList.size() > 0) {
 			cat = (String) sList.get(0).getValue();
 		    } else {
-			cat = "(none)";
+			cat = "none";
 		    }
 		    EElementList l;
 		    if (map.containsKey(cat)) {
@@ -257,9 +277,9 @@ public class DicSort {
     }
 
     /**
-         * 
-         * @return
-         */
+     * 
+     * @return
+     */
     private final DictionaryElement sortMon() {
 	int lrs = 0;
 	int rls = 0;
@@ -273,19 +293,19 @@ public class DicSort {
 		for (EElement e : eList) {
 		    n++;
 		    String par = e.getParadigmValue();
-			if (e.hasRestriction()) {
-			    String r = e.getRestriction();
-			    if (r.equals("LR")) {
-				lrs++;
-			    }
-			    if (r.equals("RL")) {
-				rls++;
-			    }
+		    if (e.hasRestriction()) {
+			String r = e.getRestriction();
+			if (r.equals("LR")) {
+			    lrs++;
 			}
+			if (r.equals("RL")) {
+			    rls++;
+			}
+		    }
 
 		    String cat = null;
 		    if (par == null) {
-			cat = "(none)";
+			cat = "none";
 		    } else {
 			String[] aux = par.split("__");
 			if (aux.length == 2) {
@@ -293,6 +313,7 @@ public class DicSort {
 			} else {
 			    cat = par;
 			}
+			cat = cat.replaceAll("/", "-");
 		    }
 		    if (cat != null) {
 			EElementList l;
@@ -308,24 +329,32 @@ public class DicSort {
 		    }
 
 		}
-		    System.out.println("lemmas: " + n);
-		    System.out.println("LR: " + lrs);
-		    System.out.println("RL: " + rls);
+		System.out.println("lemmas: " + n);
+		System.out.println("LR: " + lrs);
+		System.out.println("RL: " + rls);
 
 		Set keySet = map.keySet();
 		Iterator it = keySet.iterator();
 
 		EElementList listAll = new EElementList();
-		boolean status = new File("categories").mkdir();
+		String folder = "";
+		if (this.isXinclude()) {
+		    folder = out + "-includes";
+		    boolean status = new File(folder).mkdir();
+		}
 		while (it.hasNext()) {
 		    DictionaryElement d = new DictionaryElement();
 		    SectionElement sec = new SectionElement();
 		    d.addSection(sec);
-		    
+
 		    String cat = (String) it.next();
 		    EElementList list = (EElementList) map.get(cat);
 		    System.out.println(cat + ": " + list.size());
-		    dic.addXInclude("<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\"" + "categories/" + cat + "-category.xml\"/>");
+		    if (this.isXinclude()) {
+			section
+				.addXInclude("<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
+					+ folder + "/" + cat + ".xml\"/>");
+		    }
 		    if (list.size() > 0) {
 			Collections.sort(list);
 			EElement eHead = list.get(0);
@@ -335,8 +364,10 @@ public class DicSort {
 			listAll.addAll(list);
 		    }
 		    sec.setEElements(list);
-		    sec.printXML( "categories/" + cat + "-category.dix");
-		    
+		    if (this.isXinclude()) {
+			sec.printXMLXInclude(folder + "/" + cat + ".dix");
+		    }
+
 		}
 		section.setEElements(listAll);
 	    }
@@ -348,13 +379,41 @@ public class DicSort {
      * @return the dicType
      */
     public final int getDicType() {
-        return dicType;
+	return dicType;
     }
 
     /**
      * @param dicType the dicType to set
      */
     public final void setDicType(int dicType) {
-        this.dicType = dicType;
+	this.dicType = dicType;
+    }
+
+    /**
+     * @return the xinclude
+     */
+    private final boolean isXinclude() {
+	return xinclude;
+    }
+
+    /**
+     * @param xinclude the xinclude to set
+     */
+    private final void setXinclude(boolean xinclude) {
+	this.xinclude = xinclude;
+    }
+
+    /**
+     * @return the out
+     */
+    private final String getOut() {
+	return out;
+    }
+
+    /**
+     * @param out the out to set
+     */
+    private final void setOut(String out) {
+	this.out = out;
     }
 }
