@@ -20,7 +20,9 @@
 
 package dics.elements.dtd;
 
+import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -63,6 +65,35 @@ public class PardefsElement extends Element {
 	}
 	dos.writeBytes(tab(1) + "</pardefs>\n\n");
     }
+    
+    /**
+     * 
+     * @param fileName
+     */
+    public void printXML(final String fileName) {
+	BufferedOutputStream bos;
+	FileOutputStream fos;
+	DataOutputStream dos;
+
+	try {
+	    fos = new FileOutputStream(fileName);
+	    bos = new BufferedOutputStream(fos);
+	    dos = new DataOutputStream(bos);
+	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
+
+	    printXML(dos);
+
+	    fos = null;
+	    bos = null;
+	    dos.close();
+	    dos = null;
+	} catch (final IOException e) {
+	    e.printStackTrace();
+	} catch (final Exception eg) {
+	    eg.printStackTrace();
+	}
+    }
+
 
     /**
          * 

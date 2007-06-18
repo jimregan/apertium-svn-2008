@@ -61,6 +61,11 @@ public class DictionaryElement extends Element {
          * 
          */
     protected ArrayList<SectionElement> sections;
+    
+    /**
+     * 
+     */
+    protected ArrayList<String> includes;
 
     /**
          * 
@@ -113,6 +118,7 @@ public class DictionaryElement extends Element {
          */
     public DictionaryElement() {
 	sections = new ArrayList<SectionElement>();
+	includes = new ArrayList<String>();
     }
 
     /**
@@ -122,6 +128,7 @@ public class DictionaryElement extends Element {
     public DictionaryElement(final EElementMap elementMap,
 	    final DictionaryElement dic) {
 	sections = new ArrayList<SectionElement>();
+	includes = new ArrayList<String>();
 	final SectionElement sectionElement = new SectionElement("main",
 		"standard");
 	addSection(sectionElement);
@@ -148,6 +155,7 @@ public class DictionaryElement extends Element {
          */
     public DictionaryElement(final DictionaryElement dic) {
 	sections = new ArrayList<SectionElement>();
+	includes = new ArrayList<String>();
 	final SectionElement sectionElement = new SectionElement("main",
 		"standard");
 	addSection(sectionElement);
@@ -419,6 +427,65 @@ public class DictionaryElement extends Element {
 	}
     }
 
+    public void printXMLXInclude(final String fileName) {
+	BufferedOutputStream bos;
+	FileOutputStream fos;
+	DataOutputStream dos;
+
+	setFileName(fileName);
+
+	try {
+	    fos = new FileOutputStream(fileName);
+	    bos = new BufferedOutputStream(fos);
+	    dos = new DataOutputStream(bos);
+	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
+	    dos.writeBytes("<!--\n\tDictionary:\n");
+	    if (sections != null) {
+		if (isBil()) {
+		    dos.writeBytes("\tBilingual dictionary: " + getSL() + "-"
+			    + getTL() + "\n");
+		}
+		dos.writeBytes("\tSections: " + sections.size() + "\n");
+		dos.writeBytes("\tEntries: "
+			+ (sections.get(0)).getEElements().size());
+	    }
+	    if (sdefs != null) {
+		dos.writeBytes("\n\tSdefs: " + sdefs.getSdefsElements().size()
+			+ "\n");
+	    }
+	    dos.writeBytes("");
+
+	    if (comments != null) {
+		dos.writeBytes(comments);
+	    }
+	    dos.writeBytes("\n-->\n");
+	    dos.writeBytes("<dictionary>\n");
+	    if (alphabet != null) {
+		alphabet.printXML(dos);
+	    }
+	    if (sdefs != null) {
+		sdefs.printXML(dos);
+	    }
+	    if (pardefs != null) {
+		pardefs.printXML(dos);
+	    }
+	    if (includes != null) {
+		for (final String s : includes) {
+		    dos.writeBytes("\t" + s + "\n");
+		}
+	    }
+	    dos.writeBytes("</dictionary>\n");
+	    fos = null;
+	    bos = null;
+	    dos.close();
+	    dos = null;
+	} catch (final IOException e) {
+	    e.printStackTrace();
+	} catch (final Exception eg) {
+	    eg.printStackTrace();
+	}
+    }
+
     /**
          * 
          * @return The 'e' elements
@@ -640,6 +707,24 @@ public class DictionaryElement extends Element {
 		}
 	    }
 	}
+    }
+
+    /**
+     * @return the includes
+     */
+    public final ArrayList<String> getIncludes() {
+        return includes;
+    }
+
+    /**
+     * @param includes the includes to set
+     */
+    public final void setIncludes(ArrayList<String> includes) {
+        this.includes = includes;
+    }
+    
+    public final void addXInclude(String xinclude) {
+	this.includes.add(xinclude);
     }
 
 }

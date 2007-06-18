@@ -20,6 +20,7 @@
 
 package dictools;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -118,6 +119,7 @@ public class DicSort {
 	}
 	DictionaryReader dicReader = new DictionaryReader(arguments[2]);
 	DictionaryElement dic = dicReader.readDic();
+	dic.setFileName(arguments[2]);
 	dicReader = null;
 	setDic(dic);
     }
@@ -147,6 +149,7 @@ public class DicSort {
 		} else {
 		    formattedFileName = getArguments()[3];
 		}
+		//dicSorted.printXMLXInclude(formattedFileName);
 		dicSorted.printXML(formattedFileName);
 	    }
 	}
@@ -187,14 +190,16 @@ public class DicSort {
          * 
          */
     private final DictionaryElement sortBil() {
+	int lrs = 0;
+	int rls = 0;
+	int n = 0;
+
 	for (SectionElement section : dic.getSections()) {
 	    EElementList eList = section.getEElements();
 	    HashMap<String, EElementList> map = new HashMap<String, EElementList>();
-		int lrs = 0;
-		int rls = 0;
 
 	    for (EElement e : eList) {
-		
+		n++;
 		SElementList sList = e.getSElements("L");
 		if (e.hasRestriction()) {
 		    String r = e.getRestriction();
@@ -224,7 +229,7 @@ public class DicSort {
 		    }
 		}
 	    }
-	    
+	    System.out.println("lemmas: " + n);
 	    System.out.println("LR: " + lrs);
 	    System.out.println("RL: " + rls);
 
@@ -256,14 +261,17 @@ public class DicSort {
          * @return
          */
     private final DictionaryElement sortMon() {
+	int lrs = 0;
+	int rls = 0;
+
+	int n = 0;
 	for (SectionElement section : dic.getSections()) {
 	    if (section.getID().equals("main")) {
 		EElementList eList = section.getEElements();
 		HashMap<String, EElementList> map = new HashMap<String, EElementList>();
-		int lrs = 0;
-		int rls = 0;
 
 		for (EElement e : eList) {
+		    n++;
 		    String par = e.getParadigmValue();
 			if (e.hasRestriction()) {
 			    String r = e.getRestriction();
@@ -300,6 +308,7 @@ public class DicSort {
 		    }
 
 		}
+		    System.out.println("lemmas: " + n);
 		    System.out.println("LR: " + lrs);
 		    System.out.println("RL: " + rls);
 
@@ -307,10 +316,16 @@ public class DicSort {
 		Iterator it = keySet.iterator();
 
 		EElementList listAll = new EElementList();
+		boolean status = new File("categories").mkdir();
 		while (it.hasNext()) {
+		    DictionaryElement d = new DictionaryElement();
+		    SectionElement sec = new SectionElement();
+		    d.addSection(sec);
+		    
 		    String cat = (String) it.next();
 		    EElementList list = (EElementList) map.get(cat);
 		    System.out.println(cat + ": " + list.size());
+		    dic.addXInclude("<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\"" + "categories/" + cat + "-category.xml\"/>");
 		    if (list.size() > 0) {
 			Collections.sort(list);
 			EElement eHead = list.get(0);
@@ -319,9 +334,11 @@ public class DicSort {
 			eHead.addComments("******************************");
 			listAll.addAll(list);
 		    }
+		    sec.setEElements(list);
+		    sec.printXML( "categories/" + cat + "-category.dix");
+		    
 		}
 		section.setEElements(listAll);
-
 	    }
 	}
 	return dic;
