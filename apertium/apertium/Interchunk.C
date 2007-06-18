@@ -248,6 +248,17 @@ Interchunk::collectMacros(xmlNode *localroot)
   }
 }
 
+bool
+Interchunk::checkIndex(xmlNode *element, int index, int limit)
+{
+  if(index >= limit)
+  {
+    cerr << "Error in " << doc->URL<<": line " << element->line << endl;
+    return false;
+  }
+  return true;
+}
+
 string 
 Interchunk::evalString(xmlNode *element)
 {
@@ -259,7 +270,11 @@ Interchunk::evalString(xmlNode *element)
     switch(ti.getType())
     {
       case ti_clip_tl:
-        return word[ti.getPos()]->chunkPart(ti.getContent().c_str());
+        if(checkIndex(element, ti.getPos(), lword))
+        {
+          return word[ti.getPos()]->chunkPart(ti.getContent().c_str());
+        }
+        break;
 
       case ti_var:
         return variables[ti.getContent()];
@@ -269,22 +284,35 @@ Interchunk::evalString(xmlNode *element)
         return ti.getContent();
         
       case ti_b:
-        if(ti.getPos() >= 0)
+        if(checkIndex(element, ti.getPos(), lblank))
         {
-          return !blank?"":*(blank[ti.getPos()]);
+          if(ti.getPos() >= 0)
+          {
+            return !blank?"":*(blank[ti.getPos()]);
+          }
+          return " ";
         }
-        return " ";
-        
+        break;
+          
       case ti_get_case_from:
-        return copycase(word[ti.getPos()]->chunkPart(ti.getContent().c_str()),
-                        evalString((xmlNode *) ti.getPointer()));
+        if(checkIndex(element, ti.getPos(), lword))
+        {
+          return copycase(word[ti.getPos()]->chunkPart(ti.getContent().c_str()),
+                          evalString((xmlNode *) ti.getPointer()));
+        }
+        break;
       
       case ti_case_of_tl:
-        return caseOf(word[ti.getPos()]->chunkPart(ti.getContent().c_str()));
+        if(checkIndex(element, ti.getPos(), lword))
+        {
+          return caseOf(word[ti.getPos()]->chunkPart(ti.getContent().c_str()));
+        }
+        break;
       
       default:
         return "";
     }
+    return "";
   }
 
   if(!xmlStrcmp(element->name, (const xmlChar *) "clip"))
@@ -1323,13 +1351,16 @@ Interchunk::applyRule()
     if(i == 0)
     {
       word = new InterchunkWord *[limit];
+      lword = limit;
       if(limit != 1)
       {
         blank = new string *[limit - 1];
+	lblank = limit - 1;
       }
       else
       {
         blank = NULL;
+        lblank = 0;
       }
     }
     else

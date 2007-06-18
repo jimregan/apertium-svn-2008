@@ -279,6 +279,17 @@ Transfer::collectMacros(xmlNode *localroot)
   }
 }
 
+bool
+Transfer::checkIndex(xmlNode *element, int index, int limit)
+{
+  if(index >= limit)
+  {
+    cerr << "Error in " << doc->URL<<": line " << element->line << endl;
+    return false;
+  }
+  return true;
+}
+
 string 
 Transfer::evalString(xmlNode *element)
 {
@@ -290,30 +301,34 @@ Transfer::evalString(xmlNode *element)
     switch(ti.getType())
     {
       case ti_clip_sl:
-        return word[ti.getPos()]->source(ti.getContent().c_str(), ti.getCondition());
+        if(checkIndex(element, ti.getPos(), lword))
+        {
+          return word[ti.getPos()]->source(ti.getContent().c_str(), ti.getCondition());
+        }
+        break;
 
       case ti_clip_tl:
-        return word[ti.getPos()]->target(ti.getContent().c_str(), ti.getCondition());
+        if(checkIndex(element, ti.getPos(), lword))
+        {	
+          return word[ti.getPos()]->target(ti.getContent().c_str(), ti.getCondition());
+        }
+        break;
       
       case ti_linkto_sl:
-        if(word[ti.getPos()]->source(ti.getContent().c_str(), ti.getCondition()) != "")
+        if(checkIndex(element, ti.getPos(), lword) &&
+           word[ti.getPos()]->source(ti.getContent().c_str(), ti.getCondition()) != "")
         {
           return "<" + XMLParseUtil::latin1((xmlChar *) ti.getPointer()) + ">";
         }        
-        else
-        {
-          return "";
-        }
+        break;
       
       case ti_linkto_tl:
-        if(word[ti.getPos()]->target(ti.getContent().c_str(), ti.getCondition()) != "")
+        if(checkIndex(element, ti.getPos(), lword) &&
+           word[ti.getPos()]->target(ti.getContent().c_str(), ti.getCondition()) != "")
         {
           return "<" + XMLParseUtil::latin1((xmlChar *) ti.getPointer()) + ">";
         }        
-        else
-        {
-          return "";
-        }
+        break;
 
       case ti_var:
         return variables[ti.getContent()];
@@ -323,25 +338,43 @@ Transfer::evalString(xmlNode *element)
         return ti.getContent();
         
       case ti_b:
-        if(ti.getPos() >= 0)
+        if(checkIndex(element, ti.getPos(), lblank))
         {
-          return !blank?"":*(blank[ti.getPos()]);
+          if(ti.getPos() >= 0)
+          {
+            return !blank?"":*(blank[ti.getPos()]);
+          }
+          return " ";
         }
-        return " ";
+        break;
         
       case ti_get_case_from:
-        return copycase(word[ti.getPos()]->source(ti.getContent().c_str()),
-                        evalString((xmlNode *) ti.getPointer()));
+        if(checkIndex(element, ti.getPos(), lword))
+        {
+          return copycase(word[ti.getPos()]->source(ti.getContent().c_str()),
+                          evalString((xmlNode *) ti.getPointer()));
+        }
+        break;
       
       case ti_case_of_sl:
-        return caseOf(word[ti.getPos()]->source(ti.getContent().c_str()));
+        if(checkIndex(element, ti.getPos(), lword))
+        {	
+          return caseOf(word[ti.getPos()]->source(ti.getContent().c_str()));
+        }
+        break;
       
       case ti_case_of_tl:
-        return caseOf(word[ti.getPos()]->target(ti.getContent().c_str()));
+        if(checkIndex(element, ti.getPos(), lword))
+        {	
+          return caseOf(word[ti.getPos()]->target(ti.getContent().c_str()));
+        }
+        break;
       
       default:
         return "";
     }
+
+    return "";
   }
 
   if(!xmlStrcmp(element->name, (const xmlChar *) "clip"))
@@ -1687,9 +1720,11 @@ Transfer::applyRule()
     if(i == 0)
     {
       word = new TransferWord *[limit];
+      lword = limit;
       if(limit != 1)
       {
         blank = new string *[limit - 1];
+        lblank = limit - 1;
       }
       else
       {

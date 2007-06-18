@@ -54,6 +54,7 @@ private:
   xmlNode *root_element;
   InterchunkWord **word;
   string **blank;
+  int lword, lblank;
   Buffer<TransferToken> input_buffer;
   vector<string *> tmpword;
   vector<string *> tmpblank;
@@ -114,6 +115,8 @@ private:
 				  vector<string *> &blanks);
   static string pseudolemma(string const &chunk);
   static string wordzero(string const &chunk);
+
+  bool checkIndex(xmlNode *element, int index, int limit);
 public:
   Postchunk();
   ~Postchunk();
