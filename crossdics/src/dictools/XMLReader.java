@@ -304,7 +304,7 @@ public class XMLReader {
 		    final Element childElement = (Element) child;
 		    final String tag = childElement.getNodeName();
 		    text += processTagText(tag, child);
-		    final dics.elements.dtd.Element element = processTagE(tag,
+		    dics.elements.dtd.Element element = processTagE(tag,
 			    child);
 		    cElement.addChild(element);
 		}

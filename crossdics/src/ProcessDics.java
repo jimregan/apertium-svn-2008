@@ -110,6 +110,30 @@ public class ProcessDics {
 	    }
 	}
 
+	if (getAction().equals("merge-morph")) {
+	    if (getArguments().length < 6) {
+		System.err
+			.println("Usage: java ProcessDics merge-morph -monA1 monA1.dix -monA2 monA2.dix -out merged.dix");
+		System.exit(-1);
+	    } else {
+		DicMerge dicMerge = new DicMerge();
+		dicMerge.setArguments(this.getArguments());
+		dicMerge.doMergeMorph();
+	    }
+	}
+
+	if (getAction().equals("merge-bil")) {
+	    if (getArguments().length < 6) {
+		System.err
+			.println("Usage: java ProcessDics merge-morph -bilAB1 bilAb1.dix -bilAB2 bilAB2.dix -out merged.dix");
+		System.exit(-1);
+	    } else {
+		DicMerge dicMerge = new DicMerge();
+		dicMerge.setArguments(this.getArguments());
+		dicMerge.doMergeBil();
+	    }
+	}
+
 	if (getAction().equals("cross")) {
 	    if (getArguments().length < 8) {
 		System.err

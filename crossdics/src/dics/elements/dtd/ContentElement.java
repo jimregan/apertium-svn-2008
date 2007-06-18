@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import dics.elements.utils.ElementList;
 import dics.elements.utils.SElementList;
+import dics.elements.dtd.Element;
 
 /**
  * 

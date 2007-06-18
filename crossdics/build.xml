@@ -22,6 +22,7 @@
 	<property name="out" value="apertium-aa-cc.aa-sorted.dix" />
 	
 	<!-- Dictionaries to merge -->
+	<!--
 	<property name="bil-AB1" value="${dics.dir}/apertium-aa-bb.aa-bb-1.dix" />
 	<property name="mod-AB1" value="-n" />	
 	<property name="monol-A1" value="${dics.dir}/apertium-aa-bb.aa-1.dix" />
@@ -31,6 +32,7 @@
 	<property name="mod-AB2" value="-n" />
 	<property name="monol-A2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
 	<property name="monol-B2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
+	-->
 	
 	<!-- EXAMPLES -->
 	<!-- Dictionaries to cross (ca-pt example) -->
@@ -155,7 +157,7 @@
 	<!-- Sort -->
 	<target name="sort" depends="compile">
 		<echo message="Sorting '${dic}'..." />
-		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true">
 			<jvmarg value="-Xms${minMem}m" />
 			<jvmarg value="-Xmx${maxMem}m" />
 			<arg value="sort" />
@@ -164,7 +166,6 @@
 			<arg value="${out}" />
 		</java>
 		<antcall target="clean" />
-		<echo message="Log in '${docs.dir}/${outputFile}'" />
 		<echo message="Done!" />
 	</target>
 
@@ -295,7 +296,7 @@
 			<arg value="${mod-AB1}" />			
 			<arg value="${bil-AB1}" />
 
-			<arg value="-monA" />
+			<arg value="-monA1" />
 			<arg value="${monol-A1}" />
 			
 			<arg value="-monB" />
@@ -311,6 +312,64 @@
 			
 			<arg value="-monB2" />
 			<arg value="${monol-B2}" />
+			
+		</java>
+		<antcall target="clean" />
+		<echo message="Results in '${log.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Merge-morph action -->
+	<target name="merge-morph" depends="compile">
+		<echo message="Merging morphological dictionaries..." />
+		<echo message="  ${monol-A1}" />	
+		<echo message="  ${monol-A2}" />	
+		<echo message="  ${out}" />	
+
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="merge-morph" />
+
+			<arg value="-monA1" />
+			<arg value="${monol-A1}" />
+			
+			<arg value="-monA2" />
+			<arg value="${monol-A2}" />
+			
+			<arg value="-out" />
+			<arg value="${out}" />
+			
+		</java>
+		<antcall target="clean" />
+		<echo message="Results in '${log.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Merge-bil action -->
+	<target name="merge-bil" depends="compile">
+		<echo message="Merging bilingual dictionaries..." />
+		<echo message="  ${bil-AB1}" />
+		<echo message="  ${mod-AB1}" />		
+		<echo message="  ${bil-AB2}" />
+		<echo message="  ${mod-AB2}" />	
+		<echo message="  ${out}" />	
+
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="merge-bil" />
+
+			<arg value="-bilAB1" />
+			<arg value="${mod-AB1}" />			
+			<arg value="${bil-AB1}" />
+			
+			<arg value="-bilAB2" />
+			<arg value="${mod-AB2}" />			
+			<arg value="${bil-AB2}" />
+			
+			<arg value="-out" />
+			<arg value="${out}" />
 			
 		</java>
 		<antcall target="clean" />

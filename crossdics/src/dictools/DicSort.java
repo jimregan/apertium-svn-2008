@@ -51,12 +51,12 @@ public class DicSort {
     /**
          * 
          */
-    private final int BIL = 0;
+    public static final int BIL = 0;
 
     /**
          * 
          */
-    private final int MON = 1;
+    public static final int MON = 1;
 
     /**
          * 
@@ -84,8 +84,17 @@ public class DicSort {
          * @return
          */
     public final DictionaryElement sort() {
-	Collections.sort(dic.getEntries());
-	return dic;
+	DictionaryElement dicSorted = null;
+	System.out.println("Dictype: " + dicType);
+	if (this.dicType == BIL) {
+	    dicSorted = sortBil();
+	}
+
+	if (this.dicType == MON) {
+	    dicSorted = sortMon();
+	}
+	
+	return dicSorted;
     }
 
     /**
@@ -117,9 +126,9 @@ public class DicSort {
          * 
          * 
          */
-    private final void actionSort() {
+    public final void actionSort() {
 	DictionaryElement dicSorted = null;
-	System.out.println("Dictype: " + dicType);
+	//System.out.println("Dictype: " + dicType);
 	if (this.dicType == BIL) {
 	    dicSorted = sortBil();
 	}
@@ -181,9 +190,21 @@ public class DicSort {
 	for (SectionElement section : dic.getSections()) {
 	    EElementList eList = section.getEElements();
 	    HashMap<String, EElementList> map = new HashMap<String, EElementList>();
+		int lrs = 0;
+		int rls = 0;
 
 	    for (EElement e : eList) {
+		
 		SElementList sList = e.getSElements("L");
+		if (e.hasRestriction()) {
+		    String r = e.getRestriction();
+		    if (r.equals("LR")) {
+			lrs++;
+		    }
+		    if (r.equals("RL")) {
+			rls++;
+		    }
+		}
 		String cat;
 		if (sList != null) {
 		    if (sList.size() > 0) {
@@ -203,6 +224,9 @@ public class DicSort {
 		    }
 		}
 	    }
+	    
+	    System.out.println("LR: " + lrs);
+	    System.out.println("RL: " + rls);
 
 	    Set keySet = map.keySet();
 	    Iterator it = keySet.iterator();
@@ -211,6 +235,7 @@ public class DicSort {
 	    while (it.hasNext()) {
 		String cat = (String) it.next();
 		EElementList list = (EElementList) map.get(cat);
+		System.out.println(cat + ": " + list.size());
 		if (list.size() > 0) {
 		    Collections.sort(list);
 		    EElement eHead = list.get(0);
@@ -235,9 +260,20 @@ public class DicSort {
 	    if (section.getID().equals("main")) {
 		EElementList eList = section.getEElements();
 		HashMap<String, EElementList> map = new HashMap<String, EElementList>();
+		int lrs = 0;
+		int rls = 0;
 
 		for (EElement e : eList) {
 		    String par = e.getParadigmValue();
+			if (e.hasRestriction()) {
+			    String r = e.getRestriction();
+			    if (r.equals("LR")) {
+				lrs++;
+			    }
+			    if (r.equals("RL")) {
+				rls++;
+			    }
+			}
 
 		    String cat = null;
 		    if (par == null) {
@@ -264,6 +300,8 @@ public class DicSort {
 		    }
 
 		}
+		    System.out.println("LR: " + lrs);
+		    System.out.println("RL: " + rls);
 
 		Set keySet = map.keySet();
 		Iterator it = keySet.iterator();
@@ -272,6 +310,7 @@ public class DicSort {
 		while (it.hasNext()) {
 		    String cat = (String) it.next();
 		    EElementList list = (EElementList) map.get(cat);
+		    System.out.println(cat + ": " + list.size());
 		    if (list.size() > 0) {
 			Collections.sort(list);
 			EElement eHead = list.get(0);
@@ -286,5 +325,19 @@ public class DicSort {
 	    }
 	}
 	return dic;
+    }
+
+    /**
+     * @return the dicType
+     */
+    public final int getDicType() {
+        return dicType;
+    }
+
+    /**
+     * @param dicType the dicType to set
+     */
+    public final void setDicType(int dicType) {
+        this.dicType = dicType;
     }
 }
