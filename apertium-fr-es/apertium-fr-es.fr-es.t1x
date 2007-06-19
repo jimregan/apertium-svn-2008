@@ -6618,6 +6618,49 @@
 	</action>
 </rule>
 
+<rule comment="REGLA:en train de -> ger">
+	<pattern>
+		<pattern-item n="en"/>
+		<pattern-item n="train"/>
+		<pattern-item n="de"/>
+		<pattern-item n="inf"/>
+	</pattern>
+	<action>
+		<call-macro n="tipus_verb">
+			<with-param pos="4"/>
+		</call-macro>
+		<out>
+			<chunk name="ger" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="SV"/></tag>
+					<tag><clip pos="4" side="tl" part="a_verb"/></tag>
+					<tag><clip pos="4" side="tl" part="temps"/></tag>
+					<tag><clip pos="4" side="tl" part="pers"/></tag>
+					<tag><clip pos="4" side="tl" part="nbr"/></tag>
+					<tag><var n="tipusverb"/></tag>
+				</tags>
+				<lu>
+					<clip pos="4" side="tl" part="lemh"/>
+					<clip pos="4" side="tl" part="a_verb"/>
+					<lit-tag v="ger"/>
+				<clip pos="4" side="tl" part="lemq"/>
+				</lu>
+			</chunk>
+		</out>
+		<call-macro n="f_bcond">
+			<with-param pos="2"/>
+		</call-macro>
+		<call-macro n="f_bcond">
+			<with-param pos="3"/>
+		</call-macro>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+
 <rule comment="REGLA: être en train de -> estar ger">
 	<pattern>
 		<pattern-item n="vbser"/>
