@@ -29,20 +29,25 @@ CROSSING DICTIONARIES
 
 5) Edit build.xml and indicate the set of dictionaries as follows:
 
-	<property name="bil-AB"  value="apertium-bb-aa.bb-aa.dix" />
-	<property name="bil-BC"  value="apertium-bb-cc.bb-cc.dix" />
-	<property name="monol-A" value="apertium-bb-aa.aa.dix" />
-	<property name="monol-C" value="apertium-bb-cc.cc.dix" />
-	<property name="mod-AB"  value="-n" />
+	<property name="bil-AB" value="${dics.dir}/apertium-bb-aa.bb-aa.dix"/>
+	<property name="bil-BC" value="${dics.dir}/apertium-bb-cc.bb-cc.dix"/>
+	<property name="monol-A" value="${dics.dir}/apertium-bb-aa.aa.dix"/>
+	<property name="monol-C" value="${dics.dir}/apertium-bb-cc.cc.dix"/>
+	<property name="mod-AB" value="-n" />
 	<property name="mod-BC" value="-n" />
+	<property name="cross-model" value="schemas/cross-model-test.xml" />
 	
 	Note:	use "-r" instead of "-n" if the dictionary has to be reversed.
 		(apertium-aa-bb.aa-bb.dix to apertium-bb-aa.bb-aa.dix)
 
-	Do "ant help" to know how to use the command line instead of editing
-build.xml.
+	or
 
-6) Edit schemas/cross-model-test.xml file and customize the patterns if needed.
+	Use the 'cross-dics' script:
+
+	cross-dics <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> [<cross-model>]
+
+
+6) Edit schemas/cross-model-test.xml (default) file and customize the patterns if needed.
 
 7) Use the tool:
 
@@ -82,6 +87,6 @@ SORTING DICTIONARIES
 --------------------
 1) How to sort a dictionary (and group by category)
 
-   $ ant sort -Ddic=apertium-aa-bb.aa.dix -Ddic-type=-mon -Dout=sorted.dix
+   $ ./sort <-bil|-mon> <-xinclude|-same-file> <dic.dix> <out.dix>
 
-   * -Ddic-type=-bil for bilingual dictionaries.
+
