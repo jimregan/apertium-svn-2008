@@ -18,18 +18,12 @@
  * 02111-1307, USA.
  */
 
-import dics.elements.dtd.DictionaryElement;
-import dics.elements.utils.DicSet;
-import dics.elements.utils.DictionaryElementList;
-import dics.elements.utils.EElementList;
 import dictools.DicConsistent;
 import dictools.DicCross;
 import dictools.DicFormat;
 import dictools.DicMerge;
 import dictools.DicReverse;
 import dictools.DicSort;
-import dictools.DicTools;
-import dictools.DictionaryReader;
 
 /**
  * 
@@ -93,7 +87,7 @@ public class ProcessDics {
 		System.exit(-1);
 	    } else {
 		DicConsistent dicConsistent = new DicConsistent();
-		dicConsistent.setArguments(this.getArguments());
+		dicConsistent.setArguments(getArguments());
 		dicConsistent.doConsistent();
 	    }
 	}
@@ -105,7 +99,7 @@ public class ProcessDics {
 		System.exit(-1);
 	    } else {
 		DicMerge dicMerge = new DicMerge();
-		dicMerge.setArguments(this.getArguments());
+		dicMerge.setArguments(getArguments());
 		dicMerge.doMerge();
 	    }
 	}
@@ -117,7 +111,7 @@ public class ProcessDics {
 		System.exit(-1);
 	    } else {
 		DicMerge dicMerge = new DicMerge();
-		dicMerge.setArguments(this.getArguments());
+		dicMerge.setArguments(getArguments());
 		dicMerge.doMergeMorph();
 	    }
 	}
@@ -129,7 +123,7 @@ public class ProcessDics {
 		System.exit(-1);
 	    } else {
 		DicMerge dicMerge = new DicMerge();
-		dicMerge.setArguments(this.getArguments());
+		dicMerge.setArguments(getArguments());
 		dicMerge.doMergeBil();
 	    }
 	}
@@ -141,7 +135,7 @@ public class ProcessDics {
 		System.exit(-1);
 	    } else {
 		DicCross dicCross = new DicCross();
-		dicCross.setArguments(this.getArguments());
+		dicCross.setArguments(getArguments());
 		dicCross.doCross();
 	    }
 	}

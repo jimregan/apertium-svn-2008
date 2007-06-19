@@ -146,7 +146,9 @@ public class DictionaryReader extends XMLReader {
          */
     public SdefElement readSdef(final Element e) {
 	final String n = getAttributeValue(e, "n");
+	final String c = getAttributeValue(e, "c");
 	final SdefElement sdefElement = new SdefElement(n);
+	sdefElement.setComment(c);
 	return sdefElement;
     }
 

@@ -156,6 +156,11 @@ public class DicCross {
 
     /**
          * 
+         */
+    private int NDcounter;
+
+    /**
+         * 
          * 
          */
     public DicCross() {
@@ -255,6 +260,7 @@ public class DicCross {
 
 	if (isCrossWithPatterns()) {
 	    getNDCrossModel().printXML("dix/ND-cross-model.xml");
+	    // System.out.println("ND-all: " + this.NDcounter);
 	}
 
 	dics[0] = dic;
@@ -318,6 +324,20 @@ public class DicCross {
 	    if (!sdefList.containsKey(sdef2.getValue())) {
 		sdefList.put(sdef2.getValue(), sdef2);
 	    } else {
+		SdefElement sdef1 = sdefList.get(sdef2.getValue());
+
+		if ((sdef1.getComment() != null)
+			&& (sdef2.getComment() == null)) {
+		    sdef2.setComment(sdef1.getComment());
+		}
+
+		if ((sdef1.getComment() != null)
+			&& (sdef2.getComment() != null)) {
+		    if (!sdef1.getComment().equals(sdef2.getComment())) {
+			sdef2.setComment(sdef1.getComment() + "/"
+				+ sdef2.getComment());
+		    }
+		}
 		sdefList.put(sdef2.getValue(), sdef2);
 	    }
 	}
@@ -510,7 +530,18 @@ public class DicCross {
 	    // elementList.add(actionE);
 	    return actionEList;
 	} else {
-	    insertNDCrossAction(crossAction);
+	    int iR = resolveRestriction(e1.reverse().getRestriction(), e2
+		    .getRestriction());
+
+	    if (iR != NONE) {
+		String cat1 = e1.getCategory("L");
+		String cat2 = e2.getCategory("L");
+		if ((cat1 != null) && (cat2 != null)) {
+		    if (cat1.equals(cat2)) {
+			insertNDCrossAction(crossAction);
+		    }
+		}
+	    }
 	    return null;
 	}
     }
@@ -537,7 +568,7 @@ public class DicCross {
 		EElement actionE = assignValues(e1, e2, eAction, entries);
 		actionE.setRestriction(restriction);
 
-		// comments & author
+		// cross comments & author
 		final String author = mergeAttributes(e1.getAuthor(), e2
 			.getAuthor());
 		actionE.setAuthor(author);
@@ -854,6 +885,10 @@ public class DicCross {
 	if (!nDCrossActions.containsKey(cA.getPattern().toString())) {
 	    nDCrossActions.put(cA.getPattern().toString(), cA);
 	    nDCrossModel.addCrossAction(cA);
+	} else {
+	    CrossAction ca = nDCrossActions.get(cA.getPattern().toString());
+	    ca.incrementOccurrences();
+	    NDcounter++;
 	}
     }
 
@@ -893,7 +928,7 @@ public class DicCross {
          * @param dicSet
          */
     private final void actionCross() {
-	DicSet dicSet = this.getDicSet();
+	DicSet dicSet = getDicSet();
 	actionConsistent(dicSet, "yes");
 
 	final DicCross dc = new DicCross();
@@ -1071,7 +1106,7 @@ public class DicCross {
 	final DictionaryElement mon2 = DicTools.readMonolingual(sDicMonC);
 
 	DicSet dicSet = new DicSet(mon1, bil1, mon2, bil2);
-	this.setDicSet(dicSet);
+	setDicSet(dicSet);
     }
 
     /**

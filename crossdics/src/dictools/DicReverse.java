@@ -23,7 +23,6 @@ package dictools;
 import java.util.Collections;
 
 import dics.elements.dtd.DictionaryElement;
-import dics.elements.utils.DicSet;
 
 /**
  * 
@@ -85,7 +84,7 @@ public class DicReverse {
 	DictionaryReader dicReader = new DictionaryReader(arguments[1]);
 	DictionaryElement bil = dicReader.readDic();
 	dicReader = null;
-	this.setDicOrig(bil);
+	setDicOrig(bil);
     }
 
     /**
@@ -93,8 +92,8 @@ public class DicReverse {
          * 
          */
     public final void doReverse() {
-	this.processArguments();
-	this.actionReverse();
+	processArguments();
+	actionReverse();
     }
 
     /**
@@ -102,7 +101,7 @@ public class DicReverse {
          * 
          */
     public final void actionReverse() {
-	DictionaryElement bil = this.reverse();
+	DictionaryElement bil = reverse();
 	String reverseFileName = "reversed-dic.dix";
 	if (getArguments().length == 3) {
 	    if (getArguments()[2].equals("out.dix")) {

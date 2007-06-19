@@ -35,7 +35,7 @@ import dics.elements.utils.ElementList;
  * @author Enrique Benimeli Bofarull
  * 
  */
-public class CrossAction {
+public class CrossAction implements Comparable<CrossAction> {
 
     /**
          * 
@@ -56,6 +56,11 @@ public class CrossAction {
          * 
          */
     private ActionSet actionSet;
+
+    /**
+         * 
+         */
+    private int occurrences;
 
     /**
          * 
@@ -166,7 +171,9 @@ public class CrossAction {
 	if (actionSet != null) {
 	    getActionSet().printXML(dos);
 	}
-	dos.writeBytes("</cross-action>\n\n");
+	dos.writeBytes("</cross-action>\n");
+	dos.writeBytes("<!-- " + getOccurrences()
+		+ " entries like this -->\n\n");
     }
 
     /**
@@ -397,4 +404,55 @@ public class CrossAction {
 	this.actionSet = actionSet;
 	actionSet.setName(getId());
     }
+
+    /**
+         * @return the occurrences
+         */
+    public final int getOccurrences() {
+	return occurrences;
+    }
+
+    /**
+         * @param occurrences
+         *                the occurrences to set
+         */
+    public final void setOccurrences(int occurrences) {
+	this.occurrences = occurrences;
+    }
+
+    /**
+         * 
+         * 
+         */
+    public final void incrementOccurrences() {
+	occurrences++;
+    }
+
+    /**
+         * 
+         */
+    public int compareTo(final CrossAction anotherEElement)
+	    throws ClassCastException {
+
+	if (anotherEElement == null) {
+	    return -1;
+	}
+
+	if (!(anotherEElement instanceof CrossAction)) {
+	    throw new ClassCastException("A CrossAction object expected.");
+	}
+
+	final int occ1 = getOccurrences();
+
+	final int occ2 = (anotherEElement).getOccurrences();
+
+	if (occ1 == occ2) {
+	    return 0;
+	}
+	if (occ1 > occ2) {
+	    return -1;
+	}
+	return 1;
+    }
+
 }

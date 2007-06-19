@@ -37,6 +37,11 @@ public class SdefElement extends Element {
 
     /**
          * 
+         */
+    private String comment;
+
+    /**
+         * 
          * @param value
          */
     public SdefElement(final String value) {
@@ -63,8 +68,13 @@ public class SdefElement extends Element {
 	if (comments == null) {
 	    setComments("");
 	}
+	String comment = "";
+	if (this.comment != null) {
+	    comment = "\tc=\"" + getComment() + "\"";
+
+	}
 	dos.writeBytes(tab(2) + "<" + getTagName() + " n=\"" + getValue()
-		+ "\"/> " + getComments() + "\n");
+		+ "\" " + comment + "/> " + getComments() + "\n");
     }
 
     /**
@@ -74,6 +84,21 @@ public class SdefElement extends Element {
     public final String toString() {
 	final String str = "<" + getValue() + ">";
 	return str;
+    }
+
+    /**
+         * @return the comment
+         */
+    public final String getComment() {
+	return comment;
+    }
+
+    /**
+         * @param comment
+         *                the comment to set
+         */
+    public final void setComment(String comment) {
+	this.comment = comment;
     }
 
 }

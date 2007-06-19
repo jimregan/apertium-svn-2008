@@ -81,7 +81,7 @@ public class SdefsElement extends Element {
 	for (final SdefElement e : sdefsElements) {
 	    final String d = descriptions.get(e.getValue());
 	    if (d != null) {
-		e.setComments("\t<!-- " + d + "-->");
+		// e.setComments("\t<!-- " + d + "-->");
 	    }
 	    e.printXML(dos);
 	}
@@ -93,7 +93,7 @@ public class SdefsElement extends Element {
 	    dos.writeBytes(tab(1) + " -->\n");
 	}
     }
-    
+
     public void printXML(final String fileName) {
 	BufferedOutputStream bos;
 	FileOutputStream fos;
@@ -117,7 +117,6 @@ public class SdefsElement extends Element {
 	    eg.printStackTrace();
 	}
     }
-
 
     /**
          * 

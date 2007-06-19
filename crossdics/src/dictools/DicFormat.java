@@ -71,8 +71,8 @@ public class DicFormat {
          * 
          */
     public final void doFormat() {
-	this.processArguments();
-	this.actionFormat();
+	processArguments();
+	actionFormat();
     }
 
     /**
@@ -83,7 +83,7 @@ public class DicFormat {
 	DictionaryReader dicReader = new DictionaryReader(arguments[1]);
 	DictionaryElement dic = dicReader.readDic();
 	dicReader = null;
-	this.setDicFormatted(dic);
+	setDicFormatted(dic);
     }
 
     /**
@@ -103,13 +103,6 @@ public class DicFormat {
 	    }
 	    dicFormatted.printXML(formattedFileName);
 	}
-    }
-
-    /**
-         * @return the dicFormatted
-         */
-    private final DictionaryElement getDicFormatted() {
-	return dicFormatted;
     }
 
     /**

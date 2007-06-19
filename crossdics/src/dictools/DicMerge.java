@@ -85,15 +85,15 @@ public class DicMerge {
          * 
          */
     private DicSet dicSet2;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private DicSet merged;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String sOut;
 
     /**
@@ -142,10 +142,10 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param morph1FileName
-     * @param morph2FileName
-     */
+         * 
+         * @param morph1FileName
+         * @param morph2FileName
+         */
     public final void setMonAs(final String morph1FileName,
 	    final String morph2FileName) {
 	DictionaryReader dicReader1 = new DictionaryReader(morph1FileName);
@@ -476,22 +476,22 @@ public class DicMerge {
          * 
          */
     public final void doMerge() {
-	this.processArguments();
-	this.actionMerge();
+	processArguments();
+	actionMerge();
     }
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void doMergeMorph() {
-	this.processArgumentsMorph();
-	this.mergeMorph();
+	processArgumentsMorph();
+	mergeMorph();
     }
 
     public final void doMergeBil() {
-	this.processArgumentsBil();
-	this.mergeBil();
+	processArgumentsBil();
+	mergeBil();
     }
 
     /**
@@ -500,7 +500,7 @@ public class DicMerge {
          */
     public final void actionMerge() {
 	final DicSet dicSet = merge();
-	//setMerged(dicSet);
+	// setMerged(dicSet);
 	final DictionaryElement bil = dicSet.getBil1();
 	final DictionaryElement monA = dicSet.getMon1();
 	final DictionaryElement monB = dicSet.getMon2();
@@ -601,38 +601,38 @@ public class DicMerge {
 	final DictionaryElement monA1 = DicTools.readMonolingual(sDicMonA1);
 	final DictionaryElement monB1 = DicTools.readMonolingual(sDicMonB1);
 	final DicSet dicSet1 = new DicSet(bilAB1, monA1, monB1);
-	this.setDicSet1(dicSet1);
-	this.setBilAB1(bilAB1);
-	this.setMonA1(monA1);
-	this.setMonB1(monB1);
+	setDicSet1(dicSet1);
+	setBilAB1(bilAB1);
+	setMonA1(monA1);
+	setMonB1(monB1);
 
 	final DictionaryElement bilAB2 = DicTools.readBilingual(sDicBilAB2,
 		bilAB2Reverse);
 	final DictionaryElement monA2 = DicTools.readMonolingual(sDicMonA2);
 	final DictionaryElement monB2 = DicTools.readMonolingual(sDicMonB2);
 	final DicSet dicSet2 = new DicSet(bilAB2, monA2, monB2);
-	this.setBilAB2(bilAB2);
-	this.setMonA2(monA2);
-	this.setMonB2(monB2);
+	setBilAB2(bilAB2);
+	setMonA2(monA2);
+	setMonB2(monB2);
 
-	this.setDicSet2(dicSet2);
+	setDicSet2(dicSet2);
 
     }
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     private void processArgumentsMorph() {
 	final int nArgs = getArguments().length;
 
-	String sDicMonA1, sDicMonA2, sDicMonB1, sDicMonB2;
-	sDicMonA1 = sDicMonA2 = sDicMonB1 = sDicMonB2 = null;
-	String sDicBilAB1, sDicBilAB2;
-	sDicBilAB1 = sDicBilAB2 = null;
-	boolean bilAB1Reverse, bilAB2Reverse;
+	String sDicMonA1, sDicMonA2, sDicMonB1;
+	sDicMonA1 = sDicMonA2 = sDicMonB1 = null;
+	String sDicBilAB1;
+	sDicBilAB1 = null;
+	boolean bilAB1Reverse;
 	;
-	bilAB1Reverse = bilAB2Reverse = false;
+	bilAB1Reverse = false;
 
 	for (int i = 1; i < nArgs; i++) {
 	    String arg = getArguments()[i];
@@ -657,26 +657,25 @@ public class DicMerge {
 		System.err.println("Merged:\t'" + sOut + "'");
 	    }
 
-
 	}
 
 	final DictionaryElement monA1 = DicTools.readMonolingual(sDicMonA1);
-	this.setMonA1(monA1);
+	setMonA1(monA1);
 
 	final DictionaryElement monA2 = DicTools.readMonolingual(sDicMonA2);
-	this.setMonA2(monA2);
+	setMonA2(monA2);
 
     }
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     private void processArgumentsBil() {
 	final int nArgs = getArguments().length;
 
-	String sDicMonA1, sDicMonA2, sDicMonB1, sDicMonB2;
-	sDicMonA1 = sDicMonA2 = sDicMonB1 = sDicMonB2 = null;
+	String sDicMonA1, sDicMonA2, sDicMonB1;
+	sDicMonA1 = sDicMonA2 = sDicMonB1 = null;
 	String sDicBilAB1, sDicBilAB2;
 	sDicBilAB1 = sDicBilAB2 = null;
 	boolean bilAB1Reverse, bilAB2Reverse;
@@ -724,14 +723,15 @@ public class DicMerge {
 		System.err.println("Merged:\t'" + sOut + "'");
 	    }
 
-
 	}
 
-	final DictionaryElement bilAB1 = DicTools.readBilingual(sDicBilAB1, bilAB1Reverse);
-	this.setBilAB1(bilAB1);
+	final DictionaryElement bilAB1 = DicTools.readBilingual(sDicBilAB1,
+		bilAB1Reverse);
+	setBilAB1(bilAB1);
 
-	final DictionaryElement bilAB2 = DicTools.readBilingual(sDicBilAB2, bilAB2Reverse);
-	this.setBilAB2(bilAB2);
+	final DictionaryElement bilAB2 = DicTools.readBilingual(sDicBilAB2,
+		bilAB2Reverse);
+	setBilAB2(bilAB2);
 
     }
 
@@ -781,56 +781,49 @@ public class DicMerge {
     }
 
     /**
-     * @return the merged
-     */
+         * @return the merged
+         */
     public final DicSet getMerged() {
-        return merged;
+	return merged;
     }
 
     /**
-     * @param merged the merged to set
-     */
+         * @param merged
+         *                the merged to set
+         */
     public final void setMerged(DicSet merged) {
-        this.merged = merged;
+	this.merged = merged;
     }
-    
+
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void mergeMorph() {
-	DictionaryElement morph = this.mergeMonols(this.getMonA1(), this.getMonA2());
+	DictionaryElement morph = mergeMonols(getMonA1(), getMonA2());
 	DicSort dicSort = new DicSort(morph);
 	dicSort.setDicType(DicSort.MON);
 	DictionaryElement sorted = dicSort.sort();
-	sorted.printXML(this.getSOut());
+	sorted.printXML(getSOut());
     }
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void mergeBil() {
-	DictionaryElement bil = this.mergeBils(this.getBilAB1(), this.getBilAB2());
+	DictionaryElement bil = mergeBils(getBilAB1(), getBilAB2());
 	DicSort dicSort = new DicSort(bil);
 	dicSort.setDicType(DicSort.BIL);
 	DictionaryElement sorted = dicSort.sort();
-	sorted.printXML(this.getSOut());
+	sorted.printXML(getSOut());
     }
 
-    
     /**
-     * @return the sOut
-     */
+         * @return the sOut
+         */
     private final String getSOut() {
-        return sOut;
-    }
-
-    /**
-     * @param out the sOut to set
-     */
-    private final void setSOut(String out) {
-        sOut = out;
+	return sOut;
     }
 
 }

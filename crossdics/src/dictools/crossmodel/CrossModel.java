@@ -24,6 +24,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * 
@@ -91,7 +92,9 @@ public class CrossModel {
 	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
 	    dos.writeBytes("<cross-model>\n");
 	    int i = 0;
-	    for (CrossAction crossAction : getCrossActions()) {
+	    CrossActionList cal = getCrossActions();
+	    Collections.sort(cal);
+	    for (CrossAction crossAction : cal) {
 		crossAction.printXML(dos, i);
 		i++;
 	    }

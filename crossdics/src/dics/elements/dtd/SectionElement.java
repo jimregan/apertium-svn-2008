@@ -49,10 +49,10 @@ public class SectionElement extends Element {
          * 
          */
     private EElementList eElements;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     protected ArrayList<String> includes;
 
     /**
@@ -146,9 +146,9 @@ public class SectionElement extends Element {
     }
 
     /**
-     * 
-     * @param fileName
-     */
+         * 
+         * @param fileName
+         */
     public void printXMLXInclude(final String fileName) {
 	BufferedOutputStream bos;
 	FileOutputStream fos;
@@ -160,10 +160,9 @@ public class SectionElement extends Element {
 	    dos = new DataOutputStream(bos);
 	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
 
-		for (final EElement e : eElements) {
-		    e.printXML(dos);
-		}
-
+	    for (final EElement e : eElements) {
+		e.printXML(dos);
+	    }
 
 	    fos = null;
 	    bos = null;
@@ -183,23 +182,24 @@ public class SectionElement extends Element {
     public final void setEElements(EElementList elements) {
 	eElements = elements;
     }
-    
+
     /**
-     * @param includes the includes to set
-     */
+         * @param includes
+         *                the includes to set
+         */
     public final void setIncludes(ArrayList<String> includes) {
-        this.includes = includes;
+	this.includes = includes;
     }
-    
+
     public final void addXInclude(String xinclude) {
-	this.includes.add(xinclude);
+	includes.add(xinclude);
     }
 
     /**
-     * @return the includes
-     */
+         * @return the includes
+         */
     public final ArrayList<String> getIncludes() {
-        return includes;
+	return includes;
     }
 
 }

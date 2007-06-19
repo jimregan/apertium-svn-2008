@@ -61,7 +61,7 @@ public class DictionaryElement extends Element {
          * 
          */
     protected ArrayList<SectionElement> sections;
-    
+
     /**
          * 
          */
@@ -106,10 +106,10 @@ public class DictionaryElement extends Element {
          * 
          */
     private String targetLanguage;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String folder;
 
     /**
@@ -460,12 +460,16 @@ public class DictionaryElement extends Element {
 	    if (alphabet != null) {
 		alphabet.printXML(dos);
 	    }
-	    dos.writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\"" + this.getFolder() + "/sdefs.xml\"/>\n");
-	    sdefs.printXML( this.getFolder() + "/sdefs.xml");
-	    dos.writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\"" + this.getFolder() + "/pardefs.xml\"/>\n");
-	    pardefs.printXML(this.getFolder() + "/pardefs.xml");
-	    
-	    for (SectionElement section : this.sections) {
+	    dos
+		    .writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
+			    + getFolder() + "/sdefs.xml\"/>\n");
+	    sdefs.printXML(getFolder() + "/sdefs.xml");
+	    dos
+		    .writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
+			    + getFolder() + "/pardefs.xml\"/>\n");
+	    pardefs.printXML(getFolder() + "/pardefs.xml");
+
+	    for (SectionElement section : sections) {
 		ArrayList<String> includes = section.getIncludes();
 		String attributes = "";
 		if (section.getID() != null) {
@@ -474,12 +478,13 @@ public class DictionaryElement extends Element {
 		if (section.getType() != null) {
 		    attributes += " type=\"" + section.getType() + "\"";
 		}
-		dos.writeBytes(tab(1) + "<" + section.getTagName() + "" + attributes + ">\n");
-	    if (includes != null) {
-		for (final String s : includes) {
-		    dos.writeBytes("\t" + s + "\n");
+		dos.writeBytes(tab(1) + "<" + section.getTagName() + ""
+			+ attributes + ">\n");
+		if (includes != null) {
+		    for (final String s : includes) {
+			dos.writeBytes("\t" + s + "\n");
+		    }
 		}
-	    }
 		dos.writeBytes(tab(1) + "</" + section.getTagName() + ">\n");
 	    }
 	    dos.writeBytes("</dictionary>\n");
@@ -718,17 +723,18 @@ public class DictionaryElement extends Element {
     }
 
     /**
-     * @return the folder
-     */
+         * @return the folder
+         */
     public final String getFolder() {
-        return folder;
+	return folder;
     }
 
     /**
-     * @param folder the folder to set
-     */
+         * @param folder
+         *                the folder to set
+         */
     public final void setFolder(String folder) {
-        this.folder = folder;
+	this.folder = folder;
     }
 
 }

@@ -120,8 +120,8 @@ public class DicConsistent {
          * 
          */
     public final void doConsistent() {
-	this.processArguments();
-	this.actionConsistent("yes");
+	processArguments();
+	actionConsistent("yes");
     }
 
     /**
@@ -358,7 +358,7 @@ public class DicConsistent {
          * @return
          */
     private final DicConsistent actionConsistent(String removeNotCommon) {
-	final DicConsistent dicConsistent = new DicConsistent(this.getDicSet());
+	final DicConsistent dicConsistent = new DicConsistent(getDicSet());
 	dicConsistent.makeConsistentDictionaries(removeNotCommon);
 	dicSet.printXML("consistent");
 	return dicConsistent;
@@ -435,7 +435,7 @@ public class DicConsistent {
 	final DictionaryElement mon2 = DicTools.readMonolingual(sDicMonC);
 
 	DicSet dicSet = new DicSet(mon1, bil1, mon2, bil2);
-	this.setDicSet(dicSet);
+	setDicSet(dicSet);
     }
 
     /**

@@ -24,7 +24,6 @@ import dics.elements.dtd.SElement;
 import dics.elements.utils.DicSet;
 import dics.elements.utils.SElementList;
 import dictools.DicCross;
-import dictools.DicMerge;
 import dictools.DicTools;
 import dictools.DictionaryReader;
 

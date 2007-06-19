@@ -1,0 +1,18 @@
+#!/bin/bash
+crossmodel="schemas/cross-model-test.xml"
+nparams="$#"
+if [ $nparams -ge 6 ] && [ $nparams -le 7  ]; then
+	echo "bilAB ($2): $3"
+	echo "monA: $1"
+	echo "bilBC($4): $5"
+	echo "monC: $6"
+
+	if [ $nparams -eq 7 ]
+	then
+		crossmodel=$7
+	fi
+	echo "cross model: $crossmodel"
+	ant cross -Dmonol-A=$1 -Dmonol-C=$6 -Dmod-AB=$2 -Dbil-AB=$3 -Dmod-BC=$4 -Dbil-BC=$5 -Dcross-model=$crossmodel
+else
+	echo "Usage: cross-dics <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> [<cross-model>]"
+fi
