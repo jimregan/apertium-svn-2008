@@ -9,14 +9,140 @@
         <file name="ca-oc.prob"/>
       </program>
       <program name="apertium-pretransfer"/>
-
-<!-- TRANSFER ANTIGUO
+      
+<!-- TRANSFER ANTIGUO      
       <program name="apertium-transfer">
-        <file name="apertium-oc-ca.trules-ca-oc.xml"/>
+        <file name="apertium-ca-oc.trules-ca-oc.xml"/>
         <file name="trules-ca-oc.bin"/>
         <file name="ca-oc.autobil.bin"/>
+      </program> -->
+      
+      <program name="apertium-transfer">
+        <file name="ca-oc.t1x"/>
+        <file name="ca-oc.t1x.bin"/>
+        <file name="ca-oc.autobil.bin"/>
       </program>
--->
+      <program name="apertium-interchunk">
+        <file name="ca-oc.t2x"/>
+        <file name="ca-oc.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="ca-oc.t3x"/>
+        <file name="ca-oc.t3x.bin"/>
+      </program>
+      
+      <program name="lt-proc $1">
+        <file name="ca-oc.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="ca-oc.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc-anmor">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc-tagger">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc-pretransfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc-chunker">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="ca-oc.t1x"/>
+        <file name="ca-oc.t1x.bin"/>
+        <file name="ca-oc.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="ca-oc-interchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="ca-oc.t1x"/>
+        <file name="ca-oc.t1x.bin"/>
+        <file name="ca-oc.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="ca-oc.t2x"/>
+        <file name="ca-oc.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc-postchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="ca-oc.t1x"/>
+        <file name="ca-oc.t1x.bin"/>
+        <file name="ca-oc.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="ca-oc.t2x"/>
+        <file name="ca-oc.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="ca-oc.t3x"/>
+        <file name="ca-oc.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc-generador">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
       <program name="apertium-transfer">
         <file name="ca-oc.t1x"/>
         <file name="ca-oc.t1x.bin"/>
@@ -33,11 +159,11 @@
       <program name="lt-proc $1">
         <file name="ca-oc.autogen.bin"/>
       </program>
-      <program name="lt-proc -p">
-        <file name="ca-oc.autopgen.bin"/>
-      </program>
     </pipeline>
   </mode>
+
+
+
   
   <mode name="oc-ca">
     <pipeline>
@@ -79,6 +205,130 @@
     </pipeline>
   </mode>
 
+  <mode name="oc-ca-anmor">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc-ca.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc-ca-tagger">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc-ca.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc-ca-pretransfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="oc-ca-chunker">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="oc-ca.t1x"/>
+        <file name="oc-ca.t1x.bin"/>
+        <file name="oc-ca.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="oc-ca-interchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="oc-ca.t1x"/>
+        <file name="oc-ca.t1x.bin"/>
+        <file name="oc-ca.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="oc-ca.t2x"/>
+        <file name="oc-ca.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc-ca-postchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="oc-ca.t1x"/>
+        <file name="oc-ca.t1x.bin"/>
+        <file name="oc-ca.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="oc-ca.t2x"/>
+        <file name="oc-ca.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="oc-ca.t3x"/>
+        <file name="oc-ca.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc-ca-generador">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="oc-ca.t1x"/>
+        <file name="oc-ca.t1x.bin"/>
+        <file name="oc-ca.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="oc-ca.t2x"/>
+        <file name="oc-ca.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="oc-ca.t3x"/>
+        <file name="oc-ca.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="oc-ca.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+
   <mode name="ca-oc_aran">
     <pipeline>
       <program name="lt-proc">
@@ -117,6 +367,129 @@
       </program>
     </pipeline>
   </mode>
+
+  <mode name="ca-oc_aran-anmor">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc@aran.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc_aran-tagger">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc@aran.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc@aran.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc_aran-pretransfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc@aran.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc@aran.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc_aran-chunker">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc@aran.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc@aran.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="ca-oc@aran.t1x"/>
+        <file name="ca-oc@aran.t1x.bin"/>
+        <file name="ca-oc@aran.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="ca-oc_aran-interchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc@aran.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc@aran.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="ca-oc@aran.t1x"/>
+        <file name="ca-oc@aran.t1x.bin"/>
+        <file name="ca-oc@aran.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="ca-oc@aran.t2x"/>
+        <file name="ca-oc@aran.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc_aran-postchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc@aran.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc@aran.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="ca-oc@aran.t1x"/>
+        <file name="ca-oc@aran.t1x.bin"/>
+        <file name="ca-oc@aran.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="ca-oc@aran.t2x"/>
+        <file name="ca-oc@aran.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="ca-oc@aran.t3x"/>
+        <file name="ca-oc@aran.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ca-oc_aran-generador">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-oc@aran.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-oc@aran.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="ca-oc@aran.t1x"/>
+        <file name="ca-oc@aran.t1x.bin"/>
+        <file name="ca-oc@aran.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="ca-oc@aran.t2x"/>
+        <file name="ca-oc@aran.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="ca-oc@aran.t3x"/>
+        <file name="ca-oc@aran.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ca-oc@aran.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
   
   <mode name="oc_aran-ca">
     <pipeline>
@@ -154,6 +527,128 @@
       </program>
       <program name="lt-proc -p">
         <file name="oc@aran-ca.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc_aran-ca-anmor">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc@aran-ca.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc_aran-ca-tagger">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc@aran-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc@aran-ca.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc_aran-ca-pretransfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc@aran-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc@aran-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="oc_aran-ca-chunker">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc@aran-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc@aran-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="oc@aran-ca.t1x"/>
+        <file name="oc@aran-ca.t1x.bin"/>
+        <file name="oc@aran-ca.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="oc_aran-ca-interchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc@aran-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc@aran-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="oc@aran-ca.t1x"/>
+        <file name="oc@aran-ca.t1x.bin"/>
+        <file name="oc@aran-ca.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="oc@aran-ca.t2x"/>
+        <file name="oc@aran-ca.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc_aran-ca-postchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc@aran-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc@aran-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="oc@aran-ca.t1x"/>
+        <file name="oc@aran-ca.t1x.bin"/>
+        <file name="oc@aran-ca.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="oc@aran-ca.t2x"/>
+        <file name="oc@aran-ca.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="oc@aran-ca.t3x"/>
+        <file name="oc@aran-ca.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="oc_aran-ca-generador">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="oc@aran-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="oc@aran-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="oc@aran-ca.t1x"/>
+        <file name="oc@aran-ca.t1x.bin"/>
+        <file name="oc@aran-ca.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="oc@aran-ca.t2x"/>
+        <file name="oc@aran-ca.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="oc@aran-ca.t3x"/>
+        <file name="oc@aran-ca.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="oc@aran-ca.autogen.bin"/>
       </program>
     </pipeline>
   </mode>
