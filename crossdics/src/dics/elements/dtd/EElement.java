@@ -873,6 +873,11 @@ public class EElement extends Element implements Cloneable,
     @Override
     public final String toString() {
 	String str = "";
+	String r = "";
+	if (this.hasRestriction()) {
+	    r = " r=\"" + this.getRestriction() + "\"";
+	}
+	str += "<e"+ r + ">";
 	for (final Element e : children) {
 	    if (e instanceof IElement) {
 		final IElement i = (IElement) e;
@@ -891,8 +896,13 @@ public class EElement extends Element implements Cloneable,
 		final ParElement par = (ParElement) e;
 		str += par.toString();
 	    }
+	    if (e instanceof ReElement) {
+		final ReElement re = (ReElement) e;
+		str += re.toString();
+	    }    
 
 	}
+	str += "</e>";
 	return str;
     }
 

@@ -279,8 +279,7 @@ public class ContentElement extends Element implements Cloneable {
 	    sList = "";
 	}
 
-	final String str = "<" + tagName + ">" + v + "</" + tagName + ">"
-		+ sList;
+	final String str = "<" + tagName + ">" + v + sList + "</" + tagName + ">";
 	return str;
     }
 

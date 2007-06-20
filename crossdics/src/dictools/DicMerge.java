@@ -289,12 +289,16 @@ public class DicMerge {
 	sectionElement.setID(sectionE1.getID());
 	sectionElement.setType(sectionE1.getType());
 
+	int duplicated = 0;
 	final EElementList elements1 = sectionE1.getEElements();
 	for (final EElement e1 : elements1) {
 	    final String e1Key = e1.toString();
 	    if (!eMap.containsKey(e1Key)) {
 		eMap.put(e1Key, e1);
 		sectionElement.addEElement(e1);
+	    } else {
+		System.out.println("Duplicated: " + e1Key);
+		duplicated++;
 	    }
 	}
 
@@ -306,6 +310,8 @@ public class DicMerge {
 		sectionElement.addEElement(e2);
 	    }
 	}
+	
+	System.out.println( duplicated + " duplicated entries in sections " + sectionE1.getID() + "/" + sectionE2.getID());;
 
 	return sectionElement;
     }
@@ -489,6 +495,10 @@ public class DicMerge {
 	mergeMorph();
     }
 
+    /**
+     * 
+     *
+     */
     public final void doMergeBil() {
 	processArgumentsBil();
 	mergeBil();

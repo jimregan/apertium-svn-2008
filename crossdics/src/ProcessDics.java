@@ -153,9 +153,9 @@ public class ProcessDics {
 	}
 
 	if (getAction().equals("format")) {
-	    if (getArguments().length != 3) {
+	    if (getArguments().length != 4) {
 		System.err
-			.println("Usage: java ProcessDics format <dic> <dic-formatted>");
+			.println("Usage: java ProcessDics format <-mon|-bil> <dic> <dic-formatted>");
 		System.exit(-1);
 	    } else {
 		final DicFormat dicFormat = new DicFormat();

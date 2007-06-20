@@ -64,5 +64,12 @@ public class ReElement extends Element {
 	dos.writeBytes(tab(3) + "<" + getTagName() + ">" + getValue() + "</"
 		+ getTagName() + ">\n");
     }
+    
+    /**
+     * 
+     */
+    public final String toString() {
+	return getValue();
+    }
 
 }

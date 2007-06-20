@@ -368,7 +368,6 @@ public class DictionaryElement extends Element {
 	DataOutputStream dos;
 
 	setFileName(fileName);
-
 	try {
 	    fos = new FileOutputStream(fileName);
 	    bos = new BufferedOutputStream(fos);
@@ -384,6 +383,7 @@ public class DictionaryElement extends Element {
 		dos.writeBytes("\tEntries: "
 			+ (sections.get(0)).getEElements().size());
 	    }
+	    
 	    if (sdefs != null) {
 		dos.writeBytes("\n\tSdefs: " + sdefs.getSdefsElements().size()
 			+ "\n");

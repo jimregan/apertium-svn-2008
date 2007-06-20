@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ "$#" -eq 5 ]; then
+	echo "Bilingual 1: $1"
+	echo "mode: $2"
+	echo "Bilingual 2: $3"
+	echo "mode: $4"
+	echo "Merged: $5"
+	ant merge-bil -Dmod-AB1=$2 -Dbil-AB1=$1 -Dmod-AB2=$4 -Dbil-AB2=$3 -Dout=$5
+else
+	echo "Usage: merge-bil <-n|-r> <bilAB1> <-n|-r> <bilAB2> <merged>"
+fi
