@@ -2,7 +2,8 @@
 
 bin_PROGRAMS = apertium-tagger-tl-trainer apertium-tagger-eval apertium-tagger-baum-welch \
                apertium-tagger-check-parameters apertium-tagger-readwords  \
-               apertium-SGT apertium-tagger-apply-rules #\
+               apertium-SGT apertium-tagger-apply-rules 
+        
 #               apertium-bestTLtagger
 # apertium-tagger-prob2txt apertium-hmm-language-model
 
