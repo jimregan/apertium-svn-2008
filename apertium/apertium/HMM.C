@@ -328,9 +328,9 @@ HMM::init_probabilities_from_tagged_text(FILE *ftagged, FILE *funtagged) {
   for(i=0; i<N; i++) {
     double sum=0;
     for(j=0; j<N; j++)  
-      sum += tags_pair[i][j]+1.0;
+      sum += tags_pair[i][j]+0.5;
     for(j=0; j<N; j++)  
-      (td->getA())[i][j] = (tags_pair[i][j]+1.0)/sum;
+      (td->getA())[i][j] = (tags_pair[i][j]+0.5)/sum;
   }
     
   
@@ -346,7 +346,7 @@ HMM::init_probabilities_from_tagged_text(FILE *ftagged, FILE *funtagged) {
     }	      
     for(k=0; k<M; k++)  {
       if (output[k].find(i)!=output[k].end())
-	(td->getB())[i][k] = (emission[i][k]+(((double)1.0)/((double)nclasses_appear)))/(times_appear+((double)1.0));
+	(td->getB())[i][k] = (emission[i][k]+(((double)0.5)/((double)nclasses_appear)))/(times_appear+((double)0.5));
     }
    }
   
