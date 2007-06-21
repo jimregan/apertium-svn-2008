@@ -60,6 +60,17 @@
       <cat-item name="pro_auxmod_mod_inf"/>
     </def-cat>   
 
+<def-cat n="pottenirenclitic">
+      <cat-item name="verbcj_inf_perif"/>
+      <cat-item name="verbcj_inf"/>
+      <cat-item name="auxmod_inf_inf"/>
+      <cat-item name="have_pp_inf"/>
+      <cat-item name="be_inf_inf"/>
+</def-cat>
+
+
+
+
     <def-cat n="pro_vblike">
       <cat-item name="pro_vblike"/>
     </def-cat>
@@ -152,6 +163,11 @@
     <def-attr n="a_prnpro">
       <attr-item tags="prn.pro"/>
     </def-attr>
+
+     <def-attr n="a_prnenc">
+      <attr-item tags="prn.enc"/>
+    </def-attr>
+
 
   </section-def-attrs>
   <section-def-vars>
@@ -813,7 +829,7 @@
     
     <!-- regles per arreglar el pronom reflexiu de tercera persona (li-> se)-->
     
-    <rule comment="arregla el pron reflexiu de tercera persona">
+    <rule comment="arregla el pron reflexiu de tercera persona, quan és proclític">
       <pattern>
 	<pattern-item n="pottenirpronom"/>
       </pattern>
@@ -1190,6 +1206,37 @@
       </action>
     </rule> 
     
+
+<!--<rule comment="arregla el pron reflexiu de tercera persona quan és enclític. No es pot accedir el lema del pronom enclític i per ara no es pot fer la regla">
+      <pattern>
+	<pattern-item n="pottenirenclitic"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+		<equal>
+		  <clip pos="3" part="a_prnenc"/>
+		  <lit-tag v="prn.enc"/>
+		</equal>
+	    </test>
+	    <out>
+	      <lu>
+		<lit v="hola"/>
+	      </lu>
+	    </out>
+	  </when>
+	</choose>
+      </action>
+</rule>-->
+		
+
+
+
+
+
+
+
 
     <rule comment="CHUNK: HI">
       <pattern>

@@ -814,9 +814,9 @@
 	  </let>
 	  <append n="pronom">
 	    <lit-tag v="prn.pro"/>
-	    <clip pos="1" side="tl" part="pers" link-to="4"/>
+	    <lit-tag v="4"/>
 	    <lit-tag v="mf"/>
-	    <clip pos="1" side="tl" part="nbr" link-to="5"/>
+	    <lit-tag v="5"/>
 	    <lit v="$ ^"/>
 	  </append>	
 	</when>
@@ -838,14 +838,18 @@
 	  </test>
 	  <let>
 	    <var n="pronomenc"/>
-	    <lit v="+es"/>
+	    <lit v="+prpers"/>
 	  </let>
 	  <append n="pronomenc">
-	    <lit-tag v="prn.enc.ref.p3.mf.sp"/>
+	    <lit-tag v="prn.enc"/>
+	    <lit-tag v="4"/>
+	    <lit-tag v="mf"/>
+	    <lit-tag v="5"/>
 	  </append>	
 	</when>
       </choose> 
     </def-macro>
+
 
     <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
       <choose>
@@ -2845,7 +2849,7 @@
 	</call-macro>
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="3"/>
-	</call-macro>  
+	</call-macro> 
 	<out> 
 	  <chunk name="num_adv_adj_nom" case="caseFirstWord">
 	    <tags>
@@ -5421,11 +5425,15 @@
 	<call-macro n="genere_nombre">
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="det_no">
+	  <with-param pos="1"/>
+	  <with-param pos="5"/>
+	</call-macro>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
-	  <chunk name="num_adv_adj_nom" case="caseFirstWord">
+	  <chunk name="det_adv_adj_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.DET"/></tag>
 	      <tag><clip pos="5" side="tl" part="gen"/></tag>
@@ -5434,8 +5442,8 @@
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="a_det"/>
-	      <clip pos="1" side="tl" part="gen" link-to="3"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="gen" link-to="3"/>
+	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
 	    </lu>
 	    <b/> 
 	    <lu> 
@@ -5453,8 +5461,8 @@
 	    <lu>   
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
-	      <clip pos="5" side="tl" part="gen" />
-	      <clip pos="5" side="tl" part="nbr" />
+	      <clip pos="5" side="tl" part="gen" link-to="3" />
+	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu> 
 	    <b/> 
@@ -9034,7 +9042,7 @@
 	      </and>
 	    </test>
 	    <out>
-	      <chunk name="mod_inf_perif" case="caseFirstWord">
+	      <chunk name="verbcj_inf_perif" case="caseFirstWord">
 		<tags>	       
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -9076,7 +9084,7 @@
 	      </equal>
 	    </test>
 	    <out>
-	      <chunk name="mod_inf_perif" case="caseFirstWord">
+	      <chunk name="verbcj_inf_perif" case="caseFirstWord">
 		<tags>	       
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -9120,7 +9128,7 @@
 	      <lit-tag v="pri"/>
 	    </let>
 	    <out>
-	      <chunk name="mod_inf" case="caseFirstWord">
+	      <chunk name="verbcj_inf" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -9157,7 +9165,7 @@
 	      </equal>
 	    </test>
 	    <out>
-	      <chunk name="mod_inf" case="caseFirstWord">
+	      <chunk name="verbcj_inf" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -9291,7 +9299,7 @@
           </when>
 	</choose>
         <out>
-          <chunk name="auxmod_inf_ger" case="caseFirstWord">
+          <chunk name="auxmod_inf_inf" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SV"/></tag>
               <tag><var n="tipus_verb"/></tag>
@@ -9389,7 +9397,7 @@
         </choose>
 	
         <out>
-          <chunk name="auxmod_inf_ger" case="caseFirstWord">
+          <chunk name="verbcj_inf" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SV"/></tag>
               <tag><var n="tipus_verb"/></tag>
@@ -9461,7 +9469,7 @@
 	      </and>
 	    </test>
 	    <out>
-	      <chunk name="mod_inf_perif" case="caseFirstWord">
+	      <chunk name="verbcj_inf_perif" case="caseFirstWord">
 		<tags>	       
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -9502,7 +9510,7 @@
 	      </equal>
 	    </test>
 	    <out>
-	      <chunk name="mod_inf_perif" case="caseFirstWord">
+	      <chunk name="verbcj_inf_perif" case="caseFirstWord">
 		<tags>	       
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -9546,7 +9554,7 @@
 	      <lit-tag v="pri"/>
 	    </let>
 	    <out>
-	      <chunk name="mod_inf" case="caseFirstWord">
+	      <chunk name="verbcj_inf" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -9583,7 +9591,7 @@
 	      </equal>
 	    </test>
 	    <out>
-	      <chunk name="mod_inf" case="caseFirstWord">
+	      <chunk name="verbcj_inf" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -9619,7 +9627,7 @@
               </equal>
             </test>
 	    <out>
-	      <chunk name="mod_inf" case="caseFirstWord">
+	      <chunk name="verbcj_inf" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -10017,9 +10025,8 @@
             </let>
           </when>
         </choose>
-
 	    <out>
-	      <chunk name="auxmod_inf_inf" case="caseFirstWord">
+	      <chunk name="verbcj_inf" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -10109,8 +10116,6 @@
           </chunk>
           <b pos="1"/>
         </out>
-
-
         <choose>
           <when>
             <test>
@@ -10145,7 +10150,7 @@
         </choose>
 
 	    <out>
-	      <chunk name="auxmod_inf_inf" case="caseFirstWord">
+	      <chunk name="verbcj_inf" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -14406,37 +14411,22 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 	    <let>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <lit-tag v="vblex"/>
-	    </let>			
-	    <let>
-	      <var n="paraula1"/>
-	      <clip pos="1" side="tl" part="lemh"/>
 	    </let>
-	    <append n="paraula1">
-	      <clip pos="1" side="tl" part="tags"/>
-	      <lit-tag v="m"/>
-	      <lit-tag v="sg"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </append>
-	    <let>
-	      <clip pos="1" side="tl" part="whole"/>
-	      <var n="paraula1"/>
-	    </let>
-
 	    <out>
 	      <chunk name="be_inf_inf" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
 		  <tag><clip pos="1" side="tl" part="temps"/></tag>
-		  <tag><clip pos="1" side="tl" part="gen"/></tag>
-		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><lit-tag v="m"/></tag>
+		  <tag><lit-tag v="sg"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="lemh"/> 
 		  <clip pos="1" side="tl" part="a_verb"/>
 		  <clip pos="1" side="tl" part="temps" link-to="3"/>
-		  <clip pos="1" side="tl" part="gen" link-to="4"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		  <lit-tag v="4"/>
+		  <lit-tag v="5"/>
 		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
 		<b pos="1"/>
@@ -14469,60 +14459,26 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 		<let>
 		  <clip pos="2" side="tl" part="temps"/>
 		  <lit-tag v="pii"/><!--'deia' -->
-		</let>	 
-		<let>
-		  <var n="paraula2"/>
-		  <clip pos="2" side="tl" part="lemh"/>
 		</let>
-		<append n="paraula2">
-		  <clip pos="2" side="tl" part="tags"/>
-		  <lit-tag v="PD"/>
-		  <lit-tag v="ND"/>
-		  <clip pos="2" side="tl" part="lemq"/>
-		</append>
-		<let>
-		  <clip pos="2" side="tl" part="whole"/>
-		  <var n="paraula2"/>
-		</let>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal><!--Si té pers, també té nbr-->
-			  <clip pos="1" side="tl" part="pers"/>
-			  <lit v=""/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" side="tl" part="pers"/>
-		      <clip pos="1" side="tl" part="pers"/>
-		    </let>
-		    <let>
-		      <clip pos="2" side="tl" part="nbr"/>
-		      <clip pos="1" side="tl" part="nbr"/>
-		    </let>
-		  </when>
-		</choose>		
 		<call-macro n="f_bcond">
 		  <with-param pos="1"/>
 		</call-macro>
-		<out>
+		<out><!--was/were, les dues formes són ambigues en quant a pers/nbr, per tant PD i ND si temps = past-->
 		  <chunk name="verbcj_inf" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SV"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
 		      <tag><clip pos="2" side="tl" part="temps"/></tag>
-		      <tag><clip pos="2" side="tl" part="pers"/></tag>
-		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="PD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
 		    </tags> 
 		    <lu>
 		      <var n="pronom"/>	
 		      <clip pos="2" side="tl" part="lemh"/> 
 		      <clip pos="2" side="tl" part="a_verb"/>
 		      <clip pos="2" side="tl" part="temps" link-to="3"/>
-		      <clip pos="2" side="tl" part="pers" link-to="4"/>
-		      <clip pos="2" side="tl" part="nbr" link-to="5"/>
+		      <lit-tag v="4"/>
+		      <lit-tag v="5"/>
 		      <clip pos="2" side="tl" part="lemq"/>
 		    </lu>
 		    <b pos="1"/>
@@ -14666,7 +14622,62 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 	  <with-param pos="2"/>
 	</call-macro>
 	<choose>
-	  <when> <!-- if BE=pp then estar-->
+	  <when> <!-- if BE=pp then estar, i envia pronom si el verb és pronominal-->
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="1" side="sl" part="temps"/>
+		  <lit-tag v="pp"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="tl" part="a_verb"/>
+		  <lit-tag v="vblex.pron"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <lit v="estar"/>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <lit-tag v="vblex"/>
+	    </let>
+	    <out>
+	      <chunk name="be_ger_enc" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+		  <tag><clip pos="1" side="tl" part="temps"/></tag>
+		  <tag><lit-tag v="m"/></tag>
+		  <tag><lit-tag v="sg"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/> 
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps" link-to="3"/>
+		  <lit-tag v="4"/>
+		  <lit-tag v="5"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu>
+		<b pos="1"/>
+		<mlu>
+		  <lu>
+		    <clip pos="2" side="tl" part="lemh"/> 
+		    <clip pos="2" side="tl" part="a_verb"/>
+		    <clip pos="2" side="tl" part="temps"/>
+		    <clip pos="2" side="tl" part="lemq"/>
+		  </lu>
+		  <lu><!--enviem el pronom reflexiu perquè en aquest cas, quan es dóna el chunk 'been + ger' sense el 'have', vol dir que el 'have' està lluny i per tant, per ara, no es pot determinar la persona de l'enclític ('he has, in recent years, been caring....' -->
+		    <lit v="es"/>
+		    <lit-tag v="prn.enc.ref.p3.mf.sp"/>
+		    <clip pos="3" side="tl" part="lemq"/>
+		  </lu>
+		</mlu>    
+	      </chunk>
+	    </out>
+	  </when>
+	  <when> <!-- if BE=pp then estar (entra per aquí si el verb no és pronominal)-->
 	    <test>
 	      <equal>
 		<clip pos="1" side="sl" part="temps"/>
@@ -14680,44 +14691,30 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 	    <let>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <lit-tag v="vblex"/>
-	    </let>			
-	    <let>
-	      <var n="paraula1"/>
-	      <clip pos="1" side="tl" part="lemh"/>
 	    </let>
-	    <append n="paraula1">
-	      <clip pos="1" side="tl" part="tags"/>
-	      <lit-tag v="m"/>
-	      <lit-tag v="sg"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </append>
-	    <let>
-	      <clip pos="1" side="tl" part="whole"/>
-	      <var n="paraula1"/>
-	    </let>
-
 	    <out>
 	      <chunk name="be_ger" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
 		  <tag><clip pos="1" side="tl" part="temps"/></tag>
-		  <tag><clip pos="1" side="tl" part="gen"/></tag>
-		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><lit-tag v="m"/></tag>
+		  <tag><lit-tag v="sg"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="lemh"/> 
 		  <clip pos="1" side="tl" part="a_verb"/>
 		  <clip pos="1" side="tl" part="temps" link-to="3"/>
-		  <clip pos="1" side="tl" part="gen" link-to="4"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		  <lit-tag v="4"/>
+		  <lit-tag v="5"/>
 		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
 		<b pos="1"/>
 		<lu>
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_verb"/>
-		  <clip pos="2" side="tl" part="temps"/>
+		  <clip pos="2" side="tl" part="temps"/>		  
+		  <var n="pronomenc"/>
 		  <clip pos="2" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
@@ -14735,61 +14732,26 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 		<let>
 		  <clip pos="2" side="tl" part="temps"/>
 		  <lit-tag v="pii"/><!--'deia' -->
-		</let>	 
-		<let>
-		  <var n="paraula2"/>
-		  <clip pos="2" side="tl" part="lemh"/>
-		</let>
-		<append n="paraula2">
-		  <clip pos="2" side="tl" part="tags"/>
-		  <lit-tag v="PD"/>
-		  <lit-tag v="ND"/>
-		  <clip pos="2" side="tl" part="lemq"/>
-		</append>
-		<let>
-		  <clip pos="2" side="tl" part="whole"/>
-		  <var n="paraula2"/>
-		</let>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal><!--Si té pers, també té nbr-->
-			  <clip pos="1" side="tl" part="pers"/>
-			  <lit v=""/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" side="tl" part="pers"/>
-		      <clip pos="1" side="tl" part="pers"/>
-		    </let>
-		    <let>
-		      <clip pos="2" side="tl" part="nbr"/>
-		      <clip pos="1" side="tl" part="nbr"/>
-		    </let>
-		  </when>
-		</choose>
-		
+		</let>			
 		<call-macro n="f_bcond">
 		  <with-param pos="1"/>
 		</call-macro>
-		<out>
+		<out><!--was/were, les dues formes són ambigues en quant a pers/nbr, per tant PD i ND si temps = past-->
 		  <chunk name="verbcj" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SV"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
 		      <tag><clip pos="2" side="tl" part="temps"/></tag>
-		      <tag><clip pos="2" side="tl" part="pers"/></tag>
-		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="PD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
 		    </tags> 
 		    <lu>
 		      <var n="pronom"/>	
 		      <clip pos="2" side="tl" part="lemh"/> 
 		      <clip pos="2" side="tl" part="a_verb"/>
 		      <clip pos="2" side="tl" part="temps" link-to="3"/>
-		      <clip pos="2" side="tl" part="pers" link-to="4"/>
-		      <clip pos="2" side="tl" part="nbr" link-to="5"/>
+		      <lit-tag v="4"/>
+		      <lit-tag v="5"/>
 		      <clip pos="2" side="tl" part="lemq"/>
 		    </lu>
 		  </chunk>
@@ -14919,8 +14881,7 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 	</call-macro>
 	<choose>
 	  <when>
-	    <test>
-	      
+	    <test>	      
 	      <equal>
 		<clip pos="1" side="sl" part="temps"/>
 		<lit-tag v="pp"/>
@@ -14933,39 +14894,24 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 	    <let>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <lit-tag v="vblex"/>
-	    </let>
-	    <let>
-	      <var n="paraula1"/>
-	      <clip pos="1" side="tl" part="lemh"/>
-	    </let>
-	    <append n="paraula1">
-	      <clip pos="1" side="tl" part="tags"/>
-	      <lit-tag v="m"/>
-	      <lit-tag v="sg"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </append>
-	    <let>
-	      <clip pos="1" side="tl" part="whole"/>
-	      <var n="paraula1"/>
-	    </let>
+	    </let>	    
 	    <out>
 	      <chunk name="be_ger_enc" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
 		  <tag><clip pos="1" side="tl" part="temps"/></tag>
-		  <tag><clip pos="1" side="tl" part="gen"/></tag>
-		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><lit-tag v="m"/></tag>
+		  <tag><lit-tag v="sg"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="lemh"/> 
 		  <clip pos="1" side="tl" part="a_verb"/>
 		  <clip pos="1" side="tl" part="temps" link-to="3"/>
-		  <clip pos="1" side="tl" part="gen" link-to="4"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		  <lit-tag v="4"/>
+		  <lit-tag v="5"/>
 		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
-
 		<b pos="1"/>
 		<mlu>
 		  <lu>
@@ -15001,53 +14947,18 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 		<let>
 		  <clip pos="2" side="tl" part="temps"/>
 		  <lit-tag v="pii"/><!--'deia' -->
-		</let>	 
-		<let>
-		  <var n="paraula2"/>
-		  <clip pos="2" side="tl" part="lemh"/>
-		</let>
-		<append n="paraula2">
-		  <clip pos="2" side="tl" part="tags"/>
-		  <lit-tag v="PD"/>
-		  <lit-tag v="ND"/>
-		  <clip pos="2" side="tl" part="lemq"/>
-		</append>
-		<let>
-		  <clip pos="2" side="tl" part="whole"/>
-		  <var n="paraula2"/>
-		</let>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal><!--Si té pers, també té nbr-->
-			  <clip pos="1" side="tl" part="pers"/>
-			  <lit v=""/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" side="tl" part="pers"/>
-		      <clip pos="1" side="tl" part="pers"/>
-		    </let>
-		    <let>
-		      <clip pos="2" side="tl" part="nbr"/>
-		      <clip pos="1" side="tl" part="nbr"/>
-		    </let>
-		  </when>
-		</choose>
-		
+		</let>		
 		<call-macro n="f_bcond">
 		  <with-param pos="1"/>
 		</call-macro>
-		<out>
+		<out><!--was/were, les dues formes són ambigues en quant a pers/nbr, per tant PD i ND si temps = past-->
 		  <chunk name="pro_verbcj" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SV"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
 		      <tag><clip pos="2" side="tl" part="temps"/></tag>
-		      <tag><clip pos="2" side="tl" part="pers"/></tag>
-		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="PD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
 		    </tags> 
 		    <lu>
 		      <var n="pronom"/>
@@ -15062,8 +14973,8 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 		      <clip pos="2" side="tl" part="lemh"/> 
 		      <clip pos="2" side="tl" part="a_verb"/>
 		      <clip pos="2" side="tl" part="temps" link-to="3"/>
-		      <clip pos="2" side="tl" part="pers" link-to="4"/>
-		      <clip pos="2" side="tl" part="nbr" link-to="5"/>
+		      <lit-tag v="4"/>
+		      <lit-tag v="5"/>
 		      <clip pos="2" side="tl" part="lemq"/>
 		    </lu>
 		  </chunk>
@@ -15184,9 +15095,6 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 
 
 
-
-
-
     <rule comment="REGLA: BE ADV GER (is always/not working -> sempre/no està treballant">
       <pattern>
 	<pattern-item n="be"/>
@@ -15253,36 +15161,23 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 	    <let>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <lit-tag v="vblex"/>
-	    </let>			
-	    <let>
-	      <var n="paraula1"/>
-	      <clip pos="1" side="tl" part="lemh"/>
-	    </let>
-	    <append n="paraula1">
-	      <clip pos="1" side="tl" part="tags"/>
-	      <lit-tag v="m"/>
-	      <lit-tag v="sg"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </append>
-	    <let>
-	      <clip pos="1" side="tl" part="whole"/>
-	      <var n="paraula1"/>
-	    </let>
+	    </let>		
+	 
 	    <out>
 	      <chunk name="be_ger" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
 		  <tag><clip pos="1" side="tl" part="temps"/></tag>
-		  <tag><clip pos="1" side="tl" part="gen"/></tag>
-		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><lit-tag v="m"/></tag>
+		  <tag><lit-tag v="sg"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="lemh"/> 
 		  <clip pos="1" side="tl" part="a_verb"/>
 		  <clip pos="1" side="tl" part="temps" link-to="3"/>
-		  <clip pos="1" side="tl" part="gen" link-to="4"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		  <lit-tag v="4"/>
+		  <lit-tag v="5"/>
 		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
 		<b pos="2"/>
@@ -15308,64 +15203,29 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 		<let>
 		  <clip pos="3" side="tl" part="temps"/>
 		  <lit-tag v="pii"/><!--'deia' -->
-		</let>	 
-		<let>
-		  <var n="paraula2"/>
-		  <clip pos="3" side="tl" part="lemh"/>
-		</let>
-		<append n="paraula2">
-		  <clip pos="3" side="tl" part="tags"/>
-		  <lit-tag v="PD"/>
-		  <lit-tag v="ND"/>
-		  <clip pos="3" side="tl" part="lemq"/>
-		</append>
-		<let>
-		  <clip pos="3" side="tl" part="whole"/>
-		  <var n="paraula2"/>
-		</let>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal><!--Si té pers, també té nbr-->
-			  <clip pos="1" side="tl" part="pers"/>
-			  <lit v=""/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" side="tl" part="pers"/>
-		      <clip pos="1" side="tl" part="pers"/>
-		    </let>
-		    <let>
-		      <clip pos="3" side="tl" part="nbr"/>
-		      <clip pos="1" side="tl" part="nbr"/>
-		    </let>
-		  </when>
-		</choose>
-		
+		</let>			
 		<call-macro n="f_bcond">
 		  <with-param pos="2"/>
 		</call-macro>	       
 		<call-macro n="firstWord">
 		  <with-param pos="1"/>
 		</call-macro>
-		<out>
+		<out><!--was/were, les dues formes són ambigues en quant a pers/nbr, per tant PD i ND si temps = past-->
 		  <chunk name="verbcj">
 		    <tags>
 		      <tag><lit-tag v="SV"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
 		      <tag><clip pos="3" side="tl" part="temps"/></tag>
-		      <tag><clip pos="3" side="tl" part="pers"/></tag>
-		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="PD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
 		    </tags> 
 		    <lu>
 		      <var n="pronom"/>
 		      <clip pos="3" side="tl" part="lemh"/> 
 		      <clip pos="3" side="tl" part="a_verb"/>
 		      <clip pos="3" side="tl" part="temps" link-to="3"/>
-		      <clip pos="3" side="tl" part="pers" link-to="4"/>
-		      <clip pos="3" side="tl" part="nbr" link-to="5"/>
+		      <lit-tag v="4"/>
+		      <lit-tag v="5"/>
 		      <clip pos="3" side="tl" part="lemq"/>
 		    </lu>
 		  </chunk>
@@ -15544,36 +15404,22 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 	    <let>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <lit-tag v="vblex"/>
-	    </let>
-	    <let>
-	      <var n="paraula1"/>
-	      <clip pos="1" side="tl" part="lemh"/>
-	    </let>
-	    <append n="paraula1">
-	      <clip pos="1" side="tl" part="tags"/>
-	      <lit-tag v="m"/>
-	      <lit-tag v="sg"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </append>
-	    <let>
-	      <clip pos="1" side="tl" part="whole"/>
-	      <var n="paraula1"/>
-	    </let>
+	    </let>	   
 	    <out>
 	      <chunk name="be_ger_enc" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
 		  <tag><clip pos="1" side="tl" part="temps"/></tag>
-		  <tag><clip pos="1" side="tl" part="gen"/></tag>
-		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><lit-tag v="m"/></tag>
+		  <tag><lit-tag v="sg"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="lemh"/> 
 		  <clip pos="1" side="tl" part="a_verb"/>
 		  <clip pos="1" side="tl" part="temps" link-to="3"/>
-		  <clip pos="1" side="tl" part="gen" link-to="4"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		  <lit-tag v="4"/>
+		  <lit-tag v="5"/>
 		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
 
@@ -15611,56 +15457,21 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 		<let>
 		  <clip pos="3" side="tl" part="temps"/>
 		  <lit-tag v="pii"/><!--'deia' -->
-		</let>	 
-		<let>
-		  <var n="paraula2"/>
-		  <clip pos="3" side="tl" part="lemh"/>
-		</let>
-		<append n="paraula2">
-		  <clip pos="3" side="tl" part="tags"/>
-		  <lit-tag v="PD"/>
-		  <lit-tag v="ND"/>
-		  <clip pos="3" side="tl" part="lemq"/>
-		</append>
-		<let>
-		  <clip pos="3" side="tl" part="whole"/>
-		  <var n="paraula2"/>
-		</let>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal><!--Si té pers, també té nbr-->
-			  <clip pos="1" side="tl" part="pers"/>
-			  <lit v=""/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" side="tl" part="pers"/>
-		      <clip pos="1" side="tl" part="pers"/>
-		    </let>
-		    <let>
-		      <clip pos="3" side="tl" part="nbr"/>
-		      <clip pos="1" side="tl" part="nbr"/>
-		    </let>
-		  </when>
-		</choose>
-		
+		</let>	 		
 		<call-macro n="f_bcond">
 		  <with-param pos="2"/>
 		</call-macro>	       
 		<call-macro n="firstWord">
 		  <with-param pos="1"/>
 		</call-macro>
-		<out>
+		<out><!--was/were, les dues formes són ambigues en quant a pers/nbr, per tant PD i ND si temps = past-->
 		  <chunk name="pro_verbcj">
 		    <tags>
 		      <tag><lit-tag v="SV"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
 		      <tag><clip pos="3" side="tl" part="temps"/></tag>
-		      <tag><clip pos="3" side="tl" part="pers"/></tag>
-		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="PD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
 		    </tags> 
 		    <lu>
 		      <var n="pronom"/>
@@ -15675,16 +15486,15 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que en
 		      <clip pos="3" side="tl" part="lemh"/> 
 		      <clip pos="3" side="tl" part="a_verb"/>
 		      <clip pos="3" side="tl" part="temps" link-to="3"/>
-		      <clip pos="3" side="tl" part="pers" link-to="4"/>
-		      <clip pos="3" side="tl" part="nbr" link-to="5"/>
+		      <lit-tag v="4"/>
+		      <lit-tag v="5"/>
 		      <clip pos="3" side="tl" part="lemq"/>
 		    </lu>
 		  </chunk>
 		</out>
 		<call-macro n="f_bcond">
 		  <with-param pos="3"/>
-		</call-macro>
-		
+		</call-macro>		
 	      </when>
 	      <otherwise>
 		<choose>
