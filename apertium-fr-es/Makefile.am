@@ -90,7 +90,6 @@ apertium-fr-es.fr.dix: apertium-fr-es.fr.metadix
                                                  	            	            	            	            	            	  	 
 modes: modes.xml
 	apertium-gen-modes modes.xml
-	mkdir $(prefix)/share/apertium-1.0/$(PREFIX1)/modes
 	
 apertium_fr_esdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
 apertium_fr_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
@@ -100,7 +99,7 @@ apertium_fr_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
-		    modes/*
+		    modes
 		  
 
 CLEANFILES = -r $(TARGETS_COMMON) apertium-fr-es.fr.dix
