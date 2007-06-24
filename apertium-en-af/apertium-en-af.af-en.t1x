@@ -4,6 +4,10 @@
     <def-cat n="adv">
       <cat-item tags="adv"/>
     </def-cat>
+    <def-cat n="num">
+      <cat-item tags="num"/>
+      <cat-item tags="num.*"/>
+    </def-cat>
     <def-cat n="adj">
       <cat-item tags="adj"/>
       <cat-item tags="adj.*"/>
@@ -91,6 +95,9 @@
     </def-attr>
     <def-attr n="a_adv">
       <attr-item tags="adv"/>
+    </def-attr>
+    <def-attr n="a_num">
+      <attr-item tags="num"/>
     </def-attr>
     <def-attr n="tipus_prn">
       <attr-item tags="prn"/>
@@ -220,6 +227,8 @@
       </action>
     </rule>
 
+
+
     <rule comment="REGLA: VAUX VBLEX">
       <pattern>
         <pattern-item n="verbm"/>
@@ -298,7 +307,6 @@
 	        <tags>
 		  <tag><lit-tag v="ADJ"/></tag>
                 </tags>
-               
                 <lu>
                   <clip pos="1" side="tl" part="lem"/>
     	          <clip pos="1" side="tl" part="a_adj"/>
@@ -308,7 +316,70 @@
       </action>
     </rule>
 
-    <rule> <!-- ^kan<vaux><pres>$ ^praat<vblex><pres>$ ^nie<adv>$ -->
+
+   <rule comment="REGLA: ADJ NOM">
+      <pattern>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="adj_nom">
+	        <tags>
+		  <tag><lit-tag v="SN"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+    	          <clip pos="1" side="tl" part="a_adj"/>
+                </lu>
+		<b/>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+    	          <clip pos="2" side="tl" part="a_nom"/>
+    	          <clip pos="2" side="tl" part="nbr"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+   <rule comment="REGLA: NUM ADJ NOM">
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="num_adj_nom">
+	        <tags>
+		  <tag><lit-tag v="SN"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+    	          <clip pos="1" side="tl" part="a_num"/>
+    	          <clip pos="1" side="tl" part="nbr"/>
+                </lu>
+		<b/>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+    	          <clip pos="2" side="tl" part="a_adj"/>
+                </lu>
+		<b/>
+                <lu>
+                  <clip pos="3" side="tl" part="lem"/>
+    	          <clip pos="3" side="tl" part="a_nom"/>
+    	          <clip pos="3" side="tl" part="nbr"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+
+
+
+    <rule>
       <pattern>
         <pattern-item n="verbm"/>
         <pattern-item n="verbnm"/>
@@ -331,6 +402,7 @@
                   <clip pos="2" side="tl" part="a_verb"/>
                   <clip pos="2" side="tl" part="temps"/>
 		</lu>
+		<b/>
 		<lu>
                   <clip pos="3" side="tl" part="lem"/>
                   <clip pos="3" side="tl" part="a_adv"/>
@@ -517,6 +589,46 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: VAUX PRN">
+      <pattern>
+        <pattern-item n="verbm"/>
+        <pattern-item n="prpers"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prpers" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="PRN"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="tipus_prn"/>
+              <clip pos="2" side="tl" part="pers"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <clip pos="2" side="tl" part="nbr"/>
+            </lu>
+	  </chunk>
+	  <b/>
+	  <chunk name="verb">
+            <tags>
+              <tag><lit-tag v="V"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="pers"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
     <rule comment="REGLA: PRN PR PRN">
       <pattern>
         <pattern-item n="prn"/>
@@ -599,8 +711,6 @@
         </out>
      </action>
    </rule>
-
-
 
     <rule> <!-- REGLA: reset variables-->
       <pattern>
