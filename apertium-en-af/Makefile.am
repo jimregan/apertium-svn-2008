@@ -81,8 +81,7 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
-           $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
-           $(BASENAME).$(LANG2).tsx  \
+	   $(BASENAME).$(LANG2).dix \
            $(PREFIX1).prob $(PREFIX2).prob \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
@@ -90,6 +89,8 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            modes.xml
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
+#           $(BASENAME).$(LANG1).tsx 
+#           $(BASENAME).$(LANG2).tsx  
 
 modes: modes.xml clean-dicts
 	apertium-gen-modes modes.xml
