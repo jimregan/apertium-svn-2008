@@ -41,6 +41,7 @@ import dics.elements.dtd.SElement;
 import dics.elements.dtd.SdefElement;
 import dics.elements.dtd.SdefsElement;
 import dics.elements.dtd.SectionElement;
+import dics.elements.utils.EElementList;
 
 /**
  * 
@@ -49,6 +50,11 @@ import dics.elements.dtd.SectionElement;
  */
 public class DictionaryReader extends XMLReader {
 
+    /**
+     * 
+     */
+    private DictionaryElement dic;
+    
     /**
          * 
          * @param fileName
@@ -84,6 +90,7 @@ public class DictionaryReader extends XMLReader {
 		    final SdefsElement sdefsElement = readSdefs(childElement);
 		    dic.setSdefs(sdefsElement);
 		}
+		
 		if (childElementName.equals("section")) {
 		    final SectionElement sectionElement = readSection(childElement);
 		    dic.addSection(sectionElement);
@@ -92,10 +99,25 @@ public class DictionaryReader extends XMLReader {
 		    final PardefsElement pardefsElement = readPardefs(childElement);
 		    dic.setPardefs(pardefsElement);
 		}
+		    if (childElementName.equals("xi:include")) {
+			String fileName = this.getAttributeValue(childElement, "href");
+			System.err.println("XInclude (" + fileName + ")");
+			DictionaryReader reader = new DictionaryReader(fileName);
+			DictionaryElement dic2 = reader.readDic();
+			if (fileName.endsWith("sdefs.dix")) {
+			    SdefsElement sdefs = dic2.getSdefs();
+			    dic.setSdefs(sdefs);
+			}
+			if (fileName.endsWith("pardefs.dix")) {
+			    PardefsElement pardefs = dic2.getPardefsElement();
+			    dic.setPardefs(pardefs);
+			}
+		    }
 	    }
 	}
 	root = null;
 	setDocument(null);
+	this.setDic(dic);
 	return dic;
     }
 
@@ -212,11 +234,23 @@ public class DictionaryReader extends XMLReader {
 			final EElement eElement = readEElement(childElement);
 			sectionElement.addEElement(eElement);
 		    }
+		    if (childElementName.equals("xi:include")) {
+			String fileName = this.getAttributeValue(childElement, "href");
+			System.err.println("XInclude (" + fileName + ")");
+			DictionaryReader reader = new DictionaryReader(fileName);
+			DictionaryElement dic = reader.readDic();
+			EElementList eList = dic.getAllEntries();
+			for (EElement e2 : eList) {
+			    sectionElement.addEElement(e2);
+			}
+		    }
 		}
 	    }
 	}
 	return sectionElement;
     }
+    
+    //public EElementList readEElementXInclude(childElement)
 
     /**
          * 
@@ -331,6 +365,20 @@ public class DictionaryReader extends XMLReader {
 	}
 	final ReElement reElement = new ReElement(value);
 	return reElement;
+    }
+    
+    /**
+     * @return the dic
+     */
+    public final DictionaryElement getDic() {
+        return dic;
+    }
+
+    /**
+     * @param dic the dic to set
+     */
+    public final void setDic(DictionaryElement dic) {
+        this.dic = dic;
     }
 
 }

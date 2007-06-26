@@ -24,6 +24,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dics.elements.utils.EElementList;
+
 /**
  * 
  * @author Enrique Benimeli Bofarull
@@ -34,7 +36,7 @@ public class PardefElement extends Element {
     /**
          * 
          */
-    private ArrayList<EElement> eElements;
+    private EElementList eElements;
 
     /**
          * 
@@ -47,7 +49,7 @@ public class PardefElement extends Element {
          */
     public PardefElement(final String value) {
 	n = value;
-	eElements = new ArrayList<EElement>();
+	eElements = new EElementList();
     }
 
     /**
@@ -58,7 +60,7 @@ public class PardefElement extends Element {
          */
     public PardefElement(final PardefElement orig, final String name) {
 	n = name;
-	eElements = new ArrayList<EElement>();
+	eElements = new EElementList();
 
 	for (final EElement e : orig.eElements) {
 	    final EElement e2 = (EElement) e.clone();
@@ -209,6 +211,20 @@ public class PardefElement extends Element {
 	for (final EElement e : eElements) {
 	    e.changeCategory("R", newCategory);
 	}
+    }
+
+    /**
+     * @return the eElements
+     */
+    public final EElementList getEElements() {
+        return eElements;
+    }
+
+    /**
+     * @param elements the eElements to set
+     */
+    public final void setEElements(EElementList elements) {
+        eElements = elements;
     }
 
 }

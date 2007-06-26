@@ -982,6 +982,10 @@ public class EElement extends Element implements Cloneable,
 	if (anotherEElement == null) {
 	    return -1;
 	}
+	
+	if (this.isRegEx()) {
+	    return 0;
+	}
 
 	if (!(anotherEElement instanceof EElement)) {
 	    throw new ClassCastException("An EElement object expected.");

@@ -380,8 +380,11 @@ public class DictionaryElement extends Element {
 			    + getTL() + "\n");
 		}
 		dos.writeBytes("\tSections: " + sections.size() + "\n");
-		dos.writeBytes("\tEntries: "
-			+ (sections.get(0)).getEElements().size());
+		int ne = 0;
+		for (SectionElement section : sections) {
+		    ne += section.getEElements().size();
+		}
+		dos.writeBytes("\tEntries: " + ne);
 	    }
 	    
 	    if (sdefs != null) {
@@ -424,6 +427,10 @@ public class DictionaryElement extends Element {
 	}
     }
 
+    /**
+     * 
+     * @param fileName
+     */
     public void printXMLXInclude(final String fileName) {
 	BufferedOutputStream bos;
 	FileOutputStream fos;
@@ -462,12 +469,12 @@ public class DictionaryElement extends Element {
 	    }
 	    dos
 		    .writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
-			    + getFolder() + "/sdefs.xml\"/>\n");
-	    sdefs.printXML(getFolder() + "/sdefs.xml");
+			    + getFolder() + "/sdefs.dix\"/>\n");
+	    sdefs.printXML(getFolder() + "/sdefs.dix");
 	    dos
 		    .writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
-			    + getFolder() + "/pardefs.xml\"/>\n");
-	    pardefs.printXML(getFolder() + "/pardefs.xml");
+			    + getFolder() + "/pardefs.dix\"/>\n");
+	    pardefs.printXML(getFolder() + "/pardefs.dix");
 
 	    for (SectionElement section : sections) {
 		ArrayList<String> includes = section.getIncludes();
@@ -506,6 +513,27 @@ public class DictionaryElement extends Element {
     public EElementList getEntries() {
 	for (final SectionElement s : sections) {
 	    if (s.getID().equals("main")) {
+		return s.getEElements();
+	    }
+	}
+	return null;
+    }
+
+    public EElementList getAllEntries() {
+	for (final SectionElement s : sections) {
+	    return s.getEElements();
+	}
+	return null;
+    }
+
+    /**
+     * 
+     * @param sectionID
+     * @return
+     */
+    public EElementList getEntries(final String sectionID) {
+	for (final SectionElement s : sections) {
+	    if (s.getID().equals(sectionID)) {
 		return s.getEElements();
 	    }
 	}
@@ -686,7 +714,8 @@ public class DictionaryElement extends Element {
          * 
          */
     public void reverse() {
-	final ArrayList<EElement> elements = getEntries();
+	for (SectionElement section : this.getSections()) {
+	final ArrayList<EElement> elements = section.getEElements();
 
 	for (final EElement ee : elements) {
 	    final ArrayList<Element> children = ee.getChildren();
@@ -719,6 +748,7 @@ public class DictionaryElement extends Element {
 		    ((PElement) e).setRElement(rE);
 		}
 	    }
+	}
 	}
     }
 

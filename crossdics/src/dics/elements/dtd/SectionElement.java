@@ -160,9 +160,13 @@ public class SectionElement extends Element {
 	    dos = new DataOutputStream(bos);
 	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
 
+	    dos.writeBytes("<dictionary>\n");
+	    dos.writeBytes("<section>\n");
 	    for (final EElement e : eElements) {
 		e.printXML(dos);
 	    }
+	    dos.writeBytes("</section>\n");
+	    dos.writeBytes("</dictionary>\n");
 
 	    fos = null;
 	    bos = null;

@@ -103,15 +103,19 @@ public class DicFormat {
 			duplicated++;
 		    }
 		}
+		
 		System.out.println(duplicated + " duplicated entries in section '" + section.getID() + "'");
 	}
 	
 	DicSort dicSort = new DicSort(dicFormatted);
+	/*
 	dicSort.setDicType(getDicType());
 	dicSort.setOut(this.getOut());
 	DictionaryElement formatted = dicSort.sort();
 	formatted.printXML(getOut());
 	return formatted;
+	*/
+	return dicFormatted;
     }
 
     /**

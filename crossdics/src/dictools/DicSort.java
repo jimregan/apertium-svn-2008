@@ -347,7 +347,7 @@ public class DicSort {
 		    if (isXinclude()) {
 			section
 				.addXInclude("<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
-					+ folder + "/" + cat + ".xml\"/>");
+					+ folder + "/" + cat + ".dix\"/>");
 		    }
 		    if (list.size() > 0) {
 			Collections.sort(list);

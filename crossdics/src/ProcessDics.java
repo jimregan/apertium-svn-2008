@@ -18,9 +18,11 @@
  * 02111-1307, USA.
  */
 
+import misc.AddGender;
 import dictools.DicConsistent;
 import dictools.DicCross;
 import dictools.DicFormat;
+import dictools.DicGather;
 import dictools.DicMerge;
 import dictools.DicReverse;
 import dictools.DicSort;
@@ -175,6 +177,31 @@ public class ProcessDics {
 		dicSort.doSort();
 	    }
 	}
+
+	if (getAction().equals("gather")) {
+	    if (getArguments().length != 3) {
+		System.err
+			.println("Usage: java ProcessDics gather <dic> <dic-sorted>");
+		System.exit(-1);
+	    } else {
+		DicGather dicGather = new DicGather(arguments[1], arguments[2]);
+		//dicGather.setArguments(arguments);
+		dicGather.doGather();
+	    }
+	}
+	
+	if (getAction().equals("addgender")) {
+	    if (getArguments().length != 4) {
+		System.err
+			.println("Usage: java ProcessDics addgender <morph-source> <bil> <out>");
+		System.exit(-1);
+	    } else {
+		AddGender addGender = new AddGender();
+		addGender.setArguments(arguments);
+		addGender.doAddGender();
+	    }
+	}
+	
 
     }
 
