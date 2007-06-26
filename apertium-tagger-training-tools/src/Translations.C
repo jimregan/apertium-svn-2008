@@ -198,6 +198,55 @@ Translations::evaluate_translations_likelihood(string likelihood_script) {
   }
 }
 
+void 
+Translations::set_previoulsy_evaluated_translations_likelihood(map<string, double>& translations_likelihoods) {
+  double sum_likelihood=0;
+  double likelihood;
+
+  //Take the likelihood of each translation in the target language <-> p(tau(g_i,s)|M_TL)
+  for (int i=0; i<get_number_translations(); i++) {
+    if((are_translations_ok()) && (get_number_translations()>1))
+      likelihood=translations_likelihoods[get_translation_at(i)];
+    else
+      likelihood=1;
+
+    Utils::print_debug("TRANSLATION TO EVALUATE: ");
+    Utils::print_debug(get_translation_at(i));
+    Utils::print_debug("\n");
+    Utils::print_debug("LIKEKLIHOOD: ");
+    Utils::print_debug(likelihood);
+    Utils::print_debug("\n\n");
+
+    if ((likelihood<=0)||isnan(likelihood)) {
+      cerr<<"Error: Likelihood NULL or NAN: "<<get_translation_at(i)<<"\n";
+      likelihood=DBL_MIN;
+      //      all_likelihoods_ok=false;
+    }
+    if (likelihood>1) {
+      cerr<<"Warning: Likelihood of '"<<get_translation_at(i)<<"' is "<<likelihood<<"\n";
+      likelihood=1;
+      //      all_likelihoods_ok=false;
+    }
+
+    set_translation_likelihood(i,likelihood);
+    sum_likelihood+=likelihood;
+  }
+
+  //Normalizamos las verosimilitudes
+  for(int i=0; i<get_number_translations(); i++) {
+    likelihood=get_translation_likelihood(i);
+    set_translation_likelihood(i,likelihood/sum_likelihood);
+      
+    Utils::print_debug("TRANSLATION TO NORMALIZE: ");
+    Utils::print_debug(get_translation_at(i));
+    Utils::print_debug("\n");
+    Utils::print_debug("NORMALIZED LIKELIHOOD: ");
+    Utils::print_debug(get_translation_likelihood(i));
+    Utils::print_debug("\n\n");
+  }
+}
+
+
 void
 Translations::calculate_probability_each_path() {
   //Firts we calculate the contribution of each path to the

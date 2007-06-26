@@ -83,6 +83,7 @@ public:
   void set_path_translation(string trans, int path);
 
   void evaluate_translations_likelihood(string likelihood_script);
+  void set_previoulsy_evaluated_translations_likelihood(map<string, double>& translations_likelihoods);
 
   void calculate_probability_each_path();
 

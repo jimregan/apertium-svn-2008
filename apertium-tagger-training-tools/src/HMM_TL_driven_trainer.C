@@ -110,11 +110,14 @@ HMM_TL_driven_trainer::set_use_tags_rules(bool b) {
 }
 
 void 
-HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords, string filename){
+HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords, string filename, ofstream& fpaths, ifstream& ftrans, ifstream& flike){
   int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
   map<int, map<int, double> > emis; //NxM
+
+  map<int, double> tags_count; //N
+  map<int, double> ambclass_count; //M
 
   string cadena;
   Segment* seg=NULL;
@@ -235,11 +238,17 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     Utils::print_debug("\n");
     
 
+    map<string, double> translations_likelihoods;
     //Calculamos sus traducciones
     for(int ncamino=0; ncamino<seg->get_number_paths(); ncamino++) {
       cadena=seg->get_path(etqpart, ncamino);      
       if (is_feasible_path(last_etq_segmento_ant, etqpart)) {
 	if (seg->get_number_paths()==1) {
+
+	  if(fpaths.is_open()) {
+	    continue;
+	  }
+
 	  Utils::print_debug("PATH ");
 	  Utils::print_debug(ncamino);
 	  Utils::print_debug(" TO TRANSLATE: "+cadena+"\n");
@@ -248,15 +257,33 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	  Utils::print_debug("\n");
 	  translations[TL1]->set_path_translation(TRANSLATION_UNIQUE_PATH, ncamino);
 	} else {
+
+	  if(fpaths.is_open()) {
+	    fpaths<<cadena<<"^.<sent>$[\n]"<<flush;
+	    continue;
+	  }
+
 	  Utils::print_debug("PATH ");
 	  Utils::print_debug(ncamino);
 	  Utils::print_debug(" TO TRANSLATE: "+cadena+"\n");
 	  string tradcadena;
 
-	  if(translations[TL1]->are_translations_ok())
-	    tradcadena=Utils::translate(Utils::translation_script, cadena);
-	  else
-	    tradcadena=TRANSLATION_NOT_USED;
+	  if(ftrans.is_open()) {
+	    getline(ftrans, tradcadena);
+	    if (!(translations[TL1]->are_translations_ok()))
+	      tradcadena=TRANSLATION_NOT_USED;
+	  } else {
+	    if(translations[TL1]->are_translations_ok())
+	      tradcadena=Utils::translate(Utils::translation_script, cadena);
+	    else
+	      tradcadena=TRANSLATION_NOT_USED;
+	  }
+
+	  if(flike.is_open()) {
+	    string strlikelihood;
+	    getline(flike, strlikelihood);	  
+	    translations_likelihoods[tradcadena]=atof(strlikelihood.c_str());
+	  }
 
 	  translations[TL1]->set_path_translation(tradcadena, ncamino);
 	  Utils::print_debug("TRANSLATION: "+tradcadena+"\n");
@@ -278,6 +305,13 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 
 	hay_caminos_prohibidos=true;
       }
+    }
+
+    if (fpaths.is_open()) {
+      //Batch mode
+      cadena=seg->get_path(etqpart, 0);
+      last_etq_segmento_ant=etqpart.back();
+      continue;
     }
 
     //Comprobamos que el segmento tenga traducciones. Por errores en el
@@ -328,10 +362,14 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       continue;
     }
 
-    translations[TL1]->evaluate_translations_likelihood(Utils::likelihood_script);
+    if (flike.is_open()) {
+      translations[TL1]->set_previoulsy_evaluated_translations_likelihood(translations_likelihoods);
+    } else {
+      translations[TL1]->evaluate_translations_likelihood(Utils::likelihood_script);
+    }
     translations[TL1]->calculate_probability_each_path();
 
-    update_counts(seg, translations, tags_pair, emis, last_etq_segmento_ant);
+    update_counts(seg, translations, tags_pair, emis, last_etq_segmento_ant, tags_count, ambclass_count);
 
     //Actualizamos contadores
     cuenta_segmentos++;
@@ -374,7 +412,8 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       cout<<"Time (user+sys): "<<Utils::get_usage_time()<<"\n";
       cout<<"--------------------------------------------------------\n"<<flush;
 
-      calculate_parameters(tags_pair, emis);
+      //calculate_parameters(tags_pair, emis);
+      calculate_smoothed_parameters(tags_count, tags_pair, ambclass_count, emis, corpus_length);
                   
       char aux[15];
       sprintf(aux, "%d", next_save_probs);
@@ -393,7 +432,9 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     }	 
   }
     
-  calculate_parameters(tags_pair, emis);  
+  //calculate_parameters(tags_pair, emis);  
+  calculate_smoothed_parameters(tags_count, tags_pair, ambclass_count, emis, corpus_length);
+
   if (seg!=NULL)
     delete seg;
   for(i=0; i<translations.size(); i++)
@@ -402,11 +443,14 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 }
 
 void 
-HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c) {
+HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ofstream& fpaths, ifstream& ftrans, ifstream& flike) {
   int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
   map<int, map<int, double> > emis; //NxM
+
+  map<int, double> tags_count; //N
+  map<int, double> ambclass_count; //M
 
   string cadena;
 
@@ -672,7 +716,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     translations[TL1]->evaluate_translations_likelihood(Utils::likelihood_script);
     translations[TL1]->calculate_probability_each_path();
 
-    update_counts(seg, translations, tags_pair, emis, last_etq_segmento_ant);
+    update_counts(seg, translations, tags_pair, emis, last_etq_segmento_ant, tags_count, ambclass_count);
 
     //Actualizamos contadores
     cuenta_segmentos++;
@@ -697,7 +741,8 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     //We test if we need to update the molde used for prunning
     if (cuenta_palabras>=next_update_pruning_model) {
 
-      calculate_parameters(tags_pair, emis);
+      //calculate_parameters(tags_pair, emis);
+      calculate_smoothed_parameters(tags_count, tags_pair, ambclass_count, emis, corpus_length);
 
       cout<<"Mixing parameters, number of processed words: "<<cuenta_palabras<<"\n";
 
@@ -753,7 +798,8 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       cout<<"Time (user+sys): "<<Utils::get_usage_time()<<"\n";
       cout<<"--------------------------------------------------------\n"<<flush;
 
-      calculate_parameters(tags_pair, emis);
+      //calculate_parameters(tags_pair, emis);
+      calculate_smoothed_parameters(tags_count, tags_pair, ambclass_count, emis, corpus_length);
 
       char aux[15];
       sprintf(aux, "%d", next_save_probs);
@@ -780,7 +826,9 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     }	 
   }
     
-  calculate_parameters(tags_pair, emis);  
+  //calculate_parameters(tags_pair, emis);  
+  calculate_smoothed_parameters(tags_count, tags_pair, ambclass_count, emis, corpus_length);
+
   mix_parameters((double)cuenta_palabras, (double)corpus_length, mixing_c);
   PathsPruner::set_tagger_data(tagger_data);           
 
@@ -795,7 +843,12 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 
 
 void 
-HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans, map<int, map<int, double> > &tags_pair, map<int, map<int, double> > &emis, TTag last_tag_prev_segment) {
+HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans, 
+				     map<int, map<int, double> > &tags_pair, 
+				     map<int, map<int, double> > &emis, 
+				     TTag last_tag_prev_segment,
+				     map<int, double> &tags_count, 
+				     map<int, double> &ambclass_count) {
   TTag tag1, tag2;
   set<TTag> tags;
   string cadena;
@@ -838,6 +891,23 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
     prob_each_path[i]=prob_each_path[i]/sum_prob_each_path;
   }
 
+  //Update the number of times each ambiguity class have been seen
+  //(this is not an estimation)
+  for(int i=0; i<seg->vwords.size(); i++) {
+    tags=seg->vwords[i].get_tags();
+    if (tags.size()==0)
+      tags=tagger_data.getOpenClass();
+
+    int k=tagger_data.getOutput()[tags];
+    if ((k>=tagger_data.getM())||(k<0)) {
+      cerr<<"Error: Ambiguity class number out of range: "<<k<<"\n";
+      cerr<<"Word: "<<seg->vwords[i].get_superficial_form()<<"\n";
+      cerr<<"Ambiguity class: "<<seg->vwords[i].get_string_tags()<<"\n";
+      cerr<<"Amb. class size: "<<tags.size()<<"\n";
+    }
+    ambclass_count[k]++;
+  }
+
   for (int i=0; i<seg->get_number_paths(); i++) {
 
     double prob_este_camino=prob_each_path[i];
@@ -870,6 +940,8 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
 	cerr<<"Tag2: "<<tag2<<" "<<tagger_data.getArrayTags()[tag2]<<"\n";
 	exit(EXIT_FAILURE);
       }
+
+      tags_count[tag2]+=prob_este_camino;
 	    
       if(tag2>=0) { //No es una palabra desconocida
 	int k=tagger_data.getOutput()[tags];
@@ -1042,6 +1114,58 @@ HMM_TL_driven_trainer::calculate_parameters(map<int, map<int, double> > &tags_pa
 	if(isnan(tagger_data.getB()[i][k])) {
 	  cerr<<"Error: b["<<i<<"]["<<k<<"] is NAN\n";
 	}
+      }
+    }
+  }
+}
+
+double 
+HMM_TL_driven_trainer::lambda(double count) {
+  double sqrtval=sqrt(count);
+  return sqrtval/(1+sqrtval);
+}
+
+void 
+HMM_TL_driven_trainer::calculate_smoothed_parameters(map<int, double> &tags_count, 
+                                                     map<int, map<int, double> > &tags_pairs, 
+                                                     map<int, double> &ambclass_count, 
+                                                     map<int, map<int, double> > &emis, 
+                                                     double corpus_length) {
+  map<int, double> prob_tag;
+  double mu=lambda(corpus_length);
+  double sum_tag=0.0;
+
+  for(int i=0; i<tagger_data.getN(); i++) {
+    sum_tag+=tags_count[i];
+  }
+  for(int i=0; i<tagger_data.getN(); i++) {
+    prob_tag[i]=(mu*(tags_count[i]/sum_tag)) + ((1-mu)*(1/tagger_data.getN()));
+  }
+
+  for (int i=0; i<tagger_data.getN(); i++) {
+    for (int j=0; j<tagger_data.getN(); j++) {
+      double lambda_value=lambda(tags_count[i]);
+      tagger_data.getA()[i][j]=(lambda_value*(tags_pairs[i][j]/tags_count[i])) +
+	((1-lambda_value)*prob_tag[j]);
+    }
+  }
+
+  map<int, double> prob_ambclass;
+  double sum_ambclass=0.0;
+  for(int k=0; k<tagger_data.getM(); k++) {
+    sum_ambclass+=ambclass_count[k];
+  }
+  for(int k=0; k<tagger_data.getM(); k++) {
+    prob_ambclass[k]=(mu*(ambclass_count[k]/sum_ambclass)) + ((1-mu)*(1/tagger_data.getM()));
+  }
+
+  //REVISAR ESTO, creo que es al reves
+  for(int j=0; j<tagger_data.getN(); j++) {
+    for(int k=0; k<tagger_data.getM(); k++) {
+      if(tagger_data.getOutput()[k].find(j)!=tagger_data.getOutput()[k].end()) {
+	double lambda_value=lambda(tags_count[j]);
+	tagger_data.getB()[j][k]=(lambda_value*(emis[j][k]/tags_count[j]))+
+	  ((1-lambda_value)*prob_ambclass[k]);
       }
     }
   }

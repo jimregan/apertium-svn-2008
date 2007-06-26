@@ -89,12 +89,22 @@ private:
 
   void init_allowed_bigrams();
 
-  void update_counts(Segment* seg, vector<Translations*> &trans, map<int, map<int, double> > &tags_pair,
-                     map<int, map<int, double> > &emis, TTag last_tag_prev_segment);
+  void update_counts(Segment* seg, vector<Translations*> &trans, 
+                     map<int, map<int, double> > &tags_pair,
+                     map<int, map<int, double> > &emis, TTag last_tag_prev_segment,
+                     map<int, double> &tags_count, 
+                     map<int, double> &ambclass_count);
 
   bool is_feasible_path(const TTag& last_etq_ant, const vector<TTag>& etqpart);
 
   void calculate_parameters(map<int, map<int, double> > &tags_pairs, map<int, map<int, double> > &emis);
+
+  double lambda(double count);
+  void calculate_smoothed_parameters(map<int, double> &tags_count, 
+				     map<int, map<int, double> > &tags_pairs, 
+				     map<int, double> &ambclass_count, 
+				     map<int, map<int, double> > &emis, 
+				     double corpus_length);
 
   void mix_parameters(double words_processed, double corpus_length, double mixing_c);
 
@@ -120,9 +130,9 @@ public:
 
   void write_parameters(FILE *out);
 
-  void train(FILE *is, int corpus_length, int save_after_nwords, string filename);
+  void train(FILE *is, int corpus_length, int save_after_nwords, string filename, ofstream& fpaths, ifstream& ftrans, ifstream& flike);
 
-  void train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c);
+  void train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ofstream& fpaths, ifstream& ftrans, ifstream& flike);
 
   void print_A();
 

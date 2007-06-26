@@ -55,7 +55,11 @@ using namespace std;
 
 void help(char *name) {
   cerr<<"USAGE:\n"
-      <<name<<" --tsxfile tsxfile --train <n> [--prune <m> <l> <p> <c> --initprob init.prob] --file file --tscript tscript --lscript lscript [--trules transferrules] [--supforms superficialforms] [--save <n>] [--norules] [--debug]\n\n"
+      <<name<<" --tsxfile tsxfile --train <n> [--prune <m> <l> <p> <c> --initprob init.prob]"
+      <<" --file file --tscript tscript --lscript lscript [--trules transferrules]"
+      <<" [--supforms superficialforms] [--genpaths pathsfile]"
+      <<" [--translations transfile [--likelihoods likefiles]]"
+      <<" [--save <n>] [--norules] [--debug]\n\n"
       <<"ARGUMENTS:\n"
       <<"   --tsxfile|-x: Specify the tagger specification file in XML format\n"
       <<"   --train|-t: Train the HMM-based part-of-speech tagger using\n"
@@ -77,7 +81,14 @@ void help(char *name) {
       <<"               be calculated and stored (optional)\n"
       <<"   --norules|-n: Forbidden and enforce rules will not be used to discard\n"
       <<"               disambiguation paths during training (by default those \n"
-      <<"               rules are used)\n"
+      <<"               rules are used)\n"      
+      <<"   --genpaths|-g: Specify a file in which all disambiguations paths\n"
+      <<"               for each segment are written This cause translations not\n"
+      <<"               to be performed, for batch training, 1st stage\n"
+      <<"  --translations|-a: Specify a file from which all translations of\n"
+      <<"               each segment are read.  Used for batch training, 2nd stage\n"
+      <<"  --likelihoods|-e: Specify a file from which the likelihood of each\n"
+      <<"               translation is read. Used for batch training, 2nd/3rd stage\n"
       <<"   --supforms|-p: Specify a set of superficial forms (separated by '|') that\n"
       <<"               will be tested during the source-language text segmentation \n"
       <<"               to prevent the method from segmenting at those superficial forms\n"
@@ -128,6 +139,11 @@ int main(int argc, char *argv[]) {
   double prune_p=1.0;
   double mixing_c=-1.0;
 
+  string pathsfile="";
+  string transfile="";
+  string likefile="";
+
+
   int save_after_nwords=0;
 
   int c;
@@ -151,6 +167,9 @@ int main(int argc, char *argv[]) {
 	{"supforms",   required_argument, 0, 'p'},
 	{"prune",      required_argument, 0, 'k'},
 	{"initprob",   required_argument, 0, 'b'},
+	{"genpaths",    required_argument, 0, 'g'},
+	{"translations",required_argument, 0, 'a'},
+	{"likelihoods", required_argument, 0, 'e'},
 	{"save",       required_argument, 0, 's'},
 	{"norules",    no_argument,       0, 'n'},
 	{"debug",      no_argument,       0, 'd'},
@@ -159,7 +178,7 @@ int main(int argc, char *argv[]) {
 	{0, 0, 0, 0}
       };
 
-    c=getopt_long(argc, argv, "x:t:f:r:l:u:k:s:ndhv",long_options, &option_index);
+    c=getopt_long(argc, argv, "x:t:f:r:l:u:k:b:g:a:e:s:ndhv",long_options, &option_index);
     if (c==-1)
       break;
       
@@ -241,6 +260,15 @@ int main(int argc, char *argv[]) {
     case 's':
       save_after_nwords=atoi(optarg);
       break;
+    case 'g':
+      pathsfile=optarg;
+      break;
+    case 'a':
+      transfile=optarg;
+      break;
+    case 'e':
+      likefile=optarg;
+      break;
     case 'n':
       use_tags_rules=false;
       break;
@@ -321,6 +349,9 @@ int main(int argc, char *argv[]) {
 
   FILE *fdic, *fcrp, *fprob;
 
+  ofstream fpaths;
+  ifstream ftrans, flike;
+
   if (mode==MODE_TRAIN) {
     if (prune_m>0) {
       fprob = fopen(initprob.c_str(), "r");
@@ -344,9 +375,9 @@ int main(int argc, char *argv[]) {
 
   if (mode==MODE_TRAIN) {
     if (prune_m<=0)
-      hmm_trainer.train(fcrp, corpus_length, save_after_nwords, filename);
+      hmm_trainer.train(fcrp, corpus_length, save_after_nwords, filename, fpaths, ftrans, flike);
     else
-      hmm_trainer.train_pruning(fcrp, corpus_length, save_after_nwords, filename, mixing_c);
+      hmm_trainer.train_pruning(fcrp, corpus_length, save_after_nwords, filename, mixing_c, fpaths, ftrans, flike);
   } 
 
   if (mode==MODE_TRAIN) {
