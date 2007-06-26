@@ -371,6 +371,21 @@ int main(int argc, char *argv[]) {
 
     fprob = fopen((filename+".prob").c_str(), "w");
     if (!fprob) file_name_error(filename+".prob");
+
+    if (pathsfile!="") {
+      fpaths.open(pathsfile.c_str(), ios::out | ios::trunc);
+      if(fpaths.fail()) file_name_error(pathsfile);
+    }
+
+    if(transfile!="") {
+      ftrans.open(transfile.c_str(), ios::in);
+      if (ftrans.fail()) file_name_error(transfile);
+    }
+
+    if(likefile!="") {
+      flike.open(likefile.c_str(), ios::in);
+      if(flike.fail()) file_name_error(likefile);
+    }
   }
 
   if (mode==MODE_TRAIN) {
