@@ -19,6 +19,7 @@
  */
 
 import misc.AddGender;
+import misc.AssignParadigm;
 import dictools.DicConsistent;
 import dictools.DicCross;
 import dictools.DicFormat;
@@ -201,7 +202,19 @@ public class ProcessDics {
 		addGender.doAddGender();
 	    }
 	}
-	
+
+	if (getAction().equals("assignparadigm")) {
+	    if (getArguments().length != 4) {
+		System.err
+			.println("Usage: java ProcessDics assignparadigm <morph-source> <bil> <out>");
+		System.exit(-1);
+	    } else {
+		AssignParadigm a = new AssignParadigm();
+		a.setArguments(arguments);
+		a.doAddGender();
+	    }
+	}
+
 
     }
 

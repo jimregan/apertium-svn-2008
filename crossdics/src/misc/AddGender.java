@@ -140,6 +140,7 @@ public class AddGender {
 		    if (parName != null) {
 			if (parName.contains("NC") ) {
 			    ContentElement leftSide = ee.getSide("L");
+			    ContentElement rightSide = ee.getSide("R");
 			    String text = leftSide.getValue();
 			    
 			    SElement gender = ng.get(text);
@@ -148,11 +149,8 @@ public class AddGender {
 				genderFound++;
 			    SElement noun = new SElement("n");
 			    leftSide.addChild(noun);
+			    rightSide.addChild(noun);
 			    leftSide.addChild(gender);
-			    } else {
-				genderNotFound++;
-				System.err.println("(" + genderNotFound +") I could not find gender for '" + text + "'");
-			    }
 			    // and remove par element if NC
 			    ParElement par = null;
 			    for (Element e : ee.getChildren()) {
@@ -160,7 +158,13 @@ public class AddGender {
 				    par = (ParElement)e;
 				}
 			    }
+
 			    ee.getChildren().remove(par);
+			    } else {
+				genderNotFound++;
+				System.err.println("(" + genderNotFound +") I could not find gender for '" + text + "'");
+			    }
+			    
 			}
 		    }
 		}
