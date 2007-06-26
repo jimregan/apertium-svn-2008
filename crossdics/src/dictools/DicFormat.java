@@ -99,12 +99,13 @@ public class DicFormat {
 			//EElement other = (EElement)eMap.get(e1Key);
 			String left = e.getValue("L");
 			String right = e.getValue("R");
-			System.out.println("Duplicated: " + left + "/" + right);
+			System.err.println("Duplicated: " + left + "/" + right);
 			duplicated++;
 		    }
 		}
-		
-		System.out.println(duplicated + " duplicated entries in section '" + section.getID() + "'");
+		String errorMsg = duplicated + " duplicated entries in section '" + section.getID() + "'";
+		System.err.println(errorMsg);
+		System.out.println(errorMsg);
 	}
 	
 	DicSort dicSort = new DicSort(dicFormatted);

@@ -211,10 +211,9 @@ public class ProcessDics {
 	    } else {
 		AssignParadigm a = new AssignParadigm();
 		a.setArguments(arguments);
-		a.doAddGender();
+		a.doAssignParadigm();
 	    }
 	}
-
 
     }
 

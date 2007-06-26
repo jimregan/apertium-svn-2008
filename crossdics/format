@@ -2,7 +2,9 @@
 if [ "$#" == 3 ]
 then
 echo "Dic: $2"
-ant format -Ddic-type=$1 -Ddic=$2 -Dout=$3
+java -Xms32m -Xmx350m -cp lib/cross-dics.jar ProcessDics format $1 $2 $3 2> format.err
+echo "Done!"
+echo "Log file in 'format.err'"
 else
 echo "Usage: format <-mon|-bil> <dic> <out>"
 fi

@@ -26,6 +26,8 @@ import dics.elements.dtd.ContentElement;
 import dics.elements.dtd.DictionaryElement;
 import dics.elements.dtd.EElement;
 import dics.elements.dtd.Element;
+import dics.elements.dtd.LElement;
+import dics.elements.dtd.PElement;
 import dics.elements.dtd.ParElement;
 import dics.elements.dtd.PardefElement;
 import dics.elements.dtd.PardefsElement;
@@ -34,6 +36,7 @@ import dics.elements.dtd.SElement;
 import dics.elements.dtd.SdefElement;
 import dics.elements.dtd.SdefsElement;
 import dics.elements.dtd.SectionElement;
+import dics.elements.dtd.TextElement;
 import dictools.DictionaryReader;
 
 /**
@@ -44,148 +47,131 @@ import dictools.DictionaryReader;
 public class AssignParadigm {
 
     /**
-     * 
-     */
+         * 
+         */
     private String[] arguments;
 
     /**
-     * 
-     */
+         * 
+         */
     private String morphDic;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String bilDic;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String out;
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void processArguments() {
 	morphDic = arguments[1];
 	bilDic = arguments[2];
 	out = arguments[3];
     }
-    
+
     /**
-     * 
-     *
-     */
-    public final void doAddGender() {
+         * 
+         * 
+         */
+    public final void doAssignParadigm() {
 	this.processArguments();
-	
+
 	DictionaryReader reader = new DictionaryReader(morphDic);
+	reader.setReadParadigms(false);
 	System.out.println("Reading morphological '" + morphDic + "'");
 	DictionaryElement dic = reader.readDic();
-	//dic.printXML("morf-es.dix");
 
-	HashMap<String,SElement> ng = new HashMap<String,SElement>();
-
-	PardefsElement pars = dic.getPardefsElement();
+	HashMap<String, String> np = new HashMap<String, String>();
 
 	for (SectionElement section : dic.getSections()) {
 	    for (EElement ee : section.getEElements()) {
-		String lemma = ee.getLemma();
-		if (lemma != null ) {
-		    String parName = ee.getParadigmValue();
-		    if (parName != null && parName.endsWith("__n")) {
-			PardefElement par = pars.getParadigmDefinition(parName);
-			if (par != null) {
-			    for (EElement eepar : par.getEElements()) {
-				RElement r = eepar.getP().getR();
-				for (Element er : r.getChildren()) {
-				    if (er instanceof SElement) {
-					SElement s = (SElement)er;
-					String sv = er.getValue();
-					if (sv.equals("m") || sv.equals("f") || sv.equals("mf")) {
-					    ng.put(lemma, s);
-					    //System.out.println(lemma + " (" + sv + ")");
-					}
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }	    
-	}
-
-	System.out.println(ng.size() + " nouns read.");
-
-	DictionaryReader reader2 = new DictionaryReader(bilDic);
-	DictionaryElement bil = reader2.readDic();
-
-	SdefsElement sdefs = bil.getSdefs();
-	SdefElement n = new SdefElement("n");
-	SdefElement m = new SdefElement("m");
-	SdefElement f = new SdefElement("f");
-	SdefElement mf = new SdefElement("mf");
-	sdefs.addSdefElement(n);
-	sdefs.addSdefElement(m);
-	sdefs.addSdefElement(f);
-	sdefs.addSdefElement(mf);
-	
-	int genderFound = 0;
-	int genderNotFound = 0;
-	for (SectionElement section : bil.getSections()) {
-	    for (EElement ee : section.getEElements()) {
-		if (!ee.isRegEx()) {
-		    String parName = ee.getParadigmValue();
-		    if (parName != null) {
-			if (parName.contains("NC") ) {
-			    ContentElement leftSide = ee.getSide("L");
-			    String text = leftSide.getValue();
-			    
-			    SElement gender = ng.get(text);
-			    if (gender != null) {
-				//System.out.println(text + " (" + gender.getValue() + ")");
-				genderFound++;
-			    SElement noun = new SElement("n");
-			    leftSide.addChild(noun);
-			    leftSide.addChild(gender);
-			    } else {
-				genderNotFound++;
-				System.err.println("(" + genderNotFound +") I could not find gender for '" + text + "'");
-			    }
-			    // and remove par element if NC
-			    ParElement par = null;
-			    for (Element e : ee.getChildren()) {
-				if (e instanceof ParElement) {
-				    par = (ParElement)e;
-				}
-			    }
-			    ee.getChildren().remove(par);
-			}
-		    }
+		String parName = ee.getParadigmValue();
+		if (parName != null) {
+		    String right = ee.getSide("R").getValue();
+		    np.put(right, parName);
 		}
 	    }
 	}
-	
-	System.out.println("I found gender for " + genderFound + " lemmas.");
-	System.out.println("I could not find gender for " + genderNotFound + " lemmas (see addgender.err).");
 
-	System.out.println("Updated bilingual dictionary: '" + out + "'");
-	bil.printXML(out);	
+	System.out.println(np.size() + " entries read.");
+	DictionaryReader reader2 = new DictionaryReader(bilDic);
+	DictionaryElement bil = reader2.readDic();
+
+	for (SectionElement section : bil.getSections()) {
+	    for (EElement ee : section.getEElements()) {
+		if (!ee.isRegEx()) {
+		    String left = ee.getSide("L").getValue();
+		    String right = ee.getSide("R").getValue();
+
+		    String leftNoTags = this.cleanTags(left);
+		    String rightNoTags = this.cleanTags(right);
+		    String par = np.get(rightNoTags);
+
+		    EElement e = new EElement();
+		    e.setComment("auto");
+
+		    PElement p = new PElement();
+		    e.addChild(p);
+		    if (par == null) {
+			System.err.println("No paradigm for '" + leftNoTags
+				+ "'");
+			par = "";
+		    }
+		    ParElement parE = new ParElement(par);
+		    e.addChild(parE);
+
+		    LElement l = new LElement();
+		    RElement r = new RElement();
+		    TextElement text = new TextElement(leftNoTags);
+		    r.addChild(text);
+		    p.setLElement(l);
+		    p.setRElement(r);
+
+		    dic.addEElement(e);
+		}
+	    }
+	}
+	System.out.println("Updated morphological dictionary: '" + out + "'");
+	dic.printXML(out);
     }
 
     /**
-     * @return the arguments
-     */
+         * 
+         * @param value
+         * @return
+         */
+    private final String cleanTags(final String value) {
+	String[] vs = value.split("\\[");
+	if (vs == null)
+	    return value;
+	if (vs.length > 1) {
+	    return vs[0];
+	} else {
+	    return value;
+	}
+
+    }
+
+    /**
+         * @return the arguments
+         */
     public final String[] getArguments() {
-        return arguments;
+	return arguments;
     }
 
     /**
-     * @param arguments the arguments to set
-     */
+         * @param arguments
+         *                the arguments to set
+         */
     public final void setArguments(String[] arguments) {
-        this.arguments = arguments;
+	this.arguments = arguments;
     }
 
 }

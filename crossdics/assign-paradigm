@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ "$#" == 3 ]
+then
+java -Xms32m -Xmx350m -cp lib/cross-dics.jar ProcessDics assignparadigm $1 $2 $3 2> assignparadigm.err
+echo "Log file in 'assignparadigm.err'"
+else
+echo "---------------------------------"
+echo "This is an ad-hoc script!!"
+echo "New entries available in <bil> (those on the left side) are inserted in <out> based on the information available in the morphological dictionary <morph-source>."
+echo "---------------------------------"
+echo "Usage: assignparadigm  <morph-source> <bil> <out>"
+fi
