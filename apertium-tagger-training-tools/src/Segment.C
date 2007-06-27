@@ -49,7 +49,7 @@ Segment::get_path(vector <TTag>& etqpart, int path) {
   for(int i=0; i<contador_caminos.size(); i++) {
     int tag_position=((int)(path/nfijo_caminos[i]))%contador_caminos[i].size();            
     s+=vwords[i].get_lexical_form(contador_caminos[i][tag_position], tag_index["TAG_kEOF"]);
-    if (!vwords[i].get_plus_cut())
+    if ((!vwords[i].get_plus_cut()) && (i<(contador_caminos.size()-1)))
       s+=" ";
     etqpart.push_back(contador_caminos[i][tag_position]);
   }

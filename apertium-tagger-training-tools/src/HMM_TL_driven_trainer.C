@@ -1135,18 +1135,20 @@ HMM_TL_driven_trainer::calculate_smoothed_parameters(map<int, double> &tags_coun
   double mu=lambda(corpus_length);
   double sum_tag=0.0;
 
+  Utils::print_debug("Calculating smoothed parameters\n------------------------\n");
+
   for(int i=0; i<tagger_data.getN(); i++) {
     sum_tag+=tags_count[i];
   }
   for(int i=0; i<tagger_data.getN(); i++) {
-    prob_tag[i]=(mu*(tags_count[i]/sum_tag)) + ((1-mu)*(1/tagger_data.getN()));
+    prob_tag[i]=(mu*(tags_count[i]/sum_tag)) + ((1.0-mu)*(1.0/((double)tagger_data.getN())));
   }
 
   for (int i=0; i<tagger_data.getN(); i++) {
     for (int j=0; j<tagger_data.getN(); j++) {
       double lambda_value=lambda(tags_count[i]);
       tagger_data.getA()[i][j]=(lambda_value*(tags_pairs[i][j]/tags_count[i])) +
-	((1-lambda_value)*prob_tag[j]);
+	((1.0-lambda_value)*prob_tag[j]);
     }
   }
 
@@ -1156,7 +1158,7 @@ HMM_TL_driven_trainer::calculate_smoothed_parameters(map<int, double> &tags_coun
     sum_ambclass+=ambclass_count[k];
   }
   for(int k=0; k<tagger_data.getM(); k++) {
-    prob_ambclass[k]=(mu*(ambclass_count[k]/sum_ambclass)) + ((1-mu)*(1/tagger_data.getM()));
+    prob_ambclass[k]=(mu*(ambclass_count[k]/sum_ambclass)) + ((1.0-mu)*(1.0/((double)tagger_data.getM())));
   }
 
 
@@ -1165,7 +1167,7 @@ HMM_TL_driven_trainer::calculate_smoothed_parameters(map<int, double> &tags_coun
       if(tagger_data.getOutput()[k].find(j)!=tagger_data.getOutput()[k].end()) {
 	double lambda_value=lambda(tags_count[j]);
 	tagger_data.getB()[j][k]=(lambda_value*(emis[j][k]/tags_count[j]))+
-	  ((1-lambda_value)*prob_ambclass[k]);
+	  ((1.0-lambda_value)*prob_ambclass[k]);
       }
     }
   }
