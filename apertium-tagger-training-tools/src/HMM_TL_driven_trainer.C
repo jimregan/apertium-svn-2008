@@ -259,7 +259,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	} else {
 
 	  if(fpaths.is_open()) {
-	    fpaths<<cadena<<"^.<sent>$ [\n]"<<flush;
+	    fpaths<<cadena<<"^.<sent>$[\n]"<<flush;
 	    continue;
 	  }
 
