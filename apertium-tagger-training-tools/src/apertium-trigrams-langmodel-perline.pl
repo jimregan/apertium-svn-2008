@@ -292,7 +292,7 @@ sub do_eval {
             }         
          }
       }      
-      print TXTOUTPUT $prob_acumulada; #|$cuentaletras";
+      print TXTOUTPUT $prob_acumulada, "\n"; #|$cuentaletras";
    } 
    
    
