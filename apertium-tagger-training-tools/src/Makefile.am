@@ -3,17 +3,17 @@
 bin_PROGRAMS = apertium-tagger-tl-trainer apertium-tagger-eval apertium-tagger-baum-welch \
                apertium-tagger-check-parameters apertium-tagger-readwords  \
                apertium-SGT apertium-tagger-apply-rules 
-        
+
 #               apertium-bestTLtagger
 # apertium-tagger-prob2txt apertium-hmm-language-model
 
 bin_SCRIPTS = apertium-xtract-regex-trules apertium-tagger-gen-crp-file apertium-tagger-gen-dic-file \
-              apertium-trigrams-langmodel
+              apertium-trigrams-langmodel apertium-trigrams-langmodel-perline
 
 apertium_tagger_training_toolsdir=$(prefix)/apertium-tagger-training-tools-$(GENERIC_API_VERSION)
 
 EXTRA_DIST = xtract-trules.xsl xtract-regex-trules.sh gen_crp_file.sh gen_dic_file.sh \
-             apertium-trigrams-langmodel.pl
+             apertium-trigrams-langmodel.pl apertium-trigrams-langmodel-perline.pl 
 
 apertium_tagger_tl_trainer_SOURCES =  HMM_TL_driven_trainer.H  Segment.H \
             StringCollection.H  TransferRules.H  Translations.H  Utils.H PathsPruner.H \
@@ -80,4 +80,10 @@ apertium-trigrams-langmodel: apertium-trigrams-langmodel.pl Makefile.am
 	@echo "Creating $@ script"
 	@echo "#!$(PERL) -w" > $@
 	@cat   apertium-trigrams-langmodel.pl >> $@
+	@chmod a+x $@
+
+apertium-trigrams-langmodel-perline: apertium-trigrams-langmodel-perline.pl Makefile.am
+	@echo "Creating $@ script"
+	@echo "#!$(PERL) -w" > $@
+	@cat   apertium-trigrams-langmodel-perline.pl >> $@
 	@chmod a+x $@

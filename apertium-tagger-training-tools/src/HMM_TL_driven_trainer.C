@@ -259,7 +259,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	} else {
 
 	  if(fpaths.is_open()) {
-	    fpaths<<cadena<<"^.<sent>$[\n]"<<flush;
+	    fpaths<<cadena<<"^.<sent>$ [\n]"<<flush;
 	    continue;
 	  }
 
@@ -1159,7 +1159,7 @@ HMM_TL_driven_trainer::calculate_smoothed_parameters(map<int, double> &tags_coun
     prob_ambclass[k]=(mu*(ambclass_count[k]/sum_ambclass)) + ((1-mu)*(1/tagger_data.getM()));
   }
 
-  //REVISAR ESTO, creo que es al reves
+
   for(int j=0; j<tagger_data.getN(); j++) {
     for(int k=0; k<tagger_data.getM(); k++) {
       if(tagger_data.getOutput()[k].find(j)!=tagger_data.getOutput()[k].end()) {
