@@ -23,6 +23,7 @@ TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
           $(PREFIX1b).t1x.bin $(PREFIX1b).t2x.bin $(PREFIX1b).t3x.bin \
           $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
           $(PREFIX2b).t1x.bin $(PREFIX2b).t2x.bin $(PREFIX2b).t3x.bin \
+          $(PREFIX1).t1x. $(PREFIX1).t2x $(PREFIX1).t3x \
           $(PREFIX1b).t1x $(PREFIX1b).t2x $(PREFIX1b).t3x \
           $(PREFIX2).t1x $(PREFIX2).t2x $(PREFIX2).t3x \
           $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x 
@@ -246,9 +247,11 @@ apertium_oc_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob trules-$(PREFIX1).xml \
                     trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
                     trules-$(PREFIX2).bin $(MODES) \
+                    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
                     $(PREFIX1b).t1x.bin $(PREFIX1b).t2x.bin $(PREFIX1b).t3x.bin \
                     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
                     $(PREFIX2b).t1x.bin $(PREFIX2b).t2x.bin $(PREFIX2b).t3x.bin \
+                    $(PREFIX1).t1x $(PREFIX1).t2x $(PREFIX1).t3x \
                     $(PREFIX1b).t1x $(PREFIX1b).t2x $(PREFIX1b).t3x \
                     $(PREFIX2).t1x $(PREFIX2).t2x $(PREFIX2).t3x \
                     $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x 
