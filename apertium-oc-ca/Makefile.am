@@ -96,23 +96,23 @@ $(PREFIX2b).autogen.bin: $(BASENAME).$(LANG1).metadix
 	apertium-validate-dictionary $$$$tmp3 && \
 	lt-comp rl $$$$tmp3 $@ && rm $$$$tmp1 $$$$tmp2 $$$$tmp3
 
-$(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).post-$(LANG1).dix >$$$$tmp1 && \
-	apertium-validate-dictionary $$$$tmp1 && \
-	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
-
-$(PREFIX1b).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).post-$(LANG1).dix >$$$$tmp1 && \
-	apertium-validate-dictionary $$$$tmp1 && \
-	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
-
-$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG2).dix
+$(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).post-$(LANG2).dix >$$$$tmp1 && \
 	apertium-validate-dictionary $$$$tmp1 && \
 	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
 
-$(PREFIX2b).autopgen.bin: $(BASENAME).post-$(LANG2).dix
+$(PREFIX1b).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).post-$(LANG2).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
+	xsltproc --stringparam aversion $(PREFIX1) aversion.xsl $(BASENAME).post-$(LANG1).dix >$$$$tmp1 && \
+	apertium-validate-dictionary $$$$tmp1 && \
+	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
+
+$(PREFIX2b).autopgen.bin: $(BASENAME).post-$(LANG1).dix
+	xsltproc --stringparam aversion $(PREFIX1b) aversion.xsl $(BASENAME).post-$(LANG1).dix >$$$$tmp1 && \
 	apertium-validate-dictionary $$$$tmp1 && \
 	lt-comp lr $$$$tmp1 $@ && rm $$$$tmp1
 
