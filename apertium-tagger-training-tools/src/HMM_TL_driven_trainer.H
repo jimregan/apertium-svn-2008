@@ -100,6 +100,7 @@ private:
   void calculate_parameters(map<int, map<int, double> > &tags_pairs, map<int, map<int, double> > &emis);
 
   double lambda(double count);
+  map<int, double> prob_amb_class_from_tag(int i, map<int, double> &prob_ambclass);
   void calculate_smoothed_parameters(map<int, double> &tags_count, 
 				     map<int, map<int, double> > &tags_pairs, 
 				     map<int, double> &ambclass_count, 
