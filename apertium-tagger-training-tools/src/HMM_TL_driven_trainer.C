@@ -445,7 +445,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 }
 
 void 
-HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ofstream& fpaths, ifstream& ftrans, ifstream& flike) {
+HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ifstream& ftrans, ifstream& flike) {
   int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
@@ -616,6 +616,29 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     nwords_translated+=(seg->vwords.size())*(pruner->get_number_considered_paths());
     nwords_to_translate_without_pruning+=(seg->vwords.size())*(seg->get_number_paths());
 
+    map<int, string> paths_translations;
+    map<string, double> translations_likelihoods;
+    if (ftrans.is_open()) {
+      //If the ftrans stream is open, we read all translations, even
+      //if we will discard them
+      for(int ncamino=0; ncamino<seg->get_number_paths(); ncamino++) {
+	cadena=seg->get_path(etqpart, ncamino);
+	if(is_feasible_path(last_etq_segmento_ant, etqpart)) {
+	  if (seg->get_number_paths()>1) {
+	    string cadtrans;
+	    getline(ftrans, cadtrans);
+	    paths_translations[ncamino]=cadtrans;
+
+	    if(flike.is_open()) {
+	      string strlikelihood;
+	      getline(flike, strlikelihood);
+	      translations_likelihoods[cadtrans]=atof(strlikelihood.c_str());
+	    }
+	  }
+	}
+      }
+    }
+
     //Calculamos sus traducciones
     //for(int ncamino=0; ncamino<seg->get_number_paths(); ncamino++) {
     int ncamino;
@@ -638,9 +661,12 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 	  Utils::print_debug(" TO TRANSLATE: "+cadena+"\n");
 	  string tradcadena;
 
-	  if(translations[TL1]->are_translations_ok())
-	    tradcadena=Utils::translate(Utils::translation_script, cadena);
-	  else
+	  if(translations[TL1]->are_translations_ok()) {
+	    if (ftrans.is_open()) 
+	      tradcadena=paths_translations[ncamino];
+	    else
+	      tradcadena=Utils::translate(Utils::translation_script, cadena);
+	  } else
 	    tradcadena=TRANSLATION_NOT_USED;
 
 	  translations[TL1]->set_path_translation(tradcadena, ncamino);
@@ -714,8 +740,10 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       last_etq_segmento_ant=etqpart.back();
       continue;
     }
-
-    translations[TL1]->evaluate_translations_likelihood(Utils::likelihood_script);
+    if(flike.is_open()) 
+      translations[TL1]->set_previoulsy_evaluated_translations_likelihood(translations_likelihoods);
+    else
+      translations[TL1]->evaluate_translations_likelihood(Utils::likelihood_script);
     translations[TL1]->calculate_probability_each_path();
 
     update_counts(seg, translations, tags_pair, emis, last_etq_segmento_ant, tags_count, ambclass_count);

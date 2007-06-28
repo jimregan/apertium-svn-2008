@@ -3,7 +3,7 @@
 #Change to use the desired named pipes or another
 #language model 
 FIFO_IN=catalan_fifo_in
-FIFO_OUTcatalan_fifo_out
+FIFO_OUT=catalan_fifo_out
 LMDATA=catalan.lm
 
 #IMPORTANT: Note that the language model program (apertium-trigrams-langmodel.pl)

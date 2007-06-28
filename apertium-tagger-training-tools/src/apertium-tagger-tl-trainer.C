@@ -359,6 +359,14 @@ int main(int argc, char *argv[]) {
       cerr<<"Reading apertium-tagger parameters from file '"<<initprob<<"'\n";
       hmm_trainer.read_parameters(fprob);
       fclose(fprob);
+
+      if(pathsfile!="") {
+	cerr<<"Error: --genpaths cannot be used when --prune.\n";
+	cerr<<"First use --genpaths without --prune (normal training) and the\n";
+	cerr<<"use --translations and --likelihood in conjuntion (or not) with --prune\n";
+	help(argv[0]);
+	exit(EXIT_FAILURE);
+      }
     } else {
       fdic = fopen((filename+".dic").c_str(), "r");
       if (!fdic) file_name_error(filename+".dic");
@@ -391,8 +399,9 @@ int main(int argc, char *argv[]) {
   if (mode==MODE_TRAIN) {
     if (prune_m<=0)
       hmm_trainer.train(fcrp, corpus_length, save_after_nwords, filename, fpaths, ftrans, flike);
-    else
-      hmm_trainer.train_pruning(fcrp, corpus_length, save_after_nwords, filename, mixing_c, fpaths, ftrans, flike);
+    else {
+      hmm_trainer.train_pruning(fcrp, corpus_length, save_after_nwords, filename, mixing_c, ftrans, flike);
+    }
   } 
 
   if (mode==MODE_TRAIN) {
