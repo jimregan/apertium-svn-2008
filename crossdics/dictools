@@ -1,0 +1,152 @@
+#!/bin/bash
+
+mainClass="ProcessDics"
+# Minimum and maximum memory for JVM
+defaultMinMem=32
+defaultMaxMem=300
+library="lib/cross-dics.jar"
+java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp ${library} $mainClass"
+
+#
+#  assignparadigm
+#
+function assignparadigm() {
+   if [ $nparams == 4 ]
+   then
+      java ${java_options} $task $2 $3 $4 2> assignparadigm.err
+      echo "Log file in '$task.err'"
+      else
+         echo "---------------------------------"
+         echo "This is an ad-hoc script!!"
+         echo "New entries available in <bil> (those on the left side) are inserted in <out> based on the information available in the morphological dictionary <morph-source>."
+         echo "---------------------------------"
+         echo "Usage: dictools assignparadigm  <morph-source> <bil> <out>"
+   fi
+}
+
+#
+#	cross
+#
+function cross() {
+   crossmodel="schemas/cross-model-test.xml"
+   if [ $nparams -ge 7 ] && [ $nparams -le 9  ]; then
+	   if [ $nparams -eq 9 ]
+   	then
+	   	crossmodel=$9
+   	fi
+	   echo "cross model: $crossmodel"
+   	java ${java_options} $task -bilAB $3 $4 -bilBC $5 $6 -monA $2 -monC $7 -cross-model $crossmodel
+   else
+   	echo "Usage: dictools cross <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> [-cross-model crossmodel]"
+   fi
+}
+
+#
+#	add-gender
+#
+function addgender() {
+   if [ $nparams == 4 ]
+      then
+         java ${java_options} $task $2 $3 $4 2> $task.err
+      else
+      echo "Usage: dictools $task  <morph-source> <bil> <out>"
+   fi
+}
+
+#
+#  format
+#
+function format() {
+   if [ $nparams == 4 ]
+   then
+      echo "Reading '$3'..."
+   	java ${java_options} $task $2 $3 $4 2> format.err
+      echo "Formatted dictonary: $4"
+      echo "Log file in 'format.err'"
+   else
+      echo "Usage: dictools format <-mon|-bil> <dic> <out>"
+   fi
+}
+
+#
+#  merge-morph
+#
+function merge-morph() {
+   if [ $nparams == 4 ]
+   then
+      echo "Morphological 1: $2"
+      echo "Morphological 2: $3"
+      java ${java_options} $task -monA1 $2 -monA2 $3 -out $4
+      echo "Merged dictionary: $4"
+   else
+      echo "Usage: dictools merge-morph <monA1> <monA2> <merged>"
+   fi
+}
+
+#
+#  merge-bil
+#
+function merge-bil() {
+   if [ $nparams -eq 6 ]; then
+	   echo "Bilingual 1: $3"
+   	echo "mode: $2"
+	   echo "Bilingual 2: $5"
+   	echo "mode: $4"
+      java ${java_options} $task -bilAB1 $2 $3 -bilAB2 $4 $5 -out $6
+      echo "Merged: $6"
+   else
+   	echo "Usage: dictools merge-bil <-n|-r> <bilAB1> <-n|-r> <bilAB2> <merged>"
+   fi
+}
+
+#
+#  reverse-bil
+#
+function reverse-bil() {
+   if [ $nparams == 3 ]
+   then
+      echo "Reading '$2'..."
+   	java ${java_options} reverse $2 $3 2> reverse-bil.err      
+   else
+      echo "Usage: dictools reverse-bil <dic> <out>"
+   fi
+}
+
+#
+#  sort
+#
+function sort() {
+   if [ $nparams == 5 ]
+   then
+      echo "Reading '$4' ($2)"
+      java ${java_options} $task $2 $3 $4 $5
+      echo "Sorted: $5"
+   else
+      echo "Usage: dictools sort <-bil|-mon> <-xinclude|-same-file> <dic.dix> <out.dix>"
+   fi
+}
+
+#
+#	show_help
+#
+function show_help() {
+   echo "Usage: dictools [task] ..."
+   echo "  Tasks:"
+   echo "    crossdics:    crosses a set of dictionaries."
+   echo "    format:       formats a dictionary."   
+   echo "    merge-bil:    merges two bilingual dictionaries."
+   echo "    merge-morph:  merges two morphological dictionaries."
+   echo "    reverse-bil:  reverses a bilingual dictionary."
+   echo "    sort:         sorts (and groups by category) a dictionary."
+   exit 127
+}
+
+task=$1
+nparams="$#"
+params="$@"
+if [ "$#" == 0 ]; then
+   show_help
+else
+   $task $params
+fi
+
