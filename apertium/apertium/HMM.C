@@ -621,7 +621,7 @@ HMM::train (FILE *ftxt) {
     i = it->first;
     for (jt=xsi[i].begin(); jt!=xsi[i].end(); jt++) {
       j = jt->first;
-      if (xsi[i][j]>0) {        
+       if (xsi[i][j]>0) {        
         (td->getA())[i][j] = xsi[i][j]/gamma[i];
 	
         if (isnan((td->getA())[i][j])) {
@@ -690,7 +690,7 @@ HMM::train (FILE *ftxt) {
 }
 
 void 
-HMM::tagger(FILE *in, FILE *out)
+HMM::tagger(FILE *in, FILE *out, bool show_all_good_first)
 {
   int i, j, k, nw;
   TaggerWord *word=NULL;
@@ -774,10 +774,14 @@ HMM::tagger(FILE *in, FILE *out)
         if (debug)
 	  cerr<<"Problem with word '"<<word->get_superficial_form()<<"' "<<word->get_string_tags()<<"\n";
       }
-      for (unsigned t=0; t<best[nwpend%2][tag].size(); t++)
-      {
-        string const &micad = wpend[t].get_lexical_form(best[nwpend%2][tag][t], (td->getTagIndex())["TAG_kEOF"]);
-        fwrite_unlocked(micad.c_str(), sizeof(char), micad.size(), out); //For eficiency
+      for (unsigned t=0; t<best[nwpend%2][tag].size(); t++) {
+	if (show_all_good_first) {
+	  string const &micad = wpend[t].get_all_choosen_tag_first(best[nwpend%2][tag][t], (td->getTagIndex())["TAG_kEOF"]);
+	  fwrite_unlocked(micad.c_str(), sizeof(char), micad.size(), out); //For eficiency
+	} else {
+	  string const &micad = wpend[t].get_lexical_form(best[nwpend%2][tag][t], (td->getTagIndex())["TAG_kEOF"]);
+	  fwrite_unlocked(micad.c_str(), sizeof(char), micad.size(), out); //For eficiency
+	}
       }
       
       //Return to the initial state

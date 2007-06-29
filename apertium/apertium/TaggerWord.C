@@ -215,3 +215,44 @@ TaggerWord::outputOriginal(FILE *output) {
 
   fprintf(output, "%s",s.c_str());
 }
+
+
+string 
+TaggerWord::get_all_choosen_tag_first(TTag &t, int const TAG_kEOF) {
+  string ret="";
+
+  if (show_ingnored_string)
+    ret+=ignored_string;
+   
+  if(t==TAG_kEOF)
+    return ret;
+
+  if (!previous_plus_cut)
+    ret+="^";
+
+  ret+=superficial_form;
+
+  if (lexical_forms.size()==0) { // This is an UNKNOWN WORD
+    ret +="/*"+superficial_form;
+  } else {
+    ret+="/"+lexical_forms[t];
+    if (lexical_forms.size()>1) {
+      set<TTag>::iterator it;
+      for (it=tags.begin(); it!=tags.end(); it++) {
+	if (*it != t) {
+	  ret+="/"+lexical_forms[*it];
+	}
+      }
+    }
+  }
+  
+  if (ret != ignored_string) {
+    if (plus_cut)
+      ret+="+";
+    else {
+      ret +="$";	
+    }
+  }
+     
+  return ret;
+}

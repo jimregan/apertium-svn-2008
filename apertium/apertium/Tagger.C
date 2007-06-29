@@ -55,14 +55,13 @@ Tagger::getMode(int argc, char *argv[])
       {"retrain",    required_argument, 0, 'r'},
       {"tagger",     no_argument,       0, 'g'},
       {"eval",       no_argument,       0, 'e'},
-      //{"forhandtag", no_argument,       0, 'f'},
+      {"first",      no_argument,       0, 'f'},
       {"help",       no_argument,       0, 'h'}, 
       {"debug",      no_argument,       0, 'd'}, 
       {0, 0, 0, 0}
     };
 
-    //c=getopt_long(argc, argv, "t:sr:gefh",long_options, &option_index);
-    c=getopt_long(argc, argv, "dt:s:r:geh",long_options, &option_index);
+    c=getopt_long(argc, argv, "dt:s:r:gefh",long_options, &option_index);
     if (c==-1)
       break;
       
@@ -163,11 +162,11 @@ Tagger::getMode(int argc, char *argv[])
       case 'f': 
         if(mode==TAGGER_MODE)
         {
-          mode=TAGGER_FORHANDTAG_MODE;
+          mode=TAGGER_FIRST_MODE;
         }
         else
         {
-          cerr<<"Error: --forhandtag optional argument should only appear after --tagger argument\n";
+          cerr<<"Error: --first optional argument should only appear after --tagger argument\n";
 	  help();
 	} 
 	break;
@@ -205,7 +204,7 @@ Tagger::getMode(int argc, char *argv[])
       }
       break;
     case 3:
-      if(mode != TAGGER_MODE)
+      if ((mode != TAGGER_MODE) && (mode != TAGGER_FIRST_MODE))
       {
         help();
       }
@@ -219,7 +218,7 @@ Tagger::getMode(int argc, char *argv[])
       break;
     
     case 1:
-      if(mode != TAGGER_MODE)
+      if ((mode != TAGGER_MODE) && (mode != TAGGER_FIRST_MODE))
       {
         help();
       }
@@ -250,7 +249,7 @@ Tagger::main(int argc, char *argv[])
   int mode = getMode(argc, argv);
 
   switch(mode)
-  {
+    {
     case TRAIN_MODE:
       train();
       break;
@@ -267,15 +266,19 @@ Tagger::main(int argc, char *argv[])
       tagger();
       break;
 
+    case TAGGER_FIRST_MODE:
+      tagger(true);
+      break;
+
     default:
       cerr<<"Error: Unknown working mode mode\n";
       help();
       break;
-  }
+    }
 }
 
 void
-Tagger::tagger()
+Tagger::tagger(bool mode_first)
 {
   FILE *ftdata = fopen(filenames[0].c_str(), "r");
   if (!ftdata) {
@@ -290,7 +293,7 @@ Tagger::tagger()
   
   if(filenames.size() == 1)
   {
-    hmm.tagger(stdin, stdout);
+    hmm.tagger(stdin, stdout, mode_first);
   }
   else
   {
@@ -300,7 +303,7 @@ Tagger::tagger()
     }
     if(filenames.size() == 2)
     {
-      hmm.tagger(finput, stdout);
+      hmm.tagger(finput, stdout, mode_first);
     }
     else
     {
@@ -309,7 +312,7 @@ Tagger::tagger()
         filerror(filenames[2]);
       }
 
-      hmm.tagger(finput, foutput);
+      hmm.tagger(finput, foutput, mode_first);
       fclose(foutput);
     }
     fclose(finput);

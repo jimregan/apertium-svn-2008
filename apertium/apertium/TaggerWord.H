@@ -108,6 +108,8 @@ public:
    */  
   string get_lexical_form_without_ignored_string(TTag &t, int const TAG_kEOF); 
   
+  string get_all_choosen_tag_first(TTag &t, int const TAG_kEOF);
+
   /** Add text to the ignored string
    *
    */   
