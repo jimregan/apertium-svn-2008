@@ -486,7 +486,7 @@ Tagger::help()
   out << "USAGE: " << basename(localname) << "[-d] -t=n DIC CRP TSX TAGGER_DATA" << endl;
   out << "       " << basename(localname) << "[-d] -s=n DIC CRP TSX TAGGER_DATA HTAG UNTAG" << endl;
   out << "       " << basename(localname) << "[-d] -r=n CRP TAGGER_DATA" << endl;
-  out << "       " << basename(localname) << "[-d] -g TAGGER_DATA [INPUT [OUTPUT]]" << endl;
+  out << "       " << basename(localname) << "[-d] -g [-f] TAGGER_DATA [INPUT [OUTPUT]]" << endl;
   out << endl;
   out << "Where OPTIONS are:" << endl;
   out << "  -t, --train=n:       performs n iterations of the Baum-Welch training" << endl;
@@ -496,6 +496,9 @@ Tagger::help()
   out << "  -r, --retrain=n:     retrains the model with n aditional Baum-Welch" << endl;
   out << "                       iterations (unsupervised)" << endl;
   out << "  -g, --tagger:        tags input text by means of Viterbi algorithm" << endl;
+  out << "  -f, --first:         used if conjuntion with -g (--tagger) makes the tagger"<< endl;
+  out << "                       to give all lexical forms of each word, being the choosen" << endl;
+  out << "                       one in the first place (after the lemma)"<<endl;
   out << "  -d, --debug:         print error mesages when tagging input text" << endl;
   out << endl;
   out << "And FILES are:" << endl;          
