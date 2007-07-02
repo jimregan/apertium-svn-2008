@@ -37,6 +37,7 @@
 #include <apertium/TaggerData.H>
 #include <apertium/TSXReader.H>
 #include "configure.H"
+#include "SmoothUtils.H"
 
 #define ZERO 1e-10
 
@@ -45,6 +46,7 @@
 #define MODE_RETRAIN 2
 
 using namespace std;
+
 
 //Global vars
 TaggerData tagger_data;
@@ -97,8 +99,11 @@ void kupiec (FILE *is, int corpus_length) {
   int i, j, k, k1, k2, nw=0;
   map<int, double> classes_ocurrences; // M
   map<int, map<int, double> > classes_pair_ocurrences; // MxM
-  map<int, double> tags_estimate; // N
-  map<int, map<int, double> > tags_pair_estimate; // NxN
+
+  map<int, double> tags_count; // N
+  map<int, double> tags_count_for_emis; // N
+  map<int, map<int, double> > tags_pairs; //NxN
+  map<int, map<int, double> > emis; //NxM
 
   MorphoStream lexmorfo(is, true, &tagger_data);
 
@@ -152,22 +157,22 @@ void kupiec (FILE *is, int corpus_length) {
       cerr<<nw<<" ";
       break;
     }
-    
   }  
   
   //Estimation of the number of time each tags occurs in the training text
   for(i=0; i<tagger_data.getN(); i++) {  
-    tags_estimate[i]=0;
+    tags_count_for_emis[i]=0;
     for(k=0; k<tagger_data.getM();  k++) { 
-      if(tagger_data.getOutput()[k].find(i)!=tagger_data.getOutput()[k].end())
-        tags_estimate[i] += classes_ocurrences[k]/((double)tagger_data.getOutput()[k].size());	
+      if(tagger_data.getOutput()[k].find(i)!=tagger_data.getOutput()[k].end()) {
+        tags_count_for_emis[i] += classes_ocurrences[k]/((double)tagger_data.getOutput()[k].size());
+      }
     }
   }
       
   //Estimation of the number of times each tag pair occurs
   for(i=0; i<tagger_data.getN(); i++)
     for(j=0; j<tagger_data.getN(); j++)
-      tags_pair_estimate[i][j]=0;
+      tags_pairs[i][j]=0;
 
   set<TTag> tags1, tags2;
   set<TTag>::iterator itag1, itag2;
@@ -182,39 +187,24 @@ void kupiec (FILE *is, int corpus_length) {
         for (itag2=tags2.begin(); itag2!=tags2.end(); itag2++) {
           if (((*itag2)<0)||((*itag2)>=tagger_data.getN())) 
 	    cerr<<"Error: Tag "<<*itag2<<" out of range\n";
-          tags_pair_estimate[*itag1][*itag2]+=nocurrences;
+          tags_pairs[*itag1][*itag2]+=nocurrences;
+	  tags_count[*itag1]+=nocurrences;
 	}
       }
     }
   }
 
-  //a[i][j] estimation. Use of an initial count of 0 (ELE)
-  double sum;
-  for(i=0; i<tagger_data.getN(); i++) {
-    sum=0;
-    for(j=0; j<tagger_data.getN(); j++)
-      sum+=tags_pair_estimate[i][j];
-
-    for(j=0; j<tagger_data.getN(); j++) {  
-      if (sum>0)
-        tagger_data.getA()[i][j] = tags_pair_estimate[i][j]/sum;
-      else {
-        tagger_data.getA()[i][j] = 0;
-      }
-    }
-  }
-
-  //b[i][k] estimation
+  //Estimation of the number of times each ambiguity class is emitted
+  //from each tag
   for(i=0; i<tagger_data.getN(); i++) {
     for(k=0; k<tagger_data.getM(); k++)  {
       if (tagger_data.getOutput()[k].find(i)!=tagger_data.getOutput()[k].end()) {
-        if (tags_estimate[i]>0)
-          tagger_data.getB()[i][k] = (classes_ocurrences[k]/tagger_data.getOutput()[k].size())/tags_estimate[i];
-        else 
-	  tagger_data.getB()[i][k] = 0;
+	emis[i][k]=classes_ocurrences[k]/((double)tagger_data.getOutput()[k].size());
       }
     }
   }
+
+  SmoothUtils::calculate_smoothed_parameters(tagger_data, tags_count, tags_pairs, classes_ocurrences, emis, tags_count_for_emis, nw);
   cerr<<" done\n";
 }
 

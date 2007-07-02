@@ -93,19 +93,12 @@ private:
                      map<int, map<int, double> > &tags_pair,
                      map<int, map<int, double> > &emis, TTag last_tag_prev_segment,
                      map<int, double> &tags_count, 
-                     map<int, double> &ambclass_count);
+                     map<int, double> &ambclass_count,
+		     map<int, double> &tags_count_for_emis);
 
   bool is_feasible_path(const TTag& last_etq_ant, const vector<TTag>& etqpart);
 
   void calculate_parameters(map<int, map<int, double> > &tags_pairs, map<int, map<int, double> > &emis);
-
-  double lambda(double count);
-  map<int, double> prob_amb_class_from_tag(int i, map<int, double> &prob_ambclass);
-  void calculate_smoothed_parameters(map<int, double> &tags_count, 
-				     map<int, map<int, double> > &tags_pairs, 
-				     map<int, double> &ambclass_count, 
-				     map<int, map<int, double> > &emis, 
-				     double corpus_length);
 
   void mix_parameters(double words_processed, double corpus_length, double mixing_c);
 

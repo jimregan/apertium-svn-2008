@@ -2,10 +2,9 @@
 
 bin_PROGRAMS = apertium-tagger-tl-trainer apertium-tagger-eval apertium-tagger-baum-welch \
                apertium-tagger-check-parameters apertium-tagger-readwords  \
-               apertium-SGT apertium-tagger-apply-rules 
-
-#               apertium-bestTLtagger
-# apertium-tagger-prob2txt apertium-hmm-language-model
+               apertium-SGT apertium-tagger-apply-rules apertium-tagger-prob2txt \
+               apertium-tagger-supervised
+# apertium-bestTLtagger apertium-hmm-language-model
 
 bin_SCRIPTS = apertium-xtract-regex-trules apertium-tagger-gen-crp-file apertium-tagger-gen-dic-file \
               apertium-trigrams-langmodel apertium-trigrams-langmodel-perline
@@ -17,16 +16,19 @@ EXTRA_DIST = xtract-trules.xsl xtract-regex-trules.sh gen_crp_file.sh gen_dic_fi
 
 apertium_tagger_tl_trainer_SOURCES =  HMM_TL_driven_trainer.H  Segment.H \
             StringCollection.H  TransferRules.H  Translations.H  Utils.H PathsPruner.H \
-            apertium-tagger-tl-trainer.C  \
+            SmoothUtils.H apertium-tagger-tl-trainer.C  \
             HMM_TL_driven_trainer.C Segment.C  StringCollection.C  TransferRules.C \
-            Translations.C  Utils.C PathsPruner.C
+            Translations.C  Utils.C PathsPruner.C SmoothUtils.C
 apertium_tagger_tl_trainer_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
 apertium_tagger_eval_SOURCES = Utils.H Utils.C TaggerEval.H TaggerEval.C apertium-tagger-eval.C
 apertium_tagger_eval_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
-apertium_tagger_baum_welch_SOURCES = apertium-tagger-baum-welch.C
+apertium_tagger_baum_welch_SOURCES = apertium-tagger-baum-welch.C SmoothUtils.H SmoothUtils.C
 apertium_tagger_baum_welch_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
+
+apertium_tagger_supervised_SOURCES = apertium-tagger-supervised.C SmoothUtils.H SmoothUtils.C
+apertium_tagger_supervised_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
 apertium_tagger_check_parameters_SOURCES = apertium-tagger-check-parameters.C
 apertium_tagger_check_parameters_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
@@ -37,8 +39,8 @@ apertium_tagger_readwords_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_L
 apertium_tagger_apply_rules_SOURCES = apertium-tagger-apply-rules.C
 apertium_tagger_apply_rules_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
-#apertium_tagger_prob2txt_SOURCES = apertium-tagger-prob2txt.C
-#apertium_tagger_prob2txt_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
+apertium_tagger_prob2txt_SOURCES = apertium-tagger-prob2txt.C
+apertium_tagger_prob2txt_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
 #apertium_hmm_language_model_SOURCES = apertium-hmm-language-model.C Utils.H Utils.C
 #apertium_hmm_language_model_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
