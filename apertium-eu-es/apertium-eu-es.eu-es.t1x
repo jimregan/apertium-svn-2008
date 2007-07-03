@@ -9,15 +9,17 @@
     </def-cat>
 
      <def-cat n="adj">
-      <cat-item tags="adj"/>
+      <cat-item tags="adj.*"/>
     </def-cat>
 
     <def-cat n="det">
       <cat-item tags="det.art.*"/>
+      <cat-item tags="det.ind.*"/>
     </def-cat>
 
-     <def-cat n="pos">
-      <cat-item tags="det.pos"/>
+     <def-cat n="post">
+      <cat-item tags="post"/>
+      <cat-item tags="post.*"/>
     </def-cat>
 
     <def-cat n="num">
@@ -66,11 +68,15 @@
       <attr-item tags="det"/>
     </def-attr> 
 
+    
+    <def-attr n="a_prep">          
+      <attr-item tags="pr"/>
+    </def-attr> 
+
      <def-attr n="tipus_det">          
       <attr-item tags="art"/>         
       <attr-item tags="def"/>         
-      <attr-item tags="ind"/>        
-      <attr-item tags="pos"/>
+      <attr-item tags="ind"/>  
     </def-attr> 
   
     <def-attr n="pers">
@@ -184,7 +190,7 @@
 
 
 
-<def-macro n="gen2" npar="2"><!--Si el nombre en español es mf, se asigna <m> al determinante. Solución provisional, considerar si sería posible determinar el género de ciertos nombres (el/la profesor/a) -->
+<def-macro n="gen_n" npar="2"><!--Si el nombre en español es mf, se asigna <m> al determinante. Solución provisional, considerar si sería posible determinar el género de ciertos nombres (el/la profesor/a) -->
   <choose>
 	  <when>
 	    <test>
@@ -217,68 +223,7 @@
 	</choose>
 </def-macro>
 
-<def-macro n="gen3" npar="3"><!--Si el nombre en español es mf, se asigna <m> al determinante. Solución provisional, considerar si sería posible determinar el género de ciertos nombres (el/la profesor/a) -->
-  <choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="tl" part="gen"/> 
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" side="tl" part="gen"/> 
-		    <lit-tag v="mf"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" side="tl" part="gen"/> 
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	      <otherwise>
-		<let>
-		  <clip pos="2" side="tl" part="gen"/> 
-		  <clip pos="1" side="tl" part="gen"/>
-		</let>
-	      </otherwise>
-	    </choose>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="gen"/> 
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" side="tl" part="gen"/> 
-		    <lit-tag v="mf"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" side="tl" part="gen"/> 
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	      <otherwise>
-		<let>
-		  <clip pos="3" side="tl" part="gen"/> 
-		  <clip pos="1" side="tl" part="gen"/>
-		</let>
-	      </otherwise>
-	    </choose>
-	  </when>
-	</choose>
-</def-macro>
+
 
 
   </section-def-macros>
@@ -288,7 +233,7 @@
     <!--********************************* REGLES DE SN ***************************************************** -->
 
 
- <!--   <rule comment="REGLA: NOM (per a donar valor a la variable de gènere, i per a col·locar la cua en les multiparaules amb g">
+   <rule comment="REGLA: NOM ( per a col·locar la cua en les multiparaules amb g i traduir noms sense determinant">
       <pattern>
 	<pattern-item n="nom"/>
       </pattern>
@@ -301,13 +246,13 @@
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="1" side="tl" part="gen"/></tag>
-	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><lit-tag v="sg"/></tag>
 	    </tags>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="gen" link-to="3"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <lit-tag v="4"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
@@ -317,7 +262,7 @@
 	  <lit v="aa"/>
 	</let>
       </action>
-    </rule>-->
+    </rule>
 
  <rule comment="REGLA: NOM + DET (etxea)">
       <pattern>
@@ -328,12 +273,12 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="gen2">
+	<call-macro n="gen_n">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
 	<out> 
-	  <chunk name="nom_det" case="caseFirstWord">
+	  <chunk name="det_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="2" side="sl" part="tipus_det"/></tag>
@@ -343,7 +288,7 @@
 	    <lu>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/> 
-	      <clip pos="2" side="tl" part="tipus_det" link-to="2"/> 
+	      <lit-tag v="2"/> 
 	      <clip pos="2" side="tl" part="gen"/>
 	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
 	    </lu>
@@ -370,13 +315,16 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="gen3">
+	<call-macro n="gen_n">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>
 	<out> 
-	  <chunk name="nom_adj_det" case="caseFirstWord">
+	  <chunk name="det_nom_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="3" side="sl" part="tipus_det"/></tag>
@@ -386,7 +334,7 @@
 	    <lu>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_det"/> 
-	      <clip pos="3" side="tl" part="tipus_det" link-to="2"/> 
+	      <lit-tag v="2"/> 
 	      <clip pos="3" side="tl" part="gen"/>
 	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
 	    </lu>
@@ -410,7 +358,90 @@
       </action>
  </rule>
 
-<rule comment="REGLA: POSESIVO + NOMBRE + DET (nire etxea)">
+
+
+ <rule comment="REGLA: NOM + POST (etxetara)">
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pr_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP.UNDET"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><lit-tag v="sg"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_prep"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: NOM + DET + POST (etxera)">
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pr_det_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><clip pos="2" side="sl" part="tipus_det"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="lem"/> 
+	      <clip pos="3" side="tl" part="a_prep"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen" link-to="3"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<!--<rule comment="REGLA: POSESIVO + NOMBRE + DET (nire etxea)">
       <pattern>
 	<pattern-item n="pos"/>
 	<pattern-item n="nom"/>
@@ -420,7 +451,7 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="gen2">
+	<call-macro n="gen_n">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
 	</call-macro>
@@ -450,62 +481,10 @@
 	  </chunk>
 	</out>
       </action>
- </rule>
+ </rule>-->
 
 
-<rule comment="REGLA: POSESIVO + NOMBRE + ADJ + DET (nire etxe gorria)">
-      <pattern>
-	<pattern-item n="pos"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="adj"/>
-	<pattern-item n="det"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="gen2">
-	  <with-param pos="2"/>
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="gen2">
-	  <with-param pos="2"/>
-	  <with-param pos="3"/>
-	</call-macro>
-	<out> 
-	  <chunk name="pos_nom_det" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="SN"/></tag>
-	      <tag><clip pos="1" side="sl" part="tipus_det"/></tag>
-	      <tag><clip pos="2" side="tl" part="gen"/></tag>
-	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="lem"/> 
-	      <clip pos="1" side="tl" part="a_det"/> 
-	      <clip pos="1" side="tl" part="tipus_det" link-to="2"/> 
-	      <clip pos="1" side="tl" part="gen"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
-	    </lu>
-	    <b pos="1"/>
-	    <lu> 
-	      <clip pos="2" side="tl" part="lemh"/> 
-	      <clip pos="2" side="tl" part="a_nom"/>
-	      <clip pos="2" side="tl" part="gen" link-to="3"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
-	      <clip pos="2" side="tl" part="lemq"/> 
-	    </lu>
-	     <b pos="2"/>
-	     <lu> 
-	      <clip pos="3" side="tl" part="lem"/> 
-	      <clip pos="3" side="tl" part="a_adj"/>
-	      <clip pos="3" side="tl" part="gen"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
- </rule>
+
 
 
     <rule comment="REGLA: reset variables">
