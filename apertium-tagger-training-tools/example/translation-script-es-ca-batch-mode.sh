@@ -13,7 +13,8 @@ AUTOPGEN=$DATA/$DIRECTION.autopgen.bin
 #gawk '{printf $0 "^.<sent>$[]" }' |\
 apertium-pretransfer |\
 apertium-transfer $DATA/trules-$DIRECTION.xml $DATA/trules-$DIRECTION.bin $AUTOBIL |\
-lt-proc -n $AUTOGEN  |\
+lt-proc -d $AUTOGEN  |\
 lt-proc -p $AUTOPGEN |\
 apertium-re$FORMAT |\
+sed -e "s/*\(\\w\+\)/\1/g" |\
 sed -re "s/( )*[.]$//g" 
