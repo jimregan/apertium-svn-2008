@@ -441,6 +441,65 @@
       </action>
  </rule>
 
+<rule comment="REGLA: NOM + ADJ + DET + POST (etxera)">
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="det"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pr_det_adj_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><clip pos="3" side="sl" part="tipus_det"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="4" side="tl" part="lem"/> 
+	      <clip pos="4" side="tl" part="a_prep"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="3" side="tl" part="lem"/> 
+	      <clip pos="3" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="3" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	    </lu>	    
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen" link-to="3"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	    <b/> 
+	    <lu> 
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_adj"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
 <!--<rule comment="REGLA: POSESIVO + NOMBRE + DET (nire etxea)">
       <pattern>
 	<pattern-item n="pos"/>
