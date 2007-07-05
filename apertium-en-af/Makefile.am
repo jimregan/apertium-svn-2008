@@ -20,7 +20,6 @@ $(BASENAME).$(LANG2).dix:
 	xmllint --xinclude $(BASENAME).$(LANG2).dix.xml > $(BASENAME).$(LANG2).dix
 $(BASENAME).$(LANG1)-$(LANG2).dix:
 	xmllint --xinclude $(BASENAME).$(LANG1)-$(LANG2).dix.xml > $(BASENAME).$(LANG1)-$(LANG2).dix
-
      
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
@@ -92,15 +91,20 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 #           $(BASENAME).$(LANG1).tsx 
 #           $(BASENAME).$(LANG2).tsx  
 
-modes: modes.xml clean-dicts
-	apertium-gen-modes modes.xml
-
 clean-dicts:
 	rm $(BASENAME).$(LANG1).dix
 	rm $(BASENAME).$(LANG2).dix
 	rm $(BASENAME).$(PREFIX1).dix
 	
-apertium_en_afdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
+apertium_en_afdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
+apertium_en_modesdir=$(prefix)/share/apertium/modes/
+
+$(PREFIX1).mode: modes.xml 
+	apertium-gen-modes modes.xml
+
+$(PREFIX2).mode: modes.xml 
+	apertium-gen-modes modes.xml
+
 apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
@@ -108,7 +112,12 @@ apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX2).autopgen.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin
+		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin 
+
+apertium_en_af_MODES=$(PREFIX1).mode $(PREFIX2).mode
 		  
+install-data-local:
+	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_en_modesdir)
+	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_en_modesdir)
 
 CLEANFILES = -rf $(TARGETS_COMMON) modes
