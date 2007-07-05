@@ -287,7 +287,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	  if(flike.is_open()) {
 	    string strlikelihood;
 	    getline(flike, strlikelihood);	  
-	    translations_likelihoods[tradcadena]=atof(strlikelihood.c_str());
+	    translations_likelihoods[trim(tradcadena)]=atof(strlikelihood.c_str());
 	  }
 
 	  translations[TL1]->set_path_translation(tradcadena, ncamino);
@@ -637,7 +637,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 	    if(flike.is_open()) {
 	      string strlikelihood;
 	      getline(flike, strlikelihood);
-	      translations_likelihoods[cadtrans]=atof(strlikelihood.c_str());
+	      translations_likelihoods[trim(cadtrans)]=atof(strlikelihood.c_str());
 	    }
 	  }
 	}
