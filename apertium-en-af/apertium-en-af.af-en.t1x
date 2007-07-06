@@ -71,6 +71,9 @@
       <attr-item tags="m"/>
       <attr-item tags="mf"/>
     </def-attr>
+    <def-attr n="a_prep">              
+      <attr-item tags="pr"/>
+    </def-attr>
     <def-attr n="a_cnj">              
       <attr-item tags="cnjadv"/>
       <attr-item tags="cnjcoo"/>
@@ -255,6 +258,26 @@
             </out>
       </action>
     </rule>
+
+    <rule comment="REGLA: PR">
+      <pattern>
+        <pattern-item n="prep"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="prep">
+	        <tags>
+		  <tag><lit-tag v="PR"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+    	          <clip pos="1" side="tl" part="a_prep"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: CNJADV">
       <pattern>
