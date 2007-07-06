@@ -7,15 +7,12 @@ PREFIX2=$(LANG2)-$(LANG1)
 BASENAME=apertium-$(PREFIX1)
 
 TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
-     $(PREFIX1).autopgen.bin \
-     $(PREFIX1).lextormono.bin \
-     $(PREFIX1).lextorbil.bin \
-     $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin modes
+     $(PREFIX1).autopgen.bin $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin modes
      
 TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
-          trules-$(PREFIX1).xml trules-$(PREFIX2).xml \
-          $(BASENAME).$(LANG1)-lextor.dix $(BASENAME).$(LANG2)-lextor.dix \
-	  $(BASENAME).$(PREFIX1)-lextor.dix $(BASENAME).$(PREFIX2)-lextor.dix 
+          trules-$(PREFIX1).xml trules-$(PREFIX2).xml 
+          # $(BASENAME).$(LANG1)-lextor.dix $(BASENAME).$(LANG2)-lextor.dix \
+	  # $(BASENAME).$(PREFIX1)-lextor.dix $(BASENAME).$(PREFIX2)-lextor.dix 
 	  
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
@@ -76,31 +73,31 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 ##	ln -s $(BASENAME).trules-$(PREFIX2).xml trules-$(PREFIX2).xml
 
 
-$(BASENAME).$(LANG1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
-	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-	apertium-gen-lextormono rl $(BASENAME).$(PREFIX1).dix $@
+##$(BASENAME).$(LANG1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
+##	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
+##	apertium-gen-lextormono rl $(BASENAME).$(PREFIX1).dix $@
 	
-$(BASENAME).$(LANG2)-lextor.dix: $(BASENAME).$(PREFIX1).dix
-	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-	apertium-gen-lextormono lr $(BASENAME).$(PREFIX1).dix $@
+##$(BASENAME).$(LANG2)-lextor.dix: $(BASENAME).$(PREFIX1).dix
+##	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
+##	apertium-gen-lextormono lr $(BASENAME).$(PREFIX1).dix $@
 
-$(PREFIX1).lextormono.bin: $(BASENAME).$(LANG1)-lextor.dix
-	lt-comp lr $(BASENAME).$(LANG1)-lextor.dix $@
+##$(PREFIX1).lextormono.bin: $(BASENAME).$(LANG1)-lextor.dix
+##	lt-comp lr $(BASENAME).$(LANG1)-lextor.dix $@
 	
 ##$(PREFIX2).lextormono.bin: $(BASENAME).$(LANG2)-lextor.dix
 ##	lt-comp lr $(BASENAME).$(LANG2)-lextor.dix $@
 
 
-$(BASENAME).$(PREFIX1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
-	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-	apertium-gen-lextorbil rl $(BASENAME).$(PREFIX1).dix $@
+##$(BASENAME).$(PREFIX1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
+##	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
+##	apertium-gen-lextorbil rl $(BASENAME).$(PREFIX1).dix $@
 	
 ##$(BASENAME).$(PREFIX2)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 ##	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 ##	apertium-gen-lextorbil lr $(BASENAME).$(PREFIX1).dix $@
 
-$(PREFIX1).lextorbil.bin: $(BASENAME).$(PREFIX1)-lextor.dix
-	lt-comp lr $(BASENAME).$(PREFIX1)-lextor.dix $@
+##$(PREFIX1).lextorbil.bin: $(BASENAME).$(PREFIX1)-lextor.dix
+##	lt-comp lr $(BASENAME).$(PREFIX1)-lextor.dix $@
 	
 ##$(PREFIX2).lextorbil.bin: $(BASENAME).$(PREFIX2)-lextor.dix
 ##	lt-comp lr $(BASENAME).$(PREFIX2)-lextor.dix $@
@@ -136,10 +133,8 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(LANG2).tsx \
            $(PREFIX1).prob \
            buscaPar.xsl principal.xsl \
-           $(PREFIX1).lextor \
            $(PREFIX1)-supervised.make $(PREFIX1)-unsupervised.make \
            $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README \
-           lextor-data/README lextor.make translate-to-default-equivalent.xsl \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
            $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
@@ -154,8 +149,6 @@ apertium_eu_es_DATA=$(PREFIX1).automorf.bin \
                     $(PREFIX1).autogen.bin \
                     $(PREFIX1).autopgen.bin \
                     $(PREFIX1).prob \
-		    $(PREFIX1).lextormono.bin \
-		    $(PREFIX1).lextorbil.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    modes
 		  

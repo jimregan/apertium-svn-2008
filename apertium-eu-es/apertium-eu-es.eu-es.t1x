@@ -12,9 +12,15 @@
       <cat-item tags="adj.*"/>
     </def-cat>
 
+    <def-cat n="adjizl">
+      <cat-item tags="adj.izl"/>
+    </def-cat>
+
+
     <def-cat n="det">
       <cat-item tags="det.art.*"/>
       <cat-item tags="det.ind.*"/>
+      <cat-item tags="det.dem.*"/>
     </def-cat>
 
      <def-cat n="post">
@@ -28,6 +34,9 @@
       
     </def-cat>
 
+    <def-cat n="prntn">
+      <cat-item tags="prn.tn.*"/>
+    </def-cat>
   
     <def-cat n="prep">
       <cat-item tags="pr"/>
@@ -76,7 +85,8 @@
      <def-attr n="tipus_det">          
       <attr-item tags="art"/>         
       <attr-item tags="def"/>         
-      <attr-item tags="ind"/>  
+      <attr-item tags="ind"/>         
+      <attr-item tags="dem"/>  
     </def-attr> 
   
     <def-attr n="pers">
@@ -114,7 +124,12 @@
       <attr-item tags="pii"/>
     </def-attr>
 
+    <def-attr n="tipus_prn">          
+      <attr-item tags="tn"/>   
+    </def-attr> 
+
   </section-def-attrs>
+
   <section-def-vars>    
     <def-var n="caseFirstWord"/>
     <def-var n="EOS"/>
@@ -127,9 +142,7 @@
   <section-def-macros>
 
 
-
-
-    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+ <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
       <choose>
 	<when>
 	  <test>
@@ -146,6 +159,8 @@
 	</when>     	    
       </choose>
     </def-macro>
+
+
 
  <def-macro n="firstWord" npar="1">
       <choose>
@@ -223,7 +238,22 @@
 	</choose>
 </def-macro>
 
-
+<def-macro n="gen_prn" npar="1"><!-- vosotros/vosotras - solució provisional -->
+  <choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/> 
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/> 
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+  </choose>
+</def-macro>
 
 
   </section-def-macros>
@@ -441,7 +471,7 @@
       </action>
  </rule>
 
-<rule comment="REGLA: NOM + ADJ + DET + POST (etxera)">
+<rule comment="REGLA: NOM + ADJ + DET + POST (etxe gorrira)">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="adj"/>
@@ -472,7 +502,7 @@
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_prep"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_det"/> 
@@ -499,6 +529,95 @@
 	</out>
       </action>
  </rule>
+
+
+   <rule comment="REGLA: PRONOMBRE ( para asignar género a 'nosotros' y 'vosotros'. Por ahora será 'm' por defecto) ">
+      <pattern>
+	<pattern-item n="prntn"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_prn">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="prntn" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PRN"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+
+ <rule comment="REGLA: ADJ + NOM + DET (euskal presoak)">
+      <pattern>
+	<pattern-item n="adjizl"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="det_nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="sl" part="tipus_det"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="lem"/> 
+	      <clip pos="3" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="3" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen" link-to="3"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="lemq"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_adj"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
 
 <!--<rule comment="REGLA: POSESIVO + NOMBRE + DET (nire etxea)">
       <pattern>
