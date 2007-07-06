@@ -40,6 +40,7 @@
       <cat-item tags="vbhaver.*"/> 
     </def-cat>
     <def-cat n="verbm">
+      <cat-item tags="vaux"/>
       <cat-item tags="vaux.*"/>
     </def-cat>
     <def-cat n="cnjadv">
@@ -103,9 +104,12 @@
       <attr-item tags="num"/>
     </def-attr>
     <def-attr n="tipus_prn">
-      <attr-item tags="prn"/>
       <attr-item tags="prn.subj"/>
       <attr-item tags="prn.obj"/>
+      <attr-item tags="prn.itg"/>
+      <attr-item tags="prn.tn"/>
+      <attr-item tags="prn.pos"/>
+      <attr-item tags="prn"/>
     </def-attr>
     <def-attr n="pers">                 <!-- Person -->
        <attr-item tags="p1"/>
@@ -125,6 +129,7 @@
        <attr-item tags="pri"/>
        <attr-item tags="past"/>
        <attr-item tags="pres"/>
+       <attr-item tags="inf"/>
      </def-attr>
   </section-def-attrs>
 
@@ -209,6 +214,27 @@
         </let>
       </action>
     </rule>
+
+    <rule>
+      <pattern>
+        <pattern-item n="verbm"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="modal_verb">
+	        <tags>
+		  <tag><lit-tag v="V"/></tag>
+		</tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <clip pos="1" side="tl" part="temps"/>
+                </lu>
+	      </chunk>
+            </out>
+      </action>
+    </rule>
+
 
     <rule>
       <pattern>
@@ -639,6 +665,7 @@
             <lu>
               <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="temps"/>
               <clip pos="1" side="tl" part="pers"/>
               <clip pos="1" side="tl" part="gen"/>
               <clip pos="1" side="tl" part="nbr"/>
