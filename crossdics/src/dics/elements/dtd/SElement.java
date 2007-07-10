@@ -27,7 +27,7 @@ import java.util.HashMap;
 /**
  * 
  * @author Enrique Benimeli Bofarull
- * 
+ *
  */
 public class SElement extends Element {
 

@@ -80,6 +80,11 @@ public class EElement extends Element implements Cloneable,
     /**
          * 
          */
+    private String patternApplied;
+
+    /**
+         * 
+         */
     private boolean locked = false;
 
     /**
@@ -875,9 +880,9 @@ public class EElement extends Element implements Cloneable,
 	String str = "";
 	String r = "";
 	if (this.hasRestriction()) {
-	    r = " r=\"" + this.getRestriction() + "\"";
+	    r = " r=\"" + getRestriction() + "\"";
 	}
-	str += "<e"+ r + ">";
+	str += "<e" + r + ">";
 	for (final Element e : children) {
 	    if (e instanceof IElement) {
 		final IElement i = (IElement) e;
@@ -899,7 +904,7 @@ public class EElement extends Element implements Cloneable,
 	    if (e instanceof ReElement) {
 		final ReElement re = (ReElement) e;
 		str += re.toString();
-	    }    
+	    }
 
 	}
 	str += "</e>";
@@ -982,8 +987,8 @@ public class EElement extends Element implements Cloneable,
 	if (anotherEElement == null) {
 	    return -1;
 	}
-	
-	if (this.isRegEx()) {
+
+	if (isRegEx()) {
 	    return 0;
 	}
 
@@ -1044,6 +1049,21 @@ public class EElement extends Element implements Cloneable,
 	    }
 	}
 	return eRev;
+    }
+
+    /**
+         * @return the patternApplied
+         */
+    public final String getPatternApplied() {
+	return patternApplied;
+    }
+
+    /**
+         * @param patternApplied
+         *                the patternApplied to set
+         */
+    public final void setPatternApplied(String patternApplied) {
+	this.patternApplied = patternApplied;
     }
 
 }

@@ -79,7 +79,7 @@ public class DicSort {
          * 
          */
     public DicSort() {
-	this.setXinclude(false);
+	setXinclude(false);
     }
 
     /**
@@ -88,7 +88,7 @@ public class DicSort {
          */
     public DicSort(final DictionaryElement dic) {
 	this.dic = dic;
-	this.setXinclude(false);
+	setXinclude(false);
     }
 
     /**
@@ -407,16 +407,16 @@ public class DicSort {
     }
 
     /**
-     * @return the dic
-     */
+         * @return the dic
+         */
     public final DictionaryElement getDic() {
-        return dic;
+	return dic;
     }
-    
+
     /**
-     * 
-     * @param out
-     */
+         * 
+         * @param out
+         */
     public final void setOut(final String out) {
 	this.out = out;
     }

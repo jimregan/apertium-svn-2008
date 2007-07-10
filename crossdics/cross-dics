@@ -12,7 +12,8 @@ if [ $nparams -ge 6 ] && [ $nparams -le 7  ]; then
 		crossmodel=$7
 	fi
 	echo "cross model: $crossmodel"
-	ant cross -Dmonol-A=$1 -Dmonol-C=$6 -Dmod-AB=$2 -Dbil-AB=$3 -Dmod-BC=$4 -Dbil-BC=$5 -Dcross-model=$crossmodel
+	#ant cross -Dmonol-A=$1 -Dmonol-C=$6 -Dmod-AB=$2 -Dbil-AB=$3 -Dmod-BC=$4 -Dbil-BC=$5 -Dcross-model=$crossmodel
+	java -cp lib/cross-dics.jar ProcessDics cross -bilAB $2 $3 -bilBC $4 $5 -monA $1 -monC $6 $crossmodel
 else
 	echo "Usage: cross-dics <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> [<cross-model>]"
 fi

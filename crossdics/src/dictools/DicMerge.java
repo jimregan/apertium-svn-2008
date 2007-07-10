@@ -310,8 +310,10 @@ public class DicMerge {
 		sectionElement.addEElement(e2);
 	    }
 	}
-	
-	System.out.println( duplicated + " duplicated entries in sections " + sectionE1.getID() + "/" + sectionE2.getID());;
+
+	System.out.println(duplicated + " duplicated entries in sections "
+		+ sectionE1.getID() + "/" + sectionE2.getID());
+	;
 
 	return sectionElement;
     }
@@ -496,9 +498,9 @@ public class DicMerge {
     }
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void doMergeBil() {
 	processArgumentsBil();
 	mergeBil();
@@ -636,14 +638,9 @@ public class DicMerge {
     private void processArgumentsMorph() {
 	final int nArgs = getArguments().length;
 
-	String sDicMonA1, sDicMonA2, sDicMonB1;
-	sDicMonA1 = sDicMonA2 = sDicMonB1 = null;
-	String sDicBilAB1;
-	sDicBilAB1 = null;
-	boolean bilAB1Reverse;
+	String sDicMonA1, sDicMonA2;
+	sDicMonA1 = sDicMonA2 = null;
 	;
-	bilAB1Reverse = false;
-
 	for (int i = 1; i < nArgs; i++) {
 	    String arg = getArguments()[i];
 	    if (arg.equals("-monA1")) {
@@ -684,8 +681,8 @@ public class DicMerge {
     private void processArgumentsBil() {
 	final int nArgs = getArguments().length;
 
-	String sDicMonA1, sDicMonA2, sDicMonB1;
-	sDicMonA1 = sDicMonA2 = sDicMonB1 = null;
+	String sDicMonA1, sDicMonA2;
+	sDicMonA1 = sDicMonA2 = null;
 	String sDicBilAB1, sDicBilAB2;
 	sDicBilAB1 = sDicBilAB2 = null;
 	boolean bilAB1Reverse, bilAB2Reverse;

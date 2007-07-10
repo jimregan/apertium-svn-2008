@@ -20,6 +20,7 @@
 
 package dictools.crossmodel;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import dics.elements.dtd.Element;
@@ -37,6 +38,11 @@ public class State {
          * 
          */
     private String value;
+
+    /**
+         * 
+         */
+    private String temp;
 
     /**
          * 
@@ -114,12 +120,14 @@ public class State {
 	    State state;
 	    if (!transitions.containsKey(e.getValue())) {
 		state = new State(e.getValue());
+		state.setTemp(((SElement) e).getTemp());
 		transitions.put(state.getValue(), state);
 	    } else {
 		state = transitions.get(e.getValue());
 	    }
 	    if (state.getValue().equals("j")) {
 		actionSet.setPatternLength(new Integer(i));
+		actionSet.calculatePatternLength();
 		state.setActionSet(actionSet);
 	    } else {
 		state.add(pattern, actionSet, i + 1);
@@ -134,7 +142,7 @@ public class State {
          * @param actionSetList
          */
     public final void getActionSet(final ElementList entries, int i,
-	    ActionSetList actionSetList) {
+	    ActionSetList actionSetList, HashMap<String, ElementList> tails) {
 	if (i < entries.size()) {
 	    lrrl = new Vector<String>();
 	    lrrl.add("LR");
@@ -158,14 +166,15 @@ public class State {
 	    SElement sE = (SElement) e;
 	    String v = sE.getValue();
 
-	    processRestriction(v, "LR-RL", lrrl, i);
-	    processRestriction(v, "LR", lr, i);
-	    processRestriction(v, "RL", rl, i);
+	    processRestriction(v, "LR-RL", lrrl, i, tails);
+	    processRestriction(v, "LR", lr, i, tails);
+	    processRestriction(v, "RL", rl, i, tails);
 
 	    if (!isRestrictionMatched()) {
 		String real = sE.getTemp();
-		processItem(real, i);
-		processItem(v, i);
+		// System.out.println(v + "/" + real);
+		processItem(real, i, tails);
+		processItem(v, i, tails);
 	    }
 	}
     }
@@ -183,7 +192,8 @@ public class State {
          * @return
          */
     private final void processRestriction(final String v, final String value,
-	    final Vector<String> values, int i) {
+	    final Vector<String> values, int i,
+	    HashMap<String, ElementList> tails) {
 	if (!isRestrictionMatched()) {
 	    if (v.equals(value)) {
 		setRestrictionMatched(true);
@@ -191,7 +201,7 @@ public class State {
 		    if (getTransitions().containsKey(val)) {
 			State state = getTransitions().get(val);
 			state.getActionSet(getEntries(), i + 1,
-				getActionSetList());
+				getActionSetList(), tails);
 		    }
 		}
 	    }
@@ -203,17 +213,68 @@ public class State {
          * @param value
          * @param i
          */
-    private final void processItem(final String value, int i) {
+    private final void processItem(final String value, int i,
+	    HashMap<String, ElementList> tails) {
 	if (getTransitions().containsKey(value)) {
 	    State state = getTransitions().get(value);
+
 	    if (state.getValue().equals("j")) {
+		ActionSet actionSet = state.getActionSet();
+		actionSet.setTails(tails);
+
 		setActionSet(state.getActionSet());
 		getActionSetList().put(this.getActionSet().getName(),
 			this.getActionSet());
 	    } else {
-		state.getActionSet(getEntries(), i + 1, getActionSetList());
+		state.getActionSet(getEntries(), i + 1, getActionSetList(),
+			tails);
 	    }
 	}
+
+	if (getTransitions().containsKey("0")) {
+	    if (tails == null) {
+		tails = new HashMap<String, ElementList>();
+	    }
+	    // System.out.print("entries: ");
+	    // this.getEntries().print();
+	    ElementList tail = new ElementList();
+	    ElementList entries = getEntries();
+
+	    Element e = entries.get(i);
+	    while (!e.getValue().equals("b") && !e.getValue().equals("j")) {
+		tail.add(e);
+		i++;
+		e = entries.get(i);
+	    }
+	    // System.out.print("S = ");
+	    // s.print();
+
+	    // CrossModelFST.addTail(s);
+
+	    State state = getTransitions().get("0");
+	    if (tail.size() > 0) {
+		if (!tails.containsKey(state.getTemp())) {
+		    tails.put(state.getTemp(), tail);
+		}
+	    }
+
+	    state.getActionSet(getEntries(), i, getActionSetList(), tails);
+
+	    /*
+                 * if (getTransitions().containsKey(e.getValue())) {
+                 * System.out.println("Next: " + e.getValue()); State state =
+                 * getTransitions().get(e.getValue());
+                 * 
+                 * if (state.getValue().equals("j")) {
+                 * System.out.println("Accepted pattern with S");
+                 * setActionSet(state.getActionSet());
+                 * getActionSetList().put(this.getActionSet().getName(),
+                 * this.getActionSet()); } else {
+                 * state.getActionSet(getEntries(), i + 1, getActionSetList()); } }
+                 */
+
+	}
+
     }
 
     /**
@@ -308,5 +369,20 @@ public class State {
          */
     public final void setActionSetList(ActionSetList actionSetList) {
 	this.actionSetList = actionSetList;
+    }
+
+    /**
+         * @return the temp
+         */
+    public final String getTemp() {
+	return temp;
+    }
+
+    /**
+         * @param temp
+         *                the temp to set
+         */
+    public final void setTemp(String temp) {
+	this.temp = temp;
     }
 }

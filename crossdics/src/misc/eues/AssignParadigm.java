@@ -1,4 +1,4 @@
-package misc;
+package misc.eues;
 
 /*
  * Copyright (C) 2007 Universitat d'Alacant / Universidad de Alicante
@@ -22,19 +22,12 @@ package misc;
 
 import java.util.HashMap;
 
-import dics.elements.dtd.ContentElement;
 import dics.elements.dtd.DictionaryElement;
 import dics.elements.dtd.EElement;
-import dics.elements.dtd.Element;
 import dics.elements.dtd.LElement;
 import dics.elements.dtd.PElement;
 import dics.elements.dtd.ParElement;
-import dics.elements.dtd.PardefElement;
-import dics.elements.dtd.PardefsElement;
 import dics.elements.dtd.RElement;
-import dics.elements.dtd.SElement;
-import dics.elements.dtd.SdefElement;
-import dics.elements.dtd.SdefsElement;
 import dics.elements.dtd.SectionElement;
 import dics.elements.dtd.TextElement;
 import dictools.DictionaryReader;
@@ -81,7 +74,7 @@ public class AssignParadigm {
          * 
          */
     public final void doAssignParadigm() {
-	this.processArguments();
+	processArguments();
 
 	DictionaryReader reader = new DictionaryReader(morphDic);
 	reader.setReadParadigms(false);
@@ -110,8 +103,8 @@ public class AssignParadigm {
 		    String left = ee.getSide("L").getValue();
 		    String right = ee.getSide("R").getValue();
 
-		    String leftNoTags = this.cleanTags(left);
-		    String rightNoTags = this.cleanTags(right);
+		    String leftNoTags = cleanTags(left);
+		    String rightNoTags = cleanTags(right);
 		    String par = np.get(rightNoTags);
 
 		    EElement e = new EElement();
@@ -149,8 +142,9 @@ public class AssignParadigm {
          */
     private final String cleanTags(final String value) {
 	String[] vs = value.split("\\[");
-	if (vs == null)
+	if (vs == null) {
 	    return value;
+	}
 	if (vs.length > 1) {
 	    return vs[0];
 	} else {

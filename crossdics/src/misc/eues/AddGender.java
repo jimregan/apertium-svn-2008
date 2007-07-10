@@ -1,4 +1,4 @@
-package misc;
+package misc.eues;
 
 /*
  * Copyright (C) 2007 Universitat d'Alacant / Universidad de Alicante
@@ -44,68 +44,70 @@ import dictools.DictionaryReader;
 public class AddGender {
 
     /**
-     * 
-     */
+         * 
+         */
     private String[] arguments;
 
     /**
-     * 
-     */
+         * 
+         */
     private String morphDic;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String bilDic;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String out;
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void processArguments() {
 	morphDic = arguments[1];
 	bilDic = arguments[2];
 	out = arguments[3];
     }
-    
+
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void doAddGender() {
-	this.processArguments();
-	
+	processArguments();
+
 	DictionaryReader reader = new DictionaryReader(morphDic);
 	System.out.println("Reading morphological '" + morphDic + "'");
 	DictionaryElement dic = reader.readDic();
-	//dic.printXML("morf-es.dix");
+	// dic.printXML("morf-es.dix");
 
-	HashMap<String,SElement> ng = new HashMap<String,SElement>();
+	HashMap<String, SElement> ng = new HashMap<String, SElement>();
 
 	PardefsElement pars = dic.getPardefsElement();
 
 	for (SectionElement section : dic.getSections()) {
 	    for (EElement ee : section.getEElements()) {
 		String lemma = ee.getLemma();
-		if (lemma != null ) {
+		if (lemma != null) {
 		    String parName = ee.getParadigmValue();
-		    if (parName != null && parName.endsWith("__n")) {
+		    if ((parName != null) && parName.endsWith("__n")) {
 			PardefElement par = pars.getParadigmDefinition(parName);
 			if (par != null) {
 			    for (EElement eepar : par.getEElements()) {
 				RElement r = eepar.getP().getR();
 				for (Element er : r.getChildren()) {
 				    if (er instanceof SElement) {
-					SElement s = (SElement)er;
+					SElement s = (SElement) er;
 					String sv = er.getValue();
-					if (sv.equals("m") || sv.equals("f") || sv.equals("mf")) {
+					if (sv.equals("m") || sv.equals("f")
+						|| sv.equals("mf")) {
 					    ng.put(lemma, s);
-					    //System.out.println(lemma + " (" + sv + ")");
+					    // System.out.println(lemma + "
+                                                // (" + sv + ")");
 					}
 				    }
 				}
@@ -113,7 +115,7 @@ public class AddGender {
 			}
 		    }
 		}
-	    }	    
+	    }
 	}
 
 	System.out.println(ng.size() + " nouns read.");
@@ -130,7 +132,7 @@ public class AddGender {
 	sdefs.addSdefElement(m);
 	sdefs.addSdefElement(f);
 	sdefs.addSdefElement(mf);
-	
+
 	int genderFound = 0;
 	int genderNotFound = 0;
 	for (SectionElement section : bil.getSections()) {
@@ -138,58 +140,63 @@ public class AddGender {
 		if (!ee.isRegEx()) {
 		    String parName = ee.getParadigmValue();
 		    if (parName != null) {
-			if (parName.contains("NC") ) {
+			if (parName.contains("NC")) {
 			    ContentElement leftSide = ee.getSide("L");
 			    ContentElement rightSide = ee.getSide("R");
 			    String text = leftSide.getValue();
-			    
+
 			    SElement gender = ng.get(text);
 			    if (gender != null) {
-				//System.out.println(text + " (" + gender.getValue() + ")");
+				// System.out.println(text + " (" +
+                                // gender.getValue() + ")");
 				genderFound++;
-			    SElement noun = new SElement("n");
-			    leftSide.addChild(noun);
-			    rightSide.addChild(noun);
-			    leftSide.addChild(gender);
-			    // and remove par element if NC
-			    ParElement par = null;
-			    for (Element e : ee.getChildren()) {
-				if (e instanceof ParElement) {
-				    par = (ParElement)e;
+				SElement noun = new SElement("n");
+				leftSide.addChild(noun);
+				rightSide.addChild(noun);
+				leftSide.addChild(gender);
+				// and remove par element if NC
+				ParElement par = null;
+				for (Element e : ee.getChildren()) {
+				    if (e instanceof ParElement) {
+					par = (ParElement) e;
+				    }
 				}
-			    }
 
-			    ee.getChildren().remove(par);
+				ee.getChildren().remove(par);
 			    } else {
 				genderNotFound++;
-				System.err.println("(" + genderNotFound +") I could not find gender for '" + text + "'");
+				System.err.println("(" + genderNotFound
+					+ ") I could not find gender for '"
+					+ text + "'");
 			    }
-			    
+
 			}
 		    }
 		}
 	    }
 	}
-	
+
 	System.out.println("I found gender for " + genderFound + " lemmas.");
-	System.out.println("I could not find gender for " + genderNotFound + " lemmas (see addgender.err).");
+	System.out.println("I could not find gender for " + genderNotFound
+		+ " lemmas (see addgender.err).");
 
 	System.out.println("Updated bilingual dictionary: '" + out + "'");
-	bil.printXML(out);	
+	bil.printXML(out);
     }
 
     /**
-     * @return the arguments
-     */
+         * @return the arguments
+         */
     public final String[] getArguments() {
-        return arguments;
+	return arguments;
     }
 
     /**
-     * @param arguments the arguments to set
-     */
+         * @param arguments
+         *                the arguments to set
+         */
     public final void setArguments(String[] arguments) {
-        this.arguments = arguments;
+	this.arguments = arguments;
     }
 
 }

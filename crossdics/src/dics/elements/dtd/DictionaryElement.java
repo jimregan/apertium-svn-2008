@@ -386,7 +386,7 @@ public class DictionaryElement extends Element {
 		}
 		dos.writeBytes("\tEntries: " + ne);
 	    }
-	    
+
 	    if (sdefs != null) {
 		dos.writeBytes("\n\tSdefs: " + sdefs.getSdefsElements().size()
 			+ "\n");
@@ -428,9 +428,9 @@ public class DictionaryElement extends Element {
     }
 
     /**
-     * 
-     * @param fileName
-     */
+         * 
+         * @param fileName
+         */
     public void printXMLXInclude(final String fileName) {
 	BufferedOutputStream bos;
 	FileOutputStream fos;
@@ -527,10 +527,10 @@ public class DictionaryElement extends Element {
     }
 
     /**
-     * 
-     * @param sectionID
-     * @return
-     */
+         * 
+         * @param sectionID
+         * @return
+         */
     public EElementList getEntries(final String sectionID) {
 	for (final SectionElement s : sections) {
 	    if (s.getID().equals(sectionID)) {
@@ -714,41 +714,41 @@ public class DictionaryElement extends Element {
          * 
          */
     public void reverse() {
-	for (SectionElement section : this.getSections()) {
-	final ArrayList<EElement> elements = section.getEElements();
+	for (SectionElement section : getSections()) {
+	    final ArrayList<EElement> elements = section.getEElements();
 
-	for (final EElement ee : elements) {
-	    final ArrayList<Element> children = ee.getChildren();
+	    for (final EElement ee : elements) {
+		final ArrayList<Element> children = ee.getChildren();
 
-	    if (ee.getRestriction() != null) {
-		if (ee.getRestriction().equals("LR")) {
-		    ee.setRestriction("RL");
-		} else {
-		    if (ee.getRestriction().equals("RL")) {
-			ee.setRestriction("LR");
+		if (ee.getRestriction() != null) {
+		    if (ee.getRestriction().equals("LR")) {
+			ee.setRestriction("RL");
+		    } else {
+			if (ee.getRestriction().equals("RL")) {
+			    ee.setRestriction("LR");
+			}
+		    }
+		}
+
+		for (final Element e : children) {
+		    if (e instanceof PElement) {
+			LElement lE = ((PElement) e).getL();
+			RElement rE = ((PElement) e).getR();
+
+			// final String auxValue = lE.getValue();
+			ElementList auxChildren = lE.getChildren();
+
+			// lE.setValue(rE.getValue());
+			lE.setChildren(rE.getChildren());
+
+			// rE.setValue(auxValue);
+			rE.setChildren(auxChildren);
+
+			((PElement) e).setLElement(lE);
+			((PElement) e).setRElement(rE);
 		    }
 		}
 	    }
-
-	    for (final Element e : children) {
-		if (e instanceof PElement) {
-		    LElement lE = ((PElement) e).getL();
-		    RElement rE = ((PElement) e).getR();
-
-		    // final String auxValue = lE.getValue();
-		    ElementList auxChildren = lE.getChildren();
-
-		    // lE.setValue(rE.getValue());
-		    lE.setChildren(rE.getChildren());
-
-		    // rE.setValue(auxValue);
-		    rE.setChildren(auxChildren);
-
-		    ((PElement) e).setLElement(lE);
-		    ((PElement) e).setRElement(rE);
-		}
-	    }
-	}
 	}
     }
 

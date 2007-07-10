@@ -47,29 +47,29 @@ public class ActionSetList extends HashMap<String, ActionSet> {
 	int max = size();
 	int cont = 1;
 
-	System.out.print("{ ");
+	System.err.print("{ ");
 	while (it.hasNext()) {
 	    String key = (String) it.next();
 	    ActionSet actionSet = get(key);
 
 	    for (Action action : actionSet) {
-		System.out.print(action.getName() + " ("
+		System.err.print(action.getName() + " ("
 			+ action.getPatternLength() + "/"
 			+ action.getNumberOfConstants() + ")");
 		if (cont < max) {
-		    System.out.print(", ");
+		    System.err.print(", ");
 		    cont++;
 		}
 	    }
 	}
-	System.out.println(" }");
+	System.err.println(" }");
     }
 
     /**
          * 
          * @return
          */
-    public final ActionSet getBestActionSet() {
+    public final ActionSet getBestActionSetOld() {
 	ActionSet bestActionSet = null;
 	ArrayList<ActionSet> actionSetList = new ArrayList<ActionSet>();
 	int maxLength = 0;
@@ -98,6 +98,68 @@ public class ActionSetList extends HashMap<String, ActionSet> {
 	    }
 	}
 
+	return bestActionSet;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public final ActionSet getBestActionSet() {
+	ActionSet bestActionSet = null;
+	ArrayList<ActionSet> actionSetList = new ArrayList<ActionSet>();
+
+	Set keySet = keySet();
+	Iterator it = keySet.iterator();
+	int maxNConstants = -1;
+
+	int i = 1;
+	// System.err.println("Candidates:");
+	while (it.hasNext()) {
+	    String key = (String) it.next();
+	    ActionSet actionSet = get(key);
+	    // System.err.println("\tcandidate (" + i + "): " +
+                // actionSet.getName());
+	    // System.err.println("\t\tconstants: " +
+                // actionSet.getNumberOfConstants());
+	    // System.err.println("\t\tlength: " +
+                // actionSet.getPatternLength());
+	    if (actionSet.getNumberOfConstants() > maxNConstants) {
+		actionSetList = new ArrayList<ActionSet>();
+		actionSetList.add(actionSet);
+		maxNConstants = actionSet.getNumberOfConstants();
+	    } else {
+		if (actionSet.getNumberOfConstants() == maxNConstants) {
+		    actionSetList.add(actionSet);
+		}
+	    }
+	    i++;
+	}
+
+	int maxLength = 0;
+
+	ArrayList<ActionSet> actionSetList2 = new ArrayList<ActionSet>();
+	for (ActionSet actionSet : actionSetList) {
+	    if (actionSet.getPatternLength() > maxLength) {
+		bestActionSet = actionSet;
+		maxLength = actionSet.getPatternLength();
+	    } else {
+		if (actionSet.getPatternLength() == maxLength) {
+		    actionSetList2.add(actionSet);
+		}
+	    }
+	}
+
+	if (actionSetList2.size() > 1) {
+	    int maxR = 0;
+	    for (ActionSet actionSet2 : actionSetList2) {
+		if (actionSet2.getNumberOfRestrictions() > maxR) {
+		    bestActionSet = actionSet2;
+		    maxR = actionSet2.getNumberOfRestrictions();
+		}
+	    }
+	}
+	// System.err.println("Winner: " + bestActionSet.getName());
 	return bestActionSet;
     }
 }

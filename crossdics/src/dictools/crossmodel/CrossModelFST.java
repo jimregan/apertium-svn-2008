@@ -21,6 +21,8 @@
 package dictools.crossmodel;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import dics.elements.dtd.Element;
 import dics.elements.dtd.SElement;
@@ -48,6 +50,7 @@ public class CrossModelFST {
          * 
          */
     public CrossModelFST(final CrossModel crossModel) {
+
 	initialState = new State("");
 	String str;
 	HashMap<String, CrossAction> patterns = new HashMap<String, CrossAction>();
@@ -55,10 +58,15 @@ public class CrossModelFST {
 	for (CrossAction crossAction : crossModel.getCrossActions()) {
 	    ElementList eList = crossAction.processVars();
 	    str = getElementListString(eList);
+	    // System.err.println("pattern: " + str);
 	    if (!patterns.containsKey(str)) {
 		patterns.put(str, crossAction);
 		// System.out.println(crossAction.getId() + ": " + str);
 		ActionSet actionSet = crossAction.getActionSet();
+
+		// we add a refernce to the crossAction
+		actionSet.setCrossAction(crossAction);
+
 		add(eList, actionSet);
 	    } else {
 		CrossAction cA = patterns.get(str);
@@ -85,16 +93,34 @@ public class CrossModelFST {
          * @return
          */
     public final ActionSet getActionSet(CrossAction entries) {
+	// HashMap<String,ElementList> tails = new
+        // HashMap<String,ElementList>();
+	HashMap<String, ElementList> tails = null;
 	ElementList eList = entries.processEntries();
-	// String str = getElementListString(eList);
+	String str = getElementListString(eList);
 	// System.out.println(str);
 	ActionSetList actionSetList = new ActionSetList();
-	initialState.getActionSet(eList, 0, actionSetList);
+	initialState.getActionSet(eList, 0, actionSetList, tails);
 
 	if (actionSetList.size() > 0) {
-	    // System.out.println(str);
+	    // System.err.println(str);
 	    // entries.print();
 	    ActionSet bestActionSet = actionSetList.getBestActionSet();
+	    // System.err.println("Action: " + bestActionSet.getName());
+
+	    if (bestActionSet.getTails() != null) {
+		// System.err.println("Tails:");
+		Set keySet = bestActionSet.getTails().keySet();
+		Iterator it = keySet.iterator();
+
+		while (it.hasNext()) {
+		    String key = (String) it.next();
+		    ElementList tail = bestActionSet.getTails().get(key);
+		    // System.err.print(key + ": ");
+		    // tail.print();
+		}
+	    }
+
 	    setActionSet(bestActionSet);
 	    return bestActionSet;
 	} else {

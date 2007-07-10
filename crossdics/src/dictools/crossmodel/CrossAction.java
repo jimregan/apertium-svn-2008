@@ -149,7 +149,7 @@ public class CrossAction implements Comparable<CrossAction> {
          * 
          */
     public final void print() {
-	System.out.println("CROSS-ACTION:");
+	// System.err.println("CROSS-ACTION:");
 	if (pattern != null) {
 	    getPattern().print();
 	}
@@ -183,7 +183,7 @@ public class CrossAction implements Comparable<CrossAction> {
     public final ElementList processEntries() {
 	ElementList eList = new ElementList();
 	try {
-	    HashMap<String, Integer> hm = new HashMap<String, Integer>();
+	    HashMap<String, String> hm = new HashMap<String, String>();
 	    Pattern pattern = getPattern();
 
 	    Integer j = new Integer(0);
@@ -197,16 +197,21 @@ public class CrossAction implements Comparable<CrossAction> {
 
 	    // e1
 	    addRestrictionCode(eList, e1);
-	    j = tagElements(e1L, eList, j, hm);
+	    j = tagElements(e1L, eList, j, hm, "1");
 	    eList.add(new SElement("b"));
-	    j = tagElements(e1R, eList, j, hm);
+
+	    j = new Integer(0); // añadido
+	    j = tagElements(e1R, eList, j, hm, "2");
 	    eList.add(new SElement("b"));
 
 	    // e2
 	    addRestrictionCode(eList, e2);
-	    j = tagElements(e2L, eList, j, hm);
+
+	    j = new Integer(0); // añadido
+	    j = tagElements(e2L, eList, j, hm, "3");
 	    eList.add(new SElement("b"));
-	    j = tagElements(e2R, eList, j, hm);
+	    j = new Integer(0); // añadido
+	    j = tagElements(e2R, eList, j, hm, "4");
 	    eList.add(new SElement("j"));
 
 	} catch (Exception e) {
@@ -236,7 +241,7 @@ public class CrossAction implements Comparable<CrossAction> {
     public final ElementList processVars() {
 	getActionSet().setNumberOfConstants(0);
 
-	HashMap<String, Integer> hm = new HashMap<String, Integer>();
+	HashMap<String, String> hm = new HashMap<String, String>();
 	ElementList eList = new ElementList();
 
 	Pattern pattern = getPattern();
@@ -251,15 +256,21 @@ public class CrossAction implements Comparable<CrossAction> {
 	ContentElement e2R = e2.getSide("R");
 
 	addRestrictionCode(eList, e1);
-	j = tagPattern(e1L, eList, j, hm);
+	j = tagPattern(e1L, eList, j, hm, "1");
 	eList.add(new SElement("b"));
-	j = tagPattern(e1R, eList, j, hm);
+	j = new Integer(0); // añadido
+
+	j = tagPattern(e1R, eList, j, hm, "2");
 	eList.add(new SElement("b"));
 
 	addRestrictionCode(eList, e2);
-	j = tagPattern(e2L, eList, j, hm);
+
+	j = new Integer(0); // añadido
+	j = tagPattern(e2L, eList, j, hm, "3");
 	eList.add(new SElement("b"));
-	j = tagPattern(e2R, eList, j, hm);
+
+	j = new Integer(0); // añadido
+	j = tagPattern(e2R, eList, j, hm, "4");
 	eList.add(new SElement("j"));
 
 	ActionSet aSet = getActionSet();
@@ -267,8 +278,10 @@ public class CrossAction implements Comparable<CrossAction> {
 	if (aSet != null) {
 	    for (Action a : aSet) {
 		EElement ea = a.getE();
-		j = tagAction(ea.getSide("L"), j, hm);
-		j = tagAction(ea.getSide("R"), j, hm);
+		j = new Integer(0); // añadido
+		j = tagAction(ea.getSide("L"), j, hm, "5");
+		j = new Integer(0); // añadido
+		j = tagAction(ea.getSide("R"), j, hm, "6");
 	    }
 	}
 
@@ -283,28 +296,34 @@ public class CrossAction implements Comparable<CrossAction> {
          * @param hm
          */
     private final Integer tagPattern(ContentElement ce, ElementList eList,
-	    Integer j, HashMap<String, Integer> hm) {
+	    Integer j, HashMap<String, String> hm, final String pref) {
+	int p = 1;
 	for (int k = 0; k < ce.getChildren().size(); k++) {
 	    Element e = ce.getChildren().get(k);
 
 	    if (e instanceof SElement) {
-		Integer pos;
+		String pos;
 		SElement sElement = (SElement) e.clone();
 		ce.getChildren().set(k, sElement);
 		String value = sElement.getValue();
 		if (hm.containsKey(value)) {
 		    pos = hm.get(value);
 		} else {
-		    j++;
-		    pos = new Integer(j);
+		    pos = pref + "-" + p;
+		    p++;
 		    hm.put(value, pos);
 		}
 		if (Character.isUpperCase(value.charAt(0))
 			&& Character.isDigit(value.charAt(value.length() - 1))) {
-
-		    String n = pos.toString();
-		    sElement.setValue(n);
-		    sElement.setTemp(value);
+		    if (value.charAt(0) == 'S') {
+			String n = new String("0");
+			sElement.setValue(n);
+			sElement.setTemp(value);
+		    } else {
+			String n = pos.toString();
+			sElement.setValue(n);
+			sElement.setTemp(value);
+		    }
 		} else {
 		    if (!Character.isDigit(value.charAt(0))) {
 			sElement.setValue(value);
@@ -326,26 +345,45 @@ public class CrossAction implements Comparable<CrossAction> {
          * @return
          */
     private final Integer tagAction(ContentElement ce, Integer j,
-	    HashMap<String, Integer> hm) {
+	    HashMap<String, String> hm, final String pref) {
+	int p = 1;
 	for (int k = 0; k < ce.getChildren().size(); k++) {
 	    Element e = ce.getChildren().get(k);
 	    if (e instanceof SElement) {
+		String pos;
 		SElement sElement = (SElement) e.clone();
 		ce.getChildren().set(k, sElement);
 		String value = sElement.getValue();
+		if (hm.containsKey(value)) {
+		    pos = hm.get(value);
+		} else {
+		    pos = pref + "-" + p;
+		    p++;
+		    hm.put(value, pos);
+		}
+
+		/*
+                 * SElement sElement = (SElement) e.clone();
+                 * ce.getChildren().set(k, sElement); String value =
+                 * sElement.getValue();
+                 */
 		if (Character.isUpperCase(value.charAt(0))
 			&& Character.isDigit(value.charAt(value.length() - 1))) {
-		    Integer pos;
-		    if (hm.containsKey(value)) {
-			pos = hm.get(value);
+		    if (value.charAt(0) == 'S') {
+			String n = new String("0");
+			sElement.setValue(n);
+			sElement.setTemp(value);
 		    } else {
-			j++;
-			pos = new Integer(j);
-			hm.put(value, pos);
+			String n = pos.toString();
+			sElement.setValue(n);
+			sElement.setTemp(value);
 		    }
-		    String n = pos.toString();
-		    sElement.setValue(n);
-		    sElement.setTemp(value);
+		    /*
+                         * String pos; if (hm.containsKey(value)) { pos =
+                         * hm.get(value); } else { pos = pref + "-" + p;
+                         * hm.put(value, pos); p++; } String n = pos.toString();
+                         * sElement.setValue(n); sElement.setTemp(value);
+                         */
 		} else {
 		    if (!Character.isDigit(value.charAt(0))) {
 			sElement.setValue(value);
@@ -365,19 +403,20 @@ public class CrossAction implements Comparable<CrossAction> {
          * @return
          */
     private final Integer tagElements(ContentElement ce, ElementList eList,
-	    Integer j, HashMap<String, Integer> hm) {
+	    Integer j, HashMap<String, String> hm, final String pref) {
+	int p = 1;
 	for (int k = 0; k < ce.getChildren().size(); k++) {
 	    Element e = ce.getChildren().get(k);
 	    if (e instanceof SElement) {
 		String value = e.getValue();
-		Integer pos;
+		String pos;
 		if (hm.containsKey(value)) {
 		    pos = hm.get(value);
 		} else {
-		    j++;
-		    pos = new Integer(j);
+		    pos = pref + "-" + p;
 		    hm.put(value, pos);
 		    getConstants().put(pos.toString(), value);
+		    p++;
 		}
 		SElement sElement = (SElement) e;
 		sElement.setValue(pos.toString());

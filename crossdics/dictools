@@ -8,23 +8,6 @@ library="lib/cross-dics.jar"
 java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp ${library} $mainClass"
 
 #
-#  assignparadigm
-#
-function assignparadigm() {
-   if [ $nparams == 4 ]
-   then
-      java ${java_options} $task $2 $3 $4 2> assignparadigm.err
-      echo "Log file in '$task.err'"
-      else
-         echo "---------------------------------"
-         echo "This is an ad-hoc script!!"
-         echo "New entries available in <bil> (those on the left side) are inserted in <out> based on the information available in the morphological dictionary <morph-source>."
-         echo "---------------------------------"
-         echo "Usage: dictools assignparadigm  <morph-source> <bil> <out>"
-   fi
-}
-
-#
 #	cross
 #
 function cross() {
@@ -35,21 +18,9 @@ function cross() {
 	   	crossmodel=$9
    	fi
 	   echo "cross model: $crossmodel"
-   	java ${java_options} $task -bilAB $3 $4 -bilBC $5 $6 -monA $2 -monC $7 -cross-model $crossmodel
+   	java ${java_options} $task -bilAB $3 $4 -bilBC $5 $6 -monA $2 -monC $7 -cross-model $crossmodel 2> $task.err
    else
    	echo "Usage: dictools cross <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> [-cross-model crossmodel]"
-   fi
-}
-
-#
-#	add-gender
-#
-function addgender() {
-   if [ $nparams == 4 ]
-      then
-         java ${java_options} $task $2 $3 $4 2> $task.err
-      else
-      echo "Usage: dictools $task  <morph-source> <bil> <out>"
    fi
 }
 

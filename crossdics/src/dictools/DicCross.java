@@ -43,6 +43,7 @@ import dics.elements.utils.DictionaryElementList;
 import dics.elements.utils.EElementList;
 import dics.elements.utils.EElementMap;
 import dics.elements.utils.EHashMap;
+import dics.elements.utils.ElementList;
 import dictools.crossmodel.Action;
 import dictools.crossmodel.ActionSet;
 import dictools.crossmodel.ConstantMap;
@@ -161,6 +162,16 @@ public class DicCross {
 
     /**
          * 
+         */
+    private HashMap<String, Integer> usedPatterns;
+
+    /**
+         * 
+         */
+    private int taskOrder;
+
+    /**
+         * 
          * 
          */
     public DicCross() {
@@ -171,6 +182,8 @@ public class DicCross {
 	regExProcessed = new EHashMap();
 	nDCrossActions = new HashMap<String, CrossAction>();
 	nDCrossModel = new CrossModel();
+	usedPatterns = new HashMap<String, Integer>();
+	taskOrder = 1;
     }
 
     /**
@@ -179,16 +192,20 @@ public class DicCross {
          */
     private final void readCrossModel() {
 	try {
+	    System.out.print("[" + (taskOrder++) + "] Reading cross model ("
+		    + getCrossModelFileName() + ")");
 	    final CrossModelReader cmr = new CrossModelReader(
 		    getCrossModelFileName());
-	    setCrossModel(cmr.readCrossModel());
+	    CrossModel cm = cmr.readCrossModel();
+	    System.out.println(" (" + cm.getCrossActions().size()
+		    + " patterns processed).");
+
+	    setCrossModel(cm);
 	    CrossModelFST fst = new CrossModelFST(getCrossModel());
 	    setCrossModelFST(fst);
-	    final int nCrossActions = getCrossModel().getCrossActions().size();
-	    // System.err.println("Cross patterns: " + nCrossActions);
 	} catch (final Exception e) {
 	    e.printStackTrace();
-	    System.err.println("Error reading cross model.");
+	    System.out.println("Error reading cross model.");
 	}
     }
 
@@ -256,6 +273,8 @@ public class DicCross {
 	    specul.addSection(speculSection);
 	}
 
+	System.out.println("[" + (taskOrder++)
+		+ "] Sorting crossed dictionary...");
 	Collections.sort(dic.getEntries());
 
 	if (isCrossWithPatterns()) {
@@ -312,6 +331,7 @@ public class DicCross {
          */
     private final SdefsElement crossSdefs(final SdefsElement sdefs1,
 	    final SdefsElement sdefs2) {
+	System.out.println("[" + (taskOrder++) + "] Crossing definitions...");
 	final SdefsElement sdefs = new SdefsElement();
 	HashMap<String, SdefElement> sdefList = new HashMap<String, SdefElement>();
 
@@ -367,6 +387,8 @@ public class DicCross {
     private SectionElement[] crossSections(final SectionElement section1,
 	    final SectionElement section2, final SdefsElement sdefs) {
 
+	System.out.println("[" + (taskOrder++) + "] Crossing sections '"
+		+ section1.getID() + "' and '" + section2.getID() + "'");
 	final SectionElement[] sections = new SectionElement[2];
 
 	final SectionElement section = new SectionElement();
@@ -452,6 +474,18 @@ public class DicCross {
 				if (!getProcessed().containsKey(str)) {
 				    section.addEElement(e);
 				    getProcessed().put(str, e);
+				    String actionID = e.getPatternApplied();
+				    if (!usedPatterns.containsKey(actionID)) {
+					usedPatterns.put(actionID, new Integer(
+						1));
+				    } else {
+					Integer times = usedPatterns
+						.get(actionID);
+					int t = times.intValue();
+					t++;
+					usedPatterns.put(actionID, new Integer(
+						t));
+				    }
 				}
 			    }
 			}
@@ -525,6 +559,7 @@ public class DicCross {
 	ActionSet actionSetFST = getCrossModelFST().getActionSet(crossAction);
 	if (actionSetFST != null) {
 	    final String actionID = actionSetFST.getName();
+
 	    EElementList actionEList = applyCrossAction(e1, e2, actionID,
 		    crossAction);
 	    // elementList.add(actionE);
@@ -558,14 +593,20 @@ public class DicCross {
 	    final String actionID, final CrossAction entries) {
 	EElementList elementList = new EElementList();
 	final CrossAction cA = getCrossModel().getCrossAction(actionID);
+	HashMap<String, ElementList> tails = cA.getActionSet().getTails();
+
 	for (Action action : cA.getActionSet()) {
+
 	    EElement eAction = action.getE();
 
 	    final int iR = resolveRestriction(e1.getRestriction(), e2
 		    .getRestriction());
 	    if (iR != NONE) {
+
 		final String restriction = getRestrictionString(iR);
-		EElement actionE = assignValues(e1, e2, eAction, entries);
+		EElement actionE = assignValues(e1, e2, eAction, entries, tails);
+		actionE.setPatternApplied(actionID);
+
 		actionE.setRestriction(restriction);
 
 		// cross comments & author
@@ -592,8 +633,10 @@ public class DicCross {
          * @return
          */
     private final EElement assignValues(EElement e1, EElement e2,
-	    EElement eAction, CrossAction entries) {
+	    EElement eAction, CrossAction entries,
+	    HashMap<String, ElementList> tails) {
 	ConstantMap constants = entries.getConstants();
+
 	EElement eCrossed = new EElement();
 	PElement pE = new PElement();
 
@@ -603,8 +646,8 @@ public class DicCross {
 	LElement lE2 = new LElement();
 	RElement rE2 = new RElement();
 
-	assignValuesSide(lE2, lE, constants, e1);
-	assignValuesSide(rE2, rE, constants, e2);
+	assignValuesSide(lE2, lE, constants, e1, tails);
+	assignValuesSide(rE2, rE, constants, e2, tails);
 
 	pE.setLElement(lE2);
 	pE.setRElement(rE2);
@@ -621,14 +664,34 @@ public class DicCross {
          */
     private final void assignValuesSide(ContentElement ceWrite,
 	    final ContentElement ceRead, final ConstantMap constants,
-	    final EElement ei) {
+	    final EElement ei, HashMap<String, ElementList> tails) {
 	ceWrite.addChild(new TextElement(ei.getSide("R").getValue()));
 	for (Element e : ceRead.getSElements()) {
-	    if (!constants.containsKey(e.getValue())) {
-		ceWrite.addChild(new SElement(e.getValue()));
+	    String v = e.getValue();
+
+	    if (!v.equals("0")) {
+		if (!constants.containsKey(e.getValue())) {
+		    ceWrite.addChild(new SElement(e.getValue()));
+		} else {
+		    String value = constants.get(e.getValue());
+		    ceWrite.addChild(new SElement(value));
+		}
 	    } else {
-		String value = constants.get(e.getValue());
-		ceWrite.addChild(new SElement(value));
+		SElement sE = (SElement) e;
+		if (!tails.containsKey(sE.getTemp())) {
+		    // ceWrite.addChild(new SElement(e.getValue()));
+		} else {
+		    ElementList tail = tails.get(sE.getTemp());
+		    for (Element elem : tail) {
+			if (!constants.containsKey(elem.getValue())) {
+			    ceWrite.addChild(new SElement(elem.getValue()));
+			} else {
+			    String value = constants.get(elem.getValue());
+			    ceWrite.addChild(new SElement(value));
+			}
+			// ceWrite.addChild(elem);
+		    }
+		}
 	    }
 	}
     }
@@ -931,11 +994,14 @@ public class DicCross {
 	DicSet dicSet = getDicSet();
 	actionConsistent(dicSet, "yes");
 
-	final DicCross dc = new DicCross();
-	dc.setCrossWithPatterns(true); // true means uses patterns
-	dc.setCrossModelFileName(getCrossModelFileName());
+	// final DicCross dc = new DicCross();
+	// dc.setCrossWithPatterns(true); // true means uses patterns
+	setCrossWithPatterns(true);
+	// dc.setCrossModelFileName(getCrossModelFileName());
+	setCrossModelFileName(getCrossModelFileName());
 
-	final DictionaryElement[] bils = dc.crossDictionaries(dicSet);
+	// final DictionaryElement[] bils = dc.crossDictionaries(dicSet);
+	final DictionaryElement[] bils = crossDictionaries(dicSet);
 
 	final DictionaryElement bilCrossed = bils[0];
 	final DictionaryElement bilSpecul = bils[1];
@@ -945,6 +1011,9 @@ public class DicCross {
 	bilCrossed.setType("BIL");
 	bilCrossed.setSL(sl);
 	bilCrossed.setTL(tl);
+
+	System.out.println("[" + (taskOrder++)
+		+ "] Making morphological dicionaries consistent ...");
 
 	final EElementList[] commonCrossedMons = DicTools.makeConsistent(
 		bilCrossed, dicSet.getMon1(), dicSet.getMon2());
@@ -981,6 +1050,8 @@ public class DicCross {
 	del.add(monBSpecul);
 
 	printXMLCrossedAndSpecul(del, sl, tl);
+
+	System.out.println("[" + (taskOrder++) + "] Done!");
     }
 
     /**
@@ -997,6 +1068,34 @@ public class DicCross {
 	final DictionaryElement monBCrossed = del.get(3);
 	final DictionaryElement monASpecul = del.get(4);
 	final DictionaryElement monBSpecul = del.get(5);
+
+	int i = 0;
+	String patterns = "";
+	bilCrossed.addComments("");
+	bilCrossed.addComments("Patterns applied:");
+	System.err.println("Patterns applied:");
+	for (CrossAction cA : getCrossModel().getCrossActions()) {
+	    String cAName = cA.getId();
+	    if (!usedPatterns.containsKey(cAName)) {
+		if (i != 0) {
+		    patterns += ", " + cAName;
+		} else {
+		    patterns += cAName;
+		}
+		i++;
+	    } else {
+		String msg = "\t" + cAName + " (" + usedPatterns.get(cAName)
+			+ " times)";
+		System.err.println(msg);
+		bilCrossed.addComments(msg);
+
+	    }
+	}
+	System.err.println("[" + (taskOrder++) + "] Patterns never applied: "
+		+ patterns);
+
+	System.out.println("[" + (taskOrder++)
+		+ "] Generating crossed dictionaries ...");
 
 	bilCrossed.printXML("dix/apertium-" + sl + "-" + tl + "." + sl + "-"
 		+ tl + "-crossed.dix");
@@ -1098,11 +1197,19 @@ public class DicCross {
 	    }
 	}
 
+	System.out.println("[" + (taskOrder++) + "] Loading bilingual AB ("
+		+ sDicBilAB + ")");
 	final DictionaryElement bil1 = DicTools.readBilingual(sDicBilAB,
 		bilABReverse);
+	System.out.println("[" + (taskOrder++) + "] Loading bilingual BC ("
+		+ sDicBilBC + ")");
 	final DictionaryElement bil2 = DicTools.readBilingual(sDicBilBC,
 		bilBCReverse);
+	System.out.println("[" + (taskOrder++) + "] Loading monolingual A ("
+		+ sDicMonA + ")");
 	final DictionaryElement mon1 = DicTools.readMonolingual(sDicMonA);
+	System.out.println("[" + (taskOrder++) + "] Loading monolingual C ("
+		+ sDicMonC + ")");
 	final DictionaryElement mon2 = DicTools.readMonolingual(sDicMonC);
 
 	DicSet dicSet = new DicSet(mon1, bil1, mon2, bil2);

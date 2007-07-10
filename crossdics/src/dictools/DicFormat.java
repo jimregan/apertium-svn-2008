@@ -20,8 +20,6 @@
 
 package dictools;
 
-import java.util.Collections;
-
 import dics.elements.dtd.DictionaryElement;
 import dics.elements.dtd.EElement;
 import dics.elements.dtd.SectionElement;
@@ -46,8 +44,8 @@ public class DicFormat {
     private String[] arguments;
 
     /**
-     * 
-     */
+         * 
+         */
     public static final int BIL = 0;
 
     /**
@@ -56,15 +54,14 @@ public class DicFormat {
     public static final int MON = 1;
 
     /**
-     * 
-     */
+         * 
+         */
     private int dicType;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String out;
-    
 
     /**
          * 
@@ -89,33 +86,32 @@ public class DicFormat {
     public final DictionaryElement format() {
 	final EHashMap eMap = new EHashMap();
 	for (SectionElement section : dicFormatted.getSections()) {
-		int duplicated = 0;
-		final EElementList elements = section.getEElements();
-		for (final EElement e : elements) {
-		    final String e1Key = e.toString();
-		    if (!eMap.containsKey(e1Key)) {
-			eMap.put(e1Key, e);
-		    } else {
-			//EElement other = (EElement)eMap.get(e1Key);
-			String left = e.getValue("L");
-			String right = e.getValue("R");
-			System.err.println("Duplicated: " + left + "/" + right);
-			duplicated++;
-		    }
+	    int duplicated = 0;
+	    final EElementList elements = section.getEElements();
+	    for (final EElement e : elements) {
+		final String e1Key = e.toString();
+		if (!eMap.containsKey(e1Key)) {
+		    eMap.put(e1Key, e);
+		} else {
+		    // EElement other = (EElement)eMap.get(e1Key);
+		    String left = e.getValue("L");
+		    String right = e.getValue("R");
+		    System.err.println("Duplicated: " + left + "/" + right);
+		    duplicated++;
 		}
-		String errorMsg = duplicated + " duplicated entries in section '" + section.getID() + "'";
-		System.err.println(errorMsg);
-		System.out.println(errorMsg);
+	    }
+	    String errorMsg = duplicated + " duplicated entries in section '"
+		    + section.getID() + "'";
+	    System.err.println(errorMsg);
+	    System.out.println(errorMsg);
 	}
-	
+
 	DicSort dicSort = new DicSort(dicFormatted);
 	/*
-	dicSort.setDicType(getDicType());
-	dicSort.setOut(this.getOut());
-	DictionaryElement formatted = dicSort.sort();
-	formatted.printXML(getOut());
-	return formatted;
-	*/
+         * dicSort.setDicType(getDicType()); dicSort.setOut(this.getOut());
+         * DictionaryElement formatted = dicSort.sort();
+         * formatted.printXML(getOut()); return formatted;
+         */
 	return dicFormatted;
     }
 
@@ -142,13 +138,13 @@ public class DicFormat {
 	DictionaryElement dic = dicReader.readDic();
 	dicReader = null;
 	setDicFormatted(dic);
-	
+
 	if (getArguments().length == 4) {
 	    if (getArguments()[3].equals("out.dix")) {
 		out = DicTools.removeExtension(getArguments()[3]);
 		out = out + "-formatted.dix";
 	    } else {
-		this.setOut(getArguments()[3]);
+		setOut(getArguments()[3]);
 	    }
 	}
     }
@@ -159,7 +155,7 @@ public class DicFormat {
          */
     private final void actionFormat() {
 	final DictionaryElement dicFormatted = format();
-	    dicFormatted.printXML(this.getOut());
+	dicFormatted.printXML(getOut());
     }
 
     /**
@@ -186,31 +182,33 @@ public class DicFormat {
     }
 
     /**
-     * @return the dicType
-     */
+         * @return the dicType
+         */
     public final int getDicType() {
-        return dicType;
+	return dicType;
     }
 
     /**
-     * @param dicType the dicType to set
-     */
+         * @param dicType
+         *                the dicType to set
+         */
     public final void setDicType(int dicType) {
-        this.dicType = dicType;
+	this.dicType = dicType;
     }
 
     /**
-     * @return the out
-     */
+         * @return the out
+         */
     public final String getOut() {
-        return out;
+	return out;
     }
 
     /**
-     * @param out the out to set
-     */
+         * @param out
+         *                the out to set
+         */
     public final void setOut(String out) {
-        this.out = out;
+	this.out = out;
     }
 
 }

@@ -51,28 +51,28 @@ import dics.elements.utils.EElementList;
 public class DictionaryReader extends XMLReader {
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement dic;
 
     /**
-     * 
-     */
+         * 
+         */
     private boolean readParadigms = true;
 
     /**
-     * 
-     * @param fileName
-     */
+         * 
+         * @param fileName
+         */
     public DictionaryReader(final String fileName) {
 	super(fileName);
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see dictools.IDicReader#loadDic()
-     */
+         * (non-Javadoc)
+         * 
+         * @see dictools.IDicReader#loadDic()
+         */
     public DictionaryElement readDic() {
 	analize();
 	final DictionaryElement dic = new DictionaryElement();
@@ -82,6 +82,12 @@ public class DictionaryReader extends XMLReader {
 	final NodeList children = root.getChildNodes();
 	for (int i = 0; i < children.getLength(); i++) {
 	    final Node child = children.item(i);
+
+	    /*
+                 * if (child instanceof Comment) { Comment comment =
+                 * (Comment)child; System.out.println("Comment: " +
+                 * comment.getTextContent()); }
+                 */
 	    if (child instanceof Element) {
 		final Element childElement = (Element) child;
 		final String childElementName = childElement.getNodeName();
@@ -101,7 +107,7 @@ public class DictionaryReader extends XMLReader {
 		    dic.addSection(sectionElement);
 		}
 
-		if (this.isReadParadigms()) {
+		if (isReadParadigms()) {
 		    if (childElementName.equals("pardefs")) {
 			final PardefsElement pardefsElement = readPardefs(childElement);
 			dic.setPardefs(pardefsElement);
@@ -109,8 +115,7 @@ public class DictionaryReader extends XMLReader {
 		}
 
 		if (childElementName.equals("xi:include")) {
-		    String fileName = this.getAttributeValue(childElement,
-			    "href");
+		    String fileName = getAttributeValue(childElement, "href");
 		    System.err.println("XInclude (" + fileName + ")");
 		    DictionaryReader reader = new DictionaryReader(fileName);
 		    DictionaryElement dic2 = reader.readDic();
@@ -127,15 +132,15 @@ public class DictionaryReader extends XMLReader {
 	}
 	root = null;
 	setDocument(null);
-	this.setDic(dic);
+	setDic(dic);
 	return dic;
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     public AlphabetElement readAlphabet(final Element e) {
 	String alphabet = "";
 	if (e.hasChildNodes()) {
@@ -154,9 +159,9 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     */
+         * 
+         * @param e
+         */
     public SdefsElement readSdefs(final Element e) {
 	final SdefsElement sdefsElement = new SdefsElement();
 
@@ -173,9 +178,9 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     */
+         * 
+         * @param e
+         */
     public SdefElement readSdef(final Element e) {
 	final String n = getAttributeValue(e, "n");
 	final String c = getAttributeValue(e, "c");
@@ -185,9 +190,9 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     */
+         * 
+         * @param e
+         */
     public PardefsElement readPardefs(final Element e) {
 	final PardefsElement pardefsElement = new PardefsElement();
 
@@ -204,9 +209,9 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     */
+         * 
+         * @param e
+         */
     public PardefElement readPardef(final Element e) {
 	final String n = getAttributeValue(e, "n");
 	final PardefElement pardefElement = new PardefElement(n);
@@ -223,10 +228,10 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     public SectionElement readSection(final Element e) {
 	final String id = getAttributeValue(e, "id");
 	final String type = getAttributeValue(e, "type");
@@ -245,7 +250,7 @@ public class DictionaryReader extends XMLReader {
 			sectionElement.addEElement(eElement);
 		    }
 		    if (childElementName.equals("xi:include")) {
-			String fileName = this.getAttributeValue(childElement,
+			String fileName = getAttributeValue(childElement,
 				"href");
 			System.err.println("XInclude (" + fileName + ")");
 			DictionaryReader reader = new DictionaryReader(fileName);
@@ -261,13 +266,13 @@ public class DictionaryReader extends XMLReader {
 	return sectionElement;
     }
 
-    //public EElementList readEElementXInclude(childElement)
+    // public EElementList readEElementXInclude(childElement)
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     @Override
     public IElement readIElement(final Element e) {
 	final IElement iElement = new IElement();
@@ -276,10 +281,10 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     @Override
     public LElement readLElement(final Element e) {
 	final LElement lElement = new LElement();
@@ -288,10 +293,10 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     @Override
     public RElement readRElement(final Element e) {
 	final RElement rElement = new RElement();
@@ -300,10 +305,10 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     @Override
     public GElement readGElement(final Element e) {
 	final GElement gElement = new GElement();
@@ -312,10 +317,10 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     @Override
     public PElement readPElement(final Element e) {
 	final PElement pElement = new PElement();
@@ -344,10 +349,10 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     @Override
     public ParElement readParElement(final Element e) {
 	final String n = getAttributeValue(e, "n");
@@ -356,10 +361,10 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     @Override
     public ReElement readReElement(final Element e) {
 	String value = "";
@@ -379,29 +384,31 @@ public class DictionaryReader extends XMLReader {
     }
 
     /**
-     * @return the dic
-     */
+         * @return the dic
+         */
     public final DictionaryElement getDic() {
 	return dic;
     }
 
     /**
-     * @param dic the dic to set
-     */
+         * @param dic
+         *                the dic to set
+         */
     public final void setDic(DictionaryElement dic) {
 	this.dic = dic;
     }
 
     /**
-     * @return the readParadigms
-     */
+         * @return the readParadigms
+         */
     public final boolean isReadParadigms() {
 	return readParadigms;
     }
 
     /**
-     * @param readParadigms the readParadigms to set
-     */
+         * @param readParadigms
+         *                the readParadigms to set
+         */
     public final void setReadParadigms(boolean readParadigms) {
 	this.readParadigms = readParadigms;
     }

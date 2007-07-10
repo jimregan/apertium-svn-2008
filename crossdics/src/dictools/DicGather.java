@@ -25,39 +25,39 @@ import dics.elements.dtd.DictionaryElement;
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class DicGather {
 
     /**
-     * 
-     */
+         * 
+         */
     private String dic;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String out;
-    
+
     /**
-     * 
-     * @param dic
-     * @param out
-     */
+         * 
+         * @param dic
+         * @param out
+         */
     public DicGather(final String dic, final String out) {
 	this.dic = dic;
 	this.out = out;
     }
-    
+
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void doGather() {
 	DictionaryReader reader = new DictionaryReader(dic);
 	DictionaryElement dic = reader.readDic();
 	dic.printXML(out);
-	
+
 	System.out.println("Dictionary in a single file: '" + out + "'");
     }
 }

@@ -23,6 +23,11 @@ package dictools.crossmodel;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import dics.elements.dtd.SElement;
+import dics.elements.utils.ElementList;
+import dics.elements.utils.SElementList;
 
 /**
  * 
@@ -53,14 +58,24 @@ public class ActionSet extends ArrayList<Action> {
 
     /**
          * 
+         */
+    private HashMap<String, ElementList> tails;
+
+    /**
+         * 
+         */
+    private CrossAction crossAction;
+
+    /**
+         * 
          * @return
          */
     public final int getNumberOfConstants() {
-	int n = 0;
-	for (Action action : this) {
-	    n += action.getNumberOfConstants();
-	}
-	return n;
+	/*
+         * int n = 0; for (Action action : this) { n +=
+         * action.getNumberOfConstants(); } return n;
+         */
+	return numberOfConstants;
     }
 
     /**
@@ -122,8 +137,77 @@ public class ActionSet extends ArrayList<Action> {
          * 
          * @return
          */
-    public final Integer getPatternLength() {
+    public final int getPatternLength() {
 	return patternLength;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public final void calculatePatternLength() {
+	// 3 because of 3 <b> tags
+	// 2 because of 2 restrictions
+	patternLength = patternLength - getNumberOfTails() - 2 - 3;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    private final Integer getNumberOfTails() {
+	int nTails = 0;
+	CrossAction cA = getCrossAction();
+
+	SElementList e1L = cA.getPattern().getAB().getSElements("L");
+	SElementList e1R = cA.getPattern().getAB().getSElements("R");
+	SElementList e2L = cA.getPattern().getBC().getSElements("L");
+	SElementList e2R = cA.getPattern().getBC().getSElements("R");
+
+	if (containsTail(e1L)) {
+	    nTails++;
+	}
+	if (containsTail(e1R)) {
+	    nTails++;
+	}
+	if (containsTail(e2L)) {
+	    nTails++;
+	}
+	if (containsTail(e2R)) {
+	    nTails++;
+	}
+
+	return new Integer(nTails);
+    }
+
+    /**
+         * 
+         * @param list
+         * @return
+         */
+    private final boolean containsTail(final SElementList list) {
+	for (SElement s : list) {
+	    if (s.getValue().equals("0")) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public final int getNumberOfRestrictions() {
+	CrossAction cA = getCrossAction();
+	int nR = 0;
+	if (cA.getPattern().getAB().hasRestriction()) {
+	    nR++;
+	}
+	if (cA.getPattern().getBC().hasRestriction()) {
+	    nR++;
+	}
+	return nR;
     }
 
     /**
@@ -132,6 +216,36 @@ public class ActionSet extends ArrayList<Action> {
          */
     public final void setPatternLength(Integer patternLength) {
 	this.patternLength = patternLength;
+    }
+
+    /**
+         * @return the tails
+         */
+    public final HashMap<String, ElementList> getTails() {
+	return tails;
+    }
+
+    /**
+         * @param tails
+         *                the tails to set
+         */
+    public final void setTails(HashMap<String, ElementList> tails) {
+	this.tails = tails;
+    }
+
+    /**
+         * @return the crossAction
+         */
+    public final CrossAction getCrossAction() {
+	return crossAction;
+    }
+
+    /**
+         * @param crossAction
+         *                the crossAction to set
+         */
+    public final void setCrossAction(CrossAction crossAction) {
+	this.crossAction = crossAction;
     }
 
 }

@@ -25,7 +25,6 @@ import java.io.IOException;
 
 import dics.elements.utils.ElementList;
 import dics.elements.utils.SElementList;
-import dics.elements.dtd.Element;
 
 /**
  * 
@@ -279,7 +278,8 @@ public class ContentElement extends Element implements Cloneable {
 	    sList = "";
 	}
 
-	final String str = "<" + tagName + ">" + v + sList + "</" + tagName + ">";
+	final String str = "<" + tagName + ">" + v + sList + "</" + tagName
+		+ ">";
 	return str;
     }
 
@@ -300,7 +300,7 @@ public class ContentElement extends Element implements Cloneable {
 	}
 
 	// final String str = "<" + tagName + ">" + "</" + tagName + ">" +
-        // sList;
+	// sList;
 	final String str = sList;
 	return str;
     }

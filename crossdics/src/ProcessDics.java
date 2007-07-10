@@ -18,8 +18,6 @@
  * 02111-1307, USA.
  */
 
-import misc.AddGender;
-import misc.AssignParadigm;
 import dictools.DicConsistent;
 import dictools.DicCross;
 import dictools.DicFormat;
@@ -122,7 +120,7 @@ public class ProcessDics {
 	if (getAction().equals("merge-bil")) {
 	    if (getArguments().length < 6) {
 		System.err
-			.println("Usage: java ProcessDics merge-morph -bilAB1 bilAb1.dix -bilAB2 bilAB2.dix -out merged.dix");
+			.println("Usage: java ProcessDics merge-bil -bilAB1 bilAb1.dix -bilAB2 bilAB2.dix -out merged.dix");
 		System.exit(-1);
 	    } else {
 		DicMerge dicMerge = new DicMerge();
@@ -186,32 +184,8 @@ public class ProcessDics {
 		System.exit(-1);
 	    } else {
 		DicGather dicGather = new DicGather(arguments[1], arguments[2]);
-		//dicGather.setArguments(arguments);
+		// dicGather.setArguments(arguments);
 		dicGather.doGather();
-	    }
-	}
-	
-	if (getAction().equals("addgender")) {
-	    if (getArguments().length != 4) {
-		System.err
-			.println("Usage: java ProcessDics addgender <morph-source> <bil> <out>");
-		System.exit(-1);
-	    } else {
-		AddGender addGender = new AddGender();
-		addGender.setArguments(arguments);
-		addGender.doAddGender();
-	    }
-	}
-
-	if (getAction().equals("assignparadigm")) {
-	    if (getArguments().length != 4) {
-		System.err
-			.println("Usage: java ProcessDics assignparadigm <morph-source> <bil> <out>");
-		System.exit(-1);
-	    } else {
-		AssignParadigm a = new AssignParadigm();
-		a.setArguments(arguments);
-		a.doAssignParadigm();
 	    }
 	}
 

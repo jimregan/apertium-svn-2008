@@ -23,6 +23,7 @@ package dics.elements.utils;
 import java.util.ArrayList;
 
 import dics.elements.dtd.Element;
+import dics.elements.dtd.SElement;
 
 /**
  * 
@@ -59,6 +60,47 @@ public class ElementList extends ArrayList<Element> implements Cloneable {
 	} catch (final Exception ex) {
 	    return null;
 	}
+    }
+
+    /**
+         * 
+         * 
+         */
+    public final void print() {
+	if (size() > 0) {
+	    for (Element e : this) {
+		String tmp = "";
+		if (e instanceof SElement) {
+		    tmp = ((SElement) e).getTemp();
+		    if (tmp == null) {
+			tmp = "";
+		    }
+		}
+		System.out.print("<" + e.getValue() + "/" + tmp + ">");
+	    }
+	    System.out.println("");
+	}
+    }
+
+    /**
+         * 
+         */
+    @Override
+    public final String toString() {
+	String str = "";
+	if (size() > 0) {
+	    for (Element e : this) {
+		String tmp = "";
+		if (e instanceof SElement) {
+		    tmp = ((SElement) e).getTemp();
+		    if (tmp == null) {
+			tmp = "";
+		    }
+		}
+		str += "<" + e.getValue() + "/" + tmp + ">";
+	    }
+	}
+	return str;
     }
 
 }
