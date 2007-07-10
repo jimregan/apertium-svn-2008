@@ -8,6 +8,12 @@
       <cat-item tags="np"/>
     </def-cat>
 
+    <def-cat n="nom_adv">
+      <cat-item tags="n"/>
+      <cat-item tags="np"/>
+      <cat-item tags="adv"/>
+    </def-cat>
+
      <def-cat n="adj">
       <cat-item tags="adj.*"/>
     </def-cat>
@@ -42,7 +48,10 @@
       <cat-item tags="pr"/>
     </def-cat>
 
-  
+  <def-cat n="ko_en">
+      <cat-item lemma="ko" tags="post"/>
+      <cat-item lemma="en" tags="post"/>
+    </def-cat>
 
     <def-cat n="sent">
       <cat-item tags="sent"/>
@@ -80,7 +89,15 @@
     
     <def-attr n="a_prep">          
       <attr-item tags="pr"/>
-    </def-attr> 
+    </def-attr>
+  
+    <def-attr n="a_adv">          
+      <attr-item tags="adv"/>
+    </def-attr>
+
+     <def-attr n="a_num">          
+      <attr-item tags="num"/>
+    </def-attr>
 
      <def-attr n="tipus_det">          
       <attr-item tags="art"/>         
@@ -252,6 +269,31 @@
 	      <lit-tag v="m"/>
 	    </let>
 	  </when>
+  </choose>
+</def-macro>
+
+  <def-macro n="nbr_n1" npar="1"><!-- asginar singular cuando el nombre va sin determinante -->
+  <choose>
+	  <when>
+	    <test>
+	      <not><!--cuando se trata de un nombre -->
+		<equal>
+		  <clip pos="1" side="tl" part="a_nom"/>
+		  <lit v=""/>
+		</equal>
+	      </not>
+	    </test>
+	    <let>
+	      <var n="nombre"/> 
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	     <let>
+	      <var n="nombre"/> 
+	      <lit v=""/>
+	    </let>
+	  </otherwise>
   </choose>
 </def-macro>
 
@@ -617,7 +659,214 @@
       </action>
  </rule>
 
+<rule comment="REGLA: N(incluye adv) + ko/ren + NOM + DET (gaurko egunkaria)">
+      <pattern>
+	<pattern-item n="nom_adv"/>
+	<pattern-item n="ko_en"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="nbr_n1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="d_n_pr_n" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="4" side="sl" part="tipus_det"/></tag>
+	      <tag><clip pos="3" side="tl" part="gen"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="4" side="tl" part="lem"/> 
+	      <clip pos="4" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="4" side="tl" part="gen"/>
+	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="gen" link-to="3"/>
+	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="lemq"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="a_adv"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <var n="nombre"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
 
+
+<rule comment="REGLA: N + ART + ko/ren + NOM + DET (emakumearen egunkaria)"> 
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+	<pattern-item n="ko_en"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="4"/>
+	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="gen_n">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="d_n_pr_d_n" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="5" side="sl" part="tipus_det"/></tag>
+	      <tag><clip pos="4" side="tl" part="gen"/></tag>
+	      <tag><clip pos="5" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="5" side="tl" part="lem"/> 
+	      <clip pos="5" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="5" side="tl" part="gen"/>
+	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu> 
+	      <clip pos="4" side="tl" part="lemh"/> 
+	      <clip pos="4" side="tl" part="a_nom"/>
+	      <clip pos="4" side="tl" part="gen" link-to="3"/>
+	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="lemq"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: NUM + DET (zortziak - las ocho. Se pone en femenino porque casi siempre es indicación horaria)">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="d_num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="tipus_det"/></tag>
+	      <tag><lit-tag v="f"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <lit-tag v="3"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: NOM + DET + ko/en NUM + DET (goizeko zortziak - las ocho de la mañana. Se pone en femenino porque casi siempre es indicación horaria)">
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+	<pattern-item n="ko_en"/>
+	<pattern-item n="num"/>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<call-macro n="gen_n">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="d_num_pr_d_n" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="5" side="sl" part="tipus_det"/></tag>
+	      <tag><lit-tag v="f"/></tag>
+	      <tag><clip pos="5" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="5" side="tl" part="lem"/> 
+	      <clip pos="5" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <lit-tag v="3"/>
+	      <clip pos="5" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="1"/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	    
+	  </chunk>
+	</out>
+      </action>
+</rule>
 
 <!--<rule comment="REGLA: POSESIVO + NOMBRE + DET (nire etxea)">
       <pattern>
