@@ -60,6 +60,9 @@
        <cat-item tags="pref"/>
        <cat-item tags="pref.*"/>
     </def-cat>
+    <def-cat n="attachable_prefix">
+       <cat-item tags="pr.atp"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -125,6 +128,11 @@
        <attr-item tags="vbhaver"/>
        <attr-item tags="vbmod"/>
        <attr-item tags="vaux"/>
+    </def-attr>
+    <def-attr n="a_atp">
+      <attr-item tags="pr.atp"/>
+      <attr-item tags="pr"/>
+      <attr-item tags="adv"/>
     </def-attr>
     <def-attr n="temps">
        <attr-item tags="pii"/>
@@ -258,6 +266,39 @@
             </out>
       </action>
     </rule>
+
+    <rule>
+      <pattern>
+	<pattern-item n="attachable_prefix"/>
+        <pattern-item n="prefix"/>
+        <pattern-item n="verbnm"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="verb">
+	        <tags>
+		  <tag><lit-tag v="V"/></tag>
+		</tags>
+                <lu>
+                  <clip pos="3" side="tl" part="lem"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <clip pos="2" side="tl" part="temps"/>
+                </lu>
+              </chunk>
+	      <b/>
+	      <chunk name="atp">
+	        <tags>
+		  <tag><lit-tag v="pr"/></tag>
+		</tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_atp"/>
+                </lu>
+	      </chunk>
+            </out>
+      </action>
+    </rule>
+
 
 
 
