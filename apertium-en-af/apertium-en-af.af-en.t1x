@@ -48,6 +48,10 @@
       <cat-item tags="cnjadv"/>
       <cat-item tags="cnjadv.*"/>
     </def-cat>
+    <def-cat n="cnjcoo">
+      <cat-item tags="cnjcoo"/>
+      <cat-item tags="cnjcoo.*"/>
+    </def-cat>
     <def-cat n="prep"> <!-- preposition -->
       <cat-item tags="pr"/>
     </def-cat>
@@ -342,6 +346,27 @@
                 <lu>
                   <clip pos="1" side="tl" part="lem"/>
     	          <clip pos="1" side="tl" part="a_prep"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: CNJCOO">
+      <pattern>
+        <pattern-item n="cnjcoo"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="cnjcoo">
+	        <tags>
+		  <tag><lit-tag v="CNJ"/></tag>
+		  <tag><lit-tag v="COO"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+    	          <clip pos="1" side="tl" part="a_cnj"/>
                 </lu>
               </chunk>
             </out>
@@ -666,7 +691,7 @@
               <clip pos="1" side="tl" part="a_det"/> 
               <clip pos="2" side="sl" part="nbr"/>
             </lu>
-            <b pos="1"/>
+            <b/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_nom"/>
@@ -681,6 +706,47 @@
         </let>
       </action>
     </rule>
+
+    <rule comment="REGLA: DET ADJ NOM">
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="det_adj_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><clip pos="2" side="sl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/> 
+              <clip pos="1" side="tl" part="a_det"/> 
+              <clip pos="2" side="sl" part="nbr"/>
+            </lu>
+            <b/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+	    </lu>
+	    <b/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: VAUX PRN">
       <pattern>
@@ -792,9 +858,9 @@
       </pattern>
       <action>
         <out>
-          <chunk name="V">
+          <chunk name="verb_participle">
 	    <tags>
-	      <tag><lit-tag v="participle"/></tag>
+	      <tag><lit-tag v="V"/></tag>
 	    </tags>
             <lu>
               <clip pos="2" side="tl" part="lem"/>
