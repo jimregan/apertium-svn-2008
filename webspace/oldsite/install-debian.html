@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for MkLinux (vers 1 September 2005), see www.w3.org" />
+
+  <title>Installing apertium on Debian</title>
+<style type="text/css">
+/*<![CDATA[*/
+ div.c1 {width: 60%; align: center;}
+/*]]>*/
+</style>
+</head>
+
+<body>
+  <div class="c1">
+    <h1>Installing apertium on Debian</h1>
+
+    <h2>Installing apertium and lttoolbox</h2>It is important to
+    install both apertium and lttoolbox packages.
+    <pre>
+root@feynman:~# apt-get install apertium lttoolbox
+</pre>
+
+    <h2>Select and install language packs</h2>Searching and
+    installing language pairs may be done in the orthodox manner.
+    <pre>
+root@feynman:~# apt-cache search apertium language pair
+apertium - Shallow-transfer machine translation engine
+apertium-es-pt - Apertium language pair: Spanish&lt;-&gt;Portuguese
+apertium-fr-ca - Apertium language pair: French&lt;-&gt;Catalan
+apertium-es-ca - Apertium language pair: Spanish&lt;-&gt;Catalan
+
+root@feynman:~# apt-get install apertium-fr-ca
+</pre>
+
+    <h2>Using apertium</h2>The language packs are installed into
+    "/usr/share/apertium-1.0/pairs/" Create a file with source
+    language text in,
+    <pre>
+spectre@feynman:~$ cat &gt; /tmp/french
+La traduction est le fait d'interpr&eacute;ter le sens d'un texte dans une langue (langue 
+source, ou langue de d&eacute;part), et de produire un texte ayant un sens et un effet &eacute;quivalents 
+sur un lecteur ayant une langue et une culture diff&eacute;rentes (langue cible, ou langue d'arriv&eacute;e).
+</pre>Use "apertium-translator" to translate the text. The basic
+format of the command is as follows (see further instructions using
+<code>apertium-translator --help</code> or <code>man
+apertium-translator</code>):
+    <pre>
+apertium-translator &lt;path to language pair data&gt; &lt;translation direction&gt; 
+</pre>So for example, to translate our text from French to Catalan,
+we can use the following command:
+    <pre>
+spectre@feynman:~$ apertium-translator /usr/share/apertium-1.0/pairs/fr-ca fr-ca &lt; /tmp/french
+La traducci&oacute; &eacute;s el fet d'interpretar el sentit d'un text en una llengua (llengua font, 
+o llengua de sortida), i de produir un text havent-hi un sentit i un efecte *&eacute;quivalents 
+sobre un lector havent-hi una llengua i una cultura diferents (llengua *cible, o llengua 
+d'arribada).
+</pre>
+
+    <h2>Common problems</h2>
+
+    <h3>Unsupported locale</h3>The following error message
+    indicates that an ISO-8859-1 compatible locale is not
+    installed.
+    <pre>
+spectre@feynman:~$ apertium-translator /usr/share/apertium-1.0/pairs/fr-ca fr-ca &lt; /tmp/french
+Warning: unsupported locale, fallback to "C"
+Warning: unsupported locale, fallback to "C"
+</pre>Currently apertium uses the ISO-8859-1 encoding. If your
+debian installation is not configured to enable this encoding, you
+can enable it by reconfiguring the "locales" package. e.g.
+    <pre>
+root@feynman:~$ dpkg-reconfigure locales
+</pre>Enable an ISO-8859-1 locale, such as "es_ES ISO-8859-1". The
+next menu will ask you to set your default locale. You can leave
+this as it is. Press "ok", and your new locales will be generated.
+Output will be like:
+    <pre>
+Generating locales (this might take a while)...
+  en_GB.ISO-8859-1... done
+  en_GB.UTF-8... done
+  es_ES.ISO-8859-1... done
+Generation complete.
+</pre>
+
+    <h3>Nonsense characters</h3>If nonsense characters appear in
+    the translation, e.g. "La traducci&oacute; &eacute;s el fet de
+    *interpr<b>&Atilde;&copy;</b>*ter ...", first check that the
+    file you are trying to translate is in the right encoding. You
+    can use "file" to check,
+    <pre>
+spectre@feynman:~$ file /tmp/french
+/tmp/french: UTF-8 Unicode text
+</pre>If a file is in UTF-8, nonsense characters can appear. In
+order to change the encoding to ISO-8859-1, the GNU "iconv" program
+can be used.
+    <pre>
+spectre@feynman:~$ iconv -f UTF-8 -t ISO_8859-1 /tmp/french &gt; /tmp/french.txt
+</pre>Run "file" again, to check:
+    <pre>
+spectre@feynman:~$ file /tmp/french.txt
+/tmp/french.txt: ISO-8859 text
+</pre>If nonsense characters still appear, check that your terminal
+is set to the correct character encoding. In Gnome Terminal, this
+is done by going to "Terminal" -&gt; "Set character encoding". Make
+sure this is set to an ISO-8859-1 compatible setting. In PuTTY you
+can do this by going to "Change settings" -&gt; "Translation" and
+make sure that it is set to "ISO-8859-1".
+  </div>
+</body>
+</html>

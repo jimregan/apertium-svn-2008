@@ -1,0 +1,1804 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 1 September 2005), see www.w3.org">
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=iso-8859-1">
+<style type="text/css">
+        BODY, P, DIV, H1, H2, H3, H4, H5, H6, ADDRESS, OL, UL, LI, TITLE,
+TD, OPTION, SELECT 
+{ 
+ font-family: Verdana 
+ }
+ BODY, P, DIV, ADDRESS, OL, UL, LI, TITLE, TD, OPTION, SELECT  
+ {  
+   font-size: 10pt; 
+     margin-top:0pt;  
+       margin-bottom:0pt;  
+       } 
+       BODY, P
+       {
+         margin-left:0pt; 
+           margin-right:0pt;
+           }
+           BODY
+           {
+             background: white;
+               margin: 6px;
+                 padding: 0px;
+                 }
+                 ul { list-style-type: square }
+                 h6 { font-size: 10pt }
+                 h5 { font-size: 11pt }
+                 h4 { font-size: 12pt }
+                 h3 { font-size: 13pt }
+                 h2 { font-size: 14pt }
+                 h1 { font-size: 16pt }
+                 blockquote { padding: 10px; border: 1px #DDDDDD dashed }
+                 a img { border: 0; }
+                 table.zeroBorder {
+                         border-width: 1px 1px 1px 1px;
+                                 border-spacing: 2px 2px;
+                                         border-style: dotted dotted dotted
+dotted;
+        border-color: gray gray gray gray;
+                border-collapse: collapse;
+                }
+                table.zeroBorder th {
+                        border-width: 1px 1px 1px 1px;
+                                padding: 1px 1px 1px 1px;
+                                        border-style: dotted dotted dotted
+dotted;
+        border-color: gray gray gray gray;
+        }
+        table.zeroBorder td {
+                border-width: 1px 1px 1px 1px;
+                        padding: 1px 1px 1px 1px;
+                                border-style: dotted dotted dotted dotted;
+                                        border-color: gray gray gray gray;
+                                        }
+                                        .dragBox {
+                                          background-color: #FFFFFF;
+                                            border: 1px solid #000000;
+                                              color: #000000;
+                                                padding: 0px;
+                                                  position: absolute;
+                                                  
+                                                  }
+                                                  .dragBar {
+                                                   background-color:
+#008080;
+  color: #ffffff;
+    font-weight: bold;
+      padding: 2px 1em 2px 1em;
+      }
+      .hiddenStyle {
+                      visibility: hidden; 
+                                      position: absolute;
+                                                      borderRight: black 1px
+solid;
+                borderLeft: black 1px solid;
+                                borderTop: black 1px solid;
+                                                borderBottom: black 1px
+solid;
+                z-Index: 1;
+                                paddingRight: 0;
+                                                paddingLeft: 0;
+                                                                paddingTop:
+0;
+                paddingBottom: 0;
+                                background: white
+                                        }
+                                        .misspell { background-image:
+url('images/misspell.gif'); background-repeat: repeat-x;
+background-position: bottom }
+@media screen {
+.pb { border-top: 1px dashed #C0C0C0; border-bottom: 1px dashed #C0C0C0 }
+.writely-comment { font-size: 8pt; color: gray; }
+.writely-comment-text { color: black; font-size: 9pt}
+}
+@media print {
+.pb { border-top: 0px; border-bottom: 0px }
+.writely-comment { display: none }
+}
+@media screen,print {
+.pb { height: 1px }
+}
+</style>
+
+  <title></title>
+<style type="text/css">
+   br.c13 {FONT-WEIGHT: normal}
+    span.c12 {FONT-WEIGHT: normal}
+     br.c11 {FONT-STYLE: italic}
+      span.c10 {FONT-STYLE: italic; BACKGROUND-COLOR: #ffffff}
+       br.c9 {BACKGROUND-COLOR: #ffff00}
+        span.c8 {FONT-WEIGHT: bold}
+         br.c7 {BACKGROUND-COLOR: #ffff66}
+          ul.c6 {BACKGROUND-COLOR: #ffffff}
+           br.c5 {BACKGROUND-COLOR: #ffffff}
+            span.c4 {BACKGROUND-COLOR: #ffff33}
+             span.c3 {BACKGROUND-COLOR: #ffff00}
+              span.c2 {BACKGROUND-COLOR: #ffffff}
+               span.c1 {FONT-STYLE: italic}
+</style>
+</head>
+
+<body>
+  <h1>Adding linguistic data to an existing language pair in
+  Apertium</h1>
+
+  <h2>Description of language-pair data currently available</h2>At
+  present Apertium has linguistic data for three language pairs:
+  Spanish-Catalan, Spanish-Galician and Spanish-Portuguese. These
+  linguistic data include mainly dictionaries (monolingual and
+  bilingual), structural transfer rules that perform grammatical
+  and other transformations between the two languages involved, and
+  lexical data for the part-of-speech tagger, which is in charge of
+  the disambiguation of the source language text.<br>
+  All these linguistic data are contained in a single directory:
+  <span class="c1">apertium-es-ca</span> <span class=
+  "c3"><span class="c2">for the</span></span>
+  Spanish-Catalan<span class="c3"><span class=
+  "c2">pair,</span></span> <span class="c1">apertium-es-gl</span>
+  <span class="c3"><span class="c2">for the</span></span>
+  Spanish-Galician pair and<span class="c1">apertium-es-pt</span>
+  <span class="c3"><span class="c2">for the</span></span>
+  Spanish-Portuguese pair. The files that you can find in these
+  directories are described next.<br>
+  <br>
+  For the Spanish&ndash;Catalan pair (<span class=
+  "c1">apertium-es-ca</span>):<br>
+  <br>
+
+  <ul>
+    <li><span class="c1">apertium-es-ca.es.dix</span> :
+    <span class="c3"><span class="c2">Spanish</span></span>
+    monolingual dictionary, containing 11,800 entries (as of 17
+    november 2005)&nbsp;</li>
+
+    <li><span class="c1">apertium-es-ca.ca.dix</span> : Catalan
+    monolingual dictionary, containing 11,800 entries.</li>
+
+    <li><span class="c1">apertium-es-ca.es-ca.dix</span> :
+    Spanish-Catalan bilingual dictionary, containing 12,800 entries
+    (correspondences Spanish-Catalan).</li>
+
+    <li><span class="c1">apertium-es-ca.trules-es-ca.xml</span> :
+    Structural transfer rules for the translation from Spanish to
+    Catalan.</li>
+
+    <li><span class="c1">apertium-es-ca.trules-ca-es.xml</span> :
+    Structural transfer rules for the translation from Catalan to
+    Spanish.</li>
+
+    <li><span class="c1">apertium-es-ca.es.tsx</span> : Tagger
+    definition file for Spanish</li>
+
+    <li><span class="c1">apertium-es-ca.ca.tsx</span> : Tagger
+    definition file for Catalan</li>
+
+    <li><span class="c1">apertium-es-ca.post-es.dix</span> :
+    Post-generation dictionary for Spanish, with 25 entries and 5
+    paradigms (applies when translating from Catalan to
+    Spanish)</li>
+
+    <li><span class="c1">apertium-es-ca.post-ca.dix</span> :
+    Post-generation dictionary for Catalan, with 16 entries and 57
+    paradigms (applies when translating from Spanish to
+    Catalan)</li>
+
+    <li>directory <span class="c1">es-tagger-data</span> : Contains
+    data needed for the Spanish tagger (corpora, etc.)<br></li>
+
+    <li>directory <span class="c1">ca-tagger-data</span> : Contains
+    data needed for the Catalan tagger (corpora, etc.)</li>
+  </ul><br>
+  For the Spanish&ndash;Galician pair (<span class=
+  "c1">apertium-es-gl</span>):<br>
+  <br>
+
+  <ul>
+    <li><span class="c1">apertium-es-gl.es.dix</span> :
+    <span class="c3"><span class="c2">Spanish</span></span>
+    monolingual dictionary, containing 9,000 entries</li>
+
+    <li><span class="c1">apertium-es-gl.gl.dix</span> : Galician
+    monolingual dictionary, containing 8,600 entries.</li>
+
+    <li><span class="c1">apertium-es-gl.es-gl.dix</span> :
+    Spanish-Galician bilingual dictionary, containing 8,500 entries
+    (correspondences Spanish-Galician).</li>
+
+    <li><span class="c1">apertium-es-gl.trules-es-gl.xml</span> :
+    Structural transfer rules for the translation from Spanish to
+    Galician.</li>
+
+    <li><span class="c1">apertium-es-gl.trules-gl-es.xml</span> :
+    Structural transfer rules for the translation from Galician to
+    Spanish.</li>
+
+    <li><span class="c1">apertium-es-gl.es.tsx</span> : Tagger
+    definition file for Spanish</li>
+
+    <li><span class="c1">apertium-es-gl.gl.tsx</span> : Tagger
+    definition file for Galician</li>
+
+    <li><span class="c1">apertium-es-gl.post-es.dix</span> :
+    Post-generation dictionary for Spanish, with 36 entries and 12
+    paradigms (applies when translating from Galician to
+    Spanish)</li>
+
+    <li><span class="c1">apertium-es-gl.post-gl.dix</span> :
+    Post-generation dictionary for Galician, with 74 entries and 48
+    paradigms (applies when translating from Spanish to
+    Galician)</li>
+
+    <li>directory <span class="c1">es-tagger-data</span> : Contains
+    data needed for the Spanish tagger<br></li>
+
+    <li>directory <span class="c1">gl-tagger-data</span> : Contains
+    data needed for the Galician tagger</li>
+  </ul><span class="c4"><br></span> For the
+  Spanish&ndash;Portuguese pair (<span class=
+  "c1">apertium-es-<span class="c2">pt</span></span><span class=
+  "c2">):</span><br class="c5">
+  <br class="c5">
+
+  <ul class="c6">
+    <li><span class="c1">apertium-es-pt.es.dix</span> : Spanish
+    monolingual dictionary, containing 9,700 entries<br></li>
+
+    <li><span class="c1">apertium-es-pt.pt.dix</span> : Portuguese
+    monolingual dictionary, containing&nbsp;9,700 entries.</li>
+
+    <li><span class="c1">apertium-es-pt.es-pt.dix</span> :
+    Spanish-Portuguese bilingual dictionary, containing 9,100
+    entries (correspondences Spanish-Portuguese).</li>
+
+    <li><span class="c1">apertium-es-pt.trules-es-pt.xml</span> :
+    Structural transfer rules for the translation from Spanish to
+    Portuguese.</li>
+
+    <li><span class="c1">apertium-es-pt.trules-pt-es.xml</span> :
+    Structural transfer rules for the translation from Portuguese
+    to Spanish.</li>
+
+    <li><span class="c1">apertium-es-pt.es.tsx</span> : Tagger
+    definition file for Spanish</li>
+
+    <li><span class="c1">apertium-es-pt.pt.tsx</span> : Tagger
+    definition file for Portuguese.</li>
+
+    <li><span class="c1">apertium-es-pt.post-es.dix</span> :
+    Post-generation dictionary for Spanish, with 25 entries and 4
+    paradigms (applies when translating from Portuguese to
+    Spanish)</li>
+
+    <li><span class="c1">apertium-es-pt.post-pt.dix</span> :
+    Post-generation dictionary for Portuguese, with 54 entries and
+    16 paradigms (applies when translating from Spanish to
+    Portuguese)</li>
+
+    <li>directory <span class="c1">es-tagger-data</span> : Contains
+    data needed for the Spanish tagger<br></li>
+
+    <li>directory <span class="c1">pt-tagger-data</span> : Contains
+    data needed for the Portuguese tagger</li>
+  </ul><span class="c4"><br></span>
+
+  <h2>Adding words to monolingual and bilingual
+  dictionaries</h2>When extending or adapting Apertium, the most
+  likely operation that will be performed will be to extend its
+  dictionaries. In fact, it will be far more common than adding
+  transfer or post-generation rules.<br>
+  <br>
+  IMPORTANT: Every time a set of modifications is made to any of
+  the dictionaries, the modules have to be recompiled. Type
+  <span class="c1">make</span> in the directory where the
+  linguistic data are saved (<span class=
+  "c1">apertium-es-ca</span><span class="c1">,
+  apertium-es-gl</span> or what may be applicable) so that the
+  system generates the new binary files.<br>
+  <br>
+  If you want to add a new word to Apertium, you need to add three
+  entries in the dictionaries. Suppose you are working with the
+  Spanish-Catalan pair. In this case, you have to add:<br>
+  <br>
+
+  <ol>
+    <li>an entry in the Spanish monolingual dictionary: so that the
+    translator can analyze ("understand") the word when it finds it
+    in a text, and generate it when translating this word into
+    Spanish.</li>
+
+    <li>an entry in the bilingual dictionary: so that you can tell
+    Apertium how to translate this word from one language to the
+    other.</li>
+
+    <li>an entry in the Catalan monolingual dictionary: so that the
+    translator can analyze ("understand") the word when it finds it
+    in a text, and generate it when translating this word into
+    Catalan.</li>
+  </ol><br>
+  <br>
+  You will need to go to the directory containing the XML
+  dictionaries (for the Spanish-Catalan pair, this is <span class=
+  "c1">apertium-es-ca</span>) <span class="c3"><span class="c2">and
+  open with a text editor or a specialized XML editor the three
+  dictionary files mentioned:</span></span> <span class=
+  "c1">apertium-es-ca.es.dix</span>, <span class=
+  "c1">apertium-es-ca.es-ca.dix</span> and <span class=
+  "c1">apertium-es-ca.ca.dix</span>. The entries you need to create
+  in these three dictionaries share a common structure.<br>
+  <br class="c7">
+  <br>
+
+  <p><span class="c8">Monolingual dictionary
+  (Spanish)</span></p>You may want, for example, to add the Spanish
+  adjective "cósmico", whose equivalent in Catalan is "còsmic". The
+  first step is to add this word to the Spanish monolingual
+  dictionary. You will see that a monolingual dictionary has
+  basically two types of data: <span class="c8">paradigms</span>
+  (in the "&lt;pardefs&gt;" section of the dictionary, each
+  paradigm inside a &lt;pardef&gt; element) and <span class=
+  "c8">word entries</span> (in the main &lt;section&gt; of the
+  dictionary, each one inside an &lt;e&gt; element). Word entries
+  consist of a lemma (that is, the word as you would find it in a
+  typical paper dictionary) plus grammatical information; paradigms
+  contain the inflection data of all lemmas in the dictionary. You
+  can search a particular word by searching the string <span class=
+  "c1">lm="word"</span> (<span class="c1">lm</span> meaning
+  <span class="c1">lemma</span>). (The element <span class=
+  "c1">lm</span> is optional and some other dictionaries may not
+  contain it.)<br>
+  Look at the word entries in the Spanish monolingual dictionary,
+  for example at the entry for the adjective "bonito". You can find
+  it by searching <span class="c1">lm="bonito"</span>:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e lm="bonito"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;bonit&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="absolut/o__adj"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<span class=
+  "c3"><span class="c2"><br>
+  <br>
+  To add a word, you will have to create an entry with the same
+  structure. The part between &lt;i&gt; and &lt;/i&gt; contains the
+  prefix of the word that is common to all inflected forms, and the
+  element &lt;par&gt; refers to the inflection paradigm of this
+  word. Therefore, this entry means that the adjective "bonito"
+  inflects like the adjective "absoluto" and has the same
+  morphological analysis: the forms <span class=
+  "c1">bonit<span class="c8">o</span>,</span> <span class=
+  "c1">bonit<span class="c8">a</span>,</span> <span class=
+  "c1">bonit<span class="c8">os</span>,</span> <span class=
+  "c1">bonit<span class="c8">as</span></span>are equivalent to the
+  forms <span class="c1">absolut<span class="c8">o</span>,</span>
+  <span class="c1">absolut<span class="c8">a</span>,</span>
+  <span class="c1">absolut<span class="c8">os</span>,</span>
+  <span class="c1">absolut<span class="c8">as</span></span> and
+  have the</span></span> <span class="c3"><span class=
+  "c2">morphological</span></span> <span class="c3"><span class=
+  "c2">analysis <span class="c1">adj m sg</span>, <span class=
+  "c1">adj f sg</span>, <span class="c1">adj m pl</span> and
+  <span class="c1">adj f pl</span> respectively.<br>
+  Now, you have to decide which is the lexical category of the word
+  you want to add. The word "cósmico" is an <span class=
+  "c8">adjective</span>, like "bonito". Next, you have to find the
+  appropriate paradigm for this adjective. Is it the same as the
+  one for "bonito" and "absoluto"? Can you say <span class=
+  "c1">cósmic<span class="c8">o</span>,</span> <span class=
+  "c1">cósmic<span class="c8">a</span>,</span> <span class=
+  "c1">cósmic<span class="c8">os</span>,</span> <span class=
+  "c1">cósmic<span class="c8">as</span>?</span></span></span>
+  <span class="c3"><span class="c2">The answer is yes,
+  and,</span></span><span class="c3"><span class="c2">with all this
+  information, you can now create the correct
+  entry:<br></span></span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e lm="cósmico"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;cósmic&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="absolut/o__adj"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <span class="c3"><span class="c2"><br></span></span>If the word
+  you want to add has a different paradigm, you have to find it in
+  the dictionary and assign it to the entry.&nbsp; You have two
+  ways to find the appropriate paradigm: looking in the
+  &lt;pardefs&gt; section of the dictionary, where all the
+  paradigms are defined inside a &lt;pardef&gt; element, or finding
+  another word that you think may already exist in the dictionary
+  and that has the same inflection paradigm as the one to be added.
+  For example, if you want to add the word "genoma", you need to
+  find an appropriate paradigm for a <span class="c8">noun</span>
+  whose gender is masculine and forms the plural with the addition
+  of an <span class="c8">-s</span>. This will be the paradigm
+  "abismo__n" in our present dictionaries. Therefore, the entry for
+  this new word would be:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; &lt;e lm="genoma"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;genoma&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="abismo__n"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  <br>
+  In exceptional cases you will need to create a new paradigm for a
+  certain word. You can look at the structure of other paradigms
+  and create one accordingly. For a more detailed description of
+  paradigms and word entries in the dictionaries, refer to section
+  <span class="c2">3.1.2</span> of the system documentation (at
+  present only in Spanish).<span class="c3"><br></span><br>
+  <br>
+  <span class="c8">Monolingual dictionary (Catalan)</span><br>
+  Once you have added the word to one monolingual dictionary, you
+  have to do the same to the other monolingual dictionary of the
+  translation pair (in our example, the Catalan monolingual
+  dictionary) using the same structure. The result would
+  be:<br class="c9">
+  <span class="c3"><br>
+  <span class="c2">&nbsp;&nbsp;&nbsp; &lt;e
+  lm="còsmic"&gt;</span></span><br class="c5">
+  <span class="c2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;còsmi&lt;/i&gt;</span><br class="c5">
+  <span class="c2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="acadèmi/c__adj"/&gt;</span><br class="c5">
+  <span class="c2">&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br></span> <span class="c8">Monolingual dictionary
+  (Galician)</span><br>
+  In the case you are trying to improve the XML dictionaries for
+  the Spanish-Galician pair, you will need to go to the directory
+  <span class="c1">apertium-es-gl</span> <span class=
+  "c3"><span class="c2">and open with a text editor or a
+  specialized XML editor the three dictionary files</span></span>
+  <span class="c1">apertium-es-gl.es.dix</span>, <span class=
+  "c1">apertium-es-gl.es-gl.dix</span> and <span class=
+  "c1">apertium-es-gl.gl.dix</span>. In that case, once you have
+  added the new Spanish word <span class="c3"><span class=
+  "c2">"genoma"</span></span> to the Spanish monolingual dictionary
+  (<span class="c1">apertium-es-gl.es.dix</span>), you have to add
+  the equivalent Galician word "xenoma" to the Galician monolingual
+  dictionary (<span class="c1">apertium-es-gl.gl.dix</span>), that
+  is:<br class="c9">
+  <span class="c3"><br>
+  <span class="c2">&nbsp;&nbsp;&nbsp; &lt;e
+  lm="xenoma"&gt;</span></span><br class="c5">
+  <span class="c2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;xenoma&lt;/i&gt;</span><br class="c5">
+  <span class="c2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="Xulio__n"/&gt;</span><br class="c5">
+  <span class="c2">&nbsp;&nbsp;&nbsp; &lt;/e&gt;</span><br class=
+  "c5">
+  <br>
+  <span class="c8">Bilingual dictionary</span><br>
+  The last step is to add the translation to the bilingual
+  dictionary.<br>
+  A bilingual dictionary does not <span class="c2">usually</span>
+  have paradigms, only lemmas. An entry contains only the lemma in
+  both languages and the first grammatical symbol (the lexical
+  category) of each one. Entries have a left side (&lt;l&gt;) and a
+  right side (&lt;r&gt;), and each language has always to be in the
+  same position: in our system, it has been agreed that Spanish
+  occupies the left side, and Catalan, Galician and Portuguese the
+  right side. Once the "side" of each language has been agreed in a
+  system, it has to be observed all through the dictionaries so
+  that the translation works.<br>
+  With the addition of the lemma of both words, the system will
+  translate all their inflected forms (the grammatical symbols are
+  copied from the source language word to the target language
+  word). This will only work if the source language word and the
+  target language word are grammatically equivalent, that is, if
+  they share exactly the same <span class="c3"><span class=
+  "c2">morphological</span></span> symbols <span class="c2">for all
+  of their inflected forms</span>. This is the case with our
+  example; therefore, the entry you have to add to the bilingual
+  dictionary is:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;e&gt;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;cósmico&lt;s n="adj"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;còsmic&lt;s n="adj"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  This entry will translate all the inflected forms, that is,
+  <span class="c1">adj m sg</span>, <span class="c1">adj f
+  sg</span>, <span class="c1">adj m pl</span> and <span class=
+  "c1">adj f pl.</span> It works for the translation in both
+  directions: from Spanish to Catalan and from Catalan to
+  Spanish.<br>
+  <br>
+  In the case of the Spanish-Galician pair, the following bilingual
+  entry in the Spanish-Galician bilingual dictionary (<span class=
+  "c1">apertium-es-gl.es-gl</span>) will translate all the
+  inflected forms for the equivalent words genoma/xenoma in both
+  directions, that is, from Spanish to Galician and from Galician
+  to Spanish:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;e&gt;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;genoma&lt;s n="n"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;xenoma&lt;s n="n"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  What to do if the word pair is not equivalent grammatically
+  (their grammatical symbols are not exactly the same)? In that
+  case, you need to specify all the grammatical symbols (in the
+  same order as they are specified in the monolingual dictionaries)
+  until you reach the symbol that differs between the source
+  language word and the target language word. For example, the
+  Spanish noun "limón" has masculine gender and its equivalent in
+  Catalan, "llimona", has feminine gender. The entry in the
+  bilingual dictionary must be as follows:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;limón&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;llimona&lt;s n="n"/&gt;&lt;s n="f"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  A more difficult problem arises when two words have different
+  grammatical symbols and the grammatical information of the source
+  language word is not enough to determine the gender (masculine or
+  feminine) or the number (singular or plural) of the target
+  language word. Take for example the Spanish adjective
+  "canadiense". Its gender is (masculine-feminine) since it is
+  invariable in gender, that is, it can go both with masculine and
+  feminine nouns (<span class="c1">hombre canadiense, mujer
+  canadiense</span>). In Catalan, on the other hand, the adjective
+  has a different inflection for the masculine and the feminine
+  (<span class="c1">home canadenc</span>, <span class="c1">dona
+  canadenca</span>). Therefore, when translating from Spanish to
+  Catalan it is not possible to know, without looking at the
+  accompanying noun, whether the Spanish adjective (<span class=
+  "c1">mf</span>) has to be translated as a feminine or a masculine
+  adjective in Catalan. In that case, the symbol "GD" (for "gender
+  to be determined") is used instead of the gender symbol. The
+  word's gender will be determined by the structural transfer
+  module, by means of a transfer rule (a rule that detects the
+  gender of the preceding noun in this particular case).<br>
+  Therefore, "GD" must be used only when translating from Spanish
+  to Catalan, but not when translating from Catalan to Spanish, as
+  in Spanish the gender will always be <span class="c1">mf</span>
+  regardless of the gender of the original word.<br>
+  In the bilingual dictionary you will need to add, in this case,
+  more than one entry with direction indications, as you must
+  specify in which translation direction the gender remains
+  undetermined. The entries for this adjective should be as
+  follows:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;e r="LR"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;canadiense&lt;s n="adj"/&gt;&lt;s
+  n="mf"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;canadenc&lt;s n="adj"/&gt;&lt;s
+  n="GD"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e r="RL"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;canadiense&lt;s n="adj"/&gt;&lt;s
+  n="mf"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;canadenc&lt;s n="adj"/&gt;&lt;s n="f"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e r="RL"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;canadiense&lt;s n="adj"/&gt;&lt;s
+  n="mf"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;canadenc&lt;s n="adj"/&gt;&lt;s n="m"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  "LR" means "left to right", and "RL", "right to left". Since
+  Spanish is on the left and Catalan on the right, the adjective
+  will be "GD" only when translating from Spanish to Catalan
+  ("LR"). For the translation "RL" you need to create two entries,
+  one for the adjective in feminine and another one for the
+  adjective in masculine.<br>
+  The same principle applies when it is not possible to determine
+  the number (singular or plural) of the target word for the same
+  reasons mentioned above. For example, the Spanish noun
+  "rascacielos" (<span class="c1">skyscraper</span>) is invariable
+  in number, that is, it can be singular as well as plural
+  (<span class="c1">un rascacielos, dos rascacielos</span>). In
+  Catalan, on the other hand, the noun has a different inflection
+  for the singular and for the plural (<span class="c1">un
+  gratacel, dos gratacels</span>). In this case the symbol used is
+  "ND" ("number to be determined") and the entries should be like
+  this:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e r="LR"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;rascacielos&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;s
+  n="sp"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;gratacel&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;s
+  n="ND"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e r="RL"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;rascacielos&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;s
+  n="sp"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;gratacel&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;s
+  n="pl"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e r="RL"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;rascacielos&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;s
+  n="sp"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;gratacel&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;s
+  n="sg"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  For a more detailed description of this kind of entries, refer to
+  section <span class="c2">3.1.2</span>.4.2 of the system
+  documentation (at present only in Spanish).<br>
+  <span class="c3"><br></span>
+
+  <h3>Adding direction restrictions</h3>In the previous example we
+  have already seen the use of direction restrictions for entries
+  with undetermined gender or number ("GD" or "ND"). Restrictions
+  can also be used in other cases.<br>
+  It is important to note that the current version of Apertium can
+  give only a single equivalent for each source-language lexical
+  form (a lexical form is the lemma plus its grammatical
+  information), that is, no word-sense disambiguation is performed.
+  [Note: The system performs only part-of-speech disambiguation for
+  homograph words, that is, for ambiguous words that can be
+  analyzed as more than one lexical form, like <span class=
+  "c1">vino</span> in Spanish, that can mean both "wine" and
+  "he/she came". This type of disambiguation is performed by the
+  tagger.] When a lemma can be translated in two or more different
+  ways, one has to be chosen (the most general, the most frequent,
+  etc.).&nbsp; You can tell Apertium that a certain word has to be
+  understood (analyzed) but not generated, as it is not the
+  translation of any source-language lemma.<br>
+  <br>
+  Let's see this with an example. The Spanish noun "muñeca" can be
+  translated in two different ways in Catalan depending on its
+  meaning: "canell" (wrist) or "nina" (doll). The context decides
+  which translation is the correct one, but in its present state
+  Apertium can not make such a decision (but see below the section
+  on multiword units for ways to circumvent this problem).
+  Therefore, you have to decide which word you want as an
+  equivalent when translating from Spanish to Catalan. From Catalan
+  to Spanish, both words can be translated as "muñeca" without any
+  problem. You have to specify all these circumstances in the
+  dictionary entries using direction restrictions ("LR" meaning
+  "left to right", that is, Spanish-Catalan, and "RL" meaning
+  "right to left", that is, Catalan-Spanish). If you decide to
+  translate "muñeca" as "canell" in all cases, the entries in the
+  bilingual dictionary shall be:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;muñeca&lt;s n="n"/&gt;&lt;s n="f"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;canell&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e r="RL"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;muñeca&lt;s n="n"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;nina&lt;s n="n"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  <br>
+  This means that translation directions will be:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; muñeca --&gt; canell<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; muñeca &lt;-- canell<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; muñeca &lt;-- nina<br>
+  <br>
+  &nbsp;(Note that that there is also a gender change in the case
+  of "muñeca" (feminine) and "canell" (masculine))<br>
+  <br>
+  It should be emphasized that a lemma can not have two
+  translations in the target language, because the system would
+  give an error when translating that lemma (see the section
+  "Detecting errors" below to see how to find and correct these and
+  other types of errors). When a word can be translated in two
+  different ways in the target language in all contexts, you need
+  to choose one as the translation equivalent and leave the other
+  one as a lemma that can be analyzed but not generated, using
+  direction restrictions like in the previous example. For example,
+  the Catalan lemmas "mot" and "paraula" can be both translated
+  into Spanish as "palabra" (<span class="c1">word</span>) and the
+  entry in the bilingual dictionary should look like this:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;palabra&lt;s n="n"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;paraula&lt;s n="n"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e r="RL"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;palabra&lt;s n="n"/&gt;&lt;s n="f"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;mot&lt;s n="n"/&gt;&lt;s n="m"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  Therefore, for this lemmas the translation directions will
+  be:<br>
+  <br>
+  palabra --&gt; paraula<br>
+  palabra &lt;-- paraula<br>
+  palabra &lt;-- mot<br>
+  <br>
+  <span class="c4"><br>
+  <span class="c2">One may have to specify restrictions regarding
+  translation direction also in monolingual dictionaries. For
+  example, both Spanish forms</span> <span class=
+  "c10">cantaran</span><span class="c2">or</span> <span class=
+  "c10">cantasen</span><span class="c2">should be analyzed
+  as</span> <span class="c10">cantar,</span><span class="c2">verb,
+  subjunctive imperfect, 3rd person plural, but when generating
+  Spanish text, one has to decide which one will be generated.
+  Monolingual dictionaries are read in two directions depending on
+  its purpose: for the analysis, the reading direction is left to
+  right; for the generation, right to left. Therefore, a word that
+  must be analyzed but not generated must have the restriction
+  "LR", and a word that must be generated but not analyzed must
+  have the restriction "RL".<br>
+  The case of</span></span> <span class="c4"><span class=
+  "c10">cantaran</span><span class="c2">or</span> <span class=
+  "c10">cantasen</span></span> <span class="c4"><span class=
+  "c2">must have already been taken care of in inflection paradigms
+  and it is unlikely to be a problem for most people extending a
+  dictionary. In some other cases it can be necessary to introduce
+  a restriction in the word entries of monolingual
+  dictionaries.</span></span><br>
+
+  <h3>Adding multiwords</h3>It is possible to create entries
+  consisting of two ore more words, if these words are considered
+  to build a single "translation unit".<br>
+  These "multiword units" can also be useful when it comes to
+  select the correct equivalent for a word inside a fixed
+  expression. For example, the Spanish word "dirección" may be
+  translated into two Catalan words: "direcció" (direction,
+  management, directorate, steering, etc.) and "adreça" (address);
+  including, for example, frequent multiword units such as
+  "dirección general" --&gt; "direcció general" (general
+  directorate) and "dirección postal" --&gt; "adreça postal"
+  (postal address) may help get improved translations in some
+  situations.<br>
+  <br>
+  Multiword units can be classified basically into two categories:
+  multiwords with inner inflection and multiwords without inner
+  inflection.<br>
+  <br>
+  <span class="c8">Multiwords without inner inflection</span> are
+  just like the normal one-word entries, with the only difference
+  that you need to insert the element &lt;b/&gt; (which represents
+  a blank) between the individual words that make up the unit.
+  Therefore, if you want to add, for example, the Spanish multiword
+  "hoy en día" (<span class="c1">nowadays</span>), whose equivalent
+  in Catalan is "avui dia", the entries you need to add to the
+  different dictionaries are:<br>
+  <br>
+
+  <ul>
+    <li>Spanish monolingual dictionary:</li>
+  </ul><br>
+  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &lt;e lm="hoy en
+  día"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+  &lt;i&gt;hoy&lt;b/&gt;en&lt;b/&gt;día&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &lt;par
+  n="ahora__adv"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/e&gt;<br>
+  <br>
+
+  <ul>
+    <li>Catalan monolingual dictionary:</li>
+  </ul><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e
+  lm="avui dia"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  &lt;i&gt;avui&lt;b/&gt;dia&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;par n="ahir__adv"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+
+  <ul>
+    <li>Spanish-Catalan bilingual dictionary:</li>
+  </ul><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp; &lt;l&gt;hoy&lt;b/&gt;en&lt;b/&gt;día&lt;s
+  n="adv"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp; &lt;r&gt;avui&lt;b/&gt;dia&lt;s n="adv"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+  &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  <br>
+  For Spanish-Galician pair, if you want to add, for example, the
+  Spanish multiword "manga por hombro" (<span class=
+  "c1">disarranged</span>), whose equivalent in Galician is "sen
+  xeito nin modo", the entries you need to add are:<br>
+  <br>
+
+  <ul>
+    <li>Spanish monolingual dictionary:</li>
+  </ul><br>
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &lt;e lm="manga por
+  hombro"&gt;<br>
+  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  &lt;i&gt;manga&lt;b/&gt;por&lt;b/&gt;hombro&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="abajo__adv"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/e&gt;<br>
+  <br>
+
+  <ul>
+    <li>Galician monolingual dictionary:</li>
+  </ul><br>
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &lt;e lm="sen xeito nin
+  modo"&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;sen&lt;b/&gt;xeito&lt;b/&gt;nin&lt;b/&gt;modo&lt;/i&gt;<br>
+
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="Deo_gratias__adv"/&gt;<br>
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+
+  <ul>
+    <li>Spanish-Galician bilingual dictionary:</li>
+  </ul>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;e&gt;<br>
+  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+  &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+  &nbsp;&nbsp; &lt;l&gt;manga&lt;b/&gt;por&lt;b/&gt;hombro&lt;s
+  n="adv"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  &nbsp;
+  &lt;r&gt;sen&lt;b/&gt;xeito&lt;b/&gt;nin&lt;b/&gt;modo&lt;s
+  n="adv"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  &lt;/p&gt;<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/e&gt;<br>
+  <br>
+  <br>
+  <span class="c8">Brief introduction to paradigms</span><br>
+  <br>
+  The paradigms of the previous examples, as adverbs do not
+  inflect, contain only the grammatical symbol of the lexical form,
+  as you see in this example:<br>
+  &nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;pardef n="ahora__adv"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;l/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;&lt;s n="adv"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/e&gt;<br>
+  &nbsp;&nbsp;&nbsp; &lt;/pardef&gt;<br>
+  <br>
+  &nbsp; Paradigms are build like a lexical entry. We have seen so
+  far lexical entries where the common part of the lemma is put
+  between &lt;i&gt; &lt;/i&gt;:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e lm="cósmico"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;cósmic&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="absolut/o__adj"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  But you can also express the same with a pair of strings: a left
+  string &lt;l&gt; and a right string &lt;r&gt; inside a &lt;p&gt;
+  element:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;e lm="cósmico"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+  &nbsp;&nbsp; &lt;l&gt;cósmic&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;cósmic&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="absolut/o__adj"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  These two entries are equivalent. The use of the &lt;i&gt;
+  element helps get more simple and compact entries, and you can
+  use it when the left side and the right side of the string pair
+  are identical. As has been explained before, monolingual
+  dictionaries are read LR for the analysis of a text and RL for
+  the generation. Therefore, when there is some difference between
+  the analysed string and the generated string (not very usual) the
+  entry can not be written using the &lt;i&gt; element.<br>
+  In paradigms, the left and right strings are never identical,
+  since the right side must contain the grammatical symbols that
+  will go through all the modules of the system.<br>
+  <br>
+  <span class="c8">Multiwords with inner inflection</span> consist
+  of a word that can inflect (typically a verb) and an invariable
+  element. For these entries you need to specify the inflection
+  paradigm just after the word that inflects. The invariable part
+  must be marked with the element &lt;g&gt; in the right side. The
+  blanks between words are indicated, like in the previous case,
+  with the element &lt;b/&gt;. Look at the following example for
+  the Spanish multiword "echar de menos" (<span class="c1">to
+  miss</span>), translated into Catalan as "trobar a faltar":<br>
+  <br>
+  Spanish monolingual dictionary:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;e lm="echar de menos"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;ech&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;par n="aspir/ar__vblex"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;&lt;b/&gt;de&lt;b/&gt;menos&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;&lt;g&gt;&lt;b/&gt;de&lt;b/&gt;menos&lt;/g&gt;&lt;/r&gt;<br>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/e&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;<br>
+  <br>
+  Catalan monolingual dictionary:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e lm="trobar a faltar"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;trob&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;par n="abander/ar__vblex"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;&lt;b/&gt;a&lt;b/&gt;faltar&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;&lt;g&gt;&lt;b/&gt;a&lt;b/&gt;faltar&lt;/g&gt;&lt;/r&gt;<br>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  Spanish-Catalan bilingual dictionary:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; &lt;e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;echar&lt;g&gt;&lt;b/&gt;de&lt;b/&gt;menos&lt;/g&gt;&lt;s
+  n="vblex"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;trobar&lt;g&gt;&lt;b/&gt;a&lt;b/&gt;faltar&lt;/g&gt;&lt;s
+  n="vblex"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  Note that the grammatical symbol is appended at the end, after
+  the group marked with the &lt;g&gt;.<br>
+  It can be the case that a lemma is a multiword in one language
+  and a single word in the other language. In that case, in the
+  bilingual dictionary, the multiword will contain the &lt;g&gt;
+  element and the single word will not. In the monolingual
+  dictionaries, each entry will be created according to its type.
+  Look at the following example for the Spanish multiword "darse
+  cuenta" (<span class="c1">to realize</span>), translated into
+  Catalan as the verb "adonar-se":<br>
+  <br>
+  Spanish monolingual dictionary:<br>
+  &nbsp;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp; &lt;e lm="darse cuenta"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;d&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;par n="d/ar__vblex"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;&lt;b/&gt;cuenta&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;r&gt;&lt;g&gt;&lt;b/&gt;cuenta&lt;/g&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<br>
+  Catalan monolingual dictionary:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;e lm="adonar-se"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;i&gt;adon&lt;/i&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;par
+  n="abander/ar__vblex"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  Spanish-Catalan bilingual dictionary:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; &lt;e&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;l&gt;dar&lt;g&gt;&lt;b/&gt;cuenta&lt;/g&gt;&lt;s
+  n="vblex"/&gt;&lt;/l&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;r&gt;adonar&lt;s
+  n="vblex"/&gt;&lt;/r&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+  &nbsp;&nbsp;&nbsp; &lt;/e&gt;<br>
+  <br>
+  Note that the enclitic pronouns (such as "-se") after both the
+  Spanish and Catalan verb forms need not be specified and will be
+  taken care of by structural transfer rules; the correct
+  positioning of clitics is one of the main reasons for using the
+  &lt;g&gt;... &lt;/g&gt; labels around the invariable part of
+  multi-word verbs.<br>
+  <br>
+  The same principles and actions described for basic entries
+  (gender and number change, direction restrictions, etc.) apply to
+  all kinds of multiwords.<br>
+  For a more detailed description of multiword units, refer to
+  section 3.1.2.5 of the system documentation (at present only in
+  Spanish).<br>
+
+  <h3>Consider contributing your improved lexical data</h3>If you
+  have successfully added general-purpose lexical data to any of
+  the Apertium language pairs, please consider contributing it to
+  the project so that we can offer a better toolbox to the
+  community. You can e-mail your data (in three XML files, one for
+  each monolingual dictionary and another one for the bilingual
+  dictionary) to the following addresses:<br>
+
+  <div>
+    <table border="0" cellpadding="3" cellspacing="0" width="100%"
+    summary="Contact addresses">
+      <tbody>
+        <tr>
+          <td>Spanish-Catalan data<br></td>
+
+          <td>Mireia Ginestí: mginesti [at] dlsi [dot] ua [dot]
+          es<br></td>
+        </tr>
+
+        <tr>
+          <td>Spanish-Portuguese data<br></td>
+
+          <td>Carme Armentano: carmentano [at] dlsi [dot] ua [dot]
+          es<br></td>
+        </tr>
+
+        <tr>
+          <td>Spanish-Galician data<br></td>
+
+          <td>Xavier Gómez-Guinovart: xgg [at] uvigo [dot] es</td>
+        </tr>
+      </tbody>
+    </table>
+  </div><br>
+  If you believe you are going to contribute more heavily to the
+  project, you can join the development team through
+  www.sourceforge.net. If you do not have a sourceforge account,
+  please create one; then write to Mikel L. Forcada (mlf [at] ua
+  [dot] es) or Sergio Ortiz (sortiz [at] dlsi [dot] ua [dot] es) or
+  to Xavier Gómez Guinovart if you are interested in the
+  Spanish-Galician language pair, explaining briefly your
+  motivations and background to join the project. The usual way to
+  contribute is to use CVS; as a project member, you will be able
+  to commit your changes to dictionaries directly.<br>
+  <br>
+  The addition of simple lexical contributions has recently been
+  made simpler by means of web forms at <a href=
+  "http://xixona.dlsi.ua.es/prototype/webform/">http://xixona.dlsi.ua.es/prototype/webform/</a>,
+  so that contributors do not have to deal directly with XML.<br>
+  <br>
+  You should be aware that the data you contribute to the project,
+  once added, will be freely distributed under the current license
+  (GNU General Public License or Creative Commons 2.5
+  attribution-sharealike-noncommercial, as indicated). Make sure
+  the data you contribute is not affected by any kind of license
+  which may be incompatible with the licenses used in this project.
+  No kind of agreement or contract is created between you and the
+  developers. If you have any doubt, or you plan to make a massive
+  contribution, contact Mikel L. Forcada.
+
+  <h2>Adding structural transfer (grammar) rules</h2>Structural
+  transfer rules carry out transformations to the disambiguated
+  text, which are needed because of grammatical, syntactical and
+  lexical divergences between the two languages involved (gender
+  and number changes to ensure agreement in the target language,
+  word reorderings, changes in prepositions, etc.). The rules
+  detect patterns (sequences) of source text lexical forms and
+  apply to them the corresponding transformations. The module
+  detects the patterns in a left-to-right, longest-match way; for
+  example, the phrase "the big cat" will be detected and processed
+  by the rule for <span class="c1">determiner - adjective -
+  noun</span> and not by the rule for <span class="c1">determiner -
+  adjective</span>, since the first pattern is longer. If two
+  patterns have the same length, the rule that applies is the one
+  defined in the first place.<br>
+  <br>
+  The structural transfer module (generated from the structural
+  transfer rules file) calls the lexical transfer module (generated
+  from the bilingual dictionary) all through the process to
+  determine the target language equivalents of the source language
+  lexical forms.<br>
+  <br>
+  The structural transfer rules are contained in a XML file, one
+  for each translation direction (for example, for the translation
+  from Spanish to Catalan, the file is <span class=
+  "c1">apertium-es-ca.trules-es-ca.xml).</span> You need to edit
+  this file if you want to add or change transfer rules.<br>
+  <br>
+  Rules have a <span class="c8">pattern</span> and an <span class=
+  "c8">action</span> part. The pattern specifies which sequences of
+  lexical forms have to be detected and processed. The action
+  describes the verifications and transformations that need to be
+  done on its constituents. Usual transformation operations (such
+  as gender and number agreement) are defined inside a
+  macroinstruction which is called inside the rule. At the end of
+  the action part of the rule, the resulting lexical forms in the
+  target language are sent out so that they are processed by the
+  next modules in the translation system.<br>
+  <br>
+  A transfer rules file contains four sections with definitions of
+  elements used in the rules, and a fifth section where the actual
+  rules are defined. The sections are the following:<br>
+  <br>
+
+  <ul>
+    <li>&lt;section-def-cats&gt;: This section contains the
+    definition of the categories which are to be used in the rule
+    patterns (that is, the type of lexical forms that will be
+    detected by a certain rule). For the rule presented below, the
+    categories "det" and "nom" (determiner and noun) need to be
+    defined here. Categories are defined specifying the grammatical
+    symbols that the lexical forms have. An asterisk indicates that
+    one or more grammatical symbols follow the ones specified. The
+    following is the definition of the category "det", which groups
+    determiners and predeterminers in the same category since they
+    play the same role for transfer purposes:</li>
+  </ul>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;def-cat
+  n="det"&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;cat-item tags="det.*"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;cat-item tags="predet.*"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/def-cat&gt;<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; It is also possible
+  to define as a category&nbsp;a certain lemma, like the following
+  for the preposition "en":<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;def-cat n="en"&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  &nbsp; &nbsp; &nbsp; &lt;cat-item lemma="en" tags="pr"/&gt;<br>
+  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/def-cat&gt;<br>
+  <br>
+
+  <ul>
+    <li>&lt;section-def-attrs&gt;: This section contains the
+    definition of the attributes that will be used inside of the
+    rules, in the action part. You need attributes for all the
+    categories defined in the previous section, if they are to be
+    used in the action part of the rule (to make verifications on
+    them or to send them out at the end of the rule), as well as
+    for other attributes needed in the rule (such as gender or
+    number). Attributes have to be defined using their
+    corresponding grammatical symbols and can not have asterisks;
+    its name must be unique. The following are the definitions for
+    the attributes "a_det" (for determiners) and "gen"
+    (gender):</li>
+  </ul>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;def-attr
+  n="a_det"&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;attr-item tags="det.def"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp; &lt;attr-item tags="det.ind"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;attr-item tags="det.dem"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;attr-item tags="det.pos"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;attr-item tags="predet"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/def-attr&gt;<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;def-attr
+  n="gen"&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;attr-item tags="m"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp; &lt;attr-item tags="f"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;attr-item tags="mf"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;attr-item tags="nt"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;attr-item tags="GD"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/def-attr&gt;<br>
+  <br>
+
+  <ul>
+    <li>&lt;section-def-vars&gt; : This section contains the
+    definition of the variables used in the rules.<br></li>
+  </ul>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;def-var n="interrogativa"/&gt;<br>
+  <br>
+
+  <ul>
+    <li>&lt;section-def-macros&gt; : Here the macroinstructions are
+    defined, which contain sequences of code that are frequently
+    used in the rules; this way, linguists do not need to write the
+    same actions repeatedly. There are, for example,
+    macroinstructions for gender and number agreement
+    operations.</li>
+  </ul><br>
+
+  <ul>
+    <li>&lt;section-rules&gt; : This is the section where the
+    structural transfer rules are written.<br></li>
+  </ul><br>
+  <br>
+  The following is an example of a rule which detects the sequence
+  <span class="c1">determiner -- noun</span>:<br>
+  <br>
+  &lt;rule&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pattern&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &lt;pattern-item
+  n="det"/&gt;<br>
+  &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pattern-item
+  n="nom"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/pattern&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;call-macro n="f_concord2"&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;with-param pos="2"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;with-param pos="1"/&gt;<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/call-macro&gt;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;out&gt;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;lu&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="whole"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/lu&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;b
+  pos="1"/&gt;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;lu&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="2" side="tl" part="whole"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/lu&gt;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/out&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+  &lt;/rule&gt;<br>
+  <br>
+  Part of the action performed on this pattern is specified inside
+  the macroinstruction "f_concord2", which is defined in the
+  &lt;section-def-macros&gt;. It performs gender and number
+  agreement operations: if there is a gender or number change
+  between the source language and the target language (in the
+  noun), the determiner changes its gender or number accordingly;
+  furthermore, if gender or number are undetermined ("GD" or "ND",
+  as explained in the previous section "Adding words to monolingual
+  and bilingual dictionaries"), the noun receives the correct
+  gender or number values from the preceding determiner. In the
+  Apertium es-ca, es-gl and es-pt systems, there are agreement
+  macroinstructions defined for one, two, three or four lexical
+  units (f_concord1, f_concord2, f_concord3, f_concord4). When
+  calling the macroinstructions in a rule, it must be specified
+  which is the main lexical unit (the one which most heavily
+  determines the gender or number of the other lexical units) and
+  which other lexical units of the pattern have to be included in
+  the agreement operations, in order of importance. This is done
+  with the &lt;with-param pos=""/&gt; element. In the previous
+  rule, the main lexical unit is the noun (position "2" in the
+  pattern) and the second one is the determiner (position "1" in
+  the pattern).<br>
+  <br>
+  After the pertinent actions , the resulting lexical forms are
+  sent out, inside the &lt;out&gt; element. Each lexical unit is
+  defined with a &lt;clip&gt;. Its attributes mean the
+  following:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - pos: refers to the position of
+  the lexical form in the pattern. "1" is the first lexical form
+  (the determiner) and "2" the second one (the noun).<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - side: indicates if the lexical
+  form is in the source language ("sl") or in the target language
+  ("tl"). Of course, words are sent out always in the target
+  language; source language lexical forms may be needed inside of a
+  rule, when testing its attributes or characteristics.<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - part: indicates which part of
+  the lexical form is referred to in the 'clip'. You can use some
+  predefined values:<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -whole: the
+  whole lexical form (lemma and grammatical symbols). Used only
+  when sending out the lexical unit (inside an &lt;out&gt;
+  element).<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -lem: the
+  lemma of the lexical unit<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -lemh: the
+  head of the lemma of a multiword with inner inflection<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -lemq: the
+  queue of a lemma of a multiword with inner inflection<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Appart from
+  these predefined values, you can use any of the attributes
+  defined in &lt;section-def-attrs&gt; (for example "gen" or
+  "a_det").<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; The values "lemh" and
+  "lemq" are used when sending out multiwords with inner inflection
+  (see the section "Adding multiwords") in order to place the head
+  and the queue of the lemma in the right position, since the
+  previous module moved the queue just after the lemma head for
+  various reasons. In pratice, in our system, this means that you
+  must use these values instead of 'whole' when sending out verbs,
+  since in our dictionaries multiwords with inner inflection are
+  always verbs and, if you use the value "whole" when sending them
+  out, the multiword would not be well formed (the head and the
+  queue of the lemma would not have the correct position).<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Therefore, a
+  rule that has a verb in its pattern must send the lexical forms
+  like in the following two examples:<br>
+  <br>
+  &lt;rule&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pattern&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;pattern-item n="verb"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/pattern&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;out&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;lu&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="lemh"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="a_verb"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="temps"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="persona"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="gen"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="nbr"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="lemq"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/lu&gt;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/out&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+  &lt;/rule&gt;<br>
+  <br>
+  <br>
+  &lt;rule&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pattern&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pattern-item
+  n="verb"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pattern-item
+  n="prnenc"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;/pattern&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; &lt;action&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;out&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;mlu&gt;<br>
+  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;lu&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="lemh"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="a_verb"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="temps"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="persona"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="nbr"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/lu&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;lu&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="2" side="tl" part="lem"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="2" side="tl" part="a_prnenc"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="2" side="tl" part="persona"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="2" side="tl" part="gen"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="2" side="tl" part="nbr"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;clip pos="1" side="tl" part="lemq"/&gt;<br>
+  &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/lu&gt;&nbsp;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/mlu&gt;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/out&gt;<br>
+  &nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+  &lt;/rule&gt;<br>
+  <br>
+  The first rule detects a verb and places the queue in the correct
+  place, after all the grammatical symbols. The lexical unit is
+  sent specifying the attributes separately: lemma head, lexical
+  category (verb), tense, person, gender (for the participles),
+  number and lemma queue.<br>
+  <br>
+  The second rule detects a verb followed by an enclitic pronoun
+  and sends the two lexical forms specifying also the attributes
+  separately; the first lexical unit consists of: lemma head,
+  lexical category (verb), tense, person and number; the second
+  lexical unit consists of: lemma, lexical category (enclitic
+  pronoun), person, gender, number and lemma queue. This way, the
+  queue of the lemma is placed after the enclitic pronoun. The two
+  lexical units (verb and enclitic pronoun) are sent inside a
+  &lt;mlu&gt; element, since they have to reach the morphological
+  generator as a multilexical unit (multiword).<br>
+  <br>
+  If you want to <span class="c8">add a new transfer rule</span>,
+  you have to follow these <span class="c8">steps</span>:<br>
+  <br>
+
+  <ol>
+    <li>Specify which pattern you want to detect. Bear in mind that
+    words are processed only once by a rule, and that rules are
+    applied left to right and choosing the longest match. For
+    example, imagine you have in your transfer rules file only two
+    rules, one for the pattern "determiner - noun" and one for the
+    pattern "noun - adjective". The Spanish phrase "el valle verde"
+    (the green valley)" would be detected and processed by the
+    first one, not by the second. You will need to add a rule for
+    the pattern "determiner - noun - adjective" if you wish that
+    the three lexical units are processed in the same pattern.</li>
+
+    <li>Describe the operations you want to perform on the pattern.
+    In the Apertium es-ca, es-gl and es-pt, simple agreement
+    operations (gender and number agreement) are easy to perform in
+    a rule by means of a macroinstruction. To perform other
+    operations, you will need to use more complicated elements; for
+    a more detailed description of the language used to create
+    rules, refer to the section 3.4.2 of the system documentation
+    (at present only in Spanish). You can also read the DTD of the
+    structural transfer rules file (transfer.dtd) provided with the
+    Apertium package, in which all the elements of the language are
+    described in English.</li>
+
+    <li>Send the lexical units of the pattern in the target
+    language inside an &lt;out&gt; element. Each lexical unit must
+    be included in a &lt;lu&gt; element. If two or more lexical
+    units must be generated as a multilexical unit (only for
+    enclitic pronouns in the present language pairs) , they must be
+    grouped inside a &lt;mlu&gt; element.<br>
+    All the words that are detected by a rule (that are part of a
+    pattern) must be sent out at the end of the rule so that the
+    next module (the generator) receives them. If a lexical unit is
+    detected by a pattern and is not included in the &lt;out&gt;
+    element, it will not be generated.<br></li>
+  </ol><br>
+
+  <h2>Adding data for the lexical categorial disambiguator
+  (part-of-speech tagger)</h2>To be written.<br>
+
+  <h2>Retraining the lexical categorial disambiguator</h2>To be
+  written.<br>
+
+  <h2>Detecting errors</h2>It is easy to make errors when adding
+  new words or transfer rules to the Apertium system.<br>
+  <br>
+  It is possible that, when compiling the new files, the system
+  displays an error message. In this case, this is a formal error
+  (a missing XML tag, a tag that is not allowed in a certain
+  context, etc.). You just have to go to the line number indicated
+  by the error message, correct the error and compile again. Other
+  types of errors are not detected when compiling, but can make the
+  system mistranslate a word or give an incomprehensible text
+  string. These are linguistic errors, which can be detected and
+  corrected with the tips given in this chapter. The following
+  information is for Linux users, since Apertium works for the
+  moment only with this OS.<br>
+  <br>
+  As all the data processed by the system, from&nbsp;the original
+  text to the&nbsp;translated text, circulate&nbsp;between the
+  eight modules of the system in&nbsp;text format, it is possible
+  to&nbsp;stop the text stream at any point to know what is the
+  input or the output of a certain module. You just have to type
+  the right commands in the terminal using a pipeline structure so
+  that the standard output of one is used as the standard input for
+  the next one.<br>
+  <br>
+  Using the <span class="c1">echo</span> or <span class=
+  "c1">cat</span> commands, you can send a text through one or more
+  modules to analyse their output and detect the origin of the
+  error. You have to move to the directory where the linguistic
+  data are saved and type the commands explained below.<br>
+  <br>
+  <span class="c8">The morphological analyser output<br></span>To
+  know how a word is analysed by the translator, type the following
+  in the terminal (example for the Catalan word <span class=
+  "c1">gener)</span>:<br>
+  <br>
+  <span class="c1">echo "gener" | apertium-destxt | lt-proc
+  ca-es.automorf.bin<br class="c11"></span><br>
+  You can replace <span class="c1">ca-es</span> with the
+  translation direction you want to test.<br>
+  <br>
+  The output in Apertium should be:<br>
+  <span class=
+  "c1">^gener/gener&lt;n&gt;&lt;m&gt;&lt;sg&gt;$^./.&lt;sent&gt;$[][]</span><br>
+
+  <br>
+  The string structure is: <span class=
+  "c1">^word/lemma&lt;morphological analysis&gt;$</span>. The
+  <span class="c1">&lt;sent&gt;</span> tag is the analysis of the
+  point, as every sentence end is represented as a point by the
+  system, whether or not explicitly indicated in the sentence.<br>
+  <br>
+  The analysis of an unknown word is (ignoring the point info):<br>
+  <span class="c1">^genoma/*genoma$</span><br>
+  <br>
+  and the analysis of an ambiguous word:<br>
+  <span class=
+  "c1">^casa/casa&lt;n&gt;&lt;f&gt;&lt;sg&gt;/casar&lt;vblex&gt;&lt;pri&gt;&lt;p3&gt;&lt;sg&gt;/casar&lt;vblex&gt;&lt;imp&gt;&lt;p2&gt;&lt;sg&gt;$</span><br>
+
+  <br>
+  Each lexical form (lemma plus morphological analysis) is
+  presented as a possible analysis of the word <span class=
+  "c1">casa</span>.<br>
+  <br>
+  <span class="c8">The tagger output</span><br>
+  <br>
+  To know the output of the tagger for a source language text, type
+  the following in the terminal (example for the Catalan-Spanish
+  direction):<br>
+  <br>
+  <span class="c1">echo "gener" | apertium-destxt | lt-proc
+  ca-es.automorf.bin | apertium-tagger --tagger
+  ca-es.prob<br></span><br>
+  The output will be:<br>
+  <span class=
+  "c1">^gener&lt;n&gt;&lt;m&gt;&lt;sg&gt;$^.&lt;sent&gt;$[][]</span><br>
+
+  <br>
+  The output for an ambiguous word will be like the&nbsp;one above,
+  since the tagger chooses one lexical form. Therefore, the output
+  for <span class="c1">casa</span> in Catalan will be, for example
+  (depending on the context):<br>
+  <span class=
+  "c1">^casa&lt;n&gt;&lt;f&gt;&lt;sg&gt;$^.&lt;sent&gt;$[][]</span><br>
+
+  <br>
+  <span class="c8">The pretransfer output</span><br>
+  <br>
+  This module applies some changes to multiwords (move the lemma
+  queue of a multiword with inner inflection just after the lemma
+  head). To know its output, type:<br>
+  <br>
+  <span class="c1">echo "gener" | apertium-destxt | lt-proc
+  ca-es.automorf.bin | apertium-tagger --tagger ca-es.prob
+  |&nbsp;apertium-pretransfer<br>
+  <br></span> Since <span class="c1">gener</span> is not a
+  multiword in the dictionaries, this module does not alter its
+  input.<br>
+  <span class="c1"><br></span><span class="c8">The structural
+  transfer output<br></span><br>
+  To know how a word, phrase or sentence is translated into the
+  target language and processed by structural transfer rules, type
+  the following in the terminal:<br>
+  <span class="c1"><br>
+  echo "gener" | apertium-destxt | lt-proc ca-es.automorf.bin |
+  apertium-tagger --tagger ca-es.prob |&nbsp;apertium-pretransfer |
+  apertium-transfer trules-ca-es.xml trules-ca-es.bin
+  ca-es.autobil.bin<br></span><br>
+  The output for the Catalan word&nbsp;<span class=
+  "c1">gener</span> will be:<br>
+  <span class=
+  "c1">^enero&lt;n&gt;&lt;m&gt;&lt;sg&gt;$<br></span><br>
+  Analysing how a word or phrase is output by this module can help
+  you detect errors in the bilingual dictionary&nbsp;or in the
+  structural transfer rules. Typical bilingual dictionary errors
+  are: two equivalents for the same source language lexical form,
+  or wrong assignment of morphological symbols. Errors due to
+  structurual transfer rules vary a lot depending on the actions
+  performed by the rules.<br>
+  <br>
+  <strong>The morphological generator output<br></strong><br>
+  To know how a word is generated by the system,&nbsp;type the
+  following in the terminal:<br>
+  <br>
+  <span class="c1">echo "gener" | apertium-destxt | lt-proc
+  ca-es.automorf.bin | apertium-tagger --tagger ca-es.prob
+  |&nbsp;apertium-pretransfer | apertium-transfer trules-ca-es.xml
+  trules-ca-es.bin ca-es.autobil.bin | lt-proc
+  -g&nbsp;ca-es.autogen.bin<br></span><br>
+  With this command you can detect generation errors due to an
+  incorrect entry in the target language monolingual dictionary or
+  to a divergence between the output of the bilingual dictionary
+  (the output of the previous module) and the entry in the
+  monolingual dictionary.<br>
+  <br>
+  The correct output for the input "gener" would be:<br>
+  <span class="c1">enero.[][]<br>
+  <br></span> There are in this case no morphological symbols, and
+  the word appears inflected.<br>
+  <br>
+  <strong>The post-generator output<br></strong><br>
+  It is not very usual to have errors due to the postgenerator,
+  because of its generally small size and the fact that it is
+  seldom changed after adding usual combinations, but you can also
+  test how a source language text comes out of this module, by
+  typing:<br>
+  <span class="c1"><br>
+  echo "gener" | apertium-destxt | lt-proc ca-es.automorf.bin |
+  apertium-tagger --tagger ca-es.prob |&nbsp;apertium-pretransfer |
+  apertium-transfer trules-ca-es.xml trules-ca-es.bin
+  ca-es.autobil.bin | lt-proc -g&nbsp;ca-es.autogen.bin</span>
+  <span class="c1">| lt-proc -p ca-es.autopgen.bin</span><br>
+  <br>
+  <strong>The Apertium&nbsp;output<br>
+  <br>
+  <span class="c12">You can put all the modules of the system in
+  the pipeline structure and see how a source language text goes
+  through all the modules and gets translated into the target
+  language. You just have to add the reformatter to the previous
+  command:<br>
+  <br></span></strong> <span class="c1">echo "gener" |
+  apertium-destxt | lt-proc ca-es.automorf.bin | apertium-tagger
+  --tagger ca-es.prob |&nbsp;apertium-pretransfer |
+  apertium-transfer trules-ca-es.xml trules-ca-es.bin
+  ca-es.autobil.bin | lt-proc -g&nbsp;ca-es.autogen.bin</span>
+  <span class="c1">| lt-proc -p ca-es.autopgen.bin |
+  apertium-retxt</span><br>
+  <strong><br class="c13">
+  <span class="c12">This is the same as using the</span></strong>
+  "apertium-translator" shell script provided by the Apertium
+  package:<br>
+  <br>
+  <span class="c1">echo "gener" | apertium-translator .
+  ca-es</span><br class="c11">
+  <br>
+  (The point indicates the directory where the linguistic data are
+  saved.)<br>
+  <br>
+  Of course, instead of typing all the presented commands every
+  time you need to test a translation, you can create shell scripts
+  for every action and use them to test the output of
+  each&nbsp;module.<br>
+  <br>
+  <span class="c8">Error examples<br>
+  <br></span> To be written.<span class="c8"><br></span>
+
+  <h2>Generating a new Apertium system from modified data</h2>If
+  you make changes to any of the linguistic data files of Apertium
+  (the dictionaries, the transfer rules, the tagger file or corpora
+  or the postgeneration dictionaries), the changes will not be
+  applied until you recompile the modules. To do this, type
+  <span class="c1">make</span> in the directory where the
+  linguistic data are saved (<span class=
+  "c1">apertium-es-ca</span><span class="c1">,
+  apertium-es-gl</span> or what may be applicable) so that the
+  system generates the new binary files.<br>
+  <br>
+  If changes were made to the tagger file or to the corpora used to
+  train the tagger, you will need also to retrain the tagger. In
+  the same directory mentioned above, after typing <span class=
+  "c1">make</span>, type <span class="c1">make train</span> in
+  order to perform the retraining.<br>
+  <br>
+  Now the Apertium translator will work using the recently added
+  data.<br>
+  <br>
+  <br>
+</body>
+</html>
