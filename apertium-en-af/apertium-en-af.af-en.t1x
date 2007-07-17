@@ -433,6 +433,26 @@
       </action>
     </rule>
 
+   <rule comment="REGLA: ADV">
+      <pattern>
+        <pattern-item n="adv"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="adv">
+	        <tags>
+		  <tag><lit-tag v="ADV"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+    	          <clip pos="1" side="tl" part="a_adv"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+
 
    <rule comment="REGLA: ADJ NOM">
       <pattern>
@@ -492,6 +512,35 @@
             </out>
       </action>
     </rule>
+
+   <rule comment="REGLA: NUM NOM">
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="num_nom">
+	        <tags>
+		  <tag><lit-tag v="SN"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+    	          <clip pos="1" side="tl" part="a_num"/>
+    	          <clip pos="1" side="tl" part="nbr"/>
+                </lu>
+		<b/>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+    	          <clip pos="2" side="tl" part="a_nom"/>
+    	          <clip pos="2" side="tl" part="nbr"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+
 
 
 
