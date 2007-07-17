@@ -116,7 +116,14 @@ PatternList::insertOutOfSequence(string const &lemma, string const &tags,
   {
     for(unsigned int i = 0, limit = lemma.size(); i < limit; i++)
     {
-      result.push_back(int((unsigned char) lemma[i]));
+      if(lemma[i] == '*')
+      {
+        result.push_back(alphabet(ANY_CHAR));
+      }
+      else
+      {
+        result.push_back(int((unsigned char) lemma[i]));
+      }
     }
   }
   if(tags == "")
