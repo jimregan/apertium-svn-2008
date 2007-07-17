@@ -11,13 +11,15 @@ all:
 
 	lt-comp rl apertium-en-nl.nl.dix en-nl.autogen.bin
 	lt-comp rl apertium-en-nl.en.dix nl-en.autogen.bin
+
+	lt-comp rl apertium-en-nl.post-nl.dix en-nl.autopgen.bin
 	
-#	apertium-validate-transfer apertium-en-nl.en-nl.t1x
-#	apertium-preprocess-transfer apertium-en-nl.en-nl.t1x en-nl.t1x.bin
-#	apertium-validate-interchunk apertium-en-nl.en-nl.t2x
-#	apertium-preprocess-transfer apertium-en-nl.en-nl.t2x en-nl.t2x.bin
-#	apertium-validate-postchunk apertium-en-nl.en-nl.t3x
-#	apertium-preprocess-transfer apertium-en-nl.en-nl.t3x en-nl.t3x.bin
+	apertium-validate-transfer apertium-en-nl.en-nl.t1x
+	apertium-preprocess-transfer apertium-en-nl.en-nl.t1x en-nl.t1x.bin
+	apertium-validate-interchunk apertium-en-nl.en-nl.t2x
+	apertium-preprocess-transfer apertium-en-nl.en-nl.t2x en-nl.t2x.bin
+	apertium-validate-postchunk apertium-en-nl.en-nl.t3x
+	apertium-preprocess-transfer apertium-en-nl.en-nl.t3x en-nl.t3x.bin
 
 	#clean up temp files
 	rm apertium-en-nl.en.dix apertium-en-nl.nl.dix apertium-en-nl.en-nl.dix
