@@ -18,7 +18,8 @@
                 </form>
             </div>
             -->
-				<?php include_once("header.php") ?>
+				<?php include_once("content/" . $lang . "/header.html") ?>
+				<?php include_once("php/lang_menu.php") ?>
 				
             <div id="body">
             	<!-- Navigation -->
