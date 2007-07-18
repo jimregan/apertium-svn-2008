@@ -774,14 +774,20 @@
 					<choose> <!-- canvia aquests verbs-->
 						<when>
 							<test>
-								<equal caseless="yes">
-									<clip pos="2" side="sl" part="lem"/>
-									<lit v="refuser"/>
-								</equal>
+								<or>
+									<equal caseless="yes">
+										<clip pos="2" side="sl" part="lem"/>
+										<lit v="sonar"/>
+									</equal>
+									<equal caseless="yes">
+										<clip pos="2" side="sl" part="lem"/>
+										<lit v="apelar"/>
+									</equal>
+								</or>
 							</test>
 							<let>
 								<clip pos="2" side="tl" part="lem"/>
-								<lit v="negar"/>
+								<lit v="dir"/>
 							</let>
 						</when>
 						<when>
@@ -967,14 +973,20 @@
 									<choose> <!-- i canvia aquests verbs (els deixo per tenir l'exemple :-P)-->
 										<when>
 											<test>
-												<equal caseless="yes">
-													<clip pos="2" side="sl" part="lem"/>
-													<lit v="refuser"/>
-												</equal>
+												<or>
+													<equal caseless="yes">
+														<clip pos="2" side="sl" part="lem"/>
+														<lit v="sonar"/>
+													</equal>
+													<equal caseless="yes">
+														<clip pos="2" side="sl" part="lem"/>
+														<lit v="apelar"/>
+													</equal>
+												</or>
 											</test>
 											<let>
 												<clip pos="2" side="tl" part="lem"/>
-												<lit v="negar"/>
+												<lit v="dir"/>
 											</let>
 										</when>
 										<when>
@@ -6387,15 +6399,15 @@
 			<call-macro n="tipus_verb">
 				<with-param pos="2"/>
 			</call-macro>
-			<call-macro n="temps_verb">
-				<with-param pos="2"/>
-			</call-macro>
 			<call-macro n="verb_ref">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="2"/>
 			</call-macro>
 			<out>
 				<chunk name="pro_verb" case="caseFirstWord">
