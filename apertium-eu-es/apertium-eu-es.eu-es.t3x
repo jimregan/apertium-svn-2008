@@ -3,13 +3,14 @@
   <section-def-cats>
 
     
- 
-
-    <def-cat n="nom">
-      <cat-item name="nom"/>
+     <def-cat n="det_adj">
+      <cat-item name="det_adj"/>
     </def-cat>
 
 
+    <def-cat n="adj_grado">
+      <cat-item name="d_adv_adj"/>
+    </def-cat>
 
   </section-def-cats>
 
@@ -49,6 +50,14 @@
           <attr-item tags="subs"/>
       </def-attr>
 
+  <def-attr n="tipus_det">          
+      <attr-item tags="art"/>         
+      <attr-item tags="def"/>         
+      <attr-item tags="ind"/>         
+      <attr-item tags="dem"/>  
+    </def-attr>
+
+
   </section-def-attrs>
 
 <section-def-vars> 
@@ -81,47 +90,88 @@
 
   <section-rules>
 
-   <rule comment="CHUNK: nom">
+   <rule comment="CHUNK: SA"><!-- Si el SA va determinado con 'art' i no ha entrado por ninguna regla del t2x que lo haga definido, se imprimirá sin artículo ('etxea gorria da' - 'la casa es roja' -->
       <pattern>
-        <pattern-item n="nom"/>
+        <pattern-item n="det_adj"/>
       </pattern>
       <action>
 	<choose>
 	  <when>
 	    <test>
-	      <and>
 		<equal>
-		  <clip pos="0" part="a_SN"/>
-		  <lit-tag v="PDET"/>
+		  <clip pos="0" part="tipus_det"/>
+		  <lit-tag v="art"/>
 		</equal>
-		<not>
-		  <equal>
-		    <clip pos="1" part="a_nom"/>
-		    <lit-tag v="np"/>
-		  </equal>
-		</not>
-	      </and>
 	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
 	    <out>
 	      <lu>
-		<get-case-from pos="1">
-		<lit v="el"/>
-		</get-case-from>
-		<lit-tag v="det.def"/>
-		<clip pos="1" part="gen"/>
-		<clip pos="1" part="nbr"/>
-	      </lu>
-	      <b/>
-	    </out>
+		<clip pos="2" part="whole"/>
+	      </lu> 
+	    </out> 
 	  </when>
-	</choose>	 
-        <out>
-          <lu>
-            <clip pos="1" part="whole"/>
-          </lu> 
-        </out>   
+	  <otherwise>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu> 
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	    </out> 
+	  </otherwise>
+	</choose>
       </action>
-    </rule> 
+   </rule> 
 
+ <rule comment="CHUNK: SA con grado"><!-- Si el SA va determinado con 'art' i no ha entrado por ninguna regla del t2x que lo haga definido, se imprimirá sin artículo ('etxea gorriagoa da' - 'la casa es roja') excepto 'gorriena' -->
+      <pattern>
+        <pattern-item n="adj_grado"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+		<equal>
+		  <clip pos="0" part="tipus_det"/>
+		  <lit-tag v="art"/>
+		</equal>		
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>	  
+	    <out>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu> 
+	      <b pos="2"/>
+	      <lu>
+		<clip pos="3" part="whole"/>
+	      </lu> 
+	    </out> 
+	  </when>
+	  <otherwise>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu> 
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	      <b pos="2"/>
+	      <lu>
+		<clip pos="3" part="whole"/>
+	      </lu> 
+	    </out> 
+	  </otherwise>
+	</choose>
+      </action>
+   </rule> 
+	
+	
   </section-rules>
 </postchunk>

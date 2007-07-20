@@ -7,6 +7,15 @@
     </def-cat>  
     <def-cat n="SP">
       <cat-item tags="SP.*"/>
+      <cat-item tags="SPGEN.*"/>
+    </def-cat>  
+
+    <def-cat n="SPGEN">
+      <cat-item tags="SPGEN.*"/>
+    </def-cat> 
+ 
+    <def-cat n="SA">
+      <cat-item tags="SA.*"/>
     </def-cat>  
     <def-cat n="punt">
       <cat-item tags="sent"/>
@@ -148,7 +157,47 @@
       </action>
 </rule>
 
-
+    
+    <rule> <!-- REGLA: SA--><!--si va solo y no se le puede asignar género a los GD, se asignará masculino, y singular para ND -->
+      <pattern>
+	<pattern-item n="SA"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
 
  <rule> <!-- REGLA: SP-->
       <pattern>
@@ -178,7 +227,51 @@
 </rule>
 
 
-
+ <rule> <!-- REGLA: SPGEN + SN-->
+      <pattern>
+	<pattern-item n="SPGEN"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
   
 
     <rule> <!-- REGLA: reset variables-->

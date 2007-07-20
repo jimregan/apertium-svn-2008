@@ -69,6 +69,7 @@
 
 <def-label name="DET" closed="true">
     <tags-item tags="det.art.*"/>
+    <tags-item lemma="bat" tags="num.sg"/>
     <tags-item tags="det.ind.*"/>
     <tags-item tags="det.dem.*"/>
     <tags-item tags="det.dem"/>
@@ -76,6 +77,13 @@
     <tags-item tags="DET.ERKIND.*"/>
   </def-label>
 
+<def-label name="DETIND" closed="true">
+    <tags-item tags="det.ind.*"/>
+  </def-label>
+
+<def-label name="DETINDIZL" closed="true">
+    <tags-item tags="det.indizl.*"/>
+  </def-label>
 
 <def-label name="DET_DZG" closed="true">
     <tags-item tags="det.DZG"/>
@@ -240,6 +248,20 @@
       <tags-item tags="det.ind.sg"/>
       <tags-item lemma="na" tags="ATZ.DET.BAN"/>
       <tags-item lemma="ka" tags="ATZ.ADB.ADOARR"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="NOMKO" closed="true">
+    <sequence>
+      <tags-item tags="n"/>
+      <label-item label="KO"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="ADVKO" closed="true">
+    <sequence>
+      <label-item label="ADV"/>
+      <label-item label="KO"/>
     </sequence>
   </def-mult>
 
