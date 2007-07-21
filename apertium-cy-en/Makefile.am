@@ -92,6 +92,12 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 
+clean-dicts:
+	rm $(BASENAME).$(LANG1).dix
+	rm $(BASENAME).$(LANG2).dix
+	rm $(BASENAME).$(PREFIX1).dix
+
+
 modes: modes.xml
 	rm $(BASENAME).$(LANG1).dix
 	rm $(BASENAME).$(LANG2).dix
