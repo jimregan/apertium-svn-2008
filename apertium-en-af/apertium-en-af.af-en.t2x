@@ -37,6 +37,9 @@
     <def-cat n="ADV">
       <cat-item tags="ADV"/>
     </def-cat>
+    <def-cat n="PREADV">
+      <cat-item tags="PREADV"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -595,6 +598,53 @@
         </call-macro>
       </action>
 </rule>
+
+<rule comment="REGLA: V PREADV ADJ V CNJ">
+      <pattern>
+        <pattern-item n="V"/>
+        <pattern-item n="PREADV"/>
+        <pattern-item n="ADJ"/>
+        <pattern-item n="V"/>
+        <pattern-item n="CNJ"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b/>
+          <chunk>
+            <clip pos="4" part="lem"/>
+            <clip pos="4" part="tags"/>
+            <clip pos="4" part="chcontent"/>
+	  </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+            <clip pos="3" part="chcontent"/>
+          </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="5" part="lem"/>
+            <clip pos="5" part="tags"/>
+            <clip pos="5" part="chcontent"/>
+          </chunk>
+        </out>
+        <call-macro n="nombre_SN">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+</rule>
+
 
 
 <rule comment="REGLA: ADV PR SN CNJ SN V">
