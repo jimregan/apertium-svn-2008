@@ -52,6 +52,9 @@
     <def-cat n="cnjadv">
       <cat-item tags="cnjadv"/>
     </def-cat>
+    <def-cat n="cnjsub">
+      <cat-item tags="cnjsub"/>
+    </def-cat>
     <def-cat n="cnjcoo">
       <cat-item tags="cnjcoo"/>
       <cat-item tags="cnjcoo.*"/>
@@ -451,6 +454,26 @@
                 <lu>
                   <clip pos="1" side="tl" part="lem"/>
     	          <clip pos="1" side="tl" part="a_prep"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: CNJSUB">
+      <pattern>
+        <pattern-item n="cnjsub"/>
+      </pattern>
+      <action>
+            <out>
+	      <chunk name="cnjsub">
+	        <tags>
+		  <tag><lit-tag v="CNJ"/></tag>
+		  <tag><lit-tag v="SUB"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+    	          <clip pos="1" side="tl" part="a_cnj"/>
                 </lu>
               </chunk>
             </out>
