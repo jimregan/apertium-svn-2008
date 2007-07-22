@@ -10,6 +10,9 @@
       <cat-item tags="adj.*"/>
       <cat-item tags="adj.pos.*"/>
     </def-cat>
+    <def-cat n="verb">
+      <cat-item tags="vblex.*"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -27,6 +30,11 @@
       <attr-item tags="np.loc"/>
       <attr-item tags="np.ant"/>
     </def-attr>
+    <def-attr n="a_verb">
+      <attr-item tags="vblex"/>
+      <attr-item tags="vbmod"/>
+      <attr-item tags="vbaux"/>
+    </def-attr>
     <def-attr n="nbr">
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
@@ -39,6 +47,11 @@
       <attr-item tags="mf"/>
       <attr-item tags="ND"/>
     </def-attr>
+    <def-attr n="temps">
+      <attr-item tags="past"/>
+      <attr-item tags="pres"/>
+      <attr-item tags="pri"/>
+    </def-attr>
   </section-def-attrs>
 
   <section-def-vars>
@@ -49,6 +62,8 @@
   </section-def-vars>
 
   <section-rules>
+<!-- ONE UNIT -->
+
     <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
       <pattern>
         <pattern-item n="nom"/>
@@ -69,6 +84,29 @@
         </out>
       </action>
     </rule>
+
+    <rule comment="REGLA: VERB">
+      <pattern>
+        <pattern-item n="verb"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="V"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="temps"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+<!-- TWO UNITS -->
 
     <rule comment="REGLA: NOM NOM">
       <pattern>
