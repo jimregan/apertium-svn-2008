@@ -221,6 +221,8 @@ void baum_welch(FILE *ftxt, int corpus_length) {
   double prob, loli;              
   vector < set<TTag> > pending;
   
+  map<int, double> ambclass_count;
+
   // alpha => forward probabilities
   // beta  => backward probabilities
 
@@ -260,7 +262,9 @@ void baum_welch(FILE *ftxt, int corpus_length) {
       exit(EXIT_FAILURE);
     }
     
-    k = tagger_data.getOutput()[tags];    
+    k = tagger_data.getOutput()[tags];
+    ambclass_count[k]++;
+
     len = pending.size();
     alpha[len].clear();     
       
@@ -334,8 +338,8 @@ void baum_welch(FILE *ftxt, int corpus_length) {
   if ((pending.size()>1) || ((tag!=eos))) 
     cerr<<"Warning: Thee las tag is not the end-of-sentence-tag\n";
   
-  //Clean previous values  
- 
+  /*
+  //Clean previous values   
   for(i=0; i<tagger_data.getN(); i++) {
     for(j=0; j<tagger_data.getN(); j++)
       tagger_data.getA()[i][j]=0;
@@ -349,47 +353,50 @@ void baum_welch(FILE *ftxt, int corpus_length) {
     for (jt=xsi[i].begin(); jt!=xsi[i].end(); jt++) {
       j = jt->first;
       if (xsi[i][j]>0) {        
-        tagger_data.getA()[i][j] = xsi[i][j]/gamma[i];
+	tagger_data.getA()[i][j] = xsi[i][j]/gamma[i];
 	
-        if (isnan(tagger_data.getA()[i][j])) {
-          cerr <<"Error: BW - NAN(1) a["<<i<<"]["<<j<<"]="<<tagger_data.getA()[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+	if (isnan(tagger_data.getA()[i][j])) {
+	  cerr <<"Error: BW - NAN(1) a["<<i<<"]["<<j<<"]="<<tagger_data.getA()[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
 	  exit(EXIT_FAILURE);
-        }
+	}
 	if (isinf(tagger_data.getA()[i][j])) {
-          cerr <<"Error: BW - INF(1) a["<<i<<"]["<<j<<"]="<<tagger_data.getA()[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+	  cerr <<"Error: BW - INF(1) a["<<i<<"]["<<j<<"]="<<tagger_data.getA()[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
 	  exit(EXIT_FAILURE);
-        }
+	}
 	if (tagger_data.getA()[i][j]==0) {
-          //cerr <<"Error: BW - ZERO(1) a["<<i<<"]["<<j<<"]="<<a[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+	  //cerr <<"Error: BW - ZERO(1) a["<<i<<"]["<<j<<"]="<<a[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
 	  //exit(1);
-        }
+	}
       }
     }
   }
+  
 
   for (it=phi.begin(); it!=phi.end(); it++) {
     i = it->first;
     for (kt=phi[i].begin(); kt!=phi[i].end(); kt++) {
       k = kt->first;
       if (phi[i][k]>0) {
-        tagger_data.getB()[i][k] = phi[i][k]/gamma[i];	
+	tagger_data.getB()[i][k] = phi[i][k]/gamma[i];	
         
 	if (isnan(tagger_data.getB()[i][k])) {
-          cerr <<"Error: BW - NAN(2) b["<<i<<"]["<<k<<"]="<<tagger_data.getB()[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+	  cerr <<"Error: BW - NAN(2) b["<<i<<"]["<<k<<"]="<<tagger_data.getB()[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
 	  exit(EXIT_FAILURE);
-        }
+	}
 	if (isinf(tagger_data.getB()[i][k])) {
-          cerr <<"Error: BW - INF(2) b["<<i<<"]["<<k<<"]="<<tagger_data.getB()[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+	  cerr <<"Error: BW - INF(2) b["<<i<<"]["<<k<<"]="<<tagger_data.getB()[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
 	  exit(EXIT_FAILURE);
-        }
+	}
 	if (tagger_data.getB()[i][k]==0) {
-          //cerr <<"Error: BW - ZERO(2) b["<<i<<"]["<<k<<"]="<<b[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+	  //cerr <<"Error: BW - ZERO(2) b["<<i<<"]["<<k<<"]="<<b[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
 	  //exit(1);
-        }
+	}
       }
     }
   }
+  */
 
+  SmoothUtils::calculate_smoothed_parameters(tagger_data, gamma, xsi, ambclass_count, phi, gamma, nw);
   cerr<<" done. Log="<<loli<<"\n";
 }
 

@@ -153,19 +153,20 @@ TaggerEval::eval_tagger(FILE* ftagged, FILE *funtagged){
 
 void 
 TaggerEval::print_evaluation() {
-  cout<<"# of words.......................................... "<<nwords<<"\n"
-      <<"# of unknown words.................................. "<<nunknown<<"\n"
-      <<"# of ignored words.................................. "<<nignored<<"\n"
-      <<"# of ambiguous words................................ "<<nambiguous<<"\n"
-      <<"# of errors NOT due to ambiguous words.............. "<<nerrors_noamb<<"\n"
-      <<"# of errors due to ambiguous words.................. "<<nerrors_amb<<"\n"
-      <<"# of errors due to unknown words.................... "<<nerrors_unk<<"\n"
-      <<"% of unknown words.................................. "<<(nunknown/nwords)*100.0<<" %\n"
-      <<"% of ambiguous words................................ "<<(nambiguous/nwords)*100.0<<" %\n"
-      <<"% of unknown and ambiguous words.................... "<<((nambiguous+nunknown)/nwords)*100.0<<" %\n"
-      <<"% of error over ambiguous words .................... "<<(nerrors_amb/nambiguous)*100.0<<" %\n"
-      <<"% of error over ambiguous and unknown words......... "<<((nerrors_amb+nerrors_unk)/(nambiguous+nunknown))*100.0<<" %\n"
-      <<"% of error over all words .......................... "<<((nerrors_amb+nerrors_unk)/nwords)*100.0<<" %\n";
+  cout<<"# of words........................................... "<<nwords<<"\n"
+      <<"# of unknown words................................... "<<nunknown<<"\n"
+      <<"# of ignored words................................... "<<nignored<<"\n"
+      <<"# of ambiguous words................................. "<<nambiguous<<"\n"
+      <<"# of errors NOT due to ambiguous words............... "<<nerrors_noamb<<"\n"
+      <<"# of errors due to ambiguous words................... "<<nerrors_amb<<"\n"
+      <<"# of errors due to unknown words..................... "<<nerrors_unk<<"\n"
+      <<"% of unknown words................................... "<<(nunknown/nwords)*100.0<<" %\n"
+      <<"% of ambiguous words................................. "<<(nambiguous/nwords)*100.0<<" %\n"
+      <<"% of unknown and ambiguous words..................... "<<((nambiguous+nunknown)/nwords)*100.0<<" %\n"
+      <<"% of error over ambiguous words ..................... "<<(nerrors_amb/nambiguous)*100.0<<" %\n"
+      <<"% of error over ambiguous and unknown words.......... "<<((nerrors_amb+nerrors_unk)/(nambiguous+nunknown))*100.0<<" %\n"
+      <<"% of error over all words ........................... "<<((nerrors_amb+nerrors_unk)/nwords)*100.0<<" %\n"
+      <<"% of error over all words (including non amb. errors) "<<((nerrors_amb+nerrors_unk+nerrors_noamb)/nwords)*100.0<<" %\n";
 
   cerr<<"NIGNORED: "<<nignored<<"\n";
 }
