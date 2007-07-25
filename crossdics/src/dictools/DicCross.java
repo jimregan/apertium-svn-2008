@@ -44,6 +44,7 @@ import dics.elements.utils.EElementList;
 import dics.elements.utils.EElementMap;
 import dics.elements.utils.EHashMap;
 import dics.elements.utils.ElementList;
+import dics.elements.utils.Msg;
 import dictools.crossmodel.Action;
 import dictools.crossmodel.ActionSet;
 import dictools.crossmodel.ConstantMap;
@@ -61,120 +62,127 @@ import dictools.crossmodel.Pattern;
 public class DicCross {
 
     /**
-         * Restrictions for crossing
-         */
+     * Restrictions for crossing
+     */
     private int[][] rMatrix;
 
     /**
-         * Left-Right restriction
-         */
+     * Left-Right restriction
+     */
     private final int LR = 0;
 
     /**
-         * Right-Left restriction
-         */
+     * Right-Left restriction
+     */
     private final int RL = 1;
 
     /**
-         * Left-Right and Right-Left restrictions.
-         */
+     * Left-Right and Right-Left restrictions.
+     */
     private final int BOTH = 2;
 
     /**
-         * 
-         */
+     * 
+     */
     private final int NONE = 3;
 
     /**
-         * Bilingual dictionary A-B
-         */
+     * Bilingual dictionary A-B
+     */
     private DictionaryElement bilAB;
 
     /**
-         * Bilingual dictionary B-C
-         */
+     * Bilingual dictionary B-C
+     */
     private DictionaryElement bilBC;
 
     /**
-         * 
-         */
+     * 
+     */
     private final boolean MATCH_CATEGORY = true;
 
     /**
-         * 
-         */
+     * 
+     */
     private EHashMap processed;
 
     /**
-         * 
-         */
+     * 
+     */
     private EHashMap speculProcessed;
 
     /**
-         * 
-         */
+     * 
+     */
     private EHashMap regExProcessed;
 
     /**
-         * 
-         */
+     * 
+     */
     private CrossModel crossModel;
 
     /**
-         * 
-         */
+     * 
+     */
     private CrossModelFST crossModelFST;
 
     /**
-         * 
-         */
+     * 
+     */
     private boolean crossWithPatterns = false;
 
     /**
-         * 
-         */
+     * 
+     */
     private String crossModelFileName;
 
     /**
-         * 
-         */
+     * 
+     */
     private HashMap<String, CrossAction> nDCrossActions;
 
     /**
-         * 
-         */
+     * 
+     */
     private CrossModel nDCrossModel;
 
     /**
-         * 
-         */
+     * 
+     */
     private String[] arguments;
 
     /**
-         * 
-         */
+     * 
+     */
     private DicSet dicSet;
 
     /**
-         * 
-         */
+     * 
+     */
     private int NDcounter;
 
     /**
-         * 
-         */
+     * 
+     */
     private HashMap<String, Integer> usedPatterns;
 
     /**
-         * 
-         */
+     * 
+     */
     private int taskOrder;
+    
+    /**
+     * 
+     */
+    private Msg msg;
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     public DicCross() {
+	msg = new Msg();
+	msg.setLogFileName("cross.log");
 	rMatrix = new int[3][3];
 	fillOutRestrictionMatrix();
 	processed = new EHashMap();
@@ -187,9 +195,9 @@ public class DicCross {
     }
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     private final void readCrossModel() {
 	try {
 	    System.out.print("[" + (taskOrder++) + "] Reading cross model ("
@@ -197,7 +205,7 @@ public class DicCross {
 	    final CrossModelReader cmr = new CrossModelReader(
 		    getCrossModelFileName());
 	    CrossModel cm = cmr.readCrossModel();
-	    System.out.println(" (" + cm.getCrossActions().size()
+	    msg.out(" (" + cm.getCrossActions().size()
 		    + " patterns processed).");
 
 	    setCrossModel(cm);
@@ -210,9 +218,9 @@ public class DicCross {
     }
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     private final void fillOutRestrictionMatrix() {
 	// Note: B-A ^ B-C = A-C
 	setRMatrixValue(LR, LR, NONE);
@@ -229,11 +237,11 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param dic1
-         * @param dic2
-         * @return
-         */
+     * 
+     * @param dic1
+     * @param dic2
+     * @return
+     */
     public DictionaryElement[] crossDictionaries(final DicSet dicSet) {
 	final DictionaryElement[] dics = new DictionaryElement[2];
 
@@ -273,7 +281,7 @@ public class DicCross {
 	    specul.addSection(speculSection);
 	}
 
-	System.out.println("[" + (taskOrder++)
+	msg.out("[" + (taskOrder++)
 		+ "] Sorting crossed dictionary...");
 	Collections.sort(dic.getEntries());
 
@@ -289,11 +297,11 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param alphabet1
-         * @param alphabet2
-         * @return
-         */
+     * 
+     * @param alphabet1
+     * @param alphabet2
+     * @return
+     */
     private final AlphabetElement crossAlphabets(
 	    final AlphabetElement alphabet1, final AlphabetElement alphabet2) {
 	final AlphabetElement alphabet = new AlphabetElement();
@@ -323,15 +331,15 @@ public class DicCross {
     }
 
     /**
-         * Crossed two <code>&lt;sdefs&gt;</code> elements.
-         * 
-         * @param sdefs1
-         * @param sdefs2
-         * @return
-         */
+     * Crossed two <code>&lt;sdefs&gt;</code> elements.
+     * 
+     * @param sdefs1
+     * @param sdefs2
+     * @return
+     */
     private final SdefsElement crossSdefs(final SdefsElement sdefs1,
 	    final SdefsElement sdefs2) {
-	System.out.println("[" + (taskOrder++) + "] Crossing definitions...");
+	msg.out("[" + (taskOrder++) + "] Crossing definitions...");
 	final SdefsElement sdefs = new SdefsElement();
 	HashMap<String, SdefElement> sdefList = new HashMap<String, SdefElement>();
 
@@ -378,16 +386,16 @@ public class DicCross {
     }
 
     /**
-         * Crossed two <code>&lt;section&gt;</code> elements.
-         * 
-         * @param section1
-         * @param section2
-         * @return
-         */
+     * Crossed two <code>&lt;section&gt;</code> elements.
+     * 
+     * @param section1
+     * @param section2
+     * @return
+     */
     private SectionElement[] crossSections(final SectionElement section1,
 	    final SectionElement section2, final SdefsElement sdefs) {
 
-	System.out.println("[" + (taskOrder++) + "] Crossing sections '"
+	msg.out("[" + (taskOrder++) + "] Crossing sections '"
 		+ section1.getID() + "' and '" + section2.getID() + "'");
 	final SectionElement[] sections = new SectionElement[2];
 
@@ -419,14 +427,14 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param elements
-         * @param sectionMap
-         * @param section
-         * @param speculSection
-         * @param bil
-         * @param dir
-         */
+     * 
+     * @param elements
+     * @param sectionMap
+     * @param section
+     * @param speculSection
+     * @param bil
+     * @param dir
+     */
     private void crossSectionsAB(final EElementList elements,
 	    final EElementMap sectionMap, final SectionElement section,
 	    final SectionElement speculSection, final DictionaryElement bil,
@@ -451,14 +459,14 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param e1
-         * @param candidates
-         * @param section
-         * @param speculProcessed
-         * @param bil
-         * @param dir
-         */
+     * 
+     * @param e1
+     * @param candidates
+     * @param section
+     * @param speculProcessed
+     * @param bil
+     * @param dir
+     */
     private final void crossElementAndPairs(final EElement e1,
 	    final EElementList candidates, final SectionElement section,
 	    final SectionElement speculSection, final DictionaryElement bil,
@@ -506,12 +514,12 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param e1
-         * @param e2
-         * @param matchCategory
-         * @return
-         */
+     * 
+     * @param e1
+     * @param e2
+     * @param matchCategory
+     * @return
+     */
     private final EElement speculate(EElement e1, EElement e2,
 	    boolean matchCategory, int dir) {
 	EElement e = null;
@@ -537,12 +545,12 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param a
-         * @param b
-         * @param dir
-         * @return
-         */
+     * 
+     * @param a
+     * @param b
+     * @param dir
+     * @return
+     */
     private final EElementList cross(EElement e1, EElement e2, final int dir) {
 
 	if (dir != 0) {
@@ -552,22 +560,26 @@ public class DicCross {
 	    e1 = aux;
 	}
 
+	msg.log("crossing " + e1.getValue() + " and " + e2.getValue());
 	CrossAction crossAction = new CrossAction();
 	Pattern entriesPattern = new Pattern(e1.reverse(), e2);
 	crossAction.setPattern(entriesPattern);
-	// Action actionFST = getCrossModelFST().getAction(crossAction);
 	ActionSet actionSetFST = getCrossModelFST().getActionSet(crossAction);
+	boolean nonDefinedPattern = true;
 	if (actionSetFST != null) {
 	    final String actionID = actionSetFST.getName();
 
 	    EElementList actionEList = applyCrossAction(e1, e2, actionID,
 		    crossAction);
-	    // elementList.add(actionE);
+	    if (!actionID.equals("default")) {
+		nonDefinedPattern = false;
+	    }
 	    return actionEList;
-	} else {
+	}
+
+	if (nonDefinedPattern) {
 	    int iR = resolveRestriction(e1.reverse().getRestriction(), e2
 		    .getRestriction());
-
 	    if (iR != NONE) {
 		String cat1 = e1.getCategory("L");
 		String cat2 = e2.getCategory("L");
@@ -579,16 +591,18 @@ public class DicCross {
 	    }
 	    return null;
 	}
+	return null;
+
     }
 
     /**
-         * 
-         * @param e1
-         * @param e2
-         * @param actionID
-         * @param crossAction
-         * @return
-         */
+     * 
+     * @param e1
+     * @param e2
+     * @param actionID
+     * @param crossAction
+     * @return
+     */
     private final EElementList applyCrossAction(EElement e1, EElement e2,
 	    final String actionID, final CrossAction entries) {
 	EElementList elementList = new EElementList();
@@ -607,7 +621,15 @@ public class DicCross {
 		EElement actionE = assignValues(e1, e2, eAction, entries, tails);
 		actionE.setPatternApplied(actionID);
 
-		actionE.setRestriction(restriction);
+		if (eAction.hasRestriction()) {
+		    // restriction indicated in cross pattern
+		    actionE.setComments("\tforced '" + eAction.getRestriction()
+			    + "' restriction\n");
+		    actionE.setRestriction(eAction.getRestriction());
+		} else {
+		    // automatically resolved restriction
+		    actionE.setRestriction(restriction);
+		}
 
 		// cross comments & author
 		final String author = mergeAttributes(e1.getAuthor(), e2
@@ -627,17 +649,17 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param eAction
-         * @param entries
-         * @return
-         */
+     * 
+     * @param eAction
+     * @param entries
+     * @return
+     */
     private final EElement assignValues(EElement e1, EElement e2,
 	    EElement eAction, CrossAction entries,
 	    HashMap<String, ElementList> tails) {
 	ConstantMap constants = entries.getConstants();
-
 	EElement eCrossed = new EElement();
+
 	PElement pE = new PElement();
 
 	ContentElement lE = eAction.getSide("L");
@@ -656,12 +678,12 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param ceWrite
-         * @param ceRead
-         * @param constants
-         * @param ei
-         */
+     * 
+     * @param ceWrite
+     * @param ceRead
+     * @param constants
+     * @param ei
+     */
     private final void assignValuesSide(ContentElement ceWrite,
 	    final ContentElement ceRead, final ConstantMap constants,
 	    final EElement ei, HashMap<String, ElementList> tails) {
@@ -697,11 +719,11 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param e
-         * @param hm
-         * @return
-         */
+     * 
+     * @param e
+     * @param hm
+     * @return
+     */
     private final EElementList getPairs(final EElement e, final EElementMap hm) {
 	EElementList pairs = null;
 	String lemma = e.getValue("L");
@@ -711,11 +733,11 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param e1
-         * @param e2
-         * @return
-         */
+     * 
+     * @param e1
+     * @param e2
+     * @return
+     */
     private EElement crossEntries(final EElement e1, final EElement e2) {
 	EElement e = null;
 	try {
@@ -752,11 +774,11 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param attr1
-         * @param attr2
-         * @return
-         */
+     * 
+     * @param attr1
+     * @param attr2
+     * @return
+     */
     private final String mergeAttributes(final String attr1, final String attr2) {
 	String attr = null;
 	if ((attr1 != null) && (attr2 != null)) {
@@ -774,11 +796,11 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param r1
-         * @param r2
-         * @return
-         */
+     * 
+     * @param r1
+     * @param r2
+     * @return
+     */
     private final int resolveRestriction(final String r1, final String r2) {
 	final int c1 = getRestrictionCode(r1);
 	final int c2 = getRestrictionCode(r2);
@@ -787,10 +809,10 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param r
-         * @return
-         */
+     * 
+     * @param r
+     * @return
+     */
     private final int getRestrictionCode(final String r) {
 	if (r != null) {
 	    if (r.equals("LR")) {
@@ -808,10 +830,10 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param code
-         * @return
-         */
+     * 
+     * @param code
+     * @return
+     */
     private final String getRestrictionString(final int code) {
 	switch (code) {
 	case LR:
@@ -828,122 +850,122 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @return
-         */
+     * 
+     * @return
+     */
     private final CrossModel getCrossModel() {
 	return crossModel;
     }
 
     /**
-         * 
-         * @param crossModel
-         */
+     * 
+     * @param crossModel
+     */
     private final void setCrossModel(final CrossModel crossModel) {
 	this.crossModel = crossModel;
     }
 
     /**
-         * @return the crossWithPatterns
-         */
+     * @return the crossWithPatterns
+     */
     private final boolean isCrossWithPatterns() {
 	return crossWithPatterns;
     }
 
     /**
-         * @param crossWithPatterns
-         *                the crossWithPatterns to set
-         */
+     * @param crossWithPatterns
+     *                the crossWithPatterns to set
+     */
     public final void setCrossWithPatterns(final boolean crossWithPatterns) {
 	this.crossWithPatterns = crossWithPatterns;
     }
 
     /**
-         * @return the processed
-         */
+     * @return the processed
+     */
     private final EHashMap getProcessed() {
 	return processed;
     }
 
     /**
-         * @return the regExProcessed
-         */
+     * @return the regExProcessed
+     */
     private final EHashMap getRegExProcessed() {
 	return regExProcessed;
     }
 
     /**
-         * @return the speculProcessed
-         */
+     * @return the speculProcessed
+     */
     private final EHashMap getSpeculProcessed() {
 	return speculProcessed;
     }
 
     /**
-         * @return the bilAB
-         */
+     * @return the bilAB
+     */
     private final DictionaryElement getBilAB() {
 	return bilAB;
     }
 
     /**
-         * @param bilAB
-         *                the bilAB to set
-         */
+     * @param bilAB
+     *                the bilAB to set
+     */
     private final void setBilAB(final DictionaryElement bilAB) {
 	this.bilAB = bilAB;
     }
 
     /**
-         * @return the bilBC
-         */
+     * @return the bilBC
+     */
     private final DictionaryElement getBilBC() {
 	return bilBC;
     }
 
     /**
-         * @param bilBC
-         *                the bilBC to set
-         */
+     * @param bilBC
+     *                the bilBC to set
+     */
     private final void setBilBC(final DictionaryElement bilBC) {
 	this.bilBC = bilBC;
     }
 
     /**
-         * @return the rMatrix
-         */
+     * @return the rMatrix
+     */
     private final int[][] getRMatrix() {
 	return rMatrix;
     }
 
     /**
-         * 
-         * @param i
-         * @param j
-         * @param value
-         */
+     * 
+     * @param i
+     * @param j
+     * @param value
+     */
     private final void setRMatrixValue(final int i, final int j, final int value) {
 	getRMatrix()[i][j] = value;
     }
 
     /**
-         * @return the crossModelFileName
-         */
+     * @return the crossModelFileName
+     */
     private final String getCrossModelFileName() {
 	return crossModelFileName;
     }
 
     /**
-         * @param crossModelFileName
-         *                the crossModelFileName to set
-         */
+     * @param crossModelFileName
+     *                the crossModelFileName to set
+     */
     public final void setCrossModelFileName(final String crossModelFileName) {
 	this.crossModelFileName = crossModelFileName;
     }
 
     /**
-         * @return the ndCrossActions
-         */
+     * @return the ndCrossActions
+     */
     private final void insertNDCrossAction(final CrossAction cA) {
 	if (!nDCrossActions.containsKey(cA.getPattern().toString())) {
 	    nDCrossActions.put(cA.getPattern().toString(), cA);
@@ -956,40 +978,40 @@ public class DicCross {
     }
 
     /**
-         * @return the nDCrossModel
-         */
+     * @return the nDCrossModel
+     */
     private final CrossModel getNDCrossModel() {
 	return nDCrossModel;
     }
 
     /**
-         * @return the crossModelFST
-         */
+     * @return the crossModelFST
+     */
     private final CrossModelFST getCrossModelFST() {
 	return crossModelFST;
     }
 
     /**
-         * @param crossModelFST
-         *                the crossModelFST to set
-         */
+     * @param crossModelFST
+     *                the crossModelFST to set
+     */
     private final void setCrossModelFST(CrossModelFST crossModelFST) {
 	this.crossModelFST = crossModelFST;
     }
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     public final void doCross() {
 	processArguments();
 	actionCross();
     }
 
     /**
-         * 
-         * @param dicSet
-         */
+     * 
+     * @param dicSet
+     */
     private final void actionCross() {
 	DicSet dicSet = getDicSet();
 	actionConsistent(dicSet, "yes");
@@ -1012,7 +1034,7 @@ public class DicCross {
 	bilCrossed.setSL(sl);
 	bilCrossed.setTL(tl);
 
-	System.out.println("[" + (taskOrder++)
+	msg.out("[" + (taskOrder++)
 		+ "] Making morphological dicionaries consistent ...");
 
 	final EElementList[] commonCrossedMons = DicTools.makeConsistent(
@@ -1051,15 +1073,15 @@ public class DicCross {
 
 	printXMLCrossedAndSpecul(del, sl, tl);
 
-	System.out.println("[" + (taskOrder++) + "] Done!");
+	msg.out("[" + (taskOrder++) + "] Done!");
     }
 
     /**
-         * 
-         * @param del
-         * @param sl
-         * @param tl
-         */
+     * 
+     * @param del
+     * @param sl
+     * @param tl
+     */
     private final void printXMLCrossedAndSpecul(
 	    final DictionaryElementList del, final String sl, final String tl) {
 	final DictionaryElement bilCrossed = del.get(0);
@@ -1094,7 +1116,7 @@ public class DicCross {
 	System.err.println("[" + (taskOrder++) + "] Patterns never applied: "
 		+ patterns);
 
-	System.out.println("[" + (taskOrder++)
+	msg.out("[" + (taskOrder++)
 		+ "] Generating crossed dictionaries ...");
 
 	bilCrossed.printXML("dix/apertium-" + sl + "-" + tl + "." + sl + "-"
@@ -1115,11 +1137,11 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param dicSet
-         * @param removeNotCommon
-         * @return
-         */
+     * 
+     * @param dicSet
+     * @param removeNotCommon
+     * @return
+     */
     private final DicConsistent actionConsistent(final DicSet dicSet,
 	    final String removeNotCommon) {
 	final DicConsistent dicConsistent = new DicConsistent(dicSet);
@@ -1129,9 +1151,9 @@ public class DicCross {
     }
 
     /**
-         * 
-         * @param arguments
-         */
+     * 
+     * @param arguments
+     */
     private void processArguments() {
 	final int nArgs = getArguments().length;
 	String sDicMonA, sDicMonC, sDicBilAB, sDicBilBC;
@@ -1195,20 +1217,28 @@ public class DicCross {
 		setCrossModelFileName(arg);
 		System.err.println("Cross model: " + arg);
 	    }
+
+	    if (arg.equals("-debug")) {
+		i++;
+		msg.setDebug(true);
+		msg.out("debug: on");
+	    }
+
+	    
 	}
 
-	System.out.println("[" + (taskOrder++) + "] Loading bilingual AB ("
+	msg.out("[" + (taskOrder++) + "] Loading bilingual AB ("
 		+ sDicBilAB + ")");
 	final DictionaryElement bil1 = DicTools.readBilingual(sDicBilAB,
 		bilABReverse);
-	System.out.println("[" + (taskOrder++) + "] Loading bilingual BC ("
+	msg.out("[" + (taskOrder++) + "] Loading bilingual BC ("
 		+ sDicBilBC + ")");
 	final DictionaryElement bil2 = DicTools.readBilingual(sDicBilBC,
 		bilBCReverse);
-	System.out.println("[" + (taskOrder++) + "] Loading monolingual A ("
+	msg.out("[" + (taskOrder++) + "] Loading monolingual A ("
 		+ sDicMonA + ")");
 	final DictionaryElement mon1 = DicTools.readMonolingual(sDicMonA);
-	System.out.println("[" + (taskOrder++) + "] Loading monolingual C ("
+	msg.out("[" + (taskOrder++) + "] Loading monolingual C ("
 		+ sDicMonC + ")");
 	final DictionaryElement mon2 = DicTools.readMonolingual(sDicMonC);
 
@@ -1217,33 +1247,47 @@ public class DicCross {
     }
 
     /**
-         * @return the arguments
-         */
+     * @return the arguments
+     */
     public final String[] getArguments() {
 	return arguments;
     }
 
     /**
-         * @param arguments
-         *                the arguments to set
-         */
+     * @param arguments
+     *                the arguments to set
+     */
     public final void setArguments(String[] arguments) {
 	this.arguments = arguments;
     }
 
     /**
-         * @return the dicSet
-         */
+     * @return the dicSet
+     */
     private final DicSet getDicSet() {
 	return dicSet;
     }
 
     /**
-         * @param dicSet
-         *                the dicSet to set
-         */
+     * @param dicSet
+     *                the dicSet to set
+     */
     private final void setDicSet(DicSet dicSet) {
 	this.dicSet = dicSet;
+    }
+
+    /**
+     * @return the msg
+     */
+    public final Msg getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public final void setMsg(Msg msg) {
+        this.msg = msg;
     }
 
 }

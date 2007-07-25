@@ -28,6 +28,7 @@ import dics.elements.dtd.EElement;
 import dics.elements.utils.DicSet;
 import dics.elements.utils.EElementList;
 import dics.elements.utils.EElementMap;
+import dics.elements.utils.Msg;
 
 /**
  * 
@@ -90,13 +91,18 @@ public class DicConsistent {
          * 
          */
     private DicSet dicSet;
+    
+    /**
+     * 
+     */
+    private Msg msg;
 
     /**
          * 
          * 
          */
     public DicConsistent() {
-
+	msg = new Msg();
     }
 
     /**
@@ -104,6 +110,7 @@ public class DicConsistent {
          * 
          */
     public DicConsistent(final DicSet dicset) {
+	msg = new Msg();
 	setMon1(dicset.getMon1());
 	setMon2(dicset.getMon2());
 	setBil1(dicset.getBil1());
@@ -381,14 +388,14 @@ public class DicConsistent {
 		i++;
 		arg = getArguments()[i];
 		sDicMonA = arg;
-		System.err.println("Monolingual A: '" + sDicMonA + "'");
+		msg.err("Monolingual A: '" + sDicMonA + "'");
 	    }
 
 	    if (arg.equals("-monC")) {
 		i++;
 		arg = getArguments()[i];
 		sDicMonC = arg;
-		System.err.println("Monolingual C: '" + sDicMonC + "'");
+		msg.err("Monolingual C: '" + sDicMonC + "'");
 	    }
 
 	    if (arg.equals("-bilAB")) {
@@ -405,7 +412,7 @@ public class DicConsistent {
 
 		arg = getArguments()[i];
 		sDicBilAB = arg;
-		System.err.println("Bilingual A-B: '" + sDicBilAB + "'");
+		msg.err("Bilingual A-B: '" + sDicBilAB + "'");
 	    }
 
 	    if (arg.equals("-bilBC")) {
@@ -422,7 +429,7 @@ public class DicConsistent {
 		}
 		arg = getArguments()[i];
 		sDicBilBC = arg;
-		System.err.println("Bilingual B-C: '" + sDicBilBC + "'");
+		msg.err("Bilingual B-C: '" + sDicBilBC + "'");
 	    }
 
 	}

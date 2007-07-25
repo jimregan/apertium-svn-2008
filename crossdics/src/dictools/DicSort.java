@@ -30,6 +30,7 @@ import dics.elements.dtd.DictionaryElement;
 import dics.elements.dtd.EElement;
 import dics.elements.dtd.SectionElement;
 import dics.elements.utils.EElementList;
+import dics.elements.utils.Msg;
 import dics.elements.utils.SElementList;
 
 /**
@@ -73,6 +74,11 @@ public class DicSort {
          * 
          */
     private String out;
+    
+    /**
+     * 
+     */
+    private Msg msg;
 
     /**
          * 
@@ -80,6 +86,8 @@ public class DicSort {
          */
     public DicSort() {
 	setXinclude(false);
+	msg = new Msg();
+	msg.setLogFileName("sort.log");
     }
 
     /**
@@ -89,6 +97,8 @@ public class DicSort {
     public DicSort(final DictionaryElement dic) {
 	this.dic = dic;
 	setXinclude(false);
+	msg = new Msg();
+	msg.setLogFileName("sort.log");
     }
 
     /**
@@ -97,7 +107,6 @@ public class DicSort {
          */
     public final DictionaryElement sort() {
 	DictionaryElement dicSorted = null;
-	System.out.println("Dictype: " + dicType);
 	if (dicType == DicSort.BIL) {
 	    dicSorted = sortBil();
 	}
@@ -131,7 +140,7 @@ public class DicSort {
 
 	if (arguments[2].equals("-xinclude")) {
 	    setXinclude(true);
-	    System.out.println("XInclude mode");
+	    System.out.println("xinclude mode");
 	} else {
 	    setXinclude(false);
 	}
@@ -243,9 +252,9 @@ public class DicSort {
 		    }
 		}
 	    }
-	    System.out.println("lemmas: " + n);
-	    System.out.println("LR: " + lrs);
-	    System.out.println("RL: " + rls);
+	    msg.log("lemmas: " + n);
+	    msg.log("LR: " + lrs);
+	    msg.log("RL: " + rls);
 
 	    Set keySet = map.keySet();
 	    Iterator it = keySet.iterator();
@@ -254,7 +263,7 @@ public class DicSort {
 	    while (it.hasNext()) {
 		String cat = (String) it.next();
 		EElementList list = map.get(cat);
-		System.out.println(cat + ": " + list.size());
+		msg.log(cat + ": " + list.size());
 		if (list.size() > 0) {
 		    Collections.sort(list);
 		    EElement eHead = list.get(0);
@@ -323,9 +332,9 @@ public class DicSort {
 		    }
 
 		}
-		System.out.println("lemmas: " + n);
-		System.out.println("LR: " + lrs);
-		System.out.println("RL: " + rls);
+		msg.log("lemmas: " + n);
+		msg.log("LR: " + lrs);
+		msg.log("RL: " + rls);
 
 		Set keySet = map.keySet();
 		Iterator it = keySet.iterator();
@@ -343,7 +352,7 @@ public class DicSort {
 
 		    String cat = (String) it.next();
 		    EElementList list = map.get(cat);
-		    System.out.println(cat + ": " + list.size());
+		    msg.log(cat + ": " + list.size());
 		    if (isXinclude()) {
 			section
 				.addXInclude("<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
@@ -419,5 +428,19 @@ public class DicSort {
          */
     public final void setOut(final String out) {
 	this.out = out;
+    }
+
+    /**
+     * @return the msg
+     */
+    public final Msg getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public final void setMsg(Msg msg) {
+        this.msg = msg;
     }
 }

@@ -114,7 +114,7 @@
 	</target>
 
 	<!-- Compile -->
-	<target name="compile" depends="prepare">
+	<target name="compile" depends="check-java-version,prepare">
 		<echo message="Compiling Java sources..." />
 		<javac destdir="${build.dir}/" deprecation="on">
 			<include name="**/*.java" />
@@ -123,6 +123,16 @@
 		<antcall target="jar" />
 		<echo message="Done!" />
 	</target>
+	
+<target name="check-java-version">
+    <condition property="java.version.ok">
+      <or>
+        <equals arg1="${ant.java.version}" arg2="1.5"/>
+        <equals arg1="${ant.java.version}" arg2="1.6"/>
+      </or>
+    </condition>
+           <fail unless="java.version.ok">Java 1.5 or higher is required; found Java ${ant.java.version} in ${java.home}</fail>
+  </target>	
 
 	<!-- Reverse -->
 	<target name="reverse" depends="compile">

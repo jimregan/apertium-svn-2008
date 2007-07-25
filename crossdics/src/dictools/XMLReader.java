@@ -50,6 +50,7 @@ import dics.elements.dtd.ParElement;
 import dics.elements.dtd.RElement;
 import dics.elements.dtd.ReElement;
 import dics.elements.dtd.SElement;
+import dics.elements.dtd.SaElement;
 import dics.elements.dtd.TextElement;
 
 /**
@@ -93,6 +94,11 @@ public class XMLReader {
          * 
          */
     protected JElement jElement;
+    
+    /**
+     * 
+     */
+    protected SaElement saElement;
 
     /**
          * 
@@ -111,6 +117,7 @@ public class XMLReader {
 	bElement = new BElement();
 	aElement = new AElement();
 	jElement = new JElement();
+	saElement = new SaElement();
 
     }
 
@@ -362,6 +369,9 @@ public class XMLReader {
 	if (tag.equals("a")) {
 	    return getAElement();
 	}
+	if (tag.equals("sa")) {
+	    return getSaElement();
+	}
 	if (tag.equals("g")) {
 	    final Element childElement = (Element) child;
 	    final GElement gElement = readGElement(childElement);
@@ -569,6 +579,20 @@ public class XMLReader {
          */
     protected final void setJElement(final JElement element) {
 	jElement = element;
+    }
+
+    /**
+     * @return the saElement
+     */
+    public final SaElement getSaElement() {
+        return saElement;
+    }
+
+    /**
+     * @param saElement the saElement to set
+     */
+    public final void setSaElement(SaElement saElement) {
+        this.saElement = saElement;
     }
 
 }

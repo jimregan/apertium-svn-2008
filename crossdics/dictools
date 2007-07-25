@@ -13,14 +13,14 @@ java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp ${library} $mainCl
 function cross() {
    crossmodel="schemas/cross-model-test.xml"
    if [ $nparams -ge 7 ] && [ $nparams -le 9  ]; then
-	   if [ $nparams -eq 9 ]
+	   if [ $nparams -ge 8 ]
    	then
-	   	crossmodel=$9
+	   	crossmodel=$8
    	fi
 	   echo "cross model: $crossmodel"
-   	java ${java_options} $task -bilAB $3 $4 -bilBC $5 $6 -monA $2 -monC $7 -cross-model $crossmodel 2> $task.err
+   	java ${java_options} $task -bilAB $3 $4 -bilBC $5 $6 -monA $2 -monC $7 -cross-model $crossmodel $9 2> $task.err
    else
-   	echo "Usage: dictools cross <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> [-cross-model crossmodel]"
+   	echo "Usage: dictools cross <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> crossmodel"
    fi
 }
 
@@ -43,11 +43,11 @@ function format() {
 #  merge-morph
 #
 function merge-morph() {
-   if [ $nparams == 4 ]
+   if [ $nparams -ge 4 ]
    then
       echo "Morphological 1: $2"
       echo "Morphological 2: $3"
-      java ${java_options} $task -monA1 $2 -monA2 $3 -out $4
+      java ${java_options} $task -monA1 $2 -monA2 $3 -out $4 $5
       echo "Merged dictionary: $4"
    else
       echo "Usage: dictools merge-morph <monA1> <monA2> <merged>"
@@ -94,6 +94,19 @@ function sort() {
       echo "Sorted: $5"
    else
       echo "Usage: dictools sort <-bil|-mon> <-xinclude|-same-file> <dic.dix> <out.dix>"
+   fi
+}
+
+#
+#  gather
+#
+function gather() {
+   if [ $nparams == 3 ]
+   then
+      java ${java_options} $task $2 $3
+      echo "Gathered: $3"
+   else
+      echo "Usage: dictools gather <dic> <out.dix>"
    fi
 }
 

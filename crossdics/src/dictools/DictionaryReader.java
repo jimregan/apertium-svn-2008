@@ -96,7 +96,7 @@ public class DictionaryReader extends XMLReader {
 		    final AlphabetElement alphabetElement = readAlphabet(childElement);
 		    dic.setAlphabet(alphabetElement);
 		}
-		// Definitions
+		// Symbol definitions
 		if (childElementName.equals("sdefs")) {
 		    final SdefsElement sdefsElement = readSdefs(childElement);
 		    dic.setSdefs(sdefsElement);
@@ -116,11 +116,13 @@ public class DictionaryReader extends XMLReader {
 
 		if (childElementName.equals("xi:include")) {
 		    String fileName = getAttributeValue(childElement, "href");
-		    System.err.println("XInclude (" + fileName + ")");
+		    System.err.println("xi:include (" + fileName + ")");
 		    DictionaryReader reader = new DictionaryReader(fileName);
 		    DictionaryElement dic2 = reader.readDic();
-		    if (fileName.endsWith("sdefs.dix")) {
-			SdefsElement sdefs = dic2.getSdefs();
+		    if (fileName.endsWith("sdefs.dix") || fileName.endsWith("symbols.xml")) {
+			SdefsReader sdefsReader = new SdefsReader(fileName);
+			SdefsElement sdefs = sdefsReader.readSdefs();
+			System.out.println("Symbol definitions: " + fileName);
 			dic.setSdefs(sdefs);
 		    }
 		    if (fileName.endsWith("pardefs.dix")) {

@@ -784,6 +784,21 @@ public class EElement extends Element implements Cloneable,
     }
 
     /**
+     * 
+     * @return
+     */
+    public final ParElement getParadigm() {
+	// Returns value of first paradigm
+	for (final Element e : children) {
+	    if (e instanceof ParElement) {
+		final ParElement parE = (ParElement) e;
+		return parE;
+	    }
+	}
+	return null;
+    }
+
+    /**
          * 
          * @param value
          */
@@ -910,6 +925,92 @@ public class EElement extends Element implements Cloneable,
 	str += "</e>";
 	return str;
     }
+
+    /**
+     * 
+     * @return
+     */
+    public final String toStringNoParadigm() {
+	String str = "";
+	String r = "";
+	if (this.hasRestriction()) {
+	    r = " r=\"" + getRestriction() + "\"";
+	}
+	str += "<e" + r + ">";
+	for (final Element e : children) {
+	    if (e instanceof IElement) {
+		final IElement i = (IElement) e;
+		str += i.toString();
+	    }
+	    if (e instanceof PElement) {
+		final PElement p = (PElement) e;
+
+		final LElement lE = p.getL();
+		str += lE.toString();
+
+		final RElement rE = p.getR();
+		str += rE.toString();
+	    }
+	    if (e instanceof ReElement) {
+		final ReElement re = (ReElement) e;
+		str += re.toString();
+	    }
+
+	}
+	str += "</e>";
+	return str;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public final String lemmaAndCategory() {
+	String str = "";
+	String r = "";
+	if (this.hasRestriction()) {
+	    r = " r=\"" + getRestriction() + "\"";
+	}
+	str += "<e" + r + ">";
+	str += this.getLemma();
+	for (final Element e : children) {
+	    /*
+	    if (e instanceof IElement) {
+		final IElement i = (IElement) e;
+		str += i.toString();
+	    }
+	    if (e instanceof PElement) {
+		final PElement p = (PElement) e;
+
+		final LElement lE = p.getL();
+		str += lE.toString();
+
+		final RElement rE = p.getR();
+		str += rE.toString();
+	    }
+	    
+	    if (e instanceof ReElement) {
+		final ReElement re = (ReElement) e;
+		str += re.toString();
+	    }
+	    */
+	    if (e instanceof ParElement) {
+		final ParElement par = (ParElement) e;
+		final String parValue = par.getValue();
+		String [] parts = parValue.toString().split("__");
+		String category = "";
+		for( int i=0; i<parts.length; i++) {
+		    //System.out.print("(" + parts[i] + ")");
+		    category = parts[i];		    
+		}
+		str += "/" + category;
+	    }
+	}
+	str += "</e>";
+	return str;
+    }
+
+    
 
     /**
          * 

@@ -90,6 +90,7 @@ public class CrossModel {
 	    bos = new BufferedOutputStream(fos);
 	    dos = new DataOutputStream(bos);
 	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
+	    dos.writeBytes("<!-- Examples of patterns not found -->\n");
 	    dos.writeBytes("<cross-model>\n");
 	    int i = 0;
 	    CrossActionList cal = getCrossActions();
