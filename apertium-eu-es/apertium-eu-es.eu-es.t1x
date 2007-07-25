@@ -4052,28 +4052,65 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </otherwise>  
 	    
 	</choose>
-	<out>
-	  <chunk name="vbconj" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="2" side="tl" part="lemh"/>
-	      <clip pos="2" side="tl" part="a_verb"/>
-	      <clip pos="2" side="tl" part="temps"/>
-	      <clip pos="2" side="tl" part="persnbr"/>
-	    </lu>
-	    <b pos="1"/>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		 <clip pos="2" side="tl" part="temps"/>
+		 <lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk name="vbconj" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="2" side="tl" part="lemh"/>
+		  <clip pos="2" side="tl" part="a_verb"/>
+		  <clip pos="2" side="tl" part="temps"/>
+		  <clip pos="2" side="tl" part="persnbr"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps"/>
+		  <lit-tag v="m.sg"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <when><!--regla a mi fer, falta fbcond i decidir les tags del chunk i com s'envien les lu -->
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>	      
 	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="m.sg"/>
-	    </lu>
-	  </chunk>
-	</out>
+	      <lit-tag v="ifi"/>
+	    </let>
+	    <out>
+	      <chunk name="vbconj" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps"/>
+		  <clip pos="2" side="tl" part="persnbr"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	</choose>
       </action>
 </rule>
 
