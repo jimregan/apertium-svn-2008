@@ -52,12 +52,13 @@
  <def-label name="NOMA">
     <tags-item lemma="*a" tags="n"/>
     <tags-item lemma="*a" tags="IZE.ARR"/>
-  </def-label>
+  </def-label> 
+
 
 
   <def-label name="NOM">
     <tags-item tags="n"/>
-    <tags-item tags="IZE.ARR"/>
+    <tags-item tags="IZE.ARR"/> 
   </def-label>
 
 
@@ -77,19 +78,11 @@
     <tags-item tags="DET.ERKIND.*"/>
   </def-label>
 
-<def-label name="DETIND" closed="true">
-    <tags-item tags="det.ind.*"/>
-  </def-label>
 
 <def-label name="DETINDIZL" closed="true">
     <tags-item tags="det.indizl.*"/>
   </def-label>
 
-<def-label name="DET_DZG" closed="true">
-    <tags-item tags="det.DZG"/>
-    <tags-item tags="det.DZG.*"/>
-    <tags-item tags="DET.DZG.*"/><!--treure -->
-  </def-label>
 
 <def-label name="DET_ORD" closed="true">
     <tags-item tags="DET.ORD"/>
@@ -132,7 +125,7 @@
 <def-label name="KO" closed="true">
     <tags-item lemma="ko" tags="post"/>
     <tags-item tags="post.ko"/>
-  </def-label>
+  </def-label> 
 
 <def-label name="POST" closed="true">
     <tags-item tags="post"/>
@@ -207,16 +200,16 @@
     <tags-item tags="BST"/>
   </def-label>
 
-<def-mult name="NOMA_DET" closed="true">
+<def-mult name="NOMA_DET">
     <sequence>
-      <tags-item lemma="*a" tags="n"/>
+      <label-item label="NOMA"/>
       <tags-item tags="det.art.sg"/>
     </sequence>
   </def-mult>
 
-<def-mult name="ADJIZOA_DET" closed="true">
+<def-mult name="ADJIZOA_DET">
     <sequence>
-      <tags-item lemma="*a" tags="adj.izo"/>
+      <label-item label="ADJIZOA"/>
       <tags-item tags="det.art.sg"/>
     </sequence>
   </def-mult>
@@ -238,27 +231,27 @@
 
 <def-mult name="BANA" closed="true">
     <sequence>
-      <tags-item tags="det.ind.sg"/>
+      <tags-item lemma="bat" tags="num.sg"/>
       <tags-item lemma="na" tags="ATZ.DET.BAN"/>
     </sequence>
   </def-mult>
 
 <def-mult name="BANAKA" closed="true">
     <sequence>
-      <tags-item tags="det.ind.sg"/>
+      <tags-item lemma="bat" tags="num.sg"/>
       <tags-item lemma="na" tags="ATZ.DET.BAN"/>
       <tags-item lemma="ka" tags="ATZ.ADB.ADOARR"/>
     </sequence>
   </def-mult>
 
-<def-mult name="NOMKO" closed="true">
+<def-mult name="NOMKO"><!--per a casar-lo amb adjectius en -ko? -->
     <sequence>
       <tags-item tags="n"/>
       <label-item label="KO"/>
     </sequence>
   </def-mult>
 
-<def-mult name="ADVKO" closed="true">
+<def-mult name="ADVKO">
     <sequence>
       <label-item label="ADV"/>
       <label-item label="KO"/>
