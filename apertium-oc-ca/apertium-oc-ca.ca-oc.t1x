@@ -511,6 +511,23 @@
 
 <section-def-macros>
 
+	<def-macro n="f_lex_adv" npar="1">
+		<choose>
+			<when>
+				<test>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="més aviat"/>
+					</equal>
+				</test>
+				<let>
+					<clip pos="1" side="tl" part="lem"/>
+					<lit v="puslèu"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
+	
 	<def-macro n="envia_pas" npar="1">
 		<choose>
 			<when>
@@ -526,7 +543,7 @@
 						<tags>
 							<tag><lit-tag v="adv"/></tag>
 						</tags>
-						<lu>   
+						<lu>
 							<lit v="pas"/>
 							<lit-tag v="adv"/>
 						</lu>
@@ -4480,6 +4497,115 @@
 		</action>
 	</rule> 
 	
+	<rule comment="REGLA: ADV ADJECTIU">
+		<pattern>
+			<pattern-item n="adv"/>
+			<pattern-item n="adjec"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="adv">
+					<tags>
+						<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/>
+						<clip pos="1" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="adj" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SA"/></tag>
+						<tag><clip pos="2" side="tl" part="gen"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>   
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_adj"/>
+						<clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+						<clip pos="2" side="tl" part="gen_mf"/>	 
+						<clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+						<clip pos="2" side="tl" part="nbr_sp"/>	 
+						<clip pos="2" side="tl" part="lemq"/>
+					</lu> 
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule> 
+	
+	<rule comment="REGLA: ADV ADJECTIU">
+		<pattern>
+			<pattern-item n="adv"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="adjec"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
+				<with-param pos="2"/>
+			</call-macro>
+			<out>
+				<chunk name="adv">
+					<tags>
+						<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/>
+						<clip pos="1" side="tl" part="a_adv"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" side="tl" part="lem"/>
+						<clip pos="2" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="adj" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SA"/></tag>
+						<tag><clip pos="3" side="tl" part="gen"/></tag>
+						<tag><clip pos="3" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>   
+						<clip pos="3" side="tl" part="lemh"/> 
+						<clip pos="3" side="tl" part="a_adj"/>
+						<clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+						<clip pos="3" side="tl" part="gen_mf"/>	 
+						<clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+						<clip pos="3" side="tl" part="nbr_sp"/>	 
+						<clip pos="3" side="tl" part="lemq"/>
+					</lu> 
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule> 
+	
 	<rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
 		<pattern>
 			<pattern-item n="det"/>
@@ -4556,6 +4682,9 @@
 			<pattern-item n="verbpers"/>
 		</pattern>
 		<action>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
 			<call-macro n="f_imp">
 				<with-param pos="2"/>
 			</call-macro>
@@ -4757,6 +4886,9 @@
 		</pattern>
 		<action>
 			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
 			</call-macro>
 			<choose aversion="oc-ca">
@@ -5963,6 +6095,9 @@
 		</pattern>
 		<action>
 			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
 			</call-macro>
 			<choose aversion="oc-ca">
@@ -9638,6 +9773,9 @@
 			<pattern-item n="inf"/>
 		</pattern>
 		<action>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
@@ -9828,6 +9966,9 @@
 		</pattern>
 		<action>
 			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
 			</call-macro>
 			<choose>
@@ -10029,7 +10170,7 @@
 		</action>
 	</rule>
 
-	<rule comment="REGLA: pro pro anar a INF" >
+	<rule comment="REGLA: adv pro pro anar a INF" >
 		<pattern>
 			<pattern-item n="adv"/>
 			<pattern-item n="prnpro"/>
@@ -10041,6 +10182,9 @@
 		<action>
 			<call-macro n="firstWord">
 				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -10272,6 +10416,9 @@
 			<pattern-item n="prnenc"/>
 		</pattern>
 		<action>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
@@ -10489,6 +10636,9 @@
 			<pattern-item n="prnenc"/>
 		</pattern>
 		<action>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
@@ -10721,55 +10871,64 @@
 			<pattern-item n="adv_preadv"/>
 		</pattern>
 		<action>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
-		</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
-						<in caseless="yes">
+						<equal>
 							<clip pos="1" side="tl" part="lem"/>
-							<list n="adv_neg"/>
-						</in>
+							<lit v="ne"/>
+						</equal>
 					</test>
-					<choose>
-						<when>
-							<test>
-								<equal>
-									<clip pos="1" side="tl" part="lem"/>
-									<lit v="ne"/>
-								</equal>
-							</test>
-							<out>
-								<chunk name="no" case="caseFirstWord">
-									<tags>
-										<tag><clip pos="1" side="tl" part="a_adv"/></tag>
-										<tag><clip pos="1" side="tl" part="neg"/></tag>		
-									</tags>
-									<lu>
-										<clip pos="1" side="tl" part="lem"/>
-										<clip pos="1" side="tl" part="a_adv"/>
-									</lu>
-								</chunk>
-							</out>  
-						</when>
-						<otherwise>
-							<out>
-								<chunk name="adv_neg" case="caseFirstWord">
-									<tags>
-										<tag><clip pos="1" side="tl" part="a_adv"/></tag>
-										<tag><clip pos="1" side="tl" part="neg"/></tag>		
-									</tags>
-									<lu>
-										<clip pos="1" side="tl" part="lem"/>
-										<clip pos="1" side="tl" part="a_adv"/>
-									</lu>
-								</chunk>
-							</out>
-						</otherwise>
-					</choose>
+					<out>
+						<chunk name="no" case="caseFirstWord">
+							<tags>
+								<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+								<tag><clip pos="1" side="tl" part="neg"/></tag>		
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lem"/>
+								<clip pos="1" side="tl" part="a_adv"/>
+							</lu>
+						</chunk>
+					</out>  
 				</when>
 				<otherwise>
+					<out>
+						<chunk name="adv" case="caseFirstWord">
+							<tags>
+								<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+								<tag><clip pos="1" side="tl" part="neg"/></tag>		
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lem"/>
+								<clip pos="1" side="tl" part="a_adv"/>
+							</lu>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+			<let>
+	  		<var n="caseFirstWord"/>
+	  		<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+
+	<rule comment="ADV">
+		<pattern>
+			<pattern-item n="adv_preadv"/>
+			<pattern-item n="adv_preadv"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
 				<chunk name="adv" case="caseFirstWord">
 					<tags>
@@ -10780,10 +10939,13 @@
 						<clip pos="1" side="tl" part="lem"/>
 						<clip pos="1" side="tl" part="a_adv"/>
 					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="2" side="tl" part="lem"/>
+						<clip pos="2" side="tl" part="a_adv"/>
+					</lu>
 				</chunk>
 			</out>
-				</otherwise>
-			</choose>
 			<let>
 	  		<var n="caseFirstWord"/>
 	  		<lit v="aa"/>
