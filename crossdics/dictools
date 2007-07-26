@@ -98,15 +98,28 @@ function sort() {
 }
 
 #
-#  gather
+#  process-xincludes
 #
-function gather() {
+function process-xincludes() {
    if [ $nparams == 3 ]
    then
-      java ${java_options} $task $2 $3
-      echo "Gathered: $3"
+      java ${java_options} gather $2 $3
+      echo "Dictionary: $3"
    else
-      echo "Usage: dictools gather <dic> <out.dix>"
+      echo "Usage: dictools process-xincludes <dic> <out.dix>"
+   fi
+}
+
+#
+# get-bil-omegawiki
+#
+function get-bil-omegawiki() {
+   if [ $nparams == 4 ]
+   then
+      java ${java_options} $task $2 $3 $4
+      echo "Dictionary: $4"
+   else
+      echo "Usage: dictools get-bil-omegawiki <source-lang> <target-lang> <dic-out>"
    fi
 }
 
@@ -120,6 +133,7 @@ function show_help() {
    echo "    format:       formats a dictionary."   
    echo "    merge-bil:    merges two bilingual dictionaries."
    echo "    merge-morph:  merges two morphological dictionaries."
+   echo "    process-xincludes: processes all xincludes in the dictionary and expands them."
    echo "    reverse-bil:  reverses a bilingual dictionary."
    echo "    sort:         sorts (and groups by category) a dictionary."
    exit 127

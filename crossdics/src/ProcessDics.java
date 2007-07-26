@@ -18,6 +18,7 @@
  * 02111-1307, USA.
  */
 
+import misc.GetTranslation;
 import dics.elements.utils.Msg;
 import dictools.DicConsistent;
 import dictools.DicCross;
@@ -184,6 +185,17 @@ public class ProcessDics {
 		DicGather dicGather = new DicGather(arguments[1], arguments[2]);
 		// dicGather.setArguments(arguments);
 		dicGather.doGather();
+	    }
+	}
+
+	if (getAction().equals("get-bil-omegawiki")) {
+	    if (getArguments().length != 4) {
+		msg.err("Usage: java ProcessDics get-bil-omegawiki <source-lang> <target-lang> <dic-out>");
+		System.exit(-1);
+	    } else {
+		GetTranslation gt = new GetTranslation(arguments[1],arguments[2]);
+		gt.setOutFileName(arguments[3]);
+		gt.printDictionary();
 	    }
 	}
 
