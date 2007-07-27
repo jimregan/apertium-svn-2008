@@ -130,7 +130,7 @@
 
   <section-rules>
     
-    <rule> <!-- REGLA: SN-->
+    <rule> <!-- REGLA: SN (si es GD y no se tiene más información, se asignará masculino-->
       <pattern>
 	<pattern-item n="SN"/>
       </pattern>
@@ -146,6 +146,20 @@
 	    <let>
 	      <clip pos="1" part="tipus_det"/>
 	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
 	    </let>
 	  </when>
 	</choose>
@@ -215,6 +229,20 @@
 	    <let>
 	      <clip pos="1" part="tipus_det"/>
 	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
 	    </let>
 	  </when>
 	</choose>
