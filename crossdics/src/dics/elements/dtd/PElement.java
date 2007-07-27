@@ -117,4 +117,14 @@ public class PElement extends Element {
 	dos.writeBytes(tab(3) + "</" + getTagName() + ">\n");
     }
 
+    /**
+     * 
+     */
+    public final void printXML1Line(final DataOutputStream dos) throws IOException {
+	dos.writeBytes("<" + getTagName() + ">");
+	l.printXML1Line(dos);
+	r.printXML1Line(dos);
+	dos.writeBytes("</" + getTagName() + ">");
+    }
+
 }

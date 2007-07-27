@@ -18,6 +18,7 @@
  * 02111-1307, USA.
  */
 
+import misc.DicFormatE1Line;
 import misc.GetTranslation;
 import dics.elements.utils.Msg;
 import dictools.DicConsistent;
@@ -196,6 +197,16 @@ public class ProcessDics {
 		GetTranslation gt = new GetTranslation(arguments[1],arguments[2]);
 		gt.setOutFileName(arguments[3]);
 		gt.printDictionary();
+	    }
+	}
+
+	if (getAction().equals("format-1line")) {
+	    if (getArguments().length != 3) {
+		msg.err("Usage: java ProcessDics format-1line <dic> <dic-out>");
+		System.exit(-1);
+	    } else {
+		DicFormatE1Line dicFormat = new DicFormatE1Line(arguments[1]);
+		dicFormat.printXML(arguments[2]);
 	    }
 	}
 

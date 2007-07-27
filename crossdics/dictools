@@ -124,6 +124,20 @@ function get-bil-omegawiki() {
 }
 
 #
+# format-1line
+#
+function format-1line() {
+   if [ $nparams == 3 ]
+   then
+      java ${java_options} $task $2 $3
+      echo "Dictionary: $3"
+   else
+      echo "Usage: dictools format-1line <dic> <dic-out>"
+   fi
+}
+
+
+#
 #	show_help
 #
 function show_help() {

@@ -170,6 +170,33 @@ public class ContentElement extends Element implements Cloneable {
     }
 
     /**
+     * 
+     */
+    protected void printXML1Line(final DataOutputStream dos) throws IOException {
+	if (getTagName() != null) {
+	    dos.writeBytes("<" + getTagName() + ">");
+	} else {
+	    dos.writeBytes("<!-- error tagname -->");
+	}
+	if (getChildren() != null) {
+	    for (final Element e : getChildren()) {
+		if (e != null) {
+		    e.printXML(dos);
+		}
+	    }
+	}
+	String c = "";
+	if (getComments() != null) {
+	    c = getComments();
+	}
+	if (getTagName() != null) {
+	    dos.writeBytes("</" + getTagName() + ">" + c + "");
+	} else {
+	    dos.writeBytes("<!-- error tagname -->\n");
+	}
+    }
+
+    /**
          * 
          * @param value
          */

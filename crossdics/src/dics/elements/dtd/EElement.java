@@ -451,6 +451,41 @@ public class EElement extends Element implements Cloneable,
     }
 
     /**
+     * 
+     */
+    public final void printXML1Line(final DataOutputStream dos) throws IOException {
+	String attributes = "";
+	if (r != null) {
+	    attributes += " r=\"" + r + "\"";
+	}
+	if (lm != null) {
+	    attributes += " lm=\"" + lm + "\"";
+	}
+	if (a != null) {
+	    attributes += " a=\"" + a + "\"";
+	}
+	if (c != null) {
+	    attributes += " c=\"" + c + "\"";
+	}
+	if (comments != null) {
+	    dos.writeBytes(tab(2) + "<!-- \n");
+	    dos.writeBytes(comments);
+	    if (!isCommon()) {
+		dos.writeBytes(tab(2)
+			+ "esta entrada no aparece en el otro morfolgico\n");
+	    }
+	    dos.writeBytes(tab(2) + "-->\n");
+	}
+	dos.writeBytes("<e" + attributes + ">");
+	if (children != null) {
+	    for (final Element e : children) {
+		e.printXML1Line(dos);
+	    }
+	}
+	dos.writeBytes("</e>\n");
+    }
+
+    /**
          * 
          * @param side
          * @return
