@@ -58,6 +58,10 @@
       <cat-item tags="vblex.pp"/>
     </def-cat>
 
+ <def-cat n="ger">
+      <cat-item tags="vblex.ger"/>
+    </def-cat>
+
     <def-cat n="prntn">
       <cat-item tags="prn.tn.*"/>
     </def-cat>
@@ -284,6 +288,8 @@
     <def-var n="nombre"/>
     <def-var n="chunk"/>
     <def-var n="tipusdet"/>
+    <def-var n="procl"/>
+    <def-var n="procltags"/>
   </section-def-vars>
 
 
@@ -1258,10 +1264,16 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
   <choose>
 	  <when>
 	    <test>
-	      <equal caseless="yes">
-		<clip pos="1" side="sl" part="lem"/> 
-		<lit v="hura"/>
-	      </equal>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="hura"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="ber"/>
+		</equal>
+	      </or>
 	    </test>
 	    <let>	      
 	      <clip pos="1" side="tl" part="lem"/> 
@@ -1363,6 +1375,18 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="SPGEN"/>
 	    </let>
 	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="lem"/> 
+		<lit v="k"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="chunk"/>
+	      <lit-tag v="SN"/>
+	    </let>
+	  </when>
 	  <otherwise>
 	    <let>
 	      <var n="chunk"/>
@@ -1407,6 +1431,463 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </otherwise>
 	</choose>
 </def-macro>
+
+
+
+<def-macro n="verbal_flex" npar="1"><!--Determina la persona del verbo y la presencia de pronombres proclíticos -->
+	<choose>
+	  <when>
+	    <test><!--si es verbo NOR-NORI o NOR-NORI-NORK, envía pronombre de NORI. -->
+	      <not>
+		<equal>
+		  <clip pos="1" side="sl" part="nori"/>
+		  <lit v=""/>
+		</equal>
+	      </not>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nori"/>
+		    <lit-tag v="NI_NI"/>
+		  </equal>
+		</test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="me"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p1.mf.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <or>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nori"/>
+		      <lit-tag v="NI_ZU"/>
+		    </equal>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nori"/>
+		      <lit-tag v="NI_HI"/>
+		    </equal>
+		  </or>
+		</test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="te"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p2.mf.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nori"/>
+		      <lit-tag v="NI_HU"/>
+		    </equal>
+		  </test>
+		  <let>
+		    <var n="procl"/>
+		    <lit v="le"/>
+		  </let>
+		  <let>
+		    <var n="procltags"/>
+		    <lit-tag v="prn.pro.p3.mf.sg"/>
+		  </let>
+	      </when>
+	      <when>
+		<test>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nori"/>
+		      <lit-tag v="NI_GU"/>
+		    </equal>
+		  </test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="nos"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p1.mf.pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nori"/>
+		      <lit-tag v="NI_ZK"/>
+		    </equal>
+		  </test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="os"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p2.mf.pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nori"/>
+		      <lit-tag v="NI_HK"/>
+		    </equal>
+		  </test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="le"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p3.mf.pl"/>
+		</let>
+	      </when>
+	    </choose>
+	    <out>
+	      <chunk name="procl" case="caseFirstWord">
+		<tags>
+		  <tag><var n="procltags"/></tag>
+		</tags>
+		<lu>
+		  <var n="procl"/>
+		  <var n="procltags"/>
+		</lu>
+	      </chunk>
+	      <b/> <!-- pingui falla -->
+	    </out>
+	  </when>
+	  <when>
+	    <test><!--Si se trata de un verbo NOR-NORK cuyo NOR no sea 3a sg, envía proclítico con valor de NOR -->
+	      <and>
+		<not>
+		  <equal>
+		    <clip pos="1" side="sl" part="nork"/>
+		    <lit v=""/>
+		  </equal>
+		</not>
+		<not>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_HU"/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_NI"/>
+		  </equal>
+		</test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="me"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p1.mf.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <or>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nor"/>
+		      <lit-tag v="NR_ZU"/>
+		    </equal>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nor"/>
+		      <lit-tag v="NR_HI"/>
+		    </equal>
+		  </or>
+		</test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="te"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p2.mf.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nor"/>
+		      <lit-tag v="NR_HU"/>
+		    </equal>
+		  </test>
+		  <let>
+		    <var n="procl"/>
+		    <lit v="le"/>
+		  </let>
+		  <let>
+		    <var n="procltags"/>
+		    <lit-tag v="prn.pro.p3.mf.sg"/>
+		  </let>
+	      </when>
+	      <when>
+		<test>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nor"/>
+		      <lit-tag v="NR_GU"/>
+		    </equal>
+		  </test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="nos"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p1.mf.pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nor"/>
+		      <lit-tag v="NR_ZK"/>
+		    </equal>
+		  </test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="os"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p2.mf.pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		    <equal>		    
+		      <clip pos="1" side="sl" part="nor"/>
+		      <lit-tag v="NR_HK"/>
+		    </equal>
+		  </test>
+		<let>
+		  <var n="procl"/>
+		  <lit v="le"/>
+		</let>
+		<let>
+		  <var n="procltags"/>
+		  <lit-tag v="prn.pro.p3.mf.pl"/>
+		</let>
+	      </when>
+	    </choose>
+	    <out>
+	      <chunk name="procl" case="caseFirstWord">
+		<tags>
+		  <tag><var n="procltags"/></tag>
+		</tags>
+		<lu>
+		  <var n="procl"/>
+		  <var n="procltags"/>
+		</lu>
+	      </chunk>
+	      <b/>
+	    </out>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal>
+		  <clip pos="1" side="sl" part="nork"/>
+		  <lit v=""/>
+		</equal>
+	      </not>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nork"/>
+		    <lit-tag v="NK_NI"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p1.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nork"/>
+		    <lit-tag v="NK_ZU"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p2.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nork"/>
+		    <lit-tag v="NK_HI"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p2.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nork"/>
+		    <lit-tag v="NK_HU"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p3.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nork"/>
+		    <lit-tag v="NK_GU"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p1.pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nork"/>
+		    <lit-tag v="NK_ZK"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p2.pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nork"/>
+		    <lit-tag v="NK_HK"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p3.pl"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	  <otherwise><!--cuando el verbo no tiene sujeto NORK -->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_NI"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p1.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_ZU"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p2.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_HI"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p2.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_HU"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p3.sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_GU"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p1.pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_ZK"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p2.pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_HK"/>
+		  </equal>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="persnbr"/>
+		  <lit-tag v="p3.pl"/>
+		</let>
+	      </when>
+	    </choose>
+	  </otherwise>  
+	    
+	</choose>
+
+	
+</def-macro>
+
 
   </section-def-macros>
 
@@ -1987,6 +2468,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<call-macro n="tipo_det">
 	  <with-param pos="3"/>
 	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="4"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -2002,9 +2486,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      </or>
 	    </test>
 	    <out> 
-	      <chunk name="det_adj_nom" case="caseFirstWord">
+	      <chunk name="pr_det_adj_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="chunk"/></tag>
 		  <tag><var n="tipusdet"/></tag>
 		  <tag><clip pos="2" side="tl" part="gen"/></tag>
 		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
@@ -2044,9 +2528,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </when>
 	  <otherwise>
 	    <out> 
-	      <chunk name="det_nom_adj" case="caseFirstWord">
+	      <chunk name="pr_det_nom_adj" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="chunk"/></tag>
 		  <tag><var n="tipusdet"/></tag>
 		  <tag><clip pos="2" side="tl" part="gen"/></tag>
 		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
@@ -2240,6 +2724,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<call-macro n="tipo_det">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="5"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -2255,9 +2742,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      </or>
 	    </test>
 	    <out> 
-	      <chunk name="det_adj_nom_adj" case="caseFirstWord">
+	      <chunk name="pr_det_adj_nom_adj" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="chunk"/></tag>
 		  <tag><var n="tipusdet"/></tag>
 		  <tag><clip pos="2" side="tl" part="gen"/></tag>
 		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
@@ -2305,9 +2792,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </when>
 	  <otherwise>
 	    <out> 
-	      <chunk name="det_nom_adj_adj" case="caseFirstWord">
+	      <chunk name="pr_det_nom_adj_adj" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="chunk"/></tag>
 		  <tag><var n="tipusdet"/></tag>
 		  <tag><clip pos="2" side="tl" part="gen"/></tag>
 		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
@@ -2446,10 +2933,13 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<call-macro n="tipo_det">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="5"/>
+	</call-macro>
 	<out> 
 	  <chunk name="pr_d_n_pr_n" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="chunk"/></tag>
 	      <tag><var n="tipusdet"/></tag>
 	      <tag><clip pos="3" side="tl" part="gen"/></tag>
 	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
@@ -2586,10 +3076,13 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<call-macro n="tipo_det">
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="6"/>
+	</call-macro>
 	<out> 
 	  <chunk name="pr_d_n_pr_d_n" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="chunk"/></tag>
 	      <tag><var n="tipusdet"/></tag>
 	      <tag><clip pos="4" side="tl" part="gen"/></tag>
 	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
@@ -3077,10 +3570,13 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<call-macro n="tipo_det">
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="6"/>
+	</call-macro>
 	<out> 
-	  <chunk name="d_num_pr_d_n" case="caseFirstWord">
+	  <chunk name="pr_d_num_pr_d_n" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="chunk"/></tag>
 	      <tag><var n="tipusdet"/></tag>
 	      <tag><lit-tag v="f"/></tag>
 	      <tag><clip pos="5" side="tl" part="nbr"/></tag>
@@ -3786,6 +4282,11 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="vbsint"/>
       </pattern>
       <action>
+	<call-macro n="verbal_flex">
+	  <with-param pos="1"/>
+	</call-macro>
+
+<!--
 	<choose>
 	  <when>
 	    <test>
@@ -3883,7 +4384,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      </when>
 	    </choose>
 	  </when>
-	  <otherwise><!--cuando el verbo no tiene sujeto NORK -->
+	  <otherwise><!-*-cuando el verbo no tiene sujeto NORK -*->
 	    <choose>
 	      <when>
 		<test>
@@ -3972,7 +4473,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </choose>
 	  </otherwise>  
 	    
-	</choose>
+	</choose> -->
 	<out>
 	  <chunk name="vbconj" case="caseFirstWord">
 	    <tags>
@@ -4012,193 +4513,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  <clip pos="2" side="tl" part="a_verb"/>
 	  <lit-tag v="vbhaver"/>
 	</let>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="2" side="sl" part="nork"/>
-		  <lit v=""/>
-		</equal>
-	      </not>
-	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nork"/>
-		    <lit-tag v="NK_NI"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p1.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nork"/>
-		    <lit-tag v="NK_ZU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nork"/>
-		    <lit-tag v="NK_HI"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nork"/>
-		    <lit-tag v="NK_HU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p3.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nork"/>
-		    <lit-tag v="NK_GU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p1.pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nork"/>
-		    <lit-tag v="NK_ZK"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nork"/>
-		    <lit-tag v="NK_HK"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p3.pl"/>
-		</let>
-	      </when>
-	    </choose>
-	  </when>
-	  <otherwise><!--cuando el verbo no tiene sujeto NORK -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nor"/>
-		    <lit-tag v="NR_NI"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p1.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nor"/>
-		    <lit-tag v="NR_ZU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nor"/>
-		    <lit-tag v="NR_HI"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nor"/>
-		    <lit-tag v="NR_HU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p3.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nor"/>
-		    <lit-tag v="NR_GU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p1.pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nor"/>
-		    <lit-tag v="NR_ZK"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="2" side="sl" part="nor"/>
-		    <lit-tag v="NR_HK"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <lit-tag v="p3.pl"/>
-		</let>
-	      </when>
-	    </choose>
-	  </otherwise>  
-	    
-	</choose>
+	<call-macro n="verbal_flex">
+	  <with-param pos="2"/>
+	</call-macro>
+
 	<choose>
 	  <when>
 	    <test>
@@ -4233,7 +4551,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      </chunk>
 	    </out>
 	  </when>
-	  <when><!--regla a mi fer, falta fbcond i decidir les tags del chunk i com s'envien les lu -->
+	  <when>
 	    <test>
 	      <equal>
 		<clip pos="2" side="tl" part="temps"/>
@@ -4269,6 +4587,97 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</choose>
       </action>
 </rule>
+
+<!--
+<rule comment="REGLA: VERB">pingui falta ferho tot
+      <pattern>
+	<pattern-item n="ger"/>
+	<pattern-item n="vbsint"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="2" side="tl" part="lem"/>
+	  <lit v="haber"/>
+	</let>
+	<let>
+	  <clip pos="2" side="tl" part="a_verb"/>
+	  <lit-tag v="vbhaver"/>
+	</let>
+	<call-macro n="verbal_flex">
+	  <with-param pos="2"/>
+	</call-macro>
+
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		 <clip pos="2" side="tl" part="temps"/>
+		 <lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk name="vbconj" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+		  <tag><clip pos="2" side="sl" part="nor"/></tag>
+		  <tag><clip pos="2" side="sl" part="nori"/></tag>
+		  <tag><clip pos="2" side="sl" part="nork"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="2" side="tl" part="lemh"/>
+		  <clip pos="2" side="tl" part="a_verb"/>
+		  <clip pos="2" side="tl" part="temps"/>
+		  <clip pos="2" side="tl" part="persnbr"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps"/>
+		  <lit-tag v="m.sg"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>	      
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="ifi"/>
+	    </let>
+	    <out>
+	      <chunk name="vbconj" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+		  <tag><clip pos="2" side="sl" part="nor"/></tag>
+		  <tag><clip pos="2" side="sl" part="nori"/></tag>
+		  <tag><clip pos="2" side="sl" part="nork"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps"/>
+		  <clip pos="2" side="tl" part="persnbr"/>
+		</lu>
+	      </chunk>
+	    </out>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	  </when>
+	</choose>
+      </action>
+</rule>
+-->
 
 
 
