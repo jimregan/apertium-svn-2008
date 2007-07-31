@@ -407,8 +407,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      </otherwise>
 	    </choose>
 	  </when>
-	</choose>
-	<choose>
+  </choose>
+  <choose>
 	  <when>
 	    <test>
 	      <equal>
@@ -437,6 +437,31 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="2" side="tl" part="nbr"/> 
 		</let>
 	      </when>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="2" side="tl" part="nbr"/> 
+		      <lit-tag v="sp"/>
+		    </equal>
+		    <or>
+		      <equal>
+			<clip pos="2" side="sl" part="nbr"/> 
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="2" side="sl" part="nbr"/> 
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </and>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="nbr"/> 
+		  <clip pos="2" side="sl" part="nbr"/> 
+		</let>
+	      </when>
+
 	      <when>
 		<test>
 		  <equal>		    
@@ -584,9 +609,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		<lit-tag v="ND"/>
 	      </equal>
 	    </test>
-	    <choose>
+	    <choose>	      
 	      <when>
-		<test><!--cuando 2 tienen número sg o pl -->
+		<test><!--cuando 2 tiene número sg o pl -->
 		  <not>
 		    <or>
 		      <equal>		    
@@ -603,6 +628,30 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		<let>	<!--asigna el nbr de 2 a 1 -->	  
 		  <clip pos="1" side="tl" part="nbr"/> 
 		  <clip pos="2" side="tl" part="nbr"/> 
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="2" side="tl" part="nbr"/> 
+		      <lit-tag v="sp"/>
+		    </equal>
+		    <or>
+		      <equal>
+			<clip pos="2" side="sl" part="nbr"/> 
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="2" side="sl" part="nbr"/> 
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </and>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="nbr"/> 
+		  <clip pos="2" side="sl" part="nbr"/> 
 		</let>
 	      </when>
 	      <when>
@@ -708,10 +757,45 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		</choose>
 	      </when>
 	    </choose>
-
-
-
 	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="3" side="tl" part="nbr"/> 
+		      <lit-tag v="sp"/>
+		    </equal>
+		    <or>
+		      <equal>
+			<clip pos="3" side="sl" part="nbr"/> 
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="3" side="sl" part="nbr"/> 
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </and>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="nbr"/> 
+		  <clip pos="3" side="sl" part="nbr"/> 
+		</let>
+		<choose>
+		  <when>
+		    <test>
+		      <equal>
+			<clip pos="2" side="tl" part="nbr"/> 
+			<lit-tag v="ND"/>
+		      </equal>
+		    </test>
+		    <let>		  
+		      <clip pos="2" side="tl" part="nbr"/> 
+		      <clip pos="3" side="sl" part="nbr"/> 
+		    </let>
+		  </when>
+		</choose>
+	      </when>
 	      <when>
 		<test><!--cuando 3 es sp en origen (determinantes indefinidos) -->
 		  <equal>		    
@@ -1559,7 +1643,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <var n="procltags"/>
 		</lu>
 	      </chunk>
-	      <b/> <!-- pingui falla -->
+	     <b/>
 	    </out>
 	  </when>
 	  <when>
@@ -1893,7 +1977,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
   <section-rules>
 
-    <!--********************************* REGLES DE SN ***************************************************** -->
+    <!--********************************* REGLES DE SN
+         ***************************************************** -->
 
 
    <rule comment="REGLA: NOM ( per a col·locar la cua en les multiparaules amb g i traduir noms sense determinant">
@@ -1957,7 +2042,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="nbr"/>
 	    </lu>
 	    <b/>
 	    <lu> 
@@ -2019,7 +2104,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="nbr"/>
 		</lu>
 		<b pos="1"/>	
 		<lu> 
@@ -2058,7 +2143,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -2164,7 +2249,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="nbr"/>
 	    </lu>
 	    <b/>
 	    <lu> 
@@ -2235,7 +2320,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="nbr"/>
 	    </lu>	    
 	    <b/>
 	    <lu> 
@@ -2279,7 +2364,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="nbr"/>
 	    </lu>	    
 	    <b/>
 	    <lu> 
@@ -2385,7 +2470,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="nbr"/>
 		</lu>
 		<b pos="1"/>	
 		<lu> 
@@ -2423,7 +2508,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="nbr"/>
 		</lu>
 		<b pos="1"/>
 		<lu> 
@@ -2503,7 +2588,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="nbr"/>
 		</lu>
 		<b/>	
 		<lu> 
@@ -2545,7 +2630,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="nbr"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -2620,7 +2705,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="4" side="tl" part="GD" link-to="3"/>
 		  <clip pos="4" side="tl" part="mf"/>
-		  <clip pos="4" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="4" side="tl" part="nbr"/>
 		</lu>
 		<b pos="1"/>	
 		<lu> 
@@ -2666,7 +2751,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="4" side="tl" part="GD" link-to="3"/>
 		  <clip pos="4" side="tl" part="mf"/>
-		  <clip pos="4" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="4" side="tl" part="nbr"/>
 		</lu>
 		<b pos="1"/>	
 		
@@ -2759,7 +2844,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="4" side="tl" part="GD" link-to="3"/>
 		  <clip pos="4" side="tl" part="mf"/>
-		  <clip pos="4" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="4" side="tl" part="nbr"/>
 		</lu>
 		<b pos="2"/>	
 		<lu> 
@@ -2809,7 +2894,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="2"/> 
 		  <clip pos="4" side="tl" part="GD" link-to="3"/>
 		  <clip pos="4" side="tl" part="mf"/>
-		  <clip pos="4" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="4" side="tl" part="nbr"/>
 		</lu>
 		<b pos="2"/>		
 		<lu> 
@@ -2881,7 +2966,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -2954,7 +3039,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="nbr"/>
 	    </lu>
 	    <b/>
 	    <lu> 
@@ -3020,7 +3105,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -3097,7 +3182,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="nbr"/>
 	    </lu>
 	    <b/>
 	    <lu> 
@@ -3182,7 +3267,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="6" side="tl" part="GD" link-to="3"/>
 	      <clip pos="6" side="tl" part="mf"/>
-	      <clip pos="6" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="6" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -3237,7 +3322,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="6" side="tl" part="GD" link-to="3"/>
 	      <clip pos="6" side="tl" part="mf"/>
-	      <clip pos="6" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="6" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	   
@@ -3323,7 +3408,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="7" side="tl" part="GD" link-to="3"/>
 	      <clip pos="7" side="tl" part="mf"/>
-	      <clip pos="7" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="7" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -3413,7 +3498,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="8" side="tl" part="GD" link-to="3"/>
 	      <clip pos="8" side="tl" part="mf"/>
-	      <clip pos="8" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="8" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -3461,6 +3546,296 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</out>
       </action>
  </rule>
+
+
+<rule comment="REGLA: NUM + NOM (bi emakume - dos mujeres (pl))">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="2" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>		      		
+		      <clip pos="2" side="tl" part="gen"/>
+		      <lit-tag v="mf"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>	  
+	<out> 
+	  <chunk name="num_n" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.num"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_num"/> 
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="GD" link-to="3"/>
+	      <clip pos="2" side="tl" part="mf"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+<rule comment="REGLA: NUM + NOM + DET (bi emakumeak - las dos mujeres">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_det">
+	  <with-param pos="3"/>
+	</call-macro>
+	<let>
+	  <clip pos="2" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<let>
+	  <clip pos="3" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>		      		
+		      <clip pos="2" side="tl" part="gen"/>
+		      <lit-tag v="mf"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>
+	<out> 
+	  <chunk name="d_num_n" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="tipusdet"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="lem"/> 
+	      <clip pos="3" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="3" side="tl" part="GD" link-to="3"/>
+	      <clip pos="3" side="tl" part="mf"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_num"/> 
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="GD" link-to="3"/>
+	      <clip pos="2" side="tl" part="mf"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>	
+      </action>
+</rule>
+
+
+
+
+
+
+<rule comment="REGLA: NUM + NOM + DET + POST (bi emakumeak - las dos mujeres (pl) (cuando tagger se equivoca y elige ergativo en vez de determinante plural)
+                                  bost urtean - en () cinco años">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_det">
+	  <with-param pos="3"/>
+	</call-macro>
+	<let>
+	  <clip pos="2" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<let>
+	  <clip pos="3" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>		      		
+		      <clip pos="2" side="tl" part="gen"/>
+		      <lit-tag v="mf"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="sl" part="lem"/>
+		<lit v="k"/>
+	      </equal>
+	    </test>
+	    <out> 
+	      <chunk name="d_num_n" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipusdet"/></tag>
+		  <tag><clip pos="2" side="tl" part="gen"/></tag>
+		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="3" side="tl" part="lem"/> 
+		  <clip pos="3" side="tl" part="a_det"/> 
+		  <lit-tag v="2"/> 
+		  <clip pos="3" side="tl" part="GD" link-to="3"/>
+		  <clip pos="3" side="tl" part="mf"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_num"/> 
+		  <clip pos="1" side="tl" part="GD" link-to="3"/>
+		  <clip pos="1" side="tl" part="mf"/>
+		  <clip pos="1" side="tl" part="nbr"/>
+		</lu>
+		<b/>
+		<lu> 
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="GD" link-to="3"/>
+		  <clip pos="2" side="tl" part="mf"/>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <otherwise>
+	    
+	    <out> 
+	      <chunk name="pr_d_num_n" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipusdet"/></tag>
+		  <tag><clip pos="2" side="tl" part="gen"/></tag>
+		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="4" side="tl" part="whole"/> 
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="3" side="tl" part="lem"/> 
+		  <clip pos="3" side="tl" part="a_det"/> 
+		  <lit-tag v="2"/> 
+		  <clip pos="3" side="tl" part="GD" link-to="3"/>
+		  <clip pos="3" side="tl" part="mf"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		</lu>
+		<b/>
+		<lu>
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_num"/> 
+		  <clip pos="1" side="tl" part="GD" link-to="3"/>
+		  <clip pos="1" side="tl" part="mf"/>
+		  <clip pos="1" side="tl" part="nbr"/>
+		</lu>
+		<b/>
+		<lu> 
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="GD" link-to="3"/>
+		  <clip pos="2" side="tl" part="mf"/>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>
+      </action>
+</rule>
 
 
 <rule comment="REGLA: NUM + DET (zortziak - las ocho. Se pone en femenino porque casi siempre es indicación horaria)">
@@ -3815,7 +4190,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="6" side="tl" part="GD" link-to="3"/>
 	      <clip pos="6" side="tl" part="mf"/>
-	      <clip pos="6" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="6" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -3890,7 +4265,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="7" side="tl" part="GD" link-to="3"/>
 	      <clip pos="7" side="tl" part="mf"/>
-	      <clip pos="7" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="7" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -4002,7 +4377,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -4065,7 +4440,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -4156,7 +4531,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="nbr"/>
 	    </lu>
 	    <b/>
 	    <lu> 
@@ -4250,7 +4625,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="nbr"/>
 	    </lu>
 	    <b/>
 	    <lu>
@@ -4588,96 +4963,66 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
       </action>
 </rule>
 
-<!--
-<rule comment="REGLA: VERB">pingui falta ferho tot
+
+<rule comment="REGLA: VERB">
       <pattern>
 	<pattern-item n="ger"/>
 	<pattern-item n="vbsint"/>
       </pattern>
-      <action>
-	<let>
-	  <clip pos="2" side="tl" part="lem"/>
-	  <lit v="haber"/>
-	</let>
-	<let>
-	  <clip pos="2" side="tl" part="a_verb"/>
-	  <lit-tag v="vbhaver"/>
-	</let>
+      <action>	
 	<call-macro n="verbal_flex">
 	  <with-param pos="2"/>
 	</call-macro>
-
 	<choose>
 	  <when>
 	    <test>
 	      <equal>
-		 <clip pos="2" side="tl" part="temps"/>
+		 <clip pos="2" side="sl" part="temps"/>
 		 <lit-tag v="pri"/>
 	      </equal>
 	    </test>
-	    <out>
-	      <chunk name="vbconj" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="SV"/></tag>
-		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="2" side="tl" part="persnbr"/></tag>
-		  <tag><clip pos="2" side="sl" part="nor"/></tag>
-		  <tag><clip pos="2" side="sl" part="nori"/></tag>
-		  <tag><clip pos="2" side="sl" part="nork"/></tag>
-		</tags>
-		<lu>
-		  <clip pos="2" side="tl" part="lemh"/>
-		  <clip pos="2" side="tl" part="a_verb"/>
-		  <clip pos="2" side="tl" part="temps"/>
-		  <clip pos="2" side="tl" part="persnbr"/>
-		</lu>
-		<b pos="1"/>
-		<lu>
-		  <clip pos="1" side="tl" part="lemh"/>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <lit-tag v="m.sg"/>
-		</lu>
-	      </chunk>
-	    </out>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
 	  </when>
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" side="tl" part="temps"/>
-		<lit-tag v="pii"/>
+		 <clip pos="2" side="sl" part="temps"/>
+		 <lit-tag v="pii"/>
 	      </equal>
 	    </test>
-	    <let>	      
+	    <let>
 	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="ifi"/>
+	      <lit-tag v="pii"/>
 	    </let>
-	    <out>
-	      <chunk name="vbconj" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="SV"/></tag>
-		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="2" side="tl" part="persnbr"/></tag>
-		  <tag><clip pos="2" side="sl" part="nor"/></tag>
-		  <tag><clip pos="2" side="sl" part="nori"/></tag>
-		  <tag><clip pos="2" side="sl" part="nork"/></tag>
-		</tags>
-		<lu>
-		  <clip pos="1" side="tl" part="lemh"/>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <clip pos="2" side="tl" part="persnbr"/>
-		</lu>
-	      </chunk>
-	    </out>
-	    <call-macro n="f_bcond">
-	      <with-param pos="1"/>
-	    </call-macro>
 	  </when>
-	</choose>
+	</choose>	    
+	<out>
+	  <chunk name="vbconj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="2" side="sl" part="nor"/></tag>
+	      <tag><clip pos="2" side="sl" part="nori"/></tag>
+	      <tag><clip pos="2" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="persnbr"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	</call-macro>
       </action>
 </rule>
--->
+
 
 
 

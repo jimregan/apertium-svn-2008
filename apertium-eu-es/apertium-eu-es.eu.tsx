@@ -298,5 +298,9 @@
 
  </enforce-rules> -->
 
+  <preferences><!--nago, etc. -->
+   <prefer tags="vbsint.pri.*"/>
+   <prefer tags="vbsint.pii.*"/>
+  </preferences>
 
 </tagger>
