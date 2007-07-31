@@ -48,9 +48,10 @@
 					echo $description[$i];
 				}
 				}
-				
-				
 			}
 		?>
 	</p>
+	
 </div>
+
+

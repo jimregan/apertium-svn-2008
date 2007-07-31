@@ -29,7 +29,7 @@ function printLanguageLink($code, $text, $url, $newLang) {
 		//printLanguageLink("nl","nederlands (	dutch)", $url, $newLang, $currentLang);
 		printLanguageLink("oc","occit&agrave;", $url, $newLang, $currentLang);
 		printLanguageLink("pt","portugu&ecirc;s", $url, $newLang, $currentLang);
-		//printLanguageLink("ro","rom&acirc;nă", $url, $newLang, $currentLang);
+		printLanguageLink("ro","rom&acirc;nă", $url, $newLang, $currentLang);
 		//printLanguageLink("sh","cрпскохрватски / srpskohrvatski (serbo-croatian)", $url, $newLang, $currentLang);
 		//printLanguageLink("sv","svenska (swedish)", $url, $newLang, $currentLang);
 		//printLanguageLink("tg","тоҷикӣ (tajik)", $url, $newLang, $currentLang);		
