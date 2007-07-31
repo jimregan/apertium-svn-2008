@@ -297,6 +297,7 @@
 
     <def-attr n="a_det">
       <attr-item tags="det.dem"/>
+      <attr-item tags="detnt"/>
       <attr-item tags="det.ind"/>
       <attr-item tags="det.def"/>
       <attr-item tags="det.pos"/>
@@ -351,7 +352,18 @@
       <attr-item tags="rel.adv"/>
     </def-attr>
 
-    <def-attr n="tipus_prn">
+    <def-attr n="tipus_prn_chunk">
+      <attr-item tags="subj"/>
+      <attr-item tags="rel"/>
+      <attr-item tags="rel.adv"/>
+      <attr-item tags="rel.nn"/>
+       <attr-item tags="obj"/>
+      <attr-item tags="tn"/>
+      <attr-item tags="itg"/>
+      <attr-item tags="pos"/>
+    </def-attr>
+
+     <def-attr n="tipus_prn">
       <attr-item tags="subj"/>
       <attr-item tags="rel"/>
       <attr-item tags="rel.adv"/>
@@ -10624,7 +10636,7 @@
 				<chunk name="prnsubj" case="caseFirstWord">
 					<tags>
 						<tag><lit-tag v="SN"/></tag>
-						<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+						<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
 <!-- 				<tag><clip pos="1" side="tl" part="pers"/></tag> -->
 						<tag><clip pos="1" side="tl" part="gen"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
@@ -10663,7 +10675,7 @@
 			<chunk name="prnitg" case="caseFirstWord">
 			<tags>
 				<tag><lit-tag v="SN"/></tag>
-				<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+				<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
 				<tag><clip pos="1" side="tl" part="gen"/></tag>
 				<tag><clip pos="1" side="tl" part="nbr"/></tag>
 			</tags>
@@ -10698,7 +10710,7 @@
 			<chunk name="rel" case="caseFirstWord">
 			<tags>
 				<tag><lit-tag v="SN"/></tag>
-				<tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+				<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
 				<tag><clip pos="1" side="tl" part="gen"/></tag>
 				<tag><clip pos="1" side="tl" part="nbr"/></tag>
 			</tags>
