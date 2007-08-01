@@ -83,12 +83,8 @@
       <cat-item tags="DET.*"/>
     </def-cat>
 
-    <def-cat n="RELNN">
-      <cat-item tags="REL.nn.*"/>
-    </def-cat>
-
- <def-cat n="RELAN">
-      <cat-item tags="REL.an.*"/>
+ <def-cat n="rel">
+      <cat-item tags="REL.*"/>
     </def-cat>
     
     <def-cat n="NUM">
@@ -130,6 +126,10 @@
 	  <attr-item tags="ND"/>
       </def-attr>
 
+		<def-attr n="tipusrel">
+			<attr-item tags="quan"/>
+		</def-attr>
+
       <def-attr n="temps">
           <attr-item tags="inf"/>
 	  <attr-item tags="pri"/>
@@ -164,6 +164,7 @@
 
   <section-def-vars>
     <def-var n="nombre_subj"/>
+    <def-var n="tipus_rel"/>
     <def-var n="pers_subj"/>
     <def-var n="uno"/>
     <def-var n="nombre"/>
@@ -261,6 +262,54 @@
 				</out>
 			</when>
 		</choose>
+	</def-macro>
+
+	<def-macro n="dona_info" npar="1">
+		<let>
+			<var n="tipus_rel"/>
+			<lit v=""/>
+		</let>
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="tipusrel"/>
+						<lit-tag v="quan"/>
+					</equal>
+				</test>
+				<let>
+					<var n="tipus_rel"/>
+					<lit v="quan"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
+
+	<def-macro n="modifica_sv" npar="1">
+		<choose>
+			<when>
+				<test>
+					<and>
+						<equal>
+							<var n="tipus_rel"/>
+							<lit v="quan"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="temps"/>
+							<lit-tag v="prs"/>
+						</equal>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="temps"/>
+					<lit-tag v="fti"/>
+				</let>
+			</when>
+		</choose>
+		<let>
+			<var n="tipus_rel"/>
+			<lit v=""/>
+		</let>
 	</def-macro>
 
 <def-macro n="envia_pas" npar="1">
@@ -733,6 +782,42 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="partitiu" aversion="oc-ca">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+
+	<rule comment="REGLA: rel">
+		<pattern>
+			<pattern-item n="rel"/>
+		</pattern>
+		<action>
+			<call-macro n="dona_info">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+
+	<rule comment="REGLA: SV">
+		<pattern>
+			<pattern-item n="SV"/>
+		</pattern>
+		<action>
+			<call-macro n="modifica_sv">
 				<with-param pos="1"/>
 			</call-macro>
 			<out>

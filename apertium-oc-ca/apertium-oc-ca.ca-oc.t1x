@@ -450,6 +450,7 @@
   </section-def-attrs>
 	
   <section-def-vars>
+    <def-var n="tipusrel"/>
     <def-var n="nbr_pp"/>
     <def-var n="gen_pp"/>
     <def-var n="etiq_aux"/>
@@ -2982,6 +2983,27 @@
 			</otherwise>
 		</choose>
 	</def-macro>
+	
+	<def-macro n="tipus_rel" npar="1">
+		<let>
+			<var n="tipusrel"/>
+			<lit-tag v=""/>
+		</let>
+		<choose>
+			<when>
+				<test>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="quan"/>
+					</equal>
+				</test>
+				<let>
+					<var n="tipusrel"/>
+					<lit-tag v="quan"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
   
 </section-def-macros> 
 
@@ -4734,9 +4756,9 @@
 							<clip pos="2" side="tl" part="lemh"/>
 						</get-case-from>
 						<clip pos="2" side="tl" part="a_verb"/>
-						<clip pos="2" side="tl" part="temps"/>
-						<clip pos="2" side="tl" part="pers"/>
-						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="temps" link-to="3"/>
+						<clip pos="2" side="tl" part="pers" link-to="4"/>
+						<clip pos="2" side="tl" part="nbr" link-to="5"/>
 						<clip pos="2" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
@@ -4774,9 +4796,9 @@
 					</tags>
 					<lu>
 						<clip pos="2" side="tl" part="lemh"/>
-						<clip pos="2" side="tl" part="a_verb"/>
-						<clip pos="2" side="tl" part="temps"/>
-						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="a_verb" link-to="3"/>
+						<clip pos="2" side="tl" part="temps" link-to="4"/>
+						<clip pos="2" side="tl" part="pers" link-to="5"/>
 						<clip pos="2" side="tl" part="nbr"/>
 						<clip pos="2" side="tl" part="lemq"/> 
 					</lu>
@@ -4815,9 +4837,9 @@
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/> 
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
-						<clip pos="1" side="tl" part="nbr"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
+						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
@@ -5054,9 +5076,9 @@
 					<lu>
 						<clip pos="2" side="tl" part="lemh"/> 
 						<clip pos="2" side="tl" part="a_verb"/>
-						<clip pos="2" side="tl" part="temps"/>
-						<clip pos="2" side="tl" part="pers"/>
-						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="temps" link-to="3"/>
+						<clip pos="2" side="tl" part="pers" link-to="4"/>
+						<clip pos="2" side="tl" part="nbr" link-to="5"/>
 						<clip pos="2" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
@@ -5114,9 +5136,9 @@
 					<lu>
 						<clip pos="3" side="tl" part="lemh"/> 
 						<clip pos="3" side="tl" part="a_verb"/>
-						<clip pos="3" side="tl" part="temps"/>
-						<clip pos="3" side="tl" part="pers"/>
-						<clip pos="3" side="tl" part="nbr"/>
+						<clip pos="3" side="tl" part="temps" link-to="3"/>
+						<clip pos="3" side="tl" part="pers" link-to="4"/>
+						<clip pos="3" side="tl" part="nbr" link-to="5"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
@@ -5161,9 +5183,9 @@
 					<lu>
 						<clip pos="3" side="tl" part="lemh"/> 
 						<clip pos="3" side="tl" part="a_verb"/>
-						<clip pos="3" side="tl" part="temps"/>
-						<clip pos="3" side="tl" part="pers"/>
-						<clip pos="3" side="tl" part="nbr"/>
+						<clip pos="3" side="tl" part="temps" link-to="3"/>
+						<clip pos="3" side="tl" part="pers" link-to="4"/>
+						<clip pos="3" side="tl" part="nbr" link-to="5"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
@@ -5211,9 +5233,9 @@
 					<lu>
 						<clip pos="3" side="tl" part="lemh"/> 
 						<clip pos="3" side="tl" part="a_verb"/>
-						<clip pos="3" side="tl" part="temps"/>
-						<clip pos="3" side="tl" part="pers"/>
-						<clip pos="3" side="tl" part="nbr"/>
+						<clip pos="3" side="tl" part="temps" link-to="3"/>
+						<clip pos="3" side="tl" part="pers" link-to="4"/>
+						<clip pos="3" side="tl" part="nbr" link-to="5"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
@@ -5282,9 +5304,9 @@
 					<lu>
 						<clip pos="4" side="tl" part="lemh"/> 
 						<clip pos="4" side="tl" part="a_verb"/>
-						<clip pos="4" side="tl" part="temps"/>
-						<clip pos="4" side="tl" part="pers"/>
-						<clip pos="4" side="tl" part="nbr"/>
+						<clip pos="4" side="tl" part="temps" link-to="3"/>
+						<clip pos="4" side="tl" part="pers" link-to="4"/>
+						<clip pos="4" side="tl" part="nbr" link-to="5"/>
 						<clip pos="4" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
@@ -5331,9 +5353,9 @@
 					<lu>
 						<clip pos="4" side="tl" part="lemh"/> 
 						<clip pos="4" side="tl" part="a_verb"/>
-						<clip pos="4" side="tl" part="temps"/>
-						<clip pos="4" side="tl" part="pers"/>
-						<clip pos="4" side="tl" part="nbr"/>
+						<clip pos="4" side="tl" part="temps" link-to="3"/>
+						<clip pos="4" side="tl" part="pers" link-to="4"/>
+						<clip pos="4" side="tl" part="nbr" link-to="5"/>
 						<clip pos="4" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
@@ -6983,9 +7005,9 @@
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/>
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
-						<clip pos="1" side="tl" part="nbr"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
+						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
 					<b pos="1"/>
@@ -7041,9 +7063,9 @@
 									<clip pos="2" side="tl" part="lemh"/>
 								</get-case-from>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="nbr"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
+								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="1"/>
@@ -7085,9 +7107,9 @@
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="nbr"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
+								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="2"/>
@@ -7116,9 +7138,9 @@
 									<clip pos="2" side="tl" part="lemh"/>
 								</get-case-from>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="nbr"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
+								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="1"/>
@@ -7173,9 +7195,9 @@
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/>
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
-						<clip pos="1" side="tl" part="nbr"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
+						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
 					<b pos="2"/>
@@ -7236,9 +7258,9 @@
 					<lu>
 						<clip pos="2" side="tl" part="lemh"/>
 						<clip pos="2" side="tl" part="a_verb"/>
-						<clip pos="2" side="tl" part="temps"/>
-						<clip pos="2" side="tl" part="pers"/>
-						<clip pos="2" side="tl" part="nbr"/>
+						<clip pos="2" side="tl" part="temps" link-to="3"/>
+						<clip pos="2" side="tl" part="pers" link-to="4"/>
+						<clip pos="2" side="tl" part="nbr" link-to="5"/>
 						<clip pos="2" side="tl" part="lemq"/> 
 					</lu>
 					<b pos="2"/>
@@ -7306,9 +7328,9 @@
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
-								<clip pos="3" side="tl" part="nbr"/>
+								<clip pos="3" side="tl" part="temps" link-to="3"/>
+								<clip pos="3" side="tl" part="pers" link-to="4"/>
+								<clip pos="3" side="tl" part="nbr" link-to="5"/>
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="2"/>
@@ -7354,9 +7376,9 @@
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
-								<clip pos="3" side="tl" part="nbr"/>
+								<clip pos="3" side="tl" part="temps" link-to="3"/>
+								<clip pos="3" side="tl" part="pers" link-to="4"/>
+								<clip pos="3" side="tl" part="nbr" link-to="5"/>
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="3"/>
@@ -7391,10 +7413,10 @@
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
-								<clip pos="3" side="tl" part="nbr"/>
-								<clip pos="3" side="tl" part="lemq"/> 
+								<clip pos="3" side="tl" part="temps" link-to="3"/>
+								<clip pos="3" side="tl" part="pers" link-to="4"/>
+								<clip pos="3" side="tl" part="nbr" link-to="5"/>
+								<clip pos="3" side="tl" part="lemq"/>
 							</lu>
 							<b pos="2"/>
 							<lu>
@@ -7462,9 +7484,9 @@
 					<lu>
 						<clip pos="3" side="tl" part="lemh"/>
 						<clip pos="3" side="tl" part="a_verb"/>
-						<clip pos="3" side="tl" part="temps"/>
-						<clip pos="3" side="tl" part="pers"/>
-						<clip pos="3" side="tl" part="nbr"/>
+						<clip pos="3" side="tl" part="temps" link-to="3"/>
+						<clip pos="3" side="tl" part="pers" link-to="4"/>
+						<clip pos="3" side="tl" part="nbr" link-to="5"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
 					<b pos="2"/>
@@ -7532,9 +7554,9 @@
 					<lu>
 						<clip pos="3" side="tl" part="lemh"/>
 						<clip pos="3" side="tl" part="a_verb"/>
-						<clip pos="3" side="tl" part="temps"/>
-						<clip pos="3" side="tl" part="pers"/>
-						<clip pos="3" side="tl" part="nbr"/>
+						<clip pos="3" side="tl" part="temps" link-to="3"/>
+						<clip pos="3" side="tl" part="pers" link-to="4"/>
+						<clip pos="3" side="tl" part="nbr" link-to="5"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
 					<b pos="3"/>
@@ -7607,9 +7629,9 @@
 							<lu>
 								<clip pos="4" side="tl" part="lemh"/>
 								<clip pos="4" side="tl" part="a_verb"/>
-								<clip pos="4" side="tl" part="temps"/>
-								<clip pos="4" side="tl" part="pers"/>
-								<clip pos="4" side="tl" part="nbr"/>
+								<clip pos="4" side="tl" part="temps" link-to="3"/>
+								<clip pos="4" side="tl" part="pers" link-to="4"/>
+								<clip pos="4" side="tl" part="nbr" link-to="5"/>
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="3"/>
@@ -7659,9 +7681,9 @@
 							<lu>
 								<clip pos="4" side="tl" part="lemh"/>
 								<clip pos="4" side="tl" part="a_verb"/>
-								<clip pos="4" side="tl" part="temps"/>
-								<clip pos="4" side="tl" part="pers"/>
-								<clip pos="4" side="tl" part="nbr"/>
+								<clip pos="4" side="tl" part="temps" link-to="3"/>
+								<clip pos="4" side="tl" part="pers" link-to="4"/>
+								<clip pos="4" side="tl" part="nbr" link-to="5"/>
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="4"/>
@@ -7700,9 +7722,9 @@
 							<lu>
 								<clip pos="4" side="tl" part="lemh"/>
 								<clip pos="4" side="tl" part="a_verb"/>
-								<clip pos="4" side="tl" part="temps"/>
-								<clip pos="4" side="tl" part="pers"/>
-								<clip pos="4" side="tl" part="nbr"/>
+								<clip pos="4" side="tl" part="temps" link-to="3"/>
+								<clip pos="4" side="tl" part="pers" link-to="4"/>
+								<clip pos="4" side="tl" part="nbr" link-to="5"/>
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="3"/>
@@ -7774,9 +7796,9 @@
 					<lu>
 						<clip pos="3" side="tl" part="lemh"/>
 						<clip pos="3" side="tl" part="a_verb"/>
-						<clip pos="3" side="tl" part="temps"/>
-						<clip pos="3" side="tl" part="pers"/>
-						<clip pos="3" side="tl" part="nbr"/>
+						<clip pos="3" side="tl" part="temps" link-to="3"/>
+						<clip pos="3" side="tl" part="pers" link-to="4"/>
+						<clip pos="3" side="tl" part="nbr" link-to="5"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
 					<b pos="3"/>
@@ -8954,8 +8976,8 @@
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/> 
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
 						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
@@ -8980,8 +9002,8 @@
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/> 
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
 						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
@@ -9037,8 +9059,8 @@
 					<lu>
 						<clip pos="2" side="tl" part="lemh"/>
 						<clip pos="2" side="tl" part="a_verb"/>
-						<clip pos="2" side="tl" part="temps"/>
-						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="temps" link-to="3"/>
+						<clip pos="2" side="tl" part="pers" link-to="4"/>
 						<clip pos="2" side="tl" part="nbr" link-to="5"/>
 						<clip pos="2" side="tl" part="lemq"/> 
 					</lu>
@@ -9067,8 +9089,8 @@
 					<lu>
 						<clip pos="2" side="tl" part="lemh"/>
 						<clip pos="2" side="tl" part="a_verb"/>
-						<clip pos="2" side="tl" part="temps"/>
-						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="temps" link-to="3"/>
+						<clip pos="2" side="tl" part="pers" link-to="4"/>
 						<clip pos="2" side="tl" part="nbr" link-to="5"/>
 						<clip pos="2" side="tl" part="lemq"/> 
 					</lu>
@@ -9137,8 +9159,8 @@
 					<lu>
 						<clip pos="3" side="tl" part="lemh"/>
 						<clip pos="3" side="tl" part="a_verb"/>
-						<clip pos="3" side="tl" part="temps"/>
-						<clip pos="3" side="tl" part="pers"/>
+						<clip pos="3" side="tl" part="temps" link-to="3"/>
+						<clip pos="3" side="tl" part="pers" link-to="4"/>
 						<clip pos="3" side="tl" part="nbr" link-to="5"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
@@ -9171,8 +9193,8 @@
 					<lu>
 						<clip pos="3" side="tl" part="lemh"/>
 						<clip pos="3" side="tl" part="a_verb"/>
-						<clip pos="3" side="tl" part="temps"/>
-						<clip pos="3" side="tl" part="pers"/>
+						<clip pos="3" side="tl" part="temps" link-to="3"/>
+						<clip pos="3" side="tl" part="pers" link-to="4"/>
 						<clip pos="3" side="tl" part="nbr" link-to="5"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
@@ -9234,8 +9256,8 @@
 							<clip pos="1" side="tl" part="lemh"/>
 						</get-case-from>
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
 						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
@@ -9270,8 +9292,8 @@
 							<clip pos="1" side="tl" part="lemh"/>
 						</get-case-from>
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
 						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
@@ -9335,8 +9357,8 @@
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/>
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
 						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
@@ -9375,8 +9397,8 @@
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/>
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
 						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/> 
 					</lu>
@@ -9438,8 +9460,8 @@
 									<clip pos="2" side="tl" part="lemh"/> 
 								</get-case-from>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
 								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
@@ -9483,8 +9505,8 @@
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/> 
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
 								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
@@ -9554,8 +9576,8 @@
 									<clip pos="2" side="tl" part="lemh"/> 
 								</get-case-from>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
 								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
@@ -9636,8 +9658,8 @@
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
+								<clip pos="3" side="tl" part="temps" link-to="3"/>
+								<clip pos="3" side="tl" part="pers" link-to="4"/>
 								<clip pos="3" side="tl" part="nbr" link-to="5"/>
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
@@ -9685,8 +9707,8 @@
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
+								<clip pos="3" side="tl" part="temps" link-to="3"/>
+								<clip pos="3" side="tl" part="pers" link-to="4"/>
 								<clip pos="3" side="tl" part="nbr" link-to="5"/>
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
@@ -9727,8 +9749,8 @@
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
+								<clip pos="3" side="tl" part="temps" link-to="3"/>
+								<clip pos="3" side="tl" part="pers" link-to="4"/>
 								<clip pos="3" side="tl" part="nbr" link-to="5"/>
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
@@ -9768,8 +9790,8 @@
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
+								<clip pos="3" side="tl" part="temps" link-to="3"/>
+								<clip pos="3" side="tl" part="pers" link-to="4"/>
 								<clip pos="3" side="tl" part="nbr" link-to="5"/>
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
@@ -9857,8 +9879,8 @@
 							<lu>
 								<clip pos="4" side="tl" part="lemh"/>
 								<clip pos="4" side="tl" part="a_verb"/>
-								<clip pos="4" side="tl" part="temps"/>
-								<clip pos="4" side="tl" part="pers"/>
+								<clip pos="4" side="tl" part="temps" link-to="3"/>
+								<clip pos="4" side="tl" part="pers" link-to="4"/>
 								<clip pos="4" side="tl" part="nbr" link-to="5"/>
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
@@ -9910,8 +9932,8 @@
 							<lu>
 								<clip pos="4" side="tl" part="lemh"/>
 								<clip pos="4" side="tl" part="a_verb"/>
-								<clip pos="4" side="tl" part="temps"/>
-								<clip pos="4" side="tl" part="pers"/>
+								<clip pos="4" side="tl" part="temps" link-to="3"/>
+								<clip pos="4" side="tl" part="pers" link-to="4"/>
 								<clip pos="4" side="tl" part="nbr" link-to="5"/>
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
@@ -9958,8 +9980,8 @@
 							<lu>
 								<clip pos="4" side="tl" part="lemh"/>
 								<clip pos="4" side="tl" part="a_verb"/>
-								<clip pos="4" side="tl" part="temps"/>
-								<clip pos="4" side="tl" part="pers"/>
+								<clip pos="4" side="tl" part="temps" link-to="3"/>
+								<clip pos="4" side="tl" part="pers" link-to="4"/>
 								<clip pos="4" side="tl" part="nbr" link-to="5"/>
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
@@ -10003,8 +10025,8 @@
 							<lu>
 								<clip pos="4" side="tl" part="lemh"/>
 								<clip pos="4" side="tl" part="a_verb"/>
-								<clip pos="4" side="tl" part="temps"/>
-								<clip pos="4" side="tl" part="pers"/>
+								<clip pos="4" side="tl" part="temps" link-to="3"/>
+								<clip pos="4" side="tl" part="pers" link-to="4"/>
 								<clip pos="4" side="tl" part="nbr" link-to="5"/>
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
@@ -10087,8 +10109,8 @@
 									<clip pos="2" side="tl" part="lemh"/>
 								</get-case-from>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
 								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
@@ -10142,8 +10164,8 @@
 										<clip pos="2" side="tl" part="lemh"/>
 									</get-case-from>
 									<clip pos="2" side="tl" part="a_verb"/>
-									<clip pos="2" side="tl" part="temps"/>
-									<clip pos="2" side="tl" part="pers"/>
+									<clip pos="2" side="tl" part="temps" link-to="3"/>
+									<clip pos="2" side="tl" part="pers" link-to="4"/>
 									<clip pos="2" side="tl" part="nbr" link-to="5"/>
 									<clip pos="2" side="tl" part="lemq"/> 
 								</lu>
@@ -10184,8 +10206,8 @@
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
 								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
@@ -10225,8 +10247,8 @@
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
 								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
@@ -10311,9 +10333,9 @@
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="nbr" link-to="6"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="3"/>
+								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="4"/>
@@ -10368,9 +10390,9 @@
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="nbr" link-to="6"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
+								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="2"/>
@@ -10416,9 +10438,9 @@
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="nbr" link-to="6"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
+								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="4"/>
@@ -10463,9 +10485,9 @@
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="nbr" link-to="6"/>
+								<clip pos="2" side="tl" part="temps" link-to="3"/>
+								<clip pos="2" side="tl" part="pers" link-to="4"/>
+								<clip pos="2" side="tl" part="nbr" link-to="5"/>
 								<clip pos="2" side="tl" part="lemq"/> 
 							</lu>
 							<b pos="3"/>
@@ -10695,40 +10717,41 @@
 	</action>
 </rule>
 
-<rule comment="PRNREL">
+	<rule comment="PRNREL">
 		<pattern>
 			<pattern-item n="rel"/>
 		</pattern>
 		<action>
-	<!--		<call-macro n="f_concord1">
+			<call-macro n="tipus_rel">
 				<with-param pos="1"/>
-			</call-macro>-->
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
-		</call-macro>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
-			<chunk name="rel" case="caseFirstWord">
-			<tags>
-				<tag><lit-tag v="SN"/></tag>
-				<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
-				<tag><clip pos="1" side="tl" part="gen"/></tag>
-				<tag><clip pos="1" side="tl" part="nbr"/></tag>
-			</tags>
-			<lu>
-				<clip pos="1" side="tl" part="lem"/>  
-				<clip pos="1" side="tl" part="a_prn"/>
-				<clip pos="1" side="tl" part="tipus_prn"/> 
-				<clip pos="1" side="tl" part="gen"/>
-				<clip pos="1" side="tl" part="nbr"/>
-			</lu> 
-			</chunk>
-		</out>  
-		<let>
-			<var n="caseFirstWord"/>
-			<lit v="aa"/>
-		</let>
-	</action>
-</rule>
+				<chunk name="rel" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="REL"/></tag>
+						<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
+						<tag><clip pos="1" side="tl" part="gen"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusrel"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/>  
+						<clip pos="1" side="tl" part="a_prn"/>
+						<clip pos="1" side="tl" part="tipus_prn"/> 
+						<clip pos="1" side="tl" part="gen"/>
+						<clip pos="1" side="tl" part="nbr"/>
+					</lu> 
+				</chunk>
+			</out>  
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
 
 <rule comment="cnjcoo">
 	<pattern>
