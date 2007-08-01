@@ -484,6 +484,7 @@
 
   </section-def-attrs>
   <section-def-vars>
+    <def-var n="tipusrel"/>
     <def-var n="tipusprep"/>
     <def-var n="tipusverb"/>
     <def-var n="tipusnom"/>
@@ -637,6 +638,28 @@
 
 
   <section-def-macros>
+		
+	<def-macro n="tipus_rel" npar="1">
+		<let>
+			<var n="tipusrel"/>
+			<lit-tag v=""/>
+		</let>
+		<choose>
+			<when>
+				<test>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="quand"/>
+					</equal>
+				</test>
+				<let>
+					<var n="tipusrel"/>
+					<lit-tag v="quan"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
+	
 <def-macro n="f_lexicadj" npar="1">
 	<choose>
 		<when>
@@ -1149,9 +1172,9 @@
 							<clip pos="1" side="tl" part="lemh"/>
 <!-- 						</get-case-from> -->
 						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
-						<clip pos="1" side="tl" part="nbr"/>
+						<clip pos="1" side="tl" part="temps" link-to="3"/>
+						<clip pos="1" side="tl" part="pers" link-to="4"/>
+						<clip pos="1" side="tl" part="nbr" link-to="5"/>
 						<clip pos="1" side="tl" part="lemq"/>
 					</append>
 				</otherwise>
@@ -13492,16 +13515,20 @@
 			<call-macro n="f_concord1">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="tipus_rel">
+				<with-param pos="1"/>
+			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
 			<out>
 				<chunk name="rel" case="caseFirstWord">
 					<tags>
-						<tag><lit-tag v="SN"/></tag>
+						<tag><lit-tag v="REL"/></tag>
 						<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
 						<tag><clip pos="1" side="tl" part="gen"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusrel"/></tag>
 					</tags>
 					<lu>
 						<clip pos="1" side="tl" part="lem"/>  

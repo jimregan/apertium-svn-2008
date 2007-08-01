@@ -5,8 +5,12 @@
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>
+   
+		 <def-cat n="rel">
+      <cat-item tags="REL.*"/>
+    </def-cat>
     
-    <def-cat n="negacio"><!-- BCN-->
+		<def-cat n="negacio"><!-- BCN-->
       <cat-item tags="SN.DET.*.*.negacio"/>
     </def-cat>
     
@@ -61,14 +65,6 @@
      <def-cat n="DET">
       <cat-item tags="DET.*"/>
     </def-cat>
-
-    <def-cat n="RELNN">
-      <cat-item tags="REL.nn.*"/>
-    </def-cat>
-
- <def-cat n="RELAN">
-      <cat-item tags="REL.an.*"/>
-    </def-cat>
     
     <def-cat n="NUM">
       <cat-item tags="NUM.*"/>
@@ -86,11 +82,16 @@
   </section-def-cats>
 
   <section-def-attrs>
+	
+
+	<def-attr n="tipusrel">
+		<attr-item tags="quan"/>
+	</def-attr>
 
 	<def-attr n="tverb">
-        <attr-item tags="vben"/>
-			  <attr-item tags="vba"/>
-			  <attr-item tags="nopart"/>
+		<attr-item tags="vben"/>
+		<attr-item tags="vba"/>
+		<attr-item tags="nopart"/>
 	</def-attr>
 	<def-attr n="tnom">
         <attr-item tags="loc"/>
@@ -156,13 +157,62 @@
 
   </section-def-attrs>
 
-  <section-def-vars>
-    <def-var n="uno"/>
-    <def-var n="nombre"/>
+	<section-def-vars>
+		<def-var n="tipus_rel"/>
+		<def-var n="uno"/>
+		<def-var n="nombre"/>
 		<def-var n="genere"/>
-  </section-def-vars>
+	</section-def-vars>
 
 <section-def-macros>
+
+	<def-macro n="dona_info" npar="1">
+		<let>
+			<var n="tipus_rel"/>
+			<lit v=""/>
+		</let>
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="tipusrel"/>
+						<lit-tag v="quan"/>
+					</equal>
+				</test>
+				<let>
+					<var n="tipus_rel"/>
+					<lit v="quan"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
+
+	<def-macro n="modifica_sv" npar="1">
+		<choose>
+			<when>
+				<test>
+					<and>
+						<equal>
+							<var n="tipus_rel"/>
+							<lit v="quan"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="temps"/>
+							<lit-tag v="fti"/>
+						</equal>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="temps"/>
+					<lit-tag v="prs"/>
+				</let>
+			</when>
+		</choose>
+		<let>
+			<var n="tipus_rel"/>
+			<lit v=""/>
+		</let>
+	</def-macro>
 
 <def-macro n="assigna_gen_nbr" npar="1">
  <choose><!--To determine value of variables of gender and
@@ -471,50 +521,14 @@
 					<b pos="1"/>-->
 
 <!--REGLES GENERALS -->
-<rule comment="REGLA: SN">
-	<pattern>
-		<pattern-item n="SN"/>
-	</pattern>
-	<action>
-		<call-macro n="assigna_gen_nbr">
-			<with-param pos="1"/>
-		</call-macro>
-		<out>
-			<chunk>
-				<clip pos="1" part="lem"/>
-				<clip pos="1" part="tags"/>
-				<clip pos="1" part="chcontent"/>
-			</chunk>
-		</out>
-	</action>
-</rule>
-
-<rule comment="REGLA: SA">
-	<pattern>
-		<pattern-item n="SA"/>
-	</pattern>
-	<action>
-		<call-macro n="assigna_gen_nbr">
-			<with-param pos="1"/>
-		</call-macro>
-		<out>
-			<chunk>
-				<clip pos="1" part="lem"/>
-				<clip pos="1" part="tags"/>
-				<clip pos="1" part="chcontent"/>
-			</chunk>
-		</out>
-	</action>
-</rule>
-
-<rule comment="REGLA: SV">
-	<pattern>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
+	<rule comment="REGLA: SN">
+		<pattern>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -522,268 +536,325 @@
 					<clip pos="1" part="chcontent"/>
 				</chunk>
 			</out>
-</action>
-</rule>
+		</action>
+	</rule>
 
-<rule comment="REGLA: prep sprep">
-	<pattern>
-		<pattern-item n="pr"/>
-		<pattern-item n="pr"/>
-		<pattern-item n="SN"/>
-	</pattern>
-	<action>
-		<call-macro n="assigna_gen_nbr">
-			<with-param pos="3"/>
-		</call-macro>
-		<choose>
-			<when>
-				<test>
-					<and>
-						<equal>
-							<clip pos="2" part="tprep"/>
-							<lit-tag v="de"/>
-						</equal>
-						<or>
-							<equal>
-								<clip pos="3" part="nbr"/>
-								<lit-tag v="pl"/>
-							</equal>
-							<equal>
-								<clip pos="3" part="tnom"/>
-								<lit-tag v="part"/>
-							</equal>
-						</or>
-					</and>
-				</test>
-				<out>
-					<chunk>
-						<clip pos="1" part="lem"/>
-						<clip pos="1" part="tags"/>
-						<clip pos="1" part="chcontent"/>
-					</chunk>
-					<b pos="1"/>
-					<chunk>
-						<clip pos="3" part="lem"/>
-						<clip pos="3" part="tags"/>
-						<lit-tag v="treu_det"/>
-						<clip pos="3" part="chcontent"/>
-					</chunk>
-				</out>
-				<call-macro n="f_bcond">
-					<with-param pos="2"/>
-				</call-macro>
-			</when>
-			<otherwise>
-				<out>
-					<chunk>
-						<clip pos="1" part="lem"/>
-						<clip pos="1" part="tags"/>
-						<clip pos="1" part="chcontent"/>
-					</chunk>
-					<b pos="1"/>
-					<chunk>
-						<clip pos="2" part="lem"/>
-						<clip pos="2" part="tags"/>
-						<clip pos="2" part="chcontent"/>
-					</chunk>
-					<b pos="2"/>
-					<chunk>
-						<clip pos="3" part="lem"/>
-						<clip pos="3" part="tags"/>
-						<clip pos="3" part="chcontent"/>
-					</chunk>
-				</out>
-			</otherwise>
-		</choose>
-	</action>
-</rule>
+	<rule comment="REGLA: rel">
+		<pattern>
+			<pattern-item n="rel"/>
+		</pattern>
+		<action>
+			<call-macro n="dona_info">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
 
-<rule comment="REGLA: SV sprep">
-	<pattern>
-		<pattern-item n="SV"/>
-		<pattern-item n="pr"/>
-		<pattern-item n="SN"/>
-	</pattern>
-	<action>
-		<call-macro n="assigna_gen_nbr">
-			<with-param pos="1"/>
-		</call-macro>
-		<call-macro n="assigna_gen_nbr">
-			<with-param pos="3"/>
-		</call-macro>
-		<call-macro n="cv_prep">
-			<with-param pos="1"/>
-			<with-param pos="2"/>
-			<with-param pos="3"/>
-		</call-macro>
-		<choose>
-			<when>
-				<test>
-					<and>
-						<not>
+	<rule comment="REGLA: SA">
+		<pattern>
+			<pattern-item n="SA"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+	
+	<rule comment="REGLA: SV">
+		<pattern>
+			<pattern-item n="SV"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="modifica_sv">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+	
+	<rule comment="REGLA: prep sprep">
+		<pattern>
+			<pattern-item n="pr"/>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<and>
 							<equal>
-								<clip pos="1" part="tverb"/>
-								<lit-tag v="nopart"/>
+								<clip pos="2" part="tprep"/>
+								<lit-tag v="de"/>
 							</equal>
-						</not>
-						<equal>
-							<clip pos="2" part="tprep"/>
-							<lit-tag v="de"/>
-						</equal>
-						<or>
+							<or>
+								<equal>
+									<clip pos="3" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+								<equal>
+									<clip pos="3" part="tnom"/>
+									<lit-tag v="part"/>
+								</equal>
+							</or>
+						</and>
+					</test>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<lit-tag v="treu_det"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+					<call-macro n="f_bcond">
+						<with-param pos="2"/>
+					</call-macro>
+				</when>
+				<otherwise>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+						<b pos="2"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+		</action>
+	</rule>
+	
+	<rule comment="REGLA: SV sprep">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<and>
+							<not>
+								<equal>
+									<clip pos="1" part="tverb"/>
+									<lit-tag v="nopart"/>
+								</equal>
+							</not>
 							<equal>
-								<clip pos="3" part="nbr"/>
-								<lit-tag v="pl"/>
+								<clip pos="2" part="tprep"/>
+								<lit-tag v="de"/>
 							</equal>
+							<or>
+								<equal>
+									<clip pos="3" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+								<equal>
+									<clip pos="3" part="tnom"/>
+									<lit-tag v="part"/>
+								</equal>
+							</or>
+						</and>
+					</test>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<lit-tag v="treu_det"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+					<call-macro n="f_bcond">
+						<with-param pos="2"/>
+					</call-macro>
+				</when>
+				<otherwise>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+						<b pos="2"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+		</action>
+	</rule>
+	
+	<rule comment="REGLA: SV ADV sprep">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="ADV"/>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="cv_prep">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<and>
+							<not>
+								<equal>
+									<clip pos="1" part="tverb"/>
+									<lit-tag v="nopart"/>
+								</equal>
+							</not>
 							<equal>
-								<clip pos="3" part="tnom"/>
-								<lit-tag v="part"/>
+								<clip pos="3" part="tprep"/>
+								<lit-tag v="de"/>
 							</equal>
-						</or>
-					</and>
-				</test>
-				<out>
-					<chunk>
-						<clip pos="1" part="lem"/>
-						<clip pos="1" part="tags"/>
-						<clip pos="1" part="chcontent"/>
-					</chunk>
-					<b pos="1"/>
-					<chunk>
-						<clip pos="3" part="lem"/>
-						<clip pos="3" part="tags"/>
-						<lit-tag v="treu_det"/>
-						<clip pos="3" part="chcontent"/>
-					</chunk>
-				</out>
-				<call-macro n="f_bcond">
-					<with-param pos="2"/>
-				</call-macro>
-			</when>
-			<otherwise>
-				<out>
-					<chunk>
-						<clip pos="1" part="lem"/>
-						<clip pos="1" part="tags"/>
-						<clip pos="1" part="chcontent"/>
-					</chunk>
-					<b pos="1"/>
-					<chunk>
-						<clip pos="2" part="lem"/>
-						<clip pos="2" part="tags"/>
-						<clip pos="2" part="chcontent"/>
-					</chunk>
-					<b pos="2"/>
-					<chunk>
-						<clip pos="3" part="lem"/>
-						<clip pos="3" part="tags"/>
-						<clip pos="3" part="chcontent"/>
-					</chunk>
-				</out>
-			</otherwise>
-		</choose>
-	</action>
-</rule>
-
-<rule comment="REGLA: SV ADV sprep">
-	<pattern>
-		<pattern-item n="SV"/>
-		<pattern-item n="ADV"/>
-		<pattern-item n="pr"/>
-		<pattern-item n="SN"/>
-	</pattern>
-	<action>
-		<call-macro n="assigna_gen_nbr">
-			<with-param pos="1"/>
-		</call-macro>
-		<call-macro n="assigna_gen_nbr">
-			<with-param pos="4"/>
-		</call-macro>
-		<call-macro n="cv_prep">
-			<with-param pos="1"/>
-			<with-param pos="3"/>
-			<with-param pos="4"/>
-		</call-macro>
-		<choose>
-			<when>
-				<test>
-					<and>
-						<not>
-							<equal>
-								<clip pos="1" part="tverb"/>
-								<lit-tag v="nopart"/>
-							</equal>
-						</not>
-						<equal>
-							<clip pos="3" part="tprep"/>
-							<lit-tag v="de"/>
-						</equal>
-						<or>
-							<equal>
-								<clip pos="4" part="nbr"/>
-								<lit-tag v="pl"/>
-							</equal>
-							<equal>
-								<clip pos="4" part="tnom"/>
-								<lit-tag v="part"/>
-							</equal>
-						</or>
-					</and>
-				</test>
-				<out>
-					<chunk>
-						<clip pos="1" part="lem"/>
-						<clip pos="1" part="tags"/>
-						<clip pos="1" part="chcontent"/>
-					</chunk>
-					<b pos="1"/>
-					<chunk>
-						<clip pos="2" part="lem"/>
-						<clip pos="2" part="tags"/>
-						<clip pos="2" part="chcontent"/>
-					</chunk>
-					<b pos="2"/>
-					<chunk>
-						<clip pos="4" part="lem"/>
-						<clip pos="4" part="tags"/>
-						<lit-tag v="treu_det"/>
-						<clip pos="4" part="chcontent"/>
-					</chunk>
-				</out>
-				<call-macro n="f_bcond">
-					<with-param pos="3"/>
-				</call-macro>
-			</when>
-			<otherwise>
-				<out>
-					<chunk>
-						<clip pos="1" part="lem"/>
-						<clip pos="1" part="tags"/>
-						<clip pos="1" part="chcontent"/>
-					</chunk>
-					<b pos="1"/>
-					<chunk>
-						<clip pos="2" part="lem"/>
-						<clip pos="2" part="tags"/>
-						<clip pos="2" part="chcontent"/>
-					</chunk>
-					<b pos="2"/>
-					<chunk>
-						<clip pos="3" part="lem"/>
-						<clip pos="3" part="tags"/>
-						<clip pos="3" part="chcontent"/>
-					</chunk>
-					<b pos="3"/>
-					<chunk>
-						<clip pos="4" part="lem"/>
-						<clip pos="4" part="tags"/>
-						<clip pos="4" part="chcontent"/>
-					</chunk>
-				</out>
-			</otherwise>
-		</choose>
-	</action>
-</rule>
+							<or>
+								<equal>
+									<clip pos="4" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+								<equal>
+									<clip pos="4" part="tnom"/>
+									<lit-tag v="part"/>
+								</equal>
+							</or>
+						</and>
+					</test>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+						<b pos="2"/>
+						<chunk>
+							<clip pos="4" part="lem"/>
+							<clip pos="4" part="tags"/>
+							<lit-tag v="treu_det"/>
+							<clip pos="4" part="chcontent"/>
+						</chunk>
+					</out>
+					<call-macro n="f_bcond">
+						<with-param pos="3"/>
+					</call-macro>
+				</when>
+				<otherwise>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+						<b pos="2"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+						<b pos="3"/>
+						<chunk>
+							<clip pos="4" part="lem"/>
+							<clip pos="4" part="tags"/>
+							<clip pos="4" part="chcontent"/>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+		</action>
+	</rule>
 
 <rule comment="REGLA: det">
 	<pattern>
