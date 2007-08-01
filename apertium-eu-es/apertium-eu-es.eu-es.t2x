@@ -17,6 +17,8 @@
     <def-cat n="SA">
       <cat-item tags="SA.*"/>
     </def-cat>  
+
+
     <def-cat n="punt">
       <cat-item tags="sent"/>
     </def-cat>
@@ -163,6 +165,20 @@
 	    </let>
 	  </when>
 	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
@@ -253,6 +269,8 @@
 	</out>
       </action>
 </rule>
+
+
 
 
  <rule> <!-- REGLA: SPGEN + SN-->

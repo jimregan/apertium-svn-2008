@@ -62,6 +62,10 @@
       <cat-item tags="vblex.ger"/>
     </def-cat>
 
+<def-cat n="pfut">
+      <cat-item tags="vblex.pfut"/>
+    </def-cat>
+
     <def-cat n="prntn">
       <cat-item tags="prn.tn.*"/>
     </def-cat>
@@ -124,7 +128,8 @@
     </def-attr>  
 
     <def-attr n="a_det">          
-      <attr-item tags="det"/>
+      <attr-item tags="det"/>    
+      <attr-item tags="predet"/>
     </def-attr> 
 
     <def-attr n="a_verb">          
@@ -272,7 +277,10 @@
       <attr-item tags="ger"/>
       <attr-item tags="pprs"/>
       <attr-item tags="subs"/>	  
-      <attr-item tags="pii"/>
+      <attr-item tags="pii"/>	  
+      <attr-item tags="pfut"/>	  
+      <attr-item tags="fti"/>	  
+      <attr-item tags="cni"/>
     </def-attr>
 
     <def-attr n="tipus_prn">          
@@ -1977,8 +1985,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
   <section-rules>
 
-    <!--********************************* REGLES DE SN
-         ***************************************************** -->
+    <!--********************************* REGLES DE SN   **************************************************** -->
 
 
    <rule comment="REGLA: NOM ( per a col·locar la cua en les multiparaules amb g i traduir noms sense determinant">
@@ -2011,6 +2018,42 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</let>
       </action>
     </rule>
+
+ <rule comment="REGLA: DET (guztiak, gehienak) Para cuando va solo o con palabras desconocidas">
+      <pattern>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_det">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<out> 
+	  <chunk name="det" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="tipusdet"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
 
  <rule comment="REGLA: NOM + DET (etxea)">
       <pattern>
@@ -2055,6 +2098,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2166,6 +2213,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</out>
 	  </otherwise>
 	</choose>
+		<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2206,6 +2257,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2262,6 +2317,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2387,6 +2446,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</out>
 	    </otherwise>
 	  </choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2531,6 +2594,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </out>
 	  </otherwise>
 	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2653,6 +2720,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </out>
 	  </otherwise>
 	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2784,6 +2855,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </out>
 	  </otherwise>
 	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2926,6 +3001,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </out>
 	  </otherwise>
 	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -2992,6 +3071,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -3065,6 +3148,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -3134,6 +3221,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -3211,6 +3302,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -3361,7 +3456,11 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </chunk>
 	</out>
 	  </otherwise>
-</choose>
+	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -3450,6 +3549,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -3544,6 +3647,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -3554,6 +3661,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="nom"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<let>
 	  <clip pos="2" side="tl" part="nbr"/>
 	  <lit-tag v="pl"/>
@@ -3609,6 +3719,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -3621,6 +3735,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="det"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="tipo_det">
 	  <with-param pos="3"/>
 	</call-macro>
@@ -3693,6 +3810,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>	
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -3710,6 +3831,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="post"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="tipo_det">
 	  <with-param pos="3"/>
 	</call-macro>
@@ -3834,6 +3958,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </out>
 	  </otherwise>
 	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -3844,6 +3972,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="det"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="tipo_det">
 	  <with-param pos="2"/>
 	</call-macro>
@@ -3868,6 +3999,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -3880,6 +4015,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="det"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="concord_n2">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -3921,10 +4059,13 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="gen"/>
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
-	    </lu>
-	    
+	    </lu>	    
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -3938,6 +4079,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="post"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="concord_n2">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -3990,6 +4134,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -4036,6 +4184,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4149,6 +4301,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</out>
 	  </otherwise>
 	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4222,7 +4378,11 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	    <b/>
 	  </chunk>
-	</out>
+	</out>	
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4298,6 +4458,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    <b/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4401,8 +4565,11 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
 	    </lu>
 	  </chunk>
-
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4464,8 +4631,11 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
 	    </lu>
 	  </chunk>
-
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4499,6 +4669,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    <b/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4545,6 +4719,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    <b/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4581,6 +4759,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    <b/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4643,6 +4825,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    <b/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
  </rule>
 
@@ -4657,198 +4843,12 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="vbsint"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="verbal_flex">
 	  <with-param pos="1"/>
 	</call-macro>
-
-<!--
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="1" side="sl" part="nork"/>
-		  <lit v=""/>
-		</equal>
-	      </not>
-	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nork"/>
-		    <lit-tag v="NK_NI"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p1.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nork"/>
-		    <lit-tag v="NK_ZU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nork"/>
-		    <lit-tag v="NK_HI"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nork"/>
-		    <lit-tag v="NK_HU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p3.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nork"/>
-		    <lit-tag v="NK_GU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p1.pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nork"/>
-		    <lit-tag v="NK_ZK"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nork"/>
-		    <lit-tag v="NK_HK"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p3.pl"/>
-		</let>
-	      </when>
-	    </choose>
-	  </when>
-	  <otherwise><!-*-cuando el verbo no tiene sujeto NORK -*->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nor"/>
-		    <lit-tag v="NR_NI"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p1.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nor"/>
-		    <lit-tag v="NR_ZU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nor"/>
-		    <lit-tag v="NR_HI"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nor"/>
-		    <lit-tag v="NR_HU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p3.sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nor"/>
-		    <lit-tag v="NR_GU"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p1.pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nor"/>
-		    <lit-tag v="NR_ZK"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p2.pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>		    
-		    <clip pos="1" side="sl" part="nor"/>
-		    <lit-tag v="NR_HK"/>
-		  </equal>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="persnbr"/>
-		  <lit-tag v="p3.pl"/>
-		</let>
-	      </when>
-	    </choose>
-	  </otherwise>  
-	    
-	</choose> -->
 	<out>
 	  <chunk name="vbconj" case="caseFirstWord">
 	    <tags>
@@ -4864,9 +4864,14 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <clip pos="1" side="tl" part="temps"/>
 	      <clip pos="1" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -4880,6 +4885,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="vbsint"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<let>
 	  <clip pos="2" side="tl" part="lem"/>
 	  <lit v="haber"/>
@@ -4891,7 +4899,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<call-macro n="verbal_flex">
 	  <with-param pos="2"/>
 	</call-macro>
-
 	<choose>
 	  <when>
 	    <test>
@@ -4915,6 +4922,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="2" side="tl" part="a_verb"/>
 		  <clip pos="2" side="tl" part="temps"/>
 		  <clip pos="2" side="tl" part="persnbr"/>
+		  <clip pos="2" side="tl" part="lemq"/>
 		</lu>
 		<b pos="1"/>
 		<lu>
@@ -4922,6 +4930,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="1" side="tl" part="a_verb"/>
 		  <clip pos="1" side="tl" part="temps"/>
 		  <lit-tag v="m.sg"/>
+		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -4952,6 +4961,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="1" side="tl" part="a_verb"/>
 		  <clip pos="1" side="tl" part="temps"/>
 		  <clip pos="2" side="tl" part="persnbr"/>
+		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -4960,6 +4970,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </call-macro>
 	  </when>
 	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -4970,6 +4984,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="vbsint"/>
       </pattern>
       <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="verbal_flex">
 	  <with-param pos="2"/>
 	</call-macro>
@@ -5014,12 +5031,86 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <clip pos="1" side="tl" part="temps"/>
 	      <clip pos="2" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
 	</out>
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+</rule>
+
+
+
+<rule comment="REGLA: VERB">
+      <pattern>
+	<pattern-item n="pfut"/>
+	<pattern-item n="vbsint"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verbal_flex">
+	  <with-param pos="2"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		 <clip pos="2" side="sl" part="temps"/>
+		 <lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		 <clip pos="2" side="sl" part="temps"/>
+		 <lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when>
+	</choose>	    
+	<out>
+	  <chunk name="vbconj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="2" side="sl" part="nor"/></tag>
+	      <tag><clip pos="2" side="sl" part="nori"/></tag>
+	      <tag><clip pos="2" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -5032,6 +5123,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="pp"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk name="pp" case="caseFirstWord">
 	    <tags>
@@ -5044,9 +5138,14 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <clip pos="1" side="tl" part="temps"/>
 	      <lit-tag v="m.sg"/>
+	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -5057,6 +5156,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<pattern-item n="sent"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<let>
 	  <var n="nombre"/>
 	  <lit-tag v="sg"/>
