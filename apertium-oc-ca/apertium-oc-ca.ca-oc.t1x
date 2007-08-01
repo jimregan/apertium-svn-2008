@@ -450,7 +450,8 @@
   </section-def-attrs>
 	
   <section-def-vars>
-    <def-var n="tipusrel"/>
+ 		<def-var n="pronomsubj"/>
+   <def-var n="tipusrel"/>
     <def-var n="nbr_pp"/>
     <def-var n="gen_pp"/>
     <def-var n="etiq_aux"/>
@@ -536,6 +537,39 @@
 				<let>
 					<clip pos="1" side="tl" part="lem"/>
 					<lit v="puslèu"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
+	
+	<def-macro n="voste" npar="1">
+		<let>
+			<var n="pronomsubj"/>
+			<lit-tag v=""/>
+		</let>
+		<choose>
+			<when>
+				<test>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="vostè"/>
+					</equal>
+				</test>
+				<let>
+					<clip pos="1" side="tl" part="lem"/>
+					<lit v="vos"/>
+				</let>
+				<let>
+					<clip pos="1" side="tl" part="pers"/>
+					<lit-tag v="p2"/>
+				</let>
+				<let>
+					<clip pos="1" side="tl" part="nbr"/>
+					<lit-tag v="pl"/>
+				</let>
+				<let>
+					<var n="pronomsubj"/>
+					<lit-tag v="voste"/>
 				</let>
 			</when>
 		</choose>
@@ -10615,9 +10649,12 @@
 			<pattern-item n="prnperssubj"/>
 		</pattern>
 		<action>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
-		</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="voste">
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
 				<chunk name="prnperssubj" case="caseFirstWord">
 					<tags>
@@ -10626,15 +10663,16 @@
 						<tag><clip pos="1" side="tl" part="pers"/></tag>
 						<tag><clip pos="1" side="tl" part="gen"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="pronomsubj"/></tag>
 					</tags>
 					<lu>
 						<clip pos="1" side="tl" part="lem"/>  
 						<clip pos="1" side="tl" part="a_prn"/>
 						<clip pos="1" side="tl" part="tipus_prn"/> 
 						<clip pos="1" side="tl" part="pers"/>
-						<clip pos="1" side="tl" part="gen_sense_mf" link-to="4"/>
+						<clip pos="1" side="tl" part="gen_sense_mf" link-to="5"/>
 						<clip pos="1" side="tl" part="gen_mf"/>	 
-						<clip pos="1" side="tl" part="nbr_sense_sp" link-to="5"/>
+						<clip pos="1" side="tl" part="nbr_sense_sp" link-to="6"/>
 						<clip pos="1" side="tl" part="nbr_sp"/>
 					</lu> 
 				</chunk>

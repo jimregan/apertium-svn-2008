@@ -130,6 +130,10 @@
 			<attr-item tags="quan"/>
 		</def-attr>
 
+		<def-attr n="lemprn">
+			<attr-item tags="voste"/>
+		</def-attr>
+
       <def-attr n="temps">
           <attr-item tags="inf"/>
 	  <attr-item tags="pri"/>
@@ -163,6 +167,7 @@
 
 
   <section-def-vars>
+		<def-var n="pronom"/>
     <def-var n="nombre_subj"/>
     <def-var n="tipus_rel"/>
     <def-var n="pers_subj"/>
@@ -284,9 +289,26 @@
 			</when>
 		</choose>
 	</def-macro>
+	
+	<def-macro n="lema_prn" npar="1">
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="lemprn"/>
+						<lit-tag v="voste"/>
+					</equal>
+				</test>
+				<let>
+					<var n="pronom"/>
+					<lit v="voste"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
 
 	<def-macro n="modifica_sv" npar="1">
-		<choose>
+		<choose><!-- si hi ha un quan-->
 			<when>
 				<test>
 					<and>
@@ -310,6 +332,34 @@
 			<var n="tipus_rel"/>
 			<lit v=""/>
 		</let>
+		<choose><!-- si hi ha un vostè-->
+			<when>
+				<test>
+					<and>
+						<equal>
+							<var n="pronom"/>
+							<lit v="voste"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="pers"/>
+							<lit-tag v="p3"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="nbr"/>
+							<lit-tag v="sg"/>
+						</equal>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="pers"/>
+					<lit-tag v="p2"/>
+				</let>
+				<let>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v="pl"/>
+				</let>
+			</when>
+		</choose>
 	</def-macro>
 
 <def-macro n="envia_pas" npar="1">
@@ -779,6 +829,9 @@
 		</pattern>
 		<action>
 			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="lema_prn">
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="partitiu" aversion="oc-ca">
@@ -1498,6 +1551,11 @@
 				<var n="pers_subj"/>
 				<lit-tag v="p3"/>
 			</let>
+			<let>
+				<var n="pronom"/>
+				<lit v=""/>
+			</let>
+		
 			<out>
 				<chunk>
 					<clip pos="1" part="whole"/>
