@@ -11,10 +11,10 @@
       <cat-item name="inf"/>
     </def-cat>
  
-		<def-cat n="solo">
-      <cat-item name="solo"/>
+		<def-cat n="nomes">
+      <cat-item name="nomes"/>
     </def-cat>
-   
+    
 		<def-cat n="nom">
       <cat-item name="nom"/>
     </def-cat>
@@ -156,6 +156,22 @@
 				</out>   
 			</action>
 		</rule> 
+		
+		<rule comment="converteix no en només, si cal">
+			<pattern>
+				<pattern-item n="nomes"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<get-case-from pos="1">
+							<lit v="només"/>
+						</get-case-from>
+						<clip pos="1" part="a_adv"/>
+					</lu> 
+				</out>
+			</action>
+		</rule>
 		
 		<rule comment="fa els canvis de prepo">
 			<pattern>
