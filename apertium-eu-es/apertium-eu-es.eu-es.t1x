@@ -31,6 +31,10 @@
       <cat-item lemma="bat" tags="num.sg"/>
     </def-cat>
 
+ <def-cat n="detindizl"><!--determinantes indefinidos que van generalmente delante del nombre -->
+      <cat-item tags="det.indizl.*"/>
+    </def-cat>
+
     <def-cat n="detart">
       <cat-item tags="det.art.*"/>
     </def-cat>
@@ -160,6 +164,7 @@
       <attr-item tags="art"/>         
       <attr-item tags="def"/>         
       <attr-item tags="ind"/>         
+      <attr-item tags="indizl"/>         
       <attr-item tags="dem"/>         
       <attr-item tags="num"/>         
       <attr-item tags="ord"/>  
@@ -1656,7 +1661,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </out>
 	  </when>
 	  <when>
-	    <test><!--Si se trata de un verbo NOR-NORK cuyo NOR no sea 3a sg, envía proclítico con valor de NOR -->
+	    <test><!--Si se trata de un verbo NOR-NORK cuyo NOR no sea 3a sg o 3a pl, envía proclítico con valor de NOR -->
 	      <and>
 		<not>
 		  <equal>
@@ -1668,6 +1673,12 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <equal>		    
 		    <clip pos="1" side="sl" part="nor"/>
 		    <lit-tag v="NR_HU"/>
+		  </equal>
+		</not>
+		<not>
+		  <equal>		    
+		    <clip pos="1" side="sl" part="nor"/>
+		    <lit-tag v="NR_HK"/>
 		  </equal>
 		</not>
 	      </and>
@@ -1711,7 +1722,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="prn.pro.p2.mf.sg"/>
 		</let>
 	      </when>
-	      <when>
+	   <!--   <when>
 		<test>
 		    <equal>		    
 		      <clip pos="1" side="sl" part="nor"/>
@@ -1726,7 +1737,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		    <var n="procltags"/>
 		    <lit-tag v="prn.pro.p3.mf.sg"/>
 		  </let>
-	      </when>
+	      </when> -->
 	      <when>
 		<test>
 		    <equal>		    
@@ -1759,7 +1770,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <lit-tag v="prn.pro.p2.mf.pl"/>
 		</let>
 	      </when>
-	      <when>
+	   <!--   <when>
 		<test>
 		    <equal>		    
 		      <clip pos="1" side="sl" part="nor"/>
@@ -1774,7 +1785,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <var n="procltags"/>
 		  <lit-tag v="prn.pro.p3.mf.pl"/>
 		</let>
-	      </when>
+	      </when> -->
 	    </choose>
 	    <out>
 	      <chunk name="procl" case="caseFirstWord">
@@ -2485,6 +2496,122 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</let>
       </action>
     </rule>
+
+ <rule comment="REGLA: DET + NOM  (zenbait etxe - algunas casas / 
+nahiko jende = bastante jende.....  pensar singular/plural nom!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+pingui pingui pingui MG
+
+)">
+      <pattern>
+	<pattern-item n="detindizl"/>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="concord_n2">
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_det">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out> 
+	      <chunk name="det_nom" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipusdet"/></tag>
+		  <tag><clip pos="2" side="tl" part="gen"/></tag>
+		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		</tags>	
+		<lu> 
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <clip pos="1" side="tl" part="tipus_det"/>
+		  <clip pos="1" side="tl" part="GD" link-to="3"/>
+		  <clip pos="1" side="tl" part="mf"/>
+		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		</lu>
+		<b pos="1"/>
+		<lu> 
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="GD" link-to="3"/>
+		  <clip pos="2" side="tl" part="mf"/>
+		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
+<rule comment="REGLA: DET + NOM  (zenbait etxetan - en algunas casas / 
+nahiko jende = bastante jende.....  pensar singular/plural nom!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+pingui pingui pingui MG
+
+)">
+      <pattern>
+	<pattern-item n="detindizl"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="concord_n2">
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_det">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="3"/>
+	</call-macro>
+	    <out> 
+	      <chunk name="pr_det_nom" case="caseFirstWord">
+		<tags>
+		  <tag><var n="chunk"/></tag>
+		  <tag><var n="tipusdet"/></tag>
+		  <tag><clip pos="2" side="tl" part="gen"/></tag>
+		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>		  
+		  <clip pos="3" side="tl" part="whole"/> 
+		</lu>
+		<b pos="1"/>	
+		<lu> 
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <clip pos="1" side="tl" part="tipus_det"/>
+		  <clip pos="1" side="tl" part="GD" link-to="3"/>
+		  <clip pos="1" side="tl" part="mf"/>
+		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		</lu>
+		<b/>
+		<lu> 
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="GD" link-to="3"/>
+		  <clip pos="2" side="tl" part="mf"/>
+		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
 
 
 
