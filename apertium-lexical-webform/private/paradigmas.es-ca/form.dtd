@@ -1,0 +1,40 @@
+<!--
+      DTD for the format of form entries
+-->
+<!ELEMENT form (entry)+>
+	<!-- root element-->
+<!ATTLIST form
+	lang CDATA #REQUIRED
+	langpair CDATA #REQUIRED
+>
+<!ELEMENT entry (endings, paradigms)+>
+	<!-- entry -->
+<!ATTLIST entry
+	PoS CDATA #REQUIRED
+	nbr CDATA #IMPLIED
+	gen CDATA #IMPLIED
+>	
+<!ELEMENT endings (stem, ending+)>
+	<!-- examples (stem and endings) for paradigms -->
+
+
+<!ELEMENT stem (#PCDATA)>
+
+<!ELEMENT ending (#PCDATA)>
+
+
+<!ELEMENT paradigms (par+)>
+	<!--paradigms used to build new entries-->
+
+<!ATTLIST paradigms
+	howmany CDATA #REQUIRED
+>
+<!--number of paradigms used to build new entries-->
+
+<!ELEMENT par EMPTY>
+         <!-- reference to paradigm -->
+<!ATTLIST par
+	n CDATA #REQUIRED
+>
+   <!-- n: paradigm name -->
+	
