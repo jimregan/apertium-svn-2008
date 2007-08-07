@@ -229,6 +229,46 @@
       </action>
 </rule>
 
+<rule comment="REGLA: PRN__V SN V ADV">
+      <pattern>
+        <pattern-item n="PRN__V"/>
+        <pattern-item n="SN"/>
+        <pattern-item n="V"/>
+        <pattern-item n="ADV"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+            <clip pos="3" part="chcontent"/>
+          </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="4" part="lem"/>
+            <clip pos="4" part="tags"/>
+            <clip pos="4" part="chcontent"/>
+          </chunk>
+        </out>
+        <call-macro n="nombre_SN">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+</rule>
+
+
 
 <rule comment="REGLA: V PR SN V">
       <pattern>
@@ -596,6 +636,7 @@
         </call-macro>
       </action>
 </rule>
+
 
 <!--
 ^<V>{^believe<vblex><pres>$}$ ^<ADV>{^not<adv>$}$ ^<SN><sg>{^his<det><sg>$ ^mobile phone<n><sg>$}$ ^<V>{^get<vblex><past>$}$ ^<pr>{^back<pr><atp>$}$
