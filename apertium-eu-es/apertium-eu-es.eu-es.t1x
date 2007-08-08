@@ -2,6 +2,9 @@
 <transfer default="chunk">
   <section-def-cats>
 
+  <def-cat n="ari_izan">
+      <cat-item lemma="ari izan" tags="vbper.*"/>
+    </def-cat>
 
     <def-cat n="nom">
       <cat-item tags="n"/>
@@ -96,6 +99,7 @@
 <def-cat n="vbizen">
       <cat-item tags="vblex.izen"/>
     </def-cat>
+
 
     <def-cat n="prnpers">
       <cat-item tags="prn.pers.*"/>
@@ -5613,6 +5617,51 @@ pingui pingui pingui MG
       </action>
  </rule>
 
+  <rule comment="REGLA: PP (irekia)">
+      <pattern>
+	<pattern-item n="pp"/>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="tipo_det">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out>
+	  <chunk name="det_pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SA"/></tag>
+	      <tag><var n="tipusdet"/></tag>
+	      <tag><lit-tag v="GD"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="2" side="tl" part="GD" link-to="3"/>
+	      <clip pos="2" side="tl" part="mf"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="3"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
 
 
 <rule comment="REGLA: ADJ + GRADO (gorriago, gorriegi, gorrien(a))">
@@ -6073,7 +6122,7 @@ pingui pingui pingui MG
     </rule>
 
 
-<!--Verbos perifrásticos -->
+<!--Verbos perifrásticos (reglas exactamente idénticas a las de verbos normales, combinar en una?-->
 
 
 <rule comment="REGLA: VERBO SINTÉTICO (nahi dut)">
@@ -6350,6 +6399,55 @@ pingui pingui pingui MG
 </rule>
 
 
+<rule comment="REGLA: GER + ARI IZAN (prestatzen ari gara - estamos preparando)">
+      <pattern>
+	<pattern-item n="ger"/>
+	<pattern-item n="ari_izan"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verbal_flex">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="estar_ger" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="2" side="sl" part="nor"/></tag>
+	      <tag><clip pos="2" side="sl" part="nori"/></tag>
+	      <tag><clip pos="2" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/>
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="persnbr"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+
+
+
+
+
+
   <rule comment="ADITZ IZENA + KO (joateko) ">
     <pattern>
       <pattern-item n="vbizen"/>
@@ -6384,22 +6482,6 @@ pingui pingui pingui MG
       </out>
     </action>
   </rule>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

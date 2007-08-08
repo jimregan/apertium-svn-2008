@@ -7,6 +7,10 @@
       <cat-item name="det_adj"/>
     </def-cat>
 
+   <def-cat n="det_pp">
+      <cat-item name="det_pp"/>
+    </def-cat>
+
 
     <def-cat n="adj_grado">
       <cat-item name="d_adv_adj"/>
@@ -93,6 +97,66 @@
    <rule comment="CHUNK: SA"><!-- Si el SA va determinado con 'art' i no ha entrado por ninguna regla del t2x que lo haga definido, se imprimirá sin artículo ('etxea gorria da' - 'la casa es roja' -->
       <pattern>
         <pattern-item n="det_adj"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="0" part="tipus_det"/>
+		  <lit-tag v="art"/>
+		</equal>
+		<not><!--que el adjetivo (post2) no haya sido traducido por un det ind -->
+		  <equal>
+		    <clip pos="2" part="tipus_det"/>
+		    <lit-tag v="ind"/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu> 
+	    </out> 
+	  </when>
+	  <otherwise><!--imprimir los dos (det i adj) y cambiar det art por det def -->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="tipus_det"/>
+		    <lit-tag v="art"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="tipus_det"/>
+		  <lit-tag v="def"/>
+		</let>
+	      </when>
+	    </choose>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu> 
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	    </out> 
+	  </otherwise>
+	</choose>
+      </action>
+   </rule> 
+
+
+ <rule comment="CHUNK: SA"><!-- Si el SA va determinado con 'art' i no ha entrado por ninguna regla del t2x que lo haga definido, se imprimirá sin artículo ('etxea gorria da' - 'la casa es roja' -->
+      <pattern>
+        <pattern-item n="det_pp"/>
       </pattern>
       <action>
 	<choose>
