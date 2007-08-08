@@ -72,6 +72,10 @@
       <cat-item tags="vbper.pp"/>
     </def-cat>
 
+  <def-cat n="padv">
+      <cat-item tags="vblex.padv"/>
+    </def-cat>
+
  <def-cat n="ger">
       <cat-item tags="vblex.ger"/>
     </def-cat>
@@ -311,6 +315,7 @@
       <attr-item tags="subs"/>	  
       <attr-item tags="pii"/>	  
       <attr-item tags="pfut"/>	  
+      <attr-item tags="padv"/>	  
       <attr-item tags="fti"/>	  
       <attr-item tags="cni"/>	  
       <attr-item tags="izen"/>
@@ -6031,6 +6036,41 @@ pingui pingui pingui MG
       </action>
     </rule>
 
+
+    <rule comment="REGLA: PADV">
+      <pattern>
+	<pattern-item n="padv"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="1" side="tl" part="temps"/>
+	  <lit-tag v="pp"/>
+	</let>
+	<out>
+	  <chunk name="padv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="m.sg"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
 
 
 <!--Verbos perifrásticos -->
