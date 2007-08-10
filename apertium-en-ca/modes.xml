@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="ISO-8859-15"?>
 <modes>
+
+
+  <mode name="en-ca-unicode">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="en-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="en-ca-unicode.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-en-ca.en-ca.t1x"/>
+        <file name="en-ca.t1x.bin"/>
+        <file name="en-ca.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-en-ca.en-ca.t2x"/>
+        <file name="en-ca.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-en-ca.en-ca.t3x"/>
+        <file name="en-ca.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="en-ca.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="en-ca.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
   <mode name="en-ca">
     <pipeline>
       <program name="lt-proc">
@@ -30,6 +64,8 @@
       </program>
     </pipeline>
   </mode>
+
+
 
   <mode name="en-ca-anmor">
     <pipeline>
@@ -149,6 +185,38 @@
       </program>
       <program name="lt-proc $1">
         <file name="en-ca.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  
+  <mode name="ca-en-unicode">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ca-en-unicode.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-en-ca.ca-en.t1x"/>
+        <file name="ca-en.t1x.bin"/>
+        <file name="ca-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-en-ca.ca-en.t2x"/>
+        <file name="ca-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-en-ca.ca-en.t3x"/>
+        <file name="ca-en.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ca-en.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="ca-en.autopgen.bin"/>
       </program>
     </pipeline>
   </mode>
