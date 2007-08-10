@@ -135,6 +135,10 @@
       <cat-item lemma="en" tags="gra.sup"/>
     </def-cat>
 
+<def-cat n="nez">
+      <cat-item lemma="nez" tags="cnjadv"/>
+    </def-cat>
+
     <def-cat n="sent">
       <cat-item tags="sent"/>
     </def-cat>
@@ -6437,6 +6441,10 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
 </rule>
 
@@ -6454,6 +6462,9 @@ pingui pingui pingui MG
       <pattern-item n="ko"/>	
     </pattern>
     <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
       <let>
 	<clip pos="1" side="tl" part="temps"/>
 	<lit-tag v="inf"/>
@@ -6480,8 +6491,40 @@ pingui pingui pingui MG
 	  </lu>
 	</chunk>
       </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
     </action>
   </rule>
+
+
+ <rule comment="REGLA: (e)nez">
+      <pattern>
+	<pattern-item n="nez"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="nez" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="cnjadv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+	      
+
 
 
 

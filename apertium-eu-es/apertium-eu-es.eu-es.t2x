@@ -18,9 +18,18 @@
       <cat-item tags="SA.*"/>
     </def-cat>  
 
-<def-cat n="SVsub">
+<def-cat n="SVconj">
+      <cat-item lemma="vbconj" tags="SV.*"/>
+    </def-cat>  
+
+ <def-cat n="SVsub">
       <cat-item tags="SVsub.*"/>
     </def-cat>  
+
+<def-cat n="nez">
+      <cat-item lemma="nez" tags="cnjadv"/>
+    </def-cat>  
+
 
     <def-cat n="punt">
       <cat-item tags="sent"/>
@@ -495,7 +504,7 @@
 </rule>
   
 
-<rule>
+<rule comment="afaria prestatzeko">
   <pattern>
     <pattern-item n="SN"/>
     <pattern-item n="SVsub"/>
@@ -555,8 +564,23 @@
   </action>
 </rule>
 
-
-
+<rule comment="azaldu duenez">
+  <pattern>
+    <pattern-item n="SVconj"/>
+    <pattern-item n="nez"/>
+  </pattern>
+  <action>
+    <out> 
+      <chunk>
+	<clip pos="2" part="whole"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<clip pos="1" part="whole"/>
+      </chunk>
+    </out>
+  </action>
+</rule>
 
 
 
