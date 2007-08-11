@@ -190,6 +190,45 @@
 </rule>
 
 
+<rule comment="REGLA: SN V SN V">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="V"/>
+        <pattern-item n="SN"/>
+        <pattern-item n="V"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="4" part="lem"/>
+            <clip pos="4" part="tags"/>
+            <clip pos="4" part="chcontent"/>
+          </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+            <clip pos="3" part="chcontent"/>
+          </chunk>
+        </out>
+        <call-macro n="nombre_SN">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+</rule>
+
 <rule comment="REGLA: PRN V SN V">
       <pattern>
         <pattern-item n="PRN"/>
