@@ -111,6 +111,16 @@ public class DictionaryElement extends Element {
          * 
          */
     private String folder;
+    
+    /**
+     * 
+     */
+    private String xmlEncoding = "iso-8859-1";
+    
+    /**
+     * 
+     */
+    private String xmlVersion;
 
     /**
          * 
@@ -372,7 +382,7 @@ public class DictionaryElement extends Element {
 	    fos = new FileOutputStream(fileName);
 	    bos = new BufferedOutputStream(fos);
 	    dos = new DataOutputStream(bos);
-	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
+	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"" + getXmlEncoding() + "\"?>\n");
 	    dos.writeBytes("<!--\n\tDictionary:\n");
 	    if (sections != null) {
 		if (isBil()) {
@@ -442,7 +452,7 @@ public class DictionaryElement extends Element {
 	    fos = new FileOutputStream(fileName);
 	    bos = new BufferedOutputStream(fos);
 	    dos = new DataOutputStream(bos);
-	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n");
+	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"" + getXmlEncoding() + "\"?>\n");
 	    dos.writeBytes("<!--\n\tDictionary:\n");
 	    if (sections != null) {
 		if (isBil()) {
@@ -765,6 +775,22 @@ public class DictionaryElement extends Element {
          */
     public final void setFolder(String folder) {
 	this.folder = folder;
+    }
+
+    public final String getXmlEncoding() {
+        return xmlEncoding;
+    }
+
+    public final void setXmlEncoding(String xmlEncoding) {
+        this.xmlEncoding = xmlEncoding;
+    }
+
+    public final String getXmlVersion() {
+        return xmlVersion;
+    }
+
+    public final void setXmlVersion(String xmlVersion) {
+        this.xmlVersion = xmlVersion;
     }
 
 }

@@ -4,8 +4,11 @@ mainClass="ProcessDics"
 # Minimum and maximum memory for JVM
 defaultMinMem=32
 defaultMaxMem=300
-library="lib/cross-dics.jar"
-java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp ${library} $mainClass"
+library='lib/cross-dics.jar'
+#java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp ${library} $mainClass"
+java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp $CLASSPATH $mainClass"
+
+echo $java_options
 
 #
 #	cross
@@ -21,6 +24,7 @@ function cross() {
    	java ${java_options} $task -bilAB $3 $4 -bilBC $5 $6 -monA $2 -monC $7 -cross-model $crossmodel $9 2> $task.err
    else
    	echo "Usage: dictools cross <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> crossmodel"
+   	echo "More information in http://xixona.dlsi.ua.es/wiki/index.php/Crossdics";
    fi
 }
 

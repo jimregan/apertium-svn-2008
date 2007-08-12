@@ -257,6 +257,10 @@ public class DicCross {
 	final DictionaryElement dic = new DictionaryElement();
 	final DictionaryElement specul = new DictionaryElement();
 
+	// encoding
+	final String encoding = this.crossXmlEncodings(dic1.getXmlEncoding(), dic2.getXmlEncoding());
+	dic.setXmlEncoding(encoding);
+	
 	// alphabet
 	final AlphabetElement alphabet = crossAlphabets(dic1.getAlphabet(),
 		dic2.getAlphabet());
@@ -294,6 +298,15 @@ public class DicCross {
 	dics[1] = specul;
 
 	return dics;
+    }
+    
+    /**
+     * 
+     * @param encoding1
+     * @param encoding2
+     */
+    private final String crossXmlEncodings(final String encoding1, final String encoding2) {
+	return encoding1;
     }
 
     /**

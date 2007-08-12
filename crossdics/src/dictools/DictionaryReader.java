@@ -20,9 +20,11 @@
 
 package dictools;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
 import dics.elements.dtd.AlphabetElement;
@@ -76,8 +78,17 @@ public class DictionaryReader extends XMLReader {
     public DictionaryElement readDic() {
 	analize();
 	final DictionaryElement dic = new DictionaryElement();
+	String encoding = getDocument().getInputEncoding();
+	//System.out.println("Encoding: " + encoding);
 
-	Element root = getDocument().getDocumentElement();
+	Document doc = getDocument();
+	String xmlEncoding = doc.getXmlEncoding();
+	String xmlVersion = doc.getXmlVersion();
+	
+	dic.setXmlEncoding(xmlEncoding);
+	dic.setXmlVersion(xmlVersion);	
+	
+	Element root = doc.getDocumentElement();
 
 	final NodeList children = root.getChildNodes();
 	for (int i = 0; i < children.getLength(); i++) {
@@ -88,6 +99,14 @@ public class DictionaryReader extends XMLReader {
                  * (Comment)child; System.out.println("Comment: " +
                  * comment.getTextContent()); }
                  */
+	    
+	    if (child instanceof ProcessingInstruction) {
+		//System.out.println("PI read!");
+		ProcessingInstruction pi = (ProcessingInstruction)child;
+		String data = pi.getData();
+		//System.out.println("Data pi: " + data);
+	    }
+	    
 	    if (child instanceof Element) {
 		final Element childElement = (Element) child;
 		final String childElementName = childElement.getNodeName();
