@@ -5788,7 +5788,7 @@
 				<with-param pos="2"/>
 			</call-macro>
 			<out>
-				<chunk  namefrom="lema">
+				<chunk namefrom="lema">
 					<tags>
 						<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 						<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -7063,7 +7063,7 @@
 			<call-macro n="temps_verb">
 				<with-param pos="2"/>
 			</call-macro>
-				<call-macro n="lema_adv">
+			<call-macro n="lema_adv">
 				<with-param pos="3"/>
 			</call-macro>
 			<out>
@@ -7331,7 +7331,7 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<out>
-				<chunk name="verb_inf_enc" case="caseFirstWord">
+				<chunk name="verb_inf" case="caseFirstWord">
 					<tags>
 						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7350,6 +7350,66 @@
 						<clip pos="1" side="tl" part="lemq"/>-->
 					</lu>
 					<b pos="1"/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/> 
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+					</lu>
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
+	<rule comment="vbmod inf adv">
+		<pattern>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="inf"/>
+			<pattern-item n="adv"/>
+		</pattern>
+		<action>
+			<call-macro n="tipus_verb">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="lema_adv">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk  namefrom="lema">
+					<tags>
+						<tag><clip pos="3" side="tl" part="a_adv"/></tag>
+						<tag><clip pos="3" side="tl" part="neg"/></tag>		
+					</tags>
+					<lu>
+						<get-case-from pos="1">
+							<clip pos="3" side="tl" part="lem"/>
+						</get-case-from>
+						<clip pos="3" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="verb_inf">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="2"/>
 					<lu>
 						<clip pos="2" side="tl" part="lemh"/> 
 						<clip pos="2" side="tl" part="a_verb"/>
@@ -7432,6 +7492,216 @@
 		</action>
 	</rule>
 
+	<rule comment="vbmod prnpro inf">
+		<pattern>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="inf"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="verb_inf_enc" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="3" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="1"/>
+					<mlu>
+						<lu>
+							<clip pos="3" side="tl" part="lemh"/> 
+							<clip pos="3" side="tl" part="a_verb"/>
+							<clip pos="3" side="tl" part="temps"/>
+						</lu>
+						<lu>
+							<clip pos="2" side="tl" part="lem"/> 
+							<lit-tag v="prn.enc"/>
+							<clip pos="2" side="tl" part="tipoenc_pro"/>
+							<clip pos="3" side="tl" part="lemq"/> 
+						</lu>
+					</mlu>	
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="2"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+
+	<rule comment="prnpro vbmod inf adv">
+		<pattern>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="inf"/>
+			<pattern-item n="adv"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="lema_adv">
+				<with-param pos="4"/>
+			</call-macro>
+			<out>
+				<chunk  namefrom="lema">
+					<tags>
+						<tag><clip pos="4" side="tl" part="a_adv"/></tag>
+						<tag><clip pos="4" side="tl" part="neg"/></tag>		
+					</tags>
+					<lu>
+						<get-case-from pos="1">
+							<clip pos="4" side="tl" part="lem"/>
+						</get-case-from>
+						<clip pos="4" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="verb_inf_enc">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="3" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="2" side="tl" part="temps"/></tag>
+						<tag><clip pos="2" side="tl" part="pers"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="2"/>
+					<mlu>
+						<lu>
+							<clip pos="3" side="tl" part="lemh"/> 
+							<clip pos="3" side="tl" part="a_verb"/>
+							<clip pos="3" side="tl" part="temps"/>
+						</lu>
+						<lu>
+							<get-case-from pos="2">
+								<clip pos="1" side="tl" part="lem"/> 
+							</get-case-from>
+							<lit-tag v="prn.enc"/>
+							<clip pos="1" side="tl" part="tipoenc_pro"/>
+							<clip pos="3" side="tl" part="lemq"/> 
+						</lu>
+					</mlu>	
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="3"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+
+	<rule comment="vbmod prnpro inf adv">
+		<pattern>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="inf"/>
+			<pattern-item n="adv"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="lema_adv">
+				<with-param pos="4"/>
+			</call-macro>
+			<out>
+				<chunk  namefrom="lema">
+					<tags>
+						<tag><clip pos="4" side="tl" part="a_adv"/></tag>
+						<tag><clip pos="4" side="tl" part="neg"/></tag>		
+					</tags>
+					<lu>
+						<get-case-from pos="1">
+							<clip pos="4" side="tl" part="lem"/>
+						</get-case-from>
+						<clip pos="4" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="verb_inf_enc">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="3" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="2"/>
+					<mlu>
+						<lu>
+							<clip pos="3" side="tl" part="lemh"/> 
+							<clip pos="3" side="tl" part="a_verb"/>
+							<clip pos="3" side="tl" part="temps"/>
+						</lu>
+						<lu>
+							<clip pos="2" side="tl" part="lem"/> 
+							<lit-tag v="prn.enc"/>
+							<clip pos="2" side="tl" part="tipoenc_pro"/>
+							<clip pos="3" side="tl" part="lemq"/> 
+						</lu>
+					</mlu>	
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="3"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+
 	<rule comment="prnpro prnpro vbmod inf">
 		<pattern>
 			<pattern-item n="prnpro"/>
@@ -7484,7 +7754,7 @@
 							<clip pos="4" side="tl" part="temps"/>
 						</lu>
 						<lu>
-							<get-case-from pos="1">
+							<get-case-from pos="2">
 								<clip pos="1" side="tl" part="lem"/> 
 							</get-case-from>
 							<lit-tag v="prn.enc"/>
@@ -7512,7 +7782,253 @@
 		</action>
 	</rule>
 	
-		<rule comment="inf prnenc">
+	<rule comment="vbmod prnpro prnpro inf">
+		<pattern>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="inf"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="f_concord1">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="verb_inf_enc_enc" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="1"/>
+					<mlu>
+						<lu>
+							<clip pos="4" side="tl" part="lemh"/> 
+							<clip pos="4" side="tl" part="a_verb"/>
+							<clip pos="4" side="tl" part="temps"/>
+						</lu>
+						<lu>
+							<clip pos="2" side="tl" part="lem"/> 
+							<lit-tag v="prn.enc"/>
+							<clip pos="2" side="tl" part="tipoenc_pro"/>
+						</lu>
+						<lu>
+							<clip pos="3" side="tl" part="lem"/> 
+							<lit-tag v="prn.enc"/>
+							<clip pos="3" side="tl" part="tipoenc_pro"/>
+							<clip pos="4" side="tl" part="lemq"/> 
+						</lu>
+					</mlu>
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="f_bcond">
+				<with-param pos="3"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
+	<rule comment="prnpro prnpro vbmod inf adv">
+		<pattern>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="inf"/>
+			<pattern-item n="adv"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_concord1">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="lema_adv">
+				<with-param pos="5"/>
+			</call-macro>
+			<out>
+				<chunk  namefrom="lema">
+					<tags>
+						<tag><clip pos="5" side="tl" part="a_adv"/></tag>
+						<tag><clip pos="5" side="tl" part="neg"/></tag>		
+					</tags>
+					<lu>
+						<get-case-from pos="1">
+							<clip pos="5" side="tl" part="lem"/>
+						</get-case-from>
+						<clip pos="5" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="verb_inf_enc_enc" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="3" side="tl" part="temps"/></tag>
+						<tag><clip pos="3" side="tl" part="pers"/></tag>
+						<tag><clip pos="3" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="2"/>
+					<mlu>
+						<lu>
+							<clip pos="4" side="tl" part="lemh"/> 
+							<clip pos="4" side="tl" part="a_verb"/>
+							<clip pos="4" side="tl" part="temps"/>
+						</lu>
+						<lu>
+							<get-case-from pos="2">
+								<clip pos="1" side="tl" part="lem"/> 
+							</get-case-from>
+							<lit-tag v="prn.enc"/>
+							<clip pos="1" side="tl" part="tipoenc_pro"/>
+						</lu>
+						<lu>
+							<clip pos="2" side="tl" part="lem"/> 
+							<lit-tag v="prn.enc"/>
+							<clip pos="2" side="tl" part="tipoenc_pro"/>
+							<clip pos="4" side="tl" part="lemq"/> 
+						</lu>
+					</mlu>
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="f_bcond">
+				<with-param pos="4"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
+		<rule comment="vbmod prnpro prnpro inf adv">
+		<pattern>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="inf"/>
+			<pattern-item n="adv"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="f_concord1">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="lema_adv">
+				<with-param pos="5"/>
+			</call-macro>
+			<out>
+				<chunk  namefrom="lema">
+					<tags>
+						<tag><clip pos="5" side="tl" part="a_adv"/></tag>
+						<tag><clip pos="5" side="tl" part="neg"/></tag>		
+					</tags>
+					<lu>
+						<get-case-from pos="1">
+							<clip pos="5" side="tl" part="lem"/>
+						</get-case-from>
+						<clip pos="5" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk name="verb_inf_enc_enc" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="4" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="2"/>
+					<mlu>
+						<lu>
+							<clip pos="4" side="tl" part="lemh"/> 
+							<clip pos="4" side="tl" part="a_verb"/>
+							<clip pos="4" side="tl" part="temps"/>
+						</lu>
+						<lu>
+							<clip pos="2" side="tl" part="lem"/> 
+							<lit-tag v="prn.enc"/>
+							<clip pos="2" side="tl" part="tipoenc_pro"/>
+						</lu>
+						<lu>
+							<clip pos="3" side="tl" part="lem"/> 
+							<lit-tag v="prn.enc"/>
+							<clip pos="3" side="tl" part="tipoenc_pro"/>
+							<clip pos="4" side="tl" part="lemq"/> 
+						</lu>
+					</mlu>
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="f_bcond">
+				<with-param pos="4"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
+	<rule comment="inf prnenc">
 		<pattern>
 			<pattern-item n="inf"/>
 			<pattern-item n="prnenc"/>
@@ -11543,17 +12059,40 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
-			<out>
-				<chunk name="adv" case="caseFirstWord">
-					<tags>
-						<tag><clip pos="1" side="tl" part="a_adv"/></tag>
-					</tags>
-					<lu>
-						<clip pos="1" side="tl" part="lem"/>
-						<clip pos="1" side="tl" part="a_adv"/>
-					</lu>
-				</chunk>
-			</out>
+			<choose>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="1" side="sl" part="lem"/>
+							<lit v="non"/>
+						</equal>
+					</test>
+					<out>
+						<chunk name="no" case="caseFirstWord">
+							<tags>
+								<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lem"/>
+								<clip pos="1" side="tl" part="a_adv"/>
+							</lu>
+						</chunk>
+					</out>
+				</when>
+				<otherwise>
+					<out>
+						<chunk name="adv" case="caseFirstWord">
+							<tags>
+								<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lem"/>
+								<clip pos="1" side="tl" part="a_adv"/>
+							</lu>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>

@@ -600,6 +600,78 @@
 			</out>
 		</action>
 	</rule>
+
+	<rule comment="REGLA: ADV ADV SV. per arreglar el tema de la doble negació...">
+		<pattern>
+			<pattern-item n="ADV"/>
+			<pattern-item n="ADV"/>
+			<pattern-item n="SV"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="modifica_sv">
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<and>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="no"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="lem"/>
+								<lit v="no"/>
+							</equal>
+						</and>
+					</test>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+						<b pos="2"/>
+						<chunk>
+							<lit v="pas"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+					</out>
+				</when>
+				<otherwise>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+						<b pos="2"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+		</action>
+	</rule>
 	
 	<rule comment="REGLA: prep sprep">
 		<pattern>
