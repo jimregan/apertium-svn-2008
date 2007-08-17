@@ -5700,34 +5700,73 @@
 			<call-macro n="lema_adv">
 				<with-param pos="2"/>
 			</call-macro>
-			<out>
-				<chunk  namefrom="lema">
-					<tags>
-						<tag><clip pos="2" side="tl" part="a_adv"/></tag>
-						<tag><clip pos="2" side="tl" part="neg"/></tag>		
-					</tags>
-					<lu>
-						<get-case-from pos="1">
-							<clip pos="2" side="tl" part="lem"/>
-						</get-case-from>
-						<clip pos="2" side="tl" part="a_adv"/>
-					</lu>
-				</chunk>
-				<b pos="1"/>
-				<chunk name="verb">
-					<tags>
-						<tag><lit-tag v="SV"/></tag>
-						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-						<tag><clip pos="1" side="tl" part="temps"/></tag>
-						<tag><clip pos="1" side="tl" part="pers"/></tag>
-						<tag><clip pos="1" side="tl" part="nbr"/></tag>
-						<tag><var n="tipusverb"/></tag>
-					</tags>
-					<lu>
-						<var n="verb"/>
-					</lu>
-				</chunk>
-			</out>
+			<choose>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="2" side="sl" part="lem"/>
+							<lit v="pas"/>
+						</equal>
+					</test>
+					
+					<out>
+						<chunk  namefrom="lema">
+							<tags>
+								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
+								<tag><clip pos="2" side="tl" part="neg"/></tag>		
+							</tags>
+							<lu>
+								<get-case-from pos="1">
+									<clip pos="2" side="tl" part="lem"/>
+								</get-case-from>
+								<clip pos="2" side="tl" part="a_adv"/>
+							</lu>
+						</chunk>
+						<b pos="1"/>
+						<chunk name="verb">
+							<tags>
+								<tag><lit-tag v="SV"/></tag>
+								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+								<tag><clip pos="1" side="tl" part="temps"/></tag>
+								<tag><clip pos="1" side="tl" part="pers"/></tag>
+								<tag><clip pos="1" side="tl" part="nbr"/></tag>
+								<tag><var n="tipusverb"/></tag>
+							</tags>
+							<lu>
+								<var n="verb"/>
+							</lu>
+						</chunk>
+					</out>
+				</when>
+				<otherwise>
+					<out>
+						<chunk name="verb">
+							<tags>
+								<tag><lit-tag v="SV"/></tag>
+								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+								<tag><clip pos="1" side="tl" part="temps"/></tag>
+								<tag><clip pos="1" side="tl" part="pers"/></tag>
+								<tag><clip pos="1" side="tl" part="nbr"/></tag>
+								<tag><var n="tipusverb"/></tag>
+							</tags>
+							<lu>
+								<var n="verb"/>
+							</lu>
+						</chunk>
+						<b pos="1"/>
+						<chunk  namefrom="lema">
+							<tags>
+								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
+								<tag><clip pos="2" side="tl" part="neg"/></tag>		
+							</tags>
+							<lu>
+								<clip pos="2" side="tl" part="lem"/>
+								<clip pos="2" side="tl" part="a_adv"/>
+							</lu>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
