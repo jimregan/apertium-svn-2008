@@ -81,6 +81,7 @@
        <attr-item tags="vaux"/>
     </def-attr>
     <def-attr n="temps">
+       <attr-item tags="pp"/>
        <attr-item tags="pii"/>
        <attr-item tags="pis"/>
        <attr-item tags="pri"/>
@@ -222,6 +223,44 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: ADJ ADJ NOM">
+      <pattern>
+        <pattern-item n="adj"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+            <out>
+          <chunk name="adj_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+	    </tags>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/>
+    	        <clip pos="1" side="tl" part="a_adj"/>
+	        <lit-tag v="attr"/>
+              </lu>
+	      <b/>
+              <lu>
+                <clip pos="2" side="tl" part="lem"/>
+    	        <clip pos="2" side="tl" part="a_adj"/>
+	        <lit-tag v="attr"/>
+              </lu>
+	      <b/>
+              <lu>
+                <clip pos="3" side="tl" part="lem"/>
+    	        <clip pos="3" side="tl" part="a_nom"/>
+    	        <clip pos="3" side="tl" part="nbr"/>
+              </lu>
+            </chunk>
+            </out>
+      </action>
+    </rule>
+
+
+
     <rule comment="REGLA: ADJ">
       <pattern>
         <pattern-item n="adj"/>
@@ -242,7 +281,6 @@
       </action>
     </rule>
 
-
     <rule>
       <pattern>
         <pattern-item n="nom"/>
@@ -258,11 +296,41 @@
       </action>
     </rule>
 
+
     <rule comment="REGLA: VERBNM">
       <pattern>
         <pattern-item n="verbnm"/>
       </pattern>
       <action>
+        <choose>
+          <when>
+            <test>     <!-- If it is third person singular in the present tense -->
+                <equal>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pp"/>
+                </equal>
+            </test>
+            <out>
+              <chunk name="verb">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+              <lu>
+                  <lit v="het"/>
+                  <lit-tag v="vbhaver"/>
+                  <lit-tag v="pres"/>
+              </lu>
+              <b/>
+              <lu>
+                  <lit v="ge"/>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <clip pos="1" side="tl" part="temps"/>
+              </lu>
+              </chunk>
+            </out>
+          </when>
+          <otherwise>
             <out>
               <chunk name="verb">
                 <tags>
@@ -275,6 +343,8 @@
                 </lu>
               </chunk>
             </out>
+          </otherwise>
+        </choose>
       </action>
     </rule>
 
