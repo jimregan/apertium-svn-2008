@@ -361,6 +361,26 @@
 			</test>
 			<let><var n="nombre"/><lit-tag v="pl"/></let>
 		</when>
+<!--afegit per Gema--> <when> 
+			<test>
+				<equal>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v="sp"/>
+				</equal>
+			</test>
+			<let><clip pos="1" part="nbr"/><lit-tag v="pl"/></let>
+		</when>
+		
+		<when> 
+			<test>
+				<equal>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v=""/>
+				</equal>
+			</test>
+			<let><clip pos="1" part="nbr"/><lit-tag v="pl"/></let>
+		</when>
+		
 		<when>
 			<test>
 				<or>
@@ -435,10 +455,6 @@
 					<equal>
 						<var n="nombre_subj"/>
 						<lit v="no_assignat"/>
-					</equal>
-					<equal>
-						<var n="nombre_subj"/>
-						<lit v=""/>
 					</equal>
 					<equal>
 						<var n="nombre_subj"/>
@@ -1091,6 +1107,9 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="2"/>
 	</call-macro>
+	<call-macro n="assigna_nombre_subj">
+		<with-param pos="2"/>
+	</call-macro>
 	       <choose>
 	         <when>
 		   <test>
@@ -1262,6 +1281,9 @@
 		<call-macro n="assigna_gen_nbr">
 			<with-param pos="4"/>
 		</call-macro>
+		<call-macro n="assigna_nombre_subj">
+		<with-param pos="4"/>
+	</call-macro>
 		<out>
 			<chunk>
 				<clip pos="1" part="lem"/>
@@ -2597,9 +2619,9 @@
 	</call-macro>
 	<choose> <!--mirem si el SN és el subj de la subordinada-->
 		<when>
-			<test>
-			<or>
-			<and>
+		  <test>
+		    <or>
+		      <and>
 				<equal caseless="yes">
 					<clip pos="1" part="lem"/>
 					<lit v="prnperssubj"/>
@@ -2612,8 +2634,8 @@
 					<clip pos="3" part="nbr"/>
 					<clip pos="1" part="nbr"/>
 				</equal>
-			</and>
-			<and>
+		      </and>
+		      <and>
 				<not>
 					<equal caseless="yes">
 						<clip pos="1" part="lem"/>
@@ -2628,9 +2650,9 @@
 					<clip pos="3" part="nbr"/>
 					<clip pos="1" part="nbr"/>
 				</equal>
-			</and>
-		</or>
-			</test>
+		      </and>
+		    </or>
+		  </test>
 			<out> <!--si és que sí, el rel serà "qui" i no "que"-->
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -2649,7 +2671,7 @@
 					<clip pos="3" part="tags"/>
 					<clip pos="3" part="chcontent"/>
 				</chunk>
-	<b pos="3"/>
+				<b pos="3"/>
 			</out>
 		</when>
 		<otherwise><!--si és que no, el rel serà "que" i caldrà posar subjecte al verb-->

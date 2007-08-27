@@ -55,6 +55,9 @@
   
     <def-cat n="num">
       <cat-item tags="num.*"/>
+    </def-cat>
+    
+     <def-cat n="cifra">
       <cat-item tags="num"/>
     </def-cat>
 
@@ -863,8 +866,22 @@
             <var n="genero"/>
             <lit-tag v="m"/>
           </let>
-        </when>
+        </when> 
+<!--afegit per Gema-->		
         <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="gen"/>
+              <lit-tag v="mf"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="mf"/>
+          </let>
+        </when>
+        
+	<when>
           <test>
             <equal>
               <clip pos="1" side="tl" part="gen"/>
@@ -889,7 +906,24 @@
             <var n="numero"/>
             <lit-tag v="sg"/>
           </let>
+        </when> 
+
+<!--afegit per Gema-->
+
+	<when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="sp"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sp"/>
+          </let>
         </when>
+
+
         <when>
           <test>
             <equal>
@@ -3281,7 +3315,7 @@
 	  <chunk name="ant" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
-				<tag><lit-tag v="sg"/></tag>
+	      <tag><lit-tag v="sg"/></tag>
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="whole"/>
@@ -3308,7 +3342,7 @@
 	  <chunk name="ant" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
-				<tag><lit-tag v="sg"/></tag>
+	      <tag><lit-tag v="sg"/></tag>
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="whole"/>
@@ -3316,6 +3350,42 @@
       <b pos="1"/>
       <lu>   
 	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: 3 ANTROPÒNIMS (px. maria lópez váquez)">
+      <pattern>
+	<pattern-item n="ant"/>
+	<pattern-item n="ant"/>
+	<pattern-item n="ant"/>
+      </pattern>
+      <action>
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>
+	<out>
+	  <chunk name="ant" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><lit-tag v="sg"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+      <b pos="1"/>
+      <lu>   
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+      <b pos="2"/>
+      <lu>   
+	      <clip pos="3" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -16068,16 +16138,49 @@
 		<out>
 			<chunk name="num" case="caseFirstWord">
 				<tags>
-					<tag><clip pos="1" side="tl" part="gen"/></tag>
-					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+					<tag><lit-tag v="SN"/></tag>
+					<tag><var n="genero"/></tag>
+					<tag><var n="numero"/></tag>
 				</tags>
+				<!--<tags>
+				        <tag><clip pos="1" side="tl" part="gen"/></tag>
+					<tag><clip pos="1" side="tl" part="nbr"/></tag>
+			        </tags>-->
 				<lu>
 					<clip pos="1" side="tl" part="lem"/> 
 					<clip pos="1" side="tl" part="a_num"/>
-					<clip pos="1" side="tl" part="gen_sense_mf" link-to="1"/>
+					<clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
 					<clip pos="1" side="tl" part="gen_mf"/>	 
-					<clip pos="1" side="tl" part="nbr_sense_sp" link-to="2"/>
+					<clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
 					<clip pos="1" side="tl" part="nbr_sp"/>	 
+				</lu>
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule>
+
+
+<rule comment="NUMERAL en cifra">
+	<pattern>
+		<pattern-item n="cifra"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk name="cifra" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="SN"/></tag>
+					<tag><lit-tag v="mf"/></tag>
+					<tag><lit-tag v="sp"/></tag>
+			        </tags>
+				<lu>
+					<clip pos="1" side="tl" part="lem"/> 
+					<clip pos="1" side="tl" part="a_num"/>
+					<lit-tag v="mf"/>
+					<lit-tag v="sp"/>
 				</lu>
 			</chunk>
 		</out>

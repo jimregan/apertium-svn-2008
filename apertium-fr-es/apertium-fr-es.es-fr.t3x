@@ -5,6 +5,10 @@
     
     <def-cat n="inf">
       <cat-item name="inf"/>
+    </def-cat> 
+    
+    <def-cat n="cifra">
+      <cat-item name="cifra"/>
     </def-cat>
 
     <def-cat n="qui">
@@ -117,6 +121,10 @@
  <def-attr n="a_nom">
       <attr-item tags="n"/>
       <attr-item tags="np"/> 
+    </def-attr> 
+   
+   <def-attr n="a_num">
+      <attr-item tags="num"/>
     </def-attr>
 		
 <def-attr n="a_rel">
@@ -175,6 +183,19 @@
 						<clip pos="1" part="a_rel"/>
 						<clip pos="1" part="gen"/>
 						<clip pos="1" part="nbr"/>
+					</lu>
+				</out>   
+			</action>
+		</rule> 
+		<rule comment="CHUNK: lleva genere i nombre a les xifres">
+			<pattern>
+				<pattern-item n="cifra"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<clip pos="1" part="lem"/>
+						<clip pos="1" part="a_num"/>
 					</lu>
 				</out>   
 			</action>
