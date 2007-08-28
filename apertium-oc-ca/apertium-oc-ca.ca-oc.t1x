@@ -86,6 +86,10 @@
       <cat-item tags="prn.itg.*"/>
     </def-cat>
 		
+		<def-cat n="el_qual">
+      <cat-item lemma="el qual" tags="rel.*"/>
+    </def-cat>
+
 <def-cat n="rel">
       <cat-item tags="prn.rel.*"/>
       <cat-item tags="rel.*"/>
@@ -450,6 +454,10 @@
   </section-def-attrs>
 	
   <section-def-vars>
+ 		<def-var n="prnpro_qual"/>
+ 		<def-var n="elqual_prep"/>
+ 		<def-var n="elqual_gen"/>
+ 		<def-var n="elqual_nbr"/>
  		<def-var n="pronomsubj"/>
    <def-var n="tipusrel"/>
     <def-var n="nbr_pp"/>
@@ -525,6 +533,73 @@
 
 <section-def-macros>
 
+	<def-macro n="posa_prn" npar="1">
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<var n="elqual_prep"/>
+						<lit v="de"/>
+					</equal>
+				</test>
+				<append n="prnpro_qual">
+					<lit v="en"/>
+					<lit-tag v="prn.pro.adv"/>
+				</append>	
+			</when>
+		</choose>
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<var n="elqual_prep"/>
+						<lit v="a"/>
+					</equal>
+				</test>
+				<append n="prnpro_qual">
+					<lit v="li"/>
+					<lit-tag v="prn.pro.p3.mf"/>
+					<var n="elqual_nbr"/>
+				</append>	
+			</when>
+		</choose>
+		
+	</def-macro>
+	
+	<def-macro n="posa_adv" npar="1">
+		<choose>
+			<when>
+				<test>
+					<not>
+						<equal>
+							<var n="elqual_prep"/>
+							<lit v=""/>
+						</equal>
+					</not>
+				</test>
+				<out>
+					<b/>
+					<chunk name="adv">
+						<tags>
+							<tag><lit-tag v="adv"/></tag>
+						</tags>
+						<lu>
+							<var n="elqual_prep"/>
+							<lit-tag v="pr"/>
+						</lu>
+						<b/>
+						<lu>
+							<lit v="el"/>
+							<lit-tag v="prn.tn.p3"/>
+							<var n="elqual_gen"/>
+							<var n="elqual_nbr"/>
+						</lu>
+					</chunk>
+				</out>
+			</when>
+		</choose>
+	</def-macro>
+	
 	<def-macro n="autre" npar="1">
 		<choose>
 			<when>
@@ -5258,25 +5333,80 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
-			<out>
-				<chunk name="verb" case="caseFirstWord">
-					<tags>
-						<tag><lit-tag v="SV"/></tag>
-						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-						<tag><clip pos="1" side="tl" part="temps"/></tag>
-						<tag><clip pos="1" side="tl" part="pers"/></tag>
-						<tag><clip pos="1" side="tl" part="nbr"/></tag>
-					</tags>
-					<lu>
-						<clip pos="1" side="tl" part="lemh"/> 
-						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps" link-to="3"/>
-						<clip pos="1" side="tl" part="pers" link-to="4"/>
-						<clip pos="1" side="tl" part="nbr" link-to="5"/>
-						<clip pos="1" side="tl" part="lemq"/> 
-					</lu>
-				</chunk>
-			</out>
+			<choose>
+				<when>
+					<test>
+						<or>
+							<equal>
+								<var n="elqual_prep"/>
+								<lit v="de"/>
+							</equal>
+							<equal>
+								<var n="elqual_prep"/>
+								<lit v="a"/>
+							</equal>
+						</or>
+					</test>
+					<call-macro n="posa_prn">
+						<with-param pos="1"/>
+					</call-macro>
+					<out>
+						<chunk name="pro_verb" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="SV"/></tag>
+								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+								<tag><clip pos="1" side="tl" part="temps"/></tag>
+								<tag><clip pos="1" side="tl" part="pers"/></tag>
+								<tag><clip pos="1" side="tl" part="nbr"/></tag>
+							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
+							<b/>
+							<lu>
+								<clip pos="1" side="tl" part="lemh"/> 
+								<clip pos="1" side="tl" part="a_verb"/>
+								<clip pos="1" side="tl" part="temps" link-to="3"/>
+								<clip pos="1" side="tl" part="pers" link-to="4"/>
+								<clip pos="1" side="tl" part="nbr" link-to="5"/>
+								<clip pos="1" side="tl" part="lemq"/> 
+							</lu>
+						</chunk>
+					</out>
+				</when>
+				<otherwise>
+					<out>
+						<chunk name="verb" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="SV"/></tag>
+								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+								<tag><clip pos="1" side="tl" part="temps"/></tag>
+								<tag><clip pos="1" side="tl" part="pers"/></tag>
+								<tag><clip pos="1" side="tl" part="nbr"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lemh"/> 
+								<clip pos="1" side="tl" part="a_verb"/>
+								<clip pos="1" side="tl" part="temps" link-to="3"/>
+								<clip pos="1" side="tl" part="pers" link-to="4"/>
+								<clip pos="1" side="tl" part="nbr" link-to="5"/>
+								<clip pos="1" side="tl" part="lemq"/> 
+							</lu>
+						</chunk>
+					</out>
+					<call-macro n="posa_adv">
+						<with-param pos="1"/>
+					</call-macro>
+				</otherwise>
+			</choose>
+			<let>
+				<var n="elqual_prep"/>
+				<lit v=""/>
+			</let>
+			<let>
+				<var n="prnpro_qual"/>
+				<lit v=""/>
+			</let>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
@@ -12060,6 +12190,54 @@
 		</let>
 	</action>
 </rule>
+
+	<rule comment="PRNREL">
+		<pattern>
+			<pattern-item n="prep"/>
+			<pattern-item n="el_qual"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<let>
+				<var n="elqual_prep"/>
+				<clip pos="1" side="tl" part="lem"/>
+			</let>
+			<let>
+				<var n="elqual_gen"/>
+				<clip pos="2" side="tl" part="gen"/>
+			</let>
+			<let>
+				<var n="elqual_nbr"/>
+				<clip pos="2" side="tl" part="nbr"/>
+			</let>
+			<out>
+				<chunk name="el_qual" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="REL"/></tag>
+						<tag><clip pos="2" side="tl" part="tipus_prn_chunk"/></tag>
+						<tag><clip pos="2" side="sl" part="gen"/></tag>
+						<tag><clip pos="2" side="sl" part="nbr"/></tag>
+						<tag><var n="tipusrel"/></tag>
+						<tag><var n="elqual_prep"/></tag>
+					</tags>
+					<lu>
+						<lit v="que"/>
+						<lit-tag v="rel.an.mf.sp"/>
+<!-- 						<var n="elqual_prep"/> -->
+					</lu> 
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="1"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
 
 	<rule comment="PRNREL">
 		<pattern>
