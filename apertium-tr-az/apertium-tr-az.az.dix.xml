@@ -6,13 +6,92 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="apertium-tr-az.symbols.xml"/>
 
   <pardefs>
+    <!-- Punctuation -->
+    <pardef n="guionet">
+      <e>
+        <p>
+          <l>-</l>
+          <r>-<s n="guio"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="coma">
+      <e>
+        <p>
+          <l>,</l>
+          <r>,<s n="cm"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="cometa">
+      <e>
+         <re>[’'‘]</re>
+         <p>
+           <l/>
+           <r><s n="apos"/></r>
+         </p>
+      </e>
+    </pardef>
+
+    <pardef n="numeros">
+      <e>
+        <re>[0-9]+([.,][0-9]+)?</re>
+        <p>
+          <l/>
+          <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separa">
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+         <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separ">
+      <e>
+        <re>[¿¡]</re>
+        <p>
+          <l/>
+         <r><s n="lquest"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="paresq">
+      <e>
+        <re>[\(\[]</re>
+        <p>
+          <l/>
+         <r><s n="lpar"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="pardret">
+      <e>
+        <re>[\)\]]</re>
+        <p>
+          <l/>
+         <r><s n="rpar"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <!-- Nouns -->
 
     <pardef n="pivə__n">
       <e>
         <p>
           <l/>
-          <r><s n="n"/><s n="pl"/><s n="abs"/></r>
+          <r><s n="n"/><s n="sg"/><s n="abs"/></r>
         </p>
       </e>
       <e>
@@ -879,5 +958,30 @@
     <e lm="içmek"><i>iç</i><par n="iç/mek__vblex"/></e>
     <e lm="vermek"><i>ver</i><par n="ver/mek__vblex"/></e>
   </section>
+
+  <section id="final" type="inconditional">
+    <e>
+      <par n="separa"/> <!-- Separators -->
+    </e>
+    <e>
+      <par n="numeros"/> <!-- Numbers -->
+    </e>
+    <e>
+      <par n="coma"/> <!-- Comma -->
+    </e>
+    <e>
+      <par n="cometa"/> <!-- Apostrophe -->
+    </e> 
+    <e>
+      <par n="paresq"/> <!-- Left parenthensis -->
+    </e>
+    <e>
+      <par n="pardret"/> <!-- Right parenthesis -->
+    </e>
+    <e>
+      <par n="guionet"/> <!-- Hyphen -->
+    </e>
+  </section>
+
 </dictionary>
 
