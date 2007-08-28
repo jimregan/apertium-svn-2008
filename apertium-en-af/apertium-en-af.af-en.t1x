@@ -916,7 +916,7 @@
       </pattern>
       <action>
         <choose>
-	  <when> <!-- when the first word is lowercase and the second is uppercase, switch the two e.g. 'n Album ~ An album -->
+	  <when> <!-- Capitalise 'n at the start of a line, and lowercase the subsequent word, e.g. 'n Album ~ An album -->
 	    <test>
 	      <and>
   	        <equal>
@@ -928,8 +928,8 @@
                   <lit v="Aa"/>
 	        </equal>
 		<equal>
-	          <clip pos="2" side="tl" part="a_nom"/>
-		  <lit-tag v="n"/>
+	          <clip pos="1" side="tl" part="lem"/>
+		  <lit v="a"/>
 	        </equal>
 	      </and>
 	    </test>
