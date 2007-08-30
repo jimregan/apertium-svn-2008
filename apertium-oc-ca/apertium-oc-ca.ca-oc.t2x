@@ -49,7 +49,10 @@
 		<cat-item lemma="pro_do_inf" tags="SV.*"/>-->
       <cat-item tags="SV.*"/>
     </def-cat>
-
+   
+		<def-cat n="esser_pp">
+      <cat-item lemma="haver_pp" tags="SV.vbser.*"/>
+    </def-cat>
 
 <def-cat n="QUEREL">
       <cat-item tags="querel.*"/>
@@ -109,6 +112,15 @@
 	  <attr-item tags="p2"/>
 	  <attr-item tags="p3"/>
 	  <attr-item tags="PD"/>
+</def-attr>
+
+<def-attr n="gen_pp">
+    <attr-item tags="f"/>
+	  <attr-item tags="m"/>
+</def-attr>
+<def-attr n="nbr_pp">
+    <attr-item tags="sg"/>
+	  <attr-item tags="pl"/>
 </def-attr>
 
       <def-attr n="gen">
@@ -745,6 +757,51 @@
 	
 </def-macro>
 
+<def-macro n="concord_pp" npar="2">
+					<choose>
+						<when> 
+							<test>
+								<equal>
+									<clip pos="1" part="gen"/>
+									<lit-tag v="f"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" part="gen_pp"/>
+								<lit-tag v="f"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<clip pos="2" part="gen_pp"/>
+								<lit-tag v="m"/>
+							</let>
+						</otherwise>
+					</choose>
+	
+					<choose>
+						<when> 
+							<test>
+								<equal>
+									<clip pos="1" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" part="nbr_pp"/>
+								<lit-tag v="pl"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<clip pos="2" part="nbr_pp"/>
+								<lit-tag v="sg"/>
+							</let>
+						</otherwise>
+					</choose>
+	
+</def-macro>
+
 <def-macro n="concord_sn" npar="2"> <!--asgina gen i nbr en els sn GD o ND quan van seguits de vcop. (p.ex. "esta chica es mi ayudante)-->
 	<choose>
 		<when> 
@@ -1048,6 +1105,36 @@
 			</out>
 		</action>
 	</rule>
+
+<!-- concord de ppi -->
+	<!--<rule comment="REGLA: SN esser_pp">
+		<pattern>
+			<pattern-item n="SN"/>
+			<pattern-item n="esser_pp"/>
+		</pattern>
+		<action>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>	-->
 
 <!-- regles de verb cop  -->
 	<rule comment="REGLA: SN vbcop SA">
