@@ -1565,7 +1565,7 @@ Postchunk::pseudolemma(string const &chunk)
     }
     else if(chunk[i] == '<' || chunk[i] == '{')
     {
-      return chunk.substr(0, i-1);
+      return chunk.substr(0, i);
     }
   }
 
