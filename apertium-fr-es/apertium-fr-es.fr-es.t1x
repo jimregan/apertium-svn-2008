@@ -15905,7 +15905,7 @@
 			<choose>
 				<when>
 					<test>
-						<equal caseless="yes">
+						<equal caseless="no">
 							<clip pos="1" side="sl" part="lem"/>
 							<lit v="pas"/>
 						</equal>
@@ -15913,6 +15913,31 @@
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
 					</call-macro>
+				</when>
+				<when>
+					<test>
+						<equal caseless="no">
+							<clip pos="1" side="sl" part="lem"/>
+							<lit v="Pas"/>
+						</equal>
+					</test>
+					<out>
+					  <chunk name="prn" case="caseFirstWord">
+						<tags>
+						  <tag><lit-tag v="SN"/></tag>
+						  <tag><lit-tag v="tn"/></tag>
+					          <tag><lit-tag v="nt"/></tag>
+					          <tag><lit-tag v="sg"/></tag>
+						</tags>
+						<lu>
+						  <lit v="nada"/>
+						  <lit-tag v="prn"/> 
+						  <lit-tag v="tn"/>
+						  <lit-tag v="nt"/>
+					          <lit-tag v="sg"/>
+						</lu>
+					  </chunk>
+					</out>
 				</when>
 				<otherwise>
 					<choose>
