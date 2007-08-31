@@ -1639,7 +1639,27 @@
       <label-item label="VHABERPFCI"/>
       <label-item label="NUM"/>
     </label-sequence> 
+
+    <label-sequence>
+      <label-item label="VHABERPFCI"/>
+      <label-item label="ADV"/>
+    </label-sequence>
     
+    <label-sequence>
+      <label-item label="VHABERIPI"/>
+      <label-item label="ADV"/>
+    </label-sequence> 
+
+    <label-sequence>
+      <label-item label="VHABERGER"/>
+      <label-item label="ADV"/>
+    </label-sequence>
+
+    <label-sequence>
+      <label-item label="VHABERSUBJ"/>
+      <label-item label="ADV"/>
+    </label-sequence> 
+   
   </forbid>
 
 <!--
