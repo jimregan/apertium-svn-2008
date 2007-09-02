@@ -21,6 +21,13 @@ all:
 	apertium-validate-postchunk apertium-en-nl.en-nl.t3x
 	apertium-preprocess-transfer apertium-en-nl.en-nl.t3x en-nl.t3x.bin
 
+	apertium-validate-transfer apertium-en-nl.nl-en.t1x
+	apertium-preprocess-transfer apertium-en-nl.nl-en.t1x nl-en.t1x.bin
+	apertium-validate-interchunk apertium-en-nl.nl-en.t2x
+	apertium-preprocess-transfer apertium-en-nl.nl-en.t2x nl-en.t2x.bin
+	apertium-validate-postchunk apertium-en-nl.nl-en.t3x
+	apertium-preprocess-transfer apertium-en-nl.nl-en.t3x nl-en.t3x.bin
+
 	#clean up temp files
 	rm apertium-en-nl.en.dix apertium-en-nl.nl.dix apertium-en-nl.en-nl.dix
 clean:
