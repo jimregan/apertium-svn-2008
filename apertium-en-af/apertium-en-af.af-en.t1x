@@ -927,10 +927,16 @@
 	          <case-of pos="2" side="tl" part="lem"/>
                   <lit v="Aa"/>
 	        </equal>
-		<equal>
-	          <clip pos="1" side="tl" part="lem"/>
-		  <lit v="a"/>
-	        </equal>
+		<or>
+		  <equal>
+	            <clip pos="1" side="tl" part="lem"/>
+		    <lit v="a"/>
+	          </equal>
+		  <equal>
+	            <clip pos="1" side="tl" part="lem"/>
+		    <lit v="A"/>
+	          </equal>
+                </or>
 	      </and>
 	    </test>
               <modify-case> 
@@ -1055,6 +1061,34 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <choose>
+          <when> <!-- Capitalise 'n at the start of a line, and lowercase the subsequent word, e.g. 'n Album ~ An album -->
+            <test>
+              <and>
+                <equal>
+                  <case-of pos="2" side="tl" part="lem"/>
+                  <lit v="Aa"/>
+                </equal>
+                <equal>
+                  <case-of pos="2" side="tl" part="lem"/>
+                  <lit v="Aa"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <lit v="a"/>
+                </equal>
+              </and>
+            </test>
+              <modify-case>
+                <clip pos="1" side="tl" part="lem"/>
+                <case-of pos="2" side="tl" part="lem"/>
+              </modify-case>
+              <modify-case>
+                <clip pos="2" side="tl" part="lem"/>
+                <lit v="aa"/>
+              </modify-case>
+         </when>
+        </choose>
         <out>
           <chunk name="det_adj_nom" case="caseFirstWord">
             <tags>
