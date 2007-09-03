@@ -341,6 +341,25 @@
     </rule>
 
 
+    <rule comment="REGLA: PR">
+      <pattern>
+        <pattern-item n="prep"/>
+      </pattern>
+      <action>
+            <out>
+              <chunk name="pr">
+                <tags>
+                  <tag><lit-tag v="PR"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+		  <lit-tag v="pr"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: ADJ">
       <pattern>
@@ -401,12 +420,22 @@
                   <lit-tag v="vbhaver"/>
                   <lit-tag v="pres"/>
               </lu>
+	      </chunk>
               <b/>
+	      <chunk name="verb_participle">
+	        <tags>
+		  <tag><lit-tag v="V"/></tag>
+		</tags>
+	      <lu>
+		  <lit v="ge"/>
+		  <lit-tag v="pref"/>
+		  <lit-tag v="past"/>
+	      </lu>
               <lu>
-                  <lit v="ge"/>
                   <clip pos="1" side="tl" part="lem"/>
                   <clip pos="1" side="tl" part="a_verb"/>
-                  <clip pos="1" side="tl" part="temps"/>
+		  <lit-tag v="inf"/>
+<!--                  <clip pos="1" side="tl" part="temps"/> -->
               </lu>
               </chunk>
             </out>
