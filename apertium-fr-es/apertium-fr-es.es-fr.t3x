@@ -30,6 +30,14 @@
     <def-cat n="adj_nom">
       <cat-item name="adj_nom"/>
     </def-cat>
+    
+    <def-cat n="adv">
+      <cat-item name="adv"/>
+    </def-cat>
+    
+    <def-cat n="partitiu">
+      <cat-item name="partitiu"/>
+    </def-cat>
 
     <def-cat n="adj_adj_nom">
       <cat-item name="adj_adj_nom"/>
@@ -68,6 +76,10 @@
           <attr-item tags="p2"/>
           <attr-item tags="p3"/>
           <attr-item tags="PD"/>
+</def-attr>
+
+<def-attr n="a_adv">
+          <attr-item tags="adv"/>
 </def-attr>
 
       <def-attr n="gen">
@@ -142,11 +154,24 @@
     </def-attr>
 
   </section-def-attrs>
+  
 <section-def-vars>
     <def-var n="paraula"/>
   </section-def-vars>
 
 
+<section-def-lists>
+  <def-list n="advcantidad">
+    <list-item v="plus"/>
+    <list-item v="moins"/>
+  </def-list>
+
+  <def-list n="adjcantidad">
+    <list-item v="beaucoup de"/>
+    <list-item v="peu de"/>
+  </def-list>
+</section-def-lists>  
+  
 <section-def-macros>
 
   <def-macro n="f_bcond" npar="1">
@@ -200,6 +225,68 @@
 				</out>   
 			</action>
 		</rule> 
+
+    		<rule comment="CHUNK: lleva derterminant del partitiu quan cal">
+			<pattern>
+				<pattern-item n="adv"/>
+				<pattern-item n="partitiu"/>
+			</pattern>
+			<action>
+			  <choose>
+	                    <when> 
+	                      <test>
+		                <in caseless="yes">
+				  <clip pos="1" part="lem"/>
+		      		  <list n="advcantidad"/> 
+		                </in>
+			       </test>
+			      
+				<out>
+					<lu>
+						<clip pos="1" part="lem"/>
+						<clip pos="1" part="a_adv"/>
+					</lu>
+					<b/>
+					<lu>
+						<lit v="de"/>
+						<lit-tag v="pr"/>
+					</lu>
+					
+				</out>
+				
+			       </when> 
+			    </choose>    
+			</action>
+		</rule> 
+
+	<!-- cómo se accede al lema de una parte del 2º chunk??	<rule comment="CHUNK: lleva derterminant del partitiu quan cal">
+			<pattern>
+				<pattern-item n="partitiu"/>
+				<pattern-item n="adj_nom"/>
+			</pattern>
+			<action>
+			  <choose>
+	                    <when> 
+	                      <test>
+		                <in caseless="yes">
+				  <clip pos="2" part="lem"/>
+		      		  <list n="adjcantidad"/> 
+		                </in>
+			       </test>
+			      
+				<out>
+					<lu>
+						<lit v="DE"/>
+						<lit-tag v="pr"/>
+					</lu>
+					
+				</out>
+				
+			       </when> 
+			    </choose>    
+			</action>
+		</rule> -->
+
 
 </section-rules>
 </postchunk>

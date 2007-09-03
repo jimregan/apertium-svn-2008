@@ -50,7 +50,6 @@
       <cat-item tags="SV.*"/>
     </def-cat>
 
-
 <def-cat n="QUEREL">
       <cat-item tags="querel.*"/>
     </def-cat>
@@ -135,6 +134,8 @@
 	  <attr-item tags="pri"/>
 	  <attr-item tags="prs"/>
 	  <attr-item tags="ifi"/>
+	  <attr-item tags="pii"/>
+	  <attr-item tags="pis"/>
 	  <attr-item tags="cni"/>
 	  <attr-item tags="fti"/>
 	  <attr-item tags="pp"/>
@@ -200,6 +201,15 @@
 <list-item v="pour ce qui est de"/>
 <list-item v="sur la rêquete de"/>
 		
+</def-list>
+
+
+
+<def-list n="advcantidad">
+
+<list-item v="plus"/>
+<list-item v="moins"/>
+<list-item v="beaucoup"/>
 </def-list>
 </section-def-lists>
 
@@ -807,12 +817,21 @@
 	<choose>
 		<when>
 			<test>
+			   <and>
 				<not>
 					<equal>
 						<clip pos="1" part="temps"/>
 						<lit-tag v="imp"/>
 					</equal>
 				</not>
+				<not>
+					<equal>
+						<clip pos="1" part="temps"/>
+						<lit-tag v="inf"/>
+					</equal>
+				</not>
+				
+			   </and>	
 			</test>
 
 			<choose><!--aposta arriscada: vol dir que hem vist un sn sg i una cnjcoo; i desprÃ©s cap altre sn=> suposem que es mantÃ© sg?-->
@@ -877,13 +896,16 @@
 								</when>
 								<otherwise>
 									<out>
+									
+									<!-- mayúsculas: ejemplo a seguir-->
 										<chunk>
+										<get-case-from pos="1">
 											<lit v="prnperssubj"/>
+										</get-case-from>	
 											<lit-tag v="SN"/>
-											<lit v="{^"/>
-											<get-case-from pos="1">
+											<lit v="{^"/>	
 												<lit v="nous"/>
-											</get-case-from>
+											
 											<lit-tag v="prn.tn.p1.mf.pl"/>
 											<lit v="$}"/>
 										</chunk>
@@ -3200,9 +3222,9 @@
 		<pattern-item n="SN"/>
 	</pattern>
 	<action>
-		<call-macro n="posa_subj">
-			<with-param pos="1"/>
-		</call-macro>
+	  <call-macro n="posa_subj">
+	    <with-param pos="1"/>
+	  </call-macro>
 		<choose>
 			<when>
 				<test>
@@ -3366,7 +3388,6 @@
 		</choose>
 	</action>
 </rule>
-
 
 <rule comment="REGLA: ADV SV"> 
 	<pattern>
