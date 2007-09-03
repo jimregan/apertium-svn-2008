@@ -6,6 +6,18 @@
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>
+    <def-cat n="NP">
+      <cat-item tags="NP"/>
+      <cat-item tags="NP.*"/>
+    </def-cat>
+    <def-cat n="V">
+      <cat-item tags="V"/>
+      <cat-item tags="V.*"/>
+    </def-cat>
+    <def-cat n="REL">
+      <cat-item tags="REL"/>
+      <cat-item tags="REL.*"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -21,6 +33,9 @@
                 <def-var n="genere"/>
   </section-def-vars>
   <section-rules>
+
+
+
 <rule comment="REGLA: SN">
         <pattern>
                 <pattern-item n="SN"/>
@@ -31,6 +46,60 @@
                                         <clip pos="1" part="lem"/>
                                         <clip pos="1" part="tags"/>
                                         <clip pos="1" part="chcontent"/>
+                                </chunk>
+                        </out>
+</action>
+</rule>
+
+<!-- ^nom<NP><sg>{^Weermag<n><sg>$}$ ^verb<V>{^hê<vbhaver><pres>$}$ ^verb_participle<V>{^ge$^baklei<vblex><inf>$}$ ^det_nom<NP>{^’n<det><ind><sg>$ ^guerrilla<n><sg>$}$ ^nom<NP><sg>{^veldtog<n><sg>$}$ ^rel<REL><PRN>{^watter<rel><an>$}$ -->
+
+<!-- SN V V SN SN REL -->
+
+<rule comment="REGLA: NP V V NP NP REL">
+        <pattern>
+                <pattern-item n="NP"/>
+                <pattern-item n="V"/>
+                <pattern-item n="V"/>
+                <pattern-item n="NP"/>
+                <pattern-item n="NP"/>
+                <pattern-item n="REL"/>
+        </pattern>
+        <action>
+                        <out>
+                                <chunk>
+                                        <clip pos="1" part="lem"/>
+                                        <clip pos="1" part="tags"/>
+                                        <clip pos="1" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="2" part="lem"/>
+                                        <clip pos="2" part="tags"/>
+                                        <clip pos="2" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="4" part="lem"/>
+                                        <clip pos="4" part="tags"/>
+                                        <clip pos="4" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="5" part="lem"/>
+                                        <clip pos="5" part="tags"/>
+                                        <clip pos="5" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="3" part="lem"/>
+                                        <clip pos="3" part="tags"/>
+                                        <clip pos="3" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="6" part="lem"/>
+                                        <clip pos="6" part="tags"/>
+                                        <clip pos="6" part="chcontent"/>
                                 </chunk>
                         </out>
 </action>
