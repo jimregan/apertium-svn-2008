@@ -3,8 +3,8 @@
 <interchunk>
   <section-def-cats>
 
-    <def-cat n="SN">
-      <cat-item tags="SN.*"/>
+    <def-cat n="PR">
+      <cat-item tags="PR"/>
     </def-cat>
     <def-cat n="NP">
       <cat-item tags="NP"/>
@@ -13,6 +13,9 @@
     <def-cat n="V">
       <cat-item tags="V"/>
       <cat-item tags="V.*"/>
+    </def-cat>
+    <def-cat n="VPART">
+      <cat-item tags="V.PART"/>
     </def-cat>
     <def-cat n="REL">
       <cat-item tags="REL"/>
@@ -35,10 +38,11 @@
   <section-rules>
 
 
-
-<rule comment="REGLA: SN">
+<rule comment="REGLA: V VPART NP">
         <pattern>
-                <pattern-item n="SN"/>
+                <pattern-item n="V"/>
+                <pattern-item n="VPART"/>
+                <pattern-item n="NP"/>
         </pattern>
         <action>
                         <out>
@@ -47,9 +51,62 @@
                                         <clip pos="1" part="tags"/>
                                         <clip pos="1" part="chcontent"/>
                                 </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="3" part="lem"/>
+                                        <clip pos="3" part="tags"/>
+                                        <clip pos="3" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="2" part="lem"/>
+                                        <clip pos="2" part="tags"/>
+                                        <clip pos="2" part="chcontent"/>
+                                </chunk>
                         </out>
 </action>
 </rule>
+
+
+<!-- ^verb<V>{^hê<vbhaver><pres>$}$ ^verb_participle<V>{^ge$^wees<vbser><inf>$}$ ^pr<PR>{^in<pr>$}$ ^det_nom<NP><sg>{^die<det><def><sg>$ ^huis<n><sg>$}$ -->
+<!-- V V PR NP -->
+
+<rule comment="REGLA: V V PR NP">
+        <pattern>
+                <pattern-item n="V"/>
+                <pattern-item n="V"/>
+                <pattern-item n="PR"/>
+                <pattern-item n="NP"/>
+        </pattern>
+        <action>
+                        <out>
+                                <chunk>
+                                        <clip pos="1" part="lem"/>
+                                        <clip pos="1" part="tags"/>
+                                        <clip pos="1" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="3" part="lem"/>
+                                        <clip pos="3" part="tags"/>
+                                        <clip pos="3" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="4" part="lem"/>
+                                        <clip pos="4" part="tags"/>
+                                        <clip pos="4" part="chcontent"/>
+                                </chunk>
+			<b/>
+                                <chunk>
+                                        <clip pos="2" part="lem"/>
+                                        <clip pos="2" part="tags"/>
+                                        <clip pos="2" part="chcontent"/>
+                                </chunk>
+                        </out>
+</action>
+</rule>
+
 
 <!-- ^nom<NP><sg>{^Weermag<n><sg>$}$ ^verb<V>{^hê<vbhaver><pres>$}$ ^verb_participle<V>{^ge$^baklei<vblex><inf>$}$ ^det_nom<NP>{^’n<det><ind><sg>$ ^guerrilla<n><sg>$}$ ^nom<NP><sg>{^veldtog<n><sg>$}$ ^rel<REL><PRN>{^watter<rel><an>$}$ -->
 

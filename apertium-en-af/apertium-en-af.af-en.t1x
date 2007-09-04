@@ -841,6 +841,55 @@
               </chunk>
             </out>
 	  </when>
+          <when>
+            <test>     <!-- If it is the past tense of 'be' , [i was, you were, he/she/it was, we were, you were, they were] -->
+	      <and>    <!-- Check for 'p1.sg' and 'p3.sg' -->
+	        <or>
+                  <equal> 
+		    <clip pos="1" side="tl" part="pers"/>
+		    <lit-tag v="p1"/>
+                  </equal>
+  		  <equal>
+		    <clip pos="1" side="tl" part="pers"/>
+		    <lit-tag v="p3"/>
+  	          </equal>
+		</or>
+		<equal>
+		  <clip pos="1" side="tl" part="nbr"/>
+		  <lit-tag v="sg"/>
+  	        </equal>
+		<equal>
+		  <clip pos="2" side="tl" part="temps"/>
+		  <lit-tag v="past"/>
+  	        </equal>
+		<equal>
+		  <clip pos="2" side="tl" part="lem"/>
+		  <lit v="be"/>
+  	        </equal>
+	      </and>
+	    </test>
+	    <out>
+	      <chunk name="prn_verb">
+	        <tags>
+                  <tag><lit-tag v="PRN"/></tag>
+                  <tag><lit-tag v="V"/></tag>
+		</tags>
+              <lu>
+	        <clip pos="1" side="tl" part="lem"/>		<!-- Pronoun -->
+	        <clip pos="1" side="tl" part="tipus_prn"/>
+	        <clip pos="1" side="tl" part="pers"/>
+	        <clip pos="1" side="tl" part="gen"/>
+	        <clip pos="1" side="tl" part="nbr"/>
+		<lit v="$ ^"/>
+                <clip pos="2" side="tl" part="lem"/>		<!-- Verb -->
+    	        <clip pos="2" side="tl" part="a_verb"/>
+		<lit-tag v="past"/>
+    	        <clip pos="1" side="tl" part="pers"/>
+    	        <clip pos="1" side="tl" part="nbr"/>
+	      </lu>
+	      </chunk>
+	    </out>
+	  </when>
 	  <otherwise> 
             <out>
               <chunk name="prn_verb">
