@@ -163,18 +163,6 @@
     <def-var n="paraula"/>
   </section-def-vars>
 
-
-<section-def-lists>
-  <def-list n="advcantidad">
-    <list-item v="plus"/>
-    <list-item v="moins"/>
-  </def-list>
-
-  <def-list n="adjcantidad">
-    <list-item v="beaucoup de"/>
-    <list-item v="peu de"/>
-  </def-list>
-</section-def-lists>  
   
 <section-def-macros>
 
@@ -227,39 +215,6 @@
 						<clip pos="1" part="a_num"/>
 					</lu>
 				</out>   
-			</action>
-		</rule> 
-
-    		<rule comment="CHUNK: lleva derterminant del partitiu quan cal">
-			<pattern>
-				<pattern-item n="adv"/>
-				<pattern-item n="partitiu"/>
-			</pattern>
-			<action>
-			  <choose>
-	                    <when> 
-	                      <test>
-		                <in caseless="yes">
-				  <clip pos="1" part="lem"/>
-		      		  <list n="advcantidad"/> 
-		                </in>
-			       </test>
-			      
-				<out>
-					<lu>
-						<clip pos="1" part="lem"/>
-						<clip pos="1" part="a_adv"/>
-					</lu>
-					<b/>
-					<lu>
-						<lit v="de"/>
-						<lit-tag v="pr"/>
-					</lu>
-					
-				</out>
-				
-			       </when> 
-			    </choose>    
 			</action>
 		</rule> 
 
