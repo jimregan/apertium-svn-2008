@@ -1382,7 +1382,7 @@ Postchunk::applyRule()
   splitWordsAndBlanks(chunk, tmpword, tmpblank);
 
   word = new InterchunkWord *[tmpword.size()+1];
-  lword = tmpword.size()+1;
+  lword = static_cast<int>(tmpword.size())+1;
   word[0] = new InterchunkWord(wordzero(chunk));
 
   for(unsigned int i = 1, limit = tmpword.size()+1; i != limit; i++)
@@ -1392,7 +1392,7 @@ Postchunk::applyRule()
       if(limit != 2)
       {
         blank = new string *[limit - 2];
-        lblank = limit - 2;
+        lblank = static_cast<int>(limit) - 2;
       }
       else
       {

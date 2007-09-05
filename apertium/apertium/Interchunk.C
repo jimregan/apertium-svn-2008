@@ -1351,11 +1351,11 @@ Interchunk::applyRule()
     if(i == 0)
     {
       word = new InterchunkWord *[limit];
-      lword = limit;
+      lword = static_cast<int>(limit);
       if(limit != 1)
       {
         blank = new string *[limit - 1];
-	lblank = limit - 1;
+	lblank = static_cast<int>(limit) - 1;
       }
       else
       {

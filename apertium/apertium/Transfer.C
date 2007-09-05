@@ -284,6 +284,8 @@ Transfer::checkIndex(xmlNode *element, int index, int limit)
 {
   if(index >= limit)
   {
+    cerr << "Index: " << index << endl;
+    cerr << "Limit: " << limit << endl;
     cerr << "Error in " << doc->URL<<": line " << element->line << endl;
     return false;
   }
@@ -1720,14 +1722,15 @@ Transfer::applyRule()
     if(i == 0)
     {
       word = new TransferWord *[limit];
-      lword = limit;
+      lword = static_cast<int>(limit);
       if(limit != 1)
       {
         blank = new string *[limit - 1];
-        lblank = limit - 1;
+        lblank = static_cast<int>(limit) - 1;
       }
       else
       {
+        lblank = 0;
         blank = NULL;
       }
     }
