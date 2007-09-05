@@ -284,8 +284,6 @@ Transfer::checkIndex(xmlNode *element, int index, int limit)
 {
   if(index >= limit)
   {
-    cerr << "Index: " << index << endl;
-    cerr << "Limit: " << limit << endl;
     cerr << "Error in " << doc->URL<<": line " << element->line << endl;
     return false;
   }
