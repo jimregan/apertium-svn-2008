@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tagger SYSTEM "../tagger.dtd">
 <tagger name="swedish">
 <tagset>
