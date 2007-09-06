@@ -870,7 +870,42 @@
       <label-item label="DETMF"/>
       <label-item label="DETMF"/>
     </label-sequence>
-
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="ADJF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="ADJM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="ADJM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="ADJM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="ADJMF"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="VLEXIMP"/>
       <label-item label="VLEXPFCI"/>
