@@ -413,9 +413,9 @@ LexTorData::reduce(const string& s) {
     }
   }
 
-  unsigned p=str.find(">");
-  unsigned i=0;
-  if (p==string::npos) { //s could correspond to an unknown word
+  unsigned int p=str.find(">");
+  unsigned int i=0;
+  if (p==static_cast<unsigned int>(string::npos)) { //s could correspond to an unknown word
     p=str.length();
     if ((str.length()>0) && (str[0]=='*'))
       i=1; // to remove the star (unknown word mark)

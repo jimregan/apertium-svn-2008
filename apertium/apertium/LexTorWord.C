@@ -113,8 +113,8 @@ LexTorWord::extract_lexical_choices(FSTProcessor *fstp) {
   if (lexical_choices.size()>1) { //lexically ambiguous word
     for(unsigned i=0; i<lexical_choices.size(); i++) {
 
-      unsigned p=lexical_choices[i].find(" D<");
-      if (p!=string::npos) {
+      unsigned int p=lexical_choices[i].find(" D<");
+      if (p!=static_cast<unsigned int>(string::npos)) {
 	if (!((lexical_choices[i].length()>p+2) && (lexical_choices[i][p+2]=='<'))) {
 	  cerr<<"Error in LexTorWord::next_word when analyzing lexical options\n";
 	  cerr<<"Word: "<<word<<"; lexical choices: "<<fstp->biltrans(word,false)<<"\n";

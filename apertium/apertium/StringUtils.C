@@ -77,8 +77,8 @@ string
 StringUtils::substitute(const string& source, const string& olds, const string& news) {
   string s=source;
 
-  unsigned p=s.find(olds,0);
-  while (p!=string::npos) {
+  unsigned int p=s.find(olds,0);
+  while (p!=static_cast<unsigned int>(string::npos)) {
     s.replace(p, olds.length(), news);
     p+=news.length();
     p=s.find(olds,p);
