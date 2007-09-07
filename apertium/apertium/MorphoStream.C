@@ -213,6 +213,39 @@ MorphoStream::lrlmClassify(string const &str, int &ivwords)
 	return;
       }
     }
+    else if(i == limit - 1)
+    {
+      if(ms.classifyFinals(me->getFinals()) == -1)
+      {
+        if(last_pos != floor)
+        {
+          vwords[ivwords]->add_tag(last_type, 
+                                   str.substr(floor, last_pos - floor + 1),
+                                   td->getPreferRules());
+          if(str[last_pos+1] == '+' && last_pos+1 < limit )
+          {	
+            floor = last_pos + 1;
+	    last_pos = floor;
+            vwords[ivwords]->set_plus_cut(true); 
+            if (((int)vwords.size())<=((int)(ivwords+1)))
+              vwords.push_back(new TaggerWord(true));
+            ivwords++;
+            ms.init(me->getInitial());
+	  }
+	  i = floor++;
+        }
+        else
+        {
+          if (debug)
+          {
+	    cerr<<"Warning: There is not coarse tag for the fine tag '"<< str.substr(floor) <<"'\n";
+            cerr<<"         This is because of an incomplete tagset definition or a dictionary error\n";
+	  }
+          vwords[ivwords]->add_tag(ca_tag_kundef, str.substr(floor) , td->getPreferRules());
+	  return;
+        }
+      }
+    }
   }
   
   int val = ms.classifyFinals(me->getFinals());
