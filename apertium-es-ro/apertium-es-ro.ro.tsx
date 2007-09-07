@@ -398,6 +398,88 @@
 </tagset>
 
   <forbid>
+
+   <label-sequence>
+      <label-item label="DETDEFM"/>
+      <label-item label="PRNPRO"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETDEFF"/>
+      <label-item label="PRNPRO"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETDEFMN"/>
+      <label-item label="PRNPRO"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETDEFFN"/>
+      <label-item label="PRNPRO"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETDEFM"/>
+      <label-item label="PRNPROREF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETDEFF"/>
+      <label-item label="PRNPROREF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETDEFMN"/>
+      <label-item label="PRNPROREF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETDEFFN"/>
+      <label-item label="PRNPROREF"/>
+    </label-sequence>
+   <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="ADJNOMSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="ADJNOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="ADJDGSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="ADJDGPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="ADJNOMSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="ADJNOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="ADJDGSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="ADJDGPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="ADJNOMSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="ADJNOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="ADJDGSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="ADJDGPL"/>
+    </label-sequence>
+      
     
    <label-sequence>
       <label-item label="NOMDGSG"/>
