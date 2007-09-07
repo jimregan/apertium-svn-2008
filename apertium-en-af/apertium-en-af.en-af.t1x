@@ -50,6 +50,7 @@
       <attr-item tags="m"/>
       <attr-item tags="f"/>
       <attr-item tags="mf"/>
+      <attr-item tags="nt"/>
     </def-attr>
     <def-attr n="a_conj">
       <attr-item tags="cnjadv"/>
@@ -65,6 +66,9 @@
       <attr-item tags="adj"/>
       <attr-item tags="comp"/>
       <attr-item tags="sup"/>
+    </def-attr>
+    <def-attr n="stress">
+      <attr-item tags="uns"/>
     </def-attr>
     <def-attr n="a_det">
       <attr-item tags="det.ind"/>
@@ -86,6 +90,7 @@
     </def-attr>
     <def-attr n="a_verb">
        <attr-item tags="vblex"/>
+       <attr-item tags="vblex.uns"/>
        <attr-item tags="vbser"/>
        <attr-item tags="vbhaver"/>
        <attr-item tags="vbmod"/>
@@ -127,6 +132,32 @@
             </lu>
           </chunk>
         </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: PRPERS">
+      <pattern>
+        <pattern-item n="prpers"/>
+      </pattern>
+      <action>
+        <modify-case>
+           <clip pos="1" side="tl" part="lem"/>
+           <lit v="Aa"/>
+         </modify-case>
+         <out>
+           <chunk name="prpers">
+             <tags>
+               <tag><lit-tag v="PRN"/></tag>
+             </tags>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="tipus_prn"/>
+               <clip pos="1" side="tl" part="pers"/>
+               <clip pos="1" side="tl" part="gen"/>
+               <clip pos="1" side="tl" part="nbr"/>
+             </lu>
+           </chunk>
+         </out>
       </action>
     </rule>
 
@@ -475,18 +506,27 @@
       </pattern>
       <action>
         <choose>
+
           <when>
             <test>     <!-- If it is third person singular in the present tense -->
-		<or>
-                <equal>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pp"/>
-                </equal>
-                <equal>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </equal>
-		</or>
+		  <and>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="pp"/>
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="past"/>
+                    </equal>
+                  </or>
+		  <not>
+                  <equal> 
+                    <clip pos="1" side="tl" part="a_verb"/>
+                    <lit-tag v="vblex.uns"/> 
+                  </equal>
+		  </not>
+		  </and>
             </test>
             <out>
               <chunk name="verb">
@@ -517,6 +557,56 @@
               </chunk>
             </out>
           </when>
+
+          <when>
+            <test>     <!-- If it is third person singular in the present tense -->
+		  <and>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="pp"/>
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="past"/>
+                    </equal>
+                  </or>
+                  <equal> 
+                    <clip pos="1" side="tl" part="a_verb"/>
+                    <lit-tag v="vblex.uns"/> 
+                  </equal>
+		  </and>
+            </test>
+            <out>
+              <chunk name="verb">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+              <lu>
+                  <lit v="hê"/>
+                  <lit-tag v="vbhaver"/>
+                  <lit-tag v="pres"/>
+              </lu>
+	      </chunk>
+              <b/>
+	      <chunk name="verb_participle">
+	        <tags>
+		  <tag><lit-tag v="V"/></tag>
+		  <tag><lit-tag v="PART"/></tag>
+		</tags>
+              <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
+<!--                  <clip pos="1" side="tl" part="temps"/> -->
+              </lu>
+              </chunk>
+            </out>
+          </when>
+
+
+
+
           <otherwise>
             <out>
               <chunk name="verb">
