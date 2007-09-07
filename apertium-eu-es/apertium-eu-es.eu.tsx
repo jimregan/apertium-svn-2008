@@ -16,7 +16,9 @@
   <def-label name="PP">
     <tags-item tags="vblex.pp"/>
   </def-label> 
-
+ <def-label name="PPper">
+    <tags-item tags="vbper.pp"/>
+  </def-label>
  <def-label name="PADV">
     <tags-item tags="vblex.padv"/>
   </def-label> 
@@ -25,12 +27,21 @@
    <def-label name="GER">
     <tags-item tags="vblex.ger"/>
    </def-label>
+     <def-label name="GERper">
+    <tags-item tags="vbper.ger"/>
+   </def-label>
    <def-label name="INF">
     <tags-item tags="vblex.inf"/>
     <tags-item tags="vblex"/><!--treure, provisional perquè el tagger ho agafi tot -->
    </def-label>
+   <def-label name="INFper">
+    <tags-item tags="vbper.inf"/>
+   </def-label>
    <def-label name="PFUT">
     <tags-item tags="vblex.pfut"/>
+   </def-label>
+   <def-label name="PFUTper">
+    <tags-item tags="vbper.pfut"/>
    </def-label>
    <def-label name="VBIZEN">
     <tags-item tags="vblex.izen"/>
@@ -41,7 +52,9 @@
     <tags-item tags="ADT.*"/>
   </def-label>
 
-
+<def-label name="VBPER"><!--la resta de temps, per ara tots junts -->
+    <tags-item tags="vbper.*"/>
+  </def-label>
 <def-label name="altreverbs">
     <tags-item tags="ATZ.ADI.*"/>
     <tags-item tags="ATZ.vblex.*"/>
@@ -51,21 +64,18 @@
 
  <def-label name="NOMA">
     <tags-item lemma="*a" tags="n"/>
-    <tags-item lemma="*a" tags="IZE.ARR"/>
   </def-label> 
 
 
 
   <def-label name="NOM">
-    <tags-item tags="n"/>
-    <tags-item tags="IZE.ARR"/> 
+    <tags-item tags="n"/> 
+    <tags-item tags="n.acr"/> 
   </def-label>
 
 
  <def-label name="NP">
     <tags-item tags="np.*"/>
-    <tags-item tags="IZE.IZB"/>
-    <tags-item tags="SIG"/>
   </def-label>
 
 <def-label name="DET" closed="true">
@@ -84,12 +94,10 @@
   </def-label>
 
 
-<def-label name="DET_ORD" closed="true">
+<!--<def-label name="DET_ORD" closed="true">
     <tags-item tags="DET.ORD"/>
-    <tags-item tags="DET.ORD.*"/><!--treure -->
     <tags-item tags="DET.NOLARR"/>
-    <tags-item tags="DET.NOLARR.*"/>
-  </def-label>
+  </def-label> -->
 
 <def-label name="ADJIZOA">
     <tags-item lemma="*a" tags="adj.izo"/>
@@ -109,10 +117,12 @@
 
 <def-label name="PRNTN" closed="true">
     <tags-item tags="prn.tn.*"/>
+    <tags-item tags="prn.pers.*"/>
+    <tags-item tags="prn.ind.*"/>
     <tags-item tags="IOR.PERARR"/>
     <tags-item tags="IOR.PERARR.*"/>
     <tags-item tags="IOR.IZGMGB"/>
-    <tags-item tags="IOR.IZGGAL"/>
+   <!-- <tags-item tags="IOR.IZGGAL"/> -->
     <tags-item tags="IOR.ELK"/>
 
   </def-label>
@@ -131,10 +141,9 @@
     <tags-item tags="post"/>
   </def-label>
 
-
-
-
-
+<def-label name="PREADV">
+    <tags-item tags="preadv"/>
+  </def-label>
 <def-label name="ADV">
     <tags-item tags="adv"/>
     <tags-item tags="ADB"/>
@@ -149,6 +158,9 @@
   </def-label>
   <def-label name="CNJADV">
     <tags-item tags="cnjadv"/>
+  </def-label>
+  <def-label name="CNJlLOC">
+    <tags-item tags="cnjloc"/>
   </def-label>
 
 
