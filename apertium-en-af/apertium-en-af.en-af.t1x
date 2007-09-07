@@ -3,8 +3,12 @@
 <transfer default="chunk">
 <section-def-cats>
     <def-cat n="conj">
-      <cat-item tags="cnjadv.*"/>
       <cat-item tags="cnjadv"/>
+      <cat-item tags="cnjcoo"/>
+      <cat-item tags="cnjsub"/>
+      <cat-item tags="cnjcoo.*"/>
+      <cat-item tags="cnjadv.*"/>
+      <cat-item tags="cnjsub.*"/>
     </def-cat>
     <def-cat n="rel_prn">
       <cat-item tags="rel.*"/>
@@ -54,6 +58,8 @@
     </def-attr>
     <def-attr n="a_conj">
       <attr-item tags="cnjadv"/>
+      <attr-item tags="cnjsub"/>
+      <attr-item tags="cnjcoo"/>
     </def-attr>
     <def-attr n="a_nom">
       <attr-item tags="n"/>
@@ -385,6 +391,40 @@
         </let>
       </action>
     </rule>
+
+    <rule comment="REGLA: ADJ CONJ ADJ">
+      <pattern>
+        <pattern-item n="adj"/>
+        <pattern-item n="conj"/>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+            <out>
+          <chunk name="adj_conj_adj" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="ADJP"/></tag>
+	    </tags>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/>
+    	        <clip pos="1" side="tl" part="a_adj"/>
+	        <lit-tag v="pred"/>
+              </lu>
+	      <b/>
+              <lu>
+                <clip pos="2" side="tl" part="lem"/>
+                <clip pos="2" side="tl" part="a_conj"/>
+              </lu>
+	      <b/>
+              <lu>
+                <clip pos="3" side="tl" part="lem"/>
+    	        <clip pos="3" side="tl" part="a_adj"/>
+	        <lit-tag v="pred"/>
+              </lu>
+            </chunk>
+            </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: ADJ ADJ NOM">
       <pattern>
