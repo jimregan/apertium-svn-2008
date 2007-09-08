@@ -392,6 +392,46 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: ADJ CONJ ADJ NOM">
+      <pattern>
+        <pattern-item n="adj"/>
+        <pattern-item n="conj"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+            <out>
+          <chunk name="adj_conj_adj" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="ADJP"/></tag>
+	    </tags>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/>
+    	        <clip pos="1" side="tl" part="a_adj"/>
+	        <lit-tag v="attr"/>
+              </lu>
+	      <b/>
+              <lu>
+                <clip pos="2" side="tl" part="lem"/>
+                <clip pos="2" side="tl" part="a_conj"/>
+              </lu>
+	      <b/>
+              <lu>
+                <clip pos="3" side="tl" part="lem"/>
+    	        <clip pos="3" side="tl" part="a_adj"/>
+	        <lit-tag v="attr"/>
+              </lu>
+	      <b/>
+              <lu>
+                <clip pos="4" side="tl" part="lem"/>
+    	        <clip pos="4" side="tl" part="a_nom"/>
+    	        <clip pos="4" side="tl" part="nbr"/>
+              </lu>
+            </chunk>
+            </out>
+      </action>
+    </rule>
+
     <rule comment="REGLA: ADJ CONJ ADJ">
       <pattern>
         <pattern-item n="adj"/>
@@ -566,6 +606,12 @@
                     <lit-tag v="vblex.uns"/> 
                   </equal>
 		  </not>
+		  <not>
+                  <equal> 
+                    <clip pos="1" side="tl" part="lem"/>
+                    <lit v="wees"/>                            <!-- be is a special case -->
+                  </equal>
+		  </not>
 		  </and>
             </test>
             <out>
@@ -601,20 +647,20 @@
           <when>
             <test>     <!-- If it is third person singular in the present tense -->
 		  <and>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="tl" part="temps"/>
-                      <lit-tag v="pp"/>
+                    <or>
+                      <equal>
+                        <clip pos="1" side="tl" part="temps"/>
+                        <lit-tag v="pp"/>
+                      </equal>
+                      <equal>
+                        <clip pos="1" side="tl" part="temps"/>
+                        <lit-tag v="past"/>
+                      </equal>
+                    </or>
+                    <equal> 
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <lit-tag v="vblex.uns"/> 
                     </equal>
-                    <equal>
-                      <clip pos="1" side="tl" part="temps"/>
-                      <lit-tag v="past"/>
-                    </equal>
-                  </or>
-                  <equal> 
-                    <clip pos="1" side="tl" part="a_verb"/>
-                    <lit-tag v="vblex.uns"/> 
-                  </equal>
 		  </and>
             </test>
             <out>
@@ -638,14 +684,10 @@
                   <clip pos="1" side="tl" part="lem"/>
                   <clip pos="1" side="tl" part="a_verb"/>
 		  <lit-tag v="inf"/>
-<!--                  <clip pos="1" side="tl" part="temps"/> -->
               </lu>
               </chunk>
             </out>
           </when>
-
-
-
 
           <otherwise>
             <out>
