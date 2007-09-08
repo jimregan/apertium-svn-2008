@@ -5,6 +5,9 @@
   <def-label name="DEURNOM" closed="true">
     <tags-item lemma="deur" tags="n.*"/>
   </def-label> 
+  <def-label name="OMTE" closed="true">
+    <tags-item lemma="om te" tags="pr"/>
+  </def-label> 
   <def-label name="DEUR" closed="true">
     <tags-item lemma="deur" tags="pr"/>
   </def-label> 
@@ -229,6 +232,10 @@
       <label-item label="NOMSG"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="OMTE"/>
+      <label-item label="NOMSG"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="GE"/>
       <label-item label="NOMSG"/>
     </label-sequence>
@@ -429,6 +436,10 @@
       <label-item label="NOMPL"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="OMTE"/>
+      <label-item label="DET"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="DET"/>
       <label-item label="VAUX"/>
     </label-sequence>
@@ -493,6 +504,11 @@
       </label-set>
     </enforce-after>
    
+     <enforce-after label="OMTE">
+      <label-set>
+	<label-item label="VLEX"/>
+      </label-set>
+    </enforce-after>
 
  </enforce-rules>
 
