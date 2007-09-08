@@ -5,6 +5,9 @@
   <def-label name="DEURNOM" closed="true">
     <tags-item lemma="deur" tags="n.*"/>
   </def-label> 
+  <def-label name="NA" closed="true">
+    <tags-item lemma="na" tags="pr"/>
+  </def-label> 
   <def-label name="OMTE" closed="true">
     <tags-item lemma="om te" tags="pr"/>
   </def-label> 
@@ -14,6 +17,7 @@
   <def-label name="VIR" closed="true">
     <tags-item lemma="vir" tags="pr"/>
   </def-label> 
+
   <def-label name="ATP" closed="true">
     <tags-item tags="pr.atp"/>
   </def-label>
@@ -451,6 +455,14 @@
       <label-item label="DEURNOM"/>
       <label-item label="DET"/>
     </label-sequence>
+    <label-sequence>
+      <label-item label="NA"/>
+      <label-item label="VLEX"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NA"/>
+      <label-item label="VAUX"/>
+    </label-sequence>
  </forbid>
 
  <enforce-rules>
@@ -504,12 +516,6 @@
       </label-set>
     </enforce-after>
    
-     <enforce-after label="OMTE">
-      <label-set>
-	<label-item label="VLEX"/>
-      </label-set>
-    </enforce-after>
-
  </enforce-rules>
 
 
