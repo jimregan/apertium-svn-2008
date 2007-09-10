@@ -72,9 +72,9 @@
   <def-label name="INTERJ">
     <tags-item tags="ij"/>
   </def-label>
- <!-- <def-label name="ACRONIMON">
-    <tags-item tags="n.acr.nt.*"/>
-  </def-label> -->
+ <def-label name="ACRONIMON">
+    <tags-item tags="n.acr.*"/>
+  </def-label>
  
 <!--  <def-label name="NOMF">
     <tags-item tags="n.f.*"/>
@@ -93,6 +93,7 @@
  <def-label name="NOMNOMSG">
     <tags-item tags="n.*.sg.nom.*"/>
     <tags-item tags="n.*.sg.nom"/>
+    <tags-item tags="np.*.sg"/>
     <tags-item tags="np.*.sg.nom.*"/>
     <tags-item tags="np.loc.*.sg"/>
     <tags-item tags="n.*.nom.*.sg"/>
@@ -101,6 +102,7 @@
  <def-label name="NOMDGSG">
     <tags-item tags="n.*.sg.dg.*"/>
     <tags-item tags="n.*.sg.dg"/>
+    <tags-item tags="np.*.sg"/>
     <tags-item tags="np.*.sg.dg.*"/>
     <tags-item tags="n.*.dg.*.sg"/>
   </def-label>
@@ -108,6 +110,7 @@
 <def-label name="NOMNOMPL">
     <tags-item tags="n.*.pl.nom.*"/>
     <tags-item tags="n.*.pl.nom"/>
+    <tags-item tags="np.*.pl"/>
     <tags-item tags="np.*.pl.nom.*"/>
     <tags-item tags="np.loc.*.pl"/>
     <tags-item tags="n.*.nom.*.pl"/>
@@ -116,11 +119,25 @@
  <def-label name="NOMDGPL">
     <tags-item tags="n.*.pl.dg.*"/>
     <tags-item tags="n.*.pl.dg"/>
+    <tags-item tags="np.*.pl"/>
     <tags-item tags="np.*.pl.dg.*"/>
     <tags-item tags="n.*.dg.*.pl"/>
   </def-label>
 
+<def-label name="NOMNOMSP">
+    <tags-item tags="n.*.sp.nom.*"/>
+    <tags-item tags="n.*.sp.nom"/>
+    <tags-item tags="np.*.sp.nom.*"/>
+    <tags-item tags="np.loc.*.sp"/>
+    <tags-item tags="n.*.nom.*.sp"/>
+  </def-label>
 
+ <def-label name="NOMDGSP">
+    <tags-item tags="n.*.sp.dg.*"/>
+    <tags-item tags="n.*.sp.dg"/>
+    <tags-item tags="np.*.sp.dg.*"/>
+    <tags-item tags="n.*.dg.*.sp"/>
+  </def-label>
 
 <!--  <def-label name="TOPONIM">
     <tags-item tags="np.loc"/>
@@ -464,6 +481,22 @@
       <label-item label="ADJDGPL"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="VLEXINF"/>
+      <label-item label="ADJNOMSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXINF"/>
+      <label-item label="ADJNOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXINF"/>
+      <label-item label="ADJDGSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXINF"/>
+      <label-item label="ADJDGPL"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="VLEXIPI"/>
       <label-item label="ADJNOMSG"/>
     </label-sequence>
@@ -479,7 +512,38 @@
       <label-item label="VLEXIPI"/>
       <label-item label="ADJDGPL"/>
     </label-sequence>
-      
+    <label-sequence>
+      <label-item label="VLEXGER"/>
+      <label-item label="ADJNOMSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXGER"/>
+      <label-item label="ADJNOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXGER"/>
+      <label-item label="ADJDGSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXGER"/>
+      <label-item label="ADJDGPL"/>
+    </label-sequence> 
+     <label-sequence>
+      <label-item label="VLEXPARTPI"/>
+      <label-item label="ADJNOMSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPARTPI"/>
+      <label-item label="ADJNOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPARTPI"/>
+      <label-item label="ADJDGSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPARTPI"/>
+      <label-item label="ADJDGPL"/>
+    </label-sequence>
     
    <label-sequence>
       <label-item label="NOMDGSG"/>

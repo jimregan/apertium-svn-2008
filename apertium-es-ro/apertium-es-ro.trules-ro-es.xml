@@ -80,6 +80,7 @@
     </def-cat>
      <def-cat n="advo">
       <cat-item lemma="o" tags="adv.*"/>
+      <cat-item lemma="un" tags="det.ind.f.sg.nom"/>
     </def-cat>
     <def-cat n="prep">
       <cat-item tags="pr"/>
@@ -3481,6 +3482,9 @@
       </pattern>
       <action>
         <call-macro n="f_modgen">
+        <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
         <with-param pos="3"/>
         </call-macro>
          <choose>
@@ -3752,7 +3756,6 @@
       <pattern>
         <pattern-item n="advo"/>
         <pattern-item n="conjsub"/>
-<!--<Gemma pattern-item n="inf"/> el tagger tria malament, quan trie inf canviar verb per inf-->
         <pattern-item n="verb"/>
       </pattern>
       <action>
@@ -4106,6 +4109,9 @@
         <pattern-item n="nom"/>
       </pattern>
        <action>
+       <call-macro n="f_modgen">
+        <with-param pos="1"/>
+      </call-macro>
        <call-macro n="f_concord1">
           <with-param pos="3"/>
         </call-macro>
@@ -4187,6 +4193,44 @@
                   </lu> 
                 </out>
               </when>
+		<otherwise>
+		<out>
+                 <lu>
+		    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_verb"/>
+                    <clip pos="1" side="tl" part="temps"/>
+                    <clip pos="1" side="tl" part="persona"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+	         </lu>
+                 <b/>
+                 <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_prep"/>
+                 </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <clip pos="3" side="tl" part="a_nom"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                   <lit v="el"/>		   
+                    <lit-tag v="det.def"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_nom"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu> 
+                </out>
+              </otherwise>
              </choose>
            </action>
     </rule>  
@@ -6385,7 +6429,10 @@ is not applicable because gender and number can not be taken from previous rules
         <pattern-item n="deta"/>
         <pattern-item n="nom"/>
       </pattern>
-      <action>  
+      <action> 
+         <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro> 
         <call-macro n="f_modgen">
           <with-param pos="3"/>
         </call-macro>
@@ -8706,7 +8753,10 @@ is not applicable because gender and number can not be taken from previous rules
       <pattern-item n="conjsub"/>
       <pattern-item n="verb"/>
     </pattern>
-    <action> 
+    <action>
+     <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro> 
     <choose>
 	<when>
 	  <test>
@@ -8889,6 +8939,9 @@ is not applicable because gender and number can not be taken from previous rules
        <pattern-item n="advdecât"/>
     </pattern>
     <action> 
+       <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
       <out>
           <lu>
             <clip pos="1" side="tl" part="lem"/>
@@ -9123,6 +9176,7 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
                 <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b/>
@@ -9216,6 +9270,9 @@ is not applicable because gender and number can not be taken from previous rules
       </pattern>
       <action>
       <call-macro n="f_modgen">
+        <with-param pos="1"/>
+      </call-macro>
+      <call-macro n="f_modgen">
         <with-param pos="2"/>
       </call-macro>
       <call-macro n="f_modgen">
@@ -9245,6 +9302,7 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
                 <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b/>
@@ -10235,6 +10293,9 @@ is not applicable because gender and number can not be taken from previous rules
 	<pattern-item n="adj"/>
       </pattern>
       <action>
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
         <choose>
           <when>
             <test>
@@ -10255,6 +10316,7 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
                 <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b/>
@@ -10292,6 +10354,7 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
                 <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b pos="1"/>
@@ -10656,13 +10719,16 @@ is not applicable because gender and number can not be taken from previous rules
       </pattern>
       <action>
         <call-macro n="f_modgen">
-              <with-param pos="2"/>
-            </call-macro>
-            <call-macro n="f_concord3">
-              <with-param pos="4"/>
-              <with-param pos="3"/>
-              <with-param pos="2"/>
-            </call-macro>
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_concord3">
+          <with-param pos="4"/>
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+        </call-macro>
         <choose>
           <when>
             <test>
@@ -10679,6 +10745,7 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
                 <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b pos="1"/>
@@ -10722,6 +10789,7 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
                 <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b pos="1"/>
@@ -11317,6 +11385,9 @@ is not applicable because gender and number can not be taken from previous rules
         <pattern-item n="nom"/>
       </pattern>
        <action>
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
       <choose>
        <when>
          <test>
@@ -11332,6 +11403,7 @@ is not applicable because gender and number can not be taken from previous rules
 		</get-case-from>
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
+                <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="persona"/>
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
@@ -11364,6 +11436,7 @@ is not applicable because gender and number can not be taken from previous rules
 		</get-case-from>
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
+                <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="persona"/>
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
@@ -11989,6 +12062,9 @@ is not applicable because gender and number can not be taken from previous rules
       <pattern-item n="verbospron"/>
     </pattern>
     <action>
+     <call-macro n="f_modgen">
+	   <with-param pos="2"/>
+	</call-macro>
       <choose><!--Si la persona del pronombre y el verbo concuerdan, no envíes el pronombre -->
 	<when>
 	  <test>
@@ -12019,7 +12095,7 @@ is not applicable because gender and number can not be taken from previous rules
 </rule>
  
 <rule>
-<!--REGLA 86 mai + adj + ca = mas + adj + que-->
+<!--REGLA 86 mai + adj + ca = más + adj + que-->
 <pattern>
 	<pattern-item n="adv"/>
 	<pattern-item n="adj"/>
