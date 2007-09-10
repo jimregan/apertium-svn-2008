@@ -3472,6 +3472,105 @@
       </action>
     </rule> 
 
+        
+    <!-- REGLA 63 : VERB + NOM + ADJ= VERB + NOM + ADJ-->
+    <rule>
+      <pattern>
+        <pattern-item n="verb"/>
+        <pattern-item n="nom"/>
+	<pattern-item n="adj"/>
+      </pattern>
+      <action>
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="3"/> 
+	</call-macro>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="2" side="sl" part="a_case"/>
+                  <lit-tag v="nom"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="sl" part="a_def"/>
+                  <lit-tag v="def"/>
+                </equal>
+              </and>
+            </test>
+            <out>
+              <lu>
+                <clip pos="1" side="tl" part="lemh"/>
+                <clip pos="1" side="tl" part="a_verb"/>
+                <clip pos="1" side="tl" part="temps"/>
+                <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
+                <clip pos="1" side="tl" part="nbr"/>
+              </lu>
+              <b/>
+              <lu>
+                <lit v="el"/>
+                <lit-tag v="det.def"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="nbr"/>
+              </lu>
+              <b pos="1"/>
+              <lu>
+                <clip pos="2" side="tl" part="lem"/>
+                <clip pos="2" side="tl" part="a_nom"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="nbr"/>
+              </lu>
+	       <b pos="2"/>
+               <lu>
+                <clip pos="3" side="tl" part="lem"/>
+                <clip pos="3" side="tl" part="a_adj"/>
+                <clip pos="3" side="tl" part="gen"/>
+                <clip pos="3" side="tl" part="nbr"/>
+              </lu>
+            </out>
+           </when>
+          <otherwise>
+            <out>
+              <lu>
+                <clip pos="1" side="tl" part="lemh"/>
+                <clip pos="1" side="tl" part="a_verb"/>
+                <clip pos="1" side="tl" part="temps"/>
+                <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
+                <clip pos="1" side="tl" part="nbr"/>
+              </lu>
+              <b pos="1"/>
+              <lu>
+                <clip pos="2" side="tl" part="lem"/>
+                <clip pos="2" side="tl" part="a_nom"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="nbr"/>
+              </lu>
+	      <b pos="2"/>
+              <lu>
+                <clip pos="3" side="tl" part="lem"/>
+                <clip pos="3" side="tl" part="a_adj"/>
+                <clip pos="3" side="tl" part="gen"/>
+                <clip pos="3" side="tl" part="nbr"/>
+              </lu>
+            </out>
+          </otherwise>
+        </choose>
+      </action>
+    </rule>
+  
+
   <rule>
 <!-- REGLA TREI DELIA: VERB NOM (det)+ DETIND + NOMDG -->
       <pattern>
@@ -10281,102 +10380,7 @@ is not applicable because gender and number can not be taken from previous rules
       </action>
     </rule>     
        
-         
-    
        
-          
-    <!-- REGLA 63 DATIU: VERB + NOM + ADJ= VERB + A + NOM + ADJ-->
-    <rule>
-      <pattern>
-        <pattern-item n="verb"/>
-        <pattern-item n="nom"/>
-	<pattern-item n="adj"/>
-      </pattern>
-      <action>
-        <call-macro n="f_modgen">
-          <with-param pos="1"/>
-        </call-macro>
-        <choose>
-          <when>
-            <test>
-              <and>
-                <equal>
-                  <clip pos="2" side="sl" part="a_case"/>
-                  <lit-tag v="dg"/>
-                </equal>
-                <equal>
-                  <clip pos="2" side="sl" part="a_def"/>
-                  <lit-tag v="def"/>
-                </equal>
-              </and>
-            </test>
-            <out>
-              <lu>
-                <clip pos="1" side="tl" part="lemh"/>
-                <clip pos="1" side="tl" part="a_verb"/>
-                <clip pos="1" side="tl" part="temps"/>
-                <clip pos="1" side="tl" part="persona"/>
-                <clip pos="1" side="tl" part="gen"/>
-                <clip pos="1" side="tl" part="nbr"/>
-              </lu>
-              <b/>
-              <lu>
-                <lit v="a"/>
-                <lit-tag v="pr"/>
-              </lu>
-              <b/>
-              <lu>
-                <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="2" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
-              </lu>
-              <b pos="1"/>
-              <lu>
-                <clip pos="2" side="tl" part="lem"/>
-                <clip pos="2" side="tl" part="a_nom"/>
-                <clip pos="2" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
-              </lu>
-	       <b pos="2"/>
-               <lu>
-                <clip pos="3" side="tl" part="lem"/>
-                <clip pos="3" side="tl" part="a_adj"/>
-                <clip pos="3" side="tl" part="gen"/>
-                <clip pos="3" side="tl" part="nbr"/>
-              </lu>
-            </out>
-           </when>
-          <otherwise>
-            <out>
-              <lu>
-                <clip pos="1" side="tl" part="lemh"/>
-                <clip pos="1" side="tl" part="a_verb"/>
-                <clip pos="1" side="tl" part="temps"/>
-                <clip pos="1" side="tl" part="persona"/>
-                <clip pos="1" side="tl" part="gen"/>
-                <clip pos="1" side="tl" part="nbr"/>
-              </lu>
-              <b pos="1"/>
-              <lu>
-                <clip pos="2" side="tl" part="lem"/>
-                <clip pos="2" side="tl" part="a_nom"/>
-                <clip pos="2" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
-              </lu>
-	      <b pos="2"/>
-              <lu>
-                <clip pos="3" side="tl" part="lem"/>
-                <clip pos="3" side="tl" part="a_adj"/>
-                <clip pos="3" side="tl" part="gen"/>
-                <clip pos="3" side="tl" part="nbr"/>
-              </lu>
-            </out>
-          </otherwise>
-        </choose>
-      </action>
-    </rule>
-  
     <rule>
 <!-- REGLA 64: ADVERBI ADJECTIU NOM -->
       <pattern>
