@@ -52,6 +52,8 @@
    
 		<def-cat n="esser_pp">
       <cat-item lemma="haver_pp" tags="SV.vbser.*"/>
+      <cat-item lemma="haver_adv_pp" tags="SV.vbser.*"/>
+      <cat-item lemma="pro_haver_pp" tags="SV.vbser.*"/>
     </def-cat>
 
 <def-cat n="QUEREL">
@@ -1107,7 +1109,7 @@
 	</rule>
 
 <!-- concord de ppi -->
-	<!--<rule comment="REGLA: SN esser_pp">
+	<rule comment="REGLA: SN esser_pp">
 		<pattern>
 			<pattern-item n="SN"/>
 			<pattern-item n="esser_pp"/>
@@ -1134,7 +1136,107 @@
 				</chunk>
 			</out>
 		</action>
-	</rule>	-->
+	</rule>
+
+	<rule comment="REGLA: SN sp esser_pp">
+		<pattern>
+			<pattern-item n="SN"/>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+			<pattern-item n="esser_pp"/>
+		</pattern>
+		<action>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+
+<!-- no cal perquè l'adv va entre l'aux i el pp...?
+	<rule comment="REGLA: SN sp  adv esser_pp">
+		<pattern>
+			<pattern-item n="SN"/>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="esser_pp"/>
+		</pattern>
+		<action>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="5"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+				<b pos="4"/>
+				<chunk>
+					<clip pos="5" part="lem"/>
+					<clip pos="5" part="tags"/>
+					<clip pos="5" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>-->
 
 <!-- regles de verb cop  -->
 	<rule comment="REGLA: SN vbcop SA">
