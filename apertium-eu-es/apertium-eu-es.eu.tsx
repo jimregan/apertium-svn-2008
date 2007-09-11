@@ -34,9 +34,9 @@
     <tags-item tags="vblex.inf"/>
     <tags-item tags="vblex"/><!--treure, provisional perquè el tagger ho agafi tot -->
    </def-label>
-   <def-label name="INFper">
+<!--   <def-label name="INFper">
     <tags-item tags="vbper.inf"/>
-   </def-label>
+   </def-label> -->
    <def-label name="PFUT">
     <tags-item tags="vblex.pfut"/>
    </def-label>
@@ -119,10 +119,10 @@
     <tags-item tags="prn.tn.*"/>
     <tags-item tags="prn.pers.*"/>
     <tags-item tags="prn.ind.*"/>
+    <tags-item tags="prn.itg.*"/>
     <tags-item tags="IOR.PERARR"/>
     <tags-item tags="IOR.PERARR.*"/>
     <tags-item tags="IOR.IZGMGB"/>
-   <!-- <tags-item tags="IOR.IZGGAL"/> -->
     <tags-item tags="IOR.ELK"/>
 
   </def-label>
@@ -139,6 +139,10 @@
 
 <def-label name="POST" closed="true">
     <tags-item tags="post"/>
+</def-label>
+
+<def-label name="SPOST">
+    <tags-item tags="spost"/>
   </def-label>
 
 <def-label name="PREADV">
@@ -148,6 +152,9 @@
     <tags-item tags="adv"/>
     <tags-item tags="ADB"/>
     <tags-item tags="ADB.*"/>
+  </def-label>
+<def-label name="ADVGEN">
+    <tags-item tags="adv.gen"/>
   </def-label>
  <def-label name="CNJSUBS" closed="true">
     <tags-item tags="cnjsub"/>
@@ -288,13 +295,25 @@
 
 </tagset>
 
- <!--<forbid>
+ <forbid>
     <label-sequence>
-      <label-item label="PRNALTRES"/>
-      <label-item label="NOMSG"/>
+      <label-item label="NUM"/>
+      <label-item label="INF"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="DET"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="ADJIZOA"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="ADJIZO"/>
     </label-sequence> 
 
- </forbid> -->
+ </forbid>
 
 <!--  <enforce-rules>
    <enforce-after label="VHAVEPAST">

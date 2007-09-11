@@ -16,6 +16,7 @@
       <cat-item tags="n"/>
       <cat-item tags="np.*"/>
       <cat-item tags="adv"/>
+      <cat-item tags="adv.gen"/>
     </def-cat>
 
      <def-cat n="adj">
@@ -191,7 +192,8 @@
     </def-attr>
   
     <def-attr n="a_adv">          
-      <attr-item tags="adv"/>
+      <attr-item tags="adv"/>   
+      <attr-item tags="pr"/>
     </def-attr>
 
      <def-attr n="a_num">          
@@ -589,6 +591,36 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="nbr"/> 
 	    </let>
 	  </when>
+	  <when><!--si ha habido cambio de número de sl a tl, el nombre manda y asigna número al det/adj (ingurua = los alrededores) -->
+	    <test>
+	      <or>
+		<and>
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/> 
+		    <lit-tag v="sg"/>
+		  </equal>
+		  <equal>
+		    <clip pos="1" side="tl" part="nbr"/> 
+		    <lit-tag v="pl"/>
+		  </equal>
+		</and>
+		<and>
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/> 
+		    <lit-tag v="pl"/>
+		  </equal>
+		  <equal>
+		    <clip pos="1" side="tl" part="nbr"/> 
+		    <lit-tag v="sg"/>
+		  </equal>
+		</and>
+	      </or>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/> 
+	      <clip pos="1" side="tl" part="nbr"/> 
+	    </let>
+	  </when>
 	</choose>
 </def-macro>
 
@@ -658,7 +690,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
 	<choose>
 	  <when>
-	    <test><!--el nombre siempre es ND en los diccionarios actuales-->
+	    <test>
 	      <equal>
 		<clip pos="1" side="tl" part="nbr"/> 
 		<lit-tag v="ND"/>
@@ -955,7 +987,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      </when>
 	    </choose>
 	  </when>
-	</choose><!--i quan 3 es ND i origen no és sp? es pot donar el cas?? repassar -->
+	</choose><!--Falta fer el que he afegit a concord2: quan hi ha hagut canvi de nbr de sl a tl (ingurua) -->
+<!--i quan 3 es ND i origen no és sp? es pot donar el cas?? repassar -->
+
+
 </def-macro>
 
 
@@ -2049,12 +2084,26 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>	      
 	<out> 
 	  <chunk name="nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="1" side="tl" part="gen"/></tag>
-	      <tag><lit-tag v="sg"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
@@ -6483,6 +6532,43 @@ pingui pingui pingui MG
 	    <lit-tag v="pr"/>
 	  </lu>
 	  <b/>
+	  <lu>
+	    <clip pos="1" side="tl" part="lemh"/>
+	    <clip pos="1" side="tl" part="a_verb"/>
+	    <clip pos="1" side="tl" part="temps"/>	    
+	    <clip pos="1" side="tl" part="lemq"/>
+	  </lu>
+	</chunk>
+      </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+    </action>
+  </rule>
+
+ <rule comment="ADITZ IZENA + ART (izatea = ser) (el artículo desaparece por ahora) ">
+    <pattern>
+      <pattern-item n="vbizen"/>
+      <pattern-item n="detart"/>	
+    </pattern>
+    <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+      <let>
+	<clip pos="1" side="tl" part="temps"/>
+	<lit-tag v="inf"/>
+      </let>
+      <out>
+	<chunk name="inf" case="caseFirstWord">
+	  <tags>
+	    <tag><lit-tag v="SV"/></tag>
+	    <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	    <tag><clip pos="1" side="tl" part="temps"/></tag>
+	    <tag><lit-tag v="PD"/></tag>
+	    <tag><lit-tag v="ND"/></tag>
+	  </tags>
 	  <lu>
 	    <clip pos="1" side="tl" part="lemh"/>
 	    <clip pos="1" side="tl" part="a_verb"/>
