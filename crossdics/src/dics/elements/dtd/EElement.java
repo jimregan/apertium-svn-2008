@@ -64,6 +64,11 @@ public class EElement extends Element implements Cloneable,
          * 
          */
     private String c;
+    
+    /**
+     * 
+     */
+    private String aversion;
 
     /**
          * 
@@ -467,6 +472,10 @@ public class EElement extends Element implements Cloneable,
 	if (c != null) {
 	    attributes += " c=\"" + c + "\"";
 	}
+	if (aversion != null) {
+	    attributes += " aversion=\"" + aversion + "\"";
+	}
+	
 	if (comments != null) {
 	    dos.writeBytes(tab(2) + "<!-- \n");
 	    dos.writeBytes(comments);
@@ -502,6 +511,9 @@ public class EElement extends Element implements Cloneable,
 	}
 	if (c != null) {
 	    attributes += " c=\"" + c + "\"";
+	}
+	if (aversion != null) {
+	    attributes += " aversion=\"" + aversion + "\"";
 	}
 	if (comments != null) {
 	    dos.writeBytes(tab(2) + "<!-- \n");
@@ -1226,6 +1238,20 @@ public class EElement extends Element implements Cloneable,
          */
     public final void setPatternApplied(String patternApplied) {
 	this.patternApplied = patternApplied;
+    }
+
+    /**
+     * @return the aversion
+     */
+    public final String getAversion() {
+        return aversion;
+    }
+
+    /**
+     * @param aversion the aversion to set
+     */
+    public final void setAversion(String aversion) {
+        this.aversion = aversion;
     }
 
 }

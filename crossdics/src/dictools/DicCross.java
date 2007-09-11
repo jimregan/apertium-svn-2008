@@ -291,7 +291,7 @@ public class DicCross {
 	Collections.sort(dic.getEntries());
 
 	if (isCrossWithPatterns()) {
-	    getNDCrossModel().printXML("dix/ND-cross-model.xml");
+	    getNDCrossModel().printXML("dix/patterns-not-detected.xml");
 	    // System.out.println("ND-all: " + this.NDcounter);
 	}
 

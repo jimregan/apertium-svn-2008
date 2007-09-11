@@ -187,8 +187,10 @@ public class XMLReader {
 	final String lm = getAttributeValue(e, "lm");
 	final String a = getAttributeValue(e, "a");
 	final String c = getAttributeValue(e, "c");
+	final String aversion = this.getAttributeValue(e, "aversion");
 
 	final EElement eElement = new EElement(r, lm, a, c);
+	eElement.setAversion(aversion);
 
 	if (e.hasChildNodes()) {
 	    final NodeList children = e.getChildNodes();
