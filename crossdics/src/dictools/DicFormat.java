@@ -35,61 +35,61 @@ import dics.elements.utils.Msg;
 public class DicFormat {
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement dicFormatted;
 
     /**
-     * 
-     */
+         * 
+         */
     private String[] arguments;
 
     /**
-     * 
-     */
+         * 
+         */
     public static final int BIL = 0;
 
     /**
-     * 
-     */
+         * 
+         */
     public static final int MON = 1;
 
     /**
-     * 
-     */
+         * 
+         */
     private int dicType;
 
     /**
-     * 
-     */
+         * 
+         */
     private String out;
 
     /**
-     * 
-     */
+         * 
+         */
     private Msg msg;
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public DicFormat() {
 	msg = new Msg();
     }
 
     /**
-     * 
-     * @param dic
-     */
+         * 
+         * @param dic
+         */
     public DicFormat(final DictionaryElement dic) {
 	msg = new Msg();
 	dicFormatted = dic;
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public final DictionaryElement format() {
 	final EHashMap eMap = new EHashMap();
 	for (SectionElement section : dicFormatted.getSections()) {
@@ -115,26 +115,26 @@ public class DicFormat {
 
 	DicSort dicSort = new DicSort(dicFormatted);
 	/*
-	 * dicSort.setDicType(getDicType()); dicSort.setOut(this.getOut());
-	 * DictionaryElement formatted = dicSort.sort();
-	 * formatted.printXML(getOut()); return formatted;
-	 */
+         * dicSort.setDicType(getDicType()); dicSort.setOut(this.getOut());
+         * DictionaryElement formatted = dicSort.sort();
+         * formatted.printXML(getOut()); return formatted;
+         */
 	return dicFormatted;
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public final void doFormat() {
 	processArguments();
 	actionFormat();
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     private void processArguments() {
 	if (arguments[1].equals("-mon")) {
 	    dicType = DicSort.MON;
@@ -157,63 +157,63 @@ public class DicFormat {
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     private final void actionFormat() {
 	final DictionaryElement dicFormatted = format();
 	dicFormatted.printXML(getOut());
     }
 
     /**
-     * @param dicFormatted
-     *                the dicFormatted to set
-     */
+         * @param dicFormatted
+         *                the dicFormatted to set
+         */
     private final void setDicFormatted(DictionaryElement dicFormatted) {
 	this.dicFormatted = dicFormatted;
     }
 
     /**
-     * @return the arguments
-     */
+         * @return the arguments
+         */
     public final String[] getArguments() {
 	return arguments;
     }
 
     /**
-     * @param arguments
-     *                the arguments to set
-     */
+         * @param arguments
+         *                the arguments to set
+         */
     public final void setArguments(String[] arguments) {
 	this.arguments = arguments;
     }
 
     /**
-     * @return the dicType
-     */
+         * @return the dicType
+         */
     public final int getDicType() {
 	return dicType;
     }
 
     /**
-     * @param dicType
-     *                the dicType to set
-     */
+         * @param dicType
+         *                the dicType to set
+         */
     public final void setDicType(int dicType) {
 	this.dicType = dicType;
     }
 
     /**
-     * @return the out
-     */
+         * @return the out
+         */
     public final String getOut() {
 	return out;
     }
 
     /**
-     * @param out
-     *                the out to set
-     */
+         * @param out
+         *                the out to set
+         */
     public final void setOut(String out) {
 	this.out = out;
     }

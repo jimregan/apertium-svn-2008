@@ -94,10 +94,10 @@ public class XMLReader {
          * 
          */
     protected JElement jElement;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     protected SaElement saElement;
 
     /**
@@ -582,17 +582,18 @@ public class XMLReader {
     }
 
     /**
-     * @return the saElement
-     */
+         * @return the saElement
+         */
     public final SaElement getSaElement() {
-        return saElement;
+	return saElement;
     }
 
     /**
-     * @param saElement the saElement to set
-     */
+         * @param saElement
+         *                the saElement to set
+         */
     public final void setSaElement(SaElement saElement) {
-        this.saElement = saElement;
+	this.saElement = saElement;
     }
 
 }

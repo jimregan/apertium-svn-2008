@@ -91,10 +91,10 @@ public class DicConsistent {
          * 
          */
     private DicSet dicSet;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private Msg msg;
 
     /**

@@ -79,15 +79,15 @@ public class DictionaryReader extends XMLReader {
 	analize();
 	final DictionaryElement dic = new DictionaryElement();
 	String encoding = getDocument().getInputEncoding();
-	//System.out.println("Encoding: " + encoding);
+	// System.out.println("Encoding: " + encoding);
 
 	Document doc = getDocument();
 	String xmlEncoding = doc.getXmlEncoding();
 	String xmlVersion = doc.getXmlVersion();
-	
+
 	dic.setXmlEncoding(xmlEncoding);
-	dic.setXmlVersion(xmlVersion);	
-	
+	dic.setXmlVersion(xmlVersion);
+
 	Element root = doc.getDocumentElement();
 
 	final NodeList children = root.getChildNodes();
@@ -99,14 +99,14 @@ public class DictionaryReader extends XMLReader {
                  * (Comment)child; System.out.println("Comment: " +
                  * comment.getTextContent()); }
                  */
-	    
+
 	    if (child instanceof ProcessingInstruction) {
-		//System.out.println("PI read!");
-		ProcessingInstruction pi = (ProcessingInstruction)child;
+		// System.out.println("PI read!");
+		ProcessingInstruction pi = (ProcessingInstruction) child;
 		String data = pi.getData();
-		//System.out.println("Data pi: " + data);
+		// System.out.println("Data pi: " + data);
 	    }
-	    
+
 	    if (child instanceof Element) {
 		final Element childElement = (Element) child;
 		final String childElementName = childElement.getNodeName();
@@ -138,7 +138,8 @@ public class DictionaryReader extends XMLReader {
 		    System.err.println("xi:include (" + fileName + ")");
 		    DictionaryReader reader = new DictionaryReader(fileName);
 		    DictionaryElement dic2 = reader.readDic();
-		    if (fileName.endsWith("sdefs.dix") || fileName.endsWith("symbols.xml")) {
+		    if (fileName.endsWith("sdefs.dix")
+			    || fileName.endsWith("symbols.xml")) {
 			SdefsReader sdefsReader = new SdefsReader(fileName);
 			SdefsElement sdefs = sdefsReader.readSdefs();
 			System.out.println("Symbol definitions: " + fileName);

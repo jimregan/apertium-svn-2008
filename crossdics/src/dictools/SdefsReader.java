@@ -9,22 +9,22 @@ import dics.elements.dtd.SdefsElement;
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class SdefsReader extends XMLReader {
 
     /**
-     * 
-     * @param fileName
-     */
+         * 
+         * @param fileName
+         */
     public SdefsReader(final String fileName) {
 	super(fileName);
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public SdefsElement readSdefs() {
 	analize();
 	Element root = getDocument().getDocumentElement();
@@ -35,17 +35,17 @@ public class SdefsReader extends XMLReader {
 	if (elementName.equals("sdefs")) {
 	    sdefsElement = readSdefs(root);
 	}
-	
+
 	root = null;
 	setDocument(null);
 	return sdefsElement;
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     public SdefsElement readSdefs(final Element e) {
 	final SdefsElement sdefsElement = new SdefsElement();
 
@@ -62,10 +62,10 @@ public class SdefsReader extends XMLReader {
     }
 
     /**
-     * 
-     * @param e
-     * @return
-     */
+         * 
+         * @param e
+         * @return
+         */
     public SdefElement readSdef(final Element e) {
 	final String n = getAttributeValue(e, "n");
 	final String c = getAttributeValue(e, "c");

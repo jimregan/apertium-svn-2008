@@ -74,10 +74,10 @@ public class DicSort {
          * 
          */
     private String out;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private Msg msg;
 
     /**
@@ -431,16 +431,17 @@ public class DicSort {
     }
 
     /**
-     * @return the msg
-     */
+         * @return the msg
+         */
     public final Msg getMsg() {
-        return msg;
+	return msg;
     }
 
     /**
-     * @param msg the msg to set
-     */
+         * @param msg
+         *                the msg to set
+         */
     public final void setMsg(Msg msg) {
-        this.msg = msg;
+	this.msg = msg;
     }
 }

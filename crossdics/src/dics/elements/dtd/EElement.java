@@ -35,6 +35,9 @@ import dics.elements.utils.SElementList;
 public class EElement extends Element implements Cloneable,
 	Comparable<EElement> {
 
+    /**
+         * 
+         */
     public static int nEElements = 0;
 
     /**
@@ -122,6 +125,10 @@ public class EElement extends Element implements Cloneable,
 	return children;
     }
 
+    /**
+         * 
+         * 
+         */
     public static final void incrEElements() {
 	EElement.nEElements++;
     }
@@ -332,6 +339,34 @@ public class EElement extends Element implements Cloneable,
 
     /**
          * 
+         * @return
+         */
+    public LElement getLeft() {
+	ContentElement cE = getSide("L");
+	LElement lE = null;
+	if (cE instanceof IElement) {
+	    lE = new LElement(cE);
+	    return lE;
+	}
+	return (LElement) cE;
+    }
+
+    /**
+         * 
+         * @return
+         */
+    public RElement getRight() {
+	ContentElement cE = getSide("R");
+	RElement rE = null;
+	if (cE instanceof IElement) {
+	    rE = new RElement(cE);
+	    return rE;
+	}
+	return (RElement) cE;
+    }
+
+    /**
+         * 
          * @param side
          * @return
          */
@@ -451,9 +486,10 @@ public class EElement extends Element implements Cloneable,
     }
 
     /**
-     * 
-     */
-    public final void printXML1Line(final DataOutputStream dos) throws IOException {
+         * 
+         */
+    public final void printXML1Line(final DataOutputStream dos)
+	    throws IOException {
 	String attributes = "";
 	if (r != null) {
 	    attributes += " r=\"" + r + "\"";
@@ -819,9 +855,9 @@ public class EElement extends Element implements Cloneable,
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public final ParElement getParadigm() {
 	// Returns value of first paradigm
 	for (final Element e : children) {
@@ -962,9 +998,9 @@ public class EElement extends Element implements Cloneable,
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public final String toStringNoParadigm() {
 	String str = "";
 	String r = "";
@@ -997,9 +1033,9 @@ public class EElement extends Element implements Cloneable,
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public final String lemmaAndCategory() {
 	String str = "";
 	String r = "";
@@ -1010,33 +1046,25 @@ public class EElement extends Element implements Cloneable,
 	str += this.getLemma();
 	for (final Element e : children) {
 	    /*
-	    if (e instanceof IElement) {
-		final IElement i = (IElement) e;
-		str += i.toString();
-	    }
-	    if (e instanceof PElement) {
-		final PElement p = (PElement) e;
-
-		final LElement lE = p.getL();
-		str += lE.toString();
-
-		final RElement rE = p.getR();
-		str += rE.toString();
-	    }
-	    
-	    if (e instanceof ReElement) {
-		final ReElement re = (ReElement) e;
-		str += re.toString();
-	    }
-	    */
+                 * if (e instanceof IElement) { final IElement i = (IElement) e;
+                 * str += i.toString(); } if (e instanceof PElement) { final
+                 * PElement p = (PElement) e;
+                 * 
+                 * final LElement lE = p.getL(); str += lE.toString();
+                 * 
+                 * final RElement rE = p.getR(); str += rE.toString(); }
+                 * 
+                 * if (e instanceof ReElement) { final ReElement re =
+                 * (ReElement) e; str += re.toString(); }
+                 */
 	    if (e instanceof ParElement) {
 		final ParElement par = (ParElement) e;
 		final String parValue = par.getValue();
-		String [] parts = parValue.toString().split("__");
+		String[] parts = parValue.toString().split("__");
 		String category = "";
-		for( int i=0; i<parts.length; i++) {
-		    //System.out.print("(" + parts[i] + ")");
-		    category = parts[i];		    
+		for (int i = 0; i < parts.length; i++) {
+		    // System.out.print("(" + parts[i] + ")");
+		    category = parts[i];
 		}
 		str += "/" + category;
 	    }
@@ -1044,8 +1072,6 @@ public class EElement extends Element implements Cloneable,
 	str += "</e>";
 	return str;
     }
-
-    
 
     /**
          * 

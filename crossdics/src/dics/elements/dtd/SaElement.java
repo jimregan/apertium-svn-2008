@@ -23,14 +23,14 @@ package dics.elements.dtd;
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class SaElement extends Element {
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public SaElement() {
 	setTagName("sa");
 	setValue("<sa/>");

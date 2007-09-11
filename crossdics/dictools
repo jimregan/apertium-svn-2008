@@ -5,10 +5,9 @@ mainClass="ProcessDics"
 defaultMinMem=32
 defaultMaxMem=300
 library='lib/cross-dics.jar'
-#java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp ${library} $mainClass"
-java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp $CLASSPATH $mainClass"
-
-echo $java_options
+java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp ${library} $mainClass"
+#java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp $CLASSPATH $mainClass"
+#echo $java_options
 
 #
 #	cross
@@ -115,7 +114,7 @@ function process-xincludes() {
 }
 
 #
-# get-bil-omegawiki
+#  get-bil-omegawiki
 #
 function get-bil-omegawiki() {
    if [ $nparams == 4 ]
@@ -128,7 +127,7 @@ function get-bil-omegawiki() {
 }
 
 #
-# format-1line
+#  format-1line
 #
 function format-1line() {
    if [ $nparams == 3 ]
@@ -142,12 +141,12 @@ function format-1line() {
 
 
 #
-#	show_help
+#  show_help
 #
 function show_help() {
    echo "Usage: dictools [task] ..."
    echo "  Tasks:"
-   echo "    crossdics:    crosses a set of dictionaries."
+   echo "    cross:    crosses a set of dictionaries."
    echo "    format:       formats a dictionary."   
    echo "    merge-bil:    merges two bilingual dictionaries."
    echo "    merge-morph:  merges two morphological dictionaries."

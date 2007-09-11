@@ -60,10 +60,10 @@ public class Element implements Cloneable {
     }
 
     /**
-     * 
-     * @param dos
-     * @throws IOException
-     */
+         * 
+         * @param dos
+         * @throws IOException
+         */
     protected void printXML1Line(final DataOutputStream dos) throws IOException {
 	dos.writeBytes("<" + getTagName() + "/>");
     }

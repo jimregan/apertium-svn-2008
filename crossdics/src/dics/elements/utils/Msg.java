@@ -28,45 +28,45 @@ import java.io.IOException;
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class Msg {
 
     /**
-     * 
-     */
+         * 
+         */
     private boolean debug;
 
     /**
-     * 
-     */
+         * 
+         */
     private String logFileName;
 
     /**
-     * 
-     */
+         * 
+         */
     private DataOutputStream log;
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public Msg(final String logFileName) {
 	this.debug = false;
     }
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public Msg() {
 	this.debug = false;
     }
 
     /**
-     * 
-     * @param logFileName
-     */
+         * 
+         * @param logFileName
+         */
     private final void openLogStream(final String logFileName) {
 	try {
 	    File file = new File(logFileName);
@@ -78,25 +78,25 @@ public class Msg {
     }
 
     /**
-     * 
-     * @param text
-     */
+         * 
+         * @param text
+         */
     public final void err(final String text) {
 	System.err.println(text);
     }
 
     /**
-     * 
-     * @param text
-     */
+         * 
+         * @param text
+         */
     public final void out(final String text) {
-	    System.out.println(text);
+	System.out.println(text);
     }
 
     /**
-     * 
-     * @param text
-     */
+         * 
+         * @param text
+         */
     public final void log(final String text) {
 	if (isDebug()) {
 	    if (log == null) {
@@ -112,29 +112,31 @@ public class Msg {
     }
 
     /**
-     * @return the debug
-     */
+         * @return the debug
+         */
     public final boolean isDebug() {
 	return debug;
     }
 
     /**
-     * @param debug the debug to set
-     */
+         * @param debug
+         *                the debug to set
+         */
     public final void setDebug(boolean debug) {
 	this.debug = debug;
     }
 
     /**
-     * @return the logFileName
-     */
+         * @return the logFileName
+         */
     public final String getLogFileName() {
 	return logFileName;
     }
 
     /**
-     * @param logFileName the logFileName to set
-     */
+         * @param logFileName
+         *                the logFileName to set
+         */
     public final void setLogFileName(String logFileName) {
 	this.logFileName = logFileName;
 	if (isDebug()) {

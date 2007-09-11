@@ -36,4 +36,13 @@ public class RElement extends ContentElement {
 	setTagName("r");
     }
 
+    /**
+         * 
+         * @param cE
+         */
+    public RElement(final ContentElement cE) {
+	super(cE);
+	setTagName("r");
+    }
+
 }

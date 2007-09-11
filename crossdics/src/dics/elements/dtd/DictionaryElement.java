@@ -111,15 +111,15 @@ public class DictionaryElement extends Element {
          * 
          */
     private String folder;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String xmlEncoding = "iso-8859-1";
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String xmlVersion;
 
     /**
@@ -382,7 +382,8 @@ public class DictionaryElement extends Element {
 	    fos = new FileOutputStream(fileName);
 	    bos = new BufferedOutputStream(fos);
 	    dos = new DataOutputStream(bos);
-	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"" + getXmlEncoding() + "\"?>\n");
+	    dos.writeBytes("<?xml version=\"1.0\" encoding=\""
+		    + getXmlEncoding() + "\"?>\n");
 	    dos.writeBytes("<!--\n\tDictionary:\n");
 	    if (sections != null) {
 		if (isBil()) {
@@ -452,7 +453,8 @@ public class DictionaryElement extends Element {
 	    fos = new FileOutputStream(fileName);
 	    bos = new BufferedOutputStream(fos);
 	    dos = new DataOutputStream(bos);
-	    dos.writeBytes("<?xml version=\"1.0\" encoding=\"" + getXmlEncoding() + "\"?>\n");
+	    dos.writeBytes("<?xml version=\"1.0\" encoding=\""
+		    + getXmlEncoding() + "\"?>\n");
 	    dos.writeBytes("<!--\n\tDictionary:\n");
 	    if (sections != null) {
 		if (isBil()) {
@@ -477,12 +479,13 @@ public class DictionaryElement extends Element {
 	    if (alphabet != null) {
 		alphabet.printXML(dos);
 	    }
+	    String includeStr = "<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\""; 
 	    dos
-		    .writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
+		    .writeBytes("\t" + includeStr + " href=\""
 			    + getFolder() + "/sdefs.dix\"/>\n");
 	    sdefs.printXML(getFolder() + "/sdefs.dix");
 	    dos
-		    .writeBytes("\t<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" href=\""
+		    .writeBytes("\t" + includeStr + " href=\""
 			    + getFolder() + "/pardefs.dix\"/>\n");
 	    pardefs.printXML(getFolder() + "/pardefs.dix");
 
@@ -529,6 +532,10 @@ public class DictionaryElement extends Element {
 	return null;
     }
 
+    /**
+         * 
+         * @return
+         */
     public EElementList getAllEntries() {
 	for (final SectionElement s : sections) {
 	    return s.getEElements();
@@ -778,19 +785,19 @@ public class DictionaryElement extends Element {
     }
 
     public final String getXmlEncoding() {
-        return xmlEncoding;
+	return xmlEncoding;
     }
 
     public final void setXmlEncoding(String xmlEncoding) {
-        this.xmlEncoding = xmlEncoding;
+	this.xmlEncoding = xmlEncoding;
     }
 
     public final String getXmlVersion() {
-        return xmlVersion;
+	return xmlVersion;
     }
 
     public final void setXmlVersion(String xmlVersion) {
-        this.xmlVersion = xmlVersion;
+	this.xmlVersion = xmlVersion;
     }
 
 }

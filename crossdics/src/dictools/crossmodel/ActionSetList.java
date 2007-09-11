@@ -119,11 +119,11 @@ public class ActionSetList extends HashMap<String, ActionSet> {
 	    String key = (String) it.next();
 	    ActionSet actionSet = get(key);
 	    // System.err.println("\tcandidate (" + i + "): " +
-                // actionSet.getName());
+	    // actionSet.getName());
 	    // System.err.println("\t\tconstants: " +
-                // actionSet.getNumberOfConstants());
+	    // actionSet.getNumberOfConstants());
 	    // System.err.println("\t\tlength: " +
-                // actionSet.getPatternLength());
+	    // actionSet.getPatternLength());
 	    if (actionSet.getNumberOfConstants() > maxNConstants) {
 		actionSetList = new ArrayList<ActionSet>();
 		actionSetList.add(actionSet);

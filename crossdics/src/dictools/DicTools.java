@@ -289,7 +289,7 @@ public class DicTools {
 	d.put("adj", "adjective");
 	d.put("al", "others");
 	d.put("an", "adjective-noun");
-	d.put("ant", "(antropónimo)");
+	d.put("ant", "(antroponimo)");
 	d.put("adv", "adverb");
 	d.put("atn", "?????");
 	d.put("cm", "?????");

@@ -43,84 +43,84 @@ import dics.elements.utils.Msg;
 public class DicMerge {
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement bilAB1;
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement bilAB2;
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement monA1;
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement monA2;
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement monB1;
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement monB2;
 
     /**
-     * 
-     */
+         * 
+         */
     private String[] arguments;
 
     /**
-     * 
-     */
+         * 
+         */
     private DicSet dicSet1;
 
     /**
-     * 
-     */
+         * 
+         */
     private DicSet dicSet2;
 
     /**
-     * 
-     */
+         * 
+         */
     private DicSet merged;
 
     /**
-     * 
-     */
+         * 
+         */
     private String sOut;
 
     /**
-     * 
-     */
+         * 
+         */
     private HashMap<String, String> paradigmsToRemove;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private Msg msg;
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public DicMerge() {
 	msg = new Msg();
 	msg.setLogFileName("merge.log");
     }
 
     /**
-     * 
-     * @param dic1
-     * @param dic2
-     */
+         * 
+         * @param dic1
+         * @param dic2
+         */
     public DicMerge(final DicSet ds1, final DicSet ds2) {
 	setBilAB1(ds1.getBil1());
 	setMonA1(ds1.getMon1());
@@ -129,17 +129,17 @@ public class DicMerge {
 	setBilAB2(ds2.getBil1());
 	setMonA1(ds2.getMon1());
 	setMonA2(ds2.getMon2());
-	
+
 	msg = new Msg();
 	msg.setLogFileName("merge.log");
 
     }
 
     /**
-     * 
-     * @param bilAB1
-     * @param bilAB2
-     */
+         * 
+         * @param bilAB1
+         * @param bilAB2
+         */
     public final void setBils(final DictionaryElement bAB1,
 	    final DictionaryElement bAB2) {
 	setBilAB1(bAB1);
@@ -147,10 +147,10 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param mA1
-     * @param mA2
-     */
+         * 
+         * @param mA1
+         * @param mA2
+         */
     public final void setMonAs(final DictionaryElement mA1,
 	    final DictionaryElement mA2) {
 	setMonA1(mA1);
@@ -158,10 +158,10 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param morph1FileName
-     * @param morph2FileName
-     */
+         * 
+         * @param morph1FileName
+         * @param morph2FileName
+         */
     public final void setMonAs(final String morph1FileName,
 	    final String morph2FileName) {
 	DictionaryReader dicReader1 = new DictionaryReader(morph1FileName);
@@ -173,10 +173,10 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param mB1
-     * @param mB2
-     */
+         * 
+         * @param mB1
+         * @param mB2
+         */
     public final void setMonBs(final DictionaryElement mB1,
 	    final DictionaryElement mB2) {
 	setMonB1(mB1);
@@ -184,9 +184,9 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     private final DicSet merge() {
 	final DictionaryElement bilAB = mergeBils(getBilAB1(), getBilAB2());
 	String fileName = getBilAB1().getFileName();
@@ -232,11 +232,11 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param bAB1
-     * @param bAB2
-     * @return
-     */
+         * 
+         * @param bAB1
+         * @param bAB2
+         * @return
+         */
     private final DictionaryElement mergeBils(final DictionaryElement bAB1,
 	    final DictionaryElement bAB2) {
 	final DictionaryElement dic = new DictionaryElement();
@@ -261,11 +261,11 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param m1
-     * @param m2
-     * @return
-     */
+         * 
+         * @param m1
+         * @param m2
+         * @return
+         */
     private final DictionaryElement mergeMonols(final DictionaryElement m1,
 	    final DictionaryElement m2) {
 	final DictionaryElement mon = new DictionaryElement();
@@ -292,14 +292,14 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param sectionE1
-     * @param sectionE2
-     * @return
-     */
+         * 
+         * @param sectionE1
+         * @param sectionE2
+         * @return
+         */
     private final SectionElement mergeSectionElements(
 	    final SectionElement sectionE1, final SectionElement sectionE2) {
-	
+
 	System.out.println("Merging section '" + sectionE1.getID() + "'...");
 	final SectionElement sectionElement = new SectionElement();
 	final EHashMap eMap = new EHashMap();
@@ -315,14 +315,14 @@ public class DicMerge {
 	System.out.println("  monolingual 1 (" + elements1.size() + " lemmas)");
 	int fromSec1 = 0;
 	for (final EElement e1 : elements1) {
-	    //final String e1Key = e1.toStringNoParadigm();
+	    // final String e1Key = e1.toStringNoParadigm();
 	    final String e1Key = e1.lemmaAndCategory();
 	    if (!eMap.containsKey(e1Key)) {
 		eMap.put(e1Key, e1);
 		sectionElement.addEElement(e1);
 		fromSec1++;
 	    } else {
-		//System.out.println("Duplicated: " + e1Key);
+		// System.out.println("Duplicated: " + e1Key);
 		duplicated++;
 	    }
 	}
@@ -333,7 +333,7 @@ public class DicMerge {
 	int notin = 0;
 	int fromSec2 = 0;
 	for (final EElement e2 : elements2) {
-	    //final String e2Key = e2.toStringNoParadigm();
+	    // final String e2Key = e2.toStringNoParadigm();
 	    final String e2Key = e2.lemmaAndCategory();
 	    if (!eMap.containsKey(e2Key)) {
 		notin++;
@@ -342,7 +342,8 @@ public class DicMerge {
 		sectionElement.addEElement(e2);
 		fromSec2++;
 	    } else {
-		//System.out.println("'" + e2.getLemma() + "' already exists.");
+		// System.out.println("'" + e2.getLemma() + "' already
+                // exists.");
 		common++;
 		String parName2 = e2.getParadigmValue();
 
@@ -352,33 +353,39 @@ public class DicMerge {
 		    String parName1 = e1.getParadigmValue();
 
 		    if (!parName1.equals(parName2)) {
-			msg.log("Paradigms for <" + e1.getLemma()
-				+ "> : (" + parName1 + ", " + parName2 + ")");
-			//addParadigmToRemove(parName2);
-			e1.getParadigm().addComments("\n\t<!-- also paradigm '" + parName2 + "' -->");
+			msg.log("Paradigms for <" + e1.getLemma() + "> : ("
+				+ parName1 + ", " + parName2 + ")");
+			// addParadigmToRemove(parName2);
+			e1.getParadigm()
+				.addComments(
+					"\n\t<!-- also paradigm '" + parName2
+						+ "' -->");
 		    } else {
-			//System.out.println("Paradigms are the same");
+			// System.out.println("Paradigms are the same");
 		    }
 		}
 
 	    }
 	}
 	System.out.println("  " + common + " common lemmas");
-	System.out.println("  " + (fromSec1-common) + " new lemmas from monol. 1");
+	System.out.println("  " + (fromSec1 - common)
+		+ " new lemmas from monol. 1");
 	System.out.println("  " + fromSec2 + " new lemmas from monol. 2");
-	System.out.println("  " + sectionElement.getEElements().size() + " lemmas in merged dictionary");
-	
-	//System.out.println(duplicated + " duplicated entries in sections " + sectionE1.getID() + "/" + sectionE2.getID());
+	System.out.println("  " + sectionElement.getEElements().size()
+		+ " lemmas in merged dictionary");
+
+	// System.out.println(duplicated + " duplicated entries in sections " +
+        // sectionE1.getID() + "/" + sectionE2.getID());
 
 	return sectionElement;
     }
 
     /**
-     * 
-     * @param sdefs1
-     * @param sdefs2
-     * @return
-     */
+         * 
+         * @param sdefs1
+         * @param sdefs2
+         * @return
+         */
     private final SdefsElement mergeSdefElements(final SdefsElement sdefs1,
 	    final SdefsElement sdefs2) {
 	final SdefsElement sdefs = new SdefsElement();
@@ -403,11 +410,11 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param alphabet1
-     * @param alphabet2
-     * @return
-     */
+         * 
+         * @param alphabet1
+         * @param alphabet2
+         * @return
+         */
     private final AlphabetElement mergeAlphabetElement(
 	    final AlphabetElement alphabet1, final AlphabetElement alphabet2) {
 	final AlphabetElement alphabet = new AlphabetElement();
@@ -417,18 +424,18 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param pardefs1
-     * @param pardefs2
-     * @return
-     */
+         * 
+         * @param pardefs1
+         * @param pardefs2
+         * @return
+         */
     private final PardefsElement mergePardefElements(
 	    final PardefsElement pardefs1, final PardefsElement pardefs2) {
 	final PardefsElement pardefs = new PardefsElement();
 	final HashMap<String, PardefElement> pardefMap = new HashMap<String, PardefElement>();
 
 	for (final PardefElement pardef1 : pardefs1.getPardefElements()) {
-	    //System.out.println("Paradigm: " + pardef1.getName());
+	    // System.out.println("Paradigm: " + pardef1.getName());
 	    final String pardef1Key = pardef1.toString();
 
 	    if (!pardefMap.containsKey(pardef1Key)) {
@@ -447,126 +454,126 @@ public class DicMerge {
     }
 
     /**
-     * @return the bilAB1
-     */
+         * @return the bilAB1
+         */
     private final DictionaryElement getBilAB1() {
 	return bilAB1;
     }
 
     /**
-     * @param bilAB1
-     *                the bilAB1 to set
-     */
+         * @param bilAB1
+         *                the bilAB1 to set
+         */
     private final void setBilAB1(final DictionaryElement bilAB1) {
 	this.bilAB1 = bilAB1;
     }
 
     /**
-     * @return the bilAB2
-     */
+         * @return the bilAB2
+         */
     private final DictionaryElement getBilAB2() {
 	return bilAB2;
     }
 
     /**
-     * @param bilAB2
-     *                the bilAB2 to set
-     */
+         * @param bilAB2
+         *                the bilAB2 to set
+         */
     private final void setBilAB2(final DictionaryElement bilAB2) {
 	this.bilAB2 = bilAB2;
     }
 
     /**
-     * @return the monA1
-     */
+         * @return the monA1
+         */
     private final DictionaryElement getMonA1() {
 	return monA1;
     }
 
     /**
-     * @param monA1
-     *                the monA1 to set
-     */
+         * @param monA1
+         *                the monA1 to set
+         */
     private final void setMonA1(final DictionaryElement monA1) {
 	this.monA1 = monA1;
     }
 
     /**
-     * @return the monA2
-     */
+         * @return the monA2
+         */
     private final DictionaryElement getMonA2() {
 	return monA2;
     }
 
     /**
-     * @param monA2
-     *                the monA2 to set
-     */
+         * @param monA2
+         *                the monA2 to set
+         */
     private final void setMonA2(final DictionaryElement monA2) {
 	this.monA2 = monA2;
     }
 
     /**
-     * @return the monB1
-     */
+         * @return the monB1
+         */
     private final DictionaryElement getMonB1() {
 	return monB1;
     }
 
     /**
-     * @param monB1
-     *                the monB1 to set
-     */
+         * @param monB1
+         *                the monB1 to set
+         */
     private final void setMonB1(final DictionaryElement monB1) {
 	this.monB1 = monB1;
     }
 
     /**
-     * @return the monB2
-     */
+         * @return the monB2
+         */
     private final DictionaryElement getMonB2() {
 	return monB2;
     }
 
     /**
-     * @param monB2
-     *                the monB2 to set
-     */
+         * @param monB2
+         *                the monB2 to set
+         */
     private final void setMonB2(final DictionaryElement monB2) {
 	this.monB2 = monB2;
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public final void doMerge() {
 	processArguments();
 	actionMerge();
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public final void doMergeMorph() {
 	processArgumentsMorph();
 	mergeMorph();
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public final void doMergeBil() {
 	processArgumentsBil();
 	mergeBil();
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public final void actionMerge() {
 	final DicSet dicSet = merge();
 	// setMerged(dicSet);
@@ -580,9 +587,9 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * @param arguments
-     */
+         * 
+         * @param arguments
+         */
     private void processArguments() {
 	final int nArgs = getArguments().length;
 
@@ -689,9 +696,9 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     private void processArgumentsMorph() {
 	final int nArgs = getArguments().length;
 
@@ -724,14 +731,11 @@ public class DicMerge {
 	    if (arg.equals("-debug")) {
 		i++;
 		/*
-		arg = getArguments()[i];
-		sOut = arg;
-		*/
+                 * arg = getArguments()[i]; sOut = arg;
+                 */
 		msg.setDebug(true);
 		msg.out("debug: on");
 	    }
-
-	    
 
 	}
 
@@ -744,9 +748,9 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     private void processArgumentsBil() {
 	final int nArgs = getArguments().length;
 
@@ -812,69 +816,69 @@ public class DicMerge {
     }
 
     /**
-     * @return the arguments
-     */
+         * @return the arguments
+         */
     private final String[] getArguments() {
 	return arguments;
     }
 
     /**
-     * @param arguments
-     *                the arguments to set
-     */
+         * @param arguments
+         *                the arguments to set
+         */
     public final void setArguments(String[] arguments) {
 	this.arguments = arguments;
     }
 
     /**
-     * @return the dicSet1
-     */
+         * @return the dicSet1
+         */
     public final DicSet getDicSet1() {
 	return dicSet1;
     }
 
     /**
-     * @param dicSet1
-     *                the dicSet1 to set
-     */
+         * @param dicSet1
+         *                the dicSet1 to set
+         */
     public final void setDicSet1(DicSet dicSet1) {
 	this.dicSet1 = dicSet1;
     }
 
     /**
-     * @return the dicSet2
-     */
+         * @return the dicSet2
+         */
     public final DicSet getDicSet2() {
 	return dicSet2;
     }
 
     /**
-     * @param dicSet2
-     *                the dicSet2 to set
-     */
+         * @param dicSet2
+         *                the dicSet2 to set
+         */
     public final void setDicSet2(DicSet dicSet2) {
 	this.dicSet2 = dicSet2;
     }
 
     /**
-     * @return the merged
-     */
+         * @return the merged
+         */
     public final DicSet getMerged() {
 	return merged;
     }
 
     /**
-     * 
-     * @param merged
-     */
+         * 
+         * @param merged
+         */
     public final void setMerged(DicSet merged) {
 	this.merged = merged;
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public final void mergeMorph() {
 	DictionaryElement morph = mergeMonols(getMonA1(), getMonA2());
 	DicSort dicSort = new DicSort(morph);
@@ -885,9 +889,9 @@ public class DicMerge {
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public final void mergeBil() {
 	DictionaryElement bil = mergeBils(getBilAB1(), getBilAB2());
 	DicSort dicSort = new DicSort(bil);
@@ -897,23 +901,23 @@ public class DicMerge {
     }
 
     /**
-     * @return the sOut
-     */
+         * @return the sOut
+         */
     private final String getSOut() {
 	return sOut;
     }
 
     /**
-     * @return the paradigmsToRemove
-     */
+         * @return the paradigmsToRemove
+         */
     public final HashMap<String, String> getParadigmsToRemove() {
 	return paradigmsToRemove;
     }
 
     /**
-     * 
-     * @param parName
-     */
+         * 
+         * @param parName
+         */
     public final void addParadigmToRemove(final String parName) {
 	this.paradigmsToRemove.put(parName, parName);
     }

@@ -45,10 +45,10 @@ public class ProcessDics {
          * 
          */
     private String[] arguments;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private Msg msg;
 
     /**
@@ -92,7 +92,8 @@ public class ProcessDics {
 
 	if (getAction().equals("consistent")) {
 	    if (getArguments().length < 8) {
-		msg.err("Usage: java ProcessDics consistent -bilAB [-r] <bilAB> -bilBC [-r] <bilBC> -monA <mon-A> -monC <monC>");
+		msg
+			.err("Usage: java ProcessDics consistent -bilAB [-r] <bilAB> -bilBC [-r] <bilBC> -monA <mon-A> -monC <monC>");
 		System.exit(-1);
 	    } else {
 		DicConsistent dicConsistent = new DicConsistent();
@@ -103,7 +104,8 @@ public class ProcessDics {
 
 	if (getAction().equals("merge")) {
 	    if (getArguments().length < 8) {
-		msg.err("Usage: java ProcessDics merge -bilAB [-r] <bilAB> -bilAB2 [-r] <bilAB2> -monA <mon-A> - monA2 <monA2> -monB <monB> -monB2 <monB2>");
+		msg
+			.err("Usage: java ProcessDics merge -bilAB [-r] <bilAB> -bilAB2 [-r] <bilAB2> -monA <mon-A> - monA2 <monA2> -monB <monB> -monB2 <monB2>");
 		System.exit(-1);
 	    } else {
 		DicMerge dicMerge = new DicMerge();
@@ -114,7 +116,8 @@ public class ProcessDics {
 
 	if (getAction().equals("merge-morph")) {
 	    if (getArguments().length < 6) {
-		msg.err("Usage: java ProcessDics merge-morph -monA1 monA1.dix -monA2 monA2.dix -out merged.dix");
+		msg
+			.err("Usage: java ProcessDics merge-morph -monA1 monA1.dix -monA2 monA2.dix -out merged.dix");
 		System.exit(-1);
 	    } else {
 		DicMerge dicMerge = new DicMerge();
@@ -125,7 +128,8 @@ public class ProcessDics {
 
 	if (getAction().equals("merge-bil")) {
 	    if (getArguments().length < 6) {
-		msg.err("Usage: java ProcessDics merge-bil -bilAB1 bilAb1.dix -bilAB2 bilAB2.dix -out merged.dix");
+		msg
+			.err("Usage: java ProcessDics merge-bil -bilAB1 bilAb1.dix -bilAB2 bilAB2.dix -out merged.dix");
 		System.exit(-1);
 	    } else {
 		DicMerge dicMerge = new DicMerge();
@@ -136,7 +140,8 @@ public class ProcessDics {
 
 	if (getAction().equals("cross")) {
 	    if (getArguments().length < 8) {
-		msg.err("Usage: java ProcessDics cross -bilAB [-r] <bilAB> -bilBC [-r] <bilBC> -monA <mon-A> -monC <monC>");
+		msg
+			.err("Usage: java ProcessDics cross -bilAB [-r] <bilAB> -bilBC [-r] <bilBC> -monA <mon-A> -monC <monC>");
 		System.exit(-1);
 	    } else {
 		DicCross dicCross = new DicCross();
@@ -158,7 +163,8 @@ public class ProcessDics {
 
 	if (getAction().equals("format")) {
 	    if (getArguments().length != 4) {
-		msg.err("Usage: java ProcessDics format <-mon|-bil> <dic> <dic-formatted>");
+		msg
+			.err("Usage: java ProcessDics format <-mon|-bil> <dic> <dic-formatted>");
 		System.exit(-1);
 	    } else {
 		final DicFormat dicFormat = new DicFormat();
@@ -169,7 +175,8 @@ public class ProcessDics {
 
 	if (getAction().equals("sort")) {
 	    if (getArguments().length != 5) {
-		msg.err("Usage: java ProcessDics sort <-mon|-bil> <-xinclude|-same-file> <dic> <dic-sorted>");
+		msg
+			.err("Usage: java ProcessDics sort <-mon|-bil> <-xinclude|-same-file> <dic> <dic-sorted>");
 		System.exit(-1);
 	    } else {
 		DicSort dicSort = new DicSort();
@@ -191,10 +198,12 @@ public class ProcessDics {
 
 	if (getAction().equals("get-bil-omegawiki")) {
 	    if (getArguments().length != 4) {
-		msg.err("Usage: java ProcessDics get-bil-omegawiki <source-lang> <target-lang> <dic-out>");
+		msg
+			.err("Usage: java ProcessDics get-bil-omegawiki <source-lang> <target-lang> <dic-out>");
 		System.exit(-1);
 	    } else {
-		GetTranslation gt = new GetTranslation(arguments[1],arguments[2]);
+		GetTranslation gt = new GetTranslation(arguments[1],
+			arguments[2]);
 		gt.setOutFileName(arguments[3]);
 		gt.printDictionary();
 	    }

@@ -106,7 +106,7 @@ public class AddGenderAdj {
 						|| sv.equals("mf")) {
 					    ng.put(lemma, s);
 					    // System.out.println(lemma + "
-                                                // (" + sv + ")");
+					    // (" + sv + ")");
 					}
 				    }
 				}
@@ -148,7 +148,7 @@ public class AddGenderAdj {
 			SElement gender = ng.get(text);
 			if (gender != null) {
 			    // System.out.println(text + " (" +
-                                // gender.getValue() + ")");
+			    // gender.getValue() + ")");
 			    genderFound++;
 
 			    SElement newGender = null;

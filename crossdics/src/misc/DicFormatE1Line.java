@@ -1,5 +1,3 @@
-
-
 package misc;
 
 import java.io.BufferedOutputStream;
@@ -15,29 +13,29 @@ import dictools.DictionaryReader;
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class DicFormatE1Line {
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement dic;
-    
+
     /**
-     * 
-     * @param dicFileName
-     */
+         * 
+         * @param dicFileName
+         */
     public DicFormatE1Line(String dicFileName) {
 	DictionaryReader dicReader = new DictionaryReader(dicFileName);
 	dic = dicReader.readDic();
-	
+
     }
 
     /**
-     * 
-     * @param fileName
-     */
+         * 
+         * @param fileName
+         */
     public void printXML(final String fileName) {
 	BufferedOutputStream bos;
 	FileOutputStream fos;
@@ -52,10 +50,12 @@ public class DicFormatE1Line {
 	    dos.writeBytes("<!--\n\tDictionary:\n");
 	    if (dic.getSections() != null) {
 		if (dic.isBil()) {
-		    dos.writeBytes("\tBilingual dictionary: " + dic.getSL() + "-"
-			    + dic.getTL() + "\n");
+		    dos.writeBytes("\tBilingual dictionary: " + dic.getSL()
+			    + "-" + dic.getTL() + "\n");
 		}
-		dos.writeBytes("\tSections: " + dic.getSections().size() + "\n");
+		dos
+			.writeBytes("\tSections: " + dic.getSections().size()
+				+ "\n");
 		int ne = 0;
 		for (SectionElement section : dic.getSections()) {
 		    ne += section.getEElements().size();
@@ -64,12 +64,13 @@ public class DicFormatE1Line {
 	    }
 
 	    if (dic.getSdefs() != null) {
-		dos.writeBytes("\n\tSdefs: " + dic.getSdefs().getSdefsElements().size()
-			+ "\n");
+		dos.writeBytes("\n\tSdefs: "
+			+ dic.getSdefs().getSdefsElements().size() + "\n");
 	    }
 	    if (dic.getPardefsElement() != null) {
 		dos.writeBytes("\tParadigms: "
-			+ dic.getPardefsElement().getPardefElements().size() + "\n");
+			+ dic.getPardefsElement().getPardefElements().size()
+			+ "\n");
 	    }
 
 	    if (dic.getComments() != null) {
@@ -88,20 +89,20 @@ public class DicFormatE1Line {
 	    }
 	    if (dic.getSections() != null) {
 		for (final SectionElement s : dic.getSections()) {
-			String attributes = "";
-			if (s.getID() != null) {
-			    attributes += " id=\"" + s.getID() + "\"";
-			}
-			if (s.getType() != null) {
-			    attributes += " type=\"" + s.getType() + "\"";
-			}
-			dos.writeBytes("  <section " + attributes + ">\n");
-			for (final EElement e : s.getEElements()) {
-			    //e.printXML(dos);
-			    e.printXML1Line(dos);
-			}
-			dos.writeBytes("  </section>\n");
-		    //s.printXML(dos);
+		    String attributes = "";
+		    if (s.getID() != null) {
+			attributes += " id=\"" + s.getID() + "\"";
+		    }
+		    if (s.getType() != null) {
+			attributes += " type=\"" + s.getType() + "\"";
+		    }
+		    dos.writeBytes("  <section " + attributes + ">\n");
+		    for (final EElement e : s.getEElements()) {
+			// e.printXML(dos);
+			e.printXML1Line(dos);
+		    }
+		    dos.writeBytes("  </section>\n");
+		    // s.printXML(dos);
 		}
 	    }
 	    dos.writeBytes("</dictionary>\n");
@@ -116,5 +117,4 @@ public class DicFormatE1Line {
 	}
     }
 
-    
 }

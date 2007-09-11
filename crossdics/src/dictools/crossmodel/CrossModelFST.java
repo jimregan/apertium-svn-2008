@@ -94,7 +94,7 @@ public class CrossModelFST {
          */
     public final ActionSet getActionSet(CrossAction entries) {
 	// HashMap<String,ElementList> tails = new
-        // HashMap<String,ElementList>();
+	// HashMap<String,ElementList>();
 	HashMap<String, ElementList> tails = null;
 	ElementList eList = entries.processEntries();
 	String str = getElementListString(eList);

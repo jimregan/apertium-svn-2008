@@ -67,6 +67,15 @@ public class ContentElement extends Element implements Cloneable {
 
     /**
          * 
+         * @param cE
+         */
+    public ContentElement(final ContentElement cE) {
+	children = (ElementList) cE.getChildren().clone();
+	this.value = new String(cE.getValue());
+    }
+
+    /**
+         * 
          * @param e
          */
     public final void addChild(final Element e) {
@@ -170,8 +179,8 @@ public class ContentElement extends Element implements Cloneable {
     }
 
     /**
-     * 
-     */
+         * 
+         */
     protected void printXML1Line(final DataOutputStream dos) throws IOException {
 	if (getTagName() != null) {
 	    dos.writeBytes("<" + getTagName() + ">");
