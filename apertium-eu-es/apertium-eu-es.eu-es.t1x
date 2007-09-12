@@ -211,7 +211,8 @@
     </def-attr>
 
   <def-attr n="det_pos">          
-      <attr-item tags="prn.pers"/>         
+      <attr-item tags="prn.pers"/> 
+      <attr-item tags="prn.tn"/>         
       <attr-item tags="det.dem"/>        
       <attr-item tags="det.pos"/>
     </def-attr>
@@ -1447,6 +1448,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="1" side="sl" part="lem"/> 
 		  <lit v="ber"/>
 		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="eurak"/>
+		</equal>
 	      </or>
 	    </test>
 	    <let>	      
@@ -1460,10 +1465,20 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </when>
 	  <when>
 	    <test>
-	      <equal caseless="yes">
-		<clip pos="1" side="sl" part="lem"/> 
-		<lit v="ni"/>
-	      </equal>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="ni"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="neu"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="en"/>
+		</equal>
+	      </or>
 	    </test>
 	    <let>	      
 	      <clip pos="1" side="tl" part="lem"/> 
@@ -1481,6 +1496,14 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="1" side="sl" part="lem"/> 
 		  <lit v="hi"/>
 		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="zeu"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="heu"/>
+		</equal>
 	      </or>
 	    </test>
 	    <let>	      
@@ -1490,10 +1513,16 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </when>
 	  <when>
 	    <test>
-	      <equal caseless="yes">
-		<clip pos="1" side="sl" part="lem"/> 
-		<lit v="gu"/>
-	      </equal>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="gu"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="geu"/>
+		</equal>
+	      </or>
 	    </test>
 	    <let>	      
 	      <clip pos="1" side="tl" part="lem"/> 
@@ -1506,10 +1535,16 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </when>
 	  <when>
 	    <test>
+	      <or>
 	      <equal caseless="yes">
 		<clip pos="1" side="sl" part="lem"/> 
 		<lit v="zuek"/>
 	      </equal>
+	      <equal caseless="yes">
+		<clip pos="1" side="sl" part="lem"/> 
+		<lit v="zeuek"/>
+	      </equal>
+	      </or>
 	    </test>
 	    <let>	      
 	      <clip pos="1" side="tl" part="lem"/> 

@@ -120,8 +120,6 @@
     <tags-item tags="prn.pers.*"/>
     <tags-item tags="prn.ind.*"/>
     <tags-item tags="prn.itg.*"/>
-    <tags-item tags="IOR.PERARR"/>
-    <tags-item tags="IOR.PERARR.*"/>
     <tags-item tags="IOR.IZGMGB"/>
     <tags-item tags="IOR.ELK"/>
 
