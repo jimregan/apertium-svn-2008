@@ -19,6 +19,11 @@
       <cat-item tags="adv.gen"/>
     </def-cat>
 
+     <def-cat n="adv">
+      <cat-item tags="adv"/>
+      <cat-item tags="adv.gen"/>
+    </def-cat>
+
      <def-cat n="adj">
       <cat-item tags="adj.*"/>
     </def-cat>
@@ -48,6 +53,9 @@
       <cat-item tags="post.*"/>
     </def-cat>
 
+<def-cat n="spost">
+      <cat-item tags="spost"/>
+    </def-cat>
 
      <def-cat n="part">
       <cat-item lemma="ik" tags="post"/>
@@ -6646,9 +6654,58 @@ pingui pingui pingui MG
  </rule>
 	      
 
+<rule comment="REGLA: adv">
+      <pattern>
+	<pattern-item n="adv"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="adv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
 
 
-
+<rule comment="REGLA: SPOST (posposición separable, p. ex. 'arabera'">
+      <pattern>
+	<pattern-item n="spost"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="spost" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
 
 
 

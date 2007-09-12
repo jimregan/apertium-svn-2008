@@ -12,7 +12,9 @@
     <tags-item lemma="izan" tags="ADT.*"/>
     <tags-item tags="ADL.*"/><!--treure, provisional tagger -->
   </def-label>
-
+ <def-label name="hori" closed="true">
+    <tags-item lemma="hori" tags="adj.izo"/>
+  </def-label> 
   <def-label name="PP">
     <tags-item tags="vblex.pp"/>
   </def-label> 
@@ -297,7 +299,19 @@
     <label-sequence>
       <label-item label="NUM"/>
       <label-item label="INF"/>
-    </label-sequence> 
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETINDIZL"/>
+      <label-item label="INF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJIZLA"/>
+      <label-item label="INF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJIZL"/>
+      <label-item label="INF"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="INF"/>
       <label-item label="DET"/>
@@ -309,6 +323,34 @@
     <label-sequence>
       <label-item label="INF"/>
       <label-item label="ADJIZO"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="GRA"/>
+      <label-item label="SPOST"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="GRA"/>
+      <label-item label="ADVGEN"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="NOMA"/>
+      <label-item label="hori"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="NOM"/>
+      <label-item label="hori"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="DET"/>
+      <label-item label="hori"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="ADJIZOA"/>
+      <label-item label="hori"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="ADJIZO"/>
+      <label-item label="hori"/>
     </label-sequence> 
 
  </forbid>
