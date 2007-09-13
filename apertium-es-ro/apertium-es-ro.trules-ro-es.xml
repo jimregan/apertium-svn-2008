@@ -3537,6 +3537,111 @@
          </action>
     </rule> 
 
+<rule>
+<!-- REGLA 32abis DELIA: NOM + ADJ + DETA + NP oficiile consulare ale României = las oficinas consulares de Rumanía-->
+      <pattern>        
+        <pattern-item n="nom"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="deta"/>
+        <pattern-item n="np"/>
+      </pattern>
+      <action> 
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="1"/>
+          <with-param pos="2"/> 
+	</call-macro> 
+          <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+               <out>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_adj"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+		    <lit v="de"/>  
+		    <lit-tag v="pr"/>
+                  </lu>
+                  <b/>
+                 <lu>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_np"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+              </when>
+	      <otherwise>
+               <out>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+	           <b/>
+                   <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_adj"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+		    <lit v="de"/>  
+		    <lit-tag v="pr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_np"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+              </otherwise>
+            </choose>
+         </action>
+    </rule> 
+
 
 <rule>
 <!-- REGLA 32bisbis DELIA: NOM (def)+ DETA + Rel Cärui + Nom /cartea a cärei copertä = libro cuya portada-->
@@ -3968,9 +4073,7 @@
             </test>
 	       <out>
                   <lu>
-		   <get-case-from pos="1">
-                    <lit v="a"/>
-		   </get-case-from> 
+		    <lit v="a"/>
                     <lit-tag v="pr"/>
                   </lu>
                   <b/>
@@ -6617,10 +6720,7 @@ is not applicable because gender and number can not be taken from previous rules
         <call-macro n="f_concord2">
           <with-param pos="2"/>
           <with-param pos="3"/> 
-	  </call-macro>  	
-            <call-macro n="modcase">
-              <with-param pos="1"/>
-            </call-macro>
+	  </call-macro>
             <choose>
               <when>
                 <test>
