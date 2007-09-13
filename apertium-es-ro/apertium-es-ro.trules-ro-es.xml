@@ -112,6 +112,9 @@
     <def-cat n="conjnici">
       <cat-item lemma="nici" tags="cnjcoo"/>
     </def-cat>
+    <def-cat n="relcärui">
+      <cat-item lemma="cärui" tags="rel.*"/>
+    </def-cat>
     <def-cat n="relat">
       <cat-item tags="rel.*"/>
     </def-cat>
@@ -152,6 +155,9 @@
     <def-cat n="verbospron">
       <cat-item lemma="gândi" tags="vblex.*"/>
       <cat-item lemma="juca" tags="vblex.*"/>
+    </def-cat>
+    <def-cat n="verbfi">
+      <cat-item lemma="fi" tags="vblex.*"/>
     </def-cat>
     <def-cat n="verbtrebui">
       <cat-item lemma="trebui" tags="vbmod.*"/>
@@ -3354,8 +3360,120 @@
             </out>
       </action>
     </rule> 
+<rule>
+<!-- REGLA 73BISBISBIS: VEU PASSIVA ADAPTADA: Nom + VbFI + adj = Nom + ser + part -->
+<!-- Per a traduir  "Präjitura e(ste) fäcutä din fäinä" com a "el pastíss és fet de farina" -->
+      <pattern>
+        <pattern-item n="nom"/>
+        <pattern-item n="verbfi"/>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+       <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="1"/>
+          <with-param pos="3"/> 
+	</call-macro>
+        <out>
+          <lu>
+	        <get-case-from pos="1">
+	        <lit v="el"/>
+                </get-case-from>
+                <lit-tag v="det.def"/>
+                <clip pos="1" side="tl" part="gen"/>
+                <clip pos="1" side="tl" part="nbr"/>
+           </lu>
+           <b/>
+           <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_nom"/>  
+	      <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+           <b/>
+          <lu>
+              <lit v="ser"/> 
+                <clip pos="2" side="tl" part="a_verb"/>         
+                <clip pos="2" side="tl" part="temps"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="persona"/>
+                <clip pos="2" side="tl" part="nbr"/>
+          </lu>
+          <b/>
+          <lu>
+            <clip pos="3" side="tl" part="lem"/>
+            <clip pos="3" side="tl" part="a_adj"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
 
- 
+ <rule>
+<!-- REGLA 73BISBIS: VEU PASSIVA SENZILLA: Nom + VbFI + participi = Nom + ser + part -->
+<!-- Per a traduir  "Präjitura e(ste) fäcutä din fäinä" com a "el pastíss és fet de farina" -->
+      <pattern>
+        <pattern-item n="nom"/>
+        <pattern-item n="verbfi"/>
+        <pattern-item n="pp"/>
+      </pattern>
+      <action>
+       <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="1"/>
+          <with-param pos="3"/> 
+	</call-macro>
+        <call-macro n="modcase">
+               <with-param pos="1"/>
+            </call-macro>
+        <out>
+          <lu>
+               <get-case-from pos="1">
+	        <lit v="el"/>
+                </get-case-from>
+                <lit-tag v="det.def"/>
+                <clip pos="1" side="tl" part="gen"/>
+                <clip pos="1" side="tl" part="nbr"/>
+           </lu>
+           <b/>
+           <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_nom"/>  
+	      <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+           <b/>
+           <lu>
+              <lit v="ser"/> 
+                <clip pos="2" side="tl" part="a_verb"/>         
+                <clip pos="2" side="tl" part="temps"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="persona"/>
+                <clip pos="2" side="tl" part="nbr"/>
+          </lu>
+          <b/>
+          <lu>
+            <clip pos="3" side="tl" part="lem"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <lit-tag v="pp"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
 <rule>
 <!-- REGLA 32bis DELIA: NOM (ind)+ DETA + NP politicä a României = política de Rumanía-->
       <pattern>        
@@ -3412,6 +3530,101 @@
                     <clip pos="3" side="tl" part="a_np"/>
                     <clip pos="3" side="tl" part="gen"/>
                     <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+              </otherwise>
+            </choose>
+         </action>
+    </rule> 
+
+
+<rule>
+<!-- REGLA 32bisbis DELIA: NOM (def)+ DETA + Rel Cärui + Nom /cartea a cärei copertä = libro cuya portada-->
+      <pattern>        
+        <pattern-item n="nom"/>
+        <pattern-item n="deta"/>
+        <pattern-item n="relcärui"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action> 
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+         <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="4"/>
+        </call-macro> 
+          <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+               <out>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+		    <lit v="cuyo"/>  
+		    <lit-tag v="rel.aa"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 <lu>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_nom"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+              </when>
+	      <otherwise>
+               <out>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+	           <b/>
+                  <lu>
+		    <lit v="cuyo"/>  
+		    <lit-tag v="rel.aa"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_nom"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
                   </lu>
                 </out>
               </otherwise>
