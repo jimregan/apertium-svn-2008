@@ -88,6 +88,11 @@
       <cat-item tags="vblex.padv"/>
     </def-cat>
 
+ <def-cat n="pp_adv">
+      <cat-item tags="vblex.padv"/>
+      <cat-item tags="vblex.pp"/>
+    </def-cat>
+
  <def-cat n="ger">
       <cat-item tags="vblex.ger"/>
     </def-cat>
@@ -5626,6 +5631,154 @@ pingui pingui pingui MG
       </action>
  </rule>
 
+ <rule comment="REGLA: PP + ko">
+      <pattern>
+	<pattern-item n="pp_adv"/>
+	<pattern-item n="ko"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="1" side="tl" part="temps"/>
+	  <lit-tag v="pp"/>
+	</let>
+	<out>
+	  <chunk name="padv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SPGEN"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+	      <tag><lit-tag v="GD"/></tag>
+	      <tag><lit-tag v="ND"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="4"/>
+	      <lit-tag v="5"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+
+
+
+ <rule comment="REGLA: PP + KO NOM + DET (ezarritako alerta)">
+      <pattern>
+	<pattern-item n="pp_adv"/>
+	<pattern-item n="ko"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="concord_n2">
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="tipo_det">
+	  <with-param pos="4"/>
+	</call-macro>
+	<let>
+	  <clip pos="1" side="tl" part="temps"/>
+	  <lit-tag v="pp"/>
+	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="gen"/>
+		<lit-tag v="f"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="genere"/>
+	      <lit-tag v="f"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	       <var n="genere"/>
+	       <lit-tag v="m"/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="nbr"/>
+		<lit-tag v="pl"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="nombre"/>
+	      <lit-tag v="pl"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	       <var n="nombre"/>
+	       <lit-tag v="sg"/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<out> 
+	  <chunk name="det_nom_pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="tipusdet"/></tag>
+	      <tag><clip pos="3" side="tl" part="gen"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="4" side="tl" part="lem"/> 
+	      <clip pos="4" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="4" side="tl" part="GD" link-to="3"/>
+	      <clip pos="4" side="tl" part="mf"/>
+	      <clip pos="4" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="GD" link-to="3"/>
+	      <clip pos="3" side="tl" part="mf"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="lemq"/> 
+	    </lu>
+	    <b pos="1"/>
+	     <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <var n="genere"/>
+	      <var n="nombre"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
 
 
     <!--********************************* REGLES DE SA ***************************************************** -->
@@ -6548,7 +6701,7 @@ pingui pingui pingui MG
 
 
 
-  <rule comment="ADITZ IZENA + KO (joateko) ">
+  <rule comment="ADITZ IZENA + KO (joateko - para ir) ">
     <pattern>
       <pattern-item n="vbizen"/>
       <pattern-item n="ko"/>	
@@ -6612,6 +6765,45 @@ pingui pingui pingui MG
 	    <tag><lit-tag v="PD"/></tag>
 	    <tag><lit-tag v="ND"/></tag>
 	  </tags>
+	  <lu>
+	    <clip pos="1" side="tl" part="lemh"/>
+	    <clip pos="1" side="tl" part="a_verb"/>
+	    <clip pos="1" side="tl" part="temps"/>	    
+	    <clip pos="1" side="tl" part="lemq"/>
+	  </lu>
+	</chunk>
+      </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+    </action>
+  </rule>
+
+ <rule comment="ADITZ IZENA + KO (argitzeke - sin esclarecer) ">
+    <pattern>
+      <pattern-item n="vbizen"/>
+      <pattern-item n="post"/>	
+    </pattern>
+    <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+      <let>
+	<clip pos="1" side="tl" part="temps"/>
+	<lit-tag v="inf"/>
+      </let>
+      <out>
+	<chunk name="pr_inf" case="caseFirstWord">
+	  <tags>
+	    <tag><lit-tag v="SV"/></tag>
+	    <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	    <tag><clip pos="1" side="tl" part="temps"/></tag>
+	  </tags>
+	  <lu>
+	    <clip pos="2" side="tl" part="whole"/>
+	  </lu>
+	  <b/>
 	  <lu>
 	    <clip pos="1" side="tl" part="lemh"/>
 	    <clip pos="1" side="tl" part="a_verb"/>

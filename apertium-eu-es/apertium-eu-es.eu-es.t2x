@@ -351,34 +351,6 @@
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="1" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
 		<clip pos="2" part="gen"/>
 		<lit-tag v="GD"/>
 	      </equal>
@@ -403,6 +375,67 @@
 	    </let>
 	  </when>
 	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="temps"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="2" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="2" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	
 	<out>
 	  <chunk>
 	    <clip pos="2" part="whole"/>
@@ -449,34 +482,7 @@
 	    </let>
 	  </when>
 	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
+	
 	<choose>
 	  <when>
 	    <test>
@@ -505,6 +511,67 @@
 	    </let>
 	  </when>
 	</choose>
+<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="temps"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="2" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="2" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+
 	<out>
 	  <chunk>
 	    <clip pos="2" part="whole"/>

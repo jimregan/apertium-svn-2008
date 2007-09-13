@@ -209,8 +209,8 @@
 
 
 
-<def-label name="ERL" closed="true">
-    <tags-item tags="ERL.*"/>
+<def-label name="REL" closed="true">
+    <tags-item tags="rel"/>
   </def-label>
 <def-label name="PRT" closed="true">
     <tags-item tags="PRT.*"/>
