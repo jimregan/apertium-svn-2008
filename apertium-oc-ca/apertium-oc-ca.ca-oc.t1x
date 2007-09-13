@@ -43,7 +43,9 @@
       <cat-item tags="predet.*"/>
       <!-- <cat-item tags="num.*"/> -->
     </def-cat>
-
+   <def-cat n="detnt">
+      <cat-item tags="detnt"/>
+ </def-cat>
  <def-cat n="percent">
       <cat-item tags="num.percent"/>
     </def-cat>
@@ -3071,6 +3073,15 @@
 		<choose>
 			<when>
 				<test>
+							<equal>
+								<clip pos="1" side="tl" part="lem"/>
+								<lit v="lo"/>
+							</equal>
+						</test>
+		
+		<choose>
+			<when>
+				<test>
 
 							<equal>
 								<clip pos="1" side="tl" part="gen"/>
@@ -3109,6 +3120,8 @@
 				</let>
 			</otherwise>
 		</choose>
+	</when>
+</choose>
 	</def-macro>
 	
 	<def-macro n="tipus_rel" npar="1">
@@ -4259,6 +4272,90 @@
 		</action>
 	</rule>
 	
+		<rule comment="REGLA: DET ADJ">
+		<pattern>
+			<pattern-item n="detnt"/>
+			<pattern-item n="adjec"/>
+		</pattern>
+		<action>
+<!--			<call-macro n="f_concord2">
+				<with-param pos="2"/>
+				<with-param pos="1"/>
+			</call-macro>-->	
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<not>
+							<equal>
+								<clip pos="2" side="tl" part="gen"/>
+								<lit-tag v="mf"/>
+							</equal>
+						</not>
+					</test>
+					<let>
+						<clip pos="2" side="tl" part="gen"/>
+						<lit-tag v="m"/>
+					</let>
+				</when>
+			</choose>
+			<choose>
+				<when>
+					<test>
+						<not>
+							<equal>
+								<clip pos="2" side="tl" part="nbr"/>
+								<lit-tag v="sp"/>
+							</equal>
+						</not>
+					</test>
+					<let>
+						<clip pos="2" side="tl" part="nbr"/>
+						<lit-tag v="sg"/>
+					</let>
+				</when>
+			</choose>
+			<out>
+				<chunk name="det_adj" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SA"/></tag>
+						<tag><clip pos="2" side="tl" part="gen"/></tag>
+						<tag><clip pos="2" side="tl" part="nbr"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/> 
+						<clip pos="1" side="tl" part="a_det"/>
+						<clip pos="1" side="tl" part="gen_sense_mf"/>
+						<clip pos="1" side="tl" part="gen_mf"/>	 
+						<clip pos="1" side="tl" part="nbr_sense_sp"/>
+						<clip pos="1" side="tl" part="nbr_sp"/>	 
+					</lu>
+					<b/>
+					<lu>
+						<lit v="de"/>
+						<lit-tag v="pr"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" side="tl" part="lemh"/>
+						<clip pos="2" side="tl" part="a_adj"/>
+						<clip pos="2" side="tl" part="gen_sense_mf"/>
+						<clip pos="2" side="tl" part="gen_mf"/>
+						<clip pos="2" side="tl" part="nbr_sense_sp"/>
+						<clip pos="2" side="tl" part="nbr_sp"/>	 
+						<clip pos="2" side="tl" part="lemq"/>
+					</lu> 
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+
 	<rule comment="REGLA: DET ADJ cnj	 ADJ NOM">
 		<pattern>
 			<pattern-item n="det"/>
