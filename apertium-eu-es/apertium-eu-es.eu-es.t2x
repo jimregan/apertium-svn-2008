@@ -5,15 +5,19 @@
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>  
-    <def-cat n="SP">
-      <cat-item tags="SP.*"/>
+    <def-cat n="SPR">
+      <cat-item tags="SPR.*"/>
       <cat-item tags="SPGEN.*"/>
     </def-cat>  
 
     <def-cat n="SPGEN">
       <cat-item tags="SPGEN.*"/>
     </def-cat> 
- 
+   
+    <def-cat n="PR">
+      <cat-item tags="PR"/>
+    </def-cat>  
+
     <def-cat n="SA">
       <cat-item tags="SA.*"/>
     </def-cat> 
@@ -94,7 +98,8 @@
 
  <def-attr n="a_SP">          
       <attr-item tags="SPGEN"/>         
-      <attr-item tags="SP-SN"/> 
+      <attr-item tags="SPR"/>        
+      <attr-item tags="SPR-SN"/> 
     </def-attr> 
 
   </section-def-attrs>
@@ -255,9 +260,9 @@
       </action>
 </rule>
 
- <rule> <!-- REGLA: SP-->
+ <rule> <!-- REGLA: SPR-->
       <pattern>
-	<pattern-item n="SP"/>
+	<pattern-item n="SPR"/>
       </pattern>
       <action>
 	<choose>
@@ -448,10 +453,10 @@
       </action>
 </rule>
 
- <rule> <!-- REGLA: SPGEN + SP (arratsaldeko azken orduan)-->
+ <rule> <!-- REGLA: SPGEN + SPR (arratsaldeko azken orduan)-->
       <pattern>
 	<pattern-item n="SPGEN"/>
-	<pattern-item n="SP"/>
+	<pattern-item n="SPR"/>
       </pattern>
       <action>
 	<choose>
@@ -584,7 +589,7 @@
       </action>
 </rule>
   
- <rule> <!-- REGLA: SPGEN + SP (etxearen aurrean - delante de la casa)-->
+ <rule> <!-- REGLA: SPGEN + SPR (etxearen aurrean - delante de la casa)-->
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SADV"/>
@@ -632,7 +637,7 @@
 	    </let>
 	  </when>
 	</choose>
-	<choose>
+<!--	<choose>
 	   <when>
 	    <test>
 	      <equal>
@@ -642,10 +647,10 @@
 	    </test>
 	    <let>	      
 		<clip pos="1" part="a_SP"/>
-		<lit-tag v="SP-SN"/>
+		<lit-tag v="SPR-SN"/>
 	    </let>
 	   </when>
-	</choose>
+	</choose> -->
 	<out>
 	  <chunk>
 	    <clip pos="2" part="whole"/>
@@ -658,6 +663,78 @@
       </action>
 </rule>
   
+
+ <rule> <!-- REGLA: SPR + PR (lanetik kanpo; iturri ofizialen arabera)-->
+      <pattern>
+	<pattern-item n="SPR"/>
+	<pattern-item n="PR"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<let>	      
+	  <clip pos="1" part="a_SP"/>
+	  <lit-tag v="SPR-SN"/>
+	</let>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+
+
+
+
+
 
 
 

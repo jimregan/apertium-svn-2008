@@ -196,16 +196,10 @@
     <tags-item tags="pr"/>
   </def-label>
 
- 
-  <def-label name="RELAN" closed="true">
-    <tags-item tags="rel.an.*"/>
-  </def-label>
-  <def-label name="RELNN" closed="true">
-    <tags-item tags="rel.nn.*"/>
-  </def-label>
-  <def-label name="RELADV" closed="true">
+
+ <!-- <def-label name="RELADV" closed="true">
     <tags-item tags="rel.adv"/>
-  </def-label>
+  </def-label> -->
 
 
 
@@ -277,6 +271,19 @@
     </sequence>
   </def-mult>
 
+<def-mult name="VERBREL">
+    <sequence>
+      <label-item label="VBSINT"/>
+      <label-item label="REL"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="PRGEN"><!--perquè 'zuen' = VERBREL/PRGEN  --> 
+    <sequence>
+      <tags-item tags="prn.pers.*"/>
+      <tags-item lemma="en" tags="post"/>
+    </sequence>
+  </def-mult>
 
 <!--<def-mult name="DETPOST" closed="true">
     <sequence>
@@ -351,6 +358,10 @@
     <label-sequence>
       <label-item label="ADJIZO"/>
       <label-item label="hori"/>
+    </label-sequence>
+    <label-sequence><!--? correcte? (etorri zuen) -->
+      <label-item label="PP"/>
+      <label-item label="PRGEN"/>
     </label-sequence> 
 
  </forbid>
