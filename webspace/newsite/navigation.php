@@ -24,7 +24,13 @@
 							$numSub = count($subsections[$sections[$i]]);
 							if ($numSub > 0) {
 								foreach ($subsections[$sections[$i]] as $key=>$value) {
-									print '<a class="submenu" href="?id=' . $key . '">' . $value . '</a>';
+									$islink = strstr($key, '@');
+									$islink = substr($islink,1, strlen($islink)-1);
+									if( strcmp($islink,"") != 0 ) {
+										print '<a class="submenu" href="' . $value . '">' . $islink . '</a>';
+									} else {
+										print '<a class="submenu" href="?id=' . $key . '">' . $value . '</a>';
+									}
 								}
 							}		
 						} else {
@@ -40,7 +46,14 @@
 					$numSub = count($subsections[$id]);
 					if ($numSub > 0) {
 						foreach ($subsections[$id] as $key=>$value) {
-							print '<a class="submenu" href="?id=' . $key . '">' . $value . '</a>';
+									$islink = strstr($key, '@');
+									$islink = substr($islink,1, strlen($islink)-1);
+									if( strcmp($islink,"") != 0 ) {
+										print '<a class="submenu" href="' . $value . '">' . $islink . '</a>';
+									} else {
+										print '<a class="submenu" href="?id=' . $key . '">' . $value . '</a>';
+									}
+							
 						}
 					}		
 				} else {
