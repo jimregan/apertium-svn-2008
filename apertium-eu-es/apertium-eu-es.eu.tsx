@@ -339,26 +339,6 @@
       <label-item label="GRA"/>
       <label-item label="ADVGEN"/>
     </label-sequence> 
-    <label-sequence>
-      <label-item label="NOMA"/>
-      <label-item label="hori"/>
-    </label-sequence> 
-    <label-sequence>
-      <label-item label="NOM"/>
-      <label-item label="hori"/>
-    </label-sequence> 
-    <label-sequence>
-      <label-item label="DET"/>
-      <label-item label="hori"/>
-    </label-sequence> 
-    <label-sequence>
-      <label-item label="ADJIZOA"/>
-      <label-item label="hori"/>
-    </label-sequence> 
-    <label-sequence>
-      <label-item label="ADJIZO"/>
-      <label-item label="hori"/>
-    </label-sequence>
     <label-sequence><!--? correcte? (etorri zuen) -->
       <label-item label="PP"/>
       <label-item label="PRGEN"/>
@@ -366,19 +346,16 @@
 
  </forbid>
 
-<!--  <enforce-rules>
-   <enforce-after label="VHAVEPAST">
+ <enforce-rules>
+   <enforce-after label="hori">
       <label-set>
-        <label-item label="VLEXPP"/>
-        <label-item label="VSERPP"/>
-	<label-item label="ADV"/>
-	<label-item label="NOT"/>
-	<label-item label="PRNSUBJ"/> 
+        <label-item label="DET"/>
+      </label-set>
     </enforce-after>
    
    
 
- </enforce-rules> -->
+ </enforce-rules>
 
   <preferences><!--nago, etc. -->
    <prefer tags="vbsint.pri.*"/>

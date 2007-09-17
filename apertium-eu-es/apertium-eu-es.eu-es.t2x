@@ -34,6 +34,10 @@
       <cat-item tags="SVsub.*"/>
     </def-cat>  
 
+ <def-cat n="Orel">
+      <cat-item tags="Orel.*"/>
+    </def-cat>  
+
 <def-cat n="nez">
       <cat-item lemma="nez" tags="cnjadv"/>
     </def-cat>  
@@ -589,7 +593,7 @@
       </action>
 </rule>
   
- <rule> <!-- REGLA: SPGEN + SPR (etxearen aurrean - delante de la casa)-->
+ <rule> <!-- REGLA: SPGEN + SADV (etxearen aurrean - delante de la casa)-->
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SADV"/>
@@ -731,13 +735,6 @@
 
 
 
-
-
-
-
-
-
-
 <rule comment="afaria prestatzeko">
   <pattern>
     <pattern-item n="SN"/>
@@ -796,6 +793,128 @@
       </chunk>
     </out>
   </action>
+</rule>
+
+
+<rule comment="OREL + SN (datorren urtea)">
+  <pattern>
+    <pattern-item n="Orel"/>
+    <pattern-item n="SN"/>
+  </pattern>
+  <action>
+    <choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+  </action>
+</rule>
+
+ <rule> <!-- REGLA: OREL + SPR (datorren urteko martxoan)-->
+      <pattern>
+	<pattern-item n="Orel"/>
+	<pattern-item n="SPR"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
 </rule>
 
 <rule comment="azaldu duenez">

@@ -45,6 +45,14 @@
       <cat-item name="pr_d_num_pr_d_n"/>
     </def-cat>
 
+<def-cat n="SP6">
+      <cat-item name="pr_d_n_pr_d_n_pr_n"/>
+    </def-cat>
+
+<def-cat n="SP7">
+      <cat-item name="pr_d_n_pr_d_n_pr_d_n"/>
+    </def-cat>
+
   </section-def-cats>
 
   <section-def-attrs>
@@ -580,6 +588,160 @@
 	</choose>
       </action>
 </rule>
+
+<rule>
+      <pattern>
+        <pattern-item n="SP6"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal>
+		  <clip pos="0" part="a_SP"/>
+		  <lit-tag v="SPR-SN"/>
+		</equal>
+	      </not>
+	    </test>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu> 
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	  <otherwise>	    
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	  </otherwise>
+	</choose>
+	<out>
+	  <lu>
+	    <clip pos="2" part="whole"/>
+	  </lu>
+	  <b pos="2"/>
+	  <lu>
+	    <clip pos="3" part="whole"/>
+	  </lu> 
+	  <b pos="3"/>
+	  <lu>
+	    <clip pos="4" part="whole"/>
+	  </lu> 
+	  <b pos="4"/>
+	  <lu>
+	    <clip pos="5" part="whole"/>
+	  </lu>  
+	  <b pos="5"/>
+	  <lu>
+	    <clip pos="6" part="whole"/>
+	  </lu>  
+	  <b pos="6"/>
+	  <lu>
+	    <clip pos="7" part="whole"/>
+	  </lu> 
+	</out>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal>
+		  <clip pos="1" part="pr"/>
+		  <lit v=""/>
+		</equal>
+	      </not>
+	    </test>
+	    <out>
+	      <b pos="7"/>
+	      <lu>
+		<clip pos="8" part="whole"/>
+	      </lu> 
+	    </out> 
+	  </when>
+	</choose>
+      </action>
+</rule>
+
+
+<rule>
+      <pattern>
+        <pattern-item n="SP7"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal>
+		  <clip pos="0" part="a_SP"/>
+		  <lit-tag v="SPR-SN"/>
+		</equal>
+	      </not>
+	    </test>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu> 
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	  <otherwise>	    
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	  </otherwise>
+	</choose>
+	<out>
+	  <lu>
+	    <clip pos="2" part="whole"/>
+	  </lu>
+	  <b pos="2"/>
+	  <lu>
+	    <clip pos="3" part="whole"/>
+	  </lu> 
+	  <b pos="3"/>
+	  <lu>
+	    <clip pos="4" part="whole"/>
+	  </lu> 
+	  <b pos="4"/>
+	  <lu>
+	    <clip pos="5" part="whole"/>
+	  </lu>  
+	  <b pos="5"/>
+	  <lu>
+	    <clip pos="6" part="whole"/>
+	  </lu>  
+	  <b pos="6"/>
+	  <lu>
+	    <clip pos="7" part="whole"/>
+	  </lu>  
+	  <b pos="7"/>
+	  <lu>
+	    <clip pos="8" part="whole"/>
+	  </lu> 
+	</out>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal>
+		  <clip pos="1" part="pr"/>
+		  <lit v=""/>
+		</equal>
+	      </not>
+	    </test>
+	    <out>
+	      <b pos="8"/>
+	      <lu>
+		<clip pos="9" part="whole"/>
+	      </lu> 
+	    </out> 
+	  </when>
+	</choose>
+      </action>
+</rule>
+
 
   </section-rules>
 </postchunk>
