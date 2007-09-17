@@ -54,7 +54,7 @@ Original design by <a href="http://www.mdibb.net" title="Website of Matt Dibb">M
 <div id="creativecommons">
 <br/>
 This page is subject to a<br/>Creative Commons license<br/>
-<a href="http://creativecommons.org/licenses/by-sa/2.5">
+<a href="http://creativecommons.org/licenses/by-sa/3.0/">
 	<img alt="Creative Commons license" src="images/creativecommons.png"/>
 </a>
 </div>
