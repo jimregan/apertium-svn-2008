@@ -271,6 +271,13 @@
     </sequence>
   </def-mult>
 
+<def-mult name="SPOSTKO">
+    <sequence>
+      <label-item label="SPOST"/>
+      <label-item label="KO"/>
+    </sequence>
+  </def-mult>
+
 <def-mult name="VERBREL">
     <sequence>
       <label-item label="VBSINT"/>
@@ -318,6 +325,14 @@
     <label-sequence>
       <label-item label="ADJIZL"/>
       <label-item label="INF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJIZLA"/>
+      <label-item label="DET"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJIZL"/>
+      <label-item label="DET"/>
     </label-sequence>
     <label-sequence>
       <label-item label="INF"/>
