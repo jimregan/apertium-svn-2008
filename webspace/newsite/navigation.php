@@ -64,7 +64,18 @@
 			}
 		?>
 	</p>
+
+<!--
+	<br/>
+	<div id="rss">
+	<a href="news.xml">
+	<img src="images/rss20.gif" border="0px"/>
+	</a>
+	</div>
+	-->
 	
+
 </div>
+
 
 
