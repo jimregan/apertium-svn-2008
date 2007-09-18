@@ -1,4 +1,4 @@
-<?php include_once("meta.php") ?>
+<?php include_once("common/meta.php") ?>
 <body>
 <?php
 	$id = $HTTP_GET_VARS["id"];
@@ -23,7 +23,7 @@
 				
             <div id="body">
             	<!-- Navigation -->
-            	<?php include_once("navigation.php") ?>
+            	<?php include_once("common/navigation.php") ?>
             	<?php $file = "content/" . $lang . "/" . $id . ".html"; ?>
 
 					<?php
@@ -46,7 +46,7 @@
 					?>
             </div>
             <!-- footer -->
-            <?php include_once("footer.php") ?>
+            <?php include_once("common/footer.php") ?>
         </div>
     
     </body>
