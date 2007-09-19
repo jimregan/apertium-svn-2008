@@ -7495,6 +7495,50 @@ pingui pingui pingui MG
       </action>
  </rule>
 
+
+ <rule comment="REGLA: DET + POST (lehengo astekoan = lehengo asteko(SPGEN) + an (PR)). Se reordena en t2x">
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_det">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<out> 
+	  <chunk name="pr_det" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SPR"/></tag>
+	      <tag><var n="tipusdet"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
+
+
 <rule comment="REGLA: SPOST + KO (Autonomiari _buruzko_ erreferendumaren)">
       <pattern>
 	<pattern-item n="spost"/>
