@@ -126,7 +126,11 @@
       <cat-item tags="prn.pers.*"/>
       <cat-item lemma="hura" tags="det.dem.*"/>
     </def-cat>
-  
+
+   <def-cat n="prn">
+      <cat-item tags="prn.*"/>
+    </def-cat>
+
     <def-cat n="prep">
       <cat-item tags="pr"/>
     </def-cat>
@@ -357,7 +361,9 @@
 
     <def-attr n="tipus_prn">          
       <attr-item tags="pers"/>       
-      <attr-item tags="tn"/>   
+      <attr-item tags="tn"/>         
+      <attr-item tags="itg"/>          
+      <attr-item tags="ind"/>  
     </def-attr> 
 
   </section-def-attrs>
@@ -1432,11 +1438,11 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <or><!--cuando se trata de un nombre que debe llevar número en español-->
 		<equal>
 		  <clip pos="1" side="tl" part="a_nom"/>
-		  <lit v="n"/>
+		  <lit-tag v="n"/>
 		</equal>
 		<equal>
 		  <clip pos="1" side="tl" part="a_nom"/>
-		  <lit v="n.acr"/>
+		  <lit-tag v="n.acr"/>
 		</equal>
 	      </or>
 	    </test>
@@ -2682,6 +2688,45 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
       </action>
     </rule>
 
+ <rule comment="REGLA: PRONOMBRE + POST(gurekin, norekin - con nosotros, con quién) ">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_prn">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pr_prn" case="caseFirstWord">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="2" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
  <rule comment="REGLA: DET + NOM  (zenbait etxe - algunas casas / 
 nahiko jende = bastante jende.....  pensar singular/plural nom!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 pingui pingui pingui MG
@@ -3040,7 +3085,7 @@ pingui pingui pingui MG
       </action>
  </rule>
 
-<rule comment="REGLA: ADJ + NOM + DET + POST (azken urtetako)">
+<rule comment="REGLA: ADJ + NOM + POST (azken urtetako)">
       <pattern>
 	<pattern-item n="adjizl"/>
 	<pattern-item n="nom"/>
@@ -3444,6 +3489,20 @@ pingui pingui pingui MG
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
 	<call-macro n="tipo_det">
 	  <with-param pos="4"/>
 	</call-macro>
@@ -3514,6 +3573,20 @@ pingui pingui pingui MG
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
 	<call-macro n="tipo_det">
 	  <with-param pos="4"/>
 	</call-macro>
@@ -3591,6 +3664,62 @@ pingui pingui pingui MG
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="tipo_det">
 	  <with-param pos="5"/>
 	</call-macro>
@@ -3665,6 +3794,62 @@ pingui pingui pingui MG
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="tipo_det">
 	  <with-param pos="5"/>
 	</call-macro>
@@ -3745,6 +3930,20 @@ pingui pingui pingui MG
 	<call-macro n="nbr_n1">
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
 	<call-macro n="tipo_det">
 	  <with-param pos="5"/>
 	</call-macro>
@@ -3894,6 +4093,62 @@ pingui pingui pingui MG
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="tipo_det">
 	  <with-param pos="6"/>
 	</call-macro>
@@ -4046,6 +4301,62 @@ pingui pingui pingui MG
 	  <with-param pos="3"/>
 	  <with-param pos="4"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="concord_n2">
 	  <with-param pos="6"/>
 	  <with-param pos="7"/>
@@ -4053,6 +4364,20 @@ pingui pingui pingui MG
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
 	<call-macro n="tipo_det">
 	  <with-param pos="7"/>
 	</call-macro>
@@ -4139,13 +4464,83 @@ pingui pingui pingui MG
 	  <with-param pos="3"/>
 	  <with-param pos="4"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="concord_n2">
 	  <with-param pos="6"/>
 	  <with-param pos="7"/>
 	</call-macro>
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
-	</call-macro>
+	</call-macro>	
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
 	<call-macro n="tipo_det">
 	  <with-param pos="7"/>
 	</call-macro>
@@ -4239,10 +4634,122 @@ pingui pingui pingui MG
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="concord_n2">
 	  <with-param pos="4"/>
 	  <with-param pos="5"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="concord_n2">
 	  <with-param pos="7"/>
 	  <with-param pos="8"/>
@@ -4338,10 +4845,122 @@ pingui pingui pingui MG
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="concord_n2">
 	  <with-param pos="4"/>
 	  <with-param pos="5"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="concord_n2">
 	  <with-param pos="7"/>
 	  <with-param pos="8"/>
@@ -5568,6 +6187,62 @@ pingui pingui pingui MG
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="tipo_det">
 	  <with-param pos="5"/>
 	</call-macro>
@@ -5632,6 +6307,62 @@ pingui pingui pingui MG
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>  
 	<call-macro n="tipo_det">
 	  <with-param pos="5"/>
 	</call-macro>
@@ -5871,10 +6602,27 @@ pingui pingui pingui MG
 	  <with-param pos="5"/>
 	  <with-param pos="6"/>
 	</call-macro>
+	<call-macro n="nbr_n1">
+	  <with-param pos="3"/>
+	</call-macro>	
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>	
 	<call-macro n="posesivo">
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
-	</call-macro>		
+	</call-macro>
 	<call-macro n="tipo_det">
 	  <with-param pos="6"/>
 	</call-macro>
@@ -5950,6 +6698,34 @@ pingui pingui pingui MG
 	  <with-param pos="6"/>
 	  <with-param pos="7"/>
 	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>   
 	<call-macro n="posesivo">
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
@@ -7507,11 +8283,14 @@ pingui pingui pingui MG
 	</call-macro>
 	<call-macro n="tipo_det">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="2"/>
 	</call-macro>	
 	<out> 
 	  <chunk name="pr_det" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SPR"/></tag>
+	      <tag><var n="chunk"/></tag>
 	      <tag><var n="tipusdet"/></tag>
 	      <tag><clip pos="1" side="tl" part="gen"/></tag>
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>

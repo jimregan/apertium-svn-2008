@@ -908,6 +908,66 @@
   </action>
 </rule>
 
+<rule comment="gurekin jokatzeko - para jugar con nosotros (por ahora SPR incluye SPGEN, sintagmas en genitivo, revisar si esto provoca algún error">
+  <pattern>
+    <pattern-item n="SPR"/>
+    <pattern-item n="SVsub"/>
+  </pattern>
+  <action>
+    <choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+    <out>
+      <chunk>
+	<clip pos="2" part="whole"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<clip pos="1" part="whole"/>
+      </chunk>
+    </out>
+  </action>
+</rule>
+
 
 <rule comment="OREL + SN (datorren urtea)">
   <pattern>
