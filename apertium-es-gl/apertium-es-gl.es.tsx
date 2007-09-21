@@ -86,6 +86,33 @@
   <def-label name="PRNPRO" closed="true">
     <tags-item tags="prn.pro.*"/>
   </def-label>
+  <def-label name="VBMODINF">
+    <tags-item tags="vbmod.inf"/>
+  </def-label>
+  <def-label name="VBMODGER">
+    <tags-item tags="vbmod.ger"/>
+  </def-label>
+  <def-label name="VBMODPARTPI">
+    <tags-item tags="vbmod.pp.*"/>
+  </def-label>
+  <def-label name="VBMODPFCI">
+    <tags-item tags="vbmod.pri.*"/>
+    <tags-item tags="vbmod.fti.*"/>
+    <tags-item tags="vbmod.cni.*"/>
+  </def-label>
+  <def-label name="VBMODIPI">
+    <tags-item tags="vbmod.pii.*"/>
+    <tags-item tags="vbmod.ifi.*"/>
+  </def-label>
+  <def-label name="VBMODSUBJ">
+    <tags-item tags="vbmod.prs.*"/>
+    <tags-item tags="vbmod.pis.*"/>
+    <tags-item tags="vbmod.fts.*"/>
+  </def-label>
+  <def-label name="VBMODIMP">
+    <tags-item tags="vbmod.imp.*"/>
+  </def-label>
+
   <def-label name="VLEXINF">
     <tags-item tags="vblex.inf"/>
   </def-label>
@@ -166,6 +193,7 @@
   </def-label>
   <def-label name="REL" closed="true">
     <tags-item tags="rel.an.*"/>
+    <tags-item tags="rel.aa.*"/>
     <tags-item tags="rel.nn.*"/>
   </def-label>
   <def-label name="RELADV" closed="true">
@@ -263,6 +291,40 @@
       <label-item label="PRNENC"/>
     </sequence>
   </def-mult>
+  <def-mult name="INFMODPRNENC" closed="true">
+    <sequence>
+      <label-item label="VBMODINF"/>
+      <label-item label="PRNENC"/>
+    </sequence>
+    <sequence>
+      <label-item label="VBMODINF"/>
+      <label-item label="PRNENC"/>
+      <label-item label="PRNENC"/>
+    </sequence>
+  </def-mult>
+  <def-mult name="GERMODPRNENC" closed="true">
+    <sequence>
+      <label-item label="VBMODGER"/>
+      <label-item label="PRNENC"/>
+    </sequence>
+    <sequence>
+      <label-item label="VBMODINF"/>
+      <label-item label="PRNENC"/>
+      <label-item label="PRNENC"/>
+    </sequence>
+  </def-mult>
+  <def-mult name="IMPMODPRNENC" closed="true">
+    <sequence>
+      <label-item label="VBMODIMP"/>
+      <label-item label="PRNENC"/>
+    </sequence>
+    <sequence>
+      <label-item label="VBMODINF"/>
+      <label-item label="PRNENC"/>
+      <label-item label="PRNENC"/>
+    </sequence>
+  </def-mult>
+
   <def-mult name="INFHABERPRNENC" closed="true">
     <sequence>
       <label-item label="VHABERINF"/>
