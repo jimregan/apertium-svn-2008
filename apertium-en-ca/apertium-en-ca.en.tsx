@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <tagger name="catalan">
 <tagset>
 
@@ -130,7 +130,7 @@
   </def-label>
   <def-label name="VHAVEPP" closed="true">
     <tags-item tags="vbhaver.pp"/>
-  </def-label><!--Aquest té sentit? l'auxiliar no té forma 'pp' no? -->
+  </def-label><!--Aquest tÃ© sentit? l'auxiliar no tÃ© forma 'pp' no? -->
 
 
   <def-label name="PAST">
@@ -190,7 +190,7 @@
   </def-label>
 
 
- <def-label name="GER"><!--Per ara no distingim entre 'ger', 'pprs' i 'subs' pq cal estudiar-ho amb atenció i fer restriccions. -->
+ <def-label name="GER"><!--Per ara no distingim entre 'ger', 'pprs' i 'subs' pq cal estudiar-ho amb atenciÃ³ i fer restriccions. -->
     <tags-item tags="vblex.ger"/>
     <tags-item tags="vblex.sep.ger"/>
     <tags-item tags="vblex.pprs"/>
@@ -265,7 +265,7 @@
       <label-item label="VHAVEPP"/>
       <label-item label="INF"/>
     </label-sequence>
-  <!--   <label-sequence> Ho trec perquè ja hi ha un enforce-after que fa el mateix
+  <!--   <label-sequence> Ho trec perquÃ¨ ja hi ha un enforce-after que fa el mateix
       <label-item label="VHAVEPAST"/>
       <label-item label="PAST"/>
     </label-sequence>
@@ -375,7 +375,7 @@
       <label-item label="RELADV"/>
       <label-item label="PRES"/>      
     </label-sequence>
-    <label-sequence><!--'Visitors who wanted to come', pq esculli el rel (no obstant, es farà malament: ask visitors who is the first) -->
+    <label-sequence><!--'Visitors who wanted to come', pq esculli el rel (no obstant, es farÃ  malament: ask visitors who is the first) -->
       <label-item label="NOMSG"/>
       <label-item label="INTNOM"/>      
     </label-sequence>
@@ -634,7 +634,7 @@
       <label-item label="DET"/>
       <label-item label="VAUX"/>
     </label-sequence>
-    <label-sequence><!--MG: soluciona "popular will." però no: yes, they will. Pensar-hi millor. -->
+    <label-sequence><!--MG: soluciona "popular will." perÃ² no: yes, they will. Pensar-hi millor. -->
       <label-item label="VAUX"/>
       <label-item label="SENT"/>
     </label-sequence>
@@ -650,7 +650,7 @@
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
 	<label-item label="NOT"/>
-	<label-item label="PRNSUBJ"/><!--per a interrogatives i altres inversions. Llavors caldria afegir més categories aquí o fer canvis en el transfer (had the man finished vs. they had the book) -->
+	<label-item label="PRNSUBJ"/><!--per a interrogatives i altres inversions. Llavors caldria afegir mÃ©s categories aquÃ­ o fer canvis en el transfer (had the man finished vs. they had the book) -->
       </label-set>
     </enforce-after>
     <enforce-after label="VHAVEINF">
@@ -666,7 +666,7 @@
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
 	<label-item label="NOT"/>
-	<label-item label="PRNSUBJ"/><!--ídem més amunt -->
+	<label-item label="PRNSUBJ"/><!--Ã­dem mÃ©s amunt -->
       </label-set>
     </enforce-after>
      <enforce-after label="VHAVE">

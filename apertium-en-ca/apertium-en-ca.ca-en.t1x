@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
 <transfer default="chunk">
   <section-def-cats>
     <def-cat n="nom">
@@ -14,7 +14,7 @@
       <cat-item tags="adj.*"/>
       <cat-item tags="adj.pos.*"/>
     </def-cat>
-    <def-cat n="det"><!--Determinants i predeterminants, van anteposats en català -->
+    <def-cat n="det"><!--Determinants i predeterminants, van anteposats en catalÃ  -->
       <cat-item tags="det.dem.*"/>
       <cat-item tags="det.ind.*"/>
       <cat-item tags="det.def.*"/>
@@ -39,7 +39,7 @@
       <cat-item lemma="prpers" tags="prn.*"/>
     </def-cat>
 
-    <def-cat n="tn_itg_pos"><!--Aquí no hi entren els pronoms personals, caldrà fer-ne un xunc a part. -->
+    <def-cat n="tn_itg_pos"><!--AquÃ­ no hi entren els pronoms personals, caldrÃ  fer-ne un xunc a part. -->
       <cat-item tags="prn.tn.m.*"/>
       <cat-item tags="prn.tn.f.*"/>
       <cat-item tags="prn.tn.mf.*"/>
@@ -144,7 +144,7 @@
       <cat-item tags="vblex.pron.pp.*"/>
       <cat-item tags="vbser.pp.*"/>
       <cat-item tags="vbmod.pp.*"/>
-      <cat-item tags="vbhaver.pp.*"/><!--ATENCIÓ: CANVI -->
+      <cat-item tags="vbhaver.pp.*"/><!--ATENCIÃ“: CANVI -->
     </def-cat>
 
     <def-cat n="inf">
@@ -188,7 +188,7 @@
     <def-cat n="cnjcoo">
       <cat-item lemma="i" tags="cnjcoo"/>
       <cat-item lemma="o" tags="cnjcoo"/>
-      <cat-item lemma="però" tags="cnjcoo"/>
+      <cat-item lemma="perÃ²" tags="cnjcoo"/>
     </def-cat>
 
      <def-cat n="cnj">
@@ -370,7 +370,7 @@
   <section-def-macros>
     
 
-    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc contÃ© o no format. Cal posar aquesta funciÃ³ en les regles en quÃ¨ desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si contÃ© format cal conservar-la, si no en contÃ© cal eliminar-la perquÃ¨ no apareguin dos espais seguits. -->
       <choose>
 	<when>
 	  <test>
@@ -499,7 +499,7 @@
 		    <var n="nombre"/>
 		    <lit-tag v="sg_slpl"/>
 		  </equal>
-		  <and><!--perquè no doni error en casos (errors original) com 'uns arbre' -->
+		  <and><!--perquÃ¨ no doni error en casos (errors original) com 'uns arbre' -->
 		    <equal>
 		      <clip pos="2" side="sl" part="nbr"/>
 		      <lit-tag v="sg"/>
@@ -638,7 +638,7 @@
 		    <var n="nombre"/>
 		    <lit-tag v="pl_slsg"/>
 		  </equal>
-		  <and><!--perquè no doni error en casos com 'un Cases' -->
+		  <and><!--perquÃ¨ no doni error en casos com 'un Cases' -->
 		    <equal>
 		      <clip pos="2" side="sl" part="nbr"/>
 		      <lit-tag v="pl"/>
@@ -861,7 +861,7 @@
 
     <!--*************************************** REGLES DE SN ******************************************** -->
 
-    <rule comment="REGLA: NOM (per a col·locar la cua en les multiparaules amb g">
+    <rule comment="REGLA: NOM (per a colÂ·locar la cua en les multiparaules amb g">
       <pattern>
 	<pattern-item n="nom"/>
       </pattern>
@@ -894,7 +894,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: ANTROPÒNIM">
+<rule comment="REGLA: ANTROPÃ’NIM">
       <pattern>
 	<pattern-item n="ant"/>
       </pattern>
@@ -926,7 +926,7 @@
     </rule>
 
 
-<rule comment="REGLA: DET ANTROPÒNIM (La Maria - Maria)">
+<rule comment="REGLA: DET ANTROPÃ’NIM (La Maria - Maria)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="ant"/>
@@ -1337,7 +1337,7 @@
 
 
 
-    <rule comment="REGLA: NOM ADJ conj ADJ NOM (aspecte fràgil i tímida aparença -> fragile look and shy appearance. Regla creada perquè no entrin frases que no toquen en la regla següent">
+    <rule comment="REGLA: NOM ADJ conj ADJ NOM (aspecte frÃ gil i tÃ­mida aparenÃ§a -> fragile look and shy appearance. Regla creada perquÃ¨ no entrin frases que no toquen en la regla segÃ¼ent">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="adj"/>
@@ -1461,14 +1461,14 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: NOM ADJ conj ADJ (aspecte fràgil i tímid -> fragile and shy look">
+    <rule comment="REGLA: NOM ADJ conj ADJ (aspecte frÃ gil i tÃ­mid -> fragile and shy look">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="adj"/>
 	<pattern-item n="cnjcoo"/>
 	<pattern-item n="adj"/>
       </pattern>
-      <action><!--Pot haver-hi errors per lo de mf perquè pot ser que un sigui m i l'altra f perquè el tagger s'hagi equivocat (noia bonica i interessant). No donarà error en frases com "aspecte fràgil i tímida aparença" perquè entraran per la regla anterior. -->
+      <action><!--Pot haver-hi errors per lo de mf perquÃ¨ pot ser que un sigui m i l'altra f perquÃ¨ el tagger s'hagi equivocat (noia bonica i interessant). No donarÃ  error en frases com "aspecte frÃ gil i tÃ­mida aparenÃ§a" perquÃ¨ entraran per la regla anterior. -->
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>	
@@ -1566,7 +1566,7 @@
     </rule>
 
 
-    <rule comment="REGLA: DET NOM ADJ conj ADJ NOM (un aspecte fràgil i tímida aparença -> a fragile look and shy appearance. Regla creada perquè no entrin frases que no toquen en la regla següent)"> 
+    <rule comment="REGLA: DET NOM ADJ conj ADJ NOM (un aspecte frÃ gil i tÃ­mida aparenÃ§a -> a fragile look and shy appearance. Regla creada perquÃ¨ no entrin frases que no toquen en la regla segÃ¼ent)"> 
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -1708,7 +1708,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: DET NOM ADJ conj ADJ (un aspecte fràgil i tímid -> a fragile and shy look">
+    <rule comment="REGLA: DET NOM ADJ conj ADJ (un aspecte frÃ gil i tÃ­mid -> a fragile and shy look">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -1858,7 +1858,7 @@
     </rule> 
 
 
-    <rule comment="REGLA: ADV ADJECTIU (per a fer comparatius i superlatius: 'més llarg - longer')">
+    <rule comment="REGLA: ADV ADJECTIU (per a fer comparatius i superlatius: 'mÃ©s llarg - longer')">
       <pattern>
 	<pattern-item n="adv_preadv"/>
 	<pattern-item n="adj"/>
@@ -1873,7 +1873,7 @@
 	      <and>
 		<equal caseless="yes">
 		  <clip pos="1" side="sl" part="lem"/> 
-		  <lit v="més"/>
+		  <lit v="mÃ©s"/>
 		</equal>
 		<equal>
 		  <clip pos="2" side="tl" part="a_adj"/> 
@@ -1927,7 +1927,7 @@
     </rule> 
 
 
-    <rule comment="REGLA: DETERMINANT (perquè no doni error si va davant de desconegudes i no es pot assignar nombre)">
+    <rule comment="REGLA: DETERMINANT (perquÃ¨ no doni error si va davant de desconegudes i no es pot assignar nombre)">
       <pattern>
 	<pattern-item n="det"/>
       </pattern>
@@ -1969,7 +1969,7 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
-	  <when><!--Si és en sg, envia el pronom subjecte 'it'. En plural caldria fer transformacions al t2x (calen 3 persones - 3 persons are necessary) -->
+	  <when><!--Si Ã©s en sg, envia el pronom subjecte 'it'. En plural caldria fer transformacions al t2x (calen 3 persones - 3 persons are necessary) -->
 	    <test>
 	      <equal>
 		<clip pos="1" side="sl" part="nbr"/>
@@ -2086,7 +2086,7 @@
 	    </out>
 	  </when>
 	  
-	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 	    <choose>
 	      <when>
 		<test> 
@@ -2259,7 +2259,7 @@
 	</call-macro>
 	<choose>
 	  <when>
-	    <test><!--Si és verb 'ser' p1 o p3 en present o passat (o subjuntiu) té una conjugació pròpia en anglès. Inclou 'ser' i 'estar', tots dos són 'vbser' en anglès (to be) -->
+	    <test><!--Si Ã©s verb 'ser' p1 o p3 en present o passat (o subjuntiu) tÃ© una conjugaciÃ³ prÃ²pia en anglÃ¨s. Inclou 'ser' i 'estar', tots dos sÃ³n 'vbser' en anglÃ¨s (to be) -->
 	      <and>
 		<equal>
 		  <clip pos="1" side="tl" part="a_verb"/>
@@ -2373,7 +2373,7 @@
 	    </out>
 	  </when>
 	  <when> 
-	    <test><!--La resta de verbs tenen també prs i nbr per a p3 sg, excepte auxiliars (can). -->
+	    <test><!--La resta de verbs tenen tambÃ© prs i nbr per a p3 sg, excepte auxiliars (can). -->
 	      <and>
 		<equal>
 		  <clip pos="1" side="sl" part="temps"/>
@@ -2416,7 +2416,7 @@
 	      </chunk>
 	    </out>
 	  </when>
-	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 	    <choose>
 	      <when>
 		<test> 
@@ -2599,7 +2599,7 @@
 		  <or>
 		    <equal>
 		      <clip pos="1" side="sl" part="temps"/>
-		      <lit-tag v="ifi"/><!--digué -->
+		      <lit-tag v="ifi"/><!--diguÃ© -->
 		    </equal>
 		    <equal>
 		      <clip pos="1" side="sl" part="temps"/>
@@ -2607,7 +2607,7 @@
 		    </equal>
 		    <equal>
 		      <clip pos="1" side="sl" part="temps"/>
-		      <lit-tag v="pis"/><!--digués -->
+		      <lit-tag v="pis"/><!--diguÃ©s -->
 		    </equal>
 		  </or>
 		</test>		   
@@ -2660,7 +2660,7 @@
 	</let>
 	<choose>
 	  <when>
-	    <test><!--Si és verb 'ser' p1 o p3  té una conjugació pròpia en anglès -->
+	    <test><!--Si Ã©s verb 'ser' p1 o p3  tÃ© una conjugaciÃ³ prÃ²pia en anglÃ¨s -->
 	      <and>
 		<equal>
 		  <clip pos="2" side="tl" part="a_verb"/>
@@ -2749,7 +2749,7 @@
 	</let>
 	<choose>      
 	  <when>
-	    <!-- si el verb és separable i no és pronominal, posa el clític entre el verb i la cua (vaig treure'l -> took it out)-->
+	    <!-- si el verb Ã©s separable i no Ã©s pronominal, posa el clÃ­tic entre el verb i la cua (vaig treure'l -> took it out)-->
 	    <test>
 	      <and>
 		<equal>
@@ -2799,10 +2799,10 @@
 	      <with-param pos="2"/>
 	    </call-macro>
 	  </when>
-	  <otherwise> <!--si no és un verb separable...-->
+	  <otherwise> <!--si no Ã©s un verb separable...-->
 	    <choose>
 	      <when>
-		<test><!--mirem si és el verb "ser" -->
+		<test><!--mirem si Ã©s el verb "ser" -->
 		  <and>
 		    <equal>
 		      <clip pos="2" side="tl" part="a_verb"/>
@@ -2844,7 +2844,7 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise> <!-- si no és el verb ser, l'enviem sense pers ni nbr-->
+	      <otherwise> <!-- si no Ã©s el verb ser, l'enviem sense pers ni nbr-->
 		<out>
 		  <chunk name="verbcj" case="caseFirstWord">
 		    <tags>
@@ -2868,7 +2868,7 @@
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
 	    </call-macro>  
-	    <choose><!--I ara que ja hem imprès el verb, mirem els proclítics -->
+	    <choose><!--I ara que ja hem imprÃ¨s el verb, mirem els proclÃ­tics -->
 	      <when>
 		<test>
 		  <and>
@@ -2887,12 +2887,12 @@
 		      </equal>
 		      <equal>
 			<clip pos="3" side="sl" part="lem"/>
-			<lit v="es"/><!--és 'sp' -->
+			<lit v="es"/><!--Ã©s 'sp' -->
 		      </equal>
 		    </or>
 		  </and>
 		</test>	
-		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+		<call-macro n="f_bcond"><!--imprimeix el blanc si tÃ© info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
 		</call-macro>
 	      </when>
@@ -2938,7 +2938,7 @@
 	  <clip pos="3" side="tl" part="temps"/>		     
 	  <lit-tag v="past"/>
 	</let>
-	<choose>    <!--Mira si és 'haver-hi' (hi vaig anar) -->
+	<choose>    <!--Mira si Ã©s 'haver-hi' (hi vaig anar) -->
 	  <when>
 	    <test>
 	      <and>
@@ -2994,7 +2994,7 @@
 	  </when>
 
 	  <when>
-	    <!-- si el verb és separable i no és pronominal, posa el clític entre el verb i la cua (vaig treure'l -> took it out)-->
+	    <!-- si el verb Ã©s separable i no Ã©s pronominal, posa el clÃ­tic entre el verb i la cua (vaig treure'l -> took it out)-->
 	    <test>
 	      <and>
 		<equal>
@@ -3044,10 +3044,10 @@
 	      <with-param pos="2"/>
 	    </call-macro>
 	  </when>
-	  <otherwise> <!--si no és un verb separable...-->
+	  <otherwise> <!--si no Ã©s un verb separable...-->
 	    <choose>
 	      <when>
-		<test><!--mirem si és el verb "ser" -->
+		<test><!--mirem si Ã©s el verb "ser" -->
 		  <and>
 		    <equal>
 		      <clip pos="3" side="tl" part="a_verb"/>
@@ -3089,7 +3089,7 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise> <!-- si no és el verb ser, l'enviem sense pers ni nbr-->
+	      <otherwise> <!-- si no Ã©s el verb ser, l'enviem sense pers ni nbr-->
 		<out>
 		  <chunk name="verbcj" case="caseFirstWord">
 		    <tags>
@@ -3113,7 +3113,7 @@
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
 	    </call-macro>  
-	    <choose><!--I ara que ja hem imprès el verb, mirem els proclítics -->
+	    <choose><!--I ara que ja hem imprÃ¨s el verb, mirem els proclÃ­tics -->
 	      <when>
 		<test>
 		  <and>
@@ -3132,12 +3132,12 @@
 		      </equal>
 		      <equal>
 			<clip pos="1" side="sl" part="lem"/>
-			<lit v="es"/><!--és 'sp' -->
+			<lit v="es"/><!--Ã©s 'sp' -->
 		      </equal>
 		    </or>
 		  </and>
 		</test>	
-		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+		<call-macro n="f_bcond"><!--imprimeix el blanc si tÃ© info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
 		</call-macro>
 	      </when>
@@ -3242,7 +3242,7 @@
 	      </chunk>
 	    </out>
 	  </when>
-	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 	    <choose>
 	      <when>
 		<test> 
@@ -3377,7 +3377,7 @@
 		  <or>
 		    <equal>
 		      <clip pos="1" side="sl" part="temps"/>
-		      <lit-tag v="ifi"/><!--digué -->
+		      <lit-tag v="ifi"/><!--diguÃ© -->
 		    </equal>
 		    <equal>
 		      <clip pos="1" side="sl" part="temps"/>
@@ -3385,7 +3385,7 @@
 		    </equal>
 		    <equal>
 		      <clip pos="1" side="sl" part="temps"/>
-		      <lit-tag v="pis"/><!--digués -->
+		      <lit-tag v="pis"/><!--diguÃ©s -->
 		    </equal>
 		  </or>
 		</test>		   
@@ -3466,7 +3466,7 @@
 	  <with-param pos="1"/>
 	</call-macro>    
 	<choose>
-	  <when><!--Mira si és 'haver-hi' -->
+	  <when><!--Mira si Ã©s 'haver-hi' -->
 	    <test>
 	      <and>
 		<equal caseless="yes">
@@ -3665,7 +3665,7 @@
 	      </otherwise>
 	    </choose>
 	  </when>
-	  <otherwise><!--Si no és 'haver-hi' -->
+	  <otherwise><!--Si no Ã©s 'haver-hi' -->
 	    <choose>
 
 	  <when>
@@ -3685,10 +3685,10 @@
 	    </let>
 	  </when>
 	</choose>
-	<!-- aquí s'ha de mirar la separabilitat-->
+	<!-- aquÃ­ s'ha de mirar la separabilitat-->
 	<choose>
 	  <when>
-	    <!-- si el verb és separable i no és pronominal, posa el clític entre el verb i la cua (l'he tret -> have taken it out)-->
+	    <!-- si el verb Ã©s separable i no Ã©s pronominal, posa el clÃ­tic entre el verb i la cua (l'he tret -> have taken it out)-->
 	    <test>
 	      <and>
 		<equal>
@@ -3758,7 +3758,7 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 		<choose>
 		  <when>
 		    <test> 
@@ -3895,7 +3895,7 @@
 				  <or>
 				    <equal>
 				      <clip pos="2" side="sl" part="temps"/>
-				      <lit-tag v="ifi"/><!--digué -->
+				      <lit-tag v="ifi"/><!--diguÃ© -->
 				    </equal>
 				    <equal>
 				      <clip pos="2" side="sl" part="temps"/>
@@ -3903,7 +3903,7 @@
 				    </equal>
 				    <equal>
 				      <clip pos="2" side="sl" part="temps"/>
-				      <lit-tag v="pis"/><!--digués -->
+				      <lit-tag v="pis"/><!--diguÃ©s -->
 				    </equal>
 				  </or>
 				</test>		   
@@ -3954,9 +3954,9 @@
 		  </otherwise>
 		</choose>
 	      </otherwise>
-	    </choose>	 <!-- ... i després enviem el prn (si cal)-->
+	    </choose>	 <!-- ... i desprÃ©s enviem el prn (si cal)-->
 	  </when>
-	  <otherwise> <!-- si no és separable: -->
+	  <otherwise> <!-- si no Ã©s separable: -->
 	    <choose>	<!-- primer arreglem i enviem el verb -->
 	      <when> 
 		<test><!--tenen prs i nbr per a p3 sg. -->
@@ -4002,7 +4002,7 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 		<choose>
 		  <when>
 		    <test> 
@@ -4119,7 +4119,7 @@
 				  <or>
 				    <equal>
 				      <clip pos="2" side="sl" part="temps"/>
-				      <lit-tag v="ifi"/><!--digué -->
+				      <lit-tag v="ifi"/><!--diguÃ© -->
 				    </equal>
 				    <equal>
 				      <clip pos="2" side="sl" part="temps"/>
@@ -4127,7 +4127,7 @@
 				    </equal>
 				    <equal>
 				      <clip pos="2" side="sl" part="temps"/>
-				      <lit-tag v="pis"/><!--digués -->
+				      <lit-tag v="pis"/><!--diguÃ©s -->
 				    </equal>
 				  </or>
 				</test>		   
@@ -4168,7 +4168,7 @@
 		  </otherwise>
 		</choose>
 	      </otherwise>
-	    </choose>	 <!-- ... i després enviem el prn (si cal)-->
+	    </choose>	 <!-- ... i desprÃ©s enviem el prn (si cal)-->
 	    <choose>
 	      <when>
 		<test>
@@ -4188,12 +4188,12 @@
 		      </equal>
 		      <equal>
 			<clip pos="1" side="sl" part="lem"/>
-			<lit v="es"/><!--és 'sp' -->
+			<lit v="es"/><!--Ã©s 'sp' -->
 		      </equal>
 		    </or>
 		  </and>
 		</test>	
-		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+		<call-macro n="f_bcond"><!--imprimeix el blanc si tÃ© info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
 		</call-macro>
 	      </when>
@@ -4271,7 +4271,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: PROCLÍTIC VERB conjugat">
+    <rule comment="REGLA: PROCLÃTIC VERB conjugat">
       <pattern>
 	<pattern-item n="pro"/>
 	<pattern-item n="verbcj"/>
@@ -4281,7 +4281,7 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
-	  <when><!--Mira si és 'haver-hi' -->
+	  <when><!--Mira si Ã©s 'haver-hi' -->
 	    <test>
 	      <and>
 		<equal caseless="yes">
@@ -4469,10 +4469,10 @@
 	    </choose>
 	  </when>
 
-	  <otherwise><!--Si no és 'haver-hi-->
+	  <otherwise><!--Si no Ã©s 'haver-hi-->
 	    <choose>
 	      <when>
-		<test><!--Si és verb 'ser' p1 o p3 en present o passat (o subjuntiu) té una conjugació pròpia en anglès -->
+		<test><!--Si Ã©s verb 'ser' p1 o p3 en present o passat (o subjuntiu) tÃ© una conjugaciÃ³ prÃ²pia en anglÃ¨s -->
 		  <and>
 		    <equal>
 		      <clip pos="2" side="tl" part="a_verb"/>
@@ -4586,7 +4586,7 @@
 		</out>
 	      </when>
 	      <when> 
-		<test><!--La resta de verbs tenen també prs i nbr per a p3 sg, excepte auxiliars (can). -->
+		<test><!--La resta de verbs tenen tambÃ© prs i nbr per a p3 sg, excepte auxiliars (can). -->
 		  <and>
 		    <equal>
 		      <clip pos="2" side="sl" part="temps"/>
@@ -4629,7 +4629,7 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 		<choose>
 		  <when>
 		    <test> 
@@ -4812,7 +4812,7 @@
 		      <or>
 			<equal>
 			  <clip pos="2" side="sl" part="temps"/>
-			  <lit-tag v="ifi"/><!--digué -->
+			  <lit-tag v="ifi"/><!--diguÃ© -->
 			</equal>
 			<equal>
 			  <clip pos="2" side="sl" part="temps"/>
@@ -4820,7 +4820,7 @@
 			</equal>
 			<equal>
 			  <clip pos="2" side="sl" part="temps"/>
-			  <lit-tag v="pis"/><!--digués -->
+			  <lit-tag v="pis"/><!--diguÃ©s -->
 			</equal>
 		      </or>
 		    </test>		   
@@ -4850,7 +4850,7 @@
 		</choose>
 	      </otherwise>
 	    </choose>
-	    <choose><!--I ara que ja hem imprès el verb, mirem els proclítics -->
+	    <choose><!--I ara que ja hem imprÃ¨s el verb, mirem els proclÃ­tics -->
 	      <when>
 		<test>
 		  <and>
@@ -4869,12 +4869,12 @@
 		      </equal>
 		      <equal>
 			<clip pos="1" side="sl" part="lem"/>
-			<lit v="es"/><!--és 'sp' -->
+			<lit v="es"/><!--Ã©s 'sp' -->
 		      </equal>
 		    </or>
 		  </and>
 		</test>	
-		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+		<call-macro n="f_bcond"><!--imprimeix el blanc si tÃ© info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="1"/>
 		</call-macro>
 	      </when>
@@ -5016,7 +5016,7 @@
 		  </equal>
 		  <equal>
 		    <clip pos="2" side="sl" part="lem"/>
-		    <lit v="es"/><!--és 'sp' -->
+		    <lit v="es"/><!--Ã©s 'sp' -->
 		  </equal>
 		</or>
 	      </and>
@@ -5309,7 +5309,7 @@
 		  </equal>
 		  <equal>
 		    <clip pos="2" side="sl" part="lem"/>
-		    <lit v="es"/><!--és 'sp' -->
+		    <lit v="es"/><!--Ã©s 'sp' -->
 		  </equal>
 		</or>
 	      </and>
@@ -5498,9 +5498,9 @@
 
 
 
-    <rule comment="VERBMOD + ENCL + INF (poder-ho fer - be able to do it)(no he fet res per a pronominals, difícil fer la concordança de persona en frases que no són de 3a persona ('es'): per poder-te enamorar...">
+    <rule comment="VERBMOD + ENCL + INF (poder-ho fer - be able to do it)(no he fet res per a pronominals, difÃ­cil fer la concordanÃ§a de persona en frases que no sÃ³n de 3a persona ('es'): per poder-te enamorar...">
       <pattern>
-	<pattern-item n="verbm"/> <!-- aquí tb separaria entre inf/ger i imperatiu, per poder fer enllaços coherents en 'temps' i poder deixar temps 'sl' en imperatiu i 'tl' en inf i ger.-->
+	<pattern-item n="verbm"/> <!-- aquÃ­ tb separaria entre inf/ger i imperatiu, per poder fer enllaÃ§os coherents en 'temps' i poder deixar temps 'sl' en imperatiu i 'tl' en inf i ger.-->
 	<pattern-item n="enc"/> 
 	<pattern-item n="inf"/>
       </pattern>
@@ -5873,7 +5873,7 @@
     </rule>
 
 
-    <rule comment="VERBMOD + ENCL (per quan va davant desconegudes, perquè almenys no peti: poder-ho xxx - be able to it xxx)">
+    <rule comment="VERBMOD + ENCL (per quan va davant desconegudes, perquÃ¨ almenys no peti: poder-ho xxx - be able to it xxx)">
       <pattern>
 	<pattern-item n="verbm"/> 
 	<pattern-item n="enc"/> 
@@ -5945,7 +5945,7 @@
     </rule>
 
 
-    <rule><!--VERBMOD + ENCL + ENCL (per quan va davant desconegudes, perquè almenys no peti: poder-los-ho xxx - be able to them it xxx)-->
+    <rule><!--VERBMOD + ENCL + ENCL (per quan va davant desconegudes, perquÃ¨ almenys no peti: poder-los-ho xxx - be able to them it xxx)-->
       <pattern>
 	<pattern-item n="verbm"/> 
 	<pattern-item n="enc"/> 
@@ -6024,7 +6024,7 @@
 
 
 
-    <rule comment="REGLA: PARTICIPI (perquè no enviï gènere ni nombre quan va sol (per tal que no doni error). Caldrà posar-lo tb en les regles d'adjectiu">
+    <rule comment="REGLA: PARTICIPI (perquÃ¨ no enviÃ¯ gÃ¨nere ni nombre quan va sol (per tal que no doni error). CaldrÃ  posar-lo tb en les regles d'adjectiu">
       <pattern>
 	<pattern-item n="pp"/> 
       </pattern>
@@ -6072,7 +6072,7 @@
     </rule>
 
 
-    <rule comment="REGLA: VERB no conjugat (perquè posi bé la cua en multiparaules)">
+    <rule comment="REGLA: VERB no conjugat (perquÃ¨ posi bÃ© la cua en multiparaules)">
       <pattern>
 	<pattern-item n="inf"/> 
       </pattern>
@@ -6103,7 +6103,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: VERB no conjugat (perquè posi bé la cua en multiparaules)">
+    <rule comment="REGLA: VERB no conjugat (perquÃ¨ posi bÃ© la cua en multiparaules)">
       <pattern>
 	<pattern-item n="ger"/> 
       </pattern>
@@ -6156,7 +6156,7 @@
 
 
 <!--
-    NO FUNCIONA LA COLOCACIÓ DEL 'NO' EN T3X PER ARA
+    NO FUNCIONA LA COLOCACIÃ“ DEL 'NO' EN T3X PER ARA
     <rule comment="REGLA: ADV CALDRE (no calia - it was not necessary)">
       <pattern>
 	<pattern-item n="adv"/>
@@ -6168,7 +6168,7 @@
 	</call-macro>
 	<choose>
 	  <when>
-	    <test><!-*-hauria de fer també una llista d'adverbis que van entre aux i verb (It is always necessary) -*->
+	    <test><!-*-hauria de fer tambÃ© una llista d'adverbis que van entre aux i verb (It is always necessary) -*->
 	      <equal caseless="yes">
 		<clip pos="1" side="sl" part="lem"/>
 		<lit v="no"/>
@@ -6202,7 +6202,7 @@
 	</choose>
 
 	<choose>
-	  <when><!-*-Si és en sg, envia el pronom subjecte 'it'. En plural caldria fer transformacions al t2x (calen 3 persones - 3 persons are necessary) -*->
+	  <when><!-*-Si Ã©s en sg, envia el pronom subjecte 'it'. En plural caldria fer transformacions al t2x (calen 3 persones - 3 persons are necessary) -*->
 	    <test>
 	      <equal>
 		<clip pos="2" side="sl" part="nbr"/>
@@ -6321,7 +6321,7 @@
 	    </out>
 	  </when>
 	  
-	  <otherwise><!-*-la resta de formes verbals no tenen pers i nbr en anglès -*->
+	  <otherwise><!-*-la resta de formes verbals no tenen pers i nbr en anglÃ¨s -*->
 	    <choose>
 	      <when>
 		<test> 
@@ -6499,7 +6499,7 @@
 	</call-macro>
 	<choose>
 	  <when>
-	    <test><!--hauria de fer també una llista d'adverbis que van entre aux i verb (I've always liked it) -->
+	    <test><!--hauria de fer tambÃ© una llista d'adverbis que van entre aux i verb (I've always liked it) -->
 	      <equal caseless="yes">
 		<clip pos="1" side="sl" part="lem"/>
 		<lit v="no"/>
@@ -6533,7 +6533,7 @@
 	</choose>
 	<choose>
 	  <when>
-	    <test><!--Si és verb 'ser' p1 o p3 en present o passat (o subjuntiu) té una conjugació pròpia en anglès -->
+	    <test><!--Si Ã©s verb 'ser' p1 o p3 en present o passat (o subjuntiu) tÃ© una conjugaciÃ³ prÃ²pia en anglÃ¨s -->
 	      <and>
 		<equal>
 		  <clip pos="2" side="tl" part="a_verb"/>
@@ -6647,7 +6647,7 @@
 	    </out>
 	  </when>
 	  <when> 
-	    <test><!--La resta de verbs tenen també prs i nbr per a p3 sg, excepte auxiliars (can). -->
+	    <test><!--La resta de verbs tenen tambÃ© prs i nbr per a p3 sg, excepte auxiliars (can). -->
 	      <and>
 		<equal>
 		  <clip pos="2" side="sl" part="temps"/>
@@ -6690,7 +6690,7 @@
 	      </chunk>
 	    </out>
 	  </when>
-	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 	    <choose>
 	      <when>
 		<test> 
@@ -6873,7 +6873,7 @@
 		  <or>
 		    <equal>
 		      <clip pos="2" side="sl" part="temps"/>
-		      <lit-tag v="ifi"/><!--digué -->
+		      <lit-tag v="ifi"/><!--diguÃ© -->
 		    </equal>
 		    <equal>
 		      <clip pos="2" side="sl" part="temps"/>
@@ -6881,7 +6881,7 @@
 		    </equal>
 		    <equal>
 		      <clip pos="2" side="sl" part="temps"/>
-		      <lit-tag v="pis"/><!--digués -->
+		      <lit-tag v="pis"/><!--diguÃ©s -->
 		    </equal>
 		  </or>
 		</test>		   
@@ -6969,7 +6969,7 @@
 	</let>
 	<choose>
 	  <when>
-	    <test><!--Si és verb 'ser' p1 o p3  té una conjugació pròpia en anglès -->
+	    <test><!--Si Ã©s verb 'ser' p1 o p3  tÃ© una conjugaciÃ³ prÃ²pia en anglÃ¨s -->
 	      <and>
 		<equal>
 		  <clip pos="3" side="tl" part="a_verb"/>
@@ -7092,7 +7092,7 @@
 	  <clip pos="4" side="tl" part="temps"/>		     
 	  <lit-tag v="past"/>
 	</let>
-	<choose>    <!--Mira si és 'haver-hi' (hi vaig anar) -->
+	<choose>    <!--Mira si Ã©s 'haver-hi' (hi vaig anar) -->
 	  <when>
 	    <test>
 	      <and>
@@ -7148,7 +7148,7 @@
 	  </when>
 
 	  <when>
-	    <!-- si el verb és separable i no és pronominal, posa el clític entre el verb i la cua (vaig treure'l -> took it out)-->
+	    <!-- si el verb Ã©s separable i no Ã©s pronominal, posa el clÃ­tic entre el verb i la cua (vaig treure'l -> took it out)-->
 	    <test>
 	      <and>
 		<equal>
@@ -7198,10 +7198,10 @@
 	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
-	  <otherwise> <!--si no és un verb separable...-->
+	  <otherwise> <!--si no Ã©s un verb separable...-->
 	    <choose>
 	      <when>
-		<test><!--mirem si és el verb "ser" -->
+		<test><!--mirem si Ã©s el verb "ser" -->
 		  <and>
 		    <equal>
 		      <clip pos="4" side="tl" part="a_verb"/>
@@ -7243,7 +7243,7 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise> <!-- si no és el verb ser, l'enviem sense pers ni nbr-->
+	      <otherwise> <!-- si no Ã©s el verb ser, l'enviem sense pers ni nbr-->
 		<out>
 		  <chunk name="verbcj" case="caseFirstWord">
 		    <tags>
@@ -7267,7 +7267,7 @@
 	    <call-macro n="f_bcond">
 	      <with-param pos="2"/>
 	    </call-macro>  
-	    <choose><!--I ara que ja hem imprès el verb, mirem els proclítics -->
+	    <choose><!--I ara que ja hem imprÃ¨s el verb, mirem els proclÃ­tics -->
 	      <when>
 		<test>
 		  <and>
@@ -7286,12 +7286,12 @@
 		      </equal>
 		      <equal>
 			<clip pos="2" side="sl" part="lem"/>
-			<lit v="es"/><!--és 'sp' -->
+			<lit v="es"/><!--Ã©s 'sp' -->
 		      </equal>
 		    </or>
 		  </and>
 		</test>	
-		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+		<call-macro n="f_bcond"><!--imprimeix el blanc si tÃ© info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="3"/>
 		</call-macro>
 	      </when>
@@ -7430,7 +7430,7 @@
 	      </chunk>
 	    </out>
 	  </when>
-	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 	    <choose>
 	      <when>
 		<test> 
@@ -7565,7 +7565,7 @@
 		  <or>
 		    <equal>
 		      <clip pos="2" side="sl" part="temps"/>
-		      <lit-tag v="ifi"/><!--digué -->
+		      <lit-tag v="ifi"/><!--diguÃ© -->
 		    </equal>
 		    <equal>
 		      <clip pos="2" side="sl" part="temps"/>
@@ -7573,7 +7573,7 @@
 		    </equal>
 		    <equal>
 		      <clip pos="2" side="sl" part="temps"/>
-		      <lit-tag v="pis"/><!--digués -->
+		      <lit-tag v="pis"/><!--diguÃ©s -->
 		    </equal>
 		  </or>
 		</test>		   
@@ -7690,7 +7690,7 @@
 	  </otherwise>
 	</choose> 
 	<choose>
-	  <when><!--Mira si és 'haver-hi' -->
+	  <when><!--Mira si Ã©s 'haver-hi' -->
 	    <test>
 	      <and>
 		<equal caseless="yes">
@@ -7889,7 +7889,7 @@
 	      </otherwise>
 	    </choose>
 	  </when>
-	  <otherwise><!--Si no és 'haver-hi' -->
+	  <otherwise><!--Si no Ã©s 'haver-hi' -->
 	    <choose>
 
 	  <when>
@@ -7909,10 +7909,10 @@
 	    </let>
 	  </when>
 	</choose>
-	<!-- aquí s'ha de mirar la separabilitat-->
+	<!-- aquÃ­ s'ha de mirar la separabilitat-->
 	<choose>
 	  <when>
-	    <!-- si el verb és separable i no és pronominal, posa el clític entre el verb i la cua (l'he tret -> have taken it out)-->
+	    <!-- si el verb Ã©s separable i no Ã©s pronominal, posa el clÃ­tic entre el verb i la cua (l'he tret -> have taken it out)-->
 	    <test>
 	      <and>
 		<equal>
@@ -7982,7 +7982,7 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 		<choose>
 		  <when>
 		    <test> 
@@ -8119,7 +8119,7 @@
 				  <or>
 				    <equal>
 				      <clip pos="3" side="sl" part="temps"/>
-				      <lit-tag v="ifi"/><!--digué -->
+				      <lit-tag v="ifi"/><!--diguÃ© -->
 				    </equal>
 				    <equal>
 				      <clip pos="3" side="sl" part="temps"/>
@@ -8127,7 +8127,7 @@
 				    </equal>
 				    <equal>
 				      <clip pos="3" side="sl" part="temps"/>
-				      <lit-tag v="pis"/><!--digués -->
+				      <lit-tag v="pis"/><!--diguÃ©s -->
 				    </equal>
 				  </or>
 				</test>		   
@@ -8178,9 +8178,9 @@
 		  </otherwise>
 		</choose>
 	      </otherwise>
-	    </choose>	 <!-- ... i després enviem el prn (si cal)-->
+	    </choose>	 <!-- ... i desprÃ©s enviem el prn (si cal)-->
 	  </when>
-	  <otherwise> <!-- si no és separable: -->
+	  <otherwise> <!-- si no Ã©s separable: -->
 	    <choose>	<!-- primer arreglem i enviem el verb -->
 	      <when> 
 		<test><!--tenen prs i nbr per a p3 sg. -->
@@ -8226,7 +8226,7 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	      <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 		<choose>
 		  <when>
 		    <test> 
@@ -8343,7 +8343,7 @@
 				  <or>
 				    <equal>
 				      <clip pos="3" side="sl" part="temps"/>
-				      <lit-tag v="ifi"/><!--digué -->
+				      <lit-tag v="ifi"/><!--diguÃ© -->
 				    </equal>
 				    <equal>
 				      <clip pos="3" side="sl" part="temps"/>
@@ -8351,7 +8351,7 @@
 				    </equal>
 				    <equal>
 				      <clip pos="3" side="sl" part="temps"/>
-				      <lit-tag v="pis"/><!--digués -->
+				      <lit-tag v="pis"/><!--diguÃ©s -->
 				    </equal>
 				  </or>
 				</test>		   
@@ -8392,7 +8392,7 @@
 		  </otherwise>
 		</choose>
 	      </otherwise>
-	    </choose>	 <!-- ... i després enviem el prn (si cal)-->
+	    </choose>	 <!-- ... i desprÃ©s enviem el prn (si cal)-->
 	    <choose>
 	      <when>
 		<test>
@@ -8412,12 +8412,12 @@
 		      </equal>
 		      <equal>
 			<clip pos="2" side="sl" part="lem"/>
-			<lit v="es"/><!--és 'sp' -->
+			<lit v="es"/><!--Ã©s 'sp' -->
 		      </equal>
 		    </or>
 		  </and>
 		</test>	
-		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+		<call-macro n="f_bcond"><!--imprimeix el blanc si tÃ© info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="3"/>
 		</call-macro>
 	      </when>
@@ -8503,7 +8503,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: ADV PROCLÍTIC VERB conjugat (no el veig)">
+    <rule comment="REGLA: ADV PROCLÃTIC VERB conjugat (no el veig)">
       <pattern>
 	<pattern-item n="adv"/>
 	<pattern-item n="pro"/>
@@ -8549,7 +8549,7 @@
 	</choose>  
 
 	<choose>
-	  <when><!--Mira si és 'haver-hi' -->
+	  <when><!--Mira si Ã©s 'haver-hi' -->
 	    <test>
 	      <and>
 		<equal caseless="yes">
@@ -8737,11 +8737,11 @@
 	    </choose>
 	  </when>
 
-	  <otherwise><!--Si no és 'haver-hi-->
+	  <otherwise><!--Si no Ã©s 'haver-hi-->
 	    <choose>
 
 	  <when>
-	    <test><!--Si és verb 'ser' p1 o p3 en present o passat (o subjuntiu) té una conjugació pròpia en anglès -->
+	    <test><!--Si Ã©s verb 'ser' p1 o p3 en present o passat (o subjuntiu) tÃ© una conjugaciÃ³ prÃ²pia en anglÃ¨s -->
 	      <and>
 		<equal>
 		  <clip pos="3" side="tl" part="a_verb"/>
@@ -8855,7 +8855,7 @@
 	    </out>
 	  </when>
 	  <when> 
-	    <test><!--La resta de verbs tenen també prs i nbr per a p3 sg, excepte auxiliars (can). -->
+	    <test><!--La resta de verbs tenen tambÃ© prs i nbr per a p3 sg, excepte auxiliars (can). -->
 	      <and>
 		<equal>
 		  <clip pos="3" side="sl" part="temps"/>
@@ -8898,7 +8898,7 @@
 	      </chunk>
 	    </out>
 	  </when>
-	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglès -->
+	  <otherwise><!--la resta de formes verbals no tenen pers i nbr en anglÃ¨s -->
 	    <choose>
 	      <when>
 		<test> 
@@ -9081,7 +9081,7 @@
 		  <or>
 		    <equal>
 		      <clip pos="3" side="sl" part="temps"/>
-		      <lit-tag v="ifi"/><!--digué -->
+		      <lit-tag v="ifi"/><!--diguÃ© -->
 		    </equal>
 		    <equal>
 		      <clip pos="3" side="sl" part="temps"/>
@@ -9089,7 +9089,7 @@
 		    </equal>
 		    <equal>
 		      <clip pos="3" side="sl" part="temps"/>
-		      <lit-tag v="pis"/><!--digués -->
+		      <lit-tag v="pis"/><!--diguÃ©s -->
 		    </equal>
 		  </or>
 		</test>		   
@@ -9119,7 +9119,7 @@
 	    </choose>
 	  </otherwise>
 	</choose>
-	<choose><!--I ara que ja hem imprès el verb, mirem els proclítics -->
+	<choose><!--I ara que ja hem imprÃ¨s el verb, mirem els proclÃ­tics -->
 	  <when>
 	    <test>
 	      <and>
@@ -9138,12 +9138,12 @@
 		  </equal>
 		  <equal>
 		    <clip pos="2" side="sl" part="lem"/>
-		    <lit v="es"/><!--és 'sp' -->
+		    <lit v="es"/><!--Ã©s 'sp' -->
 		  </equal>
 		</or>
 	      </and>
 	    </test>	
-	    <call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+	    <call-macro n="f_bcond"><!--imprimeix el blanc si tÃ© info de format, el pronom no l'imprimeixis -->
 	      <with-param pos="2"/>
 	    </call-macro>
 	  </when>
@@ -9176,7 +9176,7 @@
 
 
 
-    <rule comment="NO VERB + ENCL (no ajudar-me - not to help me) (posar-ho en gerundi en anglès?)">
+    <rule comment="NO VERB + ENCL (no ajudar-me - not to help me) (posar-ho en gerundi en anglÃ¨s?)">
       <pattern>
 	<pattern-item n="no"/>
 	<pattern-item n="verbnm_inf_ger"/>
@@ -9493,7 +9493,7 @@
 
 
 
-    <rule comment="NO + VERBMOD + ENCL + INF (no poder-ho fer - not being able to do it)(aquí ho he posat en gerundi, en els altres casos d'infinitiu negat no, revisar)">
+    <rule comment="NO + VERBMOD + ENCL + INF (no poder-ho fer - not being able to do it)(aquÃ­ ho he posat en gerundi, en els altres casos d'infinitiu negat no, revisar)">
       <pattern>
 	<pattern-item n="no"/>
 	<pattern-item n="verbm_inf_ger"/>
@@ -9881,7 +9881,7 @@
     </rule>
 
 
-    <rule comment="NO + VERBMOD + ENCL (per quan va davant desconegudes, perquè almenys no peti: no poder-ho xxx - not being able to it xxx)">
+    <rule comment="NO + VERBMOD + ENCL (per quan va davant desconegudes, perquÃ¨ almenys no peti: no poder-ho xxx - not being able to it xxx)">
       <pattern>
 	<pattern-item n="no"/>
 	<pattern-item n="verbm_inf_ger"/>
@@ -9949,7 +9949,7 @@
     </rule>
 
 
-    <rule comment="NO + VERBMOD + ENCL + ENCL (per quan va davant desconegudes, perquè almenys no peti: no poder-los-ho xxx - not being able to them it xxx)">
+    <rule comment="NO + VERBMOD + ENCL + ENCL (per quan va davant desconegudes, perquÃ¨ almenys no peti: no poder-los-ho xxx - not being able to them it xxx)">
       <pattern>
 	<pattern-item n="no"/>
 	<pattern-item n="verbm_inf_ger"/>
@@ -10133,7 +10133,7 @@
 	</call-macro>
 	<choose>
 	  <when>
-	    <test><!--hauria de fer també una llista d'adverbis que van entre aux i verb (I've always liked it) -->
+	    <test><!--hauria de fer tambÃ© una llista d'adverbis que van entre aux i verb (I've always liked it) -->
 	      <equal caseless="yes">
 		<clip pos="1" side="sl" part="lem"/>
 		<lit v="no"/>
@@ -10197,7 +10197,7 @@
     </rule>
 
 
-<rule comment="PRONOM tònic/interrogatiu/possessiu"> 
+<rule comment="PRONOM tÃ²nic/interrogatiu/possessiu"> 
       <pattern>
 	<pattern-item n="tn_itg_pos"/>
       </pattern>

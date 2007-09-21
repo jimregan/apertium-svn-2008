@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
 <interchunk>
   <section-def-cats>
 
@@ -38,7 +38,7 @@
     <def-cat n="SV"><!--Verb conjugat, i tb infinitiu per quan el tagger s'equivoca. -->
       <cat-item lemma="verbcj" tags="SV.*"/>
       <cat-item tags="Vcop.*"/>
-      <cat-item lemma="mod" tags="SV.*"/><!--MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: sí que és 'haig de'. -->
+      <cat-item lemma="mod" tags="SV.*"/><!--MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: sÃ­ que Ã©s 'haig de'. -->
       <cat-item lemma="auxmod_inf" tags="SV.*"/>
       <cat-item lemma="auxmod_inf_inf" tags="SV.*"/><!--BCN-->
       <cat-item lemma="be_inf_inf" tags="SV.*"/> <!--BCN-->
@@ -136,7 +136,7 @@
 
     <def-cat n="pp">
       <cat-item lemma="pp"  tags="SA.*"/>
-      <cat-item lemma="adj"  tags="SA.*"/><!-- BCN per que agafi bé resolutions adopted -->
+      <cat-item lemma="adj"  tags="SA.*"/><!-- BCN per que agafi bÃ© resolutions adopted -->
     </def-cat>
 
     <def-cat n="DET">
@@ -216,7 +216,7 @@
       <attr-item tags="DET"/>
       <attr-item tags="UNDET"/>
       <attr-item tags="NUM"/>
-      <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformació que farà el postchunk detectant els PDET. -->
+      <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaciÃ³ que farÃ  el postchunk detectant els PDET. -->
     </def-attr>
 
   </section-def-attrs>
@@ -256,7 +256,7 @@
       </choose> 
     </def-macro>
 
-    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc contÃ© o no format. Cal posar aquesta funciÃ³ en les regles en quÃ¨ desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si contÃ© format cal conservar-la, si no en contÃ© cal eliminar-la perquÃ¨ no apareguin dos espais seguits. -->
       <choose>
 	<when>
 	  <test>
@@ -279,7 +279,7 @@
   <section-rules>
     
 
-    <!--REGLES LÈXIQUES: definides en primer lloc perquè si no es posen per altres regles -->
+    <!--REGLES LÃˆXIQUES: definides en primer lloc perquÃ¨ si no es posen per altres regles -->
 
 
 
@@ -312,7 +312,7 @@
 	  <clip pos="2" part="nbr"/>
 	  <clip pos="3" part="nbr"/>
 	</let>
-	<choose><!-- quan el subjecte és un pronom...-->
+	<choose><!-- quan el subjecte Ã©s un pronom...-->
 	  <when>
 	    <test>
 	      <equal caseless="yes">
@@ -321,7 +321,7 @@
 	      </equal>
 	    </test>	 
 	    <out>
-	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+	      <chunk><!--...creo un chunk que tindrÃ  un pronom feble -->
 		<lit v="comp_like"/>
 		<lit-tag v="prn.pro"/>
 		<lit v="{^"/>
@@ -337,7 +337,7 @@
 	      <b pos="1"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN, li assigno gÃ¨nere i nombre...-->
 	    <choose>
 	      <when>
 		<test>
@@ -390,7 +390,7 @@
 	    </choose>
 	    
 	    <out> 
-	      <chunk><!-- envio la preposició "a" -->
+	      <chunk><!-- envio la preposiciÃ³ "a" -->
 		<lit v="pr"/>
 		<lit-tag v="PREP"/>
 		<lit v="{^"/>
@@ -422,7 +422,7 @@
 	    </out>
 	  </otherwise>
 	</choose>
-	<!--Assigna gènere i nombre al segon SN (GD i ND) -->
+	<!--Assigna gÃ¨nere i nombre al segon SN (GD i ND) -->
 	<choose>
 	  <when>
 	    <test>
@@ -504,7 +504,7 @@
 	    <clip pos="2" part="chcontent"/>
 	  </chunk>
 	  <b pos="2"/>
-	  <chunk><!-- i envio també el segon SN-->
+	  <chunk><!-- i envio tambÃ© el segon SN-->
 	    <clip pos="3" part="lem"/>
 	    <clip pos="3" part="tags"/>
 	    <clip pos="3" part="chcontent"/>
@@ -546,7 +546,7 @@
 	  <clip pos="3" part="nbr"/>
 	  <clip pos="4" part="nbr"/>
 	</let>
-	<choose><!-- quan el subjecte és un pronom...-->
+	<choose><!-- quan el subjecte Ã©s un pronom...-->
 	  <when>
 	    <test>
 	      <equal caseless="yes">
@@ -562,7 +562,7 @@
 		<clip pos="2" part="chcontent"/>
 	      </chunk>
 	      <b pos="1"/>
-	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+	      <chunk><!--...creo un chunk que tindrÃ  un pronom feble -->
 		<lit v="comp_like"/>
 		<lit-tag v="prn.pro"/>
 		<lit v="{^"/>
@@ -579,7 +579,7 @@
 	      <b pos="2"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN, li assigno gÃ¨nere i nombre...-->
 	    <choose>
 	      <when>
 		<test>
@@ -632,7 +632,7 @@
 	    </choose>
 	    
 	    <out> 
-	      <chunk><!-- envio la preposició "a" -->
+	      <chunk><!-- envio la preposiciÃ³ "a" -->
 		<lit v="pr"/>
 		<lit-tag v="PREP"/>
 		<lit v="{^"/>
@@ -671,7 +671,7 @@
 	    </out>
 	  </otherwise>
 	</choose>
-	<!--Assigna gènere i nombre al segon SN (GD i ND) -->
+	<!--Assigna gÃ¨nere i nombre al segon SN (GD i ND) -->
 	<choose>
 	  <when>
 	    <test>
@@ -707,7 +707,7 @@
 	    <clip pos="3" part="chcontent"/>
 	  </chunk>
 	  <b pos="3"/>
-	  <chunk><!-- i envio també el segon SN-->
+	  <chunk><!-- i envio tambÃ© el segon SN-->
 	    <clip pos="4" part="lem"/>
 	    <clip pos="4" part="tags"/>
 	    <clip pos="4" part="chcontent"/>
@@ -739,7 +739,7 @@
 	    </let>
 	  </when>
 	</choose>
-	<choose> <!-- canvia el nom del chunk per poder-hi treballar més facilment al t3x-->
+	<choose> <!-- canvia el nom del chunk per poder-hi treballar mÃ©s facilment al t3x-->
 	  <when>
 	    <test>
 	      <equal caseless="yes">		
@@ -813,7 +813,7 @@
 	    </choose>
 	  </otherwise>
 	</choose>
-	<choose><!-- quan el subjecte és un pronom...-->
+	<choose><!-- quan el subjecte Ã©s un pronom...-->
 	  <when>
 	    <test>
 	      <equal caseless="yes">
@@ -822,7 +822,7 @@
 	      </equal>
 	    </test>	    
 	    <out>
-	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+	      <chunk><!--...creo un chunk que tindrÃ  un pronom feble -->
 		<lit v="comp_like"/>
 		<lit-tag v="prn.pro"/>
 		<lit v="{^"/>
@@ -839,7 +839,7 @@
 	      <b pos="1"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN, li assigno gÃ¨nere i nombre...-->
 	    <choose>
 	      <when>
 		<test>
@@ -892,7 +892,7 @@
 	    </choose>
 	    
 	    <out> 
-	      <chunk><!-- envio la preposició "a" -->
+	      <chunk><!-- envio la preposiciÃ³ "a" -->
 		<lit v="pr"/>
 		<lit-tag v="PREP"/>
 		<lit v="{^"/>
@@ -955,7 +955,7 @@
 	    </let>
 	  </when>
 	</choose>
-	<choose> <!-- canvia el nom del chunk per poder-hi treballar més facilment al t3x-->
+	<choose> <!-- canvia el nom del chunk per poder-hi treballar mÃ©s facilment al t3x-->
 	  <when>
 	    <test>
 	      <equal caseless="yes">		
@@ -1029,7 +1029,7 @@
 	    </choose>
 	  </otherwise>
 	</choose>
-	<choose><!-- quan el subjecte és un pronom...-->
+	<choose><!-- quan el subjecte Ã©s un pronom...-->
 	  <when>
 	    <test>
 	      <equal caseless="yes">
@@ -1044,7 +1044,7 @@
 		<clip pos="2" part="chcontent"/>
 	      </chunk>
 	      <b pos="1"/>
-	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+	      <chunk><!--...creo un chunk que tindrÃ  un pronom feble -->
 		<lit v="comp_like"/>
 		<lit-tag v="prn.pro"/>
 		<lit v="{^"/>
@@ -1061,7 +1061,7 @@
 	      <b pos="2"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN, li assigno gÃ¨nere i nombre...-->
 	    <choose>
 	      <when>
 		<test>
@@ -1114,7 +1114,7 @@
 	    </choose>
 	    
 	    <out> 
-	      <chunk><!-- envio la preposició "a" -->
+	      <chunk><!-- envio la preposiciÃ³ "a" -->
 		<lit v="pr"/>
 		<lit-tag v="PREP"/>
 		<lit v="{^"/>
@@ -1194,7 +1194,7 @@
 	  <clip pos="2" part="nbr"/>
 	  <lit-tag v="sg"/>
 	</let>
-	<choose><!-- quan el subjecte és un pronom...-->
+	<choose><!-- quan el subjecte Ã©s un pronom...-->
 	  <when>
 	    <test>
 	      <equal caseless="yes">
@@ -1203,7 +1203,7 @@
 	      </equal>
 	    </test>	    
 	    <out>
-	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+	      <chunk><!--...creo un chunk que tindrÃ  un pronom feble -->
 		<lit v="comp_like"/>
 		<lit-tag v="prn.pro"/>
 		<lit v="{^"/>
@@ -1220,7 +1220,7 @@
 	      <b pos="1"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN, li assigno gÃ¨nere i nombre...-->
 	    <choose>
 	      <when>
 		<test>
@@ -1273,7 +1273,7 @@
 	    </choose>
 	    
 	    <out> 
-	      <chunk><!-- envio la preposició "a" -->
+	      <chunk><!-- envio la preposiciÃ³ "a" -->
 		<lit v="pr"/>
 		<lit-tag v="PREP"/>
 		<lit v="{^"/>
@@ -1344,7 +1344,7 @@
 	  <clip pos="3" part="nbr"/>
 	  <lit-tag v="sg"/>
 	</let>
-	<choose><!-- quan el subjecte és un pronom...-->
+	<choose><!-- quan el subjecte Ã©s un pronom...-->
 	  <when>
 	    <test>
 	      <equal caseless="yes">
@@ -1359,7 +1359,7 @@
 		<clip pos="2" part="chcontent"/>
 	      </chunk>
 	      <b pos="2"/>
-	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+	      <chunk><!--...creo un chunk que tindrÃ  un pronom feble -->
 		<lit v="comp_like"/>
 		<lit-tag v="prn.pro"/>
 		<lit v="{^"/>
@@ -1376,7 +1376,7 @@
 	      <b pos="1"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN, li assigno gÃ¨nere i nombre...-->
 	    <choose>
 	      <when>
 		<test>
@@ -1429,7 +1429,7 @@
 	    </choose>
 	    
 	    <out> 
-	      <chunk><!-- envio la preposició "a" -->
+	      <chunk><!-- envio la preposiciÃ³ "a" -->
 		<lit v="pr"/>
 		<lit-tag v="PREP"/>
 		<lit v="{^"/>
@@ -1478,7 +1478,7 @@
     </rule>
 
 
-    <rule comment="REGLA: there BE SN"><!--NOTA MG: la millor manera de fer el canvi de 'ser' per 'haver' hauria estat enllaçar la categoria del verb (vbser, vblex, vbhaver, vbmod) en les tags del chunk en el t1x, i aquí canviar l'etiqueta, de manera que el canvia hauria estat automàtic i no hauria fet falta fer operacions complicades en el t3x per a canviar les etiquetes segons el nom de chunk. Tanmateix, en el t1x hem posat la variable 'tipus_verb' com a etiqueta del chunk que pot contenir 'pron' i 'like' a part dels tipus de verb normals (vbser, vbhaver, vbmod, vblex), la qual cosa impossibilita fer l'enllaç correctament. Amb més temps caldria canviar la manera de passar la informació de 'pron' i 'like' en el segon transfer de manera que fos possible fer l'enllaç del tipus de verb. -->
+    <rule comment="REGLA: there BE SN"><!--NOTA MG: la millor manera de fer el canvi de 'ser' per 'haver' hauria estat enllaÃ§ar la categoria del verb (vbser, vblex, vbhaver, vbmod) en les tags del chunk en el t1x, i aquÃ­ canviar l'etiqueta, de manera que el canvia hauria estat automÃ tic i no hauria fet falta fer operacions complicades en el t3x per a canviar les etiquetes segons el nom de chunk. Tanmateix, en el t1x hem posat la variable 'tipus_verb' com a etiqueta del chunk que pot contenir 'pron' i 'like' a part dels tipus de verb normals (vbser, vbhaver, vbmod, vblex), la qual cosa impossibilita fer l'enllaÃ§ correctament. Amb mÃ©s temps caldria canviar la manera de passar la informaciÃ³ de 'pron' i 'like' en el segon transfer de manera que fos possible fer l'enllaÃ§ del tipus de verb. -->
       <pattern>
 	<pattern-item n="there"/>
 	<pattern-item n="thereis"/>
@@ -1499,7 +1499,7 @@
 	    </let>
 	  </when>
 	</choose>
-	<let><!--posa-ho com a p3 sg perquè en català 'haver-hi' sempre és en p3 i sg (hi ha cotxes) -->
+	<let><!--posa-ho com a p3 sg perquÃ¨ en catalÃ  'haver-hi' sempre Ã©s en p3 i sg (hi ha cotxes) -->
 	  <clip pos="2" part="pers"/>
 	  <lit-tag v="p3"/>
 	</let>	
@@ -1516,7 +1516,7 @@
 	  <clip pos="2" part="a_verb"/>
 	  <lit-tag v="HAVER"/>
 	</let>
-	<!--Quan SN és GD o ND -->
+	<!--Quan SN Ã©s GD o ND -->
 	<choose>
 	  <when>
 	    <test>
@@ -1639,7 +1639,7 @@
 	    </let>
 	  </when>
 	</choose>
-	<let><!--posa-ho com a p3 sg perquè en català 'haver-hi' sempre és en p3 i sg (hi ha cotxes) -->
+	<let><!--posa-ho com a p3 sg perquÃ¨ en catalÃ  'haver-hi' sempre Ã©s en p3 i sg (hi ha cotxes) -->
 	  <clip pos="3" part="pers"/>
 	  <lit-tag v="p3"/>
 	</let>	
@@ -1656,7 +1656,7 @@
 	  <clip pos="3" part="a_verb"/>
 	  <lit-tag v="HAVER"/>
 	</let>
-	<!--Quan SN és GD o ND -->
+	<!--Quan SN Ã©s GD o ND -->
 	<choose>
 	  <when>
 	    <test>
@@ -1761,7 +1761,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: there BE (sense SN clar a continuació)">
+    <rule comment="REGLA: there BE (sense SN clar a continuaciÃ³)">
       <pattern>
 	<pattern-item n="there"/>
 	<pattern-item n="thereis"/>
@@ -1781,7 +1781,7 @@
 	    </let>
 	  </when>
 	</choose>
-	<let><!--posa-ho com a p3 sg perquè en català 'haver-hi' sempre és en p3 i sg (hi ha cotxes) -->
+	<let><!--posa-ho com a p3 sg perquÃ¨ en catalÃ  'haver-hi' sempre Ã©s en p3 i sg (hi ha cotxes) -->
 	  <clip pos="2" part="pers"/>
 	  <lit-tag v="p3"/>
 	</let>	
@@ -1810,7 +1810,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: there ADV BE (sense SN clar a continuació)">
+    <rule comment="REGLA: there ADV BE (sense SN clar a continuaciÃ³)">
       <pattern>
 	<pattern-item n="there"/>
 	<pattern-item n="ADV"/>
@@ -1831,7 +1831,7 @@
 	    </let>
 	  </when>
 	</choose>
-	<let><!--posa-ho com a p3 sg perquè en català 'haver-hi' sempre és en p3 i sg (hi ha cotxes) -->
+	<let><!--posa-ho com a p3 sg perquÃ¨ en catalÃ  'haver-hi' sempre Ã©s en p3 i sg (hi ha cotxes) -->
 	  <clip pos="3" part="pers"/>
 	  <lit-tag v="p3"/>
 	</let>	
@@ -1868,7 +1868,7 @@
     <!--REGLES GENERALS -->
 
 
-    <rule comment="REGLA: reporting VERBS (BCN: per afegir QUE quan tenim un 'reporting' werb seguit d'una clàusula: she said they would go home -- va dir que anirien casa. Falta fer el mateix per quan tenim: SN Vcop SA; SN ADV SV; SN SV SA; a la segona part )">
+    <rule comment="REGLA: reporting VERBS (BCN: per afegir QUE quan tenim un 'reporting' werb seguit d'una clÃ usula: she said they would go home -- va dir que anirien casa. Falta fer el mateix per quan tenim: SN Vcop SA; SN ADV SV; SN SV SA; a la segona part )">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="vbreporting"/>
@@ -1948,7 +1948,7 @@
 	      <with-param pos="1"/>
 	    </call-macro>
 	    <out>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el 2n chunk -->
 		<get-case-from pos="1">
 		  <clip pos="2" part="lem"/>
 		</get-case-from>
@@ -1971,7 +1971,7 @@
 	  </when>
 
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -2193,7 +2193,7 @@
 	<!-- fi primera part-->      
 
 
-	<!-- còpia de la regla SN SV pq faci la segona part amb els últims SN SV ok (idealment hauria d'estar en una macro)-->
+	<!-- cÃ²pia de la regla SN SV pq faci la segona part amb els Ãºltims SN SV ok (idealment hauria d'estar en una macro)-->
 
 	<choose>
 	  <when>
@@ -2249,7 +2249,7 @@
 	      <with-param pos="3"/>
 	    </call-macro>
 	    <out>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el 2n chunk -->
 		<get-case-from pos="2">
 		  <clip pos="4" part="lem"/>
 		</get-case-from>
@@ -2259,7 +2259,7 @@
 	    </out>
 	  </when>
 	  <otherwise>
-	    <choose><!--Quan SN no és prnsubj. -->
+	    <choose><!--Quan SN no Ã©s prnsubj. -->
 	      <when>
 		<test>
 		  <equal>
@@ -2501,8 +2501,8 @@
 	  </when>
 	</choose>
 	
-<!--Quan SN 1 no és prnsubj, pot ser GD o ND.
-Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pronom subjecte, haura quedat com a GD o ND. A la vegada es fan les comprovacions que toquen el cas que SN no sigui subjecte i, per tant, pugui tenir també ell GD o ND -->
+<!--Quan SN 1 no Ã©s prnsubj, pot ser GD o ND.
+AquÃ­ torna a mirar si posiciÃ³ 4 Ã©s GD o ND, ja que en cas que  pos1 no sigui pronom subjecte, haura quedat com a GD o ND. A la vegada es fan les comprovacions que toquen el cas que SN no sigui subjecte i, per tant, pugui tenir tambÃ© ell GD o ND -->
 	    <choose>
 	      <when>
 		<test>
@@ -2679,7 +2679,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	    </choose>
 	    <!--BCN (posa el PDET si cal)-->
 
-	    <choose> <!-- quan el segon SN és GD o ND-->
+	    <choose> <!-- quan el segon SN Ã©s GD o ND-->
 	      <when>
 		<test>
 		    <equal>
@@ -2773,7 +2773,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 		<clip pos="4" part="chcontent"/>
 	      </chunk>
 	    </out>
-	<choose><!--Assigna gènere i nombre a l'adjectiu -->
+	<choose><!--Assigna gÃ¨nere i nombre a l'adjectiu -->
 	  <when>
 	    <test>
 	      <not>
@@ -2865,7 +2865,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	  </when>
 	</choose>
 
-<!--Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pronom subjecte, haura quedat com a GD o ND. A la vegada es fan les comprovacions que toquen el cas que SN no sigui subjecte i, per tant, pugui tenir també ell GD o ND -->
+<!--AquÃ­ torna a mirar si posiciÃ³ 4 Ã©s GD o ND, ja que en cas que  pos1 no sigui pronom subjecte, haura quedat com a GD o ND. A la vegada es fan les comprovacions que toquen el cas que SN no sigui subjecte i, per tant, pugui tenir tambÃ© ell GD o ND -->
 
 	 
 	    <choose>
@@ -3040,7 +3040,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 		</let>
 	      </when>
 	    </choose>
-	    <choose>  <!-- quan el segon SN és GD o ND-->
+	    <choose>  <!-- quan el segon SN Ã©s GD o ND-->
 	      <when>
 		<test>
 		  <equal>
@@ -3213,7 +3213,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 		<lit v="$}"/>
 	      </chunk>
 	      <b/>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el 2n chunk -->
 		<get-case-from pos="1">
 		  <clip pos="2" part="lem"/>
 		</get-case-from>
@@ -3230,7 +3230,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	  </when>
 	  
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -3452,7 +3452,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	   <clip pos="2" part="temps"/>
 	   <lit-tag v="pri"/>
 	</let>
-	<!--Aquí  SN no és mai pronom subjecte, la categoria no l'inclou -->
+	<!--AquÃ­  SN no Ã©s mai pronom subjecte, la categoria no l'inclou -->
 	    <choose>
 	      <when>
 		<test>
@@ -3467,7 +3467,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 		</let>
 	      </when>
 	    </choose>    
-	    <!--el gerundi sempre és GD i ND, ara cal assignar-li gen i nbr del SN -->
+	    <!--el gerundi sempre Ã©s GD i ND, ara cal assignar-li gen i nbr del SN -->
 	    <let>
 	      <clip pos="2" part="pers"/>
 	      <lit-tag v="p3"/>
@@ -3626,7 +3626,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	      <with-param pos="1"/>
 	    </call-macro>
 	    <out>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el 2n chunk -->
 		<get-case-from pos="1">
 		  <clip pos="2" part="lem"/>
 		</get-case-from>
@@ -3637,7 +3637,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	  </when>
 
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -3909,7 +3909,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	  </when>
 
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -4240,7 +4240,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 		<clip pos="2" part="chcontent"/>
 	      </chunk>
 	      <b pos="2"/>	      
-	      <chunk><!--el pronom no l'envio, només el SV -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el SV -->
 		<clip pos="3" part="lem"/>
 		<clip pos="3" part="tags"/>
 		<clip pos="3" part="chcontent"/>
@@ -4248,7 +4248,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	    </out>
 	  </when>
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    
 	    <choose>
 	      <when>
@@ -4533,7 +4533,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	  </when>
 
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -4800,7 +4800,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
       </action>
     </rule>
 
-    <rule comment="REGLA: SN SV SA (they live/are happy - viuen feliços (BCN s'ha modificat)">
+    <rule comment="REGLA: SN SV SA (they live/are happy - viuen feliÃ§os (BCN s'ha modificat)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SV"/>
@@ -4861,7 +4861,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	      <with-param pos="1"/>
 	    </call-macro>
 	    <out>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el 2n chunk -->
 		<get-case-from pos="1">
 		  <clip pos="2" part="lem"/>
 		</get-case-from>
@@ -4872,7 +4872,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	  </when>
 
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -5186,7 +5186,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	  </when>
 
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -5475,7 +5475,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	    </let>
 	  </otherwise>
 	</choose>
-	<let><var n="nombre"/><lit-tag v="pl"/><!--sempre serà pl-->
+	<let><var n="nombre"/><lit-tag v="pl"/><!--sempre serÃ  pl-->
 	</let>
 	<let>
 	  <clip pos="5" part="nbr"/>
@@ -5556,7 +5556,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	 <with-param pos="1"/>
 	 </call-macro>
 	 <out>
-	 <chunk> el pronom no l'envio, només el 2n chunk 
+	 <chunk> el pronom no l'envio, nomÃ©s el 2n chunk 
 	 <get-case-from pos="1">
 	 <clip pos="2" part="lem"/>
 	 </get-case-from>
@@ -5566,7 +5566,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 	 <b pos="2"/>
 	 </out>
 	 </when>
-	 <otherwise>Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN 
+	 <otherwise>Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN 
 	 <choose>
 	 <when>
 	 <test>
@@ -5716,7 +5716,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pro
 </out>
 </otherwise>
 </choose>
-Assigna gènere i nombre a adjectiu (GD i ND) 
+Assigna gÃ¨nere i nombre a adjectiu (GD i ND) 
 <choose>
 <when>
 <test>
@@ -5726,7 +5726,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 <clip pos="1" part="gen"/>
 <lit-tag v="mf"/>
 </equal>
-<equal>  això ho he afegit jo perquè a vegades agafa "it" com a prn.obj.p3.nt i després el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor solució. -carme
+<equal>  aixÃ² ho he afegit jo perquÃ¨ a vegades agafa "it" com a prn.obj.p3.nt i desprÃ©s el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor soluciÃ³. -carme
 <clip pos="1" part="gen"/>
 <lit-tag v="nt"/>
 </equal>
@@ -5846,7 +5846,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	      <with-param pos="1"/>
 	    </call-macro>
 	    <out>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el 2n chunk -->
 		<get-case-from pos="1">
 		  <clip pos="2" part="lem"/>
 		</get-case-from>
@@ -5856,7 +5856,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	      <b pos="2"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -6050,7 +6050,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    </out>
 	  </otherwise>
 	</choose>
-	<!--Assigna gènere i nombre a adjectiu (GD i ND) -->
+	<!--Assigna gÃ¨nere i nombre a adjectiu (GD i ND) -->
 	<choose>
 	  <when>
 	    <test>
@@ -6060,7 +6060,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 		    <clip pos="1" part="gen"/>
 		    <lit-tag v="mf"/>
 		  </equal>
-		  <equal> <!-- això ho he afegit jo perquè a vegades agafa "it" com a prn.obj.p3.nt i després el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor solució. -carme-->
+		  <equal> <!-- aixÃ² ho he afegit jo perquÃ¨ a vegades agafa "it" com a prn.obj.p3.nt i desprÃ©s el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor soluciÃ³. -carme-->
 		    <clip pos="1" part="gen"/>
 		    <lit-tag v="nt"/>
 		  </equal>
@@ -6207,7 +6207,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	      <with-param pos="1"/>
 	    </call-macro>
 	    <out>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el 2n chunk -->
 		<get-case-from pos="1">
 		  <clip pos="4" part="lem"/>
 		</get-case-from>
@@ -6217,7 +6217,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	      <b pos="1"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -6446,7 +6446,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    </out>
 	  </otherwise>
 	</choose>
-	<!--Assigna gènere i nombre a adjectiu (GD i ND) -->
+	<!--Assigna gÃ¨nere i nombre a adjectiu (GD i ND) -->
 	<choose>
 	  <when>
 	    <test>
@@ -6456,7 +6456,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 		    <clip pos="1" part="gen"/>
 		    <lit-tag v="mf"/>
 		  </equal>
-		  <equal> <!-- això ho he afegit jo perquè a vegades agafa "it" com a prn.obj.p3.nt i després el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor solució. -carme-->
+		  <equal> <!-- aixÃ² ho he afegit jo perquÃ¨ a vegades agafa "it" com a prn.obj.p3.nt i desprÃ©s el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor soluciÃ³. -carme-->
 		    <clip pos="1" part="gen"/>
 		    <lit-tag v="nt"/>
 		  </equal>
@@ -6609,7 +6609,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 		<clip pos="2" part="chcontent"/>
 	      </chunk>
 	      <b pos="2"/>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk><!--el pronom no l'envio, nomÃ©s el 2n chunk -->
 		<clip pos="3" part="lem"/>
 		<clip pos="3" part="tags"/>
 		<clip pos="3" part="chcontent"/>
@@ -6617,7 +6617,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	      <b pos="3"/>
 	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -6817,7 +6817,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    </out>
 	  </otherwise>
 	</choose>
-	<!--Assigna gènere i nombre a adjectiu (GD i ND) -->
+	<!--Assigna gÃ¨nere i nombre a adjectiu (GD i ND) -->
 	<choose>
 	  <when>
 	    <test>
@@ -6827,7 +6827,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 		    <clip pos="1" part="gen"/>
 		    <lit-tag v="mf"/>
 		  </equal>
-		  <equal> <!-- això ho he afegit jo perquè a vegades agafa "it" com a prn.obj.p3.nt i després el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor solució. -carme-->
+		  <equal> <!-- aixÃ² ho he afegit jo perquÃ¨ a vegades agafa "it" com a prn.obj.p3.nt i desprÃ©s el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor soluciÃ³. -carme-->
 		    <clip pos="1" part="gen"/>
 		    <lit-tag v="nt"/>
 		  </equal>
@@ -6963,7 +6963,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	  </when>
 
 
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	  <otherwise><!--Quan SN no Ã©s pronom subjecte, per tant, quan Ã©s qualsevol altre SN -->
 	    <choose>
 	      <when>
 		<test>
@@ -7257,7 +7257,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    </let>
 	  </otherwise>
 	</choose>
-	<let><var n="nombre"/><lit-tag v="pl"/><!--sempre serà pl-->
+	<let><var n="nombre"/><lit-tag v="pl"/><!--sempre serÃ  pl-->
 	</let>
 	<let>
 	  <clip pos="6" part="nbr"/>
@@ -7699,7 +7699,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 
     <!--Regles per a sintagmes sols que han pogut quedarse amb GD, ND o PD -->
 
-    <rule comment="REGLA: SA (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar)">
+    <rule comment="REGLA: SA (per assignar gÃ¨nere i nombre si hi ha GD i ND que no s'han pogut determinar)">
       <pattern>
 	<pattern-item n="SA"/>
       </pattern>
@@ -7707,7 +7707,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	<choose>
 	  <when>
 	    <test>
-	      <equal><!--Actualment, si és GD sempre serà també ND -->
+	      <equal><!--Actualment, si Ã©s GD sempre serÃ  tambÃ© ND -->
 		<clip pos="1" part="gen"/>
 		<lit-tag v="GD"/>
 	      </equal>
@@ -7732,7 +7732,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
       </action>
     </rule>
 
-    <rule comment="REGLA: SN (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)">
+    <rule comment="REGLA: SN (per assignar gÃ¨nere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)">
       <pattern>
 	<pattern-item n="SN"/>
       </pattern>
@@ -7780,7 +7780,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 
 
 
-    <rule comment="REGLA: DET (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)">
+    <rule comment="REGLA: DET (per assignar gÃ¨nere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)">
       <pattern>
 	<pattern-item n="DET"/>
       </pattern>
@@ -7879,7 +7879,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
     </rule>
 
 
-    <rule comment="REGLA: NUM (per assignar gènere si hi ha GD)">
+    <rule comment="REGLA: NUM (per assignar gÃ¨nere si hi ha GD)">
       <pattern>
 	<pattern-item n="NUM"/>
       </pattern>
