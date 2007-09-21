@@ -87,7 +87,6 @@
     <tags-item tags="det.dem.*"/>
     <tags-item tags="det.dem"/>
     <tags-item tags="ATZ.DET.BAN"/>
-    <tags-item tags="DET.ERKIND.*"/>
   </def-label>
 
 
@@ -122,7 +121,6 @@
     <tags-item tags="prn.pers.*"/>
     <tags-item tags="prn.ind.*"/>
     <tags-item tags="prn.itg.*"/>
-    <tags-item tags="IOR.IZGMGB"/>
     <tags-item tags="IOR.ELK"/>
 
   </def-label>
