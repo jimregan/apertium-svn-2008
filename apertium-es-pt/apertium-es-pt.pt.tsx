@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <tagger name="">
 	<tagset>
 		<def-label name="VTENERINFPS" closed="true">
@@ -252,6 +252,9 @@
 		</def-label>
 		<def-label name="VMODALIMP" closed="true">
 			<tags-item tags="vbmod.imp.*"/>
+		</def-label>
+		<def-label name="VLEX">
+			<tags-item tags="vblex.*"/>
 		</def-label>
 		<def-label name="ADJF">
                         <tags-item tags="adj.f.*"/>
