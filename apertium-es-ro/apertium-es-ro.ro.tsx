@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <tagger name="romanes">
 <tagset>
   <def-label name="INTNOM" closed="true">
@@ -13,8 +13,8 @@
 
 
   <def-label name="SACNJSUB" closed="true">
-    <tags-item lemma="sä" tags="cnjsub"/>  
-  </def-label><!--acompaña sempre subjuntiu -->
+    <tags-item lemma="sÃ¤" tags="cnjsub"/>  
+  </def-label><!--acompaÃ±a sempre subjuntiu -->
 
 <def-label name="MAIADV" closed="true">     
     <tags-item lemma="mai" tags="adv"/>
@@ -259,7 +259,7 @@
   
 
 
-  <!--  <def-label name="ADJF">           PENSAR SI POSEM GÈNERES, TAMBÉ HO HEM DE FER EN ELS NOMS
+  <!--  <def-label name="ADJF">           PENSAR SI POSEM GÃˆNERES, TAMBÃ‰ HO HEM DE FER EN ELS NOMS
     <tags-item tags="adj.f.*"/>
     <tags-item tags="adj.ind.f.*"/>
   </def-label>
@@ -346,7 +346,7 @@
     <tags-item tags="rel.adv"/>
   </def-label>
 
-<!--Mireia: això ja no m'ho he mirat, caldria repassar-ho, també les prohibicions amb enclítics -->
+<!--Mireia: aixÃ² ja no m'ho he mirat, caldria repassar-ho, tambÃ© les prohibicions amb enclÃ­tics -->
 
   <def-mult name="GERLEXPRNENC">
     <sequence>
@@ -1261,7 +1261,7 @@
       <label-item label="VMODALIMP"/>
       <label-item label="IMPMODPRNENC"/>
     </label-sequence>
-<!--    <label-sequence>      AIXÒ TÉ SENTIT EN ROMANÈS?
+<!--    <label-sequence>      AIXÃ’ TÃ‰ SENTIT EN ROMANÃˆS?
       <label-item label="DETM"/>
       <label-item label="SENT"/>
     </label-sequence>

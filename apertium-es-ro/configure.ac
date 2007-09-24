@@ -13,6 +13,6 @@ AC_PROG_AWK
 AC_CONFIG_HEADER([config])
 
 PKG_CHECK_MODULES(apertium, [dnl
-  apertium-2.0 >= required_apertium_version])
+  apertium-3.0 >= required_apertium_version])
   
 AC_OUTPUT([Makefile])
