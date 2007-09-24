@@ -92,7 +92,10 @@ EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
 modes: modes.xml
 	apertium-gen-modes modes.xml
 	           
-apertium_es_ptdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
+apertium_es_ptdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
+apertium_es_modesdir=$(prefix)/share/apertium/modes/
+
+
 apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
@@ -101,9 +104,8 @@ apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
                     $(PREFIX1b).autogen.bin $(PREFIX1b).autobil.bin \
                     trules-$(PREFIX2).bin trules-$(PREFIX1b).bin \
-                    trules-$(PREFIX1b).xml modes
+                    trules-$(PREFIX1b).xml $(PREFIX1b).mode $(PREFIX1).mode $(PREFIX2).mode
 
-CLEANFILES = $(TARGETS) pt.dix pt_BR.dix es-pt.dix es-pt_BR.dix 
 
 pt.dix: $(BASENAME).$(LANG2).dix
 	./filter.sh pt left $(BASENAME).$(LANG2).dix >$@
@@ -116,4 +118,33 @@ es-pt.dix: $(BASENAME).$(PREFIX1).dix
                          
 es-pt_BR.dix: $(BASENAME).$(PREFIX1).dix
 	./filter.sh br right $(BASENAME).$(PREFIX1).dix >$@
-                                 
+
+$(PREFIX1).mode: modes.xml 
+	apertium-gen-modes modes.xml
+
+$(PREFIX1b).mode: modes.xml 
+	apertium-gen-modes modes.xml
+
+$(PREFIX2).mode: modes.xml 
+	apertium-gen-modes modes.xml
+
+modes: modes.xml
+	apertium-gen-modes modes.xml
+           
+apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
+	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
+	$(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
+	$(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
+	$(PREFIX1).prob $(PREFIX2).prob trules-$(PREFIX1).xml \
+	trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
+	trules-$(PREFIX2).bin $(PREFIX1).mode $(PREFIX2).mode
+
+install-data-local:
+	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_es_modesdir)
+	$(INSTALL_DATA) $(PREFIX1b).mode $(apertium_es_modesdir)
+	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_es_modesdir)
+	$(INSTALL_DATA) $(BASENAME).trules-$(PREFIX2).xml $(BASENAME).trules-$(PREFIX1).xml trules-$(PREFIX1b).xml $(apertium_es_ptdir)
+
+
+CLEANFILES = -rf $(TARGETS) pt.dix pt_BR.dix es-pt.dix es-pt_BR.dix  modes
