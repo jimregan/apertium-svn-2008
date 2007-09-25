@@ -1,6 +1,6 @@
 <?php
 	$sections = array("whatisapertium", "whodevelopsit", "downloading", "testdrive", "documentation", "interact", "latestnews", "software", "funding", "users", "contact");
-	$text = array("que &eacute; Apertium?", "quem o est&aacute; a desenvolver?", "descargas", "prove-o", "documenta&ccedil;&atilde;o", "interact! (en)", "latest news (en)", "software (en)", "funding (en)", "users (en)", "contact (en)");
+	$text = array("que &eacute; Apertium?", "quem o est&aacute; a desenvolver?", "descargas", "prove-o", "documenta&ccedil;&atilde;o", "interactue!", "últimas notícias", "software relacionado", "financiamento", "usuários", "contacto");
 
 $subsections = array
 (
