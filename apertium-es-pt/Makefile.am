@@ -133,11 +133,13 @@ modes: modes.xml
            
 apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
+	$(PREFIX1b).autobil.bin $(PREFIX1b).autogen.bin \
 	$(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
 	$(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
 	$(PREFIX1).prob $(PREFIX2).prob trules-$(PREFIX1).xml \
 	trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
-	trules-$(PREFIX2).bin $(PREFIX1).mode $(PREFIX2).mode
+	trules-$(PREFIX1b).xml trules-$(PREFIX1b).bin \
+	trules-$(PREFIX2).bin $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode
 
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
