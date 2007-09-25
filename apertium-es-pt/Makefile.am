@@ -89,22 +89,8 @@ EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
            $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README \
            filter.sh filter.xsl filterrules.sh filterrules.xsl
                                   
-modes: modes.xml
-	apertium-gen-modes modes.xml
-	           
 apertium_es_ptdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_es_modesdir=$(prefix)/share/apertium/modes/
-
-
-apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
-                    $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
-                    $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
-                    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
-                    $(PREFIX1).prob $(PREFIX2).prob trules-$(PREFIX1).xml \
-                    trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
-                    $(PREFIX1b).autogen.bin $(PREFIX1b).autobil.bin \
-                    trules-$(PREFIX2).bin trules-$(PREFIX1b).bin \
-                    trules-$(PREFIX1b).xml $(PREFIX1b).mode $(PREFIX1).mode $(PREFIX2).mode
 
 
 pt.dix: $(BASENAME).$(LANG2).dix
