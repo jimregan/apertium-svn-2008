@@ -19,9 +19,7 @@ $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 
 $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $(BASENAME).$(PREFIX1).dix >tmp$(PREFIX1).autobil.dix
-	lt-comp lr tmp$(PREFIX1).autobil.dix $@
-	rm tmp$(PREFIX1).autobil.dix
+	lt-comp lr  $(BASENAME).$(PREFIX1).dix $@
 
 $(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
@@ -37,9 +35,7 @@ $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $(BASENAME).$(PREFIX1).dix >tmp$(PREFIX2).autobil.dix
-	lt-comp rl $ tmp$(PREFIX2).autobil.dix $@
-	rm tmp$(PREFIX2).autobil.dix
+	lt-comp rl $(BASENAME).$(PREFIX1).dix $@
 
 $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
@@ -70,7 +66,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
            $(BASENAME).$(LANG2).tsx $(BASENAME).trules-$(PREFIX1).xml \
            $(BASENAME).trules-$(PREFIX2).xml $(PREFIX1).prob $(PREFIX2).prob \
-           modes.xml translate-to-default-equivalent.xsl
+           modes.xml
            
 apertium_es_rodir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_es_modesdir=$(prefix)/share/apertium/modes/
