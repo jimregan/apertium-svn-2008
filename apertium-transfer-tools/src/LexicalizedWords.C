@@ -62,7 +62,7 @@ LexicalizedWords::insert(string lemma, string tags) {
 
   //Some dots must be replaced by the corresponding string "><" or ">"
   pos=0;
-  while ((pos=regular_exp.find(".", pos)) != string::npos) {
+  while ((pos=regular_exp.find(".", pos)) != static_cast<unsigned int>(string::npos)) {
     if (regular_exp[pos+1]!='*') {
       regular_exp.replace(pos, 1, "><");
       pos+=2;
@@ -82,7 +82,7 @@ LexicalizedWords::insert(string lemma, string tags) {
   //All starts must be replaced by the corresponding regular
   //expression
   pos=0;
-  while ((pos=regular_exp.find("*", pos)) != string::npos) {
+  while ((pos=regular_exp.find("*", pos)) != static_cast<unsigned int>(string::npos)) {
     regular_exp.replace(pos, 1, TAGS);
     pos+=strlen(TAGS);
   }
