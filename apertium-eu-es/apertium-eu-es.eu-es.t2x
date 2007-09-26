@@ -733,6 +733,365 @@
       </action>
 </rule>
 
+ <rule> <!-- REGLA: SPGEN + SPR + PR (EAren presidentearen ustez)-->
+      <pattern>
+	<pattern-item n="SPGEN"/>
+	<pattern-item n="SPR"/>
+	<pattern-item n="PR"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="temps"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="2" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="2" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+
+	<let>	      
+	  <clip pos="2" part="a_SP"/>
+	  <lit-tag v="SPR-SN"/>
+	</let>
+	<out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+ <rule> <!-- REGLA: SPGEN + SPGEN + SN-->
+      <pattern>
+	<pattern-item n="SPGEN"/>
+	<pattern-item n="SPGEN"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="2" part="temps"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="2" part="gen"/>
+		  <clip pos="3" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="2" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="2" part="nbr"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="2" part="nbr"/>
+		  <clip pos="3" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="2" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="temps"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="3" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="3" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>	
+	<out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
 
 <rule> <!-- REGLA: SPR + PR + SN (Autonomiari buruzko erreferenduma)-->
       <pattern>
@@ -838,6 +1197,122 @@
 	    <clip pos="2" part="whole"/>
 	  </chunk>
 	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule> <!-- REGLA: SPR + PR + SPGEN + SADV (gobernu demokratikoaren aurkako kolpearen ostean)-->
+      <pattern>
+	<pattern-item n="SPR"/>
+	<pattern-item n="PR"/>
+	<pattern-item n="SPGEN"/>
+	<pattern-item n="SADV"/> 
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<let>	      
+	  <clip pos="1" part="a_SP"/>
+	  <lit-tag v="SPR-SN"/>
+	</let>
+	<out>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
 	  </chunk>
