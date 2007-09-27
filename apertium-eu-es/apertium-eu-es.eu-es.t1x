@@ -172,6 +172,10 @@
       <cat-item lemma="n" tags="rel"/>
     </def-cat>
 
+<def-cat n="cnjsub">
+      <cat-item lemma="la" tags="cnjsub"/>
+    </def-cat>
+
     <def-cat n="cm">
       <cat-item tags="cm"/>
     </def-cat>
@@ -5371,7 +5375,7 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="mf"/>
 	      <clip pos="1" side="tl" part="nbr"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
@@ -5473,6 +5477,86 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>	
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+</rule>
+
+<rule comment="REGLA: NUM + NOM (bi erasotan - en dos agresiones (pl))">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="2" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>		      		
+		      <clip pos="2" side="tl" part="gen"/>
+		      <lit-tag v="mf"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="3"/>
+	</call-macro>	  
+	<out> 
+	  <chunk name="pr_num_n" case="caseFirstWord">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><lit-tag v="num"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_num"/> 
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="GD" link-to="3"/>
+	      <clip pos="2" side="tl" part="mf"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -5996,7 +6080,7 @@ pingui pingui pingui MG
 	    <out> 
 	      <chunk name="pr_d_a_num_n" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="chunk"/></tag>
 		  <tag><var n="tipusdet"/></tag>
 		  <tag><clip pos="3" side="tl" part="gen"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
@@ -6044,9 +6128,9 @@ pingui pingui pingui MG
 	  </when>
 	  <otherwise>
 	    <out> 
-	      <chunk name="d_num_n_a" case="caseFirstWord">
+	      <chunk name="pr_d_num_n_a" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="chunk"/></tag>
 		  <tag><var n="tipusdet"/></tag>
 		  <tag><clip pos="3" side="tl" part="gen"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
@@ -6107,7 +6191,7 @@ pingui pingui pingui MG
 
 
 
-<rule comment="REGLA: NUM + NOM + DET (hiru euskal herritarrak)">
+<rule comment="REGLA: NUM + ADJ+ NOM + DET + POST (hiru euskal herritarrak)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="adj"/>
@@ -6305,7 +6389,7 @@ pingui pingui pingui MG
 	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu>
-	      <clip pos="5" side="tl" part="lem"/> 
+	      <clip pos="5" side="tl" part="whole"/> 
 	    </lu>
 	    <b pos="1"/>
 	    <lu>
@@ -6354,7 +6438,7 @@ pingui pingui pingui MG
 	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
 	    </tags>
 	     <lu>
-	      <clip pos="5" side="tl" part="lem"/> 
+	      <clip pos="5" side="tl" part="whole"/> 
 	    </lu>
 	    <b pos="1"/>
 	    <lu>
@@ -7518,6 +7602,61 @@ pingui pingui pingui MG
     </rule>
 
 
+ <rule comment="REGLA: PP (atxilotuei - a los detenidos)">
+      <pattern>
+	<pattern-item n="pp"/>
+	<pattern-item n="det"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="tipo_det">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out>
+	  <chunk name="pr_det_pp" case="caseFirstWord">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><var n="tipusdet"/></tag>
+	      <tag><lit-tag v="GD"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>	     
+	      <clip pos="3" side="tl" part="whole"/>  
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="2" side="tl" part="GD" link-to="3"/>
+	      <clip pos="2" side="tl" part="mf"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="3"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
 <rule comment="REGLA: ADJ + GRADO (gorriago, gorriegi, gorrien(a))">
       <pattern>
 	<pattern-item n="adj"/>
@@ -8492,7 +8631,36 @@ pingui pingui pingui MG
       </action>
  </rule>
 	      
-
+<rule comment="REGLA: (zituzte)la (de momento se traduce por una coma porque sino el 'que' sin ordenar distorsiona el sentido:
+hil dela esan dute - han muerto *que han dicho">
+      <pattern>
+	<pattern-item n="cnjsub"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="que" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="tags"/></tag>
+	    </tags>
+	  <!--  <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu> -->
+	  <lu>
+	    <lit v=","/>
+	    <lit-tag v="cm"/>
+	  </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+	 
 <rule comment="REGLA: adv">
       <pattern>
 	<pattern-item n="adv"/>
