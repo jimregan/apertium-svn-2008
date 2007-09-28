@@ -715,10 +715,30 @@
 						<lit v="vostè"/>
 					</equal>
 				</test>
-				<let>
-					<clip pos="1" side="tl" part="lem"/>
-					<lit v="vos"/>
-				</let>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" side="sl" part="nbr"/>
+								<lit-tag v="sg"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" side="tl" part="lem"/>
+							<lit v="vos"/>
+						</let>
+					</when>
+					<otherwise>
+						<let>
+							<clip pos="1" side="tl" part="lem"/>
+							<lit v="vosautres"/>
+						</let>
+						<let>
+							<clip pos="1" side="tl" part="gen"/>
+							<lit-tag v="GD"/>
+						</let>
+					</otherwise>
+				</choose>
 				<let>
 					<clip pos="1" side="tl" part="pers"/>
 					<lit-tag v="p2"/>
