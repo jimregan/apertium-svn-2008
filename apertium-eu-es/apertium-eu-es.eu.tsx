@@ -290,6 +290,19 @@
     </sequence>
   </def-mult>
 
+<def-mult name="NOM_POST"><!--afegit 28/09/07 -->
+    <sequence>
+      <tags-item tags="n"/>
+      <label-item label="POST"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="ADJIZO_POST"><!--afegit 28/09/07 -->
+    <sequence>
+      <tags-item tags="adj.izo"/>
+      <label-item label="POST"/>
+    </sequence>
+  </def-mult>
 <!--<def-mult name="DETPOST" closed="true">
     <sequence>
       <tags-item tags="det.art.*"/>
@@ -339,11 +352,27 @@
     <label-sequence>
       <label-item label="INF"/>
       <label-item label="ADJIZOA"/>
+    </label-sequence>  
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="ADJIZOA_DET"/>
     </label-sequence> 
     <label-sequence>
       <label-item label="INF"/>
       <label-item label="ADJIZO"/>
+    </label-sequence>  
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="NOM"/>
     </label-sequence> 
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="NOMA"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="NOMA_DET"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="GRA"/>
       <label-item label="SPOST"/>
