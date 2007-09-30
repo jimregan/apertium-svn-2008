@@ -13666,33 +13666,72 @@
 			<pattern-item n="rel"/>
 		</pattern>
 		<action>
-			<call-macro n="f_concord1">
-				<with-param pos="1"/>
-			</call-macro>
 			<call-macro n="tipus_rel">
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
-			<out>
-				<chunk name="rel" case="caseFirstWord">
-					<tags>
-						<tag><lit-tag v="REL"/></tag>
-						<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
-						<tag><clip pos="1" side="tl" part="gen"/></tag>
-						<tag><clip pos="1" side="tl" part="nbr"/></tag>
-						<tag><var n="tipusrel"/></tag>
-					</tags>
-					<lu>
-						<clip pos="1" side="tl" part="lem"/>  
-						<clip pos="1" side="tl" part="a_prn"/>
-						<clip pos="1" side="tl" part="tipus_prn"/> 
-						<clip pos="1" side="tl" part="gen"/>
-						<clip pos="1" side="tl" part="nbr"/>
-					</lu> 
-				</chunk>
-			</out>  
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="1" side="sl" part="lem"/>
+							<lit v="dont"/>
+						</equal>
+
+						
+					</test>
+					<out>
+						<chunk name="rel" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="REL"/></tag>
+								<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
+								<tag><var n="genero"/></tag>
+								<tag><var n="numero"/></tag>
+								<tag><var n="tipusrel"/></tag>
+							</tags>
+							<lu>
+								<get-case-from pos="1">
+									<lit v="de"/>
+								</get-case-from>
+								<lit-tag v="pr"/>
+							</lu>
+							<b/>
+							<lu>
+								<lit v="el qual"/>
+								<clip pos="1" side="tl" part="a_prn"/>
+								<clip pos="1" side="tl" part="tipus_prn"/> 
+								<var n="genero"/>
+								<var n="numero"/>
+							</lu> 
+						</chunk>
+					</out>  
+				</when>
+				<otherwise>
+					<call-macro n="f_concord1">
+						<with-param pos="1"/>
+					</call-macro>
+					<out>
+						<chunk name="rel" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="REL"/></tag>
+								<tag><clip pos="1" side="tl" part="tipus_prn_chunk"/></tag>
+								<tag><clip pos="1" side="tl" part="gen"/></tag>
+								<tag><clip pos="1" side="tl" part="nbr"/></tag>
+								<tag><var n="tipusrel"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lem"/>  
+								<clip pos="1" side="tl" part="a_prn"/>
+								<clip pos="1" side="tl" part="tipus_prn"/> 
+								<clip pos="1" side="tl" part="gen"/>
+								<clip pos="1" side="tl" part="nbr"/>
+							</lu> 
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
