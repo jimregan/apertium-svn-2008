@@ -34,6 +34,9 @@
 <def-cat n="nom_i_nom">
       <cat-item name="nom_conj_nom"/>
     </def-cat>
+<def-cat n="controla_adv">
+      <cat-item name="controla_adv"/>
+    </def-cat>
 
 	 <def-cat n="pottenirpronom">
 		 <cat-item name="verbcj"/>
@@ -177,6 +180,42 @@
 						<clip pos="1" part="nbr"/>
 					</lu>
 				</out>   
+			</action>
+		</rule> 
+
+				<rule comment="CHUNK: canvia _sonque_ per _pas que_">
+			<pattern>
+				<pattern-item n="controla_adv"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="sonque"/>
+							</equal>
+						</test>
+						<out>
+							<lu>
+								<lit v="pas"/>
+								<lit-tag v="adv"/>
+							</lu>
+							<b/>
+							<lu>
+								<lit v="que"/>
+								<lit-tag v="cnjsub"/>
+							</lu>
+						</out>  
+					</when>
+					<otherwise>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+						</out>
+					</otherwise>
+			</choose>
 			</action>
 		</rule> 
 

@@ -953,6 +953,50 @@
 		</action>
 	</rule>
 	
+	<rule comment="REGLA: SV adv SN">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="modifica_sv">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="lema_prn">
+				<with-param pos="3"/>
+			</call-macro>
+
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<lit v="controla_adv"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+			</out>
+			<call-macro n="partitiu" aversion="oc-ca">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+	
 	<rule comment="REGLA: prep SN">
 		<pattern>
 			<pattern-item n="pr"/>

@@ -339,6 +339,9 @@
       <attr-item tags="preadv"/>
       <attr-item tags="adv.itg"/>
     </def-attr>
+    <def-attr n="etiq_adv">
+      <attr-item tags="nomes"/>
+    </def-attr>
 
     <def-attr n="a_pp">
       <attr-item tags="vblex.pp"/>
@@ -700,6 +703,24 @@
 				</let>
 			</when>
 		</choose>-->
+	</def-macro>
+	
+	<def-macro n="f_etiq_adv" npar="1">
+		<choose>
+			<when>
+				<test>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="només"/>
+					</equal>
+				</test>
+				<let>
+					<clip pos="1" side="tl" part="etiq_adv"/>
+					<lit-tag v="nomes"/>
+				</let>
+			</when>
+		</choose>
+
 	</def-macro>
 	
 	<def-macro n="voste" npar="1">
@@ -5404,9 +5425,9 @@
 			<pattern-item n="verbpers"/>
 		</pattern>
 		<action>
-			<call-macro n="f_lex_adv">
+		<!--	<call-macro n="f_etiq_adv">
 				<with-param pos="1"/>
-			</call-macro>
+			</call-macro>-->
 			<call-macro n="f_imp">
 				<with-param pos="2"/>
 			</call-macro>
@@ -5440,6 +5461,7 @@
 				<chunk name="adv">
 					<tags>
 						<tag><clip pos="1" side="tl" part="a_adv"/></tag>
+<!-- 						<tag><clip pos="1" side="tl" part="etiq_adv"/></tag> -->
 					</tags>
 					<lu>
 						<get-case-from pos="2">
