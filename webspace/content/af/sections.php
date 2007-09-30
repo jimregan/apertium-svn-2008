@@ -12,20 +12,21 @@ $subsections = array
    */
    "testdrive"=>array
    (
-   	"link@Spanish&ndash;Catalan"=>"http://xixona.dlsi.ua.es/prototype",
-   	"link@Spanish&ndash;Galician"=>"http://sli.uvigo.es/tradutor"
+   	"link@Engels-Afrikaans"=>"http://interpret.co.za/",
+   	"link@Spaans&ndash;Katalaans"=>"http://xixona.dlsi.ua.es/prototype",
+   	"link@Spaans&ndash;Galies"=>"http://sli.uvigo.es/tradutor"
    ),
 "documentation" =>array
    (
    /*"documents"=>"Documents",*/
-   "publications"=>"Publications",
+   "publications"=>"Publikasies",
    "link@Wiki" => "http://xixona.dlsi.ua.es/wiki"
    ),
 "interact" =>array
 	(
 		"link@cgi::irc"=>"http://xixona.dlsi.ua.es/cgi-bin/cgiirc/irc.cgi",
 		"link@Forum"=>"http://sourceforge.net/forum/forum.php?forum_id=481030",
-		"link@Mailing list"=>"https://lists.sourceforge.net/lists/listinfo/apertium-stuff"
+		"link@E-poslys"=>"https://lists.sourceforge.net/lists/listinfo/apertium-stuff"
 	),
 "latestnews" =>array
 	(
@@ -33,10 +34,10 @@ $subsections = array
 	),
 "software" =>array
 	(
-		"apertium-tagger-training-tools"=>"Tagger training tools",
-		"apertium-transfer-tools"=>"Transfer tools",
-		"lttoolbox"=>"Lexical transformation",
-		"apertium-eval-translator"=>"Evaluation"
+		"apertium-tagger-training-tools"=>"Opleiding van etiketeerder",
+		"apertium-transfer-tools"=>"Oordrag programme",
+		"lttoolbox"=>"Leksikale transformasie",
+		"apertium-eval-translator"=>"Evaluasie"
 	),
 );
 
