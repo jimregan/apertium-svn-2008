@@ -13,7 +13,7 @@ function printLanguageLink($code, $text, $url, $newLang) {
 
 <div id="langselect">
 	<?php
-		//printLanguageLink("af","afrikaans (afrikaans)", $url, $newLang, $currentLang);
+		printLanguageLink("af","afrikaans", $url, $newLang, $currentLang);
 		printLanguageLink("ca","catal&agrave;", $url, $newLang, $currentLang);
 		//printLanguageLink("cy","cymraeg", $url, $newLang, $currentLang);
 		//printLanguageLink("da","dansk", $url, $newLang, $currentLang);
