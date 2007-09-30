@@ -24,15 +24,15 @@ function printLanguageLink($code, $text, $url, $newLang) {
 		printLanguageLink("fr","fran&ccedil;ais", $url, $newLang, $currentLang);
 		printLanguageLink("gl","galego", $url, $newLang, $currentLang);
 		//printLanguageLink("id","indonesian", $url, $newLang, $currentLang);
-		//printLanguageLink("mk","македонски јазик (macedonian)", $url, $newLang, $currentLang);		
+		//printLanguageLink("mk","македонски", $url, $newLang, $currentLang);		
 		//printLanguageLink("ms","bahasa Melayu (malay)", $url, $newLang, $currentLang);		
 		//printLanguageLink("nl","nederlands (	dutch)", $url, $newLang, $currentLang);
 		printLanguageLink("oc","occit&agrave;", $url, $newLang, $currentLang);
 		printLanguageLink("pt","portugu&ecirc;s", $url, $newLang, $currentLang);
 		printLanguageLink("ro","rom&acirc;nă", $url, $newLang, $currentLang);
-		//printLanguageLink("sh","cрпскохрватски / srpskohrvatski (serbo-croatian)", $url, $newLang, $currentLang);
-		//printLanguageLink("sv","svenska (swedish)", $url, $newLang, $currentLang);
-		//printLanguageLink("tg","тоҷикӣ (tajik)", $url, $newLang, $currentLang);		
+		//printLanguageLink("sh","srpskohrvatski", $url, $newLang, $currentLang);
+		//printLanguageLink("sv","svenska", $url, $newLang, $currentLang);
+		//printLanguageLink("tg","тоҷикӣ", $url, $newLang, $currentLang);		
 		print '<a title="" href="' . $url . 'lang=' . $newLang . '">-&nbsp;<b>'. $langtext .'</b>&nbsp;</a>';
 	?>
 </div>
