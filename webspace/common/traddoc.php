@@ -9,18 +9,10 @@
 	**************************
 */
 function process_form() {
-	$dir = $_POST["direction"];
+  $dir = $_POST["direction"];
   $mark = $_POST["mark"];
   $doctype = $_POST["doctype"];
-
-
-	if($mark == 1) {
-		$markUnknown = "";
-	} else {
-		$markUnknown = "-u";
-	}
-
-	translate($doctype, $dir, $markUnknown);
+  translate($doctype, $dir, $markUnknown);
 }
 
 /*
@@ -64,7 +56,7 @@ function translate($doctype, $dir, $markUnknown) {
     $program = $program."-ooffice";
   }
 
-  $cmd = $program." /home/fran/svnroot/archive/apertium-$datapair $dir $type ".$_FILES['userfile']['tmp_name']." ".$tempfile;
+  $cmd = $program." /home/fran/svnroot/archive/apertium-$datapair*/ $dir $doctype ".$_FILES['userfile']['tmp_name']." ".$tempfile;
   //$cmd = $program." $dir $type ".$_FILES['userfile']['tmp_name']." ".$tempfile;
   
   $str = shell_exec($cmd);

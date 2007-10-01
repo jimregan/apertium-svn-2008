@@ -5,38 +5,13 @@ include_once("config/apertium-config.php");
 
 <?php
 	show_form("");
-?>
-
-<?php
-/*
-	**************************
-	   PROCESS FORM
-	**************************
-*/
-function process_form() {
-	$dir = $_POST["direction"];
-  $mark = $_POST["mark"];
-  $doctype = $_POST["doctype"];
-
-
-	if($mark == 1) {
-		$markUnknown = "";
-	} else {
-		$markUnknown = "-u";
-	}
-
-	show_form("");
-		
-	translate($doctype, $dir, $markUnknown);
-
-}
-
 
 /*
   **************************
 	   SHOW FORM
-	**************************
+  **************************
 */
+
 function show_form($text) {
 print<<<_HTML_
 <form class="translation" enctype="multipart/form-data" action="common/traddoc.php" method="post">
