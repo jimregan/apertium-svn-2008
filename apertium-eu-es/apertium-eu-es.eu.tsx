@@ -206,6 +206,7 @@
   </def-label>
 <def-label name="PRT" closed="true">
     <tags-item tags="PRT.*"/>
+    <tags-item tags="PRT"/>
   </def-label>
 <def-label name="BST" closed="true">
     <tags-item tags="BST"/>
@@ -385,6 +386,27 @@
       <label-item label="PP"/>
       <label-item label="PRGEN"/>
     </label-sequence> 
+    <label-sequence>
+      <label-item label="PRT"/>
+      <label-item label="NOM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRT"/>
+      <label-item label="NOMA"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRT"/>
+      <label-item label="NOMA_DET"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRT"/>
+      <label-item label="NOMKO"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRT"/>
+      <label-item label="NOM_POST"/>
+    </label-sequence>
+
 
  </forbid>
 
@@ -395,7 +417,21 @@
       </label-set>
     </enforce-after>
    
-   
+   <enforce-after label="PRT">
+      <label-set>
+        <label-item label="ukan"/>
+      </label-set>
+    </enforce-after>
+    <enforce-after label="PRT">
+      <label-set>
+        <label-item label="izan"/>
+      </label-set>
+    </enforce-after>
+    <enforce-after label="PRT">
+      <label-set>
+        <label-item label="VBSINT"/>
+      </label-set>
+    </enforce-after>
 
  </enforce-rules>
 

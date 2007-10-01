@@ -8,6 +8,10 @@
 
     <def-cat n="nom">
       <cat-item tags="n"/>
+    </def-cat>
+
+    <def-cat n="nom_np">
+      <cat-item tags="n"/>
       <cat-item tags="np.*"/>
       <cat-item tags="n.acr"/>
     </def-cat>
@@ -2243,7 +2247,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
    <rule comment="REGLA: NOM ( per a col·locar la cua en les multiparaules amb g i traduir noms sense determinant">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -2528,7 +2532,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
  <rule comment="REGLA: NOM + POST (etxetara)">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="post"/>
       </pattern>
       <action>
@@ -2760,9 +2764,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
 <rule comment="REGLA: NOM + POST (Araba eta Bizkaiko)">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="conj"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="post"/>
       </pattern>
       <action>
@@ -2833,11 +2837,11 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
 <rule comment="REGLA: NOM + POST (Gipuzkoa, Araba eta Bizkaiko)">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="cm"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="conj"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="post"/>
       </pattern>
       <action>
@@ -3013,7 +3017,7 @@ pingui pingui pingui MG
 )">
       <pattern>
 	<pattern-item n="detindizl"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -3067,7 +3071,7 @@ pingui pingui pingui MG
 )">
       <pattern>
 	<pattern-item n="detindizl"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="post"/>
       </pattern>
       <action>
@@ -3367,7 +3371,7 @@ pingui pingui pingui MG
 <rule comment="REGLA: ADJ + NOM + POST (azken urtetako)">
       <pattern>
 	<pattern-item n="adjizl"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="post"/>
       </pattern>
       <action>
@@ -5325,7 +5329,7 @@ pingui pingui pingui MG
 <rule comment="REGLA: NUM + NOM (bi emakume - dos mujeres (pl))">
       <pattern>
 	<pattern-item n="num"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -5487,7 +5491,7 @@ pingui pingui pingui MG
 <rule comment="REGLA: NUM + NOM (bi erasotan - en dos agresiones (pl))">
       <pattern>
 	<pattern-item n="num"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="post"/>
       </pattern>
       <action>
@@ -6948,7 +6952,7 @@ pingui pingui pingui MG
       <pattern>
 	<pattern-item n="prnpos"/>
 	<pattern-item n="en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="ko_en"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="det"/>
@@ -7259,7 +7263,7 @@ pingui pingui pingui MG
 
 <rule comment="REGLA: N + ik + ADJ + sup + a (gauzarik txarrena)">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="part"/>
 	<pattern-item n="adj"/>
 	<pattern-item n="sup"/>
