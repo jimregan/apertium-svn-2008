@@ -2,10 +2,6 @@
  session_start()
 ?>
 
-<?php
-	print "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-?>
-
 <?php include_once("common/meta.php") ?>
 <body>
 <?php
