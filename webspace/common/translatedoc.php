@@ -127,7 +127,6 @@ function translate($doctype, $dir, $markUnknown) {
 
 	$datapair = getDataPair($dir);
 
-	/*
   if($datapair == "en-ca") {
   	$program="/home/fran/svnroot/local/stable/bin/apertium";
   	# /home/sortiz/apertium-$nomtrad $direccion $tipo $userfile $archivo2";
@@ -135,9 +134,8 @@ function translate($doctype, $dir, $markUnknown) {
   	$program="/home/fran/svnroot/local/stable/bin/apertium-translator";
   	# /home/sortiz/apertium-$nomtrad $direccion $tipo $userfile $archivo2";
   }
-  */
 
-	$program = $APERTIUM_TRANSLATOR;  
+	//$program = $APERTIUM_TRANSLATOR;  
 
   if($doctype == "sxw" || $doctype == "odt" || $doctype == "odtu" || $doctype == "sxwu" ||
      $doctype == "doc" || $doctype == "docu")
