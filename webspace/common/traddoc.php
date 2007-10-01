@@ -12,7 +12,7 @@ function process_form() {
   $dir = $_POST["direction"];
   $mark = $_POST["mark"];
   $doctype = $_POST["doctype"];
-  translate($doctype, $dir, $markUnknown);
+	translate($doctype, $dir, $mark);
 }
 
 /*
