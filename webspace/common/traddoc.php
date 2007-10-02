@@ -1,4 +1,5 @@
 <?php
+	include_once("../config/apertium-config.php");
 	process_form();
 ?>
 
@@ -31,7 +32,7 @@ function translate($doctype, $dir, $markUnknown) {
   }
 
   if($_FILES['userfile']['size']>16384*4*4*4*4){
-    echo "FILE IS TOO BIG";
+    print "<p>The file is too big!</p>";
     exit;
   }
 
@@ -40,24 +41,7 @@ function translate($doctype, $dir, $markUnknown) {
 
 	$datapair = getDataPair($dir);
 
-  if($datapair == "en-ca") {
-  	$program="/home/fran/svnroot/local/stable/bin/apertium";
-  	# /home/sortiz/apertium-$nomtrad $direccion $tipo $userfile $archivo2";
-  } else {
-  	$program="/home/fran/svnroot/local/stable/bin/apertium-translator";
-  	# /home/sortiz/apertium-$nomtrad $direccion $tipo $userfile $archivo2";
-  }
-
-	//$program = $APERTIUM_TRANSLATOR;  
-
-  if($doctype == "sxw" || $doctype == "odt" || $doctype == "odtu" || $doctype == "sxwu" ||
-     $doctype == "doc" || $doctype == "docu")
-  {
-    $program = $program."-ooffice";
-  }
-
-  $cmd = $program." /home/fran/svnroot/archive/apertium-$datapair*/ $dir $doctype ".$_FILES['userfile']['tmp_name']." ".$tempfile;
-  //$cmd = $program." $dir $type ".$_FILES['userfile']['tmp_name']." ".$tempfile;
+  $cmd = $APERTIUM_TRANSLATOR . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
   
   $str = shell_exec($cmd);
 

@@ -1,6 +1,5 @@
 <?php
 include_once("config/apertium-config.php");
-// apertium-config.php: $APERTIUM_TRANSLATOR, $LING_DATA_DIR, etc.
 ?>
 
 <?php

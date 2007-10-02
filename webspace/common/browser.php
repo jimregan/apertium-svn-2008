@@ -54,8 +54,9 @@
     <title>apertium</title>
   </head>
 
-  <?php
-  $variante = $_POST["variante"];
+<?php 
+	$variante = $_POST["variante"];
+	
    if($variante!=2){?>
   <frameset rows="50,*" frameborder="no">
   <?php

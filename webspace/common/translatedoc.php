@@ -1,20 +1,9 @@
 <?php
-include_once("config/apertium-config.php");
-/*
-$file = "content/" . $lang . "/translatedoc.php";
-if( file_exists($file) ) {
-	include_once("content/" . $lang . "/translatedoc.php");
-} else {
-	if (file_exists("content/en/translatedoc.php") ) {
-		include_once("content/en/translatedoc.php");
-	}
-}
-*/
+	include_once("config/apertium-config.php");
+	show_form("");
 ?>
 
 <?php
-	show_form("");
-
 /*
   **************************
 	   SHOW FORM
@@ -57,7 +46,9 @@ print<<<_HTML_
 		<option value="html" title="HyperText Markup Language">HTML - HyperText Markup Language</option>
 		<option value="rtf" title="Rich Text Format">RTF - Rich Text Format</option>
 		<option value="odt" title="OpenDocument">ODT - OpenDocument</option>
+		<!--
 		<option value="sxw" title="OpenOffice.org Writer">SXW - OpenOffice.org Writer</option>
+		-->
 	</select>
 	</td>
 	</label>
