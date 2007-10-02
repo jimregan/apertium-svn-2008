@@ -374,6 +374,14 @@
       <label-item label="INF"/>
       <label-item label="NOMA_DET"/>
     </label-sequence>
+    <label-sequence><!--joan den -->
+      <label-item label="INF"/>
+      <label-item label="VERBREL"/>
+    </label-sequence>
+    <label-sequence><!--joan da -->
+      <label-item label="INF"/>
+      <label-item label="VBSINT"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="GRA"/>
       <label-item label="SPOST"/>
@@ -386,7 +394,7 @@
       <label-item label="PP"/>
       <label-item label="PRGEN"/>
     </label-sequence> 
-    <label-sequence>
+<!--    <label-sequence>
       <label-item label="PRT"/>
       <label-item label="NOM"/>
     </label-sequence>
@@ -405,7 +413,7 @@
     <label-sequence>
       <label-item label="PRT"/>
       <label-item label="NOM_POST"/>
-    </label-sequence>
+    </label-sequence> -->
 
 
  </forbid>
@@ -420,15 +428,7 @@
    <enforce-after label="PRT">
       <label-set>
         <label-item label="ukan"/>
-      </label-set>
-    </enforce-after>
-    <enforce-after label="PRT">
-      <label-set>
         <label-item label="izan"/>
-      </label-set>
-    </enforce-after>
-    <enforce-after label="PRT">
-      <label-set>
         <label-item label="VBSINT"/>
       </label-set>
     </enforce-after>

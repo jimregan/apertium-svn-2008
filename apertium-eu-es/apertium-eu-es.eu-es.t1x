@@ -14,6 +14,7 @@
       <cat-item tags="n"/>
       <cat-item tags="np.*"/>
       <cat-item tags="n.acr"/>
+   <!--   <cat-item tags="num"/> -->
     </def-cat>
 
     <def-cat n="nom_adv">
@@ -21,6 +22,7 @@
       <cat-item tags="np.*"/>
       <cat-item tags="adv"/>
       <cat-item tags="adv.gen"/>
+   <!--   <cat-item tags="num"/> -->
     </def-cat>
 
      <def-cat n="adv">
@@ -1720,10 +1722,16 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	  </when>
 	  <when>
 	    <test>
-	      <equal>
-		<clip pos="1" side="sl" part="lem"/> 
-		<lit v="k"/>
-	      </equal>
+	      <or>
+		<equal>
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="k"/>
+		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="ik"/>
+		</equal>
+	      </or>
 	    </test>
 	    <let>
 	      <var n="chunk"/>
@@ -2365,7 +2373,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
  <rule comment="REGLA: NOM + DET (etxea)">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -2575,7 +2583,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
 <rule comment="REGLA: NOM + DET + POST (etxera)">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="post"/>
       </pattern>
@@ -3131,7 +3139,7 @@ pingui pingui pingui MG
  <rule comment="REGLA: ADJ + NOM + DET (euskal presoak)">
       <pattern>
 	<pattern-item n="adjizl"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -3245,7 +3253,7 @@ pingui pingui pingui MG
  <rule comment="REGLA: ADJ + NOM + DET + POST (lehen orrialdean)">
       <pattern>
 	<pattern-item n="adjizl"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="post"/>
       </pattern>
@@ -3758,7 +3766,7 @@ pingui pingui pingui MG
       <pattern>
 	<pattern-item n="nom_adv"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -3841,7 +3849,7 @@ pingui pingui pingui MG
       <pattern>
 	<pattern-item n="nom_adv"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="post"/>
       </pattern>
@@ -3929,10 +3937,10 @@ pingui pingui pingui MG
 
 <rule comment="REGLA: N + ART + ko/ren + NOM + DET (emakumearen egunkaria)"> 
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -4058,10 +4066,10 @@ pingui pingui pingui MG
 
 <rule comment="REGLA: N + ART + ko/ren + NOM + DET (larunbateko etapan)"> 
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="post"/>
       </pattern>
@@ -4198,7 +4206,7 @@ pingui pingui pingui MG
 	<pattern-item n="adjizl"/>
 	<pattern-item n="nom_adv"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -4356,7 +4364,7 @@ pingui pingui pingui MG
 
 <rule comment="REGLA: N + ART + ko/ren + NOM + DET (bulegoko zuzendari ohia - el ex director de la oficina)"> 
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
 	<pattern-item n="nom"/>
@@ -4573,7 +4581,7 @@ pingui pingui pingui MG
 	<pattern-item n="nom_adv"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -4735,7 +4743,7 @@ pingui pingui pingui MG
 	<pattern-item n="nom_adv"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="post"/>
       </pattern>
@@ -4906,7 +4914,7 @@ pingui pingui pingui MG
 	<pattern-item n="nom_adv"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -5116,7 +5124,7 @@ pingui pingui pingui MG
 	<pattern-item n="nom_adv"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="post"/>
       </pattern>
@@ -5402,7 +5410,7 @@ pingui pingui pingui MG
 <rule comment="REGLA: NUM + NOM + DET (bi emakumeak - las dos mujeres">
       <pattern>
 	<pattern-item n="num"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -5574,7 +5582,7 @@ pingui pingui pingui MG
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="adj"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -5747,7 +5755,7 @@ pingui pingui pingui MG
                                   bost urtean - en () cinco años">
       <pattern>
 	<pattern-item n="num"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="post"/>
       </pattern>
@@ -5894,7 +5902,7 @@ pingui pingui pingui MG
 <pattern>
   <pattern-item n="adjizl"/>
   <pattern-item n="num"/>
-  <pattern-item n="nom"/>
+  <pattern-item n="nom_np"/>
   <pattern-item n="det"/>
   <pattern-item n="post"/>
 </pattern>
@@ -6199,7 +6207,7 @@ pingui pingui pingui MG
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="adj"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="post"/>
       </pattern>
@@ -6536,7 +6544,7 @@ pingui pingui pingui MG
 
 <rule comment="REGLA: NOM + DET + ko/en NUM + DET (goizeko zortziak - las ocho de la mañana. Se pone en femenino porque casi siempre es indicación horaria)">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
 	<pattern-item n="num"/>
@@ -6655,7 +6663,7 @@ pingui pingui pingui MG
 
 <rule comment="REGLA: NOM + DET + ko/en NUM + DET + POST (goizeko bederatzietan - a las nueve de la mañana. Se pone en femenino porque casi siempre es indicación horaria)">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
 	<pattern-item n="num"/>
@@ -6787,7 +6795,7 @@ pingui pingui pingui MG
       <pattern>
 	<pattern-item n="prnpos"/>
 	<pattern-item n="en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -6954,7 +6962,7 @@ pingui pingui pingui MG
 	<pattern-item n="en"/>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -7047,10 +7055,10 @@ pingui pingui pingui MG
       <pattern>
 	<pattern-item n="prnpos"/>
 	<pattern-item n="en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
 	<pattern-item n="ko_en"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -7371,7 +7379,7 @@ pingui pingui pingui MG
       <pattern>
 	<pattern-item n="pp_adv"/>
 	<pattern-item n="ko"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
