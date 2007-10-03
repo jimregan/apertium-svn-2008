@@ -14,9 +14,9 @@
       <cat-item tags="SPGEN.*"/>
     </def-cat> 
    
-    <def-cat n="PR">
-      <cat-item tags="PR"/>
-      <cat-item tags="PRGEN"/>
+    <def-cat n="PREP">
+      <cat-item tags="PREP.*"/>
+      <cat-item tags="PREPGEN.*"/>
     </def-cat>  
 
     <def-cat n="SA">
@@ -672,7 +672,7 @@
  <rule> <!-- REGLA: SPR + PR (lanetik kanpo; iturri ofizialen arabera)-->
       <pattern>
 	<pattern-item n="SPR"/>
-	<pattern-item n="PR"/>
+	<pattern-item n="PREP"/>
       </pattern>
       <action>
 	<choose>
@@ -717,10 +717,20 @@
 	    </let>
 	  </when>
 	</choose>
-	<let>	      
-	  <clip pos="1" part="a_SP"/>
-	  <lit-tag v="SPR-SN"/>
-	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="a_adv"/>
+		<lit-tag v="pr"/>
+	      </equal>
+	    </test>		
+	    <let>	      
+	      <clip pos="1" part="a_SP"/>
+	      <lit-tag v="SPR-SN"/>
+	    </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk>
 	    <clip pos="2" part="whole"/>
@@ -737,7 +747,7 @@
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SPR"/>
-	<pattern-item n="PR"/>
+	<pattern-item n="PREP"/>
       </pattern>
       <action>
 	<choose>
@@ -856,11 +866,20 @@
 	    </choose>
 	  </when>
 	</choose>
-
-	<let>	      
-	  <clip pos="2" part="a_SP"/>
-	  <lit-tag v="SPR-SN"/>
-	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="a_adv"/>
+		<lit-tag v="pr"/>
+	      </equal>
+	    </test>
+	    <let>	      
+	      <clip pos="2" part="a_SP"/>
+	      <lit-tag v="SPR-SN"/>
+	    </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
@@ -1096,7 +1115,7 @@
 <rule> <!-- REGLA: SPR + PR + SN (Autonomiari buruzko erreferenduma)-->
       <pattern>
 	<pattern-item n="SPR"/>
-	<pattern-item n="PR"/>
+	<pattern-item n="PREP"/>
 	<pattern-item n="SN"/>
       </pattern>
       <action>
@@ -1184,10 +1203,20 @@
 	    </let>
 	  </when>
 	</choose>
-	<let>	      
-	  <clip pos="1" part="a_SP"/>
-	  <lit-tag v="SPR-SN"/>
-	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="a_adv"/>
+		<lit-tag v="pr"/>
+	      </equal>
+	    </test>
+	    <let>	      
+	      <clip pos="1" part="a_SP"/>
+	      <lit-tag v="SPR-SN"/>
+	    </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
@@ -1207,7 +1236,7 @@
 <rule> <!-- REGLA: SPR + PR + SPGEN + SADV (gobernu demokratikoaren aurkako kolpearen ostean)-->
       <pattern>
 	<pattern-item n="SPR"/>
-	<pattern-item n="PR"/>
+	<pattern-item n="PREP"/>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SADV"/> 
       </pattern>
@@ -1296,10 +1325,20 @@
 	    </let>
 	  </when>
 	</choose>
-	<let>	      
-	  <clip pos="1" part="a_SP"/>
-	  <lit-tag v="SPR-SN"/>
-	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="a_adv"/>
+		<lit-tag v="pr"/>
+	      </equal>
+	    </test>
+	    <let>	      
+	      <clip pos="1" part="a_SP"/>
+	      <lit-tag v="SPR-SN"/>
+	    </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk>
 	    <clip pos="4" part="whole"/>

@@ -14,7 +14,6 @@
       <cat-item tags="n"/>
       <cat-item tags="np.*"/>
       <cat-item tags="n.acr"/>
-   <!--   <cat-item tags="num"/> -->
     </def-cat>
 
     <def-cat n="nom_adv">
@@ -22,7 +21,6 @@
       <cat-item tags="np.*"/>
       <cat-item tags="adv"/>
       <cat-item tags="adv.gen"/>
-   <!--   <cat-item tags="num"/> -->
     </def-cat>
 
      <def-cat n="adv">
@@ -200,6 +198,7 @@
       <attr-item tags="np.loc"/>
       <attr-item tags="np.ant"/>
       <attr-item tags="np.al"/>	 
+      <attr-item tags="num"/>	 
     </def-attr>
 
     <def-attr n="a_np">
@@ -7481,6 +7480,110 @@ pingui pingui pingui MG
  </rule>
 
 
+<!--******************* REGLAS CON NÚMEROS (PARA FECHAS) ***************************** -->
+
+
+
+<rule comment="REGLA: NUM + POST (2007ko))">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pr_num">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><lit-tag v="UNDET"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_num"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="2" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: NUM + POST (irailaren 9ko) (treure el determinant? - de 9 de septiembre)">
+      <pattern>
+	<pattern-item n="nom_np"/>
+	<pattern-item n="det"/>
+	<pattern-item n="ko_en"/>
+	<pattern-item n="num"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="concord_n2">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="tipo_det">
+	  <with-param pos="2"/>
+	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<out> 
+	  <chunk name="pr_num_pr_d_n" case="caseFirstWord">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><var n="tipusdet"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_num"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="5" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="4" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="1"/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
 
     <!--********************************* REGLES DE SA ***************************************************** -->
 
@@ -8711,8 +8814,8 @@ hil dela esan dute - han muerto *que han dicho">
 	<out>
 	  <chunk name="spost" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PR"/></tag>
-	    <!--  <tag><clip pos="1" side="tl" part="a_adv"/></tag>-->
+	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
@@ -8785,8 +8888,8 @@ hil dela esan dute - han muerto *que han dicho">
 	<out>
 	  <chunk name="spost" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PRGEN"/></tag>
-	    <!--  <tag><clip pos="1" side="tl" part="a_adv"/></tag>-->
+	      <tag><lit-tag v="PREPGEN"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
