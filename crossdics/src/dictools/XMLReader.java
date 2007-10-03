@@ -23,6 +23,7 @@ package dictools;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -79,6 +80,16 @@ public class XMLReader {
          * 
          */
     protected File dicFile;
+    
+    /**
+     * 
+     */
+    protected InputStream is;
+    
+    /**
+     * 
+     */
+    protected boolean urlDic;
 
     /*
          * 
@@ -101,11 +112,28 @@ public class XMLReader {
     protected SaElement saElement;
 
     /**
+     * 
+     *
+     */
+    public XMLReader() {
+	init();
+    }
+    
+    /**
          * 
          * @param fileName
          */
     public XMLReader(final String fileName) {
 	setDicFile(new File(fileName));
+	init();
+    }
+
+    /**
+     * 
+     *
+     */
+    private final void init() {
+	//getFactory().setXIncludeAware(true);
 	try {
 	    setFactory(DocumentBuilderFactory.newInstance());
 	    setBuilder(getFactory().newDocumentBuilder());
@@ -118,7 +146,6 @@ public class XMLReader {
 	aElement = new AElement();
 	jElement = new JElement();
 	saElement = new SaElement();
-
     }
 
     /**
@@ -127,7 +154,14 @@ public class XMLReader {
          */
     protected final void analize() {
 	try {
-	    setDocument(getBuilder().parse(getDicFile()));
+	    if (isUrlDic()) {
+		// case: url
+		setDocument(getBuilder().parse(getIs()));
+		
+	    } else {
+		// case: file
+		setDocument(getBuilder().parse(getDicFile()));
+	    }
 	} catch (final FileNotFoundException fnfe) {
 	    System.err.println("Error: could not find '" + getDicFile()
 		    + "' file.");
@@ -596,6 +630,34 @@ public class XMLReader {
          */
     public final void setSaElement(SaElement saElement) {
 	this.saElement = saElement;
+    }
+
+    /**
+     * @return the is
+     */
+    public final InputStream getIs() {
+        return is;
+    }
+
+    /**
+     * @param is the is to set
+     */
+    public final void setIs(InputStream is) {
+        this.is = is;
+    }
+
+    /**
+     * @return the urlDic
+     */
+    public final boolean isUrlDic() {
+        return urlDic;
+    }
+
+    /**
+     * @param urlDic the urlDic to set
+     */
+    public final void setUrlDic(boolean urlDic) {
+        this.urlDic = urlDic;
     }
 
 }

@@ -106,7 +106,12 @@ public class ContentElement extends Element implements Cloneable {
 	String str = "";
 	for (Element e : children) {
 	    if (!(e instanceof SElement)) {
-		str += e.getValue();
+		if (e instanceof TextElement) {
+		    TextElement tE = (TextElement)e;
+		    str += tE.getValue();
+		} else {
+		    str += e.getValueNoTags();
+		}
 	    }
 	}
 	return str;
@@ -297,8 +302,7 @@ public class ContentElement extends Element implements Cloneable {
     /**
          * 
          */
-    @Override
-    public String toString() {
+    public String toStringOld() {
 	String tagName = getTagName();
 	if (tagName == null) {
 	    tagName = "";
@@ -316,6 +320,27 @@ public class ContentElement extends Element implements Cloneable {
 
 	final String str = "<" + tagName + ">" + v + sList + "</" + tagName
 		+ ">";
+	return str;
+    }
+
+    /**
+     * 
+     */
+    public String toString() {
+	String str = "";
+	
+	String tagName = getTagName();
+	if (tagName == null) {
+	    tagName = "";
+	}
+	
+	str += "<" + tagName + ">";
+	for (Element e : this.getChildren()) {
+	    String v = e.toString();
+	    str += v;
+	}
+	str += "</" + tagName + ">";
+	
 	return str;
     }
 

@@ -28,6 +28,7 @@ import dics.elements.dtd.ContentElement;
 import dics.elements.dtd.EElement;
 import dics.elements.dtd.Element;
 import dics.elements.dtd.SElement;
+import dics.elements.dtd.TextElement;
 import dics.elements.utils.ElementList;
 
 /**
@@ -300,6 +301,15 @@ public class CrossAction implements Comparable<CrossAction> {
 	int p = 1;
 	for (int k = 0; k < ce.getChildren().size(); k++) {
 	    Element e = ce.getChildren().get(k);
+	    
+	    if (e instanceof TextElement) {
+		// adds lemma to list of elements
+		TextElement tE = (TextElement)e;
+		if (!tE.getValue().equals("l1") && !tE.getValue().equals("l2") && !tE.getValue().equals("l3") && !tE.getValue().equals("l4")) {
+		    eList.add(tE);    
+		}		
+	    }
+	    
 
 	    if (e instanceof SElement) {
 		String pos;
@@ -349,6 +359,17 @@ public class CrossAction implements Comparable<CrossAction> {
 	int p = 1;
 	for (int k = 0; k < ce.getChildren().size(); k++) {
 	    Element e = ce.getChildren().get(k);
+	    /*
+	    if (e instanceof TextElement) {
+		TextElement tE = (TextElement)e;
+		String text = tE.getValue();
+		if (!text.equals("l1") && !text.equals("l4")) {
+		    
+		} else {
+		    
+		}
+	    }
+	    */
 	    if (e instanceof SElement) {
 		String pos;
 		SElement sElement = (SElement) e.clone();
@@ -407,6 +428,15 @@ public class CrossAction implements Comparable<CrossAction> {
 	int p = 1;
 	for (int k = 0; k < ce.getChildren().size(); k++) {
 	    Element e = ce.getChildren().get(k);
+	    
+	    if (e instanceof TextElement) {
+		// adds lemma to list of elements
+		TextElement tE = (TextElement)e;
+		tE.setTemp(tE.getValue());
+		//System.out.println("..tagging '" + tE.getValue() + "'");
+		eList.add(tE);
+	    }
+	    
 	    if (e instanceof SElement) {
 		String value = e.getValue();
 		String pos;

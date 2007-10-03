@@ -58,7 +58,7 @@ public class CrossModelFST {
 	for (CrossAction crossAction : crossModel.getCrossActions()) {
 	    ElementList eList = crossAction.processVars();
 	    str = getElementListString(eList);
-	    // System.err.println("pattern: " + str);
+	    System.err.println("pattern: " + str);
 	    if (!patterns.containsKey(str)) {
 		patterns.put(str, crossAction);
 		// System.out.println(crossAction.getId() + ": " + str);
@@ -135,12 +135,16 @@ public class CrossModelFST {
     private final String getElementListString(ElementList eList) {
 	String str = "";
 	for (Element e : eList) {
-	    String real = ((SElement) e).getTemp();
+	    // only 's' elements are considered as a pattern
+	    //if (e instanceof SElement) {
+	    //String real = ((SElement) e).getTemp();
+	    String real = e.getTemp();
 	    if (real != null) {
 		str += "<" + e.getValue() + "/" + real + ">";
 	    } else {
 		str += "<" + e.getValue() + ">";
 	    }
+	    //}
 	}
 	return str;
     }

@@ -1008,6 +1008,24 @@ public class EElement extends Element implements Cloneable,
 	str += "</e>";
 	return str;
     }
+    
+    /**
+     * 
+     * @return
+     */
+    public final String toStringAll() {
+	String str = "";
+	String r = "";
+	if (this.hasRestriction()) {
+	    r = " r=\"" + getRestriction() + "\"";
+	}
+	str += "<e" + r + ">";
+	for (final Element e : children) {
+	    str += e.toString();
+	}
+	str += "</e>";
+	return str;
+    }
 
     /**
          * 

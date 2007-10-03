@@ -61,4 +61,13 @@ public class TextElement extends Element {
     public final void setValue(final String v) {
 	value = v;
     }
+    
+    /**
+     * 
+     */
+    public final String toString() {
+	String str = "";
+	str += this.getValue();
+	return str;
+    }
 }

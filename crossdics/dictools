@@ -139,6 +139,30 @@ function format-1line() {
    fi
 }
 
+#
+#  read-dic
+#
+function dic-reader() {
+   if [ $nparams -ge 3 ]
+   then
+      java ${java_options} $task $2 $3 $4
+   else
+      echo "Usage: dictools dic-reader <action> [-url] <dic>"
+   fi
+}
+
+#
+#  equiv-paradigms
+#
+function equiv-paradigms() {
+   if [ $nparams -ge 2 ]
+   then
+      java ${java_options} $task $2 $3
+   else
+      echo "Usage: dictools equiv-paradigms <dic> <out>"
+   fi
+}
+
 
 #
 #  show_help
@@ -150,7 +174,7 @@ function show_help() {
    echo "    format:       formats a dictionary."   
    echo "    merge-bil:    merges two bilingual dictionaries."
    echo "    merge-morph:  merges two morphological dictionaries."
-   echo "    process-xincludes: processes all xincludes in the dictionary and expands them."
+   echo "    process-xincludes: processes and expands all xincludes in the dictionary."
    echo "    reverse-bil:  reverses a bilingual dictionary."
    echo "    sort:         sorts (and groups by category) a dictionary."
    exit 127

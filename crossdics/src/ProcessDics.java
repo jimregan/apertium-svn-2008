@@ -23,9 +23,11 @@ import misc.GetTranslation;
 import dics.elements.utils.Msg;
 import dictools.DicConsistent;
 import dictools.DicCross;
+import dictools.DicFindEquivPar;
 import dictools.DicFormat;
 import dictools.DicGather;
 import dictools.DicMerge;
+import dictools.DicReader;
 import dictools.DicReverse;
 import dictools.DicSort;
 
@@ -216,6 +218,35 @@ public class ProcessDics {
 	    } else {
 		DicFormatE1Line dicFormat = new DicFormatE1Line(arguments[1]);
 		dicFormat.printXML(arguments[2]);
+	    }
+	}
+
+	if (getAction().equals("dic-reader")) {
+	    if (getArguments().length < 3) {
+		msg.err("Usage: java ProcessDics dic-reader <action> [-url] <dic>");
+		System.exit(-1);
+	    } else {
+		DicReader dicReader = new DicReader();
+		dicReader.setAction(arguments[1]);
+		if (arguments[2].equals("-url")) {
+		    dicReader.setUrlDic(true);
+		    dicReader.setUrl(arguments[3]);
+		    System.out.println("URL: " + arguments[3]);
+		} else {
+		    dicReader.setDic(arguments[2]);
+		}
+		dicReader.doit();
+	    }
+	}
+
+	if (getAction().equals("equiv-paradigms")) {
+	    if (getArguments().length != 3) {
+		msg.err("Usage: java ProcessDics equiv-paradigms <dic> <dic-out>");
+		System.exit(-1);
+	    } else {
+		DicFindEquivPar finder = new DicFindEquivPar(arguments[1]);
+		finder.setOutFileName(arguments[2]);
+		finder.findEquivalents();
 	    }
 	}
 

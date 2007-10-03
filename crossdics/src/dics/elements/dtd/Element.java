@@ -34,6 +34,11 @@ public class Element implements Cloneable {
          * 
          */
     private String value;
+    
+    /**
+     * 
+     */
+    private String temp;
 
     /**
          * 
@@ -156,12 +161,43 @@ public class Element implements Cloneable {
 	this.value = value;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getValueNoTags() {
 	return valueNoTags;
     }
 
+    /**
+     * 
+     * @param valueNoTags
+     */
     public void setValueNoTags(String valueNoTags) {
 	this.valueNoTags = valueNoTags;
+    }
+
+    /**
+     * @return the temp
+     */
+    public final String getTemp() {
+        return temp;
+    }
+
+    /**
+     * @param temp the temp to set
+     */
+    public final void setTemp(String temp) {
+        this.temp = temp;
+    }
+    
+    /**
+     * 
+     */
+    public String toString() {
+	String str = "";
+	str += this.getValue();
+	return str;
     }
 
 }

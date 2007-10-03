@@ -23,6 +23,7 @@ package dics.elements.dtd;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dics.elements.utils.EElementList;
 
@@ -102,14 +103,41 @@ public class PardefElement extends Element {
     }
 
     /**
+     * 
+     * @param pardef2
+     * @return
+     */
+    public final boolean equals(final PardefElement pardef2) {
+	EElementList eList1 = getEElements();
+	EElementList eList2 = pardef2.getEElements();
+	
+	if (eList1.size() != eList2.size()) {
+	    return false;
+	}
+	
+	HashMap<String,EElement> elementsPardef1 = new HashMap<String,EElement>();
+	
+	for(EElement element1 : eList1) {
+	    elementsPardef1.put(element1.toStringAll(), element1);
+	}
+	
+	for(EElement element2: eList2) {
+	    if (!elementsPardef1.containsKey(element2.toStringAll())) {
+		return false;
+	    }
+	}
+	return true;
+    }
+    
+    /**
          * 
          * @param pardef2
          * @return
          */
-    public final boolean equals(final PardefElement pardef2) {
+    public final boolean equalsOld(final PardefElement pardef2) {
 
-	final ArrayList<EElement> v1 = eElements;
-	final ArrayList<EElement> v2 = pardef2.eElements;
+	final ArrayList<EElement> v1 = getEElements();
+	final ArrayList<EElement> v2 = pardef2.getEElements();
 
 	final int maxi = v1.size();
 	final int maxj = v2.size();
@@ -122,9 +150,9 @@ public class PardefElement extends Element {
 	final boolean[] c2 = new boolean[maxj];
 
 	for (int i = 0; i < maxi; i++) {
-	    final String sv1 = v1.get(i).toString();
+	    final String sv1 = v1.get(i).toStringAll();
 	    for (int j = 0; j < maxj; j++) {
-		final String sv2 = v2.get(j).toString();
+		final String sv2 = v2.get(j).toStringAll();
 		if ((sv1 != null) && (sv2 != null)) {
 		    if (!c1[i] && !c2[j] && sv1.equals(sv2)) {
 			c1[i] = true;
@@ -133,6 +161,7 @@ public class PardefElement extends Element {
 		}
 	    }
 	}
+	
 	for (int i = 0; i < maxi; i++) {
 	    if (!c1[i]) {
 		return false;
@@ -155,6 +184,18 @@ public class PardefElement extends Element {
 	str += "<" + getName() + ">";
 	for (final EElement e : eElements) {
 	    str += e.toString();
+	}
+	return str;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public final String toStringNoParName() {
+	String str = "";
+	for (final EElement e : eElements) {
+	    str += e.toStringAll();
 	}
 	return str;
     }

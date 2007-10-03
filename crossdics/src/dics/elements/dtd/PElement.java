@@ -127,5 +127,17 @@ public class PElement extends Element {
 	r.printXML1Line(dos);
 	dos.writeBytes("</" + getTagName() + ">");
     }
+    
+    /**
+     * 
+     */
+    public final String toString() {
+	String str = "";
+	
+	str += getL().toString();
+	str += getR().toString();
+	
+	return str;
+    }
 
 }

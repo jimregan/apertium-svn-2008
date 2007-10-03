@@ -69,7 +69,16 @@ public class DictionaryReader extends XMLReader {
     public DictionaryReader(final String fileName) {
 	super(fileName);
     }
-
+    
+    /**
+     * 
+     *
+     */
+    public DictionaryReader() {
+	
+	
+    }
+    
     /*
          * (non-Javadoc)
          * 
