@@ -1,4 +1,4 @@
-VERSION=1.0.2
+VERSION=1.0.3
 LANG1=es
 LANG2=pt
 LANG2b=pt_BR
@@ -36,7 +36,6 @@ $(PREFIX1b).autogen.bin: pt_BR.dix
 	apertium-validate-dictionary pt_BR.dix
 	lt-comp rl pt_BR.dix $@
                                 
-                                
 $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
 	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
@@ -50,11 +49,11 @@ $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	lt-comp rl $(BASENAME).$(PREFIX1).dix $@
 
 $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
-#	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
+	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp rl $(BASENAME).$(LANG1).dix $@
 
 $(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-#	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
+	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
 	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
 
 trules-$(PREFIX2).bin: $(BASENAME).trules-$(PREFIX2).xml
@@ -81,13 +80,13 @@ trules-$(PREFIX2).xml: $(BASENAME).trules-$(PREFIX2).xml
 
 EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
            $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
-           $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
+           $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx $(BASENAME).$(LANG1).dix \
            $(BASENAME).$(LANG2).tsx $(BASENAME).trules-$(PREFIX1).xml \
            $(BASENAME).trules-$(PREFIX2).xml $(PREFIX1).prob $(PREFIX2).prob \
            $(PREFIX1)-supervised.make $(PREFIX1)-unsupervised.make \
            $(PREFIX2)-supervised.make $(PREFIX2)-unsupervised.make \
-           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README \
-           filter.sh filter.xsl filterrules.sh filterrules.xsl
+	   $(LANG2).dix $(LANG2b).dix $(PREFIX1).dix $(PREFIX1b).dix \
+           filter.sh filter.xsl filterrules.sh filterrules.xsl modes.xml
                                   
 apertium_es_ptdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_es_modesdir=$(prefix)/share/apertium/modes/
