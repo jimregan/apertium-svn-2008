@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
 <postchunk>
   <section-def-cats>
+    
+		<def-cat n="proverb">
+      <cat-item name="proverb"/>
+    </def-cat>
+		<def-cat n="pro_proverb">
+      <cat-item name="pro_proverb"/>
+    </def-cat>
 
     
     <def-cat n="inf">
@@ -183,7 +190,7 @@
 			</action>
 		</rule> 
 
-				<rule comment="CHUNK: canvia _sonque_ per _pas que_">
+		<rule comment="CHUNK: canvia _sonque_ per _pas que_">
 			<pattern>
 				<pattern-item n="controla_adv"/>
 			</pattern>
@@ -216,6 +223,44 @@
 						</out>
 					</otherwise>
 			</choose>
+			</action>
+		</rule> 
+
+			<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
+				<pattern-item n="proverb"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
+				<pattern-item n="pro_proverb"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+					<b/>
+					<lu>
+						<clip pos="3" part="whole"/>
+					</lu>
+				</out>  
 			</action>
 		</rule> 
 
