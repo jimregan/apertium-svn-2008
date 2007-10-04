@@ -20,19 +20,19 @@ print<<<_HTML_
 	<td>Translation:</td>
 	<td>
 	<select id="direction" name="direction" title="">
-		<option value="es-ca">Spanish-Catalan</option>
-		<option value="ca-es">Catalan-Spanish</option>
-		<option value="es-gl">Spanish-Galician</option>
-		<option value="gl-es">Galician-Spanish</option>
-		<option value="es-pt">Spanish-Portuguese(pt)</option>
-		<option value="pt-es">Portuguese-Spanish</option>
-		<option value="es-br">Spanish-Portuguese(br)</option>
-		<option value="oc-ca">Catalan-Aranese</option>
-		<option value="ca-oc">Aranese-Catalan</option>
-		<option value="fr-ca">Catalan-French</option>
-		<option value="ca-fr">French-Catalan</option>
-		<option value="ca-en">Catalan-English</option>
-		<option value="en-ca">English-Catalan</option>
+_HTML_;
+
+	print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">Spanish - Catalan</option>";
+	print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">Catalan - Spanish</option>";
+	print "<option value='es-pt' " . ($dir == 'es-pt' ? ' selected=true' : '') . ">Spanish - Portuguese</option>";
+	print "<option value='pt-es' " . ($dir == 'pt-es' ? ' selected=true' : '') . ">Portuguese - Spanish</option>";
+	print "<option value='es-pt_BR' " . ($dir == 'es-pt_BR' ? ' selected=true' : '') . ">Spanish - Brazilian Portuguese</option>";
+	print "<option value='en-ca' " . ($dir == 'en-ca' ? ' selected=true' : '') . ">English - Catalan</option>";
+	print "<option value='ca-en' " . ($dir == 'ca-en' ? ' selected=true' : '') . ">Catalan - English</option>";
+	//print "<option disabled='true' value='fr-ca' " . ($dir == 'fr-ca' ? ' selected=true' : '') . ">French - Catalan</option>";
+	//print "<option disabled='true' value='ca-fr' " . ($dir == 'ca-fr' ? ' selected=true' : '') . ">Catalan - French</option>";		
+
+print<<<_HTML_
 	</select>
 	</td>
 	</label>
@@ -41,7 +41,7 @@ print<<<_HTML_
 	<label for="doctype">
 	<td>Document type:</td>
 	<td>		
-	<select id="doctype" name="doctype" title="$DOCUMENT">
+	<select id="doctype" name="doctype" title="">
 		<option value="txt" title="Text">Text - Plain text</option>
 		<option value="html" title="HyperText Markup Language">HTML - HyperText Markup Language</option>
 		<option value="rtf" title="Rich Text Format">RTF - Rich Text Format</option>

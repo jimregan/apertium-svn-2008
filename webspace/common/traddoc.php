@@ -23,6 +23,7 @@ function process_form() {
 */
 function translate($doctype, $dir, $markUnknown) {
 	global $APERTIUM_TRANSLATOR;
+	global $APERTIUM_PATH;
 	
 	$content_type = getContentType($doctype);
 	$download_filetype = getDownloadFileType($doctype);
@@ -39,18 +40,17 @@ function translate($doctype, $dir, $markUnknown) {
 	$tempfile = tempnam("/tmp","translate");
 	$tempfile = $tempfile . "." . $doctype;
 
-	$datapair = getDataPair($dir);
-
-  $cmd = $APERTIUM_TRANSLATOR . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
+  $cmd = "PATH=$APERTIUM_PATH:\$PATH " . $APERTIUM_TRANSLATOR . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
   
   $str = shell_exec($cmd);
 
   header('Content-Type: '.$content_type);
-  header('Content-Disposition: attachment; filename="downloaded.'.$download_filetype.'"');
+  header('Content-Disposition: attachment; filename="translation.'.$download_filetype.'"');
   header('Content-length: '.filesize($tempfile));
   readfile($tempfile);
   
   unlink ($tempfile);
+  echo "cmd = $cmd";  
 }
 
 /*
@@ -81,25 +81,6 @@ function getContentType($doctype) {
       break;
   }
   return $content_type;
-}
-
-/*
-  **************************
-	   GET DATA PAIR
-	**************************
-*/
-function getDataPair($dir) {
-	switch ($dir){
-		case "es-ca": case "ca-es": $datapair="es-ca"; break;
-		case "es-gl": case "gl-es": $datapair="es-gl"; break;
-		case "es-pt": case "pt-es": $datapair="es-pt-br"; break;
-		case "es-br": case "br-es": $datapair="es-pt-br"; break;
-		case "oc-ca": case "ca-oc": $datapair="oc-ca"; break;
-		case "fr-ca": case "ca-fr": $datapair="fr-ca"; break;
-		case "en-ca": case "ca-en": $datapair="en-ca"; break;
-		default: $datapair="es-ca"; break;
- 	}
- 	return $datapair;
 }
 
 /*

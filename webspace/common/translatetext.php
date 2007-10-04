@@ -8,7 +8,7 @@ if (array_key_exists('textbox',$_POST)) {
 	process_form();
 } else {
 // otherwise: show the translation textbox
-	show_form("");
+	show_form("","");
 }
 ?>
 
@@ -30,10 +30,9 @@ function process_form() {
 		$markUnknown = "-u";
 	}
 
-	show_form_text($text);
-
+	show_form($text,$dir);
 		
-	$trad = translate_text($text, $dir, $markUnknown);
+	$trad = translate($text, $dir, $markUnknown);
 	
 	print "<h3>Translation</h3>";
 	
@@ -45,44 +44,34 @@ function process_form() {
 	   SHOW FORM
 	**************************
 */
-function show_form($textbox) {
+function show_form($textbox, $dir) {
 print<<<_HTML_
-
 <form class="translation" action="$_SERVER[PHP_SELF]?id=translatetext" method="post">
 
 <fieldset>
 	<legend></legend>
 		<label for="direction">Translation type:
 			<select id="direction" name="direction" title="Select the translation type">
-				<option value="es-ca">Spanish-Catalan</option>
-				<option value="ca-es">Catalan-Spanish</option>
-				<!--
-				<option value="es-gl">Spanish-Galician</option>
-				<option value="gl-es">Galician-Spanish</option>
-				-->
-				<option value="es-pt">Spanish-Portuguese(pt)</option>
-				<option value="pt-es">Portuguese-Spanish</option>
-				<option value="es-br">Spanish-Portuguese(br)</option>
-				<!--
-				<option value="oc-ca">Aranese-Catalan</option>
-				<option value="ca-oc">Catalan-Aranese</option>
-				-->
-				<option value="fr-ca">French-Catalan</option>
-				<option value="ca-fr">Catalan-French</option>
-				<option value="en-ca">English-Catalan</option>
-				<option value="ca-en">Catalan-English</option>
-				<!--
-				<option value="es-ro">Spanish-Romanian</option>
-				<option value="ro-es">Romanian-Spanish</option>
-				-->				
+_HTML_;
+print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">Spanish - Catalan</option>";
+			print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">Catalan - Spanish</option>";
+			print "<option value='es-pt' " . ($dir == 'es-pt' ? ' selected=true' : '') . ">Spanish - Portuguese</option>";
+			print "<option value='pt-es' " . ($dir == 'pt-es' ? ' selected=true' : '') . ">Portuguese - Spanish</option>";
+			print "<option value='es-pt_BR' " . ($dir == 'es-pt_BR' ? ' selected=true' : '') . ">Spanish - Brazilian Portuguese</option>";
+			print "<option value='en-ca' " . ($dir == 'en-ca' ? ' selected=true' : '') . ">English - Catalan</option>";
+			print "<option value='ca-en' " . ($dir == 'ca-en' ? ' selected=true' : '') . ">Catalan - English</option>";
+			//print "<option disabled='true' value='fr-ca' " . ($dir == 'fr-ca' ? ' selected=true' : '') . ">French - Catalan</option>";
+			//print "<option disabled='true' value='ca-fr' " . ($dir == 'ca-fr' ? ' selected=true' : '') . ">Catalan - French</option>";		
+
+print<<<_HTML_
 			</select>
 		</label>
 		<br/><br/>
 		<label for="textbox">
 			<textarea id="textbox" name="textbox" cols="50" rows="10" title="Insert plain text to translate here">
 _HTML_;
-	$text = stripslashes($textbox);
-	print $text;
+$text = stripslashes($textbox);
+print $text;
 print<<<_HTML_
 </textarea>
 		</label>
@@ -90,12 +79,6 @@ print<<<_HTML_
 		<label for="mark">Mark unknown words:
 			<input id="mark" value="1" name="mark" type="checkbox" title="Check the box to mark unknown words"/>
 		</label>
-
-		<!--
-		<br/><br/>
-		<label>Output:</label>
-		<div id="contenedor" style="font-weight:bold"/>
-		-->
 	</fieldset>
 	<div>
 		<input type="submit" value="Translate" class="submit" title="Press button to translate"/>
@@ -103,26 +86,7 @@ print<<<_HTML_
 	</div>
 </form>
 _HTML_;
-}
 
-/*
-  **************************
-	   GET DATA PAIR
-	**************************
-*/
-function getDataPair($dir) {
-	switch ($dir){
-  	case "es-ca": case "ca-es": $datapair="es-ca"; break;
-  	case "es-gl": case "gl-es": $datapair="es-gl"; break;
-  	case "es-pt": case "pt-es": $datapair="es-pt-br"; break;
-  	case "es-br": case "br-es": $datapair="es-pt-br"; break;
-  	case "oc-ca": case "ca-oc": $datapair="oc-ca"; break; 
-  	case "fr-ca": case "ca-fr": $datapair="fr-ca"; break;
-  	case "en-ca": case "ca-en": $datapair="en-ca"; break;
-  	case "es-ro": case "ro-es": $datapair="es-ro"; break;   
-  	default: $datapair="es-ca"; break;
- 	}
- 	return $datapair;
 }
 
 /*
@@ -161,18 +125,16 @@ function translate($text, $dir, $markUnknown) {
 	global $LING_DATA_DIR;
 	
 	$text = stripslashes($text);
-	$datapair = getDataPair($dir);
 	$tempfile = tempnam("tmp","tradtext");
 	
   $fd = fopen($tempfile,"w");
   fputs($fd, $text);
   fclose($fd);
   
-	//$cmd="$APERTIUM_TRANSLATOR $LING_DATA_DIR/apertium-$datapair $dir $type $tempfile";
-	$cmd = "LANG=es_ES.UTF-8 $APERTIUM_TRANSLATOR -f txt $markUnknown $type $dir $tempfile";
+	$cmd = "LANG=es_ES.UTF-8 $APERTIUM_TRANSLATOR -f txt $markUnknown $dir $tempfile";
 
 	$trad = shell_exec($cmd);
-		$trad = replaceUnknown($trad);
+	$trad = replaceUnknown($trad);
 	$trad = str_replace("\n","<br/>\n", $trad);
 	
 	unlink($tempfile);
