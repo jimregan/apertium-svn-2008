@@ -88,7 +88,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX1).t1x \
 	   $(BASENAME).$(PREFIX2).t1x \
 	   $(BASENAME).$(LANG1).tsx \
-	   $(BASENAME).$(LANG2).tsx modes.xml
+	   $(BASENAME).$(LANG2).tsx modes.xml apertium-$(PREFIX1).symbols.xml
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 
@@ -115,7 +115,7 @@ apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin \
 		    $(PREFIX2).t1x.bin \
-	            $(PREFIX1).mode $(PREFIX2).mode modes.xml
+	            $(PREFIX1).mode $(PREFIX2).mode modes.xml apertium-$(PREFIX1).symbols.xml
 		  
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
