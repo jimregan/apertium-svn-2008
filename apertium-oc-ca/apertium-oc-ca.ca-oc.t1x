@@ -9651,7 +9651,7 @@
 			</let>
 		</action>
 	</rule>
-<!-- fins aquí :-)	 -->
+	
 	<rule comment="adv prnpro auxpers + pp">
 		<pattern>
 			<pattern-item n="adv_preadv"/>
@@ -9672,6 +9672,10 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="posa_prn_ifi">
+				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
 
 			<choose>
 				<when>
@@ -9685,13 +9689,34 @@
 						<when>
 							<test>
 								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let>
+								<var n="lema_sv"/>
+								<lit v="pro_proaux_adv_pp"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<var n="lema_sv"/>
+								<lit v="pro_aux_adv_pp"/>
+							</let>
+						</otherwise>
+					</choose>
+
+					<choose>
+						<when>
+							<test>
+								<equal>
 									<clip pos="3" side="tl" part="a_verb"/>
 									<lit-tag v="vbser"/>
 								</equal>
 							</test>
 
 							<out>
-								<chunk name="pro_haver_adv_pp" case="caseFirstWord">
+								<chunk namefrom="lema_sv" case="caseFirstWord">
 									<tags>
 										<tag><lit-tag v="SV"/></tag>
 										<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -9708,6 +9733,9 @@
 										<clip pos="2" side="tl" part="tipoenc_pro"/>
 									</lu>
 									<b pos="1"/>
+									<lu>
+										<var n="prnpro_qual"/>
+									</lu>
 									<lu>
 										<clip pos="3" side="tl" part="lemh"/>
 										<clip pos="3" side="tl" part="a_verb"/>
@@ -9736,7 +9764,7 @@
 						</when>
 						<otherwise>
 							<out>
-								<chunk name="pro_haver_adv_pp" case="caseFirstWord">
+								<chunk namefrom="lema_sv" case="caseFirstWord">
 									<tags>
 										<tag><lit-tag v="SV"/></tag>
 										<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -9753,6 +9781,9 @@
 										<clip pos="2" side="tl" part="tipoenc_pro"/>
 									</lu>
 									<b pos="1"/>
+									<lu>
+										<var n="prnpro_qual"/>
+									</lu>
 									<lu>
 										<clip pos="3" side="tl" part="lemh"/>
 										<clip pos="3" side="tl" part="a_verb"/>
@@ -9780,9 +9811,31 @@
 							</out>
 						</otherwise>
 					</choose>
-
+					<call-macro n="posa_adv">
+						<with-param pos="1"/>
+					</call-macro>
 				</when>
 				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let>
+								<var n="lema_sv"/>
+								<lit v="pro_proaux_pp"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<var n="lema_sv"/>
+								<lit v="pro_aux_pp"/>
+							</let>
+						</otherwise>
+					</choose>
 					<choose aversion="oc-ca">
 						<when>
 							<test>
@@ -9792,7 +9845,7 @@
 								</equal>
 							</test>
 							<out>
-								<chunk name="pro_haver_pp" case="caseFirstWord">
+								<chunk namefrom="lema_sv" case="caseFirstWord">
 									<tags>
 										<tag><lit-tag v="SV"/></tag>
 										<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -9809,6 +9862,9 @@
 										<clip pos="2" side="tl" part="tipoenc_pro"/>
 									</lu>
 									<b pos="1"/>
+									<lu>
+										<var n="prnpro_qual"/>
+									</lu>	
 									<lu>
 										<clip pos="3" side="tl" part="lemh"/>
 										<clip pos="3" side="tl" part="a_verb"/>
@@ -9830,7 +9886,7 @@
 						</when>
 						<otherwise>
 							<out>
-								<chunk name="pro_haver_pp" case="caseFirstWord">
+								<chunk namefrom="lema_sv" case="caseFirstWord">
 									<tags>
 										<tag><lit-tag v="SV"/></tag>
 										<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -9847,6 +9903,9 @@
 										<clip pos="2" side="tl" part="tipoenc_pro"/>
 									</lu>
 									<b pos="1"/>
+									<lu>
+										<var n="prnpro_qual"/>
+									</lu>
 									<lu>
 										<clip pos="3" side="tl" part="lemh"/>
 										<clip pos="3" side="tl" part="a_verb"/>
@@ -9867,6 +9926,9 @@
 							</out>
 						</otherwise>
 					</choose>
+					<call-macro n="posa_adv" aversion="oc-ca">
+						<with-param pos="1"/>
+					</call-macro>
 					<out aversion="oc-ca">
 						<b pos="3"/>
 						<chunk name="adv">
@@ -9892,7 +9954,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="pro_haver_pp">
+						<chunk namefrom="lema_sv">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -9906,6 +9968,9 @@
 								<clip pos="2" side="tl" part="tipoenc_pro"/>
 							</lu>
 							<b pos="2"/>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
@@ -9924,8 +9989,19 @@
 							</lu> 
 						</chunk>
 					</out>
+						<call-macro n="posa_adv" aversion="oc@aran-ca">
+							<with-param pos="1"/>
+						</call-macro>
 				</otherwise>
 			</choose>			
+			<let>
+				<var n="elqual_prep"/>
+				<lit v=""/>
+			</let>
+			<let>
+				<var n="prnpro_qual"/>
+				<lit v=""/>
+			</let>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
@@ -9953,6 +10029,10 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="posa_prn_ifi">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 
 			<choose>
 				<when>
@@ -9966,13 +10046,33 @@
 						<when>
 							<test>
 								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let>
+								<var n="lema_sv"/>
+								<lit v="pro_proaux_adv_pp"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<var n="lema_sv"/>
+								<lit v="pro_aux_adv_pp"/>
+							</let>
+						</otherwise>
+					</choose>
+					<choose>
+						<when>
+							<test>
+								<equal>
 									<clip pos="2" side="tl" part="a_verb"/>
 									<lit-tag v="vbser"/>
 								</equal>
 							</test>
 
 							<out>
-								<chunk name="pro_haver_adv_pp" case="caseFirstWord">
+								<chunk namefrom="lema_sv" case="caseFirstWord">
 									<tags>
 										<tag><lit-tag v="SV"/></tag>
 										<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -9987,6 +10087,9 @@
 										<clip pos="1" side="tl" part="tipoenc_pro"/>
 									</lu>
 									<b pos="1"/>
+									<lu>
+										<var n="prnpro_qual"/>
+									</lu>
 									<lu>
 										<clip pos="2" side="tl" part="lemh"/>
 										<clip pos="2" side="tl" part="a_verb"/>
@@ -10013,7 +10116,7 @@
 						</when>
 						<otherwise>
 							<out>
-								<chunk name="pro_haver_adv_pp" case="caseFirstWord">
+								<chunk namefrom="lema_sv" case="caseFirstWord">
 									<tags>
 										<tag><lit-tag v="SV"/></tag>
 										<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -10028,6 +10131,9 @@
 										<clip pos="1" side="tl" part="tipoenc_pro"/>
 									</lu>
 									<b pos="2"/>
+									<lu>
+										<var n="prnpro_qual"/>
+									</lu>
 									<lu>
 										<clip pos="2" side="tl" part="lemh"/>
 										<clip pos="2" side="tl" part="a_verb"/>
@@ -10053,8 +10159,32 @@
 							</out>
 						</otherwise>
 					</choose>
+					<call-macro n="posa_adv">
+						<with-param pos="1"/>
+					</call-macro>
+
 				</when>
 				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let>
+								<var n="lema_sv"/>
+								<lit v="pro_proaux_pp"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<var n="lema_sv"/>
+								<lit v="pro_aux_pp"/>
+							</let>
+						</otherwise>
+					</choose>
 					<choose>
 						<when>
 							<test>
@@ -10064,7 +10194,7 @@
 								</equal>
 							</test>
 							<out>
-								<chunk name="pro_haver_pp" case="caseFirstWord">
+								<chunk namefrom="lema_sv" case="caseFirstWord">
 									<tags>
 										<tag><lit-tag v="SV"/></tag>
 										<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -10079,6 +10209,9 @@
 										<clip pos="1" side="tl" part="tipoenc_pro"/>
 									</lu>
 									<b pos="2"/>
+									<lu>
+										<var n="prnpro_qual"/>
+									</lu>
 									<lu>
 										<clip pos="2" side="tl" part="lemh"/>
 										<clip pos="2" side="tl" part="a_verb"/>
@@ -10100,7 +10233,7 @@
 						</when>
 						<otherwise>
 							<out>
-								<chunk name="pro_haver_pp" case="caseFirstWord">
+								<chunk namefrom="lema_sv" case="caseFirstWord">
 									<tags>
 										<tag><lit-tag v="SV"/></tag>
 										<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -10115,6 +10248,9 @@
 										<clip pos="1" side="tl" part="tipoenc_pro"/>
 									</lu>
 									<b pos="1"/>
+									<lu>
+										<var n="prnpro_qual"/>
+									</lu>
 									<lu>
 										<clip pos="2" side="tl" part="lemh"/>
 										<clip pos="2" side="tl" part="a_verb"/>
@@ -10135,7 +10271,10 @@
 							</out>
 						</otherwise>
 					</choose>
-					<out>
+					<call-macro n="posa_adv">
+							<with-param pos="1"/>
+							</call-macro>
+						<out>
 						<b pos="3"/>
 						<chunk name="adv">
 							<tags>
@@ -10832,7 +10971,7 @@
 		</action>
 	</rule>
 
-	
+<!-- 	els d'auxinf falten tots -->
 		<rule comment="auxinf + pp">
 		<pattern>
 			<pattern-item n="auxinf"/>
@@ -12966,8 +13105,40 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="posa_prn">
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<var n="afegeix_prn"/>
+							<lit v="si"/>
+						</equal>
+					</test>
+					<let aversion="oc-ca">
+						<var n="lema_sv"/>
+						<lit v="proanar_inf"/>
+					</let>
+					<let aversion="oc@aran-ca">
+						<var n="lema_sv"/>
+						<lit v="proanar_a_inf"/>
+					</let>
+				</when>
+				<otherwise>
+					<let aversion="oc-ca">
+						<var n="lema_sv"/>
+						<lit v="anar_inf"/>
+					</let>
+					<let aversion="oc@aran-ca">
+						<var n="lema_sv"/>
+						<lit v="anar_a_inf"/>
+					</let>
+				</otherwise>
+			</choose>
+			
 			<out>
-				<chunk name="anar_inf" case="caseFirstWord" aversion="oc-ca">
+				<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc-ca">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -12975,6 +13146,9 @@
 						<tag><clip pos="1" side="tl" part="pers"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 					</tags>
+					<lu>
+						<var n="prnpro_qual"/>
+					</lu>
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/> 
 						<clip pos="1" side="tl" part="a_verb"/>
@@ -12993,7 +13167,7 @@
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
-				<chunk name="anar_a_inf" case="caseFirstWord" aversion="oc@aran-ca">
+				<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc@aran-ca">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -13001,7 +13175,10 @@
 						<tag><clip pos="1" side="tl" part="pers"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 					</tags>
-					<lu>
+						<lu>
+							<var n="prnpro_qual"/>
+						</lu>
+						<lu>
 						<clip pos="1" side="tl" part="lemh"/> 
 						<clip pos="1" side="tl" part="a_verb"/>
 						<clip pos="1" side="tl" part="temps" link-to="3"/>
@@ -13024,6 +13201,17 @@
 					</lu>
 				</chunk>
 			</out>
+			<call-macro n="posa_adv">
+				<with-param pos="1"/>
+			</call-macro>
+			<let>
+				<var n="elqual_prep"/>
+				<lit v=""/>
+			</let>
+			<let>
+				<var n="prnpro_qual"/>
+				<lit v=""/>
+			</let>
 			<call-macro n="f_bcond" aversion="oc-ca">
 				<with-param pos="2"/>
 			</call-macro>
@@ -13045,8 +13233,40 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="posa_prn">
+				<with-param pos="4"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<var n="afegeix_prn"/>
+							<lit v="si"/>
+						</equal>
+					</test>
+					<let aversion="oc-ca">
+						<var n="lema_sv"/>
+						<lit v="pro_proanar_inf"/>
+					</let>
+					<let aversion="oc@aran-ca">
+						<var n="lema_sv"/>
+						<lit v="pro_proanar_a_inf"/>
+					</let>
+				</when>
+				<otherwise>
+					<let aversion="oc-ca">
+						<var n="lema_sv"/>
+						<lit v="pro_anar_inf"/>
+					</let>
+					<let aversion="oc@aran-ca">
+						<var n="lema_sv"/>
+						<lit v="pro_anar_a_inf"/>
+					</let>
+				</otherwise>
+			</choose>
+
 			<out>
-				<chunk name="pro_anar_inf" case="caseFirstWord" aversion="oc-ca">
+				<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc-ca">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -13058,6 +13278,9 @@
 						<clip pos="1" side="tl" part="whole"/>
 					</lu>
 					<b pos="1"/>
+					<lu>
+						<var n="prnpro_qual"/>
+					</lu>
 					<lu>
 						<clip pos="2" side="tl" part="lemh"/>
 						<clip pos="2" side="tl" part="a_verb"/>
@@ -13076,7 +13299,7 @@
 						<clip pos="4" side="tl" part="lemq"/> 
 					</lu>
 				</chunk>
-				<chunk name="pro_anar_a_inf" case="caseFirstWord" aversion="oc@aran-ca">
+				<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc@aran-ca">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -13088,6 +13311,9 @@
 						<clip pos="1" side="tl" part="whole"/>
 					</lu>
 					<b pos="1"/>
+					<lu>
+						<var n="prnpro_qual"/>
+					</lu>
 					<lu>
 						<clip pos="2" side="tl" part="lemh"/>
 						<clip pos="2" side="tl" part="a_verb"/>
@@ -13111,6 +13337,18 @@
 					</lu>
 				</chunk>
 			</out>
+			<call-macro n="posa_adv">
+				<with-param pos="1"/>
+			</call-macro>
+			<let>
+				<var n="elqual_prep"/>
+				<lit v=""/>
+			</let>
+			<let>
+				<var n="prnpro_qual"/>
+				<lit v=""/>
+			</let>
+
 			<call-macro n="f_bcond" aversion="oc-ca">
 				<with-param pos="3"/>
 			</call-macro>
@@ -13236,6 +13474,37 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="posa_prn">
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<var n="afegeix_prn"/>
+							<lit v="si"/>
+						</equal>
+					</test>
+					<let aversion="oc-ca">
+						<var n="lema_sv"/>
+						<lit v="pro_proanar_inf"/>
+					</let>
+					<let aversion="oc@aran-ca">
+						<var n="lema_sv"/>
+						<lit v="pro_proanar_a_inf"/>
+					</let>
+				</when>
+				<otherwise>
+					<let aversion="oc-ca">
+						<var n="lema_sv"/>
+						<lit v="pro_anar_inf"/>
+					</let>
+					<let aversion="oc@aran-ca">
+						<var n="lema_sv"/>
+						<lit v="pro_anar_a_inf"/>
+					</let>
+				</otherwise>
+			</choose>
 			<out>
 				<chunk name="pro_anar_inf" case="caseFirstWord" aversion="oc-ca">
 					<tags>
@@ -13440,6 +13709,9 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="posa_prn">
+				<with-param pos="4"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -13448,8 +13720,36 @@
 							<list n="adv_mig"/>
 						</in>
 					</test>
-					<out aversion="oc-ca">
-						<chunk name="anar_adv_inf" case="caseFirstWord">
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="proanar_adv_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="proanar_adv_a_inf"/>
+							</let>
+						</when>
+						<otherwise>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="anar_adv_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="anar_adv_a_inf"/>
+							</let>
+						</otherwise>
+					</choose>
+					<out>
+						<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -13457,6 +13757,9 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<get-case-from pos="1">
 									<clip pos="2" side="tl" part="lemh"/> 
@@ -13484,7 +13787,7 @@
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
-						<chunk name="anar_a_inf" aversion="oc@aran-ca">
+						<chunk namefrom="lema_sv" aversion="oc@aran-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -13492,6 +13795,9 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/> 
 								<clip pos="2" side="tl" part="a_verb"/>
@@ -13522,10 +13828,42 @@
 							</lu>
 						</chunk>
 					</out>
+					<call-macro n="posa_adv">
+						<with-param pos="4"/>
+					</call-macro>
 				</when>
 				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="proanar_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="proanar_a_inf"/>
+							</let>
+						</when>
+						<otherwise>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="anar_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="anar_a_inf"/>
+							</let>
+						</otherwise>
+					</choose>
+					
 					<out aversion="oc-ca">
-						<chunk name="anar_inf" case="caseFirstWord">
+						<chunk namefrom="lema_sv" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -13533,6 +13871,9 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<get-case-from pos="1">
 									<clip pos="2" side="tl" part="lemh"/> 
@@ -13553,6 +13894,11 @@
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
+					</out>
+					<call-macro n="posa_adv" aversion="oc-ca">
+						<with-param pos="1"/>
+					</call-macro>
+					<out aversion="oc-ca">
 						<b pos="2"/>
 						<chunk name="adv">
 							<tags>
@@ -13578,7 +13924,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="anar_a_inf">
+						<chunk namefrom="lema_sv">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -13586,6 +13932,9 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/> 
 								<clip pos="2" side="tl" part="a_verb"/>
@@ -13609,6 +13958,9 @@
 							</lu>
 						</chunk>
 					</out>
+					<call-macro n="posa_adv" aversion="oc@aran-ca">
+						<with-param pos="1"/>
+					</call-macro>
 				</otherwise>
 			</choose>
 			<call-macro n="f_bcond" aversion="oc-ca">
@@ -13617,6 +13969,14 @@
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
+			</let>
+			<let>
+				<var n="elqual_prep"/>
+				<lit v=""/>
+			</let>
+			<let>
+				<var n="prnpro_qual"/>
+				<lit v=""/>
 			</let>
 		</action>
 	</rule>
@@ -13635,6 +13995,9 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="posa_prn">
+				<with-param pos="1"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -13643,8 +14006,36 @@
 							<list n="adv_mig"/>
 						</in>
 					</test>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="proanar_adv_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="proanar_adv_a_inf"/>
+							</let>
+						</when>
+						<otherwise>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="anar_adv_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="anar_adv_a_inf"/>
+							</let>
+						</otherwise>
+					</choose>
 					<out>
-						<chunk name="anar_adv_inf" case="caseFirstWord" aversion="oc-ca">
+						<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -13652,6 +14043,9 @@
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
 								<tag><clip pos="1" side="tl" part="nbr"/></tag>
 							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="1" side="tl" part="lemh"/> 
 								<clip pos="1" side="tl" part="a_verb"/>
@@ -13675,7 +14069,7 @@
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
-						<chunk name="anar_adv_a_inf" aversion="oc@aran-ca">
+						<chunk namefrom="lema_sv" aversion="oc@aran-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -13683,6 +14077,9 @@
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
 								<tag><clip pos="1" side="tl" part="nbr"/></tag>
 							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="1" side="tl" part="lemh"/> 
 								<clip pos="1" side="tl" part="a_verb"/>
@@ -13711,10 +14108,42 @@
 							</lu>
 						</chunk>
 					</out>
+					<call-macro n="posa_adv">
+						<with-param pos="1"/>
+					</call-macro>
+	
 				</when>
 				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="proanar_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="proanar_a_inf"/>
+							</let>
+						</when>
+						<otherwise>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="anar_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="anar_a_inf"/>
+							</let>
+						</otherwise>
+					</choose>
 					<out>
-						<chunk name="anar_inf" case="caseFirstWord" aversion="oc-ca">
+						<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -13722,6 +14151,9 @@
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
 								<tag><clip pos="1" side="tl" part="nbr"/></tag>
 							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="1" side="tl" part="lemh"/> 
 								<clip pos="1" side="tl" part="a_verb"/>
@@ -13740,7 +14172,7 @@
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
-						<chunk name="anar_a_inf" aversion="oc@aran-ca">
+						<chunk namefrom="lema_sv" aversion="oc@aran-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -13748,6 +14180,9 @@
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
 								<tag><clip pos="1" side="tl" part="nbr"/></tag>
 							</tags>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="1" side="tl" part="lemh"/> 
 								<clip pos="1" side="tl" part="a_verb"/>
@@ -13770,6 +14205,11 @@
 								<clip pos="3" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
+					</out>
+					<call-macro n="posa_adv">
+						<with-param pos="1"/>
+					</call-macro>
+					<out>
 						<b pos="3"/>
 						<chunk name="adv">
 							<tags>
@@ -13790,6 +14230,14 @@
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
 			</let>
+			<let>
+				<var n="elqual_prep"/>
+				<lit v=""/>
+			</let>
+			<let>
+				<var n="prnpro_qual"/>
+				<lit v=""/>
+			</let>
 		</action>
 	</rule>
 
@@ -13808,6 +14256,9 @@
 			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="posa_prn">
+				<with-param pos="5"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -13816,8 +14267,36 @@
 							<list n="adv_mig"/>
 						</in>
 					</test>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="pro_proanar_adv_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="pro_proanar_adv_a_inf"/>
+							</let>
+						</when>
+						<otherwise>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="pro_anar_adv_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="pro_anar_adv_a_inf"/>
+							</let>
+						</otherwise>
+					</choose>
 					<out>
-						<chunk name="pro_anar_adv_inf" case="caseFirstWord" aversion="oc-ca">
+						<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -13833,6 +14312,9 @@
 								<clip pos="2" side="tl" part="tipoenc_pro"/>
 							</lu>
 							<b pos="1"/>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
@@ -13858,7 +14340,7 @@
 								<clip pos="5" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
-						<chunk name="pro_anar_adv_a_inf" case="caseFirstWord" aversion="oc@aran-ca">
+						<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc@aran-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -13870,6 +14352,9 @@
 								<clip pos="2" side="tl" part="whole"/>
 							</lu>
 							<b pos="1"/>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
@@ -13900,10 +14385,13 @@
 							</lu>
 						</chunk>
 					</out>
+					<call-macro n="posa_adv">
+						<with-param pos="1"/>
+					</call-macro>
 				</when>
 				<otherwise>
 					<out aversion="oc-ca">
-						<chunk name="pro_anar_inf" case="caseFirstWord">
+						<chunk namefrom="lema_sv" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -13919,6 +14407,9 @@
 								<clip pos="2" side="tl" part="tipoenc_pro"/>
 							</lu>
 							<b pos="1"/>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
@@ -13937,6 +14428,11 @@
 								<clip pos="5" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
+					</out>
+					<call-macro n="posa_adv" aversion="oc-ca">
+						<with-param pos="1"/>
+					</call-macro>
+					<out aversion="oc-ca">
 						<b pos="3"/>
 						<chunk name="adv">
 							<tags>
@@ -13959,7 +14455,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="pro_anar_a_inf">
+						<chunk namefrom="lema_sv">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -13973,6 +14469,9 @@
 								<clip pos="2" side="tl" part="tipoenc_pro"/>
 							</lu>
 							<b pos="2"/>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="3" side="tl" part="lemh"/>
 								<clip pos="3" side="tl" part="a_verb"/>
@@ -13996,11 +14495,22 @@
 							</lu>
 						</chunk>
 					</out>
+					<call-macro n="posa_adv" aversion="oc@aran-ca">
+						<with-param pos="1"/>
+					</call-macro>
 				</otherwise>
 			</choose>
 			<call-macro n="f_bcond" aversion="oc-ca">
 				<with-param pos="4"/>
 			</call-macro>
+			<let>
+				<var n="elqual_prep"/>
+				<lit v=""/>
+			</let>
+			<let>
+				<var n="prnpro_qual"/>
+				<lit v=""/>
+			</let>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
@@ -14023,6 +14533,9 @@
 			<call-macro n="f_lex_adv">
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="posa_prn">
+				<with-param pos="5"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -14031,8 +14544,37 @@
 							<list n="adv_mig"/>
 						</in>
 					</test>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="afegeix_prn"/>
+									<lit v="si"/>
+								</equal>
+							</test>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="pro_proanar_adv_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="pro_proanar_adv_a_inf"/>
+							</let>
+						</when>
+						<otherwise>
+							<let aversion="oc-ca">
+								<var n="lema_sv"/>
+								<lit v="pro_anar_adv_inf"/>
+							</let>
+							<let aversion="oc@aran-ca">
+								<var n="lema_sv"/>
+								<lit v="pro_anar_adv_a_inf"/>
+							</let>
+						</otherwise>
+					</choose>
+					
 					<out>
-						<chunk name="pro_anar_adv_inf" case="caseFirstWord" aversion="oc-ca">
+						<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -14046,6 +14588,9 @@
 								<clip pos="1" side="tl" part="tipoenc_pro"/>
 							</lu>
 							<b pos="1"/>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
@@ -14069,7 +14614,7 @@
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
-						<chunk name="pro_anar_adv_a_inf" case="caseFirstWord" aversion="oc@aran-ca">
+						<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc@aran-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -14081,6 +14626,9 @@
 								<clip pos="1" side="tl" part="whole"/>
 							</lu>
 							<b pos="1"/>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
@@ -14109,10 +14657,13 @@
 							</lu>
 						</chunk>
 					</out>
+					<call-macro n="posa_adv">
+						<with-param pos="1"/>
+					</call-macro>
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="pro_anar_inf" case="caseFirstWord" aversion="oc-ca">
+						<chunk namefrom="lema_sv" case="caseFirstWord" aversion="oc-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -14126,6 +14677,9 @@
 								<clip pos="1" side="tl" part="tipoenc_pro"/>
 							</lu>
 							<b pos="1"/>
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
@@ -14145,7 +14699,7 @@
 							</lu>
 						</chunk>
 						
-						<chunk name="pro_anar_a_inf" aversion="oc@aran-ca">
+						<chunk namefrom="lema_sv" aversion="oc@aran-ca">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -14159,6 +14713,10 @@
 								<clip pos="1" side="tl" part="tipoenc_pro"/>
 							</lu>
 							<b pos="1"/>
+
+							<lu>
+								<var n="prnpro_qual"/>
+							</lu>
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/>
 								<clip pos="2" side="tl" part="a_verb"/>
@@ -14181,6 +14739,11 @@
 								<clip pos="4" side="tl" part="lemq"/> 
 							</lu>
 						</chunk>
+					</out>
+					<call-macro n="posa_adv">
+						<with-param pos="1"/>
+					</call-macro>
+					<out>
 						<b pos="4"/>
 						<chunk name="adv">
 							<tags>
@@ -14191,10 +14754,17 @@
 								<clip pos="5" side="tl" part="a_adv"/>
 							</lu>
 						</chunk>
-
 					</out>
 				</otherwise>
 			</choose>
+			<let>
+				<var n="elqual_prep"/>
+				<lit v=""/>
+			</let>
+			<let>
+				<var n="prnpro_qual"/>
+				<lit v=""/>
+			</let>
 			<call-macro n="f_bcond" aversion="oc-ca">
 				<with-param pos="3"/>
 			</call-macro>
@@ -14664,7 +15234,7 @@
 			</let>
 		</action>
 	</rule>
-
+<!-- fins aquí -->
 	<rule comment="REGLA: adv anar a INF-enc" >
 		<pattern>
 			<pattern-item n="adv"/>
