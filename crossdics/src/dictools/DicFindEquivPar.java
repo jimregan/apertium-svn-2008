@@ -33,6 +33,7 @@ import dics.elements.dtd.PardefElement;
 import dics.elements.dtd.PardefsElement;
 import dics.elements.dtd.SectionElement;
 import dics.elements.utils.EElementList;
+import dics.elements.utils.Msg;
 
 /**
  * 
@@ -53,9 +54,15 @@ public class DicFindEquivPar {
 
     /**
      * 
+     */
+    private Msg msg;
+
+    /**
+     * 
      * 
      */
     public DicFindEquivPar() {
+	msg = new Msg();
 
     }
 
@@ -64,6 +71,7 @@ public class DicFindEquivPar {
      * 
      */
     public DicFindEquivPar(final String fileName) {
+	msg = new Msg();
 	DictionaryReader dicReader = new DictionaryReader(fileName);
 	DictionaryElement dic = dicReader.readDic();
 	setDic(dic);
@@ -82,15 +90,15 @@ public class DicFindEquivPar {
 	HashMap<String, PardefElement> processed = new HashMap<String, PardefElement>();
 	HashMap<String, String> equivalents = new HashMap<String, String>();
 
-	System.err.println("Equivalent paradigms:");
+	msg.err("Equivalent paradigms:");
 	for (PardefElement par1 : pardefs1.getPardefElements()) {
 	    for (PardefElement par2 : pardefs2.getPardefElements()) {
 		if (!processed.containsKey(par1.getName() + "---"
 			+ par2.getName())) {
 		    if (!par1.getName().equals(par2.getName())
 			    && par1.equals(par2)) {
-			System.err.println("(" + par1.getName() + ", "
-				+ par2.getName() + ")");
+			msg.err("(" + par1.getName() + ", " + par2.getName()
+				+ ")");
 			canBeRemoved.add(par2);
 			equivalents.put(par2.getName(), par1.getName());
 			processed.put(par1.getName() + "---" + par2.getName(),
@@ -114,54 +122,56 @@ public class DicFindEquivPar {
      * @param equivalents
      */
     private final void replaceParadigm(final HashMap<String, String> equivalents) {
-	HashMap<String,Integer> counter = new HashMap<String,Integer>();
-	
+	HashMap<String, Integer> counter = new HashMap<String, Integer>();
+
 	DictionaryElement dic = getDic();
 
+	// Paradigm definitions
 	for (PardefElement pardef : dic.getPardefsElement().getPardefElements()) {
 	    EElementList eList = pardef.getEElements();
-	    for (EElement element : eList) {
-		for (Element e : element.getChildren()) {
-		    if (e instanceof ParElement) {
-			ParElement parE = (ParElement) e;
-			String prevParName = parE.getValue();
-			if (equivalents.containsKey(parE.getValue())) {
-			    incrementReplacementCounter(counter, parE.getValue());
-			    parE.setValue(equivalents.get(parE.getValue()));
-			    parE.addComments("<!-- '" + prevParName + "' was replaced -->");
-			}
-		    }
-		}
-	    }
+	    processElementList(eList, equivalents, counter);
 	}
 
+	// Sections
 	for (SectionElement section : dic.getSections()) {
 	    EElementList eList = section.getEElements();
-	    for (EElement element : eList) {
-		for (Element e : element.getChildren()) {
-		    if (e instanceof ParElement) {
-			ParElement parE = (ParElement) e;
-			String prevParName = parE.getValue();
-			if (equivalents.containsKey(parE.getValue())) {
-			    incrementReplacementCounter(counter, parE.getValue());
-			    parE.setValue(equivalents.get(parE.getValue()));
-			    parE.addComments("<!-- '" + prevParName + "' was replaced -->");
-			}
+	    processElementList(eList, equivalents, counter);
+	}
+
+	Set keySet = counter.keySet();
+	Iterator it = keySet.iterator();
+	msg.err("\nReplacements:");
+	while (it.hasNext()) {
+	    String key = (String) it.next();
+	    Integer iO = (Integer) counter.get(key);
+	    msg.err("'" + key + "' has been replaced " + iO + " times.");
+	}
+
+    }
+
+    /**
+     * 
+     * @param eList
+     * @param equivalents
+     * @param counter
+     */
+    private final void processElementList(final EElementList eList,
+	    final HashMap<String, String> equivalents,
+	    HashMap<String, Integer> counter) {
+	for (EElement element : eList) {
+	    for (Element e : element.getChildren()) {
+		if (e instanceof ParElement) {
+		    ParElement parE = (ParElement) e;
+		    String prevParName = parE.getValue();
+		    if (equivalents.containsKey(parE.getValue())) {
+			incrementReplacementCounter(counter, parE.getValue());
+			parE.setValue(equivalents.get(parE.getValue()));
+			parE.addComments("<!-- '" + prevParName
+				+ "' was replaced -->");
 		    }
 		}
 	    }
 	}
-	
-	Set keySet = counter.keySet();
-	Iterator it = keySet.iterator();
-	
-	System.err.println("\nReplacements:");
-	while (it.hasNext()) {
-	    String key = (String)it.next();
-	    Integer iO = (Integer)counter.get(key);
-	    System.err.println("'" + key + "' has been replaced " + iO + " times.");
-	}
-
     }
 
     /**
@@ -169,17 +179,18 @@ public class DicFindEquivPar {
      * @param counter
      * @param paradigmName
      */
-    private final void incrementReplacementCounter(final HashMap<String,Integer> counter, final String paradigmName) {
+    private final void incrementReplacementCounter(
+	    final HashMap<String, Integer> counter, final String paradigmName) {
 	if (!counter.containsKey(paradigmName)) {
-	    counter.put(paradigmName, new Integer(1));	    
+	    counter.put(paradigmName, new Integer(1));
 	} else {
 	    Integer iO = counter.get(paradigmName);
 	    int i = iO.intValue();
 	    i++;
-	    counter.put(paradigmName, new Integer(i));	    
-	}	
+	    counter.put(paradigmName, new Integer(i));
+	}
     }
-    
+
     /**
      * @return the dic
      */
