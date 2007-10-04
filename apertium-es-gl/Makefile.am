@@ -12,7 +12,7 @@ TARGETS_COMMON = $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$
      $(PREFIX2).autogen.bin \
      $(PREFIX2).autopgen.bin \
      $(PREFIX1).t1x.bin \
-     $(PREFIX2).t1x.bin modes
+     $(PREFIX2).t1x.bin
 
 $(BASENAME).$(LANG1).dix:
 	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
@@ -87,9 +87,8 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(PREFIX1).prob $(PREFIX2).prob \
 	   $(BASENAME).$(PREFIX1).t1x \
 	   $(BASENAME).$(PREFIX2).t1x \
-	   $(BASENAME).$(LANG1).tsx 
-	   $(BASENAME).$(LANG2).tsx  
-	modes.xml
+	   $(BASENAME).$(LANG1).tsx \
+	   $(BASENAME).$(LANG2).tsx modes.xml
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 
@@ -116,7 +115,7 @@ apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin \
 		    $(PREFIX2).t1x.bin \
-	            $(PREFIX1).mode $(PREFIX2).mode
+	            $(PREFIX1).mode $(PREFIX2).mode modes.xml
 		  
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
