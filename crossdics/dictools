@@ -148,6 +148,14 @@ function dic-reader() {
       java ${java_options} $task $2 $3 $4
    else
       echo "Usage: dictools dic-reader <action> [-url] <dic>"
+      echo "where <action> can be:"
+      echo "   list-paradigms:   list of paradigms";
+      echo "   list-lemmas:      list of lemmas";
+      echo "   list-definitions: list of <sdef> elemenst";
+      echo "   list-pairs:       list of pairs (for bilingual dictionaries";
+      echo "";
+      echo "More information: http://xixona.dlsi.ua.es/wiki/index.php/Dictionary_reader";
+      echo "";
    fi
 }
 
@@ -170,14 +178,15 @@ function equiv-paradigms() {
 function show_help() {
    echo "Usage: dictools [task] ..."
    echo "  Tasks:"
-   echo "    cross:             crosses a set of dictionaries."
+   echo "    cross:             crosses a set of dictionaries"
+   echo "    dic-reader:        reads elements from a dictionary"
    echo "    equiv-paradigms:   finds equivalent paradigms and updates references"
-   echo "    format:            formats a dictionary."   
-   echo "    merge-bil:         merges two bilingual dictionaries."
-   echo "    merge-morph:       merges two morphological dictionaries."
-   echo "    process-xincludes: processes and expands all xincludes in the dictionary."
-   echo "    reverse-bil:       reverses a bilingual dictionary."
-   echo "    sort:              sorts (and groups by category) a dictionary."
+   echo "    format:            formats a dictionary"   
+   echo "    merge-bil:         merges two bilingual dictionaries"
+   echo "    merge-morph:       merges two morphological dictionaries"
+   echo "    process-xincludes: processes and expands all xincludes in the dictionary"
+   echo "    reverse-bil:       reverses a bilingual dictionary"
+   echo "    sort:              sorts (and groups by category) a dictionary"
    echo ""
    echo "More info: http://xixona.dlsi.ua.es/wiki/index.php/Crossdics"
    echo ""
