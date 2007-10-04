@@ -1,4 +1,4 @@
-VERSION=0.8.1
+VERSION=0.8.2
 LANG1=en
 LANG2=ca
 PREFIX1=$(LANG1)-$(LANG2)
@@ -177,7 +177,7 @@ modes: modes.xml
 	apertium-gen-modes modes.xml
 
 install-data-local:
-	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_en_cadir)
