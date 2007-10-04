@@ -236,6 +236,6 @@ apertium_oc_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).t1x $(PREFIX1).t2x $(PREFIX1).t3x \
                     $(PREFIX1b).t1x $(PREFIX1b).t2x $(PREFIX1b).t3x \
                     $(PREFIX2).t1x $(PREFIX2).t2x $(PREFIX2).t3x \
-                    $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x 
+                    $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x  modes
 
 CLEANFILES = -r $(TARGETS) apertium-oc-es.oc.dix
