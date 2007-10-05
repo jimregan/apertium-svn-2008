@@ -16,24 +16,28 @@
       <cat-item name="d_adv_adj"/>
     </def-cat>
 
-   <def-cat n="SP1">
-      <cat-item name="pr_det_nom"/>
-      <cat-item name="pr_adj_nom"/>
-      <cat-item name="pr_nom_adj"/>
-      <cat-item name="pr_det_pp"/>
-    </def-cat>
 
  <def-cat n="SP2">
       <cat-item name="pr_nom"/>
     </def-cat>
 
- <def-cat n="SP3">
+   <def-cat n="SP3">
+      <cat-item name="pr_det_nom"/>
+      <cat-item name="pr_adj_nom"/>
+      <cat-item name="pr_nom_adj"/>
+      <cat-item name="pr_det_pp"/>
+      <cat-item name="pr_pos_n"/>
+    </def-cat>
+
+ <def-cat n="SP4">
       <cat-item name="pr_det_adj_nom"/>
       <cat-item name="pr_det_nom_adj"/>
       <cat-item name="pr_d_num_n"/>
+      <cat-item name="pr_pos_adj_n"/>
+      <cat-item name="pr_pos_n_adj"/>
     </def-cat>
 
-<def-cat n="SP4">
+<def-cat n="SP5">
       <cat-item name="pr_det_adj_nom_adj"/>
       <cat-item name="pr_det_nom_adj_adj"/>
       <cat-item name="pr_d_n_pr_n"/>
@@ -41,18 +45,27 @@
       <cat-item name="pr_d_num_n_adj"/>
     </def-cat>
 
-<def-cat n="SP5">
+<def-cat n="SP6">
       <cat-item name="pr_d_n_pr_d_n"/>
       <cat-item name="pr_d_num_pr_d_n"/>
-    </def-cat>
-
-<def-cat n="SP6">
-      <cat-item name="pr_d_n_pr_d_n_pr_n"/>
+      <cat-item name="pr_d_n_pr_pos_n"/>
     </def-cat>
 
 <def-cat n="SP7">
+      <cat-item name="pr_d_a_n_pr_d_n"/>
+      <cat-item name="pr_d_n_a_pr_d_n"/>
+    </def-cat>
+
+
+<def-cat n="SP8">
+      <cat-item name="pr_d_n_pr_d_n_pr_n"/>
+    </def-cat>
+
+<def-cat n="SP9">
       <cat-item name="pr_d_n_pr_d_n_pr_d_n"/>
     </def-cat>
+
+
 
   </section-def-cats>
 
@@ -309,7 +322,7 @@
 
 <rule>
       <pattern>
-        <pattern-item n="SP1"/>
+        <pattern-item n="SP3"/>
       </pattern>
       <action>
 	<choose>
@@ -406,7 +419,7 @@
 
 <rule>
       <pattern>
-        <pattern-item n="SP3"/>
+        <pattern-item n="SP4"/>
       </pattern>
       <action>
 	<choose>
@@ -464,7 +477,7 @@
 
 <rule>
       <pattern>
-        <pattern-item n="SP4"/>
+        <pattern-item n="SP5"/>
       </pattern>
       <action>
 	<choose>
@@ -526,7 +539,7 @@
 
 <rule>
       <pattern>
-        <pattern-item n="SP5"/>
+        <pattern-item n="SP6"/>
       </pattern>
       <action>
 	<choose>
@@ -592,7 +605,7 @@
 
 <rule>
       <pattern>
-        <pattern-item n="SP6"/>
+        <pattern-item n="SP8"/>
       </pattern>
       <action>
 	<choose>
@@ -667,7 +680,7 @@
 
 <rule>
       <pattern>
-        <pattern-item n="SP7"/>
+        <pattern-item n="SP9"/>
       </pattern>
       <action>
 	<choose>
@@ -736,6 +749,76 @@
 	      <b pos="8"/>
 	      <lu>
 		<clip pos="9" part="whole"/>
+	      </lu> 
+	    </out> 
+	  </when>
+	</choose>
+      </action>
+</rule>
+
+<rule>
+      <pattern>
+        <pattern-item n="SP7"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal>
+		  <clip pos="0" part="a_SP"/>
+		  <lit-tag v="SPR-SN"/>
+		</equal>
+	      </not>
+	    </test>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu> 
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	  <otherwise>	    
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	  </otherwise>
+	</choose>
+	<out>
+	  <lu>
+	    <clip pos="2" part="whole"/>
+	  </lu>
+	  <b pos="2"/>
+	  <lu>
+	    <clip pos="3" part="whole"/>
+	  </lu> 
+	  <b pos="3"/>
+	  <lu>
+	    <clip pos="4" part="whole"/>
+	  </lu> 
+	  <b pos="4"/>
+	  <lu>
+	    <clip pos="5" part="whole"/>
+	  </lu>  
+	  <b pos="5"/>
+	  <lu>
+	    <clip pos="6" part="whole"/>
+	  </lu> 
+	</out>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal>
+		  <clip pos="1" part="pr"/>
+		  <lit v=""/>
+		</equal>
+	      </not>
+	    </test>
+	    <out>
+	      <b pos="6"/>
+	      <lu>
+		<clip pos="7" part="whole"/>
 	      </lu> 
 	    </out> 
 	  </when>

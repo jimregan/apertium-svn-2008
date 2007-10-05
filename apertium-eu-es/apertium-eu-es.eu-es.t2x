@@ -21,10 +21,12 @@
 
     <def-cat n="SA">
       <cat-item tags="SA.*"/>
+      <cat-item tags="SADV.adj.*"/>
     </def-cat> 
 
   <def-cat n="SADV">
-      <cat-item tags="SADV.*"/>
+      <cat-item tags="SADV.adv"/>
+      <cat-item tags="SADV.pr"/>
     </def-cat> 
 
 <def-cat n="SVconj">
@@ -34,6 +36,11 @@
  <def-cat n="SVsub">
       <cat-item tags="SVsub.*"/>
     </def-cat>  
+
+ <def-cat n="pp">
+      <cat-item lemma="pp" tags="SV.*"/>
+    </def-cat>  
+
 
  <def-cat n="Orel">
       <cat-item tags="Orel.*"/>
@@ -1352,6 +1359,131 @@
 	    <clip pos="2" part="whole"/>
 	  </chunk>
 	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+ <rule> <!-- REGLA: SN+ PREP (entrenatzaile gabe; enplegurik gabe)-->
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="PREP"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	</out>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="a_adv"/>
+		<lit-tag v="adv"/>
+	      </equal>
+	    </test>		
+	    <out>
+	      <chunk>
+		<lit v="de"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^de"/>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	    </out>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+ <rule> <!-- REGLA: SN+ PREP (sinatu gabe - sin firmar (MG: por ahora sólo con pp por provar, puede hacerse extensivo a todos los SV))-->
+      <pattern>
+	<pattern-item n="pp"/>
+	<pattern-item n="PREP"/>
+      </pattern>
+      <action>
+	
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	</out>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="a_adv"/>
+		<lit-tag v="adv"/>
+	      </equal>
+	    </test>		
+	    <out>
+	      <chunk>
+		<lit v="de"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^de"/>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	    </out>
+	  </when>
+	</choose>
+	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
 	  </chunk>

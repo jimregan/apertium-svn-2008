@@ -164,7 +164,7 @@
   <def-label name="CNJADV">
     <tags-item tags="cnjadv"/>
   </def-label>
-  <def-label name="CNJlLOC">
+  <def-label name="CNJLOC">
     <tags-item tags="cnjloc"/>
   </def-label>
 
@@ -178,7 +178,6 @@
 
   <def-label name="INTERJ">
     <tags-item tags="ij"/>
-    <tags-item tags="ITJ"/>
   </def-label>
   <def-label name="ANTROPONIM">
     <tags-item tags="np.ant.*"/>
@@ -394,6 +393,16 @@
       <label-item label="PP"/>
       <label-item label="PRGEN"/>
     </label-sequence> 
+    <label-sequence>
+      <label-item label="SENT"/>
+      <label-item label="ADJIZOA"/>
+    </label-sequence>
+    <label-sequence><!--. Ezker abertzalea -->
+      <label-item label="SENT"/>
+      <label-item label="ADJIZO"/>
+    </label-sequence>
+
+
 <!--    <label-sequence>
       <label-item label="PRT"/>
       <label-item label="NOM"/>
