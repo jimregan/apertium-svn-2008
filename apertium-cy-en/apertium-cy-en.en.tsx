@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<tagger name="catalan">
+<?xml version="1.0" encoding="UTF-8"?>
+<tagger name="english">
 <tagset>
 
    <def-label name="TO" closed="true">
