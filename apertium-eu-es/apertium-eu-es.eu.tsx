@@ -3,6 +3,11 @@
 
 <tagset>
 
+  <def-label name="ezanedin" closed="true">
+    <tags-item lemma="ezan" tags="ADL.*"/>
+    <tags-item lemma="edin" tags="ADL.*"/>
+    <tags-item lemma="edin" tags="ADT.*"/>
+  </def-label>
    <def-label name="ukan" closed="true">
     <tags-item lemma="ukan" tags="vbsint.*"/>
     <tags-item lemma="ukan" tags="ADT.*"/>
@@ -10,7 +15,7 @@
   <def-label name="izan" closed="true">
     <tags-item lemma="izan" tags="vbsint.*"/>
     <tags-item lemma="izan" tags="ADT.*"/>
-    <tags-item tags="ADL.*"/><!--treure, provisional tagger -->
+    <tags-item tags="ADL.*"/> <!--treure, provisional tagger -->
   </def-label>
  <def-label name="hori" closed="true">
     <tags-item lemma="hori" tags="adj.izo"/>
@@ -34,7 +39,7 @@
    </def-label>
    <def-label name="INF">
     <tags-item tags="vblex.inf"/>
-    <tags-item tags="vblex"/><!--treure, provisional perquè el tagger ho agafi tot -->
+  <!--  <tags-item tags="vblex"/>treure, provisional perquè el tagger ho agafi tot -->
    </def-label>
 <!--   <def-label name="INFper">
     <tags-item tags="vbper.inf"/>
@@ -381,6 +386,18 @@
       <label-item label="INF"/>
       <label-item label="VBSINT"/>
     </label-sequence>
+    <label-sequence><!--joan da -->
+      <label-item label="INF"/>
+      <label-item label="ukan"/>
+    </label-sequence>
+    <label-sequence><!--joan da -->
+      <label-item label="INF"/>
+      <label-item label="izan"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="SENT"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="GRA"/>
       <label-item label="SPOST"/>
@@ -401,7 +418,18 @@
       <label-item label="SENT"/>
       <label-item label="ADJIZO"/>
     </label-sequence>
-
+    <label-sequence><!--ui no sé, només una prova -->
+      <label-item label="NOMA"/>
+      <label-item label="NOMA"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOMA_DET"/>
+      <label-item label="NOMA"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOMA"/>
+      <label-item label="NOMA_DET"/>
+    </label-sequence>
 
 <!--    <label-sequence>
       <label-item label="PRT"/>
@@ -439,6 +467,12 @@
         <label-item label="ukan"/>
         <label-item label="izan"/>
         <label-item label="VBSINT"/>
+      </label-set>
+    </enforce-after>
+
+     <enforce-after label="INF">
+      <label-set>
+        <label-item label="ezanedin"/>
       </label-set>
     </enforce-after>
 
