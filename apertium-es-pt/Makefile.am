@@ -127,7 +127,7 @@ apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	trules-$(PREFIX2).bin $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode
 
 install-data-local:
-	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_es_modesdir)
 	$(INSTALL_DATA) $(PREFIX1b).mode $(apertium_es_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_es_modesdir)
