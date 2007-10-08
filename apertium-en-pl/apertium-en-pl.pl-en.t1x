@@ -39,9 +39,6 @@
     <def-cat n="prep"> <!-- preposition -->
       <cat-item tags="pr"/>
     </def-cat>
-    <def-cat n="genitive">
-      <cat-item tags="gen"/>
-    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -51,10 +48,12 @@
       <attr-item tags="sp"/>
     </def-attr>
     <def-attr n="gen">			<!-- Gender -->
-      <attr-item tags="m"/>
+      <attr-item tags="m1"/>
+      <attr-item tags="m2"/>
+      <attr-item tags="m3"/>
       <attr-item tags="f"/>
-      <attr-item tags="mf"/>
       <attr-item tags="nt"/>
+      <attr-item tags="mf"/>
     </def-attr>
     <def-attr n="a_conj">
       <attr-item tags="cnjadv"/>
@@ -89,6 +88,12 @@
       <attr-item tags="prn.subj"/>
       <attr-item tags="prn.obj"/>
     </def-attr>
+    <def-attr n="caso">
+      <attr-item tags="nom"/>
+      <attr-item tags="acc"/>
+      <attr-item tags="dat"/>
+      <attr-item tags="gen"/>
+    </def-attr>
     <def-attr n="pers">			<!-- Person -->
        <attr-item tags="p1"/>
        <attr-item tags="p2"/>
@@ -120,7 +125,7 @@
   </section-def-vars>
 
   <section-rules>
-    <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
+    <rule comment="REGLA: NOM">
       <pattern>
         <pattern-item n="nom"/>
       </pattern>
@@ -134,6 +139,8 @@
             <lu>
               <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="caso"/>
+              <clip pos="1" side="tl" part="gen"/>
               <clip pos="1" side="tl" part="nbr"/>
             </lu>
           </chunk>
