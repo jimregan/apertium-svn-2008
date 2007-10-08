@@ -8,7 +8,7 @@ if (array_key_exists('textbox',$_POST)) {
 	process_form();
 } else {
 // otherwise: show the translation textbox
-	show_form("","");
+	show_form("","","0","0");
 }
 ?>
 
@@ -30,7 +30,7 @@ function process_form() {
 		$markUnknown = "-u";
 	}
 
-	show_form($text, $dir);
+	show_form($text, $dir, $mark, $val);
 		
 	if($val == 1) {
 		if ($dir == "es-ca") {
@@ -44,6 +44,7 @@ function process_form() {
 	print "<h3>Traducció</h3>";
 	
 	print '<p>' . $trad . '</p>';
+	
 }
 
 /*
@@ -51,7 +52,7 @@ function process_form() {
 	   SHOW FORM
 	**************************
 */
-function show_form($textbox, $dir) {
+function show_form($textbox, $dir, $mark, $val) {
 print<<<_HTML_
 <form class="translation" action="$_SERVER[PHP_SELF]?id=internostrum" method="post">
 
@@ -60,8 +61,8 @@ print<<<_HTML_
 		<label for="direction">Sentit&nbsp;
 			<select id="direction" name="direction" title="Select the translation type">
 _HTML_;
-print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">Espanyol &rarr; Català</option>";
-			print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">Català &rarr; Español</option>";
+print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">Castellà &rarr; Català</option>";
+			print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">Català &rarr; Castellà</option>";
 print<<<_HTML_
 			</select>
 		</label>
@@ -76,19 +77,23 @@ print<<<_HTML_
 		</label>
 		<br/>
 		<label for="val">
-		<input id="val" value="1" name="val" type="checkbox" title="Dóna prioritat a les formes valencianes">
-		Dóna prioritat a les <b>formes valencianes</b>			
+_HTML_;
+		print '<input id="val" value="1" ' . ($val == '1' ? 'checked="yes"' : '') . ' name="val" type="checkbox" title="Dóna prioritat a les formes valencianes">';
+print<<<_HTML_
+		Dóna prioritat a les <b><a href="?id=formesvalencianes">formes valencianes</a></b>			
 		</label>
 		<br/>
 		<label for="mark">
-		<input id="mark" value="1" name="mark" type="checkbox" title="Marca les paraules desconegudes"/>
+_HTML_;
+		print '<input id="mark" value="1" ' . ($mark == "1" ? 'checked="yes"' : '') . ' name="mark" type="checkbox" title="Marca les paraules desconegudes"/>';
+print<<<_HTML_
 		Marca les paraules desconegudes			
 		</label>
-	</fieldset>
-	<div>
+		<div>
 		<input type="submit" value="Tradueix" class="submit" title="Tradueix "/>
 		<input type="reset" value="Reestableix" class="reset" title="Reestableix"/>
 	</div>
+</fieldset>
 </form>
 _HTML_;
 
@@ -128,6 +133,7 @@ function translate($text, $dir, $markUnknown) {
 	// Imports global vars (from config/apertium-config.php)
 	global $APERTIUM_TRANSLATOR;
 	global $LING_DATA_DIR;
+	global $INTERNOSTRUM_LING_DATA;
 	
 	$text = stripslashes($text);
 	$tempfile = tempnam("tmp","tradtext");
@@ -136,8 +142,8 @@ function translate($text, $dir, $markUnknown) {
   fputs($fd, $text);
   fclose($fd);
   
-	$cmd = "LANG=es_ES.UTF-8 $APERTIUM_TRANSLATOR -d /home/ebenimeli/archive/internostrum -f txt $markUnknown $dir $tempfile";
-
+	$cmd = "LANG=es_ES.UTF-8 $APERTIUM_TRANSLATOR -d " . $INTERNOSTRUM_LING_DATA . " -f txt $markUnknown $dir $tempfile";
+	
 	$trad = shell_exec($cmd);
 	$trad = replaceUnknown($trad);
 	$trad = str_replace("\n","<br/>\n", $trad);

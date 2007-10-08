@@ -1,6 +1,11 @@
 <?php
 	include_once("config/apertium-config.php");
-	show_form("");
+	require("config/langpairs.php");
+	$dir = $HTTP_GET_VARS["dir"];
+	if ($dir == "") {
+		$dir = getPair($lang);
+	}
+	show_form("", $dir);
 ?>
 
 <?php
@@ -9,7 +14,7 @@
 	   SHOW FORM
   **************************
 */
-function show_form($text) {
+function show_form($text, $dir) {
 print<<<_HTML_
 <form class="translation" enctype="multipart/form-data" action="common/traddoc.php" method="post">
 	<fieldset>
@@ -21,16 +26,24 @@ print<<<_HTML_
 	<td>
 	<select id="direction" name="direction" title="">
 _HTML_;
-
-	print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">Spanish - Catalan</option>";
-	print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">Catalan - Spanish</option>";
-	print "<option value='es-pt' " . ($dir == 'es-pt' ? ' selected=true' : '') . ">Spanish - Portuguese</option>";
-	print "<option value='pt-es' " . ($dir == 'pt-es' ? ' selected=true' : '') . ">Portuguese - Spanish</option>";
-	print "<option value='es-pt_BR' " . ($dir == 'es-pt_BR' ? ' selected=true' : '') . ">Spanish - Brazilian Portuguese</option>";
-	print "<option value='en-ca' " . ($dir == 'en-ca' ? ' selected=true' : '') . ">English - Catalan</option>";
-	print "<option value='ca-en' " . ($dir == 'ca-en' ? ' selected=true' : '') . ">Catalan - English</option>";
-	//print "<option disabled='true' value='fr-ca' " . ($dir == 'fr-ca' ? ' selected=true' : '') . ">French - Catalan</option>";
-	//print "<option disabled='true' value='ca-fr' " . ($dir == 'ca-fr' ? ' selected=true' : '') . ">Catalan - French</option>";		
+			if ($dir=="") {
+				print "<option disabled='true' selected='true'>Select direction...</option>";
+			}
+	print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">Spanish &rarr; Catalan</option>";
+	print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">Catalan &rarr; Spanish</option>";
+	print "<option disabled='true'></option>";
+	print "<option value='es-gl' " . ($dir == 'es-gl' ? ' selected=true' : '') . ">Spanish &rarr; Galician</option>";
+	print "<option value='gl-es' " . ($dir == 'gl-es' ? ' selected=true' : '') . ">Galician &rarr; Spanish</option>";
+	print "<option disabled='true'></option>";	
+	print "<option value='es-pt' " . ($dir == 'es-pt' ? ' selected=true' : '') . ">Spanish &rarr; Portuguese</option>";
+	print "<option value='pt-es' " . ($dir == 'pt-es' ? ' selected=true' : '') . ">Portuguese &rarr; Spanish</option>";
+	print "<option value='es-pt_BR' " . ($dir == 'es-pt_BR' ? ' selected=true' : '') . ">Spanish &rarr; Brazilian Portuguese</option>";
+	print "<option disabled='true'></option>";	
+	print "<option value='en-ca' " . ($dir == 'en-ca' ? ' selected=true' : '') . ">English &rarr; Catalan</option>";
+	print "<option value='ca-en' " . ($dir == 'ca-en' ? ' selected=true' : '') . ">Catalan &rarr; English</option>";
+	print "<option disabled='true'></option>";
+	print "<option value='fr-ca' " . ($dir == 'fr-ca' ? ' selected=true' : '') . ">French &rarr; Catalan</option>";
+	print "<option value='ca-fr' " . ($dir == 'ca-fr' ? ' selected=true' : '') . ">Catalan &rarr; French</option>";		
 
 print<<<_HTML_
 	</select>
@@ -70,7 +83,6 @@ print<<<_HTML_
 		</td>
 	</label>
 	</tr>
-	</fieldset>
 	<tr>
 	<td>
 	<div>
@@ -80,7 +92,8 @@ print<<<_HTML_
 	</div>
 	</td>
 	</tr>
-	</table>	
+	</table>
+		</fieldset>	
 	</form>
 
 _HTML_;

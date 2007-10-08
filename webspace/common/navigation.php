@@ -72,8 +72,7 @@
 	<img src="images/rss20.gif" border="0px"/>
 	</a>
 	</div>
-	-->
-	
+-->	
 
 </div>
 

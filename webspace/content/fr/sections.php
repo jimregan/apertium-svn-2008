@@ -12,8 +12,8 @@
    */
    "testdrive"=>array
    (
-   	"link@Spanish&ndash;Catalan"=>"http://xixona.dlsi.ua.es/prototype",
-   	"link@Spanish&ndash;Galician"=>"http://sli.uvigo.es/tradutor"
+   	"translatetext"=>"Traduction de texte",
+   	"translatedoc"=>"Traduction de documents"  	   	
    ),
 "documentation" =>array
    (

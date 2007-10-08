@@ -12,8 +12,9 @@ $subsections = array
    */
    "testdrive"=>array
    (
-   	"link@Spanish&ndash;Catalan"=>"http://xixona.dlsi.ua.es/prototype",
-   	"link@Spanish&ndash;Galician"=>"http://sli.uvigo.es/tradutor"
+   	"link@español &ndash; galego"=>"http://sli.uvigo.es/tradutor",
+   	"translatetext"=>"Tradución de texto",
+   	"translatedoc"=>"Tradución de documentos"  	   	
    ),
 "documentation" =>array
    (

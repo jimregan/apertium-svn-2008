@@ -50,6 +50,7 @@
 					?>
             </div>
             <!-- footer -->
+            <br/>
             <?php include_once("common/footer.php") ?>
         </div>
     
