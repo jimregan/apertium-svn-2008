@@ -1028,7 +1028,8 @@
         </when>
       </choose>
     </def-macro>
-    <def-macro n="f_concord1" npar="1">
+
+     <def-macro n="f_concord1" npar="1">
       <choose>
 <!--To determine value of variables of gender and
                  number and propagate to other rules.  Variables are
@@ -1045,19 +1046,6 @@
             <lit-tag v="m"/>
           </let>
         </when>
-<!--afegit per Gema-->
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="gen"/>
-              <lit-tag v="mf"/>
-            </equal>
-          </test>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="mf"/>
-          </let>
-        </when>
         <when>
           <test>
             <equal>
@@ -1069,8 +1057,24 @@
             <var n="genero"/>
             <lit-tag v="f"/>
           </let>
+        </when>      
+	<when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="gen"/>
+              <lit-tag v="mf"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="mf"/>
+          </let>
         </when>
       </choose>
+    
+    
+    
+    
       <choose>
         <when>
           <test>
@@ -1084,19 +1088,6 @@
             <lit-tag v="sg"/>
           </let>
         </when>
-<!--afegit per Gema-->
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="sp"/>
-            </equal>
-          </test>
-          <let>
-            <var n="numero"/>
-            <lit-tag v="sp"/>
-          </let>
-        </when>
         <when>
           <test>
             <equal>
@@ -1107,6 +1098,18 @@
           <let>
             <var n="numero"/>
             <lit-tag v="pl"/>
+          </let>
+        </when>
+	<when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="sp"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sp"/>
           </let>
         </when>
       </choose>
@@ -1175,6 +1178,10 @@
         </when>
       </choose>
     </def-macro>
+    
+    
+    
+    
     <def-macro n="f_concord2" npar="2">
       <choose>
         <when>
@@ -3354,83 +3361,72 @@
   </section-def-macros>
   <section-rules>
 <!--*************************************** REGLES DE SN ******************************************** -->
-    <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
-      <pattern>
-        <pattern-item n="nom"/>
-      </pattern>
-      <action>
-        <call-macro n="f_concord1">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-            <choose>
-              <when>
-                <test>
-                  <in caseless="yes">
-                    <clip pos="1" side="tl" part="lem"/>
-                    <list n="part_sing"/>
-                  </in>
-                </test>
-                <out>
-                  <chunk name="part" case="caseFirstWord">
-                    <tags>
-                      <tag>
-                        <lit-tag v="SN"/>
-                      </tag>
-                      <tag>
-                        <var n="genero"/>
-                      </tag>
-                      <tag>
-                        <var n="numero"/>
-                      </tag>
-                    </tags>
-                    <lu>
-                      <clip pos="1" side="tl" part="lemh"/>
-                      <clip pos="1" side="tl" part="a_nom"/>
-                      <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-                      <clip pos="1" side="tl" part="gen_mf"/>
-                      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-                      <clip pos="1" side="tl" part="nbr_sp"/>
-                      <clip pos="1" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-                </out>
-              </when>
-              <otherwise>
-                <out>
-                  <chunk name="nom" case="caseFirstWord">
-                    <tags>
-                      <tag>
-                        <lit-tag v="SN"/>
-                      </tag>
-                      <tag>
-                        <var n="genero"/>
-                      </tag>
-                      <tag>
-                        <var n="numero"/>
-                      </tag>
-                    </tags>
-                    <lu>
-                      <clip pos="1" side="tl" part="lemh"/>
-                      <clip pos="1" side="tl" part="a_nom"/>
-                      <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-                      <clip pos="1" side="tl" part="gen_mf"/>
-                      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-                      <clip pos="1" side="tl" part="nbr_sp"/>
-                      <clip pos="1" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-                </out>
-              </otherwise>
-            </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-   </rule>
+
+   	<rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
+		<pattern>
+			<pattern-item n="nom"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<in caseless="yes">
+							<clip pos="1" side="tl" part="lem"/>
+							<list n="part_sing"/>
+						</in>
+					</test>
+					<out>
+						<chunk name="part" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="SN"/></tag>
+								<tag><clip pos="1" side="tl" part="gen"/></tag>
+								<tag><clip pos="1" side="tl" part="nbr"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lemh"/> 
+								<clip pos="1" side="tl" part="a_nom"/>
+								<clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+								<clip pos="1" side="tl" part="gen_mf"/>	 
+								<clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+								<clip pos="1" side="tl" part="nbr_sp"/>	 
+								<clip pos="1" side="tl" part="lemq"/>
+							</lu>
+						</chunk>
+					</out>
+				</when>
+				<otherwise>
+					<out>
+						<chunk name="nom" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="SN"/></tag>
+								<tag><clip pos="1" side="tl" part="gen"/></tag>
+								<tag><clip pos="1" side="tl" part="nbr"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lemh"/> 
+								<clip pos="1" side="tl" part="a_nom"/>
+								<clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+								<clip pos="1" side="tl" part="gen_mf"/>	 
+								<clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+								<clip pos="1" side="tl" part="nbr_sp"/>	 
+								<clip pos="1" side="tl" part="lemq"/>
+							</lu>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
     
     
     

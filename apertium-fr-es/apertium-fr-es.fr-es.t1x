@@ -1312,7 +1312,8 @@
       </let>
     </def-macro>
 
-    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc cont?o no format. Cal posar aquesta funci?en les regles en qu?desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont?format cal conservar-la, si no en cont?cal eliminar-la perqu?no apareguin dos espais seguits. -->
+    
+ <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc cont?o no format. Cal posar aquesta funci?en les regles en qu?desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont?format cal conservar-la, si no en cont?cal eliminar-la perqu?no apareguin dos espais seguits. -->
       <choose>
 	<when>
 	  <test>
@@ -3746,6 +3747,7 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -5470,6 +5472,7 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="4"/>
+			<with-param pos="5"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
@@ -6568,6 +6571,7 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="1"/>
+			<with-param pos="2"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
@@ -6607,9 +6611,11 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="1"/>
+			<with-param pos="2"/>
 		</call-macro>
 		<call-macro n="f_bcond">
 			<with-param pos="2"/>
+			<with-param pos="3"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
@@ -6649,9 +6655,11 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="2"/>
+			<with-param pos="3"/>
 		</call-macro>
 		<call-macro n="f_bcond">
 			<with-param pos="3"/>
+			<with-param pos="4"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
@@ -6709,12 +6717,15 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="2"/>
-		</call-macro>
-		<call-macro n="f_bcond">
 			<with-param pos="3"/>
 		</call-macro>
 		<call-macro n="f_bcond">
+			<with-param pos="3"/>
 			<with-param pos="4"/>
+		</call-macro>
+		<call-macro n="f_bcond">
+			<with-param pos="4"/>
+			<with-param pos="5"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
@@ -6820,12 +6831,15 @@
 		</choose>
 		<call-macro n="f_bcond">
 			<with-param pos="3"/>
-		</call-macro>
-		<call-macro n="f_bcond">
 			<with-param pos="4"/>
 		</call-macro>
 		<call-macro n="f_bcond">
+			<with-param pos="4"/>
 			<with-param pos="5"/>
+		</call-macro>
+		<call-macro n="f_bcond">
+			<with-param pos="5"/>
+			<with-param pos="6"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
@@ -6859,9 +6873,9 @@
 					</equal>
 				</or>
 			</test>
-			<call-macro n="f_bcond">
+			<!--<call-macro n="f_bcondfirst">
 				<with-param pos="1"/>
-			</call-macro>
+			</call-macro>-->
 		</when>
 		<otherwise>
 			<out>
@@ -6944,6 +6958,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -7066,6 +7081,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -7145,6 +7161,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -7245,9 +7262,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -7417,9 +7436,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -7581,6 +7602,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -7615,6 +7637,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -7684,9 +7707,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -7721,9 +7746,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -7776,9 +7803,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -7820,9 +7849,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -7904,6 +7935,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -7950,6 +7982,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -8048,6 +8081,7 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -8104,6 +8138,7 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -8160,6 +8195,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</when>
 
@@ -8207,6 +8243,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -8289,6 +8326,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -8335,6 +8373,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -8367,6 +8406,7 @@
 		<otherwise>
 			<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -8448,6 +8488,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -8494,6 +8535,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -8526,6 +8568,7 @@
 		<otherwise>
 			<call-macro n="f_bcond">
 				<with-param pos="4"/>
+				<with-param pos="5"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -8611,9 +8654,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -8660,9 +8705,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -8725,9 +8772,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -8779,9 +8828,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -8870,9 +8921,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -8919,9 +8972,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -8984,9 +9039,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="4"/>
+							<with-param pos="5"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -9038,9 +9095,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="4"/>
+							<with-param pos="5"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -9129,9 +9188,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -9178,9 +9239,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -9243,9 +9306,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -9297,9 +9362,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -9332,6 +9399,7 @@
 			<otherwise>
 				<call-macro n="f_bcond">
 					<with-param pos="4"/>
+					<with-param pos="5"/>
 				</call-macro>
 			</otherwise>
 		</choose>
@@ -9419,9 +9487,11 @@
 				</out>
 				<call-macro n="f_bcond">
 					<with-param pos="3"/>
+					<with-param pos="4"/>
 				</call-macro>
 				<call-macro n="f_bcond">
 					<with-param pos="4"/>
+					<with-param pos="5"/>
 				</call-macro>
 			</when>
 			<otherwise>
@@ -9468,9 +9538,11 @@
 				</out>
 				<call-macro n="f_bcond">
 					<with-param pos="3"/>
+					<with-param pos="4"/>
 				</call-macro>
 				<call-macro n="f_bcond">
 					<with-param pos="4"/>
+					<with-param pos="5"/>
 				</call-macro>
 			</otherwise>
 		</choose>
@@ -9533,9 +9605,11 @@
 				</out>
 				<call-macro n="f_bcond">
 					<with-param pos="3"/>
+					<with-param pos="4"/>
 				</call-macro>
 				<call-macro n="f_bcond">
 					<with-param pos="4"/>
+					<with-param pos="5"/>
 				</call-macro>
 			</when>
 			<otherwise>
@@ -9587,9 +9661,11 @@
 				</out>
 				<call-macro n="f_bcond">
 					<with-param pos="3"/>
+					<with-param pos="4"/>
 				</call-macro>
 				<call-macro n="f_bcond">
 					<with-param pos="4"/>
+					<with-param pos="5"/>
 				</call-macro>
 			</otherwise>
 		</choose>
@@ -9622,6 +9698,7 @@
 		<otherwise>
 			<call-macro n="f_bcond">
 				<with-param pos="5"/>
+				<with-param pos="6"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -9869,8 +9946,9 @@
 					</lu>
 				</chunk>
 			</out>
-			<call-macro n="f_bcond">
+<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -9916,8 +9994,9 @@
 					</mlu>	
 				</chunk>
 			</out>
-			<call-macro n="f_bcond">
+<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -10017,6 +10096,7 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="4"/>
+							<with-param pos="5"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -10072,6 +10152,7 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="4"/>
+							<with-param pos="5"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -10129,6 +10210,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="4"/>
+				<with-param pos="5"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -10176,6 +10258,7 @@
 			</out>
 			<call-macro n="f_bcond">
 				<with-param pos="4"/>
+				<with-param pos="5"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -10265,9 +10348,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -10315,9 +10400,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -10381,9 +10468,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -10436,9 +10525,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -10529,9 +10620,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="5"/>
+						<with-param pos="6"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -10579,9 +10672,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="5"/>
+						<with-param pos="6"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -10645,9 +10740,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="5"/>
+						<with-param pos="6"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -10700,9 +10797,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="5"/>
+						<with-param pos="6"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -10846,8 +10945,9 @@
 					</lu>
 				</chunk>
 			</out>
-			<call-macro n="f_bcond">
+<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -10880,8 +10980,9 @@
 					</mlu>	
 				</chunk>
 			</out>
-			<call-macro n="f_bcond">
+<call-macro n="f_bcond">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -11106,9 +11207,11 @@
 	</choose>
 	<call-macro n="f_bcond">
 		<with-param pos="2"/>
+		<with-param pos="3"/>
 	</call-macro>
 	<call-macro n="f_bcond">
 		<with-param pos="3"/>
+		<with-param pos="4"/>
 	</call-macro>
 	<out>
 	<b pos="4"/>
@@ -11181,6 +11284,7 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="2"/>
+			<with-param pos="3"/>
 		</call-macro>
 	</action>
 </rule>
@@ -11281,6 +11385,7 @@
 		</choose>
 		<call-macro n="f_bcond">
 			<with-param pos="3"/>
+			<with-param pos="4"/>
 		</call-macro>
 	</action>
 </rule>
@@ -11367,9 +11472,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="4"/>
+							<with-param pos="5"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -11419,9 +11526,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="4"/>
+							<with-param pos="5"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -11471,9 +11580,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -11513,9 +11624,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -11597,12 +11710,15 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
-					</call-macro>
-					<call-macro n="f_bcond">
 						<with-param pos="3"/>
 					</call-macro>
 					<call-macro n="f_bcond">
+						<with-param pos="3"/>
 						<with-param pos="4"/>
+					</call-macro>
+					<call-macro n="f_bcond">
+						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -11643,9 +11759,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -11701,12 +11819,15 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
-					</call-macro>
-					<call-macro n="f_bcond">
 						<with-param pos="3"/>
 					</call-macro>
 					<call-macro n="f_bcond">
+						<with-param pos="3"/>
 						<with-param pos="4"/>
+					</call-macro>
+					<call-macro n="f_bcond">
+						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -11753,12 +11874,15 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
-					</call-macro>
-					<call-macro n="f_bcond">
 						<with-param pos="3"/>
 					</call-macro>
 					<call-macro n="f_bcond">
+						<with-param pos="3"/>
 						<with-param pos="4"/>
+					</call-macro>
+					<call-macro n="f_bcond">
+						<with-param pos="4"/>
+						<with-param pos="5"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -11841,12 +11965,15 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
-						</call-macro>
-						<call-macro n="f_bcond">
 							<with-param pos="4"/>
 						</call-macro>
 						<call-macro n="f_bcond">
+							<with-param pos="4"/>
 							<with-param pos="5"/>
+						</call-macro>
+						<call-macro n="f_bcond">
+							<with-param pos="5"/>
+							<with-param pos="6"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -11887,9 +12014,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="4"/>
+							<with-param pos="5"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="5"/>
+							<with-param pos="6"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -11945,12 +12074,15 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
-						</call-macro>
-						<call-macro n="f_bcond">
 							<with-param pos="4"/>
 						</call-macro>
 						<call-macro n="f_bcond">
+							<with-param pos="4"/>
 							<with-param pos="5"/>
+						</call-macro>
+						<call-macro n="f_bcond">
+							<with-param pos="5"/>
+							<with-param pos="6"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -11997,12 +12129,15 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
-						</call-macro>
-						<call-macro n="f_bcond">
 							<with-param pos="4"/>
 						</call-macro>
 						<call-macro n="f_bcond">
+							<with-param pos="4"/>
 							<with-param pos="5"/>
+						</call-macro>
+						<call-macro n="f_bcond">
+							<with-param pos="5"/>
+							<with-param pos="6"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -12066,8 +12201,9 @@
 					</lu>
 				</chunk>
 			</out>
-			<call-macro n="f_bcond">
+<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -12102,8 +12238,9 @@
 					</mlu>	
 				</chunk>
 			</out>
-			<call-macro n="f_bcond">
+<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -12173,9 +12310,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -12210,9 +12349,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -12265,9 +12406,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -12309,9 +12452,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -12376,11 +12521,13 @@
 					</lu>
 				</chunk>
 			</out>
-			<call-macro n="f_bcond">
+<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<call-macro n="f_bcond">
 				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 		</when>
 		<otherwise>
@@ -12413,11 +12560,14 @@
 					</mlu>	
 				</chunk>
 			</out>
-			<call-macro n="f_bcond">
+<call-macro n="f_bcond">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<call-macro n="f_bcond">
 				<with-param pos="2"/>
+				<with-param pos="3"/>
+				
 			</call-macro>
 		</otherwise>
 	</choose>
@@ -12488,12 +12638,15 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
-					</call-macro>
-					<call-macro n="f_bcond">
 						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
+						<with-param pos="2"/>
 						<with-param pos="3"/>
+					</call-macro>
+					<call-macro n="f_bcond">
+						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -12528,12 +12681,15 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
-					</call-macro>
-					<call-macro n="f_bcond">
 						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
+						<with-param pos="2"/>
 						<with-param pos="3"/>
+					</call-macro>
+					<call-macro n="f_bcond">
+						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -12584,12 +12740,15 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
-					</call-macro>
-					<call-macro n="f_bcond">
 						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
+						<with-param pos="2"/>
 						<with-param pos="3"/>
+					</call-macro>
+					<call-macro n="f_bcond">
+						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -12629,12 +12788,15 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
-					</call-macro>
-					<call-macro n="f_bcond">
 						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
+						<with-param pos="2"/>
 						<with-param pos="3"/>
+					</call-macro>
+					<call-macro n="f_bcond">
+						<with-param pos="3"/>
+						<with-param pos="4"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -12789,9 +12951,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -12824,9 +12988,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -12869,9 +13035,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -12909,9 +13077,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</otherwise>
 			</choose>
@@ -13002,6 +13172,7 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="1"/>
+			<with-param pos="2"/>
 		</call-macro>
 			</otherwise>
 		</choose>
@@ -13098,6 +13269,7 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="1"/>
+			<with-param pos="2"/>
 		</call-macro>
 			</otherwise>
 		</choose>
@@ -13335,7 +13507,8 @@
 					</chunk>
 				</out>
 				<call-macro n="f_bcond">
-					<with-param pos="1"/>
+				        <with-param pos="1"/>
+					<with-param pos="2"/>
 				</call-macro>
 			</when>
 			<otherwise>
@@ -13501,6 +13674,7 @@
 				</test>
 				<call-macro n="f_bcond">
 					<with-param pos="3"/>
+					<with-param pos="4"/>
 				</call-macro>
 			</when>
 			<otherwise>
@@ -14340,9 +14514,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -14552,9 +14728,11 @@
 					</out>
 					<call-macro n="f_bcond">
 						<with-param pos="1"/>
+						<with-param pos="2"/>
 					</call-macro>
 					<call-macro n="f_bcond">
 						<with-param pos="2"/>
+						<with-param pos="3"/>
 					</call-macro>
 				</when>
 				<otherwise>
@@ -14765,9 +14943,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="1"/>
+							<with-param pos="2"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -15004,9 +15184,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="1"/>
+							<with-param pos="2"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -15225,6 +15407,7 @@
 				</out>
 				<call-macro n="f_bcond">
 					<with-param pos="1"/>
+					<with-param pos="2"/>
 				</call-macro>
 			</when>
 			<otherwise>
@@ -15265,6 +15448,7 @@
 				</out>
 				<call-macro n="f_bcond">
 					<with-param pos="2"/>
+					<with-param pos="3"/>
 				</call-macro>
 			</otherwise>
 		</choose>
@@ -15335,6 +15519,7 @@
 				</out>
 				<call-macro n="f_bcond">
 					<with-param pos="1"/>
+					<with-param pos="2"/>
 				</call-macro>
 			</when>
 			<otherwise>
@@ -15374,6 +15559,7 @@
 				</out>
 				<call-macro n="f_bcond">
 					<with-param pos="2"/>
+					<with-param pos="3"/>
 				</call-macro>
 			</otherwise>
 		</choose>
@@ -15474,9 +15660,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -15517,9 +15705,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -15576,9 +15766,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -15624,9 +15816,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -15706,9 +15900,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -15748,9 +15944,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -15806,9 +16004,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</when>
 					<otherwise>
@@ -15853,9 +16053,11 @@
 						</out>
 						<call-macro n="f_bcond">
 							<with-param pos="2"/>
+							<with-param pos="3"/>
 						</call-macro>
 						<call-macro n="f_bcond">
 							<with-param pos="3"/>
+							<with-param pos="4"/>
 						</call-macro>
 					</otherwise>
 				</choose>
@@ -15910,9 +16112,9 @@
 							<lit v="pas"/>
 						</equal>
 					</test>
-					<call-macro n="f_bcond">
+				<!--	<call-macro n="f_bcondfirst">
 						<with-param pos="1"/>
-					</call-macro>
+					</call-macro>-->
 				</when>
 				<when>
 					<test>
@@ -16184,6 +16386,7 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="2"/>
+			<with-param pos="3"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
@@ -16257,6 +16460,7 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="3"/>
+			<with-param pos="4"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
@@ -16330,6 +16534,7 @@
 		</out>
 		<call-macro n="f_bcond">
 			<with-param pos="3"/>
+			<with-param pos="4"/>
 		</call-macro>
 		<let>
 			<var n="caseFirstWord"/>
