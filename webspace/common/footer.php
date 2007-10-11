@@ -6,9 +6,12 @@
 	Project hosted in SourceForge.net
 -->
 <td>
-Project hosted in<br/>
+<?php
+print _("Project hosted in");
+?>
+<br/>
 <a href="http://sourceforge.net/">
-	<img src="images/sflogo.png" alt=""/>
+	<img src="images/sflogo.png" alt="Sourceforge.net"/>
 </a>
 </td>
 
@@ -16,7 +19,10 @@ Project hosted in<br/>
 	Funding
 -->
 <td>
-Funding received from<br/>
+<?php
+	print _("Funding received from");
+?>
+<br/>
 <a href="http://www.mityc.es/MitycCMS/images/LogoMinisterio.jpg">
 	<img src="images/logomitc120.jpg" alt=""/>
 </a>
@@ -44,7 +50,10 @@ Funding received from<br/>
 -->
 <div id="footer">
 Copyright &copy; 2007 <a href="http://www.ua.es">Universidad de Alicante</a><br/>
-Original design by <a href="http://www.mdibb.net" title="Website of Matt Dibb">Matt Dibb</a> 2006. <a href="http://jigsaw.w3.org/css-validator/check/referer" title="Validate CSS">CSS</a> <a href="http://validator.w3.org/check/referer" title="Validate XHTML">XHTML</a>
+<?php
+	print _("Original design by");
+?>
+&nbsp;<a href="http://www.mdibb.net" title="Website of Matt Dibb">Matt Dibb</a> 2006. <a href="http://jigsaw.w3.org/css-validator/check/referer" title="Validate CSS">CSS</a> <a href="http://validator.w3.org/check/referer" title="Validate XHTML">XHTML</a>
 <br/><br/>
 </div>
 
@@ -53,7 +62,10 @@ Original design by <a href="http://www.mdibb.net" title="Website of Matt Dibb">M
 -->
 <div id="creativecommons">
 <br/>
-This page is subject to a<br/>Creative Commons license<br/>
+<?php
+print _("This page is subject to a Creative Commons license");
+?>
+<br/>
 <a href="http://creativecommons.org/licenses/by-sa/3.0/">
 	<img alt="Creative Commons license" src="images/creativecommons.png"/>
 </a>

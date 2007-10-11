@@ -1,5 +1,9 @@
 <?php
 global $langtext;
+
+/*
+	PRINT LANGUAGE LINK
+*/
 function printLanguageLink($code, $text, $url, $newLang) {
 	if ($newLang==$code) {
 		$code = '&nbsp;<b>' . $text . '</b>&nbsp;';

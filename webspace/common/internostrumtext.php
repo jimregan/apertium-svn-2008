@@ -41,7 +41,7 @@ function process_form() {
 		
 	$trad = translate($text, $dir, $markUnknown);
 	
-	print "<h3>Traducció</h3>";
+	print "<h3>" . _("Translation") . "</h3>";
 	
 	print '<p>' . $trad . '</p>';
 	
@@ -58,18 +58,18 @@ print<<<_HTML_
 
 <fieldset>
 	<legend></legend>
-		<label for="direction">Sentit&nbsp;
-			<select id="direction" name="direction" title="Select the translation type">
 _HTML_;
-print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">Castellà &rarr; Català</option>";
-			print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">Català &rarr; Castellà</option>";
+		print '<label for="direction">' . _("Translation type") . ': ';
+		print '<select id="direction" name="direction" title="Select the translation type">';
+		print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("Catalan") . "</option>";
+		print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Spanish") . "</option>";
 print<<<_HTML_
 			</select>
 		</label>
 		<br/><br/>
 		<label for="textbox">
-			<textarea id="textbox" name="textbox" cols="50" rows="10" title="Insert plain text to translate here">
 _HTML_;
+			print '<textarea id="textbox" name="textbox" cols="50" rows="10" title="' . _("Insert plain text to translate here") . '">';
 $text = stripslashes($textbox);
 print $text;
 print<<<_HTML_
@@ -79,19 +79,22 @@ print<<<_HTML_
 		<label for="val">
 _HTML_;
 		print '<input id="val" value="1" ' . ($val == '1' ? 'checked="yes"' : '') . ' name="val" type="checkbox" title="Dóna prioritat a les formes valencianes">';
+		print _("Give priority to forms in Valencian") . ' <b><a href="?id=formesvalencianes">[+]</a></b>';
 print<<<_HTML_
-		Dóna prioritat a les <b><a href="?id=formesvalencianes">formes valencianes</a></b>			
+					
 		</label>
 		<br/>
 		<label for="mark">
 _HTML_;
 		print '<input id="mark" value="1" ' . ($mark == "1" ? 'checked="yes"' : '') . ' name="mark" type="checkbox" title="Marca les paraules desconegudes"/>';
+		print _("Mark unknown words");
 print<<<_HTML_
-		Marca les paraules desconegudes			
 		</label>
 		<div>
-		<input type="submit" value="Tradueix" class="submit" title="Tradueix "/>
-		<input type="reset" value="Reestableix" class="reset" title="Reestableix"/>
+_HTML_;
+		print '<input type="submit" value="' . _("Translate") . '" class="submit" title="Tradueix "/>';
+		print '<input type="reset" value="' . _("Reset") . '" class="reset" title="Reestableix"/>';
+print<<<_HTML_
 	</div>
 </fieldset>
 </form>
