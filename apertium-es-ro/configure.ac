@@ -4,9 +4,9 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_apertium_version], [2.0.0])
+m4_define([required_apertium_version], [3.0.0])
 
-AC_INIT([apertium-es-ro], [0.7.0], [sortiz@users.sourceforge.net])
+AC_INIT([apertium-es-ro], [0.7.1], [sortiz@users.sourceforge.net])
 AM_INIT_AUTOMAKE([apertium-es-ro], [0.7.0], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
