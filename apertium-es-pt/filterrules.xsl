@@ -45,6 +45,7 @@
 <xsl:copy-of select="section-def-attrs"/>
 <xsl:copy-of select="section-def-vars"/>
 <xsl:copy-of select="section-def-macros"/>
+<xsl:copy-of select="section-def-lists"/>
 <xsl:apply-templates select="./section-rules"/> 
 </transfer>
 </xsl:template>
