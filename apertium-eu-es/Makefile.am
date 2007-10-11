@@ -143,7 +143,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 modes: modes.xml
 	apertium-gen-modes modes.xml
 	
-apertium_eu_esdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
+apertium_eu_esdir=$(prefix)/share/apertium/$(PREFIX1)/
 apertium_eu_es_DATA=$(PREFIX1).automorf.bin \
                     $(PREFIX1).autobil.bin \
                     $(PREFIX1).autogen.bin \
