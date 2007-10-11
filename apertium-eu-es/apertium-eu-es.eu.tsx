@@ -153,8 +153,9 @@
   </def-label>
 <def-label name="ADV">
     <tags-item tags="adv"/>
-    <tags-item tags="ADB"/>
-    <tags-item tags="ADB.*"/>
+  </def-label>
+<def-label name="ADVITG">
+    <tags-item tags="adv.itg"/>
   </def-label>
 <def-label name="ADVGEN">
     <tags-item tags="adv.gen"/>
@@ -481,6 +482,8 @@
   <preferences><!--nago, etc. -->
    <prefer tags="vbsint.pri.*"/>
    <prefer tags="vbsint.pii.*"/>
+   <prefer tags="vbper.pri.*"/>
+   <prefer tags="vbper.pii.*"/>
   </preferences>
 
 </tagger>
