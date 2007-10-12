@@ -13,8 +13,8 @@ $subsections = array
    "testdrive"=>array
    (
    	"link@Engels-Afrikaans"=>"http://interpret.co.za/",
-   	"translatetext"=>"Text translation",
-   	"translatedoc"=>"Document translation"   	
+   	"translatetext"=>"Vertaal teks",
+   	"translatedoc"=>"Vertaal dokument"   	
    ),
 "documentation" =>array
    (
