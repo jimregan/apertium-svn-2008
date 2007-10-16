@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
 <transfer default="chunk">
   <section-def-cats>
     <def-cat n="nom">
@@ -57,7 +57,7 @@
       <cat-item lemma="en" tags="pr"/>
     </def-cat>
 <def-cat n="aprep">
-      <cat-item lemma="à" tags="pr"/>
+      <cat-item lemma="Ã " tags="pr"/>
     </def-cat>
 <def-cat n="surprep">
       <cat-item lemma="sur" tags="pr"/>
@@ -95,7 +95,7 @@
     </def-cat>
 		 <def-cat n="dont">
       <cat-item lemma="dont" tags="rel.*"/>
-<!-- això em sembla una errada...      <cat-item lemma="qui" tags="prn.itg.*"/>
+<!-- aixÃ² em sembla una errada...      <cat-item lemma="qui" tags="prn.itg.*"/>
       <cat-item lemma="lequel" tags="prn.itg.*"/>
       <cat-item tags="prn.tn.*"/>-->
     </def-cat>
@@ -511,16 +511,16 @@
 			<list-item v="monde"/>
 			<list-item v="rue"/>
 			<list-item v="zona"/>
-			<list-item v="école"/>
+			<list-item v="Ã©cole"/>
 			<list-item v="prison"/>
 			<list-item v="habitation"/>
 			<list-item v="chambre"/>
 			<list-item v="salle"/>
 			<list-item v="salon"/>
 			<list-item v="mairie"/>
-			<list-item v="université"/>
-			<list-item v="hôpital"/>
-			<list-item v="hôtel"/>
+			<list-item v="universitÃ©"/>
+			<list-item v="hÃ´pital"/>
+			<list-item v="hÃ´tel"/>
 	</def-list>
 
 		<def-list n="part_sing">
@@ -528,7 +528,7 @@
 			<list-item v="beurre"/>
 			<list-item v="limonade"/>
 			<list-item v="vin"/>
-			<list-item v="bière"/>
+			<list-item v="biÃ¨re"/>
 			<list-item v="viande"/>
 			<list-item v="pain"/>
 		</def-list>
@@ -553,13 +553,13 @@
 
 <def-list n="v_amb_en">
 			<list-item v="entrer"/>
-			<list-item v="fêter"/>
-			<list-item v="célébrer"/>
+			<list-item v="fÃªter"/>
+			<list-item v="cÃ©lÃ©brer"/>
 			<list-item v="vivre"/>
 			<list-item v="habiter"/>
 			<list-item v="mourir"/>
-			<list-item v="naître"/>
-			<list-item v="être"/>
+			<list-item v="naÃ®tre"/>
+			<list-item v="Ãªtre"/>
    </def-list>
 
 		<def-list n="vbambser">
@@ -567,10 +567,10 @@
 			<list-item v="passer"/>
 			<list-item v="impliquer"/>
 			<list-item v="arriver"/>
-			<list-item v="décéder"/>
+			<list-item v="dÃ©cÃ©der"/>
 			<list-item v="entrer"/>
 			<list-item v="mourir"/>
-			<list-item v="naître"/>
+			<list-item v="naÃ®tre"/>
 			<list-item v="partir"/>
 			<list-item v="repartir"/>
 			<list-item v="rester"/>
@@ -579,10 +579,10 @@
 			<list-item v="venir"/>
 			<list-item v="revenir"/>
 			<list-item v="devenir"/>
-			<list-item v="être"/>
+			<list-item v="Ãªtre"/>
 			<list-item v="abaisser"/>
 			<list-item v="baisser"/>
-			<list-item v="apparaître"/>
+			<list-item v="apparaÃ®tre"/>
 			<list-item v="descendre"/>
 			<list-item v="monter"/>
 			<list-item v="sortir"/>
@@ -597,17 +597,17 @@
 
 		<def-list n="mois">
 			<list-item v="janvier"/>
-			<list-item v="février"/>
+			<list-item v="fÃ©vrier"/>
 			<list-item v="mars"/>
 			<list-item v="avril"/>
 			<list-item v="mai"/>
 			<list-item v="juin"/>
 			<list-item v="juillet"/>
-			<list-item v="août"/>
+			<list-item v="aoÃ»t"/>
 			<list-item v="septembre"/>
 			<list-item v="octobre"/>
 			<list-item v="novembre"/>
-			<list-item v="décembre"/>
+			<list-item v="dÃ©cembre"/>
 		</def-list>
 
   </section-def-lists>
@@ -709,7 +709,7 @@
 				<and>
 					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
-						<lit v="troisième"/>
+						<lit v="troisiÃ¨me"/>
 					</equal>
 					<equal> 
 						<clip pos="1" side="tl" part="nbr"/>
@@ -727,7 +727,7 @@
 
 		<def-macro n="verb_ref" npar="2"><!-- aquesta macro canvia el significat de certs verbs reflexius-->
 
-			<choose> <!--si el prn és ref...-->
+			<choose> <!--si el prn Ã©s ref...-->
 				<when>
 					<test>
 						<or>
@@ -868,7 +868,7 @@
 			</choose>
 		</def-macro>
 
-<def-macro n="comprova_auxiliar_ref" npar="3"> <!--aquesta macro troba l'aux correcte en cast tenint en compte que si el verb és ref i porta l'aux "être" en cast ha de ser "haber". de passada, mira també si cal canviar el lema del verb (com la macro "verb_ref")-->
+<def-macro n="comprova_auxiliar_ref" npar="3"> <!--aquesta macro troba l'aux correcte en cast tenint en compte que si el verb Ã©s ref i porta l'aux "Ãªtre" en cast ha de ser "haber". de passada, mira tambÃ© si cal canviar el lema del verb (com la macro "verb_ref")-->
 			<choose>
 				<when><!--en cas que l'auxiliar sigui "ser":-->
 					<test>
@@ -878,7 +878,7 @@
 						</equal>
 					</test>
 					<choose>
-						<when><!--si és un verb que va amb "être" fes que l'aux sigui "haber"-->
+						<when><!--si Ã©s un verb que va amb "Ãªtre" fes que l'aux sigui "haber"-->
 							<test>
 								<in caseless="yes">
 									<clip pos="2" side="sl" part="lem"/>
@@ -904,7 +904,7 @@
 						</when>
 
 						<otherwise>
-							<choose><!--si és ref...-->
+							<choose><!--si Ã©s ref...-->
 								<when>
 									<test>
 										<or>
@@ -991,7 +991,7 @@
 										</when>
 									</choose>
 								</when>
-								<otherwise><!--si no és cap dels casos anteriors, acceptem que és passiva, i deixem el verb "ser"-->
+								<otherwise><!--si no Ã©s cap dels casos anteriors, acceptem que Ã©s passiva, i deixem el verb "ser"-->
 									<let>
 										<clip pos="1" side="tl" part="lem"/>
 										<lit v="ser"/>
@@ -1005,7 +1005,7 @@
 						</otherwise>
 					</choose>
 				</when>
-				<otherwise><!--si l'orig és "avoir" deixem "haber" en cast-->
+				<otherwise><!--si l'orig Ã©s "avoir" deixem "haber" en cast-->
 					<let>
 						<clip pos="1" side="tl" part="lem"/>
 						<lit v="haber"/>
@@ -1032,7 +1032,7 @@
 					<test>
 						<equal>
 							<clip pos="1" side="sl" part="lem"/>
-							<lit v="à"/>
+							<lit v="Ã "/>
 						</equal>
 					</test>
 					<let>
@@ -3683,7 +3683,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: ANTROPÒNIM">
+<rule comment="REGLA: ANTROPÃ’NIM">
       <pattern>
 	<pattern-item n="ant"/>
       </pattern>
@@ -5408,7 +5408,7 @@
 	</action>
 </rule>
 
-<rule comment="REGLA: DET NOM DET ADV ADJ (la fille la plus jolie : la chica más guapa)">
+<rule comment="REGLA: DET NOM DET ADV ADJ (la fille la plus jolie : la chica mÃ¡s guapa)">
 	<pattern>
 		<pattern-item n="det"/>
 		<pattern-item n="nom"/>
@@ -5915,7 +5915,7 @@
 	</action>
 </rule>
 
-<rule comment="REGLA: ne VERB plus que (n'est plus que... -> no es más que...)">
+<rule comment="REGLA: ne VERB plus que (n'est plus que... -> no es mÃ¡s que...)">
 	<pattern>
 		<pattern-item n="ne"/>
 		<pattern-item n="verbpers"/>
@@ -6669,7 +6669,7 @@
 </rule>
 
 
-<rule comment="REGLA: être en train de -> estar ger">
+<rule comment="REGLA: Ãªtre en train de -> estar ger">
 	<pattern>
 		<pattern-item n="vbser"/>
 		<pattern-item n="en"/>
@@ -6734,7 +6734,7 @@
 	</action>
 </rule>
 
-<rule comment="REGLA: être-prnsub en train de -> estar ger">
+<rule comment="REGLA: Ãªtre-prnsub en train de -> estar ger">
 	<pattern>
 		<pattern-item n="vbser"/>
 		<pattern-item n="prnperssubj"/>
@@ -7375,7 +7375,7 @@
 	</action>
 </rule>
 
-<rule comment="prnpro prnpro verbpers-prn"><!--en aquesta no poso el tema de l'"on" perquè no sé com es manega, amb tres prn-->
+<rule comment="prnpro prnpro verbpers-prn"><!--en aquesta no poso el tema de l'"on" perquÃ¨ no sÃ© com es manega, amb tres prn-->
 	<pattern>
 		<pattern-item n="prnpro"/>
 		<pattern-item n="prnpro"/>
@@ -8845,7 +8845,7 @@
 	</action>
 </rule>
 
-<rule comment="aller-subj prnpro prnpro inf"><!--aquesta tampoc té "on" pel mateix motiu que l'altra...-->
+<rule comment="aller-subj prnpro prnpro inf"><!--aquesta tampoc tÃ© "on" pel mateix motiu que l'altra...-->
 	<pattern>
 		<pattern-item n="aller"/>
 		<pattern-item n="prnperssubj"/>
@@ -10542,7 +10542,7 @@
 	</action>
 </rule>
 
-<rule comment="venir-subj de prnpro prnpro inf"><!--també falta el tema "on"-->
+<rule comment="venir-subj de prnpro prnpro inf"><!--tambÃ© falta el tema "on"-->
 	<pattern>
 		<pattern-item n="venir"/>
 		<pattern-item n="prnperssubj"/>
@@ -11239,7 +11239,7 @@
 </rule>
 
 
-<rule comment="REGLA: continuer à inf -> continuar ger">
+<rule comment="REGLA: continuer Ã  inf -> continuar ger">
 	<pattern>
 		<pattern-item n="continuer"/>
 		<pattern-item n="aprep"/>
@@ -11290,7 +11290,7 @@
 </rule>
 
 
-<rule comment="REGLA: continuer-subj à inf -> continuar ger">
+<rule comment="REGLA: continuer-subj Ã  inf -> continuar ger">
 	<pattern>
 		<pattern-item n="continuer"/>
 		<pattern-item n="prnperssubj"/>
@@ -11390,7 +11390,7 @@
 	</action>
 </rule>
 
-<rule comment="continuer-subj à prnpro inf -> continuar ger-prnenc">
+<rule comment="continuer-subj Ã  prnpro inf -> continuar ger-prnenc">
 	<pattern>
 		<pattern-item n="continuer"/>
 		<pattern-item n="prnperssubj"/>
@@ -11641,7 +11641,7 @@
 	</action>
 </rule>
 
-<rule comment="continuer à prnpro prnpro inf">
+<rule comment="continuer Ã  prnpro prnpro inf">
 	<pattern>
 		<pattern-item n="continuer"/>
 		<pattern-item n="aprep"/>
@@ -11895,7 +11895,7 @@
 	</action>
 </rule>
 
-<rule comment="continuer-subj à prnpro prnpro inf"><!--tpc es té en compte "on"-->
+<rule comment="continuer-subj Ã  prnpro prnpro inf"><!--tpc es tÃ© en compte "on"-->
 	<pattern>
 		<pattern-item n="continuer"/>
 		<pattern-item n="prnperssubj"/>
@@ -15107,7 +15107,7 @@
 	</action>
 </rule>
 
-<rule comment="prnpro prnpro auxpers-subj adv pp"><!--tbé falta l'"on"-->
+<rule comment="prnpro prnpro auxpers-subj adv pp"><!--tbÃ© falta l'"on"-->
 	<pattern>
 		<pattern-item n="prnpro"/>
 		<pattern-item n="prnpro"/>

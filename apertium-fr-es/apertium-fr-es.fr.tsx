@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <tagger name="french">
 <tagset>
   <def-label name="ACRONIMOM">
@@ -967,7 +967,7 @@
       <label-item label="IMPMODPRNENC"/>
     </label-sequence>
     
-  <!--prova prohibició verb que no siga être o avoir + participi-->  
+  <!--prova prohibiciÃ³ verb que no siga Ãªtre o avoir + participi-->  
     <label-sequence>
       <label-item label="VLEXPFCI"/>
       <label-item label="VLEXPARTPI"/>
@@ -1001,7 +1001,7 @@
       <label-item label="VLEXPARTPI"/>
     </label-sequence>
     
-<!--prova prohibició de nom i adj + ger pq trie ppres-->   
+<!--prova prohibiciÃ³ de nom i adj + ger pq trie ppres-->   
     <label-sequence>
       <label-item label="NOMM"/>
       <label-item label="VLEXGER"/>
@@ -1091,7 +1091,7 @@
       <label-item label="VMODALGER"/>
     </label-sequence> 
     
- <!--prova prohibir preposició davant de participi de present--> 
+ <!--prova prohibir preposiciÃ³ davant de participi de present--> 
   
       <label-sequence>
       <label-item label="PREP"/>

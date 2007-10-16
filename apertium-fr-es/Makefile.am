@@ -87,19 +87,35 @@ apertium-fr-es.fr.dix: apertium-fr-es.fr.metadix
 	@xsltproc buscaPar.xsl apertium-fr-es.fr.metadix | uniq > $$gen.xsl
 	@xsltproc $$gen.xsl apertium-fr-es.fr.metadix >$@
 	@rm $$gen.xsl
-                                                 	            	            	            	            	            	  	 
+	
+apertium_fr_esdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
+apertium_fr_modesdir=$(prefix)/share/apertium/modes/
+
+$(PREFIX1).mode: modes.xml
+	apertium-gen-modes modes.xml
+
+$(PREFIX2).mode: modes.xml
+	apertium-gen-modes modes.xml
+
 modes: modes.xml
 	apertium-gen-modes modes.xml
-	
-apertium_fr_esdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
-apertium_fr_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
-                    $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
-                    $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
-                    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
-                    $(PREFIX1).prob $(PREFIX2).prob \
-		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
-		    modes
-		  
 
-CLEANFILES = -r $(TARGETS_COMMON) apertium-fr-es.fr.dix
+apertium_fr_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
+	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
+	$(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
+	$(PREFIX1).autopgen.bin \
+	$(PREFIX2).autopgen.bin \
+	$(PREFIX1).prob $(PREFIX2).prob \
+	$(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+	$(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
+	$(PREFIX1).mode $(PREFIX2).mode
+
+install-data-local:
+	apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_fr_modesdir)
+	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_fr_modesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_fr_esdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x $(apertium_fr_esdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x $(apertium_fr_esdir)
+
+CLEANFILES = -rf $(TARGETS) modes $(BASENAME).$(LANG1).dix
