@@ -364,7 +364,17 @@
       <attr-item tags="f"/>
     </def-attr>
 
- 
+  <def-attr n="ND">
+      <attr-item tags="ND"/>
+  </def-attr>
+
+  <def-attr n="sp">
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
+  </def-attr>
+
+
     <def-attr n="nbr">
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
@@ -402,9 +412,9 @@
 
   <section-def-vars>    
     <def-var n="caseFirstWord"/>
-    <def-var n="EOS"/>
-    <def-var n="genere"/>
-    <def-var n="nombre"/>
+    <def-var n="EOS" v="true"/>
+    <def-var n="genere" v="m"/>
+    <def-var n="nombre" v="sg"/>
     <def-var n="palabra"/>
     <def-var n="chunk"/>
     <def-var n="tipusdet"/>
@@ -846,43 +856,7 @@
 		  <clip pos="1" side="tl" part="nbr"/> 
 		  <clip pos="2" side="sl" part="nbr"/> 
 		</let>
-	      </when>
-	      <when>
-		<test><!--cuando 2 es sp en origen (determinantes indefinidos) -->
-		  <and>
-		    <equal>		    
-		      <clip pos="2" side="sl" part="nbr"/> 
-		      <lit-tag v="sp"/>
-		    </equal>
-		    <equal>		    
-		      <clip pos="3" side="tl" part="nbr"/> 
-		      <lit-tag v="pl"/>
-		    </equal>
-		  </and>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="nbr"/> 
-		  <lit v="pl"/> 
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <and>
-		    <equal>		    
-		      <clip pos="2" side="sl" part="nbr"/> 
-		      <lit-tag v="sp"/>
-		    </equal>
-		    <equal>		    
-		      <clip pos="3" side="tl" part="nbr"/> 
-		      <lit-tag v="sg"/>
-		    </equal>
-		  </and>
-		</test>
-		<let>		  
-		  <clip pos="1" side="tl" part="nbr"/> 
-		  <lit v="sg"/> 
-		</let>
-	      </when>
+	      </when> 
 	      <when>
 		<test>
 		  <and>
@@ -915,6 +889,55 @@
 		  </when>
 		</choose>
 	      </when>
+	      <when>
+		<test><!--cuando 2 es sp en origen (determinantes indefinidos) o en destino (adjizl -> det; p. ex. gainerako) -->
+		  <and>
+		    <or>
+		      <equal>		    
+			<clip pos="2" side="sl" part="nbr"/> 
+			<lit-tag v="sp"/>
+		      </equal>
+		      <equal>		    
+			<clip pos="2" side="tl" part="nbr"/> 
+			<lit-tag v="sp"/>
+		      </equal>
+		    </or>
+		    <equal>		    
+		      <clip pos="3" side="tl" part="nbr"/> 
+		      <lit-tag v="pl"/>
+		    </equal>
+		  </and>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="nbr"/> 
+		  <lit-tag v="pl"/> 
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <and>
+		    <or>
+		      <equal>		    
+			<clip pos="2" side="sl" part="nbr"/> 
+			<lit-tag v="sp"/>
+		      </equal>
+		      <equal>		    
+			<clip pos="2" side="tl" part="nbr"/> 
+			<lit-tag v="sp"/>
+		      </equal>
+		    </or>
+		    <equal>		    
+		      <clip pos="3" side="tl" part="nbr"/> 
+		      <lit-tag v="sg"/>
+		    </equal>
+		  </and>
+		</test>
+		<let>		  
+		  <clip pos="1" side="tl" part="nbr"/> 
+		  <lit-tag v="sg"/> 
+		</let>
+	      </when>
+	     
 	      <when>
 		<test>
 		  <and>
@@ -2358,7 +2381,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <lit-tag v="2"/> 
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -2408,7 +2432,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
@@ -2420,10 +2445,10 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
       </action>
  </rule>
 
- <rule comment="REGLA: NOM + DET (lege proiektua - proyecto de ley)">
+ <rule comment="REGLA: NOM + NOM + DET (lege proiektua - proyecto de ley)">
       <pattern>
-	<pattern-item n="nom_np"/>
-	<pattern-item n="nom_np"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -2470,13 +2495,104 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="3" side="tl" part="mf"/>
 	      <clip pos="3" side="tl" part="nbr"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
+	      <clip pos="2" side="tl" part="lemq"/> 
+	    </lu>
+	    <b/>
+	    <lu>
+	      <lit v="de"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>	    
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
+<rule comment="REGLA: NOM + NOM + DET + POST (urre koloreko - de color de oro)">
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="concord_n2">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="tipo_det">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nbr_n1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>	
+	<out> 
+	  <chunk name="pr_d_n_pr_n" case="caseFirstWord">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><var n="tipusdet"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>  
+	    <lu>
+	      <clip pos="3" side="tl" part="lem"/> 
+	      <clip pos="3" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="3" side="tl" part="GD" link-to="3"/>
+	      <clip pos="3" side="tl" part="mf"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="GD" link-to="3"/>
+	      <clip pos="2" side="tl" part="mf"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	      <clip pos="2" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -2558,7 +2674,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="2" side="tl" part="tipus_det"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -2566,7 +2683,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="1" side="tl" part="a_nom"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		  <clip pos="1" side="tl" part="lemq"/> 
 		</lu>
 		<b/>
@@ -2596,7 +2714,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -2605,7 +2724,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -2617,6 +2737,60 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</let>
       </action>
  </rule>
+
+
+ <rule comment="REGLA: NOM + PP + IK (alaba izanik - habiendo sido hija... (para que no entre por la regla siguiente)">
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="pp"/>
+	<pattern-item n="part"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><lit-tag v="UNDET"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><lit-tag v="sg"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen" link-to="3"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+
+	  <chunk name="pp_ik"> 
+	    <tags>
+	      <tag><lit-tag v="SVsub"/></tag>
+	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+	      <tag><lit-tag v="ger"/></tag>
+	  </tags>
+	  <lu>
+	    <lit v="haber"/>
+	    <lit-tag v="vbhaver.ger"/>
+	  </lu>
+	  <b/>
+	  <lu>	    
+	    <clip pos="2" side="tl" part="lem"/> 
+	    <clip pos="2" side="tl" part="a_verb"/>
+	    <clip pos="2" side="tl" part="temps"/>
+	    <lit-tag v="m.sg"/>
+	  </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
 
 
  <rule comment="REGLA: NOM + ADJ + POST (balio juridikorik)">
@@ -2668,7 +2842,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="2" side="tl" part="tipus_det"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -2676,7 +2851,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 		  <clip pos="1" side="tl" part="a_nom"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		  <clip pos="1" side="tl" part="lemq"/> 
 		</lu>
 		<b/>
@@ -2701,7 +2877,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -2710,7 +2887,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -2755,6 +2933,80 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
+
+ <rule comment="REGLA: NOM + POST (osasun zentrotatik - por centro de salud)">
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nbr_n1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+
+	<out> 
+	  <chunk name="pr_nom_pr_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><lit-tag v="UNDET"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><lit-tag v="sg"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="GD" link-to="3"/>
+	      <clip pos="2" side="tl" part="mf"/>
+	      <lit-tag v="4"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <lit v="de"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/>
 	      <lit-tag v="4"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
@@ -2815,7 +3067,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
@@ -2891,7 +3144,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="2" side="tl" part="tipus_det"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	    <b/> 
 	    <lu> 
@@ -2899,7 +3153,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
@@ -2934,7 +3189,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/> 
@@ -2943,7 +3199,8 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -3239,7 +3496,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b pos="1"/>
 		<lu> 
@@ -3247,7 +3505,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 	      </chunk>
@@ -3301,7 +3560,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -3309,7 +3569,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 	      </chunk>
@@ -3378,7 +3639,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -3386,7 +3648,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 	      </chunk>
@@ -3415,7 +3678,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b/>
@@ -3424,7 +3688,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="a_adj"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -3441,8 +3706,8 @@ pingui pingui pingui MG
  <rule comment="REGLA: ADJ + NOM + DET (azken lege proiektua - el último proyecto de ley)">
       <pattern>
 	<pattern-item n="adjizl"/>
-	<pattern-item n="nom_np"/>
-	<pattern-item n="nom_np"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
 	<pattern-item n="det"/>
       </pattern>
       <action>
@@ -3504,25 +3769,27 @@ pingui pingui pingui MG
 		  <clip pos="4" side="tl" part="mf"/>
 		  <clip pos="4" side="tl" part="nbr"/>
 		</lu>
-		<b pos="1"/>	
+		<b/>	
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
-		<b/>		
+		<b pos="1"/>		
 		<lu> 
 		  <clip pos="3" side="tl" part="lemh"/> 
 		  <clip pos="3" side="tl" part="a_nom"/>
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
 		  <clip pos="3" side="tl" part="lemq"/> 
 		</lu>
-		<b/>
+		<b pos="2"/>
 		<lu>
 		  <lit v="de"/>
 		  <lit-tag v="pr"/>
@@ -3555,21 +3822,22 @@ pingui pingui pingui MG
 		  <clip pos="4" side="tl" part="mf"/>
 		  <clip pos="4" side="tl" part="nbr"/>
 		</lu>
-		<b pos="1"/>
+		<b/>
 		<lu> 
 		  <clip pos="3" side="tl" part="lemh"/> 
 		  <clip pos="3" side="tl" part="a_nom"/>
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
 		  <clip pos="3" side="tl" part="lemq"/> 
 		</lu>
-		<b/>
+		<b pos="1"/>
 		<lu>
 		  <lit v="de"/>
 		  <lit-tag v="pr"/>
 		</lu>
-		<b/>		
+		<b pos="2"/>	
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -3583,7 +3851,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="a_adj"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -3595,6 +3864,335 @@ pingui pingui pingui MG
 	</let>
       </action>
  </rule>
+
+
+<rule comment="REGLA: ADJ + NOM + DET (azken osasun zentrotatik - de último centro de salud)">
+      <pattern>
+	<pattern-item n="adjizl"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="concord_n2">
+	  <with-param pos="3"/>
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="nbr_n1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal>		
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <lit-tag v="adjant"/>
+		</equal>
+		<equal>		
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <lit-tag v="det"/>
+		</equal>
+	      </or>
+	    </test>
+	    <out> 
+	      <chunk name="pr_a_n_pr_n" case="caseFirstWord">
+		<tags>
+		  <tag><var n="chunk"/></tag>
+		  <tag><lit-tag v="UNDET"/></tag>
+		  <tag><clip pos="3" side="tl" part="gen"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>	
+		<lu>
+		  <clip pos="4" side="tl" part="whole"/> 
+		</lu>
+		<b/>	
+		<lu> 
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <clip pos="1" side="tl" part="tipus_det"/>
+		  <clip pos="1" side="tl" part="GD" link-to="3"/>
+		  <clip pos="1" side="tl" part="mf"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
+		</lu>
+		<b pos="1"/>	
+		<lu> 
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="GD" link-to="3"/>
+		  <clip pos="3" side="tl" part="mf"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="2"/>
+		<lu>
+		  <lit v="de"/>
+		  <lit-tag v="pr"/>
+		</lu>
+		<b/>		
+		<lu> 
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>		  
+	      </chunk>
+	    </out>
+	  </when>
+	  <otherwise>
+	    <out> 
+	      <chunk name="pr_n_pr_n_a" case="caseFirstWord">
+		<tags>
+		  <tag><var n="chunk"/></tag>
+		  <tag><lit-tag v="UNDET"/></tag>
+		  <tag><clip pos="3" side="tl" part="gen"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="4" side="tl" part="whole"/> 
+		</lu>
+		<b/>
+		<lu> 
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="GD" link-to="3"/>
+		  <clip pos="3" side="tl" part="mf"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <lit v="de"/>
+		  <lit-tag v="pr"/>
+		</lu>
+		<b pos="2"/>	
+		<lu> 
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>	
+		<b/>
+		<lu> 
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <clip pos="1" side="tl" part="GD" link-to="3"/>
+		  <clip pos="1" side="tl" part="mf"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: ADJ + NOM + DET (azken lege proiektuaren - del último proyecto de ley)">
+      <pattern>
+	<pattern-item n="adjizl"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="det"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="concord_n3">
+	  <with-param pos="3"/>
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="tipo_det">
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="nbr_n1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal>		
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <lit-tag v="adjant"/>
+		</equal>
+		<equal>		
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <lit-tag v="det"/>
+		</equal>
+	      </or>
+	    </test>
+	    <out> 
+	      <chunk name="pr_d_a_n_pr_n" case="caseFirstWord">
+		<tags>
+		  <tag><var n="chunk"/></tag>
+		  <tag><var n="tipusdet"/></tag>
+		  <tag><clip pos="3" side="tl" part="gen"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>	
+		<lu>
+		  <clip pos="5" side="tl" part="whole"/> 
+		</lu>
+		<b/>
+		<lu>
+		  <clip pos="4" side="tl" part="lem"/> 
+		  <clip pos="4" side="tl" part="a_det"/> 
+		  <lit-tag v="2"/> 
+		  <clip pos="4" side="tl" part="GD" link-to="3"/>
+		  <clip pos="4" side="tl" part="mf"/>
+		  <clip pos="4" side="tl" part="nbr"/>
+		</lu>
+		<b/>	
+		<lu> 
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <clip pos="1" side="tl" part="tipus_det"/>
+		  <clip pos="1" side="tl" part="GD" link-to="3"/>
+		  <clip pos="1" side="tl" part="mf"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
+		</lu>
+		<b pos="1"/>	
+		<lu> 
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="GD" link-to="3"/>
+		  <clip pos="3" side="tl" part="mf"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="2"/>
+		<lu>
+		  <lit v="de"/>
+		  <lit-tag v="pr"/>
+		</lu>
+		<b/>		
+		<lu> 
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>		  
+	      </chunk>
+	    </out>
+	  </when>
+	  <otherwise>
+	    <out> 
+	      <chunk name="pr_d_n_pr_n_a" case="caseFirstWord">
+		<tags>
+		  <tag><var n="chunk"/></tag>
+		  <tag><var n="tipusdet"/></tag>
+		  <tag><clip pos="3" side="tl" part="gen"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="5" side="tl" part="whole"/> 
+		</lu>
+		<b/>
+		<lu>
+		  <clip pos="4" side="tl" part="lem"/> 
+		  <clip pos="4" side="tl" part="a_det"/> 
+		  <lit-tag v="2"/> 
+		  <clip pos="4" side="tl" part="GD" link-to="3"/>
+		  <clip pos="4" side="tl" part="mf"/>
+		  <clip pos="4" side="tl" part="nbr"/>
+		</lu>
+		<b/>
+		<lu> 
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="GD" link-to="3"/>
+		  <clip pos="3" side="tl" part="mf"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <lit v="de"/>
+		  <lit-tag v="pr"/>
+		</lu>
+		<b pos="2"/>	
+		<lu> 
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>	
+		<b/>
+		<lu> 
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+		  <clip pos="1" side="tl" part="GD" link-to="3"/>
+		  <clip pos="1" side="tl" part="mf"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
+
 
  <rule comment="REGLA: ADJ + NOM + DET + POST (lehen orrialdean)">
       <pattern>
@@ -3659,7 +4257,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -3667,7 +4266,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 	      </chunk>
@@ -3700,7 +4300,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b/>
@@ -3709,7 +4310,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="a_adj"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -3771,7 +4373,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -3779,7 +4382,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 	      </chunk>
@@ -3803,7 +4407,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b/>
@@ -3812,7 +4417,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="a_adj"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -3883,7 +4489,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b pos="2"/>
 		<lu> 
@@ -3891,7 +4498,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b/>
@@ -3900,7 +4508,8 @@ pingui pingui pingui MG
 		  <clip pos="3" side="tl" part="a_adj"/>
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -3929,7 +4538,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b pos="2"/>
@@ -3938,7 +4548,8 @@ pingui pingui pingui MG
 		  <clip pos="3" side="tl" part="a_adj"/>
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -3947,7 +4558,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -4026,7 +4638,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -4034,7 +4647,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b/>
@@ -4043,7 +4657,8 @@ pingui pingui pingui MG
 		  <clip pos="3" side="tl" part="a_adj"/>
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -4075,7 +4690,8 @@ pingui pingui pingui MG
 		  <clip pos="2" side="tl" part="a_nom"/>
 		  <clip pos="2" side="tl" part="GD" link-to="3"/>
 		  <clip pos="2" side="tl" part="mf"/>
-		  <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="2" side="tl" part="ND" link-to="4"/>
+		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b/>
@@ -4084,7 +4700,8 @@ pingui pingui pingui MG
 		  <clip pos="3" side="tl" part="a_adj"/>
 		  <clip pos="3" side="tl" part="GD" link-to="3"/>
 		  <clip pos="3" side="tl" part="mf"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="3" side="tl" part="ND" link-to="4"/>
+		  <clip pos="3" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu> 
@@ -4093,7 +4710,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -4165,7 +4783,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -4256,7 +4875,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -4382,7 +5002,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_nom"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -4519,7 +5140,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_nom"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -4621,7 +5243,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="tipus_det"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	    </lu>
 	    <b pos="2"/>
 	    <lu> 
@@ -4629,7 +5252,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_nom"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -4671,7 +5295,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_nom"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="2"/>
@@ -4694,7 +5319,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="tipus_det"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -4826,7 +5452,8 @@ pingui pingui pingui MG
 	      <clip pos="5" side="tl" part="tipus_det"/>
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
 	    <b pos="2"/>
 	    <lu> 
@@ -4834,7 +5461,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_nom"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -4881,7 +5509,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_nom"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="2"/>
@@ -4890,7 +5519,8 @@ pingui pingui pingui MG
 	      <clip pos="5" side="tl" part="a_adj"/>
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
 	    <b/>
 	    <lu>
@@ -5045,7 +5675,8 @@ pingui pingui pingui MG
 	      <clip pos="5" side="tl" part="tipus_det"/>
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
 	    <b/>
 	    <lu> 
@@ -5053,7 +5684,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_nom"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -5102,7 +5734,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_nom"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -5111,7 +5744,8 @@ pingui pingui pingui MG
 	      <clip pos="5" side="tl" part="a_adj"/>
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
 	    <b/>
 	    <lu>
@@ -5261,7 +5895,8 @@ pingui pingui pingui MG
 	      <clip pos="6" side="tl" part="a_nom"/>
 	      <clip pos="6" side="tl" part="GD" link-to="3"/>
 	      <clip pos="6" side="tl" part="mf"/>
-	      <clip pos="6" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="6" side="tl" part="ND" link-to="4"/>
+	      <clip pos="6" side="tl" part="sp"/>
 	      <clip pos="6" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="2"/>
@@ -5431,7 +6066,8 @@ pingui pingui pingui MG
 	      <clip pos="6" side="tl" part="a_nom"/>
 	      <clip pos="6" side="tl" part="GD" link-to="3"/>
 	      <clip pos="6" side="tl" part="mf"/>
-	      <clip pos="6" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="6" side="tl" part="ND" link-to="4"/>
+	      <clip pos="6" side="tl" part="sp"/>
 	      <clip pos="6" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -5637,7 +6273,8 @@ pingui pingui pingui MG
 	      <clip pos="7" side="tl" part="a_nom"/>
 	      <clip pos="7" side="tl" part="GD" link-to="3"/>
 	      <clip pos="7" side="tl" part="mf"/>
-	      <clip pos="7" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="7" side="tl" part="ND" link-to="4"/>
+	      <clip pos="7" side="tl" part="sp"/>
 	      <clip pos="7" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="2"/>
@@ -5855,7 +6492,8 @@ pingui pingui pingui MG
 	      <clip pos="7" side="tl" part="a_nom"/>
 	      <clip pos="7" side="tl" part="GD" link-to="3"/>
 	      <clip pos="7" side="tl" part="mf"/>
-	      <clip pos="7" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="7" side="tl" part="ND" link-to="4"/>
+	      <clip pos="7" side="tl" part="sp"/>
 	      <clip pos="7" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -6486,6 +7124,118 @@ pingui pingui pingui MG
       </action>
 </rule>
 
+
+<rule comment="REGLA: NUM + NOM + NOM + POST (bi osasun zentrotatik - por dos centros de salud (pl))">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="4"/>
+	</call-macro>
+	<let>
+	  <clip pos="3" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>		      		
+		      <clip pos="3" side="tl" part="gen"/>
+		      <lit-tag v="mf"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose> 
+	<call-macro n="nbr_n1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose> 
+	<out> 
+	  <chunk name="pr_num_n_pr_n" case="caseFirstWord">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><lit-tag v="num"/></tag>
+	      <tag><clip pos="3" side="tl" part="gen"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/> 
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_num"/> 
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="GD" link-to="3"/>
+	      <clip pos="3" side="tl" part="mf"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="lemq"/> 
+	    </lu>
+	    <b pos="2"/>	    
+	    <lu>
+	      <lit v="de"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/> 
+	    </lu>	
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+</rule>
+
 <rule comment="REGLA: NUM + NUM + NOM (ehun mila lagunen - de cien mil personas (pl))">
       <pattern>
 	<pattern-item n="num"/>
@@ -6704,7 +7454,8 @@ pingui pingui pingui MG
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>	    
 	    <b/>
 	    <lu> 
@@ -6758,7 +7509,8 @@ pingui pingui pingui MG
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>	
@@ -6908,7 +7660,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_adj"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>	    
 	    <b/>
 	    <lu> 
@@ -6970,7 +7723,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_adj"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>	
@@ -7430,7 +8184,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b pos="2"/>
 		<lu>
@@ -7493,7 +8248,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -7542,7 +8298,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b/>
 		<lu>
@@ -7609,7 +8366,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -7758,7 +8516,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b pos="2"/>
 		<lu>
@@ -7837,7 +8596,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -7886,7 +8646,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 		<b pos="3"/>
 		<lu>
@@ -7969,7 +8730,8 @@ pingui pingui pingui MG
 		  <clip pos="1" side="tl" part="tipus_det"/>
 		  <clip pos="1" side="tl" part="GD" link-to="3"/>
 		  <clip pos="1" side="tl" part="mf"/>
-		  <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		  <clip pos="1" side="tl" part="ND" link-to="4"/>
+		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -8102,7 +8864,8 @@ pingui pingui pingui MG
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>	    
 	    <b/>
 	    <lu> 
@@ -8156,7 +8919,8 @@ pingui pingui pingui MG
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>	
@@ -8212,7 +8976,8 @@ pingui pingui pingui MG
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>	    
 	    <b/>
 	    <lu> 
@@ -8270,7 +9035,8 @@ pingui pingui pingui MG
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="GD" link-to="3"/>
 	      <clip pos="2" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>	
@@ -8436,7 +9202,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_adj"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>	    
 	    <b/>
 	    <lu> 
@@ -8498,7 +9265,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_adj"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>	
@@ -8562,7 +9330,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_adj"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>	    
 	    <b/>
 	    <lu> 
@@ -8628,7 +9397,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_adj"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>	
@@ -8963,7 +9733,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="det_pos"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -8971,7 +9742,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
@@ -9019,7 +9791,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="det_pos"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
 	    <b/>
 	    <lu> 
@@ -9027,7 +9800,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
@@ -9089,7 +9863,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="det_pos"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -9098,7 +9873,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="tipus_det"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
 	    <b pos="2"/>
 	    <lu> 
@@ -9106,7 +9882,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
@@ -9126,7 +9903,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="det_pos"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu> 
@@ -9134,7 +9912,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="2"/>
@@ -9143,7 +9922,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_adj"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -9212,7 +9992,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="det_pos"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
 	    <b pos="2"/>
 	    <lu> 
@@ -9221,7 +10002,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="tipus_det"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
 	    <b/>
 	    <lu> 
@@ -9229,7 +10011,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
@@ -9253,7 +10036,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="det_pos"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
 	    <b pos="2"/>
 	    <lu> 
@@ -9261,7 +10045,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -9270,7 +10055,8 @@ pingui pingui pingui MG
 	      <clip pos="4" side="tl" part="a_adj"/>
 	      <clip pos="4" side="tl" part="GD" link-to="3"/>
 	      <clip pos="4" side="tl" part="mf"/>
-	      <clip pos="4" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="4" side="tl" part="ND" link-to="4"/>
+	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -9348,7 +10134,8 @@ pingui pingui pingui MG
 	      <clip pos="5" side="tl" part="a_nom"/>
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	      <clip pos="5" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="2"/>
@@ -9455,7 +10242,8 @@ pingui pingui pingui MG
 	      <clip pos="6" side="tl" part="a_nom"/>
 	      <clip pos="6" side="tl" part="GD" link-to="3"/>
 	      <clip pos="6" side="tl" part="mf"/>
-	      <clip pos="6" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="6" side="tl" part="ND" link-to="4"/>
+	      <clip pos="6" side="tl" part="sp"/>
 	      <clip pos="6" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="2"/>
@@ -9560,7 +10348,8 @@ pingui pingui pingui MG
 	      <clip pos="5" side="tl" part="a_nom"/>
 	      <clip pos="5" side="tl" part="GD" link-to="3"/>
 	      <clip pos="5" side="tl" part="mf"/>
-	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="ND" link-to="4"/>
+	      <clip pos="5" side="tl" part="sp"/>
 	      <clip pos="5" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -9675,7 +10464,8 @@ pingui pingui pingui MG
 	      <clip pos="6" side="tl" part="a_nom"/>
 	      <clip pos="6" side="tl" part="GD" link-to="3"/>
 	      <clip pos="6" side="tl" part="mf"/>
-	      <clip pos="6" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="6" side="tl" part="ND" link-to="4"/>
+	      <clip pos="6" side="tl" part="sp"/>
 	      <clip pos="6" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -9791,7 +10581,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -9804,7 +10595,8 @@ pingui pingui pingui MG
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
 	      <clip pos="2" side="tl" part="gen"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -9857,7 +10649,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
 	    <b/>
@@ -9870,7 +10663,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_adj"/>
 	      <clip pos="3" side="tl" part="gen"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -10008,7 +10802,8 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="GD" link-to="3"/>
 	      <clip pos="3" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="1"/>
@@ -10208,7 +11003,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="tipus_det"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	    <b/>
 	  </chunk>
@@ -10263,7 +11059,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="tipus_det"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="2" side="tl" part="ND" link-to="4"/>
+	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
 	    <b/>
 	  </chunk>
@@ -10471,7 +11268,8 @@ pingui pingui pingui MG
 	      <clip pos="1" side="tl" part="a_adj"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="3" side="tl" part="ND" link-to="4"/>
+	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>
 	    <b/>
 	  </chunk>
@@ -11420,6 +12218,38 @@ pingui pingui pingui MG
       </action>
  </rule>
 
+ <rule comment="REGLA: PP + IK (esanik - habiendo dicho)">
+      <pattern>
+	<pattern-item n="pp"/>
+	<pattern-item n="part"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pp_ik"> 
+	    <tags>
+	      <tag><lit-tag v="SVsub"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><lit-tag v="ger"/></tag>
+	  </tags>
+	  <lu>
+	    <lit v="haber"/>
+	    <lit-tag v="vbhaver.ger"/>
+	  </lu>
+	  <b/>
+	  <lu>	    
+	    <clip pos="1" side="tl" part="lem"/> 
+	    <clip pos="1" side="tl" part="a_verb"/>
+	    <clip pos="1" side="tl" part="temps"/>
+	    <lit-tag v="m.sg"/>
+	  </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
 
 
  <rule comment="REGLA: (e)nez">
@@ -11498,7 +12328,8 @@ hil dela esan dute - han muerto *que han dicho">
 	      <clip pos="1" side="tl" part="a_adv"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	    </lu>
 	  </chunk>
 	</out>

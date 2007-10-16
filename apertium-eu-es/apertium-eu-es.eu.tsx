@@ -78,12 +78,13 @@
   <def-label name="NOM">
     <tags-item tags="n"/> 
     <tags-item tags="n.acr"/> 
+    <tags-item tags="np.*"/> 
   </def-label>
 
 
- <def-label name="NP">
+<!-- <def-label name="NP">
     <tags-item tags="np.*"/>
-  </def-label>
+  </def-label> -->
 
 <def-label name="DET" closed="true">
     <tags-item tags="det.art.*"/>
@@ -184,15 +185,6 @@
 
   <def-label name="INTERJ">
     <tags-item tags="ij"/>
-  </def-label>
-  <def-label name="ANTROPONIM">
-    <tags-item tags="np.ant.*"/>
-  </def-label>
-  <def-label name="TOPONIM">
-    <tags-item tags="np.loc.*"/>
-  </def-label>
-  <def-label name="NPALTRES">
-    <tags-item tags="np.al.*"/>
   </def-label>
 
   <def-label name="PREP" closed="true">
@@ -484,6 +476,7 @@
    <prefer tags="vbsint.pii.*"/>
    <prefer tags="vbper.pri.*"/>
    <prefer tags="vbper.pii.*"/>
+   <prefer tags="np.*"/>
   </preferences>
 
 </tagger>
