@@ -4,7 +4,7 @@
 
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-en-pl], [0.1.0], [joregan@users.sourceforge.net])
+AC_INIT([apertium-en-pl], [0.1.0], [jimregan@users.sourceforge.net])
 AM_INIT_AUTOMAKE([apertium-en-pl], [0.0], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
