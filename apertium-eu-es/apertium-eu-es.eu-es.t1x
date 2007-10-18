@@ -19,6 +19,7 @@
     <def-cat n="nom_adv">
       <cat-item tags="n"/>
       <cat-item tags="np.*"/>
+      <cat-item tags="n.acr"/>
       <cat-item tags="adv"/>
       <cat-item tags="adv.gen"/>
     </def-cat>
@@ -2394,6 +2395,39 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
  </rule>
 
 
+<rule comment="REGLA: NUM (Para cuando va solo o con palabras desconocidas)">
+      <pattern>
+	<pattern-item n="num"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><lit-tag v="num"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/> 
+	      <lit-tag v="2"/> 
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
  <rule comment="REGLA: NOM + DET (etxea)">
       <pattern>
 	<pattern-item n="nom_np"/>
@@ -2906,9 +2940,9 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 
 
 
- <rule comment="REGLA: NOM + POST (etxetara)">
+ <rule comment="REGLA: NOM + POST (etxetara; gaurko)">
       <pattern>
-	<pattern-item n="nom_np"/>
+	<pattern-item n="nom_adv"/>
 	<pattern-item n="post"/>
       </pattern>
       <action>
@@ -2934,6 +2968,7 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="a_adv"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
 	      <lit-tag v="4"/>
@@ -11259,6 +11294,47 @@ pingui pingui pingui MG
       </action>
  </rule>
 
+
+
+<rule comment="REGLA: adv + gra (maizago)">
+      <pattern>
+	<pattern-item n="adv"/>
+	<pattern-item n="gra"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="adv_adv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_adv"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_adv"/>
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+ </rule>
+
 <rule comment="REGLA: ADJ + GRADO + DET (gorriagoa, gorriegia, gorriena))">
       <pattern>
 	<pattern-item n="adj"/>
@@ -12337,9 +12413,9 @@ hil dela esan dute - han muerto *que han dicho">
 	    <tags>
 	      <tag><clip pos="1" side="tl" part="tags"/></tag>
 	    </tags>
-	   <lu>
+	 <!--  <lu>
 	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
+	    </lu> -->
 	  <lu>
 	    <lit v=","/>
 	    <lit-tag v="cm"/>
