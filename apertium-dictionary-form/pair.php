@@ -1,0 +1,263 @@
+<?
+	class Paradigm {
+		public $name;
+		public $stems;
+
+		function Paradigm($_name) {
+			$this->name = $_name;
+			$this->stems = array();
+		}
+
+		function add_stem($_stem, $_symbols) {
+			$this->stems[$_stem] = array();
+			array_push($this->stems[$_stem], $_symbols);
+		}
+
+		function stems() {
+			return $this->stems;
+		}
+	}	
+
+	class Dictionary {
+		public $language;
+		public $file;
+		public $doc;
+		public $paradigms;
+
+		function Dictionary($_language, $_file, $_doc, $_tags) {
+			$this->language = $_language;
+			$this->file = $_file;
+			$this->doc = $_doc;
+
+			$_paradigms = $this->doc->getElementsByTagName('pardef');
+
+			foreach($_tags as $tag) {
+				$this->paradigms[$tag] = array();
+				$needle = "/__" . $tag . "$/";
+
+				foreach($_paradigms as $paradigm) {
+					$paradigm_name = $paradigm->getAttribute('n');
+					
+					if(preg_match($needle, $paradigm_name)) {
+						$par = new Paradigm($paradigm_name);
+						array_push($this->paradigms[$tag], $par);
+
+						$entradas = $paradigm->getElementsByTagName('e');
+
+						foreach($entradas as $entrada) {
+							$slist = '';
+
+							$pair = $entrada->getElementsByTagName('p')->item(0);
+							$left = $pair->getElementsByTagName('l')->item(0)->nodeValue;
+							$right = $pair->getElementsByTagName('r')->item(0);
+
+							$symbols = $right->getElementsByTagName('s');
+
+							foreach($symbols as $symbol) {
+								if($slist != '') {
+									$slist = $slist . '.' . $symbol->getAttribute('n');
+								} else {
+									$slist = $slist . $symbol->getAttribute('n');
+								}
+							}
+
+							$par->add_stem($left, $slist);
+						}
+					}
+				}
+			}
+		}
+
+		function paradigms($_tag) {
+			return $this->paradigms[$_tag];	
+		}
+
+		function get_paradigm($_name, $_tag) {
+			foreach($this->paradigms[$_tag] as $paradigm) {
+				if($paradigm->name == $_name) {
+					return $paradigm;
+				}
+			}
+
+			print "Couldn't find paradigm";
+		}
+
+		function lemma_exists($_lemma, $_tag) {
+			$dictionary = 'cache/*/' . $this->file;
+			$command = 'cat ' . $dictionary . ' | grep "' . $_lemma . '" | grep "__' . $_tag . '\">" | wc -l '; 
+			$count = shell_exec($command);
+
+			if($count > 0) {
+				return TRUE;
+			} else {
+				return FALSE;
+			}
+		}
+
+/*** This is more correct, but the above is substantially faster.
+		function lemma_exists($_lemma, $_tag) {
+			$sections = $this->doc->getElementsByTagName('section');
+			foreach($sections as $section) {
+				$entradas = $section->getElementsByTagName('e');
+
+				foreach($entradas as $entrada) {
+					$paradigm = $entrada->getElementsByTagName('par')->item(0);
+					if(!($paradigm)) {
+						return FALSE;
+					} else if($entrada->getAttribute('lm') == $_lemma && strstr($paradigm->getAttribute('n'), $_tag)) {
+						return TRUE;
+					}
+				}
+			}
+
+			return FALSE;
+		}
+ ***/
+		function incondicional($_lemma, $_paradigm) {
+
+			if(!strstr($_paradigm, '/')) {
+				return $_lemma;
+			}
+
+			$bar_pos  = strpos($_paradigm, '/');
+			$und_pos  = strpos($_paradigm, '_');
+			$chr_str  = $und_pos - $bar_pos;
+			$sub_str  = strlen($_lemma) - $chr_str;
+
+			$incondicional = substr($_lemma, 0, $sub_str + 1);
+
+#			print $bar_pos . ':' . $und_pos . ':' . $chr_str . ':' . $sub_str . ':' . $incondicional . '<br />';
+
+			return $incondicional;
+		}
+
+		function generate_monodix_entrada($_lemma, $_paradigm) {
+			// <e lm="lemma"><i>lemm</i><par n="paradigm"/></e>
+
+			$incondicional = $this->incondicional($_lemma);
+
+			$entrada = '<e lm="' . $_lemma . '"><i>' . $incondicional . '</i><par n="' . $_paradigm . '"/></e>';
+
+			return $entrada; 
+		}
+
+		function generate_bidix_entrada($_lemma1, $_lemma2, $_tag) {
+			// <e><p><l>lemma1<s n="tag"/></l><r>lemma2<s n="tag"/></r></p></e>
+
+			$entrada = '<e><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>';
+
+			return $entrada;
+		}
+
+		function commit($cache_dir, $e) {
+			$doc = $this->doc;
+			$filepath = $cache_dir . '/' . $this->file;
+
+			$sections = $doc->getElementsByTagName('section');
+			$insertion_point = '';
+
+			foreach($sections as $section) {
+				$id = $section->getAttribute("id");
+				if($id == "main") {
+					$insertion_point = $section;	
+				}
+			}
+
+			if($insertion_point != '') {
+
+				$frag = $doc->createDocumentFragment();
+				$frag->appendXML($e);
+				$insertion_point->appendChild($frag);
+				$doc->save($filepath);
+
+			} else {
+				print "Couldn't find the main section";
+				return;
+			}
+		}
+	}
+
+	/*
+	 *
+	 *	This class represents a language pair, with the left dictionary,
+	 * 	right dictionary and bilingual dictionary (bidix).
+	 */
+	class Pair {
+		
+		public $name = '';
+		public $tags;
+		public $show;
+		public $left;
+		public $right;
+		public $bidix;
+		public $parent;
+		public $wd;
+		public $cachedir;
+
+		function Pair($_wd, $_name, $_parent) {
+			$this->name = $_name;
+			$this->parent = $_parent;
+			$this->wd = $_wd;
+		}
+
+		function populate() {
+
+			$cachedir = $this->wd . '/cache/' . $this->name . '/';
+			$this->cachedir = $cachedir;
+			
+			$dicts = $this->parent->getElementsByTagName('dictionary');
+
+			//       <dictionary n="Spanish" side="left" format="dix" file="apertium-es-gl.es.dix" />
+
+			foreach($dicts as $dict) {
+				$current = $dict->getAttribute('n');
+				$side = $dict->getAttribute('side');
+				$filename = $dict->getAttribute('file');
+					
+				if($side == 'l') {
+					$doc = new DOMDocument;
+					$doc->load($cachedir . $filename);
+					$this->left = new Dictionary($current, $filename, $doc, $this->tags);	
+				} else if($side == 'bilingual') {
+					$doc = new DOMDocument;
+					$doc->load($cachedir . $filename);
+					$this->bidix = new Dictionary($current, $filename, $doc, $this->tags);	
+				} else if($side == 'r') {
+					$doc = new DOMDocument;
+					$doc->load($cachedir . $filename);
+					$this->right = new Dictionary($current, $filename, $doc, $this->tags);	
+				}
+			}
+		}
+
+
+		function tags() {
+			return $this->tags;
+		}
+
+		function shows($_tag) {
+			return $this->show[$_tag];
+		}
+			
+		function add_tag($_tag, $_list) {
+			$this->tags[$_tag] = $_tag;
+			$this->show[$_tag] = $_list;
+		}
+
+		function dictionary($_side) {
+			if($_side == 'left') {
+				return $this->left;
+			} else if($_side == 'bilingual') {
+				return $this->bidix;
+			} else if($_side == 'right') {
+				return $this->right;
+			}
+		}
+
+		function commit($e_left, $e_bidix, $e_right) {
+			$this->left->commit($this->cachedir, $e_left);
+			$this->right->commit($this->cachedir, $e_right);
+			$this->bidix->commit($this->cachedir, $e_bidix);
+		}
+	}
+?>
