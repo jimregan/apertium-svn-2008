@@ -38,6 +38,19 @@
 						array_push($show_list, $syms);
 					}
 
+					$sides = $tag->getElementsByTagName('side');
+
+					foreach($sides as $side) {
+						$current_side = $side->getAttribute('n');
+						$templates = $side->getElementsByTagName('use-template');
+
+						foreach($templates as $template) {
+							$tag  = $template->getAttribute('tags');
+							$file = $template->getAttribute('file');
+							$this->pairs[$pair_name]->add_template($file, $tag, $current_side);
+						}
+					}
+
 					$this->pairs[$pair_name]->add_tag($tag_name, $show_list);
 				}
 

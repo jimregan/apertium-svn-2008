@@ -20,15 +20,12 @@
 		$config = $_SESSION['config'];
 	}
 
-	if(isset($_POST['selected_pair'])) {
-		$_SESSION['current_pair'] = $_POST['selected_pair'];
+	$current_pair = $_POST['selected_pair'];
+	$current_tag  = $_POST['selected_tag'];
+	$template = "none";
+	if(isset($_POST['selected_template'])) {
+		$template = $_POST['selected_template'];
 	}
-	$current_pair = $_SESSION['current_pair'];
-
-	if(isset($_POST['selected_tag'])) {
-		$_SESSION['current_tag'] = $_POST['selected_tag'];
-	}
-	$current_tag = $_SESSION['current_tag'];
 
 	$left_lemma_exists = "false";
 	$right_lemma_exists = "false";
@@ -36,34 +33,18 @@
 	$left_lemma_exists = $_POST['left_lemma_exists'];
 	$right_lemma_exists = $_POST['right_lemma_exists'];
 
-	if(isset($_POST['left_lemma'])) {
-		$_SESSION['left_lemma'] = $_POST['left_lemma'];
-	}
 	$left_lemma = $_POST['left_lemma'];
-
-	if(isset($_POST['left_paradigm'])) {
-		$_SESSION['left_paradigm'] = $_POST['left_paradigm'];
-	}
 	$left_paradigm = $_POST['left_paradigm'];
 
-	if(isset($_POST['right_lemma'])) {
-		$_SESSION['right_lemma'] = $_POST['right_lemma'];
-	}
 	$right_lemma = $_POST['right_lemma'];
-
-	if(isset($_POST['right_paradigm'])) {
-		$_SESSION['right_paradigm'] = $_POST['right_paradigm'];
-	}
 	$right_paradigm = $_POST['right_paradigm'];
 
-	if(isset($_POST['restriction'])) {
-		$_SESSION['restriction'] = $_POST['restriction'];
-	}
 	$restriction = $_POST['restriction'];
 
 	if(isset($_POST['preview_box'])) {
 		if($_POST['preview_box'] == _('Preview')) {
 			print $_POST['preview_box'];
+			print ' (' . $template . ')';
 			$previewing = 'on';
 		}
 	}
@@ -71,6 +52,7 @@
 	if(isset($_POST['commit_box'])) {
 		if($_POST['commit_box'] == _('Commit')) {
 			print $_POST['commit_box'];
+			print ' (' . $template . ')';
 			$committing = 'on';
 		}
 	}
@@ -84,6 +66,7 @@
 			$restriction = '';
 		}
 	}
+
 ?>
 
 <html>
@@ -96,7 +79,7 @@
 <form action="index.php" method="POST" name="dixform">
 <div>
   <div width="100%"> 								<!-- Header -->
-    Language pair: <select name="selected_pair" onChange="dixform.submit();">
+    <? print _('Language pair:'); ?> <select name="selected_pair" onChange="dixform.submit();">
     <?
        $pairs = $config->pairs();
 
@@ -108,7 +91,7 @@
        print "\n";
     ?>
     </select>
-    Part-of-speech: <select name="selected_tag" onChange="dixform.submit();">
+    <? print _('Part-of-speech:'); ?> <select name="selected_tag" onChange="dixform.submit();">
     <?
        $pair = $config->get_pair($current_pair);
        $tags = $pair->tags();
@@ -122,6 +105,7 @@
   </div>
   <hr/>
   <div>
+    <!-- Left side -->
     <div id="left">
     <?
         $pair = $config->get_pair($current_pair);
@@ -170,6 +154,7 @@
             $par = $dictionary->get_paradigm($left_paradigm, $current_tag);
 	    $stems = $par->stems();
 	    $show_stems = $pair->shows($current_tag);
+            $templates = $pair->templates("l");
 
 	    foreach(array_keys($stems) as $stem) {
                 if(sizeof($show_stems) > 1) {
@@ -185,12 +170,26 @@
                     print '<span id="symbol_list">' . $stems[$stem][0] . '</span>';
                     print '<br/>';
                 }
-
+           
+	        foreach(array_keys($templates) as $tmpl_tag) {
+                    if(strstr($stems[$stem][0], $tmpl_tag)) {
+                        $template = $templates[$tmpl_tag];       
+                    }
+		}
 	    }
+
+            $dictionary = $pair->dictionary('left');
+            $left_entrada = $dictionary->generate_monodix_entrada($left_lemma, $left_paradigm);
+
+	    print '<p>';
+            print '<span id="monodix_entrada">';
+            print str_replace('>', '&gt;', str_replace('<', '&lt;', $left_entrada));
+            print '</span>';
 	} 
     ?>
     </p>  
     </div>
+    <!-- Bidix side -->
     <div id="centre">
       Direction restriction:<sup><span title="header=[Direction restriction] body=[Please indicate the direction in which this word pair should be translated.]">?</span></sup>
       <br />
@@ -206,11 +205,15 @@
       <?
           if($previewing == "on") {
               $pair = $config->get_pair($current_pair);
+
+              $dictionary = $pair->dictionary('bilingual');
+
           }
 
       ?> 
       </p>
     </div>
+    <!-- Right side -->
     <div id="right">
     <?
         $pair = $config->get_pair($current_pair);
@@ -256,6 +259,7 @@
             $par = $dictionary->get_paradigm($right_paradigm, $current_tag);
 	    $stems = $par->stems();
 	    $show_stems = $pair->shows($current_tag);
+            $templates = $pair->templates("r");
 
 	    foreach(array_keys($stems) as $stem) {
                 if(sizeof($show_stems) > 1) {
@@ -271,13 +275,46 @@
                     print '<span id="symbol_list">' . $stems[$stem][0] . '</span>';
                     print '<br/>';
                 }
+ 
+	        foreach(array_keys($templates) as $tmpl_tag) {
+                    if(strstr($stems[$stem][0], $tmpl_tag)) {
+                        $template = $templates[$tmpl_tag];       
+                    }
+		}
 	    }
+
+            $dictionary = $pair->dictionary('right');
+            $right_entrada = $dictionary->generate_monodix_entrada($right_lemma, $right_paradigm);
+
+	    print '<p>';
+            print '<span id="monodix_entrada">';
+            print str_replace('>', '&gt;', str_replace('<', '&lt;', $right_entrada));
+            print '</span>';
 	} 
     ?>
     </p>
     </div>
   </div>
+  <div>
+  <?
+          $pair = $config->get_pair($current_pair);
+          $dictionary = $pair->dictionary('bilingual');
+
+          if($template != "none") {
+              $bidix_entrada = $dictionary->generate_bidix_entrada_from_template($pair->template_dir(), $template, $left_lemma, $right_lemma); 
+          } else { 
+              $bidix_entrada = $dictionary->generate_bidix_entrada($left_lemma, $right_lemma, $current_tag);
+          }
+
+          print '<span id="bidix_entrada">';
+	  print str_replace('><', '>\n<', str_replace('>', '&gt;', str_replace('<', '&lt;', $bidix_entrada)));
+          print '</span>';
+ 
+          print '<input type="hidden" name="selected_template" value="' . $template . '">';
+  ?>
+  </div>
   <div width="100%">
+
   <?
       if($committing == "on") {
           $pair = $config->get_pair($current_pair);
@@ -286,7 +323,11 @@
           $left_entrada = $dictionary->generate_monodix_entrada($left_lemma, $left_paradigm);
 
           $dictionary = $pair->dictionary('bilingual');
-          $bidix_entrada = $dictionary->generate_bidix_entrada($left_lemma, $right_lemma, $current_tag);
+          if($template != "none") {
+              $bidix_entrada = $dictionary->generate_bidix_entrada_from_template($pair->template_dir(), $template, $left_lemma, $right_lemma); 
+          } else { 
+              $bidix_entrada = $dictionary->generate_bidix_entrada($left_lemma, $right_lemma, $current_tag);
+          }
 
           $dictionary = $pair->dictionary('right');
           $right_entrada = $dictionary->generate_monodix_entrada($right_lemma, $right_paradigm);

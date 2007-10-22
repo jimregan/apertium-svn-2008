@@ -119,14 +119,11 @@
 				return $_lemma;
 			}
 
-			$bar_pos  = strpos($_paradigm, '/');
-			$und_pos  = strpos($_paradigm, '_');
-			$chr_str  = $und_pos - $bar_pos;
-			$sub_str  = strlen($_lemma) - $chr_str;
-
+			$bar_pos       = strpos($_paradigm, '/');
+			$und_pos       = strpos($_paradigm, '_');
+			$chr_str       = $und_pos - $bar_pos;
+			$sub_str       = strlen($_lemma) - $chr_str;
 			$incondicional = substr($_lemma, 0, $sub_str + 1);
-
-#			print $bar_pos . ':' . $und_pos . ':' . $chr_str . ':' . $sub_str . ':' . $incondicional . '<br />';
 
 			return $incondicional;
 		}
@@ -134,9 +131,9 @@
 		function generate_monodix_entrada($_lemma, $_paradigm) {
 			// <e lm="lemma"><i>lemm</i><par n="paradigm"/></e>
 
-			$incondicional = $this->incondicional($_lemma);
+			$incondicional = $this->incondicional($_lemma, $_paradigm);
 
-			$entrada = '<e lm="' . $_lemma . '"><i>' . $incondicional . '</i><par n="' . $_paradigm . '"/></e>';
+			$entrada = '<e lm="' . $_lemma . '"><i>' . $incondicional . '</i><par n="' . $_paradigm . '"/></e>' . "\n";
 
 			return $entrada; 
 		}
@@ -144,7 +141,17 @@
 		function generate_bidix_entrada($_lemma1, $_lemma2, $_tag) {
 			// <e><p><l>lemma1<s n="tag"/></l><r>lemma2<s n="tag"/></r></p></e>
 
-			$entrada = '<e><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>';
+			$entrada = '<e><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' . "\n";
+
+			return $entrada;
+		}
+
+		function generate_bidix_entrada_from_template($_dir, $_template, $_lemma1, $_lemma2) {
+
+			$text = file_get_contents($_dir . $_template);
+
+			$entrada = str_replace('lemma_left', $_lemma1, $text);
+			$entrada = str_replace('lemma_right', $_lemma2, $entrada);
 
 			return $entrada;
 		}
@@ -190,9 +197,12 @@
 		public $left;
 		public $right;
 		public $bidix;
+		public $templates_left;
+		public $templates_right;
 		public $parent;
 		public $wd;
 		public $cachedir;
+		public $templatedir;
 
 		function Pair($_wd, $_name, $_parent) {
 			$this->name = $_name;
@@ -204,6 +214,7 @@
 
 			$cachedir = $this->wd . '/cache/' . $this->name . '/';
 			$this->cachedir = $cachedir;
+			$this->templatedir = $this->wd . '/templates/'; 
 			
 			$dicts = $this->parent->getElementsByTagName('dictionary');
 
@@ -231,6 +242,10 @@
 		}
 
 
+		function template_dir() {
+			return $this->templatedir;
+		}
+
 		function tags() {
 			return $this->tags;
 		}
@@ -242,6 +257,33 @@
 		function add_tag($_tag, $_list) {
 			$this->tags[$_tag] = $_tag;
 			$this->show[$_tag] = $_list;
+		}
+
+		function add_template($_template, $_tag, $_side) {
+			if($_side == "l") {
+				$this->templates_left[$_tag] = $_template;
+			} else if($_side == "r") {
+				$this->templates_right[$_tag] = $_template;
+			}
+			return FALSE;
+		}
+
+		function template($_tag, $_side) {
+			if($_side == "l") {
+				return $this->templates_left[$_tag];
+			} else if($_side == "r") {
+				return $this->templates_right[$_tag];
+			}
+			return FALSE;
+		}
+
+		function templates($_side) {
+			if($_side == "l") {
+				return $this->templates_left;
+			} else if($_side == "r") {
+				return $this->templates_right;
+			}
+			return FALSE;
 		}
 
 		function dictionary($_side) {
