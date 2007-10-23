@@ -4,6 +4,7 @@
 	class Config {
 		
 		public $wd = '';
+		public $cd = '';
 		public $pairs;
 		public $doc;
 
@@ -15,8 +16,10 @@
 
 		function parse_config() {
 			$working_dir = $this->doc->getElementsByTagName('wd');
+			$cache_dir = $this->doc->getElementsByTagName('cache');
 	
 			$this->wd = $working_dir->item(0)->firstChild->wholeText;
+			$this->cd = $cache_dir->item(0)->firstChild->wholeText . '/';
 
 			$enabled_pairs = $this->doc->getElementsByTagName('pair');	
 
@@ -24,6 +27,7 @@
 				$pair_name = $pair->getAttribute('n');
 
 				$this->pairs[$pair_name] = new Pair($this->wd, $pair_name, $pair);
+				$this->pairs[$pair_name]->cachedir = $this->cd . $pair_name . '/';
 
 				$enabled_tags = $pair->getElementsByTagName('tag');	
 	

@@ -171,9 +171,11 @@
                     print '<br/>';
                 }
            
-	        foreach(array_keys($templates) as $tmpl_tag) {
-                    if(strstr($stems[$stem][0], $tmpl_tag)) {
-                        $template = $templates[$tmpl_tag];       
+		if(sizeof($templates) > 0) {
+                    foreach(array_keys($templates) as $tmpl_tag) {
+                        if(strstr($stems[$stem][0], $tmpl_tag)) {
+                            $template = $templates[$tmpl_tag];       
+                        }
                     }
 		}
 	    }
@@ -276,9 +278,11 @@
                     print '<br/>';
                 }
  
-	        foreach(array_keys($templates) as $tmpl_tag) {
-                    if(strstr($stems[$stem][0], $tmpl_tag)) {
-                        $template = $templates[$tmpl_tag];       
+		if(sizeof($templates) > 0) {
+                    foreach(array_keys($templates) as $tmpl_tag) {
+                        if(strstr($stems[$stem][0], $tmpl_tag)) {
+                            $template = $templates[$tmpl_tag];       
+                        }
                     }
 		}
 	    }

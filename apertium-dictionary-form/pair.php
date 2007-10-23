@@ -29,6 +29,22 @@
 			$this->file = $_file;
 			$this->doc = $_doc;
 
+			foreach($_tags as $tag) {
+				$this->paradigms[$tag] = array();
+				$needle = "__" . $tag;
+				$cmd = 'cat */*/' . $_file . ' | grep "pardef" | grep "' . $needle . '\"" | cut -f2 -d= | sed "s/<!--.*-->//g" ';
+				$cmd = $cmd . '| sed "s/<e>//g"'; # hack for elements on the same line as pardef (mal) add further hacks below.
+				$res = shell_exec($cmd);
+				$res = str_replace('"', '', $res);
+				$res = str_replace('>', '', $res);
+
+				foreach(explode("\n", $res) as $paradigm_name) {
+					$par = new Paradigm($paradigm_name);
+					array_push($this->paradigms[$tag], $par);
+				}
+			}
+
+/*** this is more correct, but the above is substantially faster.
 			$_paradigms = $this->doc->getElementsByTagName('pardef');
 
 			foreach($_tags as $tag) {
@@ -66,6 +82,7 @@
 					}
 				}
 			}
+ ***/
 		}
 
 		function paradigms($_tag) {
@@ -75,6 +92,34 @@
 		function get_paradigm($_name, $_tag) {
 			foreach($this->paradigms[$_tag] as $paradigm) {
 				if($paradigm->name == $_name) {
+					$xpath = new DOMXPath($this->doc);
+					$path  = "//pardef[@n='" . $_name . "']"; 
+					$res   = $xpath->evaluate($path);
+
+					$par = $res->item(0);
+
+					$entradas = $par->getElementsByTagName('e');
+
+					foreach($entradas as $entrada) {
+						$slist = '';
+
+						$pair = $entrada->getElementsByTagName('p')->item(0);
+						$left = $pair->getElementsByTagName('l')->item(0)->nodeValue;
+						$right = $pair->getElementsByTagName('r')->item(0);
+
+						$symbols = $right->getElementsByTagName('s');
+
+						foreach($symbols as $symbol) {
+							if($slist != '') {
+								$slist = $slist . '.' . $symbol->getAttribute('n');
+							} else {
+								$slist = $slist . $symbol->getAttribute('n');
+							}
+						}
+
+						$paradigm->add_stem($left, $slist);
+					}
+	
 					return $paradigm;
 				}
 			}
@@ -82,6 +127,17 @@
 			print "Couldn't find paradigm";
 		}
 
+/*** this is more correct, but the above it substantially faster.
+		function get_paradigm($_name, $_tag) {
+			foreach($this->paradigms[$_tag] as $paradigm) {
+				if($paradigm->name == $_name) {
+					return $paradigm;
+				}
+			}
+
+			print "Couldn't find paradigm";
+		}
+ ***/
 		function lemma_exists($_lemma, $_tag) {
 			$dictionary = 'cache/*/' . $this->file;
 			$command = 'cat ' . $dictionary . ' | grep "' . $_lemma . '" | grep "__' . $_tag . '\">" | wc -l '; 
@@ -212,13 +268,13 @@
 
 		function populate() {
 
-			$cachedir = $this->wd . '/cache/' . $this->name . '/';
-			$this->cachedir = $cachedir;
 			$this->templatedir = $this->wd . '/templates/'; 
 			
 			$dicts = $this->parent->getElementsByTagName('dictionary');
 
 			//       <dictionary n="Spanish" side="left" format="dix" file="apertium-es-gl.es.dix" />
+
+			$cachedir = $this->cachedir;
 
 			foreach($dicts as $dict) {
 				$current = $dict->getAttribute('n');
