@@ -392,6 +392,10 @@
       <label-item label="SENT"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="VERBREL"/>
+      <label-item label="SENT"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="GRA"/>
       <label-item label="SPOST"/>
     </label-sequence> 
