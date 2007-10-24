@@ -38,7 +38,8 @@
 
 //#define LEMMA "([-0-9a-zñçáéíóúàèìòùäëïöüâêîôûA-ZÑÇ_ÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÂÊÎÔÛãõÃÕ\\._'·,]+)"
 
-#define LEMMA "([-[:alnum:]\\._'·,; ]+)"
+//#define LEMMA "([-[:alnum:]\\._'·,; ]+)"
+#define LEMMA   "([-[:alnum:]\\._'Â·,; ]+)"
 #define TAG   "(<[a-zA-Z0-9]+>)"
 #define TAGS  "("TAG"*)"
 

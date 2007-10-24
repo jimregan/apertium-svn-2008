@@ -89,7 +89,7 @@ TransferRules::read_rules_from_file(string filename) {
 void
 TransferRules::compile_regular_expressions() {
   for(unsigned int i=0; i<regular_expressions.size(); i++) {
-    //cerr<<"Compiling: "<<i<<" "<<regular_expressions[i]<<"\n";
+    cerr<<"Compiling: "<<i<<" "<<regular_expressions[i]<<"\n";
     ApertiumRE compiled_regexp;
     compiled_regexp.compile(regular_expressions[i].c_str());
     //regex_t compiled_regexp;
