@@ -1,5 +1,5 @@
 ######################################################################
-# Copyright (C) 2006 Felipe Sánchez-Martínez
+# Copyright (C) 2006 Felipe SÃ¡nchez-MartÃ­nez
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -16,24 +16,23 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA.
 #
-#
-# Trigram language model used to estimate the likelihood of each translation 
-# peroduce when training a part-of-speech tagger using information from
-# the target language.
+# Trigram language model used to estimate the likelihood of each
+# translation peroduce when training a part-of-speech tagger using
+# information from the target language.
 #
 # For a deeper description on how the method works read the paper:
 #
 # Exploring the use of target-language information to train the
 # part-of-speech tagger of machine translation systems.  By Felipe
-# Sánchez-Martínez, Juan Antonio Pérez-Ortiz and Mikel L. Forcada.
+# SÃ¡nchez-MartÃ­nez, Juan Antonio PÃ©rez-Ortiz and Mikel L. Forcada.
 # In Lecture Notes in Computer Science 3230 (Advances in Natural
-# Language Processing, Proceedings of EsTAL - España for Natural
+# Language Processing, Proceedings of EsTAL - EspaÃ±a for Natural
 # Language Processing), p. 137-148, October 20-22, 2004, Alicante,
 # Spain.  
-# © Springer-Verlag Berling Heidelberg 2004
+# Â© Springer-Verlag Berling Heidelberg 2004
 # http://www.dlsi.ua.es/~fsanchez/pub/pdf/sanchez04b.pdf
 #
-#  @author   Felipe Sánchez-Martínez - fsanchez@dlsi.ua.es
+#  @author   Felipe SÃ¡nchez-MartÃ­nez - fsanchez@dlsi.ua.es
 ######################################################################
 
 
@@ -96,7 +95,13 @@ if((($fifoin)&&(!$fifout))||((!$fifoin)&&($fifout))) {
    pod2usage(2);
 }
 
-unless (open(INPUT, "<$input")) {
+binmode STDOUT, ":utf8";
+binmode STDIN, ":utf8";
+binmode STDERR, ":utf8";
+binmode DATA, ":utf8";
+
+
+unless (open(INPUT, "<:utf8", $input)) {
    print STDERR "Error: Cannot open input file \'$input\': $!\n"; 
    exit 1;
 }
@@ -110,11 +115,11 @@ if ($eval) {
    if ($fifoin) {
       while(1) { #Input(output will be done through named pipes, this process 
                  #will be killed from outside 
-         unless (open(TXTINPUT, "<$fifoin")) {
+         unless (open(TXTINPUT, "<:utf8", $fifoin)) {
             print STDERR "Error: Cannot open input file \'$fifoin\': $!\n"; 
             exit 1;
          }   
-         unless (open(TXTOUTPUT, ">$fifout")) {
+         unless (open(TXTOUTPUT, ">:utf8", $fifout)) {
             print STDERR "Error: Cannot open output file \'$fifout\': $!\n"; 
             exit 1;
          }   
@@ -204,7 +209,7 @@ sub do_train {
    print STDERR "$nbigrams distinct bigrams found.\n";
    print STDERR "$nmonograms distinct monograms found.\n";
 
-   &SGT; #Aplicar SGT sobre la distribución de 
+   &SGT; #Aplicar SGT sobre la distribuciÃ³n de 
          #probabilidad de los unigramas (para tratar bien las desconocidas)
    &volcar_modelo;   
 }
@@ -213,7 +218,7 @@ sub do_eval {
    print STDERR "Listo. (Ctr-D/Ctr-C para terminar)\n"; 
    print STDERR "\$ ";
    
-   #Procedemos al cálculo de la verosimilitud, procesamos la entrada estándar
+   #Procedemos al cÃ¡lculo de la verosimilitud, procesamos la entrada estÃ¡ndar
    #Evaluamos toda la entrada hasta el final de fichero, tras los cual
    #volcamos la verosimilitud calculada.
    
@@ -224,7 +229,7 @@ sub do_eval {
 
 
    #No esperamos a tener un trigrama completo
-   #Primero contemplamos el unigram, luego el bigrama y así hasta el final
+   #Primero contemplamos el unigram, luego el bigrama y asÃ­ hasta el final
 
    #Inicializar varibles
    $prob_acumulada=1;
@@ -246,7 +251,7 @@ sub do_eval {
       @palabras = split /\s+/;
       foreach $palabra (@palabras) {
          
-         next unless(length($palabra)); #Por si la cadena está vacía (pasa, no debiera por el split, pero...)
+         next unless(length($palabra)); #Por si la cadena estÃ¡ vacÃ­a (pasa, no debiera por el split, pero...)
          
 	 $cuentaletras+=length($palabra);
 	 
@@ -390,21 +395,21 @@ sub prepara_entrada {
    chomp;
 
    #Eliminamos comillas dobles
-   s/["»«]//g;
+   s/["Â»Â«]//g;
 
    #Sustituimos el apostrofo por un espacio (me cargo las apostrofaciones, pero tb los entrecomillados).
    s/[']/ /g;
    
-   #Introducimos espacios antes de los signos de puntuación a principio y/o final de palabra
-   s/([.,;:%¿?¡!()\[\]{}<>])(\w+)/$1 $2/g;
-   s/(\w+)([.,;:%¿?¡!()\[\]{}<>])/$1 $2/g;
+   #Introducimos espacios antes de los signos de puntuaciÃ³n a principio y/o final de palabra
+   s/([.,;:%Â¿?Â¡!()\[\]{}<>])(\p{IsWord}+)/$1 $2/g;
+   s/(\p{IsWord}+)([.,;:%Â¿?Â¡!()\[\]{}<>])/$1 $2/g;
 
    #Pasamos a misnusculas 
    $_= lc;
    
-   #Sustituir los número por un token que los represente
-   s/\d+/ --NUM-- /g;
-   s/\d+[.,]\d+/ --NUM-- /g;
+   #Sustituir los nÃºmero por un token que los represente
+   s/\p{IsDigit}+/ --NUM-- /g;
+   s/\p{IsDigit}+[.,]\p{IsDigit}+/ --NUM-- /g;
 
    #Eliminar espacios a principio y final de la cadena
    #s/^[ \t]+//g;
@@ -534,9 +539,9 @@ sub datos_ngrama {
    }
 }
 
-sub SGT { #Realiza la estimación Simple Good-Turing (usa un programa externo);
+sub SGT { #Realiza la estimaciÃ³n Simple Good-Turing (usa un programa externo);
 
-   #Calcula r y N_r sobre las palabra para después aplicar Simple Good-Turing
+   #Calcula r y N_r sobre las palabra para despuÃ©s aplicar Simple Good-Turing
    my %frec_frecs; #Indice del has: r; valor N_r
    my($palabra, $frecuencia);
    my $data=""; #Entrada para el programa que calcula SGT
@@ -560,8 +565,8 @@ sub SGT { #Realiza la estimación Simple Good-Turing (usa un programa externo);
    }
    
    #Al estimar la verosimilitud de una secuencia de texto a las palabras desconocidas se 
-   #le asignará la probabilidad de todas las palabras desconocidas (no estimamos el número de
-   #desconocidas). La probabilidad de una palabra desconocida será equiparable a la de una
+   #le asignarÃ¡ la probabilidad de todas las palabras desconocidas (no estimamos el nÃºmero de
+   #desconocidas). La probabilidad de una palabra desconocida serÃ¡ equiparable a la de una
    #palabra vista un unica vez
    $resSGT{0}=$resSGT{1};
 }
@@ -590,7 +595,7 @@ trigrams [options]
    -fifoin|-fi      Specify a named pipe for input
    -fifout|-fo      Specify a named pipe for output
 
-Copyright (C) 2006 Felipe Sánchez-Martínez
+Copyright (C) 2006 Felipe SÃ¡nchez-MartÃ­nez
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License as
@@ -613,15 +618,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 
 =item B<-train>
 
-Para entrenar el modelo a partir del fichero de entrada que deberá contener 
+Para entrenar el modelo a partir del fichero de entrada que deberÃ¡ contener 
 un corpus de la lengua a modelar. Tras calcular el modelo se vuelca por
-la salida estándar. Esta opción es incompatible con -eval.
+la salida estÃ¡ndar. Esta opciÃ³n es incompatible con -eval.
 
 =item B<-eval>
 
-Evaluar la verosimilitud del texto que se presente por la entrada estándar.
-Se evaluará la verosimilitud de cada línea.
-Esta opción es incompatible con -train.
+Evaluar la verosimilitud del texto que se presente por la entrada estÃ¡ndar.
+Se evaluarÃ¡ la verosimilitud de cada lÃ­nea.
+Esta opciÃ³n es incompatible con -train.
 
 =item B<-input>
 
@@ -639,29 +644,29 @@ Mostrar este manual.
 
 =item B<-debug>
 
-Mostrar información de depuración
+Mostrar informaciÃ³n de depuraciÃ³n
 
 =item B<-fastload>
 
-No cargar lo parámetros del modelo. Se recuperaran del fichero conforme se
+No cargar lo parÃ¡metros del modelo. Se recuperaran del fichero conforme se
 vayan necesitando. Se eliminan los 15 segundo que puede tardar el modelo en
-cargarse y se reduce drásticamente el consumo de memoria. 
-A cambio la evaluación es un poco más lenta. 
+cargarse y se reduce drÃ¡sticamente el consumo de memoria. 
+A cambio la evaluaciÃ³n es un poco mÃ¡s lenta. 
 
 =item B<-fifoin>
 
-Esta opción permite especificar una tubería con nombre de la que leerá 
+Esta opciÃ³n permite especificar una tuberÃ­a con nombre de la que leerÃ¡ 
 (en lugar de la entrada estandar). 
-Además cuando se ejecute en este modo el programa permanecerá 
+AdemÃ¡s cuando se ejecute en este modo el programa permanecerÃ¡ 
 en un bucle indefinido leyendo de este fichero, de modo que cuando llegue el <EOF>
-lo volverá abrir. Es util para acelerar su uso desde un programa externo.
+lo volverÃ¡ abrir. Es util para acelerar su uso desde un programa externo.
 Solo tiene sentido si -eval y -fifout. Obligatorio si -fifout.
 
 =item B<-fifout>
 
-Esta opción permite especificar una tubería con nombre sobre la que escribir
+Esta opciÃ³n permite especificar una tuberÃ­a con nombre sobre la que escribir
 (en lugar de la salida estandar). 
-Además cuando se ejecute en este modo el programa permanecerá en
+AdemÃ¡s cuando se ejecute en este modo el programa permanecerÃ¡ en
 en un bucle indefinido escribiendo en este fichero.
 Es util para acelerar su uso desde un programa externo.
 Solo tiene sentido si -eval  y -fifoin. Obligatorio si -fifoin.
@@ -670,16 +675,16 @@ Solo tiene sentido si -eval  y -fifoin. Obligatorio si -fifoin.
 =back
 =head1 DESCRIPTION
 
-Este programa se emplea para el cálculo de la verosimilitud de un fragmento
-de texto y para el entrenamiento del modelo que sirve para el cálculo de 
+Este programa se emplea para el cÃ¡lculo de la verosimilitud de un fragmento
+de texto y para el entrenamiento del modelo que sirve para el cÃ¡lculo de 
 dicha verosimilitud. 
 
-ADVERTENCIA: El programa usa las 'locales' definidas por el usuario, éstas deben
+ADVERTENCIA: El programa usa las 'locales' definidas por el usuario, Ã©stas deben
 ser acordes con la lengua de la que se desea estimar el modelo. En caso contrario
-la conversión de mayúsculas a minúsculas no funcionará convenientemente.
+la conversiÃ³n de mayÃºsculas a minÃºsculas no funcionarÃ¡ convenientemente.
 
 
-Copyright (C) 2006 Felipe Sánchez-Martínez
+Copyright (C) 2006 Felipe SÃ¡nchez-MartÃ­nez
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License as
@@ -704,12 +709,12 @@ For a deeper description on how the method works read the paper:
 
 Exploring the use of target-language information to train the
 part-of-speech tagger of machine translation systems.  By Felipe
-Sánchez-Martínez, Juan Antonio Pérez-Ortiz and Mikel L. Forcada.
+SÃ¡nchez-MartÃ­nez, Juan Antonio PÃ©rez-Ortiz and Mikel L. Forcada.
 In Lecture Notes in Computer Science 3230 (Advances in Natural
-Language Processing, Proceedings of EsTAL - España for Natural
+Language Processing, Proceedings of EsTAL - EspaÃ±a for Natural
 Language Processing), p. 137-148, October 20-22, 2004, Alicante,
 Spain.  
-© Springer-Verlag Berling Heidelberg 2004
+Â© Springer-Verlag Berling Heidelberg 2004
 http://www.dlsi.ua.es/~fsanchez/pub/pdf/sanchez04b.pdf
 
 =cut

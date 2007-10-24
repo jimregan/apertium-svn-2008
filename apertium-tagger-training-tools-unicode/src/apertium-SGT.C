@@ -60,211 +60,215 @@
  */
  
  
- #include <stdio.h>
- #include <math.h>
- #include <ctype.h>
- #include <stdlib.h>
- #include <string.h>
+#include <stdio.h>
+#include <math.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <wchar.h>
+
  
- #define TRUE   1
- #define FALSE  0
- #define MAX_LINE       100
- #define MAX_ROWS       10000
- #define MIN_INPUT      5
+#define TRUE   1
+#define FALSE  0
+#define MAX_LINE       100
+#define MAX_ROWS       10000
+#define MIN_INPUT      5
  
- int r[MAX_ROWS], n[MAX_ROWS];
- double Z[MAX_ROWS], log_r[MAX_ROWS], log_Z[MAX_ROWS], 
-                rStar[MAX_ROWS], p[MAX_ROWS];
- int rows, bigN;
- double PZero, bigNprime, slope, intercept;
+int r[MAX_ROWS], n[MAX_ROWS];
+double Z[MAX_ROWS], log_r[MAX_ROWS], log_Z[MAX_ROWS], 
+  rStar[MAX_ROWS], p[MAX_ROWS];
+int rows, bigN;
+double PZero, bigNprime, slope, intercept;
  
- int main(void)
-        {
-        int readValidInput(void);
-        void analyseInput(void);
+int main(void)
+{
+  int readValidInput(void);
+  void analyseInput(void);
         
-        if ((rows = readValidInput()) >= 0)
-                {
-                if (rows < MIN_INPUT)
-                        printf("\nFewer than %d input value-pairs\n",
-                                        MIN_INPUT);
-                else
-                        analyseInput();
-                }
-        return(TRUE);
-        }
+  if ((rows = readValidInput()) >= 0)
+    {
+      if (rows < MIN_INPUT)
+	printf("\nFewer than %d input value-pairs\n",
+	       MIN_INPUT);
+      else
+	analyseInput();
+    }
+  return(TRUE);
+}
  
- double sq(double x)
-        {
-        return(x * x);
-        }
+double sq(double x)
+{
+  return(x * x);
+}
  
- int readValidInput(void)
-        /*
-         *      returns number of rows if input file is valid, else -1
-         *      NB:  number of rows is one more than index of last row
-         *
-         */
+int readValidInput(void)
+  /*
+   *      returns number of rows if input file is valid, else -1
+   *      NB:  number of rows is one more than index of last row
+   *
+   */
         
-        {
-        char line[MAX_LINE];
-        const char* whiteSpace = " \t\n\v\f\r";
-        int lineNumber = 0;
-        int rowNumber = 0;
-        const int error = -1;
+{
+  wchar_t line[MAX_LINE];
+  const wchar_t* whiteSpace = L" \t\n\v\f\r";
+  int lineNumber = 0;
+  int rowNumber = 0;
+  const int error = -1;
 
-        while (fgets(line, MAX_LINE, stdin) != NULL && rowNumber < MAX_ROWS)
-                {
-                char* ptr = line;
-                char* integer;
-                int i;
+  while (fgetws(line, MAX_LINE, stdin) != NULL && rowNumber < MAX_ROWS)
+    {
+      wchar_t* ptr = line;
+      wchar_t* integer;
+      wchar_t* state;
+      wint_t i;
 
-                ++lineNumber;
+      ++lineNumber;
 
-                while (isspace(*ptr)) 
-                        ++ptr;  /* skip white space at the start of a line */
-                if (*ptr == '\0')
-                        continue;
-                if ((integer = strtok(ptr, whiteSpace)) == NULL || 
-                                (i = atoi(integer)) < 1)
-                        {
-                        fprintf(stderr, "Invalid field 1, line %d\n",
-                                        lineNumber);
-                        return(error);
-                        }
-                if (rowNumber > 0 && i <= r[rowNumber - 1])
-                        {
-                        fprintf(stderr, 
-                      "Frequency not in ascending order, line %d\n", 
-                                        lineNumber);
-                        return(error);
-                        }
-                r[rowNumber] = i;
-                if ((integer = strtok(NULL, whiteSpace)) == NULL || 
-                                (i = atoi(integer)) < 1)
-                        {
-                        fprintf(stderr, "Invalid field 2, line %d\n",
-                                        lineNumber);
-                        return(error);
-                        }
-                n[rowNumber] = i;
-                if (strtok(NULL, whiteSpace) != NULL)
-                        {
-                        fprintf(stderr, "Invalid extra field, line %d\n",
-                                        lineNumber);
-                        return(error);
-                        }
-                ++rowNumber;
-                }
-        if (rowNumber >= MAX_ROWS)
-                {
-                fprintf(stderr, "\nInsufficient memory reserved for input\
+      while (isspace(*ptr)) 
+	++ptr;  /* skip white space at the start of a line */
+      if (*ptr == L'\0')
+	continue;
+      if ((integer = wcstok(ptr, whiteSpace, &state)) == NULL || 
+	  (i = wcstol(integer, NULL, 0)) < 1)
+	{
+	  fprintf(stderr, "Invalid field 1, line %d\n",
+		  lineNumber);
+	  return(error);
+	}
+      if (rowNumber > 0 && i <= r[rowNumber - 1])
+	{
+	  fprintf(stderr, 
+		  "Frequency not in ascending order, line %d\n", 
+		  lineNumber);
+	  return(error);
+	}
+      r[rowNumber] = i;
+      if ((integer = wcstok(NULL, whiteSpace, &state)) == NULL || 
+	  (i = wcstol(integer, NULL, 0)) < 1)
+	{
+	  fprintf(stderr, "Invalid field 2, line %d\n",
+		  lineNumber);
+	  return(error);
+	}
+      n[rowNumber] = i;
+      if (wcstok(NULL, whiteSpace, &state) != NULL)
+	{
+	  fprintf(stderr, "Invalid extra field, line %d\n",
+		  lineNumber);
+	  return(error);
+	}
+      ++rowNumber;
+    }
+  if (rowNumber >= MAX_ROWS)
+    {
+      fprintf(stderr, "\nInsufficient memory reserved for input\
                         values\nYou need to change the definition of\
                         MAX_ROWS\n");
-                return(error);
-                }
-        return(rowNumber);
-        }
+      return(error);
+    }
+  return(rowNumber);
+}
          
- void findBestFit(void)
-        {
-        double XYs, Xsquares, meanX, meanY;
-        double sq(double);
-        int i;
+void findBestFit(void)
+{
+  double XYs, Xsquares, meanX, meanY;
+  double sq(double);
+  int i;
         
-        XYs = Xsquares = meanX = meanY = 0.0;
-        for (i = 0; i < rows; ++i)
-                {
-                meanX += log_r[i];
-                meanY += log_Z[i];
-                }
-        meanX /= rows;
-        meanY /= rows;
-        for (i = 0; i < rows; ++i)
-                {
-                XYs += (log_r[i] - meanX) * (log_Z[i] - meanY);
-                Xsquares += sq(log_r[i] - meanX);
-                }
-        slope = XYs / Xsquares;
-        intercept = meanY - slope * meanX;
-        }
+  XYs = Xsquares = meanX = meanY = 0.0;
+  for (i = 0; i < rows; ++i)
+    {
+      meanX += log_r[i];
+      meanY += log_Z[i];
+    }
+  meanX /= rows;
+  meanY /= rows;
+  for (i = 0; i < rows; ++i)
+    {
+      XYs += (log_r[i] - meanX) * (log_Z[i] - meanY);
+      Xsquares += sq(log_r[i] - meanX);
+    }
+  slope = XYs / Xsquares;
+  intercept = meanY - slope * meanX;
+}
         
- double smoothed(int i)
-        {
-        return(exp(intercept + slope * log(i)));
-        }
+double smoothed(int i)
+{
+  return(exp(intercept + slope * log(i)));
+}
         
- int row(int i)
-        {
-        int j = 0;
+int row(int i)
+{
+  int j = 0;
         
-        while (j < rows && r[j] < i)
-                ++j;
-        return((j < rows && r[j] == i) ? j : -1);
-        }
+  while (j < rows && r[j] < i)
+    ++j;
+  return((j < rows && r[j] == i) ? j : -1);
+}
         
- void showEstimates(void)
-        {
-        int i;
+void showEstimates(void)
+{
+  int i;
         
-        printf("0\t%.4g\n", PZero);
-        for (i = 0; i < rows; ++i)
-                printf("%d\t%.4g\n", r[i], p[i]);
-        }
+  wprintf(L"0\t%.4g\n", PZero);
+  for (i = 0; i < rows; ++i)
+    wprintf(L"%d\t%.4g\n", r[i], p[i]);
+}
         
- void analyseInput(void)
-        {
-        int i, j, next_n;
-        double k, x, y;
-        int indiffValsSeen = FALSE;
-        int row(int);
-        void findBestFit(void);
-        double smoothed(int);
-        double sq(double);
-        void showEstimates(void);
+void analyseInput(void)
+{
+  int i, j, next_n;
+  double k, x, y;
+  int indiffValsSeen = FALSE;
+  int row(int);
+  void findBestFit(void);
+  double smoothed(int);
+  double sq(double);
+  void showEstimates(void);
         
-        bigN = 0;
-        for (j = 0; j < rows; ++j)
-                bigN += r[j] * n[j];
-        PZero = n[row(1)] / (double) bigN;
-        for (j = 0; j < rows; ++j)
-                {
-                i = (j == 0 ? 0 : r[j - 1]);
-                if (j == rows - 1)
-                        k = (double) (2 * r[j] - i);
-                else
-                        k = (double) r[j + 1];
-                Z[j] = 2 * n[j] / (k - i);
-                log_r[j] = log(r[j]);
-                log_Z[j] = log(Z[j]);
-                }
-        findBestFit();
-        for (j = 0; j < rows; ++j)
-                {
-                y = (r[j] + 1) * smoothed(r[j] + 1) / smoothed(r[j]);
-                if (row(r[j] + 1) < 0)
-                        indiffValsSeen = TRUE;
-                if (! indiffValsSeen)
-                        {
-                        x = (r[j] + 1) * (next_n = n[row(r[j] + 1)]) / 
-                                        (double) n[j];
-                        if (fabs(x - y) <= 1.96 * sqrt(sq(r[j] + 1.0) *
-                                        next_n / (sq((double) n[j])) * 
-                                        (1 + next_n / (double) n[j])))
-                                indiffValsSeen = TRUE;
-                        else
-                                rStar[j] = x;
-                        }
-                if (indiffValsSeen)
-                        rStar[j] = y;
-                }
-        bigNprime = 0.0;
-        for (j = 0; j < rows; ++j)
-                bigNprime += n[j] * rStar[j];
-        for (j = 0; j < rows; ++j)
-                p[j] = (1 - PZero) * rStar[j] / bigNprime;
-        showEstimates();
-        }
+  bigN = 0;
+  for (j = 0; j < rows; ++j)
+    bigN += r[j] * n[j];
+  PZero = n[row(1)] / (double) bigN;
+  for (j = 0; j < rows; ++j)
+    {
+      i = (j == 0 ? 0 : r[j - 1]);
+      if (j == rows - 1)
+	k = (double) (2 * r[j] - i);
+      else
+	k = (double) r[j + 1];
+      Z[j] = 2 * n[j] / (k - i);
+      log_r[j] = log(r[j]);
+      log_Z[j] = log(Z[j]);
+    }
+  findBestFit();
+  for (j = 0; j < rows; ++j)
+    {
+      y = (r[j] + 1) * smoothed(r[j] + 1) / smoothed(r[j]);
+      if (row(r[j] + 1) < 0)
+	indiffValsSeen = TRUE;
+      if (! indiffValsSeen)
+	{
+	  x = (r[j] + 1) * (next_n = n[row(r[j] + 1)]) / 
+	    (double) n[j];
+	  if (fabs(x - y) <= 1.96 * sqrt(sq(r[j] + 1.0) *
+					 next_n / (sq((double) n[j])) * 
+					 (1 + next_n / (double) n[j])))
+	    indiffValsSeen = TRUE;
+	  else
+	    rStar[j] = x;
+	}
+      if (indiffValsSeen)
+	rStar[j] = y;
+    }
+  bigNprime = 0.0;
+  for (j = 0; j < rows; ++j)
+    bigNprime += n[j] * rStar[j];
+  for (j = 0; j < rows; ++j)
+    p[j] = (1 - PZero) * rStar[j] / bigNprime;
+  showEstimates();
+}
 
 
 
