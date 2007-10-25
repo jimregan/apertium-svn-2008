@@ -969,6 +969,20 @@
 			<call-macro n="lema_prn">
 				<with-param pos="3"/>
 			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="adv"/>
+						</equal>
+					</test>
+					<let>
+						<clip pos="2" part="lem"/>
+						<lit v="controla_adv"/>
+					</let>
+				</when>
+			</choose>
 
 			<out>
 				<chunk>
@@ -977,8 +991,9 @@
 					<clip pos="1" part="chcontent"/>
 				</chunk>
 				<b pos="1"/>
+
 				<chunk>
-					<lit v="controla_adv"/>
+					<clip pos="1" part="lem"/>
 					<clip pos="2" part="tags"/>
 					<clip pos="2" part="chcontent"/>
 				</chunk>
@@ -1323,6 +1338,43 @@
 		</action>
 	</rule>	
 
+	<rule comment="REGLA: SA vbcop SN">
+		<pattern>
+			<pattern-item n="SA"/>
+			<pattern-item n="vbcop"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="concord_sa">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="partitiu" aversion="oc-ca">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="whole"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>	
+
 	<rule comment="REGLA: SN vbcop ADV SA">
 		<pattern>
 			<pattern-item n="SN"/>
@@ -1362,6 +1414,52 @@
 				<b pos="3"/>
 				<chunk>
 					<clip pos="4" part="whole"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>	
+	
+	<rule comment="REGLA: SA vbcop ADV SN">
+		<pattern>
+			<pattern-item n="SA"/>
+			<pattern-item n="vbcop"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="concord_sa">
+				<with-param pos="4"/>
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="partitiu" aversion="oc-ca">
+				<with-param pos="4"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
 				</chunk>
 			</out>
 		</action>
