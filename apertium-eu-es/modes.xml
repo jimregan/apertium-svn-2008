@@ -154,7 +154,37 @@
     </pipeline>
   </mode>
   
-
+ <mode name="eu-es-postgen">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="eu-es.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-es.eu-es.t1x"/>
+        <file name="eu-es.t1x.bin"/>
+        <file name="eu-es.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-es.eu-es.t2x"/>
+        <file name="eu-es.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-es.eu-es.t3x"/>
+        <file name="eu-es.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="eu-es.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="eu-es.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
   <mode name="test-eu-es">
     <pipeline>
       <program name="lt-proc">
