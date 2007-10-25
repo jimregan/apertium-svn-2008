@@ -17,6 +17,9 @@
     <tags-item lemma="izan" tags="ADT.*"/>
     <tags-item tags="ADL.*"/> <!--treure, provisional tagger -->
   </def-label>
+  <def-label name="egin" closed="true"><!--hil egin da -->
+    <tags-item lemma="egin" tags="vblex.*"/>
+  </def-label> 
  <def-label name="hori" closed="true">
     <tags-item lemma="hori" tags="adj.izo"/>
   </def-label> 
