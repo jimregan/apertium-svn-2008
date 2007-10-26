@@ -590,28 +590,28 @@
           <when>
             <test>     <!-- If it is third person singular in the present tense -->
 		  <and>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="tl" part="temps"/>
-                      <lit-tag v="pp"/>
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="tl" part="temps"/>
-                      <lit-tag v="past"/>
-                    </equal>
-                  </or>
-		  <not>
-                  <equal> 
-                    <clip pos="1" side="tl" part="a_verb"/>
-                    <lit-tag v="vblex.uns"/> 
-                  </equal>
-		  </not>
-		  <not>
-                  <equal> 
-                    <clip pos="1" side="tl" part="lem"/>
-                    <lit v="wees"/>                            <!-- be is a special case -->
-                  </equal>
-		  </not>
+                    <or>
+                      <equal>
+                        <clip pos="1" side="tl" part="temps"/>
+                        <lit-tag v="pp"/>
+                      </equal>
+                      <equal>
+                        <clip pos="1" side="tl" part="temps"/>
+                        <lit-tag v="past"/>
+                      </equal>
+                    </or>
+	  	    <not>
+                      <equal> 
+                        <clip pos="1" side="tl" part="a_verb"/>
+                        <lit-tag v="vblex.uns"/> 
+                      </equal>
+		    </not>
+		    <not>
+                      <equal> 
+                        <clip pos="1" side="tl" part="lem"/>
+                        <lit v="wees"/>                            <!-- be is a special case -->
+                      </equal>
+		    </not>
 		  </and>
             </test>
             <out>
@@ -688,6 +688,35 @@
               </chunk>
             </out>
           </when>
+
+
+          <when>
+            <test>    
+                    <or>
+                      <equal>
+                        <clip pos="1" side="tl" part="temps"/>
+                        <lit-tag v="pri"/>
+                      </equal>
+                      <equal>
+                        <clip pos="1" side="tl" part="temps"/>
+                        <lit-tag v="pres"/>
+                      </equal>
+                    </or>
+            </test>
+            <out>
+              <chunk name="verb">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+              <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+		  <lit-tag v="pres"/>
+              </lu>
+              </chunk>
+            </out>
+          </when>
+
 
           <otherwise>
             <out>
