@@ -338,7 +338,42 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-            <out>
+      <choose>
+      <when>
+        <test>
+          <or>
+            <equal>
+              <clip pos="1" side="tl" part="a_adj"/>
+              <lit-tag v="adj.sint.comp"/>
+            </equal>
+            <equal>
+              <clip pos="1" side="tl" part="a_adj"/>
+              <lit-tag v="adj.sint.sup"/>
+            </equal>
+          </or>
+        </test>
+        <out>
+          <chunk name="adj_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+	    </tags>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/>
+    	        <clip pos="1" side="tl" part="a_adj"/>
+              </lu>
+	      <b/>
+              <lu>
+                <clip pos="2" side="tl" part="lem"/>
+    	        <clip pos="2" side="tl" part="a_nom"/>
+    	        <clip pos="2" side="tl" part="nbr"/>
+              </lu>
+            </chunk>
+        </out>
+      </when>
+      <otherwise>
+        <out>
           <chunk name="adj_nom" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="NP"/></tag>
@@ -357,7 +392,9 @@
     	        <clip pos="2" side="tl" part="nbr"/>
               </lu>
             </chunk>
-            </out>
+          </out>
+        </otherwise>
+      </choose>
       </action>
     </rule>
 
