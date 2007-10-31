@@ -4,11 +4,16 @@
 
   <sdefs>
     <sdef n="n"      c="Nom"/>
+    <sdef n="np"     c="Nom propre"/>
+
     <sdef n="mf"     c="Masculin/feminin"/>
     <sdef n="m"      c="Masculin"/>
     <sdef n="f"      c="Feminin"/>
     <sdef n="sg"     c="Singular"/>
     <sdef n="pl"     c="Plural"/>
+
+    <sdef n="loc"    c="Location"/>
+    <sdef n="ant"    c="Antonym"/>
 
     <sdef n="pr"     c="Preposition"/>
     <sdef n="cnjcoo" c="Conjonction de coordination"/>
@@ -16,6 +21,7 @@
     <sdef n="prn"    c="Pronom"/>
     <sdef n="obj"    c="Objet"/>
 
+    <sdef n="ij"     c="Interjection"/>
     <sdef n="adv"    c="Adverbe"/>
 
     <sdef n="vblex"  c="Verb"/>
@@ -24,6 +30,7 @@
     <sdef n="pri"    c="Present indicative"/>
     <sdef n="imp"    c="Imperfect"/>
     <sdef n="past"   c="Past definite"/>
+    <sdef n="pp"     c="Past participle"/>
     <sdef n="ffi"    c="Future indicative"/>
 
     <sdef n="p1"     c="1st person"/>
@@ -40,6 +47,16 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="ac’h__ij">
+      <e>
+        <p>
+          <l/>
+          <r><s n="ij"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
     <pardef n="evel__pr">
       <e>
@@ -2090,6 +2107,24 @@
       </e>
     </pardef>
 
+    <pardef n="Roazhon__np">
+      <e>
+        <p>
+          <l/>
+          <r><s n="np"/><s n="loc"/><s n="sg"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="Yann__np">
+      <e>
+        <p>
+          <l/>
+          <r><s n="np"/><s n="ant"/><s n="sg"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <pardef n="/bezañ__vblex">
       <e>
         <p>
@@ -2203,6 +2238,12 @@
         <p>
           <l>oant</l>
           <r>bezañ<s n="vblex"/><s n="imp"/><s n="p3"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>bet</l>
+          <r>bezañ<s n="vblex"/><s n="pp"/></r>
         </p>
       </e>
 
@@ -2423,6 +2464,10 @@
 
   </pardefs>
   <section id="main" type="standard">
+    <!-- Interjections -->
+    <e lm="ac’h"><i>ac’h</i><par n="ac’h__ij"/></e>
+
+
     <!-- Prépositions -->
     <e lm="a"><i>a</i><par n="a__pr"/></e>
 
@@ -2896,6 +2941,15 @@
     <e lm="urzh"><i>urzh</i><par n="noz__n"/></e>
     <e lm="yalc’h"><i>y</i><par n="y/alc’h__n"/></e>
 
+
+    <!-- Noms propres -->
+
+    <e lm="Kemper"><i>Kemper</i><par n="Roazhon__np"/></e>
+    <e lm="Roazhon"><i>Roazhon</i><par n="Roazhon__np"/></e>
+
+
+
+    <e lm="Yann"><i>Yann</i><par n="Yann__np"/></e>
 
     <!-- Adverbes -->
     <e lm="a-bezh"><i>a-bezh</i><par n="ouzhpenn__adv"/></e>
