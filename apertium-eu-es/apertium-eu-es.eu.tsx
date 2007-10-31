@@ -196,6 +196,9 @@
     <tags-item tags="pr"/>
   </def-label>
 
+  <def-label name="PART" closed="true">
+    <tags-item tags="part"/>
+  </def-label>
 
  <!-- <def-label name="RELADV" closed="true">
     <tags-item tags="rel.adv"/>
@@ -431,6 +434,10 @@
     <label-sequence>
       <label-item label="NOMA"/>
       <label-item label="NOMA_DET"/>
+    </label-sequence>
+    <label-sequence><!--belagarriak dira -->
+      <label-item label="DETERG"/>
+      <label-item label="izan"/>
     </label-sequence>
 
 <!--    <label-sequence>
