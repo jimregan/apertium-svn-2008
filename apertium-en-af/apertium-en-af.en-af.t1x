@@ -107,6 +107,7 @@
     </def-attr>
     <def-attr n="temps">
        <attr-item tags="pp"/>
+       <attr-item tags="ger"/>
        <attr-item tags="pii"/>
        <attr-item tags="pis"/>
        <attr-item tags="pri"/>
@@ -797,6 +798,32 @@
                   <clip pos="1" side="tl" part="lem"/>
                   <clip pos="1" side="tl" part="a_verb"/>
 		  <lit-tag v="pres"/>
+              </lu>
+              </chunk>
+            </out>
+          </when>
+
+          <when> <!-- replace gerund with infinitive -->
+            <test>    
+                      <equal>
+                        <clip pos="1" side="tl" part="temps"/>
+                        <lit-tag v="ger"/>
+                      </equal>
+            </test>
+            <out>
+              <chunk name="verb">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+              <lu>
+	          <lit     v="om te"/>
+		  <lit-tag v="pr"/>
+              </lu>
+	      <b/>
+              <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
               </lu>
               </chunk>
             </out>
