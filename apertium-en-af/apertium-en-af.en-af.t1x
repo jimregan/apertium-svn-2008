@@ -253,6 +253,7 @@
         <pattern-item n="genitive"/>
       </pattern>
       <action>
+
         <out>
           <chunk name="det_adj_nom" case="caseFirstWord">
             <tags>
@@ -299,6 +300,48 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+      <choose>
+      <when>
+        <test>
+          <or>
+            <equal>
+              <clip pos="2" side="sl" part="a_adj"/>
+              <lit-tag v="adj.sint.comp"/>
+            </equal>
+            <equal>
+              <clip pos="2" side="sl" part="a_adj"/>
+              <lit-tag v="adj.sint.sup"/>
+            </equal>
+          </or>
+        </test>
+        <out>
+          <chunk name="det_adj_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+	    <b pos="1"/>
+              <lu>
+                <clip pos="2" side="tl" part="lem"/>
+    	        <clip pos="2" side="tl" part="a_adj"/>
+              </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+            </chunk>
+        </out>
+      </when>
+      <otherwise>
         <out>
           <chunk name="det_adj_nom" case="caseFirstWord">
             <tags>
@@ -326,6 +369,8 @@
             </lu>
           </chunk>
         </out>
+       </otherwise>
+       </choose>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
