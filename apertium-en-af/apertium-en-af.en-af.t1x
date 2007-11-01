@@ -822,14 +822,14 @@
     </rule>
 
     <!-- ^be<vbser><past>$ ^organise<vblex><pp>$ -->
-    <rule comment="REGLA: VERBNM">
+    <rule comment="REGLA: VERBNM VERBNM">
       <pattern>
         <pattern-item n="verbnm"/>
         <pattern-item n="verbnm"/>
       </pattern>
       <action>
         <choose>
-          <when>
+          <when>						<!-- If the first verb is a past participle -->
             <test>   
                 <equal>
                   <clip pos="1" side="tl" part="temps"/>
@@ -860,14 +860,14 @@
                   <clip pos="1" side="tl" part="lem"/>
                   <clip pos="1" side="tl" part="a_verb"/>
                   <lit-tag v="inf"/>
-<!--                  <clip pos="1" side="tl" part="temps"/> -->
               </lu>
               </chunk>
             </out>
           </when>
 
-          <when>
+          <when>							<!-- If it is a past participle, the verb 'to be' or in the past -->
             <test> 
+	      <and>
                 <equal>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp"/>
@@ -880,6 +880,7 @@
                   <clip pos="1" side="sl" part="temps"/>
                   <lit-tag v="past"/>
                 </equal>
+	      </and>
             </test>
             <out>
               <chunk name="verb">
@@ -910,6 +911,58 @@
               </chunk>
             </out>
           </when>
+
+          <when>
+            <test> 
+                <equal>
+                  <clip pos="2" side="sl" part="temps"/>
+                  <lit-tag v="pp"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="be"/>
+                </equal>
+		<or>
+                  <equal>
+                    <clip pos="1" side="sl" part="temps"/>
+                    <lit-tag v="pri"/>
+                  </equal>
+                  <equal>
+                    <clip pos="1" side="sl" part="temps"/>
+                    <lit-tag v="pres"/>
+                  </equal>
+		</or>
+            </test>
+            <out>
+              <chunk name="verb">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+              <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+	          <lit-tag v="pres"/>
+              </lu>
+	      </chunk>
+              <b/>
+	      <chunk name="verb_participle">
+	        <tags>
+		  <tag><lit-tag v="V"/></tag>
+		  <tag><lit-tag v="PART"/></tag>
+		</tags>
+	      <lu>
+		  <lit v="ge"/>
+		</lu>
+              <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+                  <clip pos="2" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
+<!--                  <clip pos="2" side="tl" part="temps"/> -->
+              </lu>
+              </chunk>
+            </out>
+          </when>
+
           <otherwise>
             <out>
               <chunk name="verb">
