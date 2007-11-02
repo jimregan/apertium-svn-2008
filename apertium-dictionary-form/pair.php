@@ -23,6 +23,7 @@
 		public $file;
 		public $doc;
 		public $paradigms;
+		public $depth;
 
 		function Dictionary($_language, $_file, $_doc, $_tags) {
 			$this->language = $_language;
@@ -39,8 +40,10 @@
 				$res = str_replace('>', '', $res);
 
 				foreach(explode("\n", $res) as $paradigm_name) {
-					$par = new Paradigm($paradigm_name);
-					array_push($this->paradigms[$tag], $par);
+					if($paradigm_name != "") {
+						$par = new Paradigm($paradigm_name);
+						array_push($this->paradigms[$tag], $par);
+					}
 				}
 			}
 
@@ -138,19 +141,21 @@
 			print "Couldn't find paradigm";
 		}
  ***/
-		function lemma_exists($_lemma, $_tag) {
-			$dictionary = 'cache/*/' . $this->file;
-			$command = 'cat ' . $dictionary . ' | grep "' . $_lemma . '" | grep "__' . $_tag . '\">" | wc -l '; 
-			$count = shell_exec($command);
 
-			if($count > 0) {
-				return TRUE;
-			} else {
-				return FALSE;
-			}
-		}
+                function lemma_exists($_lemma, $_tag) {
+                        $dictionary = 'cache/*/' . $this->file;
+                        $command = 'cat ' . $dictionary . ' | grep "\"' . $_lemma . '\"" | wc -l ';  
+                        $count = shell_exec($command);
 
-/*** This is more correct, but the above is substantially faster.
+                        if($count > 0) {
+                                return TRUE;
+                        } else {
+                                return FALSE;
+                        }
+                }
+
+
+/***
 		function lemma_exists($_lemma, $_tag) {
 			$sections = $this->doc->getElementsByTagName('section');
 			foreach($sections as $section) {
@@ -184,25 +189,42 @@
 			return $incondicional;
 		}
 
-		function generate_monodix_entrada($_lemma, $_paradigm) {
+		function generate_monodix_entrada($_lemma, $_paradigm, $_comment) {
 			// <e lm="lemma"><i>lemm</i><par n="paradigm"/></e>
 
 			$incondicional = $this->incondicional($_lemma, $_paradigm);
 
-			$entrada = '<e lm="' . $_lemma . '"><i>' . $incondicional . '</i><par n="' . $_paradigm . '"/></e>' . "\n";
+				if($_comment != "") {
+					$entrada = '<e lm="' . $_lemma . '"><i>' . $incondicional . '</i><par n="' . $_paradigm . '"/></e>' . 
+					   '<!-- ' . $_comment . ' -->' . "\n";
+				} else {
+
+					$entrada = '<e lm="' . $_lemma . '"><i>' . $incondicional . '</i><par n="' . $_paradigm . '"/></e>' . "\n";
+				}
+
 
 			return $entrada; 
 		}
 
-		function generate_bidix_entrada($_lemma1, $_lemma2, $_tag) {
+		function generate_bidix_entrada($_lemma1, $_lemma2, $_tag, $_restriction, $_comment) {
 			// <e><p><l>lemma1<s n="tag"/></l><r>lemma2<s n="tag"/></r></p></e>
 
-			$entrada = '<e><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' . "\n";
+			if($_restriction == "none") {
+				if($_comment != "") {
+	 				$entrada = '<e><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' .
+					           '<!-- ' . $_comment . ' -->' . "\n";
+				} else {
+
+	 				$entrada = '<e><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' . "\n";
+				}
+			} else {
+				$entrada = '<e r="' . $_restriction .  '"><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' . "\n";
+			}
 
 			return $entrada;
 		}
 
-		function generate_bidix_entrada_from_template($_dir, $_template, $_lemma1, $_lemma2) {
+		function generate_bidix_entrada_from_template($_dir, $_template, $_lemma1, $_lemma2, $_comment) {
 
 			$text = file_get_contents($_dir . $_template);
 
