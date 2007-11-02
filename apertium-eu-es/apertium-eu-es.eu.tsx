@@ -411,6 +411,10 @@
       <label-item label="GRA"/>
       <label-item label="ADVGEN"/>
     </label-sequence> 
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="GRA"/>
+    </label-sequence> 
     <label-sequence><!--? correcte? (etorri zuen) -->
       <label-item label="PP"/>
       <label-item label="PRGEN"/>

@@ -50,6 +50,11 @@
       <cat-item lemma="nez" tags="cnjadv"/>
     </def-cat>  
 
+<def-cat n="PADV">
+      <cat-item lemma="det_nom_pp" tags="SN.*"/>
+      <cat-item lemma="pr_det_nom_pp" tags="SPR.*"/>
+</def-cat>
+
 
     <def-cat n="punt">
       <cat-item tags="sent"/>
@@ -403,10 +408,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="gen"/>
@@ -433,10 +446,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="nbr"/>
+			<lit-tag v="sp"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="nbr"/>
@@ -451,8 +472,7 @@
 	      </otherwise>
 	    </choose>
 	  </when>
-	</choose>
-	
+	</choose>	
 	<out>
 	  <chunk>
 	    <clip pos="2" part="whole"/>
@@ -674,6 +694,139 @@
 	</out>
       </action>
 </rule>
+
+
+ <rule> <!-- REGLA: SPGEN + SPR (nire etxean egindako lehergailu bat)-->
+      <pattern>
+	<pattern-item n="SPR"/>
+	<pattern-item n="PADV"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+<!--	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="temps"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="2" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise> -->
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	<!--    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="temps"/>
+		    <lit-tag v="pp"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="2" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise> -->
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	  </when>
+	</choose>
+
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
   
 
  <rule> <!-- REGLA: SPR + PR (lanetik kanpo; iturri ofizialen arabera)-->
@@ -749,6 +902,9 @@
 	</out>
       </action>
 </rule>
+
+
+
 
  <rule> <!-- REGLA: SPGEN + SPR + PR (EAren presidentearen ustez)-->
       <pattern>
