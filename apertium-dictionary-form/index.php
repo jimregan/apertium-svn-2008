@@ -142,14 +142,14 @@ ca · en · es
 	print $dictionary->file . ' )</small>';
     ?>
     <p>
-      Lemma:<sup><span title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>
+      Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>
       <input type="text" name="left_lemma" value="<? print $left_lemma; ?>" <? if($left_lemma_exists == "true") { print 'id="known_word"'; } ?>>
 
       <? if($left_lemma_exists == "true") { print _("Known lemma"); } ?>
     </p>
     <p>
       <? print _('Paradigm'); ?>:
-      <sup><span title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>
+      <sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>
       <select name="left_paradigm">
       <?
           $pair = $config->get_pair($current_pair);
@@ -168,7 +168,7 @@ ca · en · es
     </p>
     <p>
     <? print _('Comment'); ?>:  
-    <sup><span title="header=[Comment] body=[You can leave a comment here.]">?</span></sup>
+    <sup><span class="tooltip" title="header=[Comment] body=[You can leave a comment here.]">?</span></sup>
     <input type="text" name="left_comment" value="<? print $left_comment; ?>" /> 
     </p>
     <p>
@@ -216,19 +216,19 @@ ca · en · es
 	    }
 
             $dictionary = $pair->dictionary('left');
-            $left_entrada = $dictionary->generate_monodix_entrada($left_lemma, $left_paradigm, $left_comment);
+            $left_entrada = $dictionary->generate_monodix_entrada($left_lemma, $left_paradigm, $left_comment, "webform");
 
 	    print '<p>';
-            print '<span id="monodix_entrada">';
+            print '<span id="monodix_entrada"><pre>';
             print str_replace('>', '&gt;', str_replace('<', '&lt;', $left_entrada));
-            print '</span>';
+            print '</pre></span>';
 	} 
     ?>
     </p>  
     </div>
     <!-- Bidix side -->
     <div id="centre">
-      Direction restriction:<sup><span title="header=[Direction restriction] body=[Please indicate the direction in which this word pair should be translated.]">?</span></sup>
+      Direction restriction:<sup><span class="tooltip" title="header=[Direction restriction] body=[Please indicate the direction in which this word pair should be translated.]">?</span></sup>
       <br />
       <input type="radio" name="restriction" value="none" <? if($restriction == 'none' || $restriction == '') print  ' checked'; ?>>←→<br />
       <input type="radio" name="restriction" value="LR" <? if($restriction == 'LR')   print  ' checked'; ?>>→→<br />
@@ -322,12 +322,12 @@ ca · en · es
 	    }
 
             $dictionary = $pair->dictionary('right');
-            $right_entrada = $dictionary->generate_monodix_entrada($right_lemma, $right_paradigm, $right_comment);
+            $right_entrada = $dictionary->generate_monodix_entrada($right_lemma, $right_paradigm, $right_comment, "webform");
 
 	    print '<p>';
-            print '<span id="monodix_entrada">';
+            print '<span id="monodix_entrada"><pre>';
             print str_replace('>', '&gt;', str_replace('<', '&lt;', $right_entrada));
-            print '</span>';
+            print '</pre></span>';
 	} 
     ?>
     </p>
@@ -339,17 +339,17 @@ ca · en · es
           $dictionary = $pair->dictionary('bilingual');
 
           if($template != "none") {
-              $bidix_entrada = $dictionary->generate_bidix_entrada_from_template($pair->template_dir(), $template, $left_lemma, $right_lemma, ""); 
-              print '<span id="bidix_entrada">';
+              $bidix_entrada = $dictionary->generate_bidix_entrada_from_template($pair->template_dir(), $template, $left_lemma, $right_lemma, "", "webform"); 
+              print '<span id="bidix_entrada"><pre>';
               $bidix_entrada = str_replace('><', '>\n<', str_replace('>', '&gt;', str_replace('<', '&lt;', $bidix_entrada)));
 	      $bidix_entrada = str_replace("&lt;/e&gt;\n", "&lt;/e&gt;<br />", $bidix_entrada);
 	      print $bidix_entrada;
-              print '</span>';
+              print '</pre></span>';
           } else { 
-              $bidix_entrada = $dictionary->generate_bidix_entrada($left_lemma, $right_lemma, $current_tag, $restriction, "");
-              print '<span id="bidix_entrada">';
+              $bidix_entrada = $dictionary->generate_bidix_entrada($left_lemma, $right_lemma, $current_tag, $restriction, "", "webform");
+              print '<span id="bidix_entrada"><pre>';
               print str_replace('><', '>\n<', str_replace('>', '&gt;', str_replace('<', '&lt;', $bidix_entrada)));
-              print '</span>';
+              print '</span></pre>';
           }
 
           print '<input type="hidden" name="selected_template" value="' . $template . '">';
@@ -362,17 +362,17 @@ ca · en · es
           $pair = $config->get_pair($current_pair);
 
           $dictionary = $pair->dictionary('left');
-          $left_entrada = $dictionary->generate_monodix_entrada($left_lemma, $left_paradigm, $left_comment);
+          $left_entrada = $dictionary->generate_monodix_entrada($left_lemma, $left_paradigm, $left_comment, "webform");
 
           $dictionary = $pair->dictionary('bilingual');
           if($template != "none") {
-              $bidix_entrada = $dictionary->generate_bidix_entrada_from_template($pair->template_dir(), $template, $left_lemma, $right_lemma, ""); 
+              $bidix_entrada = $dictionary->generate_bidix_entrada_from_template($pair->template_dir(), $template, $left_lemma, $right_lemma, "", "webform"); 
           } else { 
-              $bidix_entrada = $dictionary->generate_bidix_entrada($left_lemma, $right_lemma, $current_tag, $restriction, "");
+              $bidix_entrada = $dictionary->generate_bidix_entrada($left_lemma, $right_lemma, $current_tag, $restriction, "", "webform");
           }
 
           $dictionary = $pair->dictionary('right');
-          $right_entrada = $dictionary->generate_monodix_entrada($right_lemma, $right_paradigm, $right_comment);
+          $right_entrada = $dictionary->generate_monodix_entrada($right_lemma, $right_paradigm, $right_comment, "webform");
 
           print '<span id="monodix_entrada">';
           print str_replace('>', '&gt;', str_replace('<', '&lt;', $left_entrada));

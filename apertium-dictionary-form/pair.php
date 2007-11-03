@@ -189,47 +189,62 @@
 			return $incondicional;
 		}
 
-		function generate_monodix_entrada($_lemma, $_paradigm, $_comment) {
+		function generate_monodix_entrada($_lemma, $_paradigm, $_comment, $_author) {
 			// <e lm="lemma"><i>lemm</i><par n="paradigm"/></e>
 
 			$incondicional = $this->incondicional($_lemma, $_paradigm);
 
 				if($_comment != "") {
-					$entrada = '<e lm="' . $_lemma . '"><i>' . $incondicional . '</i><par n="' . $_paradigm . '"/></e>' . 
-					   '<!-- ' . $_comment . ' -->' . "\n";
+					$entrada = '<e lm="' . $_lemma . '" a="' . $_author . '">' . "\n" .
+						   '  <i>' . $incondicional . '</i>' . "\n" .
+						   '  <par n="' . $_paradigm . '"/>' . "\n" . 
+						   '</e>' . 
+					   	   '<!-- ' . $_comment . ' -->' . "\n";
 				} else {
-
-					$entrada = '<e lm="' . $_lemma . '"><i>' . $incondicional . '</i><par n="' . $_paradigm . '"/></e>' . "\n";
+					$entrada = '<e lm="' . $_lemma . '" a="' . $_author . '">' . "\n" .
+						   '  <i>' . $incondicional . '</i>' . "\n" .
+						   '  <par n="' . $_paradigm . '"/>' . "\n" . 
+						   '</e>';
 				}
 
 
 			return $entrada; 
 		}
 
-		function generate_bidix_entrada($_lemma1, $_lemma2, $_tag, $_restriction, $_comment) {
+		function generate_bidix_entrada($_lemma1, $_lemma2, $_tag, $_restriction, $_comment, $_author) {
 			// <e><p><l>lemma1<s n="tag"/></l><r>lemma2<s n="tag"/></r></p></e>
 
 			if($_restriction == "none") {
 				if($_comment != "") {
-	 				$entrada = '<e><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' .
+	 				$entrada = '<e a="' . $_author . '">' . "\n" . 
+					           '  <p>' . "\n" .
+						   '    <l>' . $_lemma1 . '<s n="' . $_tag . '"/></l>' . "\n" . 
+						   '    <r>' . $_lemma2 . '<s n="' . $_tag . '"/></r>' . "\n" .
+						   '  </p>' . "\n" . 
+						   '</e>' . "\n" .
 					           '<!-- ' . $_comment . ' -->' . "\n";
 				} else {
-
-	 				$entrada = '<e><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' . "\n";
+	 				$entrada = '<e a="' . $_author . '">' . "\n" . 
+					           '  <p>' . "\n" .
+						   '    <l>' . $_lemma1 . '<s n="' . $_tag . '"/></l>' . "\n" . 
+						   '    <r>' . $_lemma2 . '<s n="' . $_tag . '"/></r>' . "\n" .
+						   '  </p>' . "\n" . 
+						   '</e>' . "\n";
 				}
 			} else {
-				$entrada = '<e r="' . $_restriction .  '"><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' . "\n";
+				$entrada = '<e r="' . $_restriction .  '" a="' . $_author . '"><p><l>' . $_lemma1 . '<s n="' . $_tag . '"/></l><r>' . $_lemma2 . '<s n="' . $_tag . '"/></r></p></e>' . "\n";
 			}
 
 			return $entrada;
 		}
 
-		function generate_bidix_entrada_from_template($_dir, $_template, $_lemma1, $_lemma2, $_comment) {
+		function generate_bidix_entrada_from_template($_dir, $_template, $_lemma1, $_lemma2, $_comment, $_author) {
 
 			$text = file_get_contents($_dir . $_template);
 
-			$entrada = str_replace('lemma_left', $_lemma1, $text);
-			$entrada = str_replace('lemma_right', $_lemma2, $entrada);
+			$entrada = str_replace('entry_author', $_author, $text);
+			$entrada = str_replace('entry_lemma_left', $_lemma1, $entrada);
+			$entrada = str_replace('entry_lemma_right', $_lemma2, $entrada);
 
 			return $entrada;
 		}
