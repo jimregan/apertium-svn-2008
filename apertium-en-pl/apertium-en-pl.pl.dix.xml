@@ -4,6 +4,7 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="apertium-en-pl.symbols.xml"/>
 
   <pardefs>
+   <!-- punctuation etc. -->
    <pardef n="guionet">
       <e>
         <p>
@@ -12,7 +13,6 @@
         </p>
       </e>
     </pardef>
-
     <pardef n="coma">
       <e>
         <p>
@@ -21,7 +21,6 @@
         </p>
       </e>
     </pardef>
-
     <pardef n="cometa">
       <e>
          <re>[’'‘]</re>
@@ -30,8 +29,61 @@
            <r><s n="apos"/></r>
          </p>
       </e>
-    </pardef> 
-
+    </pardef>
+    <pardef n="lquote">
+      <e r="LR">
+        <p>
+          <l>«</l>
+          <r><s n="lquot"/></r>
+        </p>
+      </e>
+    </pardef>
+    <pardef n="rquote">
+      <e r="LR">
+        <p>
+          <l>»</l>
+          <r><s n="rquot"/></r>
+        </p>
+      </e>
+    </pardef>
+    <pardef n="separa">
+       <e>
+         <re>[.\?;:!]</re>
+         <p>
+           <l/>
+           <r><s n="sent"/></r>
+         </p>
+       </e>
+    </pardef>
+     <!-- Umm... neither Polish nor English use this, so is it necessary? -->
+    <pardef n="separ">
+       <e>
+        <re>[¿¡]</re>
+        <p>
+          <l/>
+          <r><s n="lquest"/></r>
+        </p>
+       </e>
+    </pardef>
+    <pardef n="paresq">
+      <e>
+        <re>[\(\[]</re>
+        <p>
+          <l/>
+          <r><s n="lpar"/></r>
+        </p>
+      </e>
+    </pardef>
+    <pardef n="pardret">
+      <e>
+        <re>[\)\]]</re>
+        <p>
+          <l/>
+         <r><s n="rpar"/></r>
+        </p>
+      </e>
+    </pardef>
+    <!-- Number regexes -->
     <pardef n="ordinals">
       <e>
         <re>[0-9]+([.,][0-9]+)?szy</re>
@@ -90,7 +142,6 @@
         </p>
       </e>
     </pardef>
-
     <pardef n="numeros">
       <e>
         <re>[0-9]+([.,][0-9]+)?</re>
@@ -101,6 +152,7 @@
       </e>
     </pardef>
   
+    <!-- Tag pardefs -->
     <pardef n="i__cnjcoo">
       <e>
         <p>
@@ -109,7 +161,6 @@
         </p>
       </e>
     </pardef>
-
      <pardef n="halo__ij">
       <e>
         <p>
@@ -118,7 +169,6 @@
         </p>
       </e>
     </pardef>
-    
     <pardef n="bardzo__preadv">
       <e>
         <p>
@@ -127,7 +177,16 @@
         </p>
       </e>
     </pardef>
+    <pardef n="do__pr">
+      <e>
+        <p>
+          <l/>
+          <r><s n="pr"/></r>
+        </p>
+      </e>
+    </pardef>
     
+    <!-- Adjective-type numbers -->
     <pardef n="jed/en__num">
       <e>
         <p>
@@ -934,50 +993,48 @@
         </p>
       </e>
     </pardef>
-  
-     <pardef n="separa">
-       <e>
-         <re>[.\?;:!]</re>
-         <p>
-           <l/>
-           <r><s n="sent"/></r>
-         </p>
-       </e>
-     </pardef>
-     <!-- Umm... neither Polish nor English use this, so is it necessary? -->
-     <pardef n="separ">
-       <e>
-        <re>[¿¡]</re>
-        <p>
-          <l/>
-          <r><s n="lquest"/></r>
-        </p>
-       </e>
-    </pardef>
-    <pardef n="paresq">
+    <!-- Proper nouns: Places -->
+    <pardef n="Łazisk/a__np">
       <e>
-        <re>[\(\[]</re>
         <p>
-          <l/>
-          <r><s n="lpar"/></r>
+          <l>a</l>
+          <r>a<s n="np"/><s n="loc"/><s n="nt"/><s n="pl"/><s n="nom"/></r>
         </p>
       </e>
-    </pardef>
-    <pardef n="pardret">
-    <e>
-        <re>[\)\]]</re>
-        <p>
-          <l/>
-         <r><s n="rpar"/></r>
-        </p>
-    </e>
-    </pardef>
-
-    <pardef n="do__pr">
       <e>
         <p>
-          <l/>
-          <r><s n="pr"/></r>
+          <l></l>
+          <r>a<s n="np"/><s n="loc"/><s n="nt"/><s n="pl"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>om</l>
+          <r>a<s n="np"/><s n="loc"/><s n="nt"/><s n="pl"/><s n="dat"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ami</l>
+          <r>a<s n="np"/><s n="loc"/><s n="nt"/><s n="pl"/><s n="inst"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ach</l>
+          <r>a<s n="np"/><s n="loc"/><s n="nt"/><s n="pl"/><s n="locc"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>a</l>
+          <r>a<s n="np"/><s n="loc"/><s n="nt"/><s n="pl"/><s n="acc"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>a</l>
+          <r>a<s n="np"/><s n="loc"/><s n="nt"/><s n="pl"/><s n="voc"/></r>
         </p>
       </e>
     </pardef>
@@ -20637,50 +20694,6 @@
         </p>
       </e>
     </pardef>
-    <pardef n="Łazisk/a__n">
-      <e>
-        <p>
-          <l>a</l>
-          <r>a<s n="n"/><s n="nt"/><s n="pl"/><s n="nom"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l></l>
-          <r>a<s n="n"/><s n="nt"/><s n="pl"/><s n="gen"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>om</l>
-          <r>a<s n="n"/><s n="nt"/><s n="pl"/><s n="dat"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>ami</l>
-          <r>a<s n="n"/><s n="nt"/><s n="pl"/><s n="inst"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>ach</l>
-          <r>a<s n="n"/><s n="nt"/><s n="pl"/><s n="locc"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>a</l>
-          <r>a<s n="n"/><s n="nt"/><s n="pl"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>a</l>
-          <r>a<s n="n"/><s n="nt"/><s n="pl"/><s n="voc"/></r>
-        </p>
-      </e>
-    </pardef>
     <pardef n="jaseł/ka__n">
       <e>
         <p>
@@ -23153,89 +23166,89 @@
         </p>
       </e>
     </pardef>
-    <pardef n="Płask/a__n">
+    <pardef n="Płask/a__np">
       <e>
         <p>
           <l>a</l>
-          <r>a<s n="n"/><s n="f"/><s n="sg"/><s n="nom"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="sg"/><s n="nom"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>iej</l>
-          <r>a<s n="n"/><s n="f"/><s n="sg"/><s n="gen"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="sg"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>iej</l>
-          <r>a<s n="n"/><s n="f"/><s n="sg"/><s n="dat"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="sg"/><s n="dat"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ą</l>
-          <r>a<s n="n"/><s n="f"/><s n="sg"/><s n="acc"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="sg"/><s n="acc"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ą</l>
-          <r>a<s n="n"/><s n="f"/><s n="sg"/><s n="inst"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="sg"/><s n="inst"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>a</l>
-          <r>a<s n="n"/><s n="f"/><s n="sg"/><s n="voc"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="sg"/><s n="voc"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ie</l>
-          <r>a<s n="n"/><s n="f"/><s n="pl"/><s n="nom"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="pl"/><s n="nom"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ich</l>
-          <r>a<s n="n"/><s n="f"/><s n="pl"/><s n="gen"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="pl"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>im</l>
-          <r>a<s n="n"/><s n="f"/><s n="pl"/><s n="dat"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="pl"/><s n="dat"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>imi</l>
-          <r>a<s n="n"/><s n="f"/><s n="pl"/><s n="inst"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="pl"/><s n="inst"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ich</l>
-          <r>a<s n="n"/><s n="f"/><s n="pl"/><s n="locc"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="pl"/><s n="locc"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>iej</l>
-          <r>a<s n="n"/><s n="f"/><s n="sg"/><s n="dat"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="sg"/><s n="dat"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ie</l>
-          <r>a<s n="n"/><s n="f"/><s n="pl"/><s n="acc"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="pl"/><s n="acc"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ie</l>
-          <r>a<s n="n"/><s n="f"/><s n="pl"/><s n="voc"/></r>
+          <r>a<s n="np"/><s n="loc"/><s n="f"/><s n="pl"/><s n="voc"/></r>
         </p>
       </e>
     </pardef>
@@ -36132,7 +36145,7 @@
     <e lm="wrota"><i>wr</i><par n="wr/ota__n"/></e>
     <e lm="drwa"><i>dr</i><par n="dr/wa__n"/></e>
     <e lm="gusła"><i>gus</i><par n="gus/ła__n"/></e>
-    <e lm="Łaziska"><i>Łazisk</i><par n="Łazisk/a__n"/></e>
+    <e lm="Łaziska"><i>Łazisk</i><par n="Łazisk/a__np"/></e>
     <e lm="jasełka"><i>jaseł</i><par n="jaseł/ka__n"/></e>
     <e lm="polonika"><i>polonik</i><par n="polonik/a__n"/></e>
     <e lm="realia"><i>reali</i><par n="reali/a__n"/></e>
@@ -36180,7 +36193,7 @@
     <e lm="uprząż"><i>uprz</i><par n="uprz/ąż__n"/></e>
     <e lm="mysz"><i>mysz</i><par n="mysz/__n"/></e>
     <e lm="wesz"><i>w</i><par n="w/esz__n"/></e>
-    <e lm="Płaska"><i>Płask</i><par n="Płask/a__n"/></e>
+    <e lm="Płaska"><i>Płask</i><par n="Płask/a__np"/></e>
     <e lm="położna"><i>położn</i><par n="położn/a__n"/></e>
     <e lm="trwała"><i>trwał</i><par n="trwał/a__n"/></e>
     <e lm="Dobra"><i>Dobr</i><par n="Dobr/a__np"/></e>
