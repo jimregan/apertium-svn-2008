@@ -1,17 +1,18 @@
 apertium-en-af
-Apertium 2 English-Afrikaans machine translation data.
+Apertium 3 English-Afrikaans machine translation data.
 
 Files:
 
-apertium-en-af.de.dix           -- Afrikaans morphological dictionary
-apertium-en-af.de.tsx           -- Tagger tag definition file
+apertium-en-af.af.dix.xml       -- Afrikaans morphological dictionary
+apertium-en-af.af.tsx           -- Tagger tag definition file
 apertium-en-af.en-af.dix        -- Bilingual dictionary
-apertium-en-af.en.dix           -- English morphological dictionary
-apertium-en-af.trules-af-en.xml -- Transfer rules for Afrikaans-English translation
-apertium-en-af.trules-en-af.xml -- Transfer rules for English-Afrikaans translation
-
-==Pipeline==
-
-===af -> en===
-
-apertium-destxt | lt-proc af-en.automorf.bin | apertium-pretransfer |  apertium-tagger --tagger ../apertium-en-de/de-en.prob | apertium-transfer trules-af-en.xml trules-af-en.bin af-en.autobil.bin | lt-proc -g af-en.autogen.bin | lt-proc -p af-en.autopgen.bin | apertium-retxt
+apertium-en-af.en.dix.xml       -- English morphological dictionary
+apertium-en-af.symbols.xml	-- Symbol definition file for all dictionaries
+apertium-en-af.post-en.dix	-- English post-generation dictionary
+apertium-en-af.post-af.dix	-- Afrikaans post-generation dictionary
+apertium-en-af.af-en.t1x	-- First stage transfer (Afrikaans → English)
+apertium-en-af.af-en.t2x	-- Second stage transfer (Afrikaans → English)
+apertium-en-af.af-en.t3x	-- Third stage transfer (Afrikaans → English)
+apertium-en-af.en-af.t1x	-- First stage transfer (English → Afrikaans)
+apertium-en-af.en-af.t2x	-- Second stage transfer (English → Afrikaans)
+apertium-en-af.en-af.t3x	-- Third stage transfer (English → Afrikaans)
