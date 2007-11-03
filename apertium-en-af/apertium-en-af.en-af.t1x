@@ -121,7 +121,61 @@
     <def-var n="numero"/>
     <def-var n="caseFirstWord"/>
     <def-var n="nombre"/>
+    <def-var n="attr-tag-1"/>
+    <def-var n="attr-tag-2"/>
   </section-def-vars>
+
+  <section-def-macros>
+    <def-macro n="test-if-synthetic-1" npar="1">
+      <choose>
+        <when>
+          <test>
+            <not>
+              <or>
+                <equal>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <lit-tag v="adj.sint.comp"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <lit-tag v="adj.sint.sup"/>
+                </equal>
+              </or>
+            </not>
+          </test>
+          <let><var n="attr-tag-1"/><lit-tag v="attr"/></let>
+        </when>
+        <otherwise>
+          <let><var n="attr-tag-1"/><lit v=""/></let>
+        </otherwise>
+      </choose>
+    </def-macro>
+
+    <def-macro n="test-if-synthetic-2" npar="1"> <!-- WHAT AWFUL DUPLICATION. WE'LL FIND A BETTER WAY YET. -->
+      <choose>
+        <when>
+          <test>
+            <not>
+              <or>
+                <equal>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <lit-tag v="adj.sint.comp"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <lit-tag v="adj.sint.sup"/>
+                </equal>
+              </or>
+            </not>
+          </test>
+          <let><var n="attr-tag-2"/><lit-tag v="attr"/></let>
+        </when>
+        <otherwise>
+          <let><var n="attr-tag-2"/><lit v=""/></let>
+        </otherwise>
+      </choose>
+    </def-macro>
+  </section-def-macros>
 
   <section-rules>
     <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
@@ -301,20 +355,9 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-      <choose>
-      <when>
-        <test>
-          <or>
-            <equal>
-              <clip pos="2" side="sl" part="a_adj"/>
-              <lit-tag v="adj.sint.comp"/>
-            </equal>
-            <equal>
-              <clip pos="2" side="sl" part="a_adj"/>
-              <lit-tag v="adj.sint.sup"/>
-            </equal>
-          </or>
-        </test>
+        <call-macro n="test-if-synthetic-1">
+          <with-param pos="2"/>
+        </call-macro>
         <out>
           <chunk name="det_adj_nom" case="caseFirstWord">
             <tags>
@@ -328,39 +371,11 @@
               <clip pos="1" side="tl" part="nbr"/>
             </lu>
 	    <b pos="1"/>
-              <lu>
-                <clip pos="2" side="tl" part="lem"/>
-    	        <clip pos="2" side="tl" part="a_adj"/>
-              </lu>
-            <b pos="1"/>
             <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <clip pos="3" side="tl" part="lemq"/>
+              <clip pos="2" side="tl" part="lem"/>
+    	      <clip pos="2" side="tl" part="a_adj"/>
+              <var n="attr-tag-1"/>
             </lu>
-            </chunk>
-        </out>
-      </when>
-      <otherwise>
-        <out>
-          <chunk name="det_adj_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="NP"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-            </lu>
-	    <b pos="1"/>
-              <lu>
-                <clip pos="2" side="tl" part="lem"/>
-    	        <clip pos="2" side="tl" part="a_adj"/>
-	        <lit-tag v="attr"/>
-              </lu>
             <b pos="1"/>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
@@ -370,8 +385,6 @@
             </lu>
           </chunk>
         </out>
-       </otherwise>
-       </choose>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
@@ -385,20 +398,9 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-      <choose>
-      <when>
-        <test>
-          <or>
-            <equal>
-              <clip pos="1" side="tl" part="a_adj"/>
-              <lit-tag v="adj.sint.comp"/>
-            </equal>
-            <equal>
-              <clip pos="1" side="tl" part="a_adj"/>
-              <lit-tag v="adj.sint.sup"/>
-            </equal>
-          </or>
-        </test>
+        <call-macro n="test-if-synthetic-1">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <chunk name="adj_nom" case="caseFirstWord">
             <tags>
@@ -409,6 +411,7 @@
               <lu>
                 <clip pos="1" side="tl" part="lem"/>
     	        <clip pos="1" side="tl" part="a_adj"/>
+                <var n="attr-tag-1"/>
               </lu>
 	      <b/>
               <lu>
@@ -418,30 +421,6 @@
               </lu>
             </chunk>
         </out>
-      </when>
-      <otherwise>
-        <out>
-          <chunk name="adj_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="NP"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-	    </tags>
-              <lu>
-                <clip pos="1" side="tl" part="lem"/>
-    	        <clip pos="1" side="tl" part="a_adj"/>
-	        <lit-tag v="attr"/>
-              </lu>
-	      <b/>
-              <lu>
-                <clip pos="2" side="tl" part="lem"/>
-    	        <clip pos="2" side="tl" part="a_nom"/>
-    	        <clip pos="2" side="tl" part="nbr"/>
-              </lu>
-            </chunk>
-          </out>
-        </otherwise>
-      </choose>
       </action>
     </rule>
 
@@ -486,35 +465,41 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-            <out>
+        <call-macro n="test-if-synthetic-1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="test-if-synthetic-2">
+          <with-param pos="3"/>
+        </call-macro>
+        <out>
           <chunk name="adj_conj_adj" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="ADJP"/></tag>
 	    </tags>
-              <lu>
-                <clip pos="1" side="tl" part="lem"/>
-    	        <clip pos="1" side="tl" part="a_adj"/>
-	        <lit-tag v="attr"/>
-              </lu>
-	      <b/>
-              <lu>
-                <clip pos="2" side="tl" part="lem"/>
-                <clip pos="2" side="tl" part="a_conj"/>
-              </lu>
-	      <b/>
-              <lu>
-                <clip pos="3" side="tl" part="lem"/>
-    	        <clip pos="3" side="tl" part="a_adj"/>
-	        <lit-tag v="attr"/>
-              </lu>
-	      <b/>
-              <lu>
-                <clip pos="4" side="tl" part="lem"/>
-    	        <clip pos="4" side="tl" part="a_nom"/>
-    	        <clip pos="4" side="tl" part="nbr"/>
-              </lu>
-            </chunk>
-            </out>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+    	      <clip pos="1" side="tl" part="a_adj"/>
+              <var n="attr-tag-1"/>
+            </lu>
+	    <b/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_conj"/>
+            </lu>
+	    <b/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+    	      <clip pos="3" side="tl" part="a_adj"/>
+              <var n="attr-tag-2"/>
+            </lu>
+	    <b/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+    	      <clip pos="4" side="tl" part="a_nom"/>
+    	      <clip pos="4" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
       </action>
     </rule>
 
@@ -559,32 +544,38 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-            <out>
+        <call-macro n="test-if-synthetic-1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="test-if-synthetic-2">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
           <chunk name="adj_nom" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="NP"/></tag>
               <tag><clip pos="2" side="sl" part="gen"/></tag>
               <tag><var n="nombre"/></tag>
 	    </tags>
-              <lu>
-                <clip pos="1" side="tl" part="lem"/>
-    	        <clip pos="1" side="tl" part="a_adj"/>
-	        <lit-tag v="attr"/>
-              </lu>
-	      <b/>
-              <lu>
-                <clip pos="2" side="tl" part="lem"/>
-    	        <clip pos="2" side="tl" part="a_adj"/>
-	        <lit-tag v="attr"/>
-              </lu>
-	      <b/>
-              <lu>
-                <clip pos="3" side="tl" part="lem"/>
-    	        <clip pos="3" side="tl" part="a_nom"/>
-    	        <clip pos="3" side="tl" part="nbr"/>
-              </lu>
-            </chunk>
-            </out>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+    	      <clip pos="1" side="tl" part="a_adj"/>
+              <var n="attr-tag-1"/>
+            </lu>
+	    <b/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+    	      <clip pos="2" side="tl" part="a_adj"/>
+              <var n="attr-tag-2"/>
+            </lu>
+	    <b/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+    	      <clip pos="3" side="tl" part="a_nom"/>
+    	      <clip pos="3" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
       </action>
     </rule>
 
