@@ -37,6 +37,10 @@
       <cat-item tags="SVsub.*"/>
     </def-cat>  
 
+<def-cat n="SPVERB">
+      <cat-item lemma="pr_inf" tags="SV.*"/>
+    </def-cat>  
+
  <def-cat n="pp">
       <cat-item lemma="pp" tags="SV.*"/>
     </def-cat>  
@@ -116,7 +120,8 @@
  <def-attr n="a_SP">          
       <attr-item tags="SPGEN"/>         
       <attr-item tags="SPR"/>        
-      <attr-item tags="SPR-SN"/> 
+      <attr-item tags="SPR-SN"/>     
+      <attr-item tags="SV"/> 
     </def-attr> 
 
   </section-def-attrs>
@@ -180,7 +185,7 @@
 
   <section-rules>
     
-    <rule> <!-- REGLA: SN (si es GD y no se tiene más información, se asignará masculino-->
+    <rule comment="REGLA: SN (si es GD y no se tiene más información, se asignará masculino">
       <pattern>
 	<pattern-item n="SN"/>
       </pattern>
@@ -236,7 +241,7 @@
 </rule>
 
     
-    <rule> <!-- REGLA: SA--><!--si va solo y no se le puede asignar género a los GD, se asignará masculino, y singular para ND -->
+    <rule comment="REGLA: SA (si va solo y no se le puede asignar género a los GD, se asignará masculino, y singular para ND)">
       <pattern>
 	<pattern-item n="SA"/>
       </pattern>
@@ -277,7 +282,7 @@
       </action>
 </rule>
 
- <rule> <!-- REGLA: SPR-->
+ <rule comment="REGLA: SPR">
       <pattern>
 	<pattern-item n="SPR"/>
       </pattern>
@@ -335,7 +340,7 @@
 
 
 
- <rule> <!-- REGLA: SPGEN + SN-->
+ <rule comment="REGLA: SPGEN + SN">
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SN"/>
@@ -485,7 +490,7 @@
       </action>
 </rule>
 
- <rule> <!-- REGLA: SPGEN + SPR (arratsaldeko azken orduan)-->
+ <rule comment="REGLA: SPGEN + SPR (arratsaldeko azken orduan)">
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SPR"/>
@@ -548,7 +553,7 @@
 	    </let>
 	  </when>
 	</choose>
-<choose>
+	<choose>
 	  <when>
 	    <test>
 	      <equal>
@@ -559,10 +564,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="gen"/>
@@ -589,10 +602,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="nbr"/>
+			<lit-tag v="sp"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="nbr"/>
@@ -609,6 +630,7 @@
 	  </when>
 	</choose>
 
+
 	<out>
 	  <chunk>
 	    <clip pos="2" part="whole"/>
@@ -621,7 +643,7 @@
       </action>
 </rule>
   
- <rule> <!-- REGLA: SPGEN + SADV (etxearen aurrean - delante de la casa)-->
+ <rule comment="REGLA: SPGEN + SADV (etxearen aurrean - delante de la casa)">
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SADV"/>
@@ -696,7 +718,7 @@
 </rule>
 
 
- <rule> <!-- REGLA: SPGEN + SPR (nire etxean egindako lehergailu bat)-->
+ <rule comment="REGLA: SPGEN + SPR (nire etxean egindako lehergailu bat)">
       <pattern>
 	<pattern-item n="SPR"/>
 	<pattern-item n="PADV"/>
@@ -829,7 +851,7 @@
 </rule>
   
 
- <rule> <!-- REGLA: SPR + PR (lanetik kanpo; iturri ofizialen arabera)-->
+ <rule comment="REGLA: SPR + PR (lanetik kanpo; iturri ofizialen arabera)">
       <pattern>
 	<pattern-item n="SPR"/>
 	<pattern-item n="PREP"/>
@@ -906,7 +928,7 @@
 
 
 
- <rule> <!-- REGLA: SPGEN + SPR + PR (EAren presidentearen ustez)-->
+ <rule comment="REGLA: SPGEN + SPR + PR (EAren presidentearen ustez)">
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SPR"/>
@@ -980,10 +1002,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="gen"/>
@@ -1010,10 +1040,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="nbr"/>
+			<lit-tag v="sp"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="nbr"/>
@@ -1029,6 +1067,7 @@
 	    </choose>
 	  </when>
 	</choose>
+
 	<choose>
 	  <when>
 	    <test>
@@ -1060,7 +1099,7 @@
 </rule>
 
 
- <rule> <!-- REGLA: SPGEN + SPGEN + SN-->
+ <rule comment="REGLA: SPGEN + SPGEN + SN">
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SPGEN"/>
@@ -1137,6 +1176,7 @@
 	    </let>
 	  </when>
 	</choose>
+
 	<choose>
 	  <when>
 	    <test>
@@ -1148,10 +1188,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="2" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="2" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="3" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="2" part="gen"/>
@@ -1178,10 +1226,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="2" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="2" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="3" part="nbr"/>
+			<lit-tag v="sp"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="2" part="nbr"/>
@@ -1197,7 +1253,6 @@
 	    </choose>
 	  </when>
 	</choose>
-	
 	<choose>
 	  <when>
 	    <test>
@@ -1209,10 +1264,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="3" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="gen"/>
@@ -1239,10 +1302,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="3" part="nbr"/>
+			<lit-tag v="sp"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="nbr"/>
@@ -1258,6 +1329,7 @@
 	    </choose>
 	  </when>
 	</choose>	
+
 	<out>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
@@ -1275,7 +1347,7 @@
 </rule>
 
 
-<rule> <!-- REGLA: SPR + PR + SN (Autonomiari buruzko erreferenduma)-->
+<rule comment="REGLA: SPR + PR + SN (Autonomiari buruzko erreferenduma)">
       <pattern>
 	<pattern-item n="SPR"/>
 	<pattern-item n="PREP"/>
@@ -1396,7 +1468,7 @@
       </action>
 </rule>
 
-<rule> <!-- REGLA: SPR + PR + SPGEN + SADV (gobernu demokratikoaren aurkako kolpearen ostean)-->
+<rule comment="REGLA: SPR + PR + SPGEN + SADV (gobernu demokratikoaren aurkako kolpearen ostean)">
       <pattern>
 	<pattern-item n="SPR"/>
 	<pattern-item n="PREP"/>
@@ -1523,7 +1595,7 @@
 </rule>
 
 
- <rule> <!-- REGLA: SN+ PREP (entrenatzaile gabe; enplegurik gabe)-->
+ <rule comment="REGLA: SN+ PREP (entrenatzaile gabe; enplegurik gabe)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="PREP"/>
@@ -1606,7 +1678,7 @@
 </rule>
 
 
- <rule> <!-- REGLA: SN+ PREP (sinatu gabe - sin firmar (MG: por ahora sólo con pp por provar, puede hacerse extensivo a todos los SV))-->
+ <rule comment="REGLA: PP + PREP (sinatu gabe - sin firmar (MG: por ahora sólo con pp por provar, puede hacerse extensivo a todos los SV))">
       <pattern>
 	<pattern-item n="pp"/>
 	<pattern-item n="PREP"/>
@@ -1640,6 +1712,38 @@
 	  </when>
 	</choose>
 	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SPverbal + PREP (nabarmentzeaz gain - además de destacar))">
+      <pattern>
+	<pattern-item n="SPVERB"/>
+	<pattern-item n="PREP"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="a_adv"/>
+		<lit-tag v="pr"/>
+	      </equal>
+	    </test>		
+	    <let>	      
+	      <clip pos="1" part="a_SP"/>
+	      <lit-tag v="SPR-SN"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
 	  </chunk>
@@ -1784,10 +1888,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="gen"/>
@@ -1814,10 +1926,18 @@
 	    <choose>
 	      <when>
 		<test>
-		  <equal>
-		    <clip pos="1" part="temps"/>
-		    <lit-tag v="pp"/>
-		  </equal>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="nbr"/>
+			<lit-tag v="sp"/>
+		      </equal>
+		    </not>
+		  </and>
 		</test>
 		<let>
 		  <clip pos="1" part="nbr"/>
@@ -1832,7 +1952,7 @@
 	      </otherwise>
 	    </choose>
 	  </when>
-	</choose>
+	</choose>	
 	
 	<out>
 	  <chunk>
@@ -2052,7 +2172,7 @@
 
 
 
-    <rule> <!-- REGLA: reset variables-->
+    <rule comment="REGLA: reset variables">
       <pattern>
 	<pattern-item n="punt"/>
       </pattern>
