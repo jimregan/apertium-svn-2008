@@ -36,6 +36,14 @@
       <cat-item tags="vbser.*"/>
       <cat-item tags="vbhaver.*"/> 
     </def-cat>
+    <def-cat n="verb">
+      <cat-item tags="vblex"/>
+      <cat-item tags="vbser"/>
+      <cat-item tags="vbhaver"/>
+      <cat-item tags="vblex.*"/>
+      <cat-item tags="vbser.*"/>
+      <cat-item tags="vbhaver.*"/> 
+    </def-cat>
     <def-cat n="prep"> <!-- preposition -->
       <cat-item tags="pr"/>
     </def-cat>
@@ -97,6 +105,9 @@
       <attr-item tags="acc"/>
       <attr-item tags="dat"/>
       <attr-item tags="gen"/>
+      <attr-item tags="locc"/>
+      <attr-item tags="inst"/>
+      <attr-item tags="voc"/>
     </def-attr>
     <def-attr n="pers">			<!-- Person -->
        <attr-item tags="p1"/>
@@ -118,7 +129,9 @@
        <attr-item tags="pri"/>
        <attr-item tags="past"/>
        <attr-item tags="pres"/>
+       <attr-item tags="fut"/>
        <attr-item tags="inf"/>
+       <attr-item tags="cni"/>
      </def-attr>
   </section-def-attrs>
 
@@ -143,9 +156,9 @@
             <lu>
               <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="a_nom"/>
-              <clip pos="1" side="tl" part="caso"/>
               <clip pos="1" side="tl" part="gen"/>
               <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
             </lu>
           </chunk>
         </out>
@@ -171,6 +184,33 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: PRPERS">
+      <pattern>
+        <pattern-item n="prpers"/>
+      </pattern>
+      <action>
+        <modify-case>
+           <clip pos="1" side="tl" part="lem"/>
+           <lit v="Aa"/>
+         </modify-case>
+         <out>
+           <chunk name="prpers">
+             <tags>
+               <tag><lit-tag v="PRN"/></tag>
+             </tags>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="tipus_prn"/>
+               <clip pos="1" side="tl" part="pers"/>
+               <clip pos="1" side="tl" part="gen"/>
+               <clip pos="1" side="tl" part="nbr"/>
+               <!-- <clip pos="1" side="tl" part="caso"/> -->
+             </lu>
+           </chunk>
+         </out>
+      </action>
+    </rule>
+
     <rule comment="REGLA: ADJ">
       <pattern>
         <pattern-item n="adj"/>
@@ -189,6 +229,69 @@
               </chunk>
             </out>
       </action>
+    </rule>
+
+    <rule comment="Verb with subject">
+       <pattern>
+         <pattern-item n="prpers"/>
+         <pattern-item n="verb"/>
+       </pattern>
+       <action>
+         <out>
+           <chunk name="prpers_verb">
+             <tags>
+               <tag><lit-tag v="V"/></tag>
+             </tags>
+             <lu>
+               <lit v="prpers"/>
+               <lit-tag v="prn"/>
+               <lit-tag v="subj"/>
+               <clip pos="1" side="tl" part="pers"/>
+               <clip pos="1" side="tl" part="gen"/>
+               <clip pos="1" side="tl" part="nbr"/> 
+             </lu>
+             <b/>
+             <lu>
+               <clip pos="2" side="tl" part="lem"/>
+               <clip pos="2" side="tl" part="a_verb"/>
+               <clip pos="2" side="tl" part="temps"/>
+               <clip pos="2" side="tl" part="pers"/>
+               <clip pos="2" side="tl" part="nbr"/>
+             </lu>
+           </chunk>
+         </out>
+       </action>
+    </rule>
+
+    <rule comment="Verb without subject">
+       <pattern>
+         <pattern-item n="verb"/>
+       </pattern>
+       <action>
+         <out>
+           <chunk name="verb">
+             <tags>
+               <tag><lit-tag v="V"/></tag>
+             </tags>
+             <lu>
+               <lit v="prpers"/>
+               <lit-tag v="prn"/>
+               <lit-tag v="subj"/>
+               <clip pos="1" side="tl" part="pers"/>
+               <clip pos="1" side="tl" part="gen"/>
+               <clip pos="1" side="tl" part="nbr"/> 
+             </lu>
+             <b/>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_verb"/>
+               <clip pos="1" side="tl" part="temps"/>
+               <clip pos="1" side="tl" part="pers"/>
+               <clip pos="1" side="tl" part="nbr"/>
+             </lu>
+           </chunk>
+         </out>
+       </action>
     </rule>
 
     <rule> <!-- REGLA: reset variables-->
