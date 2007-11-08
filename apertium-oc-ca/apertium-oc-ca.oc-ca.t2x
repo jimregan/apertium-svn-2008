@@ -104,7 +104,8 @@
 	</def-attr>
 	<def-attr n="tprep">
         <attr-item tags="a"/>
-        <attr-item tags="de"/>
+         <attr-item tags="ta"/>
+       <attr-item tags="de"/>
         <attr-item tags="en"/>
        <attr-item tags="para"/>
 	</def-attr>
@@ -424,26 +425,24 @@
      	</choose>
      </def-macro>
 
-<def-macro n="cv_prep" npar="3">
+<def-macro n="cv_prep" npar="2">
 	<choose> <!--canvia la prepo de lloc-->
 		<when>
 			<test>
-				<and>
+				<or>
 					<equal>
-						<clip pos="3" part="tnom"/>
-						<lit-tag v="loc"/>
+						<clip pos="2" part="tprep"/>
+						<lit-tag v="a"/>
 					</equal>
-					<or>
-						<equal>
-							<clip pos="2" part="tprep"/>
-							<lit-tag v="a"/>
-						</equal>
-						<equal>
-							<clip pos="2" part="tprep"/>
-							<lit-tag v="en"/>
-						</equal>
-					</or>
-				</and>
+					<equal>
+						<clip pos="2" part="tprep"/>
+						<lit-tag v="ta"/>
+					</equal>
+					<equal>
+						<clip pos="2" part="tprep"/>
+						<lit-tag v="en"/>
+					</equal>
+				</or>
 			</test>
 			<choose>
 				<when>
@@ -458,15 +457,10 @@
 						<lit-tag v="a"/>
 					</let>
 				</when>
-				<otherwise>
-					<let>
-						<clip pos="2" part="tprep"/>
-						<lit-tag v="en"/>
-					</let>
-				</otherwise>
+			
 			</choose>
 		</when>
-		<when><!--canvia SN à inf per SN para inf-->
+<!--		<when><!-#-canvia SN à inf per SN para inf-#->
 			<test>
 				<and>
 					<equal>
@@ -497,7 +491,7 @@
 				<clip pos="2" part="tprep"/>
 				<lit-tag v="para"/>
 			</let>
-		</when>	
+		</when>	-->
 	</choose>
 </def-macro>
 
@@ -762,7 +756,6 @@
 			<call-macro n="cv_prep">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
-				<with-param pos="3"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -881,7 +874,6 @@
 			<call-macro n="cv_prep">
 				<with-param pos="1"/>
 				<with-param pos="3"/>
-				<with-param pos="4"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -995,11 +987,11 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="3"/>
 	</call-macro>
-	<call-macro n="cv_prep">
+<!--	<call-macro n="cv_prep">
 		<with-param pos="1"/>
 		<with-param pos="2"/>
 		<with-param pos="3"/>
-	</call-macro>
+	</call-macro>-->
 	<out>
 		<chunk>
 			<clip pos="1" part="lem"/>
@@ -1586,11 +1578,11 @@
 		<with-param pos="1"/>
 		<with-param pos="5"/>
 	</call-macro>
-	<call-macro n="cv_prep">
+<!--	<call-macro n="cv_prep">
 		<with-param pos="1"/>
 		<with-param pos="2"/>
 		<with-param pos="3"/>
-	</call-macro>
+	</call-macro>-->
 	<out>
 		<chunk>
 			<clip pos="1" part="lem"/>
@@ -1645,11 +1637,11 @@
 		<with-param pos="1"/>
 		<with-param pos="5"/>
 	</call-macro>
-	<call-macro n="cv_prep">
+<!--	<call-macro n="cv_prep">
 		<with-param pos="1"/>
 		<with-param pos="2"/>
 		<with-param pos="3"/>
-	</call-macro>
+	</call-macro>-->
 	<out>
 		<chunk>
 			<clip pos="1" part="lem"/>

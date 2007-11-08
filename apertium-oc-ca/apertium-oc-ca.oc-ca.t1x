@@ -565,8 +565,9 @@
 		</def-list>
 
 		<def-list n="v_amb_a">
-			<list-item v="soumettre"/>
 			<list-item v="anar"/>
+			<list-item v="ser"/>
+			<list-item v="estar"/>
    </def-list>
 
 		<def-list n="v_no_part">
@@ -1085,11 +1086,33 @@
 									</let>
 								</when>
 								<otherwise>
+							<choose>
+								<when>
+									<test>
+										<or>
+											<equal>
+												<clip pos="1" side="sl" part="lem"/>
+												<lit v="tà"/>
+											</equal>
+											<equal>
+												<clip pos="1" side="sl" part="lem"/>
+												<lit v="entà"/>
+											</equal>
+										</or>
+									</test>
+									<let>
+										<var n="tipusprep"/>
+										<lit-tag v="ta"/>
+									</let>
+								</when>
+								<otherwise>
 									<let>
 										<var n="tipusprep"/>
 										<lit-tag v=""/>
 									</let>
 								</otherwise>
+							</choose>
+							</otherwise>
 							</choose>
 						</otherwise>
 					</choose>
@@ -1111,9 +1134,7 @@
 						</equal>
 					</test>
 					<append n="verb">
-<!-- 						<get-case-from pos="2"> -->
-							<lit v="anar"/>
-<!-- 						</get-case-from> -->
+						<lit v="anar"/>
 						<lit-tag v="vaux"/>
 						<clip pos="1" side="tl" part="pers"/>
 						<clip pos="1" side="tl" part="nbr"/>
@@ -1126,9 +1147,7 @@
 				</when>
 				<otherwise>
 					<append n="verb">
-<!-- 						<get-case-from pos="2"> -->
-							<clip pos="1" side="tl" part="lemh"/>
-<!-- 						</get-case-from> -->
+						<clip pos="1" side="tl" part="lemh"/>
 						<clip pos="1" side="tl" part="a_verb"/>
 						<clip pos="1" side="tl" part="temps" link-to="3"/>
 						<clip pos="1" side="tl" part="pers" link-to="4"/>
@@ -1153,7 +1172,7 @@
 						<lit-tag v="vba"/>
 					</let>
 				</when>
-				<otherwise>
+			<!--	<otherwise>
 					<choose>
 						<when>
 							<test>
@@ -1166,7 +1185,7 @@
 								<var n="tipusverb"/>
 								<lit-tag v="vben"/>
 							</let>
-						</when>
+						</when>-->
 						<otherwise>
 							<choose>
 								<when>
@@ -1187,26 +1206,12 @@
 										<var n="tipusverb"/>
 										<lit-tag v="nodef"/>
 									</let>
-								</otherwise>
-							</choose>
+			<!--					</otherwise>
+							</choose>-->
 						</otherwise>
 					</choose>
 				</otherwise>
 			</choose>
-<!--			<choose>
-				<when>
-					<test>
-						<in caseless="yes">
-							<clip pos="1" side="sl" part="lem"/>
-							<list n="vbcop"/>
-						</in>
-					</test>
-					<let>
-						<clip pos="1" side="sl" part="a_verb"/>
-						<lit-tag v="vbcop"/>
-					</let>
-				</when>
-			</choose>-->
 		</def-macro>
 
 <def-macro n="tipus_nom" npar="1">
