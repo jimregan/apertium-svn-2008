@@ -525,7 +525,7 @@
 	</def-list>
 
 		<def-list n="part_sing">
-			<list-item v="aigua"/>
+			<list-item v="agua"/>
 			<list-item v="boder"/>
 			<list-item v="vin"/>
 			<list-item v="cervesa"/>
@@ -5663,7 +5663,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -5693,7 +5693,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="verb">
+						<chunk name="verb" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -5788,7 +5788,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -5801,7 +5801,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="inf" case="caseFirstWord">
+						<chunk name="inf">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -5851,7 +5851,6 @@
 					</out>
 				</otherwise>
 			</choose>
-
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
@@ -5914,7 +5913,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="inf" case="caseFirstWord">
+						<chunk name="inf">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -6179,7 +6178,7 @@
 			<call-macro n="lema_adv">
 				<with-param pos="2"/>
 			</call-macro>
-						<choose>
+			<choose>
 				<when>
 					<test>
 						<in caseless="yes">
@@ -6188,7 +6187,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -6236,7 +6235,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="ir_a_inf">
+						<chunk name="ir_a_inf" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -6315,7 +6314,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="3" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="3" side="tl" part="neg"/></tag>		
@@ -6328,7 +6327,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="pro_anar_a_inf" case="caseFirstWord">
+						<chunk name="pro_anar_a_inf">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -6461,7 +6460,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -6474,7 +6473,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="pro_pro_anar_a_inf" case="caseFirstWord">
+						<chunk name="pro_pro_anar_a_inf">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -6565,7 +6564,7 @@
 							</lu>
 						</chunk>
 						<b pos="4"/>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -6789,7 +6788,7 @@
 				<with-param pos="2"/>
 			</call-macro>
 			<out>
-				<chunk name="ir_a_inf">
+				<chunk name="ir_a_inf" case="caseFirstWord">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -7255,7 +7254,7 @@
 				<with-param pos="2"/>
 			</call-macro>
 			<out>
-				<chunk name="pro_verb">
+				<chunk name="pro_verb" case="caseFirstWord">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7370,7 +7369,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="3" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="3" side="tl" part="neg"/></tag>		
@@ -7408,7 +7407,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="pro_verb">
+						<chunk name="pro_verb" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7442,7 +7441,7 @@
 				</otherwise>
 			</choose>
 			<out aversion="oc@aran-ca">
-				<chunk name="pro_verb">
+				<chunk name="pro_verb" case="caseFirstWord">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
 						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7520,7 +7519,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -7533,7 +7532,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="pro_pro_verb" case="caseFirstWord">
+						<chunk name="pro_pro_verb">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -7959,7 +7958,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="inf_enc_enc" case="caseFirstWord">
+						<chunk name="inf_enc_enc">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="4" side="tl" part="a_verb"/></tag>
@@ -8072,7 +8071,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="inf_enc" case="caseFirstWord">
+						<chunk name="inf_enc">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -8186,7 +8185,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="inf_enc_enc" case="caseFirstWord">
+						<chunk name="inf_enc_enc">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -8303,7 +8302,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="3" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="3" side="tl" part="neg"/></tag>		
@@ -8339,7 +8338,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="verb_inf">
+						<chunk name="verb_inf" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -8359,7 +8358,7 @@
 							</lu>
 						</chunk>
 						<b pos="2"/>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema">
 							<tags>
 								<tag><clip pos="3" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="3" side="tl" part="neg"/></tag>		
@@ -8407,7 +8406,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -8443,7 +8442,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="verb_inf">
+						<chunk name="verb_inf" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -8633,7 +8632,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -8679,7 +8678,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="verb_inf_enc">
+						<chunk name="verb_inf_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -8722,7 +8721,6 @@
 					</out>
 				</otherwise>
 			</choose>
-
 			<call-macro n="f_bcond">
 				<with-param pos="3"/>
 			</call-macro>
@@ -8765,7 +8763,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="3" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="3" side="tl" part="neg"/></tag>		
@@ -8811,7 +8809,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="verb_inf_enc">
+						<chunk name="verb_inf_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="4" side="tl" part="a_verb"/></tag>
@@ -8896,7 +8894,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -8940,7 +8938,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="verb_inf_enc">
+						<chunk name="verb_inf_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -9023,7 +9021,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -9067,7 +9065,7 @@
 				</when>
 				<otherwise>
 					<out>
-						<chunk name="verb_inf_enc">
+						<chunk name="verb_inf_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="4" side="tl" part="a_verb"/></tag>
@@ -9296,7 +9294,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="5" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="5" side="tl" part="neg"/></tag>		
@@ -9382,7 +9380,7 @@
 							</mlu>
 						</chunk>
 						<b pos="2"/>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema">
 							<tags>
 								<tag><clip pos="5" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="5" side="tl" part="neg"/></tag>		
@@ -9444,7 +9442,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -9530,7 +9528,7 @@
 							</mlu>
 						</chunk>
 						<b pos="2"/>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -9592,7 +9590,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="5" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="5" side="tl" part="neg"/></tag>		
@@ -9605,7 +9603,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="verb_inf_enc_enc" case="caseFirstWord">
+						<chunk name="verb_inf_enc_enc">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="4" side="tl" part="a_verb"/></tag>
@@ -9736,7 +9734,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk  namefrom="lema">
+						<chunk  namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -9749,7 +9747,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="verb_inf_enc_enc" case="caseFirstWord">
+						<chunk name="verb_inf_enc_enc">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="5" side="tl" part="a_verb"/></tag>
@@ -9818,7 +9816,7 @@
 							</mlu>
 						</chunk>
 						<b pos="3"/>
-						<chunk  namefrom="lema">
+						<chunk namefrom="lema">
 							<tags>
 								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -12124,14 +12122,8 @@
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
 					</tags>
-					<lu>						<var n="verb"/>
-						<!--<clip pos="1" side="tl" part="lemh"/>
-						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
-						<clip pos="1" side="tl" part="gen"/>
-						<clip pos="1" side="tl" part="nbr" link-to="5"/>
-						<clip pos="1" side="tl" part="lemq"/> -->
+					<lu>
+						<var n="verb"/>
 					</lu>
 					<b pos="1"/>
 					<lu>
@@ -12179,7 +12171,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk name="no">
+						<chunk name="no" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="2" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="2" side="tl" part="neg"/></tag>		
@@ -12190,7 +12182,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="aux_pp" case="caseFirstWord">
+						<chunk name="aux_pp">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -12371,7 +12363,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk name="no">
+						<chunk name="no" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="3" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="3" side="tl" part="neg"/></tag>		
@@ -12384,7 +12376,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="pro_aux_pp" case="caseFirstWord">
+						<chunk name="pro_aux_pp">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="4" side="tl" part="a_verb"/></tag>
@@ -12402,12 +12394,7 @@
 							</lu>
 							<b pos="2"/>
 							<lu>
-								<var n="verb"/><!--								<clip pos="2" side="tl" part="lem"/>
-								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="gen"/>
-								<clip pos="2" side="tl" part="nbr" link-to="5"/>-->
+								<var n="verb"/>
 							</lu>
 							<b pos="3"/>
 							<lu>
@@ -12439,12 +12426,6 @@
 							<b pos="1"/>
 							<lu>
 								<var n="verb"/>
-						<!--		<clip pos="2" side="tl" part="lem"/>
-								<clip pos="2" side="tl" part="a_verb"/>
-								<clip pos="2" side="tl" part="temps"/>
-								<clip pos="2" side="tl" part="pers"/>
-								<clip pos="2" side="tl" part="gen"/>
-								<clip pos="2" side="tl" part="nbr" link-to="5"/>-->
 							</lu>
 							<b pos="2"/>
 							<lu>
@@ -12595,7 +12576,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk name="no">
+						<chunk name="no" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -12608,7 +12589,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="pro_pro_aux_pp" case="caseFirstWord">
+						<chunk name="pro_pro_aux_pp">
 							<tags>
 								<tag><lit-tag v="SV"/></tag>
 								<tag><clip pos="5" side="tl" part="a_verb"/></tag>
@@ -12629,13 +12610,8 @@
 								<clip pos="2" side="tl" part="whole"/> 
 							</lu>
 							<b pos="3"/>
-							<lu><var n="verb"/>
-<!--								<clip pos="3" side="tl" part="lem"/>
-								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
-								<clip pos="3" side="tl" part="gen"/>
-								<clip pos="3" side="tl" part="nbr" link-to="5"/>-->
+							<lu>
+								<var n="verb"/>
 							</lu>
 							<b pos="4"/>
 							<lu>
@@ -12671,12 +12647,6 @@
 							<b pos="3"/>
 							<lu>
 								<var n="verb"/>
-		<!--						<clip pos="3" side="tl" part="lem"/>
-								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="pers"/>
-								<clip pos="3" side="tl" part="gen"/>
-								<clip pos="3" side="tl" part="nbr" link-to="5"/>-->
 							</lu>
 							<b pos="4"/>
 							<lu>
@@ -12804,7 +12774,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk name="no">
+						<chunk name="no" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="3" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="3" side="tl" part="neg"/></tag>		
@@ -12817,7 +12787,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="auxinf_enc_pp" case="caseFirstWord">
+						<chunk name="auxinf_enc_pp">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="4" side="tl" part="a_verb"/></tag>
@@ -13044,7 +13014,7 @@
 						</in>
 					</test>
 					<out>
-						<chunk name="no">
+						<chunk name="no" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="4" side="tl" part="a_adv"/></tag>
 								<tag><clip pos="4" side="tl" part="neg"/></tag>		
@@ -13057,7 +13027,7 @@
 							</lu>
 						</chunk>
 						<b pos="1"/>
-						<chunk name="auxinf_enc_enc_pp" case="caseFirstWord">
+						<chunk name="auxinf_enc_enc_pp">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="5" side="tl" part="a_verb"/></tag>
@@ -13345,7 +13315,6 @@
 							<clip pos="1" side="sl" part="lem"/>
 							<lit v="dont"/>
 						</equal>
-
 						
 					</test>
 					<out>
