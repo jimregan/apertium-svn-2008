@@ -172,6 +172,13 @@
       <attr-item tags="vbmod"/>
       <attr-item tags="HAVER"/>
     </def-attr>
+
+	<def-attr n="tverb">
+		<attr-item tags="vben"/>
+		<attr-item tags="vba"/>
+		<attr-item tags="vbdins"/>
+		<attr-item tags="vbsus"/>
+	</def-attr>
       
   <def-attr n="a_SN">
           <attr-item tags="DET"/>
@@ -230,6 +237,90 @@
 
 
 <section-def-macros>
+
+	<def-macro n="cv_prep" npar="2">
+		<choose> <!--canvia la prepo de lloc-->
+			<when>
+				<test>
+					<or>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="a"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="en"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="dins"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="sus"/>
+						</equal>
+					</or>
+				</test>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vba"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="a"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vben"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="en"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vbdins"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="dins"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vbsus"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="sus"/>
+						</let>
+					</when>
+				</choose>
+			
+			</when>
+		</choose>
+	</def-macro>
 
 	<def-macro n="partitiu" npar="1">
 		<choose>
@@ -1803,6 +1894,95 @@
 		</action>
 	</rule> 
 
+	<rule comment="REGLA: SV sprep">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="lema_prn">
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<and>
+							<not>
+								<equal>
+									<clip pos="1" part="tverb"/>
+									<lit-tag v="nopart"/>
+								</equal>
+							</not>
+							<equal>
+								<clip pos="2" part="tprep"/>
+								<lit-tag v="de"/>
+							</equal>
+							<or>
+								<equal>
+									<clip pos="3" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+								<equal>
+									<clip pos="3" part="tnom"/>
+									<lit-tag v="part"/>
+								</equal>
+							</or>
+						</and>
+					</test>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<lit-tag v="treu_det"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+					<call-macro n="f_bcond">
+						<with-param pos="2"/>
+					</call-macro>
+				</when>
+				<otherwise>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+						<b pos="2"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+		</action>
+	</rule>
+	
 	<rule comment="REGLA: SN sprep vbcop adv SN">
 		<pattern>
 			<pattern-item n="SN"/>

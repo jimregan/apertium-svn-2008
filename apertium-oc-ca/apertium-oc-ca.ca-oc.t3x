@@ -50,6 +50,13 @@
     <def-cat n="inf">
       <cat-item name="inf"/>
     </def-cat>
+		
+    <def-cat n="pr">
+      <cat-item name="en"/>
+      <cat-item name="sus"/>
+      <cat-item name="dins"/>
+      <cat-item name="a"/>
+    </def-cat>
 
     <def-cat n="qui">
       <cat-item name="qui"/>
@@ -563,7 +570,20 @@
 			</action>
 		</rule> 
 
-	
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
+				<pattern-item n="pr"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<clip pos="0" part="lem"/>
+						<lit-tag v="pr"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+
 
 </section-rules>
 </postchunk>

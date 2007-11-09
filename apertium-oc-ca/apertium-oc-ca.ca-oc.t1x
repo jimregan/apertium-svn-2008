@@ -468,7 +468,9 @@
   </section-def-attrs>
 	
   <section-def-vars>
- 		<def-var n="afegeix_prn"/>
+     <def-var n="tipusverb"/>
+     <def-var n="tipusprep"/>
+		<def-var n="afegeix_prn"/>
  		<def-var n="lema_sv"/>
  		<def-var n="prnpro_afegit"/>
  		<def-var n="elqual_prep"/>
@@ -533,7 +535,23 @@
 			<list-item v="èsser"/>
    </def-list>
 
-		<def-list n="meses">
+		<def-list n="v_amb_en">
+			<list-item v="viure"/>
+   </def-list>
+		<def-list n="v_amb_a">
+			<list-item v="pensar"/>
+   </def-list>
+		<def-list n="v_amb_dins">
+			<list-item v="entrar"/>
+			<list-item v="estar"/>
+			<list-item v="èsser"/>
+   </def-list>
+		<def-list n="v_amb_sus">
+			<list-item v="sèire"/>
+			<list-item v="enfilar"/>
+   </def-list>
+		
+	 <def-list n="meses">
 			<list-item v="enero"/>
 			<list-item v="febrero"/>
 			<list-item v="marzo"/>
@@ -571,6 +589,189 @@
 
 
 <section-def-macros>
+
+		<def-macro n="f_prep" npar="1">
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="1" side="sl" part="lem"/>
+							<lit v="a"/>
+						</equal>
+					</test>
+					<let>
+						<var n="tipusprep"/>
+						<lit-tag v="a"/>
+					</let>
+				</when>
+				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<clip pos="1" side="sl" part="lem"/>
+									<lit v="en"/>
+								</equal>
+							</test>
+							<let>
+								<var n="tipusprep"/>
+								<lit-tag v="en"/>
+							</let>
+						</when>
+						<otherwise>
+							<choose>
+								<when>
+									<test>
+										<equal>
+											<clip pos="1" side="sl" part="lem"/>
+											<lit v="de"/>
+										</equal>
+									</test>
+									<let>
+										<var n="tipusprep"/>
+										<lit-tag v="de"/>
+									</let>
+								</when>
+								<otherwise>
+								<choose>
+									<when>
+										<test>
+											<or>
+												<equal>
+													<clip pos="1" side="sl" part="lem"/>
+													<lit v="tà"/>
+												</equal>
+												<equal>
+													<clip pos="1" side="sl" part="lem"/>
+													<lit v="entà"/>
+												</equal>
+											</or>
+										</test>
+										<let>
+											<var n="tipusprep"/>
+											<lit-tag v="ta"/>
+										</let>
+									</when>
+									<otherwise>
+										<choose>
+											<when>
+												<test>
+													<equal>
+														<clip pos="1" side="sl" part="lem"/>
+														<lit v="sus"/>
+													</equal>
+												</test>
+												<let>
+													<var n="tipusprep"/>
+													<lit-tag v="sus"/>
+												</let>
+											</when>
+											<otherwise>
+											<let>
+												<var n="tipusprep"/>
+												<lit-tag v=""/>
+											</let>
+										</otherwise>
+									</choose>
+								</otherwise>
+							</choose>
+						</otherwise>
+					</choose>
+				</otherwise>
+			</choose>
+				</otherwise>
+			</choose>
+		</def-macro>
+
+		<def-macro n="tipus_verb" npar="1">
+			<choose>
+				<when>
+					<test>
+						<in caseless="yes">
+							<clip pos="1" side="tl" part="lem"/>
+							<list n="v_amb_a"/>
+						</in>
+					</test>
+					<let>
+						<var n="tipusverb"/>
+						<lit-tag v="vba"/>
+					</let>
+				</when>
+				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<in caseless="yes">
+									<clip pos="1" side="tl" part="lem"/>
+									<list n="v_amb_en"/>
+								</in>
+							</test>
+							<let>
+								<var n="tipusverb"/>
+								<lit-tag v="vben"/>
+							</let>
+						</when>
+						
+						<otherwise>
+						
+							<choose>
+								<when>
+									<test>
+										<in caseless="yes">
+											<clip pos="1" side="tl" part="lem"/>
+											<list n="v_amb_sus"/>
+										</in>
+									</test>
+									<let>
+										<var n="tipusverb"/>
+										<lit-tag v="vbsus"/>
+									</let>
+								</when>
+								<otherwise>
+									<choose>
+										<when>
+											<test>
+												<in caseless="yes">
+													<clip pos="1" side="tl" part="lem"/>
+													<list n="v_amb_dins"/>
+												</in>
+											</test>
+											<let>
+												<var n="tipusverb"/>
+												<lit-tag v="vbdins"/>
+											</let>
+										</when>
+			<!--			<otherwise>
+							<choose>
+								<when>
+									<test>
+										<in caseless="yes">
+											<clip pos="1" side="sl" part="lem"/>
+											<list n="v_no_part"/>
+										</in>
+									</test>
+									<let>
+										<var n="tipusverb"/>
+										<lit-tag v="nopart"/>
+									</let>
+
+								</when>-->
+								<otherwise>
+									<let>
+										<var n="tipusverb"/>
+										<lit-tag v="nodef"/>
+									</let>
+								</otherwise>
+							</choose>
+								</otherwise>
+							</choose>
+								</otherwise>
+							</choose>
+		<!--				</otherwise>
+					</choose>-->
+				</otherwise>
+			</choose>
+		</def-macro>
 
 	<def-macro n="posa_prn" npar="1">
 		<let>
@@ -6434,6 +6635,9 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="1"/>
+			</call-macro>
 		<!--	<call-macro n="afegeix_pronom">
 				<with-param pos="1"/>
 			</call-macro>-->
@@ -6468,6 +6672,7 @@
 						<tag><clip pos="1" side="tl" part="temps"/></tag>
 						<tag><clip pos="1" side="tl" part="pers"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
 					</tags>
 					<lu>
 						<var n="prnpro_afegit"/>

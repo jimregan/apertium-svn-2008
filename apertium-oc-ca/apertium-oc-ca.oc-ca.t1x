@@ -564,12 +564,6 @@
 		  <list-item v="desembre"/>
 		</def-list>
 
-		<def-list n="v_amb_a">
-			<list-item v="anar"/>
-			<list-item v="ser"/>
-			<list-item v="estar"/>
-   </def-list>
-
 		<def-list n="v_no_part">
 			<list-item v="anar"/>
 			<list-item v="partir"/>
@@ -585,16 +579,19 @@
 			<list-item v="semblar"/>
    </def-list>
 
-<def-list n="v_amb_en">
-			<list-item v="entrer"/>
-			<list-item v="fêter"/>
-			<list-item v="célébrer"/>
-			<list-item v="vivre"/>
-			<list-item v="habiter"/>
-			<list-item v="mourir"/>
-			<list-item v="naître"/>
-			<list-item v="être"/>
+	<def-list n="v_amb_en">
+			<list-item v="pensar"/>
    </def-list>
+		<def-list n="v_amb_a">
+			<list-item v="enfilar"/>
+			<list-item v="viure"/>
+			<list-item v="entrar"/>
+			<list-item v="seure"/>
+			<list-item v="anar"/>
+			<list-item v="ser"/>
+			<list-item v="estar"/>
+   </def-list>
+
 
 		<def-list n="vbambser">
 			<list-item v="anar"/>
@@ -1049,7 +1046,7 @@
 					<test>
 						<equal>
 							<clip pos="1" side="sl" part="lem"/>
-							<lit v="à"/>
+							<lit v="a"/>
 						</equal>
 					</test>
 					<let>
@@ -1086,36 +1083,52 @@
 									</let>
 								</when>
 								<otherwise>
-							<choose>
-								<when>
-									<test>
-										<or>
-											<equal>
-												<clip pos="1" side="sl" part="lem"/>
-												<lit v="tà"/>
-											</equal>
-											<equal>
-												<clip pos="1" side="sl" part="lem"/>
-												<lit v="entà"/>
-											</equal>
-										</or>
-									</test>
-									<let>
-										<var n="tipusprep"/>
-										<lit-tag v="ta"/>
-									</let>
-								</when>
-								<otherwise>
-									<let>
-										<var n="tipusprep"/>
-										<lit-tag v=""/>
-									</let>
+								<choose>
+									<when>
+										<test>
+											<or>
+												<equal>
+													<clip pos="1" side="sl" part="lem"/>
+													<lit v="tà"/>
+												</equal>
+												<equal>
+													<clip pos="1" side="sl" part="lem"/>
+													<lit v="entà"/>
+												</equal>
+											</or>
+										</test>
+										<let>
+											<var n="tipusprep"/>
+											<lit-tag v="ta"/>
+										</let>
+									</when>
+									<otherwise>
+										<choose>
+											<when>
+												<test>
+													<equal>
+														<clip pos="1" side="sl" part="lem"/>
+														<lit v="sus"/>
+													</equal>
+												</test>
+												<let>
+													<var n="tipusprep"/>
+													<lit-tag v="sus"/>
+												</let>
+											</when>
+											<otherwise>
+											<let>
+												<var n="tipusprep"/>
+												<lit-tag v=""/>
+											</let>
+										</otherwise>
+									</choose>
 								</otherwise>
-							</choose>
-							</otherwise>
 							</choose>
 						</otherwise>
 					</choose>
+				</otherwise>
+			</choose>
 				</otherwise>
 			</choose>
 		</def-macro>
@@ -1163,7 +1176,7 @@
 				<when>
 					<test>
 						<in caseless="yes">
-							<clip pos="1" side="sl" part="lem"/>
+							<clip pos="1" side="tl" part="lem"/>
 							<list n="v_amb_a"/>
 						</in>
 					</test>
@@ -1172,12 +1185,12 @@
 						<lit-tag v="vba"/>
 					</let>
 				</when>
-			<!--	<otherwise>
+				<otherwise>
 					<choose>
 						<when>
 							<test>
 								<in caseless="yes">
-									<clip pos="1" side="sl" part="lem"/>
+									<clip pos="1" side="tl" part="lem"/>
 									<list n="v_amb_en"/>
 								</in>
 							</test>
@@ -1185,7 +1198,7 @@
 								<var n="tipusverb"/>
 								<lit-tag v="vben"/>
 							</let>
-						</when>-->
+						</when>
 						<otherwise>
 							<choose>
 								<when>
@@ -1206,8 +1219,8 @@
 										<var n="tipusverb"/>
 										<lit-tag v="nodef"/>
 									</let>
-			<!--					</otherwise>
-							</choose>-->
+								</otherwise>
+							</choose>
 						</otherwise>
 					</choose>
 				</otherwise>
