@@ -216,11 +216,11 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 
     //Si el segmento tiene demasiados caminos nos lo saltamos
     if (seg->get_number_paths()>MAX_PATH_PER_SEGMENT) { 
-      wcerr<<L"Warning: Segment has "<<seg->get_number_paths()<<L" disambiguation paths. Skipping\n";      
-      wcerr<<L"SEGMENT: ";
+      cerr<<"Warning: Segment has "<<seg->get_number_paths()<<" disambiguation paths. Skipping\n";
+      cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-        wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-      wcerr<<L"\n";
+        cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+      cerr<<"\n";
       
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
@@ -228,20 +228,22 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       continue;
     }
     
-    Utils::print_debug(L"\nA NEW SEGMENT BEGINS (");
+    Utils::print_debug("\nA NEW SEGMENT BEGINS (");
     Utils::print_debug(cuenta_palabras);
-    Utils::print_debug(L")-----------------------------\n");
-    Utils::print_debug(L"LAST TAG PREVIOUS SEGMENT: ");
+    Utils::print_debug(")-----------------------------\n");
+    Utils::print_debug("LAST TAG PREVIOUS SEGMENT: ");
     Utils::print_debug(last_etq_segmento_ant);
-    Utils::print_debug(L" - NPATHS: ");
+    Utils::print_debug(" - NPATHS: ");
     Utils::print_debug(seg->get_number_paths());
-    Utils::print_debug(L"\n--------------------------------------------------------\n");
-    Utils::print_debug(L"SEGMENT: \n");
+    Utils::print_debug("\n--------------------------------------------------------\n");
+    Utils::print_debug("SEGMENT: \n");
     for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++){
-      Utils::print_debug(seg->vwords[npalabras].get_superficial_form()+L" ");
-      Utils::print_debug(seg->vwords[npalabras].get_string_tags()+L"\n");
+      Utils::print_debug(seg->vwords[npalabras].get_superficial_form());
+      Utils::print_debug(" ");
+      Utils::print_debug(seg->vwords[npalabras].get_string_tags());
+      Utils::print_debug("\n");
     }
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
     
 
     map<wstring, double> translations_likelihoods;
@@ -255,12 +257,14 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	    continue;
 	  }
 
-	  Utils::print_debug(L"PATH ");
+	  Utils::print_debug("PATH ");
 	  Utils::print_debug(ncamino);
-	  Utils::print_debug(L" TO TRANSLATE: "+cadena+L"\n");
-	  Utils::print_debug(L"TRANSLATION: ");
+	  Utils::print_debug(" TO TRANSLATE: ");
+	  Utils::print_debug(cadena);
+	  Utils::print_debug("\n");
+	  Utils::print_debug("TRANSLATION: ");
 	  Utils::print_debug(TRANSLATION_UNIQUE_PATH);
-	  Utils::print_debug(L"\n");
+	  Utils::print_debug("\n");
 	  translations[TL1]->set_path_translation(TRANSLATION_UNIQUE_PATH, ncamino);
 	} else {
 
@@ -269,9 +273,11 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	    continue;
 	  }
 
-	  Utils::print_debug(L"PATH ");
+	  Utils::print_debug("PATH ");
 	  Utils::print_debug(ncamino);
-	  Utils::print_debug(L" TO TRANSLATE: "+cadena+L"\n");
+	  Utils::print_debug(" TO TRANSLATE: ");
+	  Utils::print_debug(cadena);
+	  Utils::print_debug("\n");
 	  wstring tradcadena;
 
 	  if(ftrans.is_open()) {
@@ -293,22 +299,24 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	  }
 
 	  translations[TL1]->set_path_translation(tradcadena, ncamino);
-	  Utils::print_debug(L"TRANSLATION: "+tradcadena+L"\n");
+	  Utils::print_debug("TRANSLATION: ");
+	  Utils::print_debug(tradcadena);
+	  Utils::print_debug("\n");
 	  if (tagger_utils::trim(tradcadena).length()==0) {
-	    wcerr<<L"Error: There is a path with a null translation: "<<cadena<<L"\n";
-	    wcerr<<L"SEGMENT: ";
+	    cerr<<"Error: There is a path with a null translation: "<<UtfConverter::toUtf8(cadena)<<"\n";
+	    cerr<<"SEGMENT: ";
 	    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-	      wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-	    wcerr<<L"\n";
+	      cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+	    cerr<<"\n";
 	  }
 	}
       } 
       else {
-	Utils::print_debug(L"PATH ");
+	Utils::print_debug("PATH ");
 	Utils::print_debug(ncamino);
-	Utils::print_debug(L" FORBIDDEN: ");
+	Utils::print_debug(" FORBIDDEN: ");
 	Utils::print_debug(cadena);
-	Utils::print_debug(L"\n");
+	Utils::print_debug("\n");
 
 	hay_caminos_prohibidos=true;
       }
@@ -328,8 +336,8 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       cerr<<"Warning: This segment has no translations into TL 1. Skipping\n";
       cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-	wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-      wcerr<<L"\n"; 
+	cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+      cerr<<"\n"; 
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
@@ -339,11 +347,11 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     //We test if there are transaltions, this segment could have all
     //the paths forbidden
     if((translations[TL1]->get_number_translations()==0)&&(hay_caminos_prohibidos)) {
-      wcerr<<L"Warning: This segment has all its paths forbidden. Skipping\n";
-      wcerr<<L"SEGMENT: ";
+      cerr<<"Warning: This segment has all its paths forbidden. Skipping\n";
+      cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-	wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-      wcerr<<L"\n";
+	cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+      cerr<<"\n";
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
@@ -353,16 +361,16 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     if (translations[TL1]->are_translations_ok())
       translations_ok[TL1]++;
 
-    Utils::print_debug(L"Are translations ok? ");
+    Utils::print_debug("Are translations ok? ");
     Utils::print_debug(translations[TL1]->are_translations_ok());
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
 
     if (!translations[TL1]->are_translations_ok()) {
-      wcerr<<L"Warning: This segment has no OK translations. Skipping\n";
-      wcerr<<L"SEGMENT: ";
+      cerr<<"Warning: This segment has no OK translations. Skipping\n";
+      cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-	wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-      wcerr<<L"\n";
+	cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+      cerr<<"\n";
       //We store the last of the segment being skipped
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
@@ -521,19 +529,19 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
   else
     next_update_pruning_model=2*corpus_length;
 
-  wcerr<<L"Target-language driven HMM-based part-of-speech training method.......\n"
-       <<L"   Training corpus will be processed for "<<corpus_length<<L" words\n"
-       <<L"   HMM parameters will be calculated each time "<<save_after_nwords<<L" words are processed\n"
-       <<L"   Calculated parameter will be saved in files with the name '"<<UtfConverter::fromUtf8(filename)<<L".N.prob'\n"
-       <<L"   Are fobidden and enforce rules going to be used? "<<use_tags_rules<<L"\n"
-       <<L"   Translation script is: '"<<UtfConverter::fromUtf8(Utils::translation_script)<<L"'\n"
-       <<L"   Likelihood estimation script is: '"<<UtfConverter::fromUtf8(Utils::likelihood_script)<<L"'\n"
-       <<L"   Disambiguation path pruning techniques will be used\n"
-       <<L"      Path pruning mode: "<<PathsPruner::mode<<L"\n"
-       <<L"      HMM parameters updating latency: "<<PathsPruner::latency<<L" words\n"
-       <<L"      Mass probability: "<<PathsPruner::probmass<<L"\n"
-       <<L"      Constant to be used when mixing parameters: "<<mixing_c<<L"\n"
-       <<L"Ready for training...... go!\n\n";
+  cerr<<"Target-language driven HMM-based part-of-speech training method.......\n"
+      <<"   Training corpus will be processed for "<<corpus_length<<" words\n"
+      <<"   HMM parameters will be calculated each time "<<save_after_nwords<<" words are processed\n"
+      <<"   Calculated parameter will be saved in files with the name '"<<filename<<".N.prob'\n"
+      <<"   Are fobidden and enforce rules going to be used? "<<use_tags_rules<<"\n"
+      <<"   Translation script is: '"<<Utils::translation_script<<"'\n"
+      <<"   Likelihood estimation script is: '"<<Utils::likelihood_script<<"'\n"
+      <<"   Disambiguation path pruning techniques will be used\n"
+      <<"      Path pruning mode: "<<PathsPruner::mode<<"\n"
+      <<"      HMM parameters updating latency: "<<PathsPruner::latency<<" words\n"
+      <<"      Mass probability: "<<PathsPruner::probmass<<"\n"
+      <<"      Constant to be used when mixing parameters: "<<mixing_c<<"\n"
+      <<"Ready for training...... go!\n\n";
 
   //Counters initialization. 
   for(i=0; i<tagger_data.getN(); i++) {
@@ -583,11 +591,11 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 
     //Si el segmento tiene demasiados caminos nos lo saltamos
     if (seg->get_number_paths()>MAX_PATH_PER_SEGMENT) { 
-      wcerr<<L"Warning: Segment has "<<seg->get_number_paths()<<L" disambiguation paths. Skipping\n";      
-      wcerr<<L"SEGMENT: ";
+      cerr<<"Warning: Segment has "<<seg->get_number_paths()<<" disambiguation paths. Skipping\n";      
+      cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-        wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-      wcerr<<L"\n";
+        cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+      cerr<<"\n";
       
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
@@ -595,20 +603,22 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       continue;
     }
     
-    Utils::print_debug(L"\nA NEW SEGMENT BEGINS (");
+    Utils::print_debug("\nA NEW SEGMENT BEGINS (");
     Utils::print_debug(cuenta_palabras);
-    Utils::print_debug(L")-----------------------------\n");
-    Utils::print_debug(L"LAST TAG PREVIOUS SEGMENT: ");
+    Utils::print_debug(")-----------------------------\n");
+    Utils::print_debug("LAST TAG PREVIOUS SEGMENT: ");
     Utils::print_debug(last_etq_segmento_ant);
-    Utils::print_debug(L" - NPATHS: ");
+    Utils::print_debug(" - NPATHS: ");
     Utils::print_debug(seg->get_number_paths());
-    Utils::print_debug(L"\n--------------------------------------------------------\n");
-    Utils::print_debug(L"SEGMENT: \n");
+    Utils::print_debug("\n--------------------------------------------------------\n");
+    Utils::print_debug("SEGMENT: \n");
     for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++){
-      Utils::print_debug(seg->vwords[npalabras].get_superficial_form()+L" ");
-      Utils::print_debug(seg->vwords[npalabras].get_string_tags()+L"\n");
+      Utils::print_debug(seg->vwords[npalabras].get_superficial_form());
+      Utils::print_debug(" ");
+      Utils::print_debug(seg->vwords[npalabras].get_string_tags());
+      Utils::print_debug("\n");
     }
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
     
     //First we calculate the a priori likelihood in order to take into
     //account only the most promising paths
@@ -655,17 +665,21 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       cadena=seg->get_path(etqpart, ncamino);      
       if (is_feasible_path(last_etq_segmento_ant, etqpart)) {
 	if (seg->get_number_paths()==1) {
-	  Utils::print_debug(L"PATH ");
+	  Utils::print_debug("PATH ");
 	  Utils::print_debug(ncamino);
-	  Utils::print_debug(L" TO TRANSLATE: "+cadena+L"\n");
-	  Utils::print_debug(L"TRANSLATION: ");
+	  Utils::print_debug(" TO TRANSLATE: ");
+	  Utils::print_debug(cadena);
+	  Utils::print_debug("\n");
+	  Utils::print_debug("TRANSLATION: ");
 	  Utils::print_debug(TRANSLATION_UNIQUE_PATH);
-	  Utils::print_debug(L"\n");
+	  Utils::print_debug("\n");
 	  translations[TL1]->set_path_translation(TRANSLATION_UNIQUE_PATH, ncamino);
 	} else {
-	  Utils::print_debug(L"PATH ");
+	  Utils::print_debug("PATH ");
 	  Utils::print_debug(ncamino);
-	  Utils::print_debug(L" TO TRANSLATE: "+cadena+L"\n");
+	  Utils::print_debug(" TO TRANSLATE: ");
+	  Utils::print_debug(cadena);
+	  Utils::print_debug("\n");
 	  wstring tradcadena;
 
 	  if(translations[TL1]->are_translations_ok()) {
@@ -677,21 +691,23 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 	    tradcadena=TRANSLATION_NOT_USED;
 
 	  translations[TL1]->set_path_translation(tradcadena, ncamino);
-	  Utils::print_debug(L"TRANSLATION: "+tradcadena+L"\n");
+	  Utils::print_debug("TRANSLATION: ");
+	  Utils::print_debug(tradcadena);
+	  Utils::print_debug("\n");
 	  if (tagger_utils::trim(tradcadena).length()==0) {
-	    wcerr<<L"Error: There is a path with a null translation: "<<cadena<<L"\n";
-	    wcerr<<L"SEGMENT: ";
+	    cerr<<"Error: There is a path with a null translation: "<<UtfConverter::toUtf8(cadena)<<"\n";
+	    cerr<<"SEGMENT: ";
 	    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-	      wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-	    wcerr<<L"\n";
+	      cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+	    cerr<<"\n";
 	  }
 	}
       } else {
-	Utils::print_debug(L"PATH ");
+	Utils::print_debug("PATH ");
 	Utils::print_debug(ncamino);
-	Utils::print_debug(L" FORBIDDEN: ");
+	Utils::print_debug(" FORBIDDEN: ");
 	Utils::print_debug(cadena);
-	Utils::print_debug(L"\n");
+	Utils::print_debug("\n");
 
 	hay_caminos_prohibidos=true;
       }
@@ -702,11 +718,11 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     //traductor puede suceder que no, porque se haya comido una palabra
     //y el segmento conste de solo una palabra por ejemplo.
     if(translations[TL1]->get_number_translations()<=0) {
-      wcerr<<L"Warning: This segment has no translations into TL 1. Skipping\n";
-      wcerr<<L"SEGMENT: ";
+      cerr<<"Warning: This segment has no translations into TL 1. Skipping\n";
+      cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-	wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-      wcerr<<L"\n"; 
+	cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+      cerr<<"\n"; 
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
@@ -718,11 +734,11 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     if((translations[TL1]->get_number_translations()==0) &&
        (hay_caminos_prohibidos)) {
 
-      wcerr<<L"Warning: This segment has all its paths forbidden. Skipping\n";
-      wcerr<<L"SEGMENT: ";
+      cerr<<"Warning: This segment has all its paths forbidden. Skipping\n";
+      cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-	wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-      wcerr<<L"\n";
+	cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+      cerr<<"\n";
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
@@ -732,16 +748,16 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     if (translations[TL1]->are_translations_ok())
       translations_ok[TL1]++;
 
-    Utils::print_debug(L"Are translations ok? ");
+    Utils::print_debug("Are translations ok? ");
     Utils::print_debug(translations[TL1]->are_translations_ok());
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
 
     if (!translations[TL1]->are_translations_ok()) {
-      wcerr<<L"Warning: This segment has no OK translations. Skipping\n";
-      wcerr<<L"SEGMENT: ";
+      cerr<<"Warning: This segment has no OK translations. Skipping\n";
+      cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
-	wcerr<<seg->vwords[npalabras].get_superficial_form()<<L" ";
-      wcerr<<L"\n";
+	cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+      cerr<<"\n";
       //We store the last of the segment being skipped
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
@@ -781,7 +797,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       //calculate_parameters(tags_pair, emis);
       SmoothUtils::calculate_smoothed_parameters(tagger_data, tags_count, tags_pair, ambclass_count, emis, tags_count_for_emis, cuenta_palabras);
 
-      wcout<<L"Mixing parameters, number of processed words: "<<cuenta_palabras<<L"\n";
+      cout<<"Mixing parameters, number of processed words: "<<cuenta_palabras<<"\n";
 
       mix_parameters((double)cuenta_palabras, (double)corpus_length, mixing_c);
       PathsPruner::set_tagger_data(tagger_data);           
@@ -792,48 +808,48 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 
     //Vemos si tenemos que guardar los parámetros
     if (cuenta_palabras>=next_save_probs) {
-      wcout<<L"Number of processed words: "<<cuenta_palabras<<L"\n";
-      wcout<<L"Number of segments treated: "<<cuenta_segmentos<<L"\n";
-      wcout<<L"Number of ambiguous segments: "<<ambiguous_segments<<L"\n";
-      wcout<<L"Total number of paths translated: "<<cuenta_caminos<<L"\n";
-      wcout<<L"Total number of translations: "<<cuenta_traducciones[TL1]<<L"\n";
-      wcout<<L"Number of segment correctly translated: "<<translations_ok[TL1]<<L"\n";
+      cout<<"Number of processed words: "<<cuenta_palabras<<"\n";
+      cout<<"Number of segments treated: "<<cuenta_segmentos<<"\n";
+      cout<<"Number of ambiguous segments: "<<ambiguous_segments<<"\n";
+      cout<<"Total number of paths translated: "<<cuenta_caminos<<"\n";
+      cout<<"Total number of translations: "<<cuenta_traducciones[TL1]<<"\n";
+      cout<<"Number of segment correctly translated: "<<translations_ok[TL1]<<"\n";
 
-      wcout<<L"Words to translate without pruning: "<<nwords_to_translate_without_pruning<<L"\n";
-      wcout<<L"Words translated after pruning: "<<nwords_translated<<L"\n";
-      wcout<<L"Ratio of pruning: "<<(double)nwords_translated/(double)nwords_to_translate_without_pruning<<L"\n";
+      cout<<"Words to translate without pruning: "<<nwords_to_translate_without_pruning<<"\n";
+      cout<<"Words translated after pruning: "<<nwords_translated<<"\n";
+      cout<<"Ratio of pruning: "<<(double)nwords_translated/(double)nwords_to_translate_without_pruning<<"\n";
 
       map<int, long>::iterator itmap;   
-      wcout<<L"Average number of paths per segment length\n";
-      wcout<<L"--------------------------------------------------------\n"<<flush;
+      cout<<"Average number of paths per segment length\n";
+      cout<<"--------------------------------------------------------\n"<<flush;
       for(itmap=long_segmentos.begin(); itmap!=long_segmentos.end(); itmap++)
-	wcout<<(*itmap).first<<L" "<<((double)caminos_long_segmentos[(*itmap).first])/((double)(*itmap).second)<<L"\n";
+	cout<<(*itmap).first<<L" "<<((double)caminos_long_segmentos[(*itmap).first])/((double)(*itmap).second)<<"\n";
 
-      wcout<<L"Average number of different translations per segment length\n";
-      wcout<<L"--------------------------------------------------------\n"<<flush;
+      cout<<"Average number of different translations per segment length\n";
+      cout<<"--------------------------------------------------------\n"<<flush;
       for(itmap=long_segmentos.begin(); itmap!=long_segmentos.end(); itmap++)
-	wcout<<(*itmap).first<<L" "<<((double)trads_long_segmentos[TL1][(*itmap).first])/((double)(*itmap).second)<<L"\n";
+	cout<<(*itmap).first<<L" "<<((double)trads_long_segmentos[TL1][(*itmap).first])/((double)(*itmap).second)<<"\n";
 
 
-      wcout<<L"Total number of paths treated per segment length\n";
-      wcout<<L" seg. length  /  number of paths  /  number of considered paths\n";
-      wcout<<L"--------------------------------------------------------\n"<<flush;
+      cout<<"Total number of paths treated per segment length\n";
+      cout<<" seg. length  /  number of paths  /  number of considered paths\n";
+      cout<<"--------------------------------------------------------\n"<<flush;
       for(map<int, pair<int, int> >::iterator it=pruning_stats.begin(); 
 	  it!=pruning_stats.end(); it++) {
-	wcout<<(*it).first<<L" "<<(*it).second.first<<L" "<<(*it).second.second
-            <<L" --> "<<((double)(*it).second.second)/((double)(*it).second.first)<<L"\n";
+	cout<<(*it).first<<" "<<(*it).second.first<<" "<<(*it).second.second
+	     <<" --> "<<((double)(*it).second.second)/((double)(*it).second.first)<<"\n";
       }
 
-      wcout<<L"Average of probability mass taken into account per segment length\n";
-      wcout<<L" seg. length  / medium probability mass\n";
-      wcout<<L"--------------------------------------------------------\n"<<flush;
+      cout<<"Average of probability mass taken into account per segment length\n";
+      cout<<" seg. length  / medium probability mass\n";
+      cout<<"--------------------------------------------------------\n"<<flush;
       for(map<int, pair<int, double> >::iterator it=pruning_probmass.begin(); 
 	  it!=pruning_probmass.end(); it++) {
-	wcout<<(*it).first<<L" "<<L" --> "<<((double)(*it).second.second)/((double)(*it).second.first)<<L"\n";
+	cout<<(*it).first<<" "<<" --> "<<((double)(*it).second.second)/((double)(*it).second.first)<<"\n";
       }
 
-      wcout<<L"Time (user+sys): "<<Utils::get_usage_time()<<L"\n";
-      wcout<<L"--------------------------------------------------------\n"<<flush;
+      cout<<"Time (user+sys): "<<Utils::get_usage_time()<<"\n";
+      cout<<"--------------------------------------------------------\n"<<flush;
 
       //calculate_parameters(tags_pair, emis);
       SmoothUtils::calculate_smoothed_parameters(tagger_data, tags_count, tags_pair, ambclass_count, emis, tags_count_for_emis, cuenta_palabras);
@@ -937,10 +953,10 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
 
     int k=tagger_data.getOutput()[tags];
     if ((k>=tagger_data.getM())||(k<0)) {
-      wcerr<<L"Error: Ambiguity class number out of range: "<<k<<L"\n";
-      wcerr<<L"Word: "<<seg->vwords[i].get_superficial_form()<<L"\n";
-      wcerr<<L"Ambiguity class: "<<seg->vwords[i].get_string_tags()<<L"\n";
-      wcerr<<L"Amb. class size: "<<tags.size()<<L"\n";
+      cerr<<"Error: Ambiguity class number out of range: "<<k<<"\n";
+      cerr<<"Word: "<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<"\n";
+      cerr<<"Ambiguity class: "<<UtfConverter::toUtf8(seg->vwords[i].get_string_tags())<<"\n";
+      cerr<<"Amb. class size: "<<tags.size()<<"\n";
       exit(EXIT_FAILURE);
     }
     ambclass_count[k]++;
@@ -951,20 +967,20 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
     double prob_este_camino=prob_each_path[i];
     cadena=seg->get_path(etqpart, i);
     
-    Utils::print_debug(L"PATH ");
+    Utils::print_debug("PATH ");
     Utils::print_debug(i);
-    Utils::print_debug(L", PROB ");
+    Utils::print_debug(", PROB ");
     Utils::print_debug(prob_este_camino);
-    Utils::print_debug(L"\n");
-    Utils::print_debug(L"              TAGS: ");
+    Utils::print_debug("\n");
+    Utils::print_debug("              TAGS: ");
     for(int j=0; j<etqpart.size(); j++) {
       if(etqpart[j]==-1)
-	Utils::print_debug(L"__UNKNOWN__");
+	Utils::print_debug("__UNKNOWN__");
       else
 	Utils::print_debug(tagger_data.getArrayTags()[etqpart[j]]);
-      Utils::print_debug(L" ");
+      Utils::print_debug(" ");
     }
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
     
 
     tag1=last_tag_prev_segment;
@@ -984,21 +1000,21 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
       tag2=etqpart[j];
       tags=seg->vwords[j].get_tags();
       if(tag2>=tagger_data.getN()) {
-	wcerr<<L"Error: Tag number out of range: "<<tag2<<L"\n";
-	wcerr<<L"Word: "<<seg->vwords[j].get_superficial_form()<<L"\n";
-	wcerr<<L"Ambiguity class: "<<seg->vwords[j].get_string_tags()<<L"\n";
-	wcerr<<L"Tag2: "<<tag2<<L" "<<tagger_data.getArrayTags()[tag2]<<L"\n";
+	cerr<<"Error: Tag number out of range: "<<tag2<<"\n";
+	cerr<<"Word: "<<UtfConverter::toUtf8(seg->vwords[j].get_superficial_form())<<"\n";
+	cerr<<"Ambiguity class: "<<UtfConverter::toUtf8(seg->vwords[j].get_string_tags())<<"\n";
+	cerr<<"Tag2: "<<tag2<<" "<<UtfConverter::toUtf8(tagger_data.getArrayTags()[tag2])<<"\n";
 	exit(EXIT_FAILURE);
       }
 	    
       if(tag2>=0) { //No es una palabra desconocida
 	int k=tagger_data.getOutput()[tags];
 	if ((k>=tagger_data.getM())||(k<0)) {
-	  wcerr<<L"Error: Ambiguity class number out of range: "<<k<<L"\n";
-	  wcerr<<L"Word: "<<seg->vwords[j].get_superficial_form()<<L"\n";
-	  wcerr<<L"Ambiguity class: "<<seg->vwords[j].get_string_tags()<<L"\n";
-	  wcerr<<L"Amb. class size: "<<tags.size()<<L"\n";
-	  wcerr<<L"Tag2: "<<tag2<<L" "<<tagger_data.getArrayTags()[tag2]<<L"\n";
+	  cerr<<"Error: Ambiguity class number out of range: "<<k<<"\n";
+	  cerr<<"Word: "<<UtfConverter::toUtf8(seg->vwords[j].get_superficial_form())<<"\n";
+	  cerr<<"Ambiguity class: "<<UtfConverter::toUtf8(seg->vwords[j].get_string_tags())<<"\n";
+	  cerr<<"Amb. class size: "<<tags.size()<<"\n";
+	  cerr<<"Tag2: "<<tag2<<" "<<UtfConverter::toUtf8(tagger_data.getArrayTags()[tag2])<<"\n";
 	  exit(EXIT_FAILURE);
 	} 
 	emis[tag2][k]+=prob_este_camino;
@@ -1179,16 +1195,16 @@ HMM_TL_driven_trainer::mix_parameters(double words_processed, double corpus_leng
   if (weigh>1)
     weigh=1;
 
-  Utils::print_debug(L"Mixing parameters\n");
-  Utils::print_debug(L"Words processed: ");
+  Utils::print_debug("Mixing parameters\n");
+  Utils::print_debug("Words processed: ");
   Utils::print_debug(words_processed);
-  Utils::print_debug(L"\n");
-  Utils::print_debug(L"Weigh new model: ");
+  Utils::print_debug("\n");
+  Utils::print_debug("Weigh new model: ");
   Utils::print_debug(weigh);
-  Utils::print_debug(L" weigh initial model: ");
+  Utils::print_debug(" weigh initial model: ");
   Utils::print_debug(1.0-weigh);
-  Utils::print_debug(L"\n");
-  cout<<L"Mixed parameters, weigh new model "<<weigh<<L"\n";
+  Utils::print_debug("\n");
+  cout<<"Mixed parameters, weigh new model "<<weigh<<"\n";
   for(int i=0; i<tagger_data.getN(); i++) {
     for(int j=0; j<tagger_data.getN(); j++) {
       mixed_value =  weigh*tagger_data.getA()[i][j] + 

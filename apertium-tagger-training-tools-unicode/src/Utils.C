@@ -34,6 +34,8 @@
 #include <sys/times.h>
 #include <sys/resource.h>
 
+#include <apertium/utf_converter.h>
+
 #include "Utils.H"
 
 string Utils::translation_script;
@@ -48,9 +50,9 @@ Utils::translate(string script, const wstring& s) {
   int fd_out[2];//Pipe descriptor (the child writes the result to the father)
 
   if (pipe(fd_in)!=0) 
-    wcerr<<L"Error creating input pipe\n";
+    cerr<<"Error creating input pipe\n";
   if (pipe(fd_out)!=0) 
-    wcerr<<L"Error creating output pipe\n";
+    cerr<<"Error creating output pipe\n";
   
   if (fork()==0) { //Code for the child
     close(0);
@@ -88,8 +90,8 @@ Utils::translate(string script, const wstring& s) {
 
     wait (&status); //Waiting for the child to finish
     if(status!=0) {
-      wcerr<<L"Error: Child process could not execute the translation script.\n";
-      wcerr<<L"Input string: ["<<s<<L"]\n";
+      cerr<<"Error: Child process could not execute the translation script.\n";
+      cerr<<"Input string: ["<<UtfConverter::toUtf8(s)<<"]\n";
       close(fd_out[0]);
       exit(EXIT_FAILURE);
     }
@@ -122,10 +124,12 @@ Utils::likelihood(string script, const wstring& s) {
   int fd_in[2]; //Pipe descriptor (the father writes text to the child)
   int fd_out[2];//Pipe descriptor (the child writes the result to the father)
 
+  string str=UtfConverter::toUtf8(s);
+
   if (pipe(fd_in)!=0) 
-    wcerr<<L"Error creating input pipe\n";
+    cerr<<"Error creating input pipe\n";
   if (pipe(fd_out)!=0) 
-    wcerr<<L"Error creating output pipe\n";
+    cerr<<"Error creating output pipe\n";
   
   if (fork()==0) { //Code for the child
     close(0);
@@ -153,12 +157,12 @@ Utils::likelihood(string script, const wstring& s) {
     close(fd_out[1]);
      
     //Mandamos el texto 
-    write(fd_in[1], (void*)s.c_str(), s.length());
+    write(fd_in[1], (void*)str.c_str(), str.length());
     close(fd_in[1]);
     wait (&status); //Waiting for the child to finish
     if(status!=0) {
-      wcerr<<L"Error: Child process could not execute the likelihood script.\n";
-      wcerr<<L"Input string: ["<<s<<L"]\n";
+      cerr<<"Error: Child process could not execute the likelihood script.\n";
+      cerr<<"Input string: ["<<str<<"]\n";
       close(fd_out[0]);
       exit(EXIT_FAILURE);
     }
@@ -231,20 +235,26 @@ Utils::split_string(const string& input, const string& delimiter) {
 }
 
 void
+Utils::print_debug(const string& s) {
+  if (debug)
+    cerr<<s;
+}
+
+void
 Utils::print_debug(const wstring& s) {
   if (debug)
-    wcerr<<s;
+    cerr<<UtfConverter::toUtf8(s);
 }
 
 void 
 Utils::print_debug(const double& d){
   if (debug)
-    wcerr<<d;
+    cerr<<d;
 }
 void 
 Utils::print_debug(const int& i) {
   if (debug)
-    wcerr<<i;
+    cerr<<i;
 }
 
 // wstring

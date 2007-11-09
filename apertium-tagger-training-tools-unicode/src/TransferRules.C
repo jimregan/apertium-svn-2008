@@ -33,6 +33,8 @@ TransferRules::~TransferRules() {
   //for(unsigned int i=0; i<compiled_regular_expressions.size(); i++) {
   //  regfree(&compiled_regular_expressions[i]);
   //}
+  for (unsigned int i=0; i<compiled_regular_expressions.size(); i++)
+    delete compiled_regular_expressions[i];
 }
 
 void
@@ -77,7 +79,7 @@ TransferRules::read_rules_from_file(string filename) {
 	//cerr<<"\n";
 	transfer_rules.push_back(rule);
       } else {
-	wcerr<<L"Error reading transfer rules from file '"<<UtfConverter::fromUtf8(filename)<<L"', there is a line without REGEX or RULE command.\n";
+	cerr<<"Error reading transfer rules from file '"<<filename<<"', there is a line without REGEX or RULE command.\n";
 	exit(EXIT_FAILURE);
       }
     }
@@ -88,10 +90,13 @@ TransferRules::read_rules_from_file(string filename) {
 
 void
 TransferRules::compile_regular_expressions() {
+  ApertiumRE* compiled_regexp;
   for(unsigned int i=0; i<regular_expressions.size(); i++) {
-    cerr<<"Compiling: "<<i<<" "<<regular_expressions[i]<<"\n";
-    ApertiumRE compiled_regexp;
-    compiled_regexp.compile(regular_expressions[i].c_str());
+    //cerr<<"Compiling: "<<i<<" "<<regular_expressions[i]<<"\n";
+
+    compiled_regexp=new ApertiumRE();
+    compiled_regexp->compile(regular_expressions[i].c_str());
+
     //regex_t compiled_regexp;
     //int res=regcomp (&compiled_regexp, regular_expressions[i].c_str(), REG_EXTENDED | REG_ICASE | REG_NOSUB );
     //if(res!=0) {
@@ -100,6 +105,7 @@ TransferRules::compile_regular_expressions() {
     //  cerr<<"Regex '"<<regular_expressions[i]<<"' compilation error: "<<errmsg<<"\n";
     //  exit(1);
     //}
+
     compiled_regular_expressions.push_back(compiled_regexp);
   }
 }
@@ -107,7 +113,7 @@ TransferRules::compile_regular_expressions() {
 bool 
 TransferRules::match_regular_expression(wstring s, int pos_regex) {
 
-  string res=compiled_regular_expressions[pos_regex].match(UtfConverter::toUtf8(s));
+  string res=compiled_regular_expressions[pos_regex]->match(UtfConverter::toUtf8(s));
 
   if(res.length()>0)
     return true;
@@ -208,12 +214,12 @@ void
 TransferRules::set_superficial_forms(wstring s) {
   superficial_forms=Utils::split_wstring(s,L"|");
 
-  Utils::print_debug(L"\nSuperficial forms that will never be a segmentation point: ");
+  Utils::print_debug("\nSuperficial forms that will never be a segmentation point: ");
   for(int i=0; i<superficial_forms.size(); i++) {
     Utils::print_debug(superficial_forms[i]);
-    Utils::print_debug(L" ");
+    Utils::print_debug(" ");
   }
-  Utils::print_debug(L"\n");
+  Utils::print_debug("\n");
 }
 
 int 

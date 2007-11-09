@@ -240,7 +240,7 @@ int main(int argc, char *argv[]) {
     case 't':  //Training
       corpus_length = atoi(optarg);
       if(corpus_length<=0) {
-	wcerr<<L"Error: mandatory --train argument <n> must be a positive integer\n";
+	cerr<<"Error: mandatory --train argument <n> must be a positive integer\n";
 	help(argv[0]);
 	exit(EXIT_FAILURE);
       }
@@ -314,12 +314,12 @@ int main(int argc, char *argv[]) {
 
   if (mode==MODE_TRAIN) {
     if (filename=="") {
-      wcerr<<L"Error: When using --train a file must be provided through the --file option\n";
+      cerr<<"Error: When using --train a file must be provided through the --file option\n";
       help(argv[0]);
       exit(EXIT_FAILURE);
     }
     if (tscript=="") {
-      wcerr<<L"Error: When using --train a translation script must be given through the --tscript option\n";
+      cerr<<"Error: When using --train a translation script must be given through the --tscript option\n";
       help(argv[0]);
       exit(EXIT_FAILURE);
     }
@@ -336,16 +336,16 @@ int main(int argc, char *argv[]) {
   }
 
   if (trules!="") {
-    wcerr<<L"Reading transfer rules from file '"<<UtfConverter::fromUtf8(trules)<<L"' "<<flush;
+    cerr<<"Reading transfer rules from file '"<<trules<<"' "<<flush;
     transfer_rules.read_rules_from_file(trules);
     wcerr<<L"done.\n";
   }
   transfer_rules.compile_regular_expressions();
 
   if (supforms!=L"") {
-    wcerr<<L"Reading superficial forms to take into account when segmenting source-language text ... ";
+    cerr<<"Reading superficial forms to take into account when segmenting source-language text ... ";
     transfer_rules.set_superficial_forms(supforms);
-    wcerr<<L"done.";
+    cerr<<"done.";
   }
 
   FILE *fdic, *fcrp, *fprob;

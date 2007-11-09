@@ -126,9 +126,9 @@ Translations::set_translation_likelihood(int index_trans, double likelihood) {
   translation_likelihood[index_trans]=likelihood;
 
   if (isnan(likelihood))
-    wcerr<<L"Error: Likelihood of translation '"<<translations[index_trans]<<L"' in NAN\n";
+    cerr<<"Error: Likelihood of translation '"<<UtfConverter::toUtf8(translations[index_trans])<<"' in NAN\n";
   if (isinf(likelihood))
-    wcerr<<L"Error: Likelihood of translation '"<<translations[index_trans]<<L"' in INF\n";
+    cerr<<"Error: Likelihood of translation '"<<UtfConverter::toUtf8(translations[index_trans])<<"' in INF\n";
 }
 
 double 
@@ -136,7 +136,7 @@ Translations::get_translation_likelihood(int index_trans) {
   if (translation_likelihood.find(index_trans)!=translation_likelihood.end())
     return translation_likelihood[index_trans];
   else {
-    wcerr<<L"Warining: Translations::get_translation_likelihood was called but there is no likelihood for the translation index "<<index_trans<<L", returning 0.0\n";
+    cerr<<"Warining: Translations::get_translation_likelihood was called but there is no likelihood for the translation index "<<index_trans<<", returning 0.0\n";
     return 0.0;
   }
 }
@@ -159,9 +159,9 @@ Translations::evaluate_translations_likelihood(string likelihood_script) {
   double sum_likelihood=0;
   double likelihood;
 
-  Utils::print_debug(L"LIKELIHOOD script: ");
-  Utils::print_debug(UtfConverter::fromUtf8(likelihood_script));
-  Utils::print_debug(L"\n");
+  Utils::print_debug("LIKELIHOOD script: ");
+  Utils::print_debug(likelihood_script);
+  Utils::print_debug("\n");
 
   //Evaluate the likelihood of each translation in the target language <-> p(tau(g_i,s)|M_TL)
   for (int i=0; i<get_number_translations(); i++) {
@@ -170,19 +170,19 @@ Translations::evaluate_translations_likelihood(string likelihood_script) {
     else
       likelihood=1;
 
-    Utils::print_debug(L"TRANSLATION TO EVALUATE: ");
+    Utils::print_debug("TRANSLATION TO EVALUATE: ");
     Utils::print_debug(get_translation_at(i));
-    Utils::print_debug(L"\n");
-    Utils::print_debug(L"LIKEKLIHOOD: ");
+    Utils::print_debug("\n");
+    Utils::print_debug("LIKEKLIHOOD: ");
     Utils::print_debug(likelihood);
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
 
     if ((likelihood<=0)||isnan(likelihood)) {
-      wcerr<<L"Error: Likelihood NULL or NAN: "<<get_translation_at(i)<<L"\n";
+      cerr<<"Error: Likelihood NULL or NAN: "<<UtfConverter::toUtf8(get_translation_at(i))<<"\n";
       likelihood=DBL_MIN;
     }
     if (likelihood>1) {
-      wcerr<<L"Warning: Likelihood of '"<<get_translation_at(i)<<L"' is "<<likelihood<<L"\n";
+      cerr<<"Warning: Likelihood of '"<<UtfConverter::toUtf8(get_translation_at(i))<<"' is "<<likelihood<<"\n";
       likelihood=1;
     }
 
@@ -195,12 +195,12 @@ Translations::evaluate_translations_likelihood(string likelihood_script) {
     likelihood=get_translation_likelihood(i);
     set_translation_likelihood(i,likelihood/sum_likelihood);
       
-    Utils::print_debug(L"TRANSLATION TO NORMALIZE: ");
+    Utils::print_debug("TRANSLATION TO NORMALIZE: ");
     Utils::print_debug(get_translation_at(i));
-    Utils::print_debug(L"\n");
-    Utils::print_debug(L"NORMALIZED LIKELIHOOD: ");
+    Utils::print_debug("\n");
+    Utils::print_debug("NORMALIZED LIKELIHOOD: ");
     Utils::print_debug(get_translation_likelihood(i));
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
   }
 }
 
@@ -216,20 +216,20 @@ Translations::set_previoulsy_evaluated_translations_likelihood(map<wstring, doub
     else
       likelihood=1;
 
-    Utils::print_debug(L"TRANSLATION TO EVALUATE: ");
+    Utils::print_debug("TRANSLATION TO EVALUATE: ");
     Utils::print_debug(get_translation_at(i));
-    Utils::print_debug(L"\n");
-    Utils::print_debug(L"LIKEKLIHOOD: ");
+    Utils::print_debug("\n");
+    Utils::print_debug("LIKEKLIHOOD: ");
     Utils::print_debug(likelihood);
-    Utils::print_debug(L"\n\n");
+    Utils::print_debug("\n\n");
 
     if ((likelihood<=0)||isnan(likelihood)) {
-      wcerr<<L"Error: Likelihood NULL or NAN: "<<get_translation_at(i)<<L"\n";
+      cerr<<"Error: Likelihood NULL or NAN: "<<UtfConverter::toUtf8(get_translation_at(i))<<"\n";
       likelihood=DBL_MIN;
       //      all_likelihoods_ok=false;
     }
     if (likelihood>1) {
-      wcerr<<L"Warning: Likelihood of '"<<get_translation_at(i)<<L"' is "<<likelihood<<L"\n";
+      cerr<<"Warning: Likelihood of '"<<UtfConverter::toUtf8(get_translation_at(i))<<"' is "<<likelihood<<"\n";
       likelihood=1;
       //      all_likelihoods_ok=false;
     }
@@ -243,12 +243,12 @@ Translations::set_previoulsy_evaluated_translations_likelihood(map<wstring, doub
     likelihood=get_translation_likelihood(i);
     set_translation_likelihood(i,likelihood/sum_likelihood);
       
-    Utils::print_debug(L"TRANSLATION TO NORMALIZE: ");
+    Utils::print_debug("TRANSLATION TO NORMALIZE: ");
     Utils::print_debug(get_translation_at(i));
-    Utils::print_debug(L"\n");
-    Utils::print_debug(L"NORMALIZED LIKELIHOOD: ");
+    Utils::print_debug("\n");
+    Utils::print_debug("NORMALIZED LIKELIHOOD: ");
     Utils::print_debug(get_translation_likelihood(i));
-    Utils::print_debug(L"\n\n");
+    Utils::print_debug("\n\n");
   }
 }
 

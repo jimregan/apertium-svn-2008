@@ -54,6 +54,7 @@ public:
   static vector<string> split_string(const string& input, const string& delimiter);
 
   static void print_debug(const wstring& s);
+  static void print_debug(const string& s);
   static void print_debug(const double& d);
   static void print_debug(const int& i);
 

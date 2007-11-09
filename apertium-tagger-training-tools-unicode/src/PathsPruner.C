@@ -24,6 +24,8 @@
 #include <cfloat>
 #include <cmath>
 
+#include <apertium/utf_converter.h>
+
 #include "Utils.H"
 
 TaggerData PathsPruner::tagger_data;
@@ -94,7 +96,7 @@ PathsPruner::compute_paths_ranking() {
   pair<int, double> p;
 
   double sum_likelihood=0.0;
-  Utils::print_debug(L"In PathsPruner::compute_paths_ranking\n");
+  Utils::print_debug("In PathsPruner::compute_paths_ranking\n");
   for(int i=0; i<seg->get_number_paths(); i++) {
     p.first=i;
     p.second=a_priori_likelihood(i);
@@ -108,12 +110,12 @@ PathsPruner::compute_paths_ranking() {
     prob_path[i].second=prob_path[i].second/sum_likelihood;
   
 
-  Utils::print_debug(L"Before sort\n-----------------------\n");
+  Utils::print_debug("Before sort\n-----------------------\n");
   for(int i=0; i<prob_path.size(); i++) {
     Utils::print_debug(prob_path[i].first);
-    Utils::print_debug(L" ");
+    Utils::print_debug(" ");
     Utils::print_debug(prob_path[i].second);
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
   }
 
   //Sort
@@ -122,16 +124,16 @@ PathsPruner::compute_paths_ranking() {
 
   reset_paths_counter();
 
-  Utils::print_debug(L"After sort\n-----------------------\n");
+  Utils::print_debug("After sort\n-----------------------\n");
   for(int i=0; i<prob_path.size(); i++) {
     Utils::print_debug(prob_path[i].first);
-    Utils::print_debug(L" ");
+    Utils::print_debug(" ");
     Utils::print_debug(prob_path[i].second);
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
   }
 
-  Utils::print_debug(L"Calculating the number of paths that will be taken into account\n");
-  Utils::print_debug(L"----------------------------------------------\n");
+  Utils::print_debug("Calculating the number of paths that will be taken into account\n");
+  Utils::print_debug("----------------------------------------------\n");
   //Now depending on the path pruning mode we calculte how many
   //disambiguation paths must be taken into account 
   
@@ -141,13 +143,13 @@ PathsPruner::compute_paths_ranking() {
     if (sum_prob<probmass) {
       k++;
       sum_prob+=prob_path[i].second;
-      Utils::print_debug(L"sum_prob: ");
+      Utils::print_debug("sum_prob: ");
       Utils::print_debug(sum_prob);
-      Utils::print_debug(L" path to be taken into account: ");
+      Utils::print_debug(" path to be taken into account: ");
       Utils::print_debug(prob_path[i].first);
-      Utils::print_debug(L" with prob ");
+      Utils::print_debug(" with prob ");
       Utils::print_debug(prob_path[i].second);
-      Utils::print_debug(L"\n");
+      Utils::print_debug("\n");
     } else {
       //At least one path to take into account
       if (k==0) {
@@ -199,11 +201,11 @@ PathsPruner::compute_paths_ranking() {
   }
   probmass_considered=sum_prob;
   
-  Utils::print_debug(L"There will be taken into account ");
+  Utils::print_debug("There will be taken into account ");
   Utils::print_debug(k);
-  Utils::print_debug(L" disambiguation paths of ");
+  Utils::print_debug(" disambiguation paths of ");
   Utils::print_debug(seg->get_number_paths());
-  Utils::print_debug(L"\n");
+  Utils::print_debug("\n");
 }
 
 int
@@ -443,16 +445,16 @@ PathsPruner::a_priori_likelihood(int path) {
   ret_prob*=prob;
 
   if (ret_prob<=0.0) {
-    wcerr<<L"Warning: a priori likelihood of path "<<path<<L" is null, prob: "<<ret_prob<<L"\n";
-    wcerr<<L"SEGMENT: ";
+    cerr<<"Warning: a priori likelihood of path "<<path<<" is null, prob: "<<ret_prob<<"\n";
+    cerr<<"SEGMENT: ";
     for(int i=0; i<seg->vwords.size(); i++) {
-      wcerr<<seg->vwords[i].get_superficial_form()<<L" ";
+      cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
     }
-    wcerr<<L"\nPATH: ";      
+    cerr<<"\nPATH: ";      
     for(int i=0; i<tagseq.size(); i++) {
-      cerr<<tagseq[i]<<L" ";
+      cerr<<tagseq[i]<<" ";
     }
-    wcerr<<L"\n";
+    cerr<<"\n";
    
     ret_prob=DBL_MIN;
   }

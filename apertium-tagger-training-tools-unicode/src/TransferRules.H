@@ -39,7 +39,8 @@
 //#define LEMMA "([-0-9a-zñçáéíóúàèìòùäëïöüâêîôûA-ZÑÇ_ÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÂÊÎÔÛãõÃÕ\\._'·,]+)"
 
 //#define LEMMA "([-[:alnum:]\\._'·,; ]+)"
-#define LEMMA   "([-[:alnum:]\\._'Â·,; ]+)"
+//#define LEMMA   "([-[:alnum:]\\._'Â·,; ]+)"
+#define LEMMA "([^<])+"
 #define TAG   "(<[a-zA-Z0-9]+>)"
 #define TAGS  "("TAG"*)"
 
@@ -48,7 +49,7 @@ using namespace std;
 class TransferRules {
 private:
   vector<string> regular_expressions;
-  vector<ApertiumRE> compiled_regular_expressions;
+  vector<ApertiumRE*> compiled_regular_expressions;
   vector<wstring> superficial_forms;
 public:
   vector<vector<int> > transfer_rules;

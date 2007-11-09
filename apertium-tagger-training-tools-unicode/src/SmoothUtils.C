@@ -25,8 +25,11 @@
 
 #include <iostream>
 
+
 #include "SmoothUtils.H"
 #include <cmath>
+
+#include <apertium/utf_converter.h>
 
 double 
 SmoothUtils::lambda(double count) {
@@ -75,8 +78,8 @@ SmoothUtils::calculate_smoothed_parameters(TaggerData& tagger_data,
       sum+=tags_pairs[i][j];
     }
     if (fabs(sum-tags_count[i])>0.0001) {
-      wcerr<<L"Error: sum does not agree for tag "<<tagger_data.getArrayTags()[i]
-           <<L": "<<sum<<L" -- "<<tags_count[i]<<L"\n";
+      cerr<<"Error: sum does not agree for tag "<<UtfConverter::toUtf8(tagger_data.getArrayTags()[i])
+          <<": "<<sum<<" -- "<<tags_count[i]<<"\n";
     }
   }
 
@@ -88,7 +91,7 @@ SmoothUtils::calculate_smoothed_parameters(TaggerData& tagger_data,
       }
     }
     if (fabs(sum-ambclass_count[k])>0.0001) {
-      wcerr<<L"Error: sum does not agree for amb. class "<<k<<L": "<<sum<<L" -- "<<ambclass_count[k]<<L"\n";
+      cerr<<"Error: sum does not agree for amb. class "<<k<<": "<<sum<<" -- "<<ambclass_count[k]<<"\n";
     }
   }
 

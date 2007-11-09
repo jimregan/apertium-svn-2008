@@ -25,6 +25,8 @@
 
 #include "Segment.H"
 
+#include <apertium/utf_converter.h>
+
 //map<string, TTag> Segment::tag_index;
 map<wstring, TTag, Ltstr> Segment::tag_index;
 Segment::Segment() {
@@ -131,12 +133,12 @@ Segment::new_segment(MorphoStream &ms, TransferRules* tr) {
   }
 
   if ((punto_corte==-1)&&(palabras_frase.size()>0)) {
-    wcerr<<L"Error: (serious) No segmentation point was found in the whole sentence\n";
-    wcerr<<L"Sentece length: "<<palabras_frase.size()<<L"\n";
-    wcerr<<L"SENTECE: ";
+    cerr<<"Error: (serious) No segmentation point was found in the whole sentence\n";
+    cerr<<"Sentece length: "<<palabras_frase.size()<<"\n";
+    cerr<<"SENTECE: ";
     for(int i=0; i<palabras_frase.size(); i++)
-      wcerr<<palabras_frase[i]->get_superficial_form()<<L" ";
-    wcerr<<L"\n";   
+      cerr<<UtfConverter::toUtf8(palabras_frase[i]->get_superficial_form())<<" ";
+    cerr<<"\n";   
     exit(1);
   }
    
