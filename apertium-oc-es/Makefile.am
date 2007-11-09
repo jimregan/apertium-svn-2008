@@ -32,48 +32,48 @@ TARGETS = $(TARGETS_COMMON) $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x
 	mkdir .deps
 	
 .deps/$(LANG1).metadix: $(BASENAME).$(LANG1).metadix .deps
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(LANG1).metadix >$@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(LANG1).metadix >$@
 
 .deps/$(LANG1).dix: .deps/$(LANG1).metadix
 	xsltproc buscaPar.xsl .deps/$(LANG1).metadix | uniq >$$$$tmp1 && \
 	xsltproc $$$$tmp1 .deps/$(LANG1).metadix > $@ && rm $$$$tmp1
 
 .deps/$(LANG1b).metadix: $(BASENAME).$(LANG1).metadix .deps
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(LANG1).metadix >$@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(LANG1).metadix >$@
 
 .deps/$(LANG1b).dix: .deps/$(LANG1b).metadix
 	xsltproc buscaPar.xsl .deps/$(LANG1b).metadix | uniq >$$$$tmp1 && \
 	xsltproc $$$$tmp1 .deps/$(LANG1b).metadix > $@ && rm $$$$tmp1
 
 .deps/$(LANG2).dix: $(BASENAME).$(LANG2).dix .deps
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(LANG2).dix >$@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(LANG2).dix >$@
 
 .deps/$(LANG2b).dix: $(BASENAME).$(LANG2).dix .deps
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(LANG2).dix >$@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(LANG2).dix >$@
 
 .deps/$(PREFIX1).dix: $(BASENAME).$(PREFIX1).dix .deps
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(PREFIX1).dix >$@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX1).dix >$@
 
 .deps/$(PREFIX1b).dix: $(BASENAME).$(PREFIX1).dix .deps
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(PREFIX1).dix >$@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX1).dix >$@
 
 .deps/$(PREFIX1).post.dix: $(BASENAME).post-$(LANG2).dix .deps
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
 .deps/$(PREFIX1b).post.dix: $(BASENAME).post-$(LANG2).dix .deps
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
 .deps/$(LANG1).post.dix: $(BASENAME).post-$(LANG1).dix .deps
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).post-$(LANG1).dix >$@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG1).dix >$@
 
 .deps/$(LANG1b).post.dix: $(BASENAME).post-$(LANG1).dix .deps
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).post-$(LANG1).dix >$@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG1).dix >$@
 
 .deps/$(LANG2).post.dix: $(BASENAME).post-$(LANG2).dix .deps
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
 .deps/$(LANG2b).post.dix: $(BASENAME).post-$(LANG2).dix .deps
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 		             
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix
 	apertium-validate-dictionary .deps/$(LANG1).dix
@@ -140,51 +140,51 @@ $(PREFIX2b).autopgen.bin: .deps/$(LANG1b).post.dix
 	lt-comp lr .deps/$(LANG1b).post.dix $@
 	
 $(PREFIX1).t1x: $(BASENAME).$(PREFIX1).t1x
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(PREFIX1).t1x > $@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX1).t1x > $@
 	apertium-validate-transfer $@
 
 $(PREFIX1b).t1x: $(BASENAME).$(PREFIX1).t1x
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(PREFIX1).t1x > $@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX1).t1x > $@
 	apertium-validate-transfer $@
 
 $(PREFIX2).t1x: $(BASENAME).$(PREFIX2).t1x
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(PREFIX2).t1x > $@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX2).t1x > $@
 	apertium-validate-transfer $@
 
 $(PREFIX2b).t1x: $(BASENAME).$(PREFIX2).t1x
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(PREFIX2).t1x > $@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX2).t1x > $@
 	apertium-validate-transfer $@
 
 $(PREFIX1).t2x: $(BASENAME).$(PREFIX1).t2x
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(PREFIX1).t2x > $@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX1).t2x > $@
 	apertium-validate-interchunk $@
 
 $(PREFIX1b).t2x: $(BASENAME).$(PREFIX1).t2x
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(PREFIX1).t2x > $@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX1).t2x > $@
 	apertium-validate-interchunk $@
 
 $(PREFIX2).t2x: $(BASENAME).$(PREFIX2).t2x
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(PREFIX2).t2x > $@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX2).t2x > $@
 	apertium-validate-interchunk $@
 
 $(PREFIX2b).t2x: $(BASENAME).$(PREFIX2).t2x
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(PREFIX2).t2x > $@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX2).t2x > $@
 	apertium-validate-interchunk $@
 	
 $(PREFIX1).t3x: $(BASENAME).$(PREFIX1).t3x
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(PREFIX1).t3x > $@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX1).t3x > $@
 	apertium-validate-postchunk $@
 
 $(PREFIX1b).t3x: $(BASENAME).$(PREFIX1).t3x
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(PREFIX1).t3x > $@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX1).t3x > $@
 	apertium-validate-postchunk $@
 
 $(PREFIX2).t3x: $(BASENAME).$(PREFIX2).t3x
-	xsltproc --stringparam alt $(PREFIX1) alt.xsl $(BASENAME).$(PREFIX2).t3x > $@
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX2).t3x > $@
 	apertium-validate-postchunk $@
 
 $(PREFIX2b).t3x: $(BASENAME).$(PREFIX2).t3x
-	xsltproc --stringparam alt $(PREFIX1b) alt.xsl $(BASENAME).$(PREFIX2).t3x > $@
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX2).t3x > $@
 	apertium-validate-postchunk $@
 
 $(PREFIX1).t1x.bin: $(PREFIX1).t1x
