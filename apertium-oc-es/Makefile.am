@@ -7,6 +7,7 @@ PREFIX1=$(LANG1)-$(LANG2)
 PREFIX1b=$(LANG1b)-$(LANG2)
 PREFIX2=$(LANG2)-$(LANG1)
 PREFIX2b=$(LANG2)-$(LANG1b)
+INSTALL_MODES=oc-es.mode es-oc.mode oc_aran-es.mode es-oc_aran.mode
 
 BASENAME=apertium-$(PREFIX1)
 
@@ -236,7 +237,7 @@ EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
 modes: modes.xml
 	apertium-gen-modes modes.xml
 	
-$(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode $(PREFIX2b).mode: modes.xml
+$(INSTALL_MODES): modes.xml
 	apertium-gen-modes modes.xml
 
 apertium_oc_esdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
@@ -259,13 +260,13 @@ apertium_oc_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1b).t1x $(PREFIX1b).t2x $(PREFIX1b).t3x \
                     $(PREFIX2).t1x $(PREFIX2).t2x $(PREFIX2).t3x \
                     $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x \
-                    $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode $(PREFIX2b).mode
+                    $(INSTALL_MODES)
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_oc_esmodesdir)
-	$(INSTALL_DATA) $(PREFIX1b).mode $(apertium_oc_esmodesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_oc_esmodesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_oc_esmodesdir)
+	$(INSTALL_DATA) oc-es.mode $(apertium_oc_esmodesdir)
+	$(INSTALL_DATA) es-oc.mode $(apertium_oc_esmodesdir)
+	$(INSTALL_DATA) oc_aran-es.mode $(apertium_oc_esmodesdir)
+	$(INSTALL_DATA) es-oc_aran.mode $(apertium_oc_esmodesdir)
 	
 CLEANFILES = -r $(TARGETS) .deps
