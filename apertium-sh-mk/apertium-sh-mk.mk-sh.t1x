@@ -1,50 +1,122 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<interchunk>
+<?xml version="1.0" encoding="utf-8"?>
+<transfer>
 
-  <section-def-cats>
-    <def-cat n="PR">
-      <cat-item tags="PR"/>
-    </def-cat>
-    <def-cat n="NP">
-      <cat-item tags="NP"/>
-      <cat-item tags="NP.*"/>
-    </def-cat>
-    <def-cat n="V">
-      <cat-item tags="V"/>
-      <cat-item tags="V.*"/>
-    </def-cat>
-  </section-def-cats>
+<section-def-cats>
+  <def-cat n="nom">
+     <cat-item tags="n.*"/>
+  </def-cat>
+  <def-cat n="pr">
+     <cat-item tags="pr"/>
+  </def-cat>
+</section-def-cats>
 
-  <section-def-attrs>
-    <def-attr n="nbr">
-      <attr-item tags="sg"/>
-      <attr-item tags="pl"/>
-      <attr-item tags="sp"/>
-      <attr-item tags="ND"/>
-    </def-attr>
-  </section-def-attrs>
+<section-def-attrs>
+  <def-attr n="a_nom">
+     <attr-item tags="n"/>
+  </def-attr>
 
-  <section-def-vars>
-    <def-var n="nombre"/>
-    <def-var n="genere"/>
-  </section-def-vars>
+  <def-attr n="a_prp">
+     <attr-item tags="pr"/>
+  </def-attr>
 
-  <section-rules>
+  <def-attr n="gen">
+     <attr-item tags="m"/>
+     <attr-item tags="f"/>
+     <attr-item tags="nt"/>
+     <attr-item tags="mf"/>
+  </def-attr>
 
-    <rule comment="REGLA: NP">
-      <pattern>
-        <pattern-item n="NP"/>
-      </pattern>
-      <action>
-        <out>
-          <chunk>
-            <clip pos="1" part="lem"/>
-            <clip pos="1" part="tags"/>
-            <clip pos="1" part="chcontent"/>
-          </chunk>
-        </out>
-      </action>
-    </rule>
+  <def-attr n="nbr">
+     <attr-item tags="sg"/>
+     <attr-item tags="pl"/>
+  </def-attr>
 
-  </section-rules>
-</interchunk>
+  <def-attr n="cas">
+     <attr-item tags="nom"/>
+     <attr-item tags="acc"/>
+     <attr-item tags="dat"/>
+     <attr-item tags="gen"/>
+     <attr-item tags="loc"/>
+     <attr-item tags="ins"/>
+     <attr-item tags="voc"/>
+  </def-attr>
+
+</section-def-attrs>
+
+<section-def-vars>
+  <def-var n="number"/>
+  <def-var n="genere"/>
+</section-def-vars>
+
+<section-rules>
+  <rule>
+     <pattern>
+       <pattern-item n="nom"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_nom"/>
+           <clip pos="1" side="tl" part="gen"/>
+           <lit-tag v="nom"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+       </out>
+     </action>
+  </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="pr"/>
+       <pattern-item n="nom"/>
+     </pattern>
+     <action>
+       <choose>
+	 <!-- When the preposition is "околу", set the case of the 
+	      following noun to the locative. -->
+         <when>
+           <test>
+             <equal>
+               <clip pos="1" side="tl" part="lem"/>
+               <lit v="o"/>
+             </equal>
+           </test>
+           <out>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_prp"/>
+             </lu>
+             <b/>
+             <lu>
+               <clip pos="2" side="tl" part="lem"/>
+               <clip pos="2" side="tl" part="a_nom"/>
+               <clip pos="2" side="tl" part="gen"/>
+               <lit-tag v="loc"/>
+               <clip pos="2" side="tl" part="nbr"/>
+             </lu>
+           </out>
+         </when>
+         <otherwise>
+           <out>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_prp"/>
+             </lu>
+             <b/>
+             <lu>
+               <clip pos="2" side="tl" part="lem"/>
+               <clip pos="2" side="tl" part="a_nom"/>
+               <clip pos="2" side="tl" part="gen"/>
+               <lit-tag v="nom"/>
+               <clip pos="2" side="tl" part="nbr"/>
+             </lu>
+           </out>
+        </otherwise>
+      </choose>       
+    </action>
+  </rule>
+
+</section-rules>
+
+</transfer>
