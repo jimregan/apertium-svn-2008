@@ -13,7 +13,7 @@ TARGETS_COMMON = $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes \
      clean-dicts
 
-#    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
+#    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin 
 
 $(BASENAME).$(LANG1).dix:
 	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
@@ -89,7 +89,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            modes.xml
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
-#           $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
+#           $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix 
 
 modes: modes.xml
 	apertium-gen-modes modes.xml
