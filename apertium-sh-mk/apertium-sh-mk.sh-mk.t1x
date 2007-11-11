@@ -81,45 +81,6 @@
      </action>
   </rule>
 
-  <rule>
-     <pattern>
-       <pattern-item n="prn"/>
-     </pattern>
-     <action>
-       <choose>
-         <when>
-           <test>
-             <equal>
-               <clip pos="1" side="sl" part="cas"/>
-               <lit-tag v="acc"/>
-             </equal>
-           </test>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <lit-tag v="prn.obj"/>
-               <clip pos="1" side="tl" part="prs"/>
-               <clip pos="1" side="tl" part="gen"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </when>
-         <otherwise>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <lit-tag v="prn.subj"/>
-               <clip pos="1" side="tl" part="a_prn"/>
-               <clip pos="1" side="tl" part="prs"/>
-               <clip pos="1" side="tl" part="gen"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </otherwise>
-       </choose>
-     </action>
-  </rule>
-
 </section-rules>
 
 </transfer>

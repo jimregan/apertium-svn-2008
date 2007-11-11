@@ -83,50 +83,6 @@
 
   <rule>
      <pattern>
-       <pattern-item n="prn"/>
-     </pattern>
-     <action>
-       <choose>
-         <!-- When the Macedonian pronoun is in the objective,
-	      translate it into the accusative case in Serbo-Croatian -->
-         <when>
-           <test>
-             <equal>
-               <clip pos="1" side="sl" part="a_prn"/>
-               <lit-tag v="prn.obj"/>
-             </equal>
-           </test>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prn"/>
-               <clip pos="1" side="tl" part="prs"/>
-               <clip pos="1" side="tl" part="gen"/>
-               <lit-tag v="acc"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </when>
-         <!-- Otherwise use the nominative case in all other
-	      situations -->
-         <otherwise>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prn"/>
-               <clip pos="1" side="tl" part="prs"/>
-               <clip pos="1" side="tl" part="gen"/>
-               <lit-tag v="nom"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </otherwise>
-       </choose>
-     </action>
-  </rule>
-
-  <rule>
-     <pattern>
        <pattern-item n="pr"/>
        <pattern-item n="nom"/>
      </pattern>
