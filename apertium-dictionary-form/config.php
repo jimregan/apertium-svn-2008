@@ -45,6 +45,7 @@
 					$sides = $tag->getElementsByTagName('side');
 
 					foreach($sides as $side) {
+						$paradigm_display_mode = "";
 						$current_side = $side->getAttribute('n');
 						$templates = $side->getElementsByTagName('use-template');
 
@@ -53,6 +54,22 @@
 							$file = $template->getAttribute('file');
 							$this->pairs[$pair_name]->add_template($file, $tag, $current_side);
 						}
+
+						$gloss_sections = $side->getElementsByTagName('paradigms');
+
+						foreach($gloss_sections as $gloss_section) {
+							$paradigm_display_mode = $gloss_section->getAttribute('display');
+							$glosses = $gloss_section->getElementsByTagName('paradigm');
+
+							foreach($glosses as $gloss) {
+								$name  = $gloss->getAttribute('n');
+								$gloss = $gloss->getAttribute('c');
+								//print $name . ' ~ ' . $gloss . "\n";
+								$this->pairs[$pair_name]->add_gloss($name, $gloss, $current_side);
+							}
+						}
+
+						$this->pairs[$pair_name]->set_display_mode($tag_name, $paradigm_display_mode, $current_side);
 					}
 
 					$this->pairs[$pair_name]->add_tag($tag_name, $show_list);

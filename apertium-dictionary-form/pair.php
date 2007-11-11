@@ -24,11 +24,14 @@
 		public $doc;
 		public $paradigms;
 		public $depth;
+		public $glosses;
+		public $display_modes;
 
-		function Dictionary($_language, $_file, $_doc, $_tags) {
+		function Dictionary($_language, $_file, $_doc, $_tags, $_glosses) {
 			$this->language = $_language;
 			$this->file = $_file;
 			$this->doc = $_doc;
+			$this->glosses = $_glosses;
 
 			foreach($_tags as $tag) {
 				$this->paradigms[$tag] = array();
@@ -86,6 +89,14 @@
 				}
 			}
  ***/
+		}
+
+		function set_display_mode($_modes) {
+			$this->display_modes = $_modes; 
+		}
+
+		function get_display_mode($_tag) {
+			return $this->display_modes[$_tag]; 
 		}
 
 		function paradigms($_tag) {
@@ -275,6 +286,10 @@
 				return;
 			}
 		}
+
+		function glosses() {
+			return $this->glosses;
+		}
 	}
 
 	/*
@@ -296,6 +311,11 @@
 		public $wd;
 		public $cachedir;
 		public $templatedir;
+
+		public $glosses_left;
+		public $glosses_right;
+		public $display_left;
+		public $display_right;
 
 		function Pair($_wd, $_name, $_parent) {
 			$this->name = $_name;
@@ -321,19 +341,20 @@
 				if($side == 'l') {
 					$doc = new DOMDocument;
 					$doc->load($cachedir . $filename);
-					$this->left = new Dictionary($current, $filename, $doc, $this->tags);	
+					$this->left = new Dictionary($current, $filename, $doc, $this->tags, $this->glosses_left);	
+					$this->left->set_display_mode($this->display_left);
 				} else if($side == 'bilingual') {
 					$doc = new DOMDocument;
 					$doc->load($cachedir . $filename);
-					$this->bidix = new Dictionary($current, $filename, $doc, $this->tags);	
+					$this->bidix = new Dictionary($current, $filename, $doc, $this->tags, "");	
 				} else if($side == 'r') {
 					$doc = new DOMDocument;
 					$doc->load($cachedir . $filename);
-					$this->right = new Dictionary($current, $filename, $doc, $this->tags);	
+					$this->right = new Dictionary($current, $filename, $doc, $this->tags, $this->glosses_right);	
+					$this->right->set_display_mode($this->display_right);
 				}
 			}
 		}
-
 
 		function template_dir() {
 			return $this->templatedir;
@@ -357,6 +378,24 @@
 				$this->templates_left[$_tag] = $_template;
 			} else if($_side == "r") {
 				$this->templates_right[$_tag] = $_template;
+			}
+			return FALSE;
+		}
+
+		function add_gloss($_paradigm, $_gloss, $_side) {
+			if($_side == "l") {
+				$this->glosses_left[$_paradigm] = $_gloss;
+			} else if($_side == "r") {
+				$this->glosses_right[$_paradigm] = $_gloss;
+			}
+			return FALSE;
+		}
+
+		function set_display_mode($_tag, $_mode, $_side) {
+			if($_side == "l") {
+				$this->display_left[$_tag] = $_mode;
+			} else if($_side == "r") {
+				$this->display_right[$_tag] = $_mode;
 			}
 			return FALSE;
 		}

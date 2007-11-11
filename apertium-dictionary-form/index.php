@@ -155,13 +155,25 @@ ca · en · es
           $pair = $config->get_pair($current_pair);
 	  $dictionary = $pair->dictionary('left');
 	  $paradigms =  $dictionary->paradigms($current_tag);
+	  $display_mode = $dictionary->get_display_mode($current_tag);
+
+	  $glosses = $dictionary->glosses();
 
 	  foreach($paradigms as $paradigm) {
+              // if we're in "list mode and there is no gloss for this
+              // paradigm, don't display it
+              if($display_mode == "list" &&  $glosses[$paradigm->name] == "") {
+                  continue;
+              }
               print '<option value="' . $paradigm->name . '"';
 	      if($paradigm->name == $left_paradigm) {
 	          print ' selected';
 	      }
-	      print '>' . $paradigm->name . '</option>'. "\n";
+              if($glosses[$paradigm->name] != "") {
+                  print '>' . $glosses[$paradigm->name] . '</option>'. "\n";
+              } else {
+                  print '>' . $paradigm->name . '</option>'. "\n";
+              }
 	  }
       ?>
       </select>
@@ -269,8 +281,14 @@ ca · en · es
           $pair = $config->get_pair($current_pair);
 	  $dictionary = $pair->dictionary('right');
 	  $paradigms =  $dictionary->paradigms($current_tag);
+	  $display_mode = $dictionary->get_display_mode($current_tag);
 
 	  foreach($paradigms as $paradigm) {
+              // if we're in "list mode and there is no gloss for this
+              // paradigm, don't display it
+              if($display_mode == "list" &&  $glosses[$paradigm->name] == "") {
+                  continue;
+              }
               print '<option value="' . $paradigm->name . '"';
 	      if($paradigm->name == $right_paradigm) {
 	          print ' selected';
