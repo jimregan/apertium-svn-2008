@@ -4,6 +4,7 @@
 <section-def-cats>
   <def-cat n="nom">
      <cat-item tags="n.*"/>
+     <cat-item tags="np.*"/>
   </def-cat>
   <def-cat n="prn">
      <cat-item tags="prn.*"/>
@@ -20,6 +21,8 @@
 <section-def-attrs>
   <def-attr n="a_nom">
      <attr-item tags="n"/>
+     <attr-item tags="np"/>
+     <attr-item tags="np.ant"/>
   </def-attr>
 
   <def-attr n="a_prp">
@@ -108,6 +111,34 @@
      </pattern>
      <action>
        <choose>
+	 <!-- When the preposition is "на", and the noun 
+              following is an antonym  set the case of 
+              the following proper noun to the locative 
+              and drop the preposition. -->
+         <when>
+           <test>
+             <and>
+               <equal>
+                 <clip pos="1" side="sl" part="lem"/>
+                 <lit v="на"/>
+               </equal>
+               <equal>
+                 <clip pos="2" side="tl" part="a_nom"/>
+                 <lit-tag v="np.ant"/>
+               </equal>
+             </and>
+           </test>
+           <out>
+             <lu>
+               <clip pos="2" side="tl" part="lem"/>
+               <clip pos="2" side="tl" part="a_nom"/>
+               <clip pos="2" side="tl" part="gen"/>
+               <lit-tag v="gen"/>
+             </lu>
+           </out>
+         </when>
+
+
 	 <!-- When the preposition is "o", set the case of the 
 	      following noun to the locative. -->
          <when>
