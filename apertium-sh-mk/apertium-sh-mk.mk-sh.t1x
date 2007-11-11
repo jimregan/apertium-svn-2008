@@ -5,6 +5,9 @@
   <def-cat n="nom">
      <cat-item tags="n.*"/>
   </def-cat>
+  <def-cat n="prn">
+     <cat-item tags="prn.*"/>
+  </def-cat>
   <def-cat n="pr">
      <cat-item tags="pr"/>
   </def-cat>
@@ -19,11 +22,23 @@
      <attr-item tags="pr"/>
   </def-attr>
 
+  <def-attr n="a_prn">
+     <attr-item tags="prn"/>
+     <attr-item tags="prn.subj"/>
+     <attr-item tags="prn.obj"/>
+  </def-attr>
+
   <def-attr n="gen">
      <attr-item tags="m"/>
      <attr-item tags="f"/>
      <attr-item tags="nt"/>
      <attr-item tags="mf"/>
+  </def-attr>
+
+  <def-attr n="prs">
+     <attr-item tags="p1"/>
+     <attr-item tags="p2"/>
+     <attr-item tags="p3"/>
   </def-attr>
 
   <def-attr n="nbr">
@@ -58,6 +73,24 @@
          <lu>
            <clip pos="1" side="tl" part="lem"/>
            <clip pos="1" side="tl" part="a_nom"/>
+           <clip pos="1" side="tl" part="gen"/>
+           <lit-tag v="nom"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+       </out>
+     </action>
+  </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="prn"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_prn"/>
+           <clip pos="1" side="tl" part="prs"/>
            <clip pos="1" side="tl" part="gen"/>
            <lit-tag v="nom"/>
            <clip pos="1" side="tl" part="nbr"/>
