@@ -36,6 +36,8 @@
 #include <apertium/collection.h>
 #include <apertium/tagger_data.h>
 #include <apertium/tsx_reader.h>
+#include <apertium/utf_converter.h>
+
 #include "configure.H"
 #include "SmoothUtils.H"
 
@@ -94,13 +96,19 @@ supervised(FILE *ftagged, FILE *funtagged) {
   word_tagged = stream_tagged.get_next_word();
   word_untagged = stream_untagged.get_next_word();
   while(word_tagged) {
-    wcerr<<*word_tagged<<L" -- "<<*word_untagged<<L"\n"; 
+    cerr<<UtfConverter::toUtf8(word_tagged->get_string_tags())<<" \t Word: " <<UtfConverter::toUtf8(word_tagged->get_superficial_form());
+    cerr<<" -- ";
+    cerr<<UtfConverter::toUtf8(word_untagged->get_string_tags())<<" \t Word: " <<UtfConverter::toUtf8(word_untagged->get_superficial_form());
+    cerr<<"\n"; 
 
     if (word_tagged->get_superficial_form()!=word_untagged->get_superficial_form()) {              
-      wcerr<<L"\nTagged text (.tagged) and analyzed text (.untagged) streams are not aligned.\n";
-      wcerr<<L"Take a look at tagged text (.tagged).\n";
-      wcerr<<L"Perhaps this is caused by a multiword unit that is not a multiword unit in one of the two files.\n";
-      wcerr<<*word_tagged<<L" -- "<<*word_untagged<<L"\n"; 
+      cerr<<"\nTagged text (.tagged) and analyzed text (.untagged) streams are not aligned.\n";
+      cerr<<"Take a look at tagged text (.tagged).\n";
+      cerr<<"Perhaps this is caused by a multiword unit that is not a multiword unit in one of the two files.\n";
+      cerr<<UtfConverter::toUtf8(word_tagged->get_string_tags())<<" \t Word: " <<UtfConverter::toUtf8(word_tagged->get_superficial_form());
+      cerr<<" -- ";
+      cerr<<UtfConverter::toUtf8(word_untagged->get_string_tags())<<" \t Word: " <<UtfConverter::toUtf8(word_untagged->get_superficial_form());
+      cerr<<"\n"; 
       exit(1);
     }
 
@@ -109,14 +117,14 @@ supervised(FILE *ftagged, FILE *funtagged) {
     tag2 = tag1;
    
     if (word_untagged==NULL) {
-      wcerr<<L"word_untagged==NULL\n";
+      cerr<<"word_untagged==NULL\n";
       exit(1);
     }
 
     if (word_tagged->get_tags().size()==0) // Unknown word
       tag1 = -1;
     else if (word_tagged->get_tags().size()>1) // Ambiguous word
-      wcerr<<L"Error in tagged text. An ambiguous word was found: "<<word_tagged->get_superficial_form()<<L"\n";
+      cerr<<"Error in tagged text. An ambiguous word was found: "<<UtfConverter::toUtf8(word_tagged->get_superficial_form())<<"\n";
     else
       tag1 = *(word_tagged->get_tags()).begin();
 
@@ -129,12 +137,12 @@ supervised(FILE *ftagged, FILE *funtagged) {
     if (word_untagged->get_tags().size()==0) { // Unknown word
       tags = tagger_data.getOpenClass();
     } else if (tagger_data.getOutput().has_not(word_untagged->get_tags())) { //We are training, there is no problem
-      wstring errors;
-      errors = L"A new ambiguity class was found. I cannot continue.\n";
-      errors+= L"Word '"+word_untagged->get_superficial_form()+L"' not found in the dictionary.\n";
-      errors+= L"New ambiguity class: "+word_untagged->get_string_tags()+L"\n";
-      errors+= L"Take a look at the dictionary, then retrain.";
-      tagger_utils::fatal_error(errors);      
+      string errors;
+      errors = "A new ambiguity class was found. I cannot continue.\n";
+      errors+= "Word '"+UtfConverter::toUtf8(word_untagged->get_superficial_form())+"' not found in the dictionary.\n";
+      errors+= "New ambiguity class: "+UtfConverter::toUtf8(word_untagged->get_string_tags())+"\n";
+      errors+= "Take a look at the dictionary, then retrain.";
+      cerr<<"Error: "<<errors<<"\n";
     } else {
       tags = word_untagged->get_tags();
     }

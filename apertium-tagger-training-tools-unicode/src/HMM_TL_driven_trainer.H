@@ -124,9 +124,9 @@ public:
 
   void write_parameters(FILE *out);
 
-  void train(FILE *is, int corpus_length, int save_after_nwords, string filename, wofstream& fpaths, wifstream& ftrans, ifstream& flike);
+  void train(FILE *is, int corpus_length, int save_after_nwords, string filename, ofstream& fpaths, ifstream& ftrans, ifstream& flike);
 
-  void train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, wifstream& ftrans, ifstream& flike);
+  void train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ifstream& ftrans, ifstream& flike);
 
   void print_A();
 

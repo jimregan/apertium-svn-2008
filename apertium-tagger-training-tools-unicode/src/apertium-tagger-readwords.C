@@ -26,6 +26,7 @@
 #include <apertium/tagger_word.h>
 #include <apertium/tagger_data.h>
 #include <apertium/tsx_reader.h>
+#include <apertium/utf_converter.h>
 
 #include "configure.H"
 
@@ -51,15 +52,15 @@ void readwords (FILE *is, int corpus_length) {
   while(word) {
     nwords++;
 
-    wcout<<word->get_superficial_form()<<" "<<word->get_string_tags()<<"\n";
+    cout<<UtfConverter::toUtf8(word->get_superficial_form())<<" "<<UtfConverter::toUtf8(word->get_string_tags())<<"\n";
 
     if (check_ambclasses) {
       int k=tagger_data.getOutput()[word->get_tags()];
     
       if ((k>=tagger_data.getM())||(k<0)) {
 	cerr<<"Error: Ambiguity class number out of range: "<<k<<"\n";
-	wcerr<<"Word: "<<word->get_superficial_form()<<"\n";
-	wcerr<<"Ambiguity class: "<<word->get_string_tags()<<"\n";
+	cerr<<"Word: "<<UtfConverter::toUtf8(word->get_superficial_form())<<"\n";
+	cerr<<"Ambiguity class: "<<UtfConverter::toUtf8(word->get_string_tags())<<"\n";
       }
     }
 

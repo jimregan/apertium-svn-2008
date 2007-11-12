@@ -21,6 +21,9 @@
 #include <apertium/morpho_stream.h>
 #include <apertium/tagger_word.h>
 #include <apertium/tagger_utils.h>
+
+#include <apertium/utf_converter.h>
+
 #include <cmath>
 #include "TaggerEval.H"
 #include "Utils.H"
@@ -86,13 +89,13 @@ TaggerEval::eval_tagger(FILE* ftagged, FILE *funtagged){
                        
     if (tagger_data.getOutput().has_not(tags)) {  //An Unknown word was found
 
-      wcerr<<L"Warning: A new ambiguity class was found. \n";
-      wcerr<<L"Retraining the tagger is necessary so as to take it into account.\n";
-      wcerr<<L"Word '"<<word->get_superficial_form()<<L"'.\n";
-      wcerr<<L"New ambiguity class: "<<word->get_string_tags()<<L"\n\n";
+      cerr<<"Warning: A new ambiguity class was found. \n";
+      cerr<<"Retraining the tagger is necessary so as to take it into account.\n";
+      cerr<<"Word '"<<UtfConverter::toUtf8(word->get_superficial_form())<<"'.\n";
+      cerr<<"New ambiguity class: "<<UtfConverter::toUtf8(word->get_string_tags())<<"\n\n";
 
-      wcerr<<L"You can still continue using this tagger parameters, but unfortunately you cannot";
-      wcerr<<L"evaluate them. This is just because the evaluation would be not correct\n";
+      cerr<<"You can still continue using this tagger parameters, but unfortunately you cannot";
+      cerr<<"evaluate them. This is just because the evaluation would be not correct\n";
 
       exit(EXIT_FAILURE);
     } 
@@ -126,7 +129,7 @@ TaggerEval::eval_tagger(FILE* ftagged, FILE *funtagged){
       if (prob>0) 
 	loli -= log(prob);
       else {
-	wcerr<<L"Problem with word '"<<word->get_superficial_form()<<L"' "<<word->get_string_tags()<<L"\n";
+	cerr<<"Problem with word '"<<UtfConverter::toUtf8(word->get_superficial_form())<<"' "<<UtfConverter::toUtf8(word->get_string_tags())<<"\n";
       }
       for (unsigned t=0; t<best[nwpend%2][tag].size(); t++) {
 	if (nleer_sin_evaluar==0)
@@ -189,11 +192,15 @@ TaggerEval::evalword(TaggerWord& word, TTag& tag, MorphoStream& morpho_streameva
     tagsok = wordok->get_tags();   
 
     if(tagsok.size()>1) {
-      wcerr<<L"Error in tagged corpus (.eval) used for evaluation. A word with more than one tag was found\n"<<*wordok<<L"\n";
+      cerr<<"Error in tagged corpus (.eval) used for evaluation. A word with more than one tag was found\n";
+      cerr<<UtfConverter::toUtf8(wordok->get_string_tags())<<" \t Word: " <<UtfConverter::toUtf8(wordok->get_superficial_form());
+      cerr<<"\n";
       return 0;
     }
     else if(tagsok.size()==0) {
-      wcerr<<L"Error in tagged corpus (.eval) used for evaluation. An unknown word was found\n"<<*wordok<<L"\n";
+      cerr<<"Error in tagged corpus (.eval) used for evaluation. An unknown word was found\n";
+      cerr<<UtfConverter::toUtf8(wordok->get_string_tags())<<" \t Word: " <<UtfConverter::toUtf8(wordok->get_superficial_form());
+      cerr<<"\n";
       return 0;
     }
    
@@ -210,10 +217,16 @@ TaggerEval::evalword(TaggerWord& word, TTag& tag, MorphoStream& morpho_streameva
     return 0;
   }
 
-  Utils::print_debug(word.get_string_tags()+L" "+word.get_superficial_form());
-  Utils::print_debug(L" ("+tagger_data.getArrayTags()[tag]+L") \t--\t ");
-  Utils::print_debug(wordok->get_superficial_form()+L" (");
-  Utils::print_debug(tagger_data.getArrayTags()[tagok]+L")  ===> ");
+  Utils::print_debug(word.get_string_tags());
+  Utils::print_debug(" ");
+  Utils::print_debug(word.get_superficial_form());
+  Utils::print_debug(" (");
+  Utils::print_debug(tagger_data.getArrayTags()[tag]);
+  Utils::print_debug(") \t--\t ");
+  Utils::print_debug(wordok->get_superficial_form());
+  Utils::print_debug(" (");
+  Utils::print_debug(tagger_data.getArrayTags()[tagok]);
+  Utils::print_debug(")  ===> ");
 
   if (fstag!=fsok) {  	    
     int ntokens_ok = tagger_utils::ntokens_multiword(wordok->get_lexical_form(tagok, tagger_data.getTagIndex()[L"TAG_kEOF"]));
@@ -233,9 +246,9 @@ TaggerEval::evalword(TaggerWord& word, TTag& tag, MorphoStream& morpho_streameva
     if (words_distance>0) {
       delete wordok;
       nignored+=1.0;
-      Utils::print_debug(L" IGNORED (multiword): ");
+      Utils::print_debug(" IGNORED (multiword): ");
       Utils::print_debug(words_distance);
-      Utils::print_debug(L"\n");
+      Utils::print_debug("\n");
       return words_distance;
     }
       
@@ -254,9 +267,9 @@ TaggerEval::evalword(TaggerWord& word, TTag& tag, MorphoStream& morpho_streameva
     }
     delete wordok;
     nignored+=1.0;
-    Utils::print_debug(L" IGNORED (hyphen): ");
+    Utils::print_debug(" IGNORED (hyphen): ");
     Utils::print_debug(words_distance);
-    Utils::print_debug(L"\n");
+    Utils::print_debug("\n");
     return words_distance;      
   }
  
@@ -270,26 +283,26 @@ TaggerEval::evalword(TaggerWord& word, TTag& tag, MorphoStream& morpho_streameva
   if (tag!=tagok) {
     if (word.get_tags().size()==0) {
       nerrors_unk+=1.0;
-      Utils::print_debug(L"ERROR UNKNOWN");
+      Utils::print_debug("ERROR UNKNOWN");
       if (tagger_data.getOpenClass().find(tagok)==tagger_data.getOpenClass().end())
-	Utils::print_debug(L", TAG NOT AVAILABLE IN THE OPEN CLASS");
-      Utils::print_debug(L"\n");
+	Utils::print_debug(", TAG NOT AVAILABLE IN THE OPEN CLASS");
+      Utils::print_debug("\n");
     } else  if (word.get_tags().size()==1) {
       nerrors_noamb+=1.0;
-      Utils::print_debug(L"ERROR TAG OK NOT AVAILABLE (NO AMBIGUOUS)\n");
+      Utils::print_debug("ERROR TAG OK NOT AVAILABLE (NO AMBIGUOUS)\n");
     } else {
       if (word.get_tags().find(tagok)==word.get_tags().end()) {
 	nerrors_noamb+=1.0;
-	Utils::print_debug(L"ERROR TAG OK NOT AVAILABLE (AMBIGUOUS)\n");
+	Utils::print_debug("ERROR TAG OK NOT AVAILABLE (AMBIGUOUS)\n");
       }
       else { 
 	nerrors_amb+=1.0;
-	Utils::print_debug(L"ERROR\n");
+	Utils::print_debug("ERROR\n");
       }
     }
   }
   else
-    Utils::print_debug(L"OK\n");
+    Utils::print_debug("OK\n");
    
   delete wordok;   
   return 0;

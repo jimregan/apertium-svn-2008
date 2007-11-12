@@ -36,6 +36,8 @@
 #include <apertium/collection.h>
 #include <apertium/tagger_data.h>
 #include <apertium/tsx_reader.h>
+#include <apertium/utf_converter.h>
+
 #include "configure.H"
 #include "SmoothUtils.H"
 
@@ -134,12 +136,12 @@ void kupiec (FILE *is, int corpus_length) {
       tags = tagger_data.getOpenClass();
     }
     else if (tagger_data.getOutput().has_not(tags)) { 
-      wstring errors;
-      errors = L"A new ambiguity class was found. I cannot continue.\n";
-      errors+= L"Word '"+word->get_superficial_form()+L"' not found in the dictionary.\n";
-      errors+= L"New ambiguity class: "+word->get_string_tags()+L"\n";
-      errors+= L"Take a look at the dictionary and at the training corpus. Then, retrain.";      
-      wcerr<<L"Error: "<<errors<<L"\n";
+      string errors;
+      errors = "A new ambiguity class was found. I cannot continue.\n";
+      errors+= "Word '"+UtfConverter::toUtf8(word->get_superficial_form())+"' not found in the dictionary.\n";
+      errors+= "New ambiguity class: "+UtfConverter::toUtf8(word->get_string_tags())+"\n";
+      errors+= "Take a look at the dictionary and at the training corpus. Then, retrain.";
+      cerr<<"Error: "<<errors<<"\n";
       exit(EXIT_FAILURE);
     }    
 
@@ -253,12 +255,12 @@ void baum_welch(FILE *ftxt, int corpus_length) {
     }
     
     if (tagger_data.getOutput().has_not(tags)) {
-      wstring errors;
-      errors = L"A new ambiguity class was found. I cannot continue.\n";
-      errors+= L"Word '"+word->get_superficial_form()+L"' not found in the dictionary.\n";
-      errors+= L"New ambiguity class: "+word->get_string_tags()+L"\n";
-      errors+= L"Take a look at the dictionary, then retrain.";
-      wcerr<<L"Error: "<<errors<<L"\n";
+      string errors;
+      errors = "A new ambiguity class was found. I cannot continue.\n";
+      errors+= "Word '"+UtfConverter::toUtf8(word->get_superficial_form())+"' not found in the dictionary.\n";
+      errors+= "New ambiguity class: "+UtfConverter::toUtf8(word->get_string_tags())+"\n";
+      errors+= "Take a look at the dictionary, then retrain.";
+      cerr<<"Error: "<<errors<<"\n";
       exit(EXIT_FAILURE);
     }
     
@@ -583,17 +585,17 @@ int main(int argc, char* argv[]) {
     fcrp=fopen(filecrp.c_str(), "r");
     check_file(fcrp, filecrp);
 
-    wcerr<<L"Calculating ambiguity classes ... "<<flush;
+    cerr<<"Calculating ambiguity classes ... "<<flush;
     hmm.read_dictionary(fdic);
-    wcerr<<L"done.\n";
+    cerr<<"done.\n";
     fclose(fdic);
 
     kupiec(fcrp, corpus_length);
 
     if (use_forbid_enforce_rules) {
-      wcerr<<L"Applying forbid and enforce rules ... "<<flush;
+      cerr<<"Applying forbid and enforce rules ... "<<flush;
       apply_rules();
-      wcerr<<L"done.\n";
+      cerr<<"done.\n";
     }
 
     while(nit>0) {

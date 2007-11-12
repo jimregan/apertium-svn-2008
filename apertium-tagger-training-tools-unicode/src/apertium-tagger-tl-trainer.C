@@ -338,7 +338,7 @@ int main(int argc, char *argv[]) {
   if (trules!="") {
     cerr<<"Reading transfer rules from file '"<<trules<<"' "<<flush;
     transfer_rules.read_rules_from_file(trules);
-    wcerr<<L"done.\n";
+    cerr<<"done.\n";
   }
   transfer_rules.compile_regular_expressions();
 
@@ -350,8 +350,8 @@ int main(int argc, char *argv[]) {
 
   FILE *fdic, *fcrp, *fprob;
 
-  wofstream fpaths;
-  wifstream ftrans;
+  ofstream fpaths;
+  ifstream ftrans;
   ifstream flike;
 
   if (mode==MODE_TRAIN) {

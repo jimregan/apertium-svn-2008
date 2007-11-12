@@ -112,7 +112,7 @@ HMM_TL_driven_trainer::set_use_tags_rules(bool b) {
 }
 
 void 
-HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords, string filename, wofstream& fpaths, wifstream& ftrans, ifstream& flike){
+HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords, string filename, ofstream& fpaths, ifstream& ftrans, ifstream& flike){
   int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
@@ -269,7 +269,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	} else {
 
 	  if(fpaths.is_open()) {
-	    fpaths<<cadena<<L"^.<sent>$[\n]"<<flush;
+	    fpaths<<UtfConverter::toUtf8(cadena)<<"^.<sent>$[\n]"<<flush;
 	    continue;
 	  }
 
@@ -281,7 +281,9 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	  wstring tradcadena;
 
 	  if(ftrans.is_open()) {
-	    getline(ftrans, tradcadena);
+	    string straux;
+	    getline(ftrans, straux);
+	    tradcadena=UtfConverter::fromUtf8(straux);
 	    if (!(translations[TL1]->are_translations_ok()))
 	      tradcadena=TRANSLATION_NOT_USED;
 	  } else {
@@ -458,7 +460,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 }
 
 void 
-HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, wifstream& ftrans, ifstream& flike) {
+HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ifstream& ftrans, ifstream& flike) {
   int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
@@ -643,7 +645,9 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 	if(is_feasible_path(last_etq_segmento_ant, etqpart)) {
 	  if (seg->get_number_paths()>1) {
 	    wstring cadtrans;
-	    getline(ftrans, cadtrans);
+	    string straux;
+	    getline(ftrans, straux);
+	    cadtrans=UtfConverter::fromUtf8(straux);
 	    paths_translations[ncamino]=cadtrans;
 
 	    if(flike.is_open()) {

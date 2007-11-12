@@ -24,6 +24,7 @@
 #include <clocale>
 
 #include <apertium/tagger_data.h>
+#include <apertium/utf_converter.h>
 
 #include "configure.H"
 
@@ -49,23 +50,23 @@ void help(char *name) {
 }
 
 void check() {
-  wcout<<"Cheking A ...\n";
+  cout<<"Cheking A ...\n";
   for (int i=0; i<tagger_data.getN(); i++) {
     double sum_prob=0.0;
     for(int j=0; j<tagger_data.getN(); j++) {
       sum_prob+=tagger_data.getA()[i][j];
     }
-    wcout<<L"SUM A["<<tagger_data.getArrayTags()[i]<<L"("<<i<<L")][*]="<<sum_prob<<L"\n";
+    cout<<"SUM A["<<UtfConverter::toUtf8(tagger_data.getArrayTags()[i])<<"("<<i<<")][*]="<<sum_prob<<"\n";
   }
 
-  wcout<<L"Checking B ...\n";
+  cout<<"Checking B ...\n";
   for (int i=0; i<tagger_data.getN(); i++) {
     double sum_prob=0.0;
     for(int k=0; k<tagger_data.getM(); k++) {
       if (tagger_data.getOutput()[k].find(i)!=tagger_data.getOutput()[k].end())
 	sum_prob+=tagger_data.getB()[i][k];
     }
-    wcout<<L"SUM B["<<tagger_data.getArrayTags()[i]<<L"("<<i<<L")][*]="<<sum_prob<<L"\n";
+    cout<<"SUM B["<<UtfConverter::toUtf8(tagger_data.getArrayTags()[i])<<"("<<i<<")][*]="<<sum_prob<<"\n";
   }
 }
 
