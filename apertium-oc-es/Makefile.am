@@ -24,56 +24,53 @@ TARGETS = $(TARGETS_COMMON) $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x
           $(PREFIX1b).t1x.bin $(PREFIX1b).t2x.bin $(PREFIX1b).t3x.bin \
           $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
           $(PREFIX2b).t1x.bin $(PREFIX2b).t2x.bin $(PREFIX2b).t3x.bin \
-          $(PREFIX1).t1x. $(PREFIX1).t2x $(PREFIX1).t3x \
+          $(PREFIX1).t1x $(PREFIX1).t2x $(PREFIX1).t3x \
           $(PREFIX1b).t1x $(PREFIX1b).t2x $(PREFIX1b).t3x \
           $(PREFIX2).t1x $(PREFIX2).t2x $(PREFIX2).t3x \
-          $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x 
+          $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x
 
-.deps:
-	mkdir .deps
-	
-.deps/$(LANG1).metadix: $(BASENAME).$(LANG1).metadix .deps
+.deps/$(LANG1).metadix: $(BASENAME).$(LANG1).metadix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(LANG1).metadix >$@
 
 .deps/$(LANG1).dix: .deps/$(LANG1).metadix
 	xsltproc buscaPar.xsl .deps/$(LANG1).metadix | uniq >$$$$tmp1 && \
 	xsltproc $$$$tmp1 .deps/$(LANG1).metadix > $@ && rm $$$$tmp1
 
-.deps/$(LANG1b).metadix: $(BASENAME).$(LANG1).metadix .deps
+.deps/$(LANG1b).metadix: $(BASENAME).$(LANG1).metadix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(LANG1).metadix >$@
 
 .deps/$(LANG1b).dix: .deps/$(LANG1b).metadix
 	xsltproc buscaPar.xsl .deps/$(LANG1b).metadix | uniq >$$$$tmp1 && \
 	xsltproc $$$$tmp1 .deps/$(LANG1b).metadix > $@ && rm $$$$tmp1
 
-.deps/$(LANG2).dix: $(BASENAME).$(LANG2).dix .deps
+.deps/$(LANG2).dix: $(BASENAME).$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(LANG2).dix >$@
 
-.deps/$(LANG2b).dix: $(BASENAME).$(LANG2).dix .deps
+.deps/$(LANG2b).dix: $(BASENAME).$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(LANG2).dix >$@
 
-.deps/$(PREFIX1).dix: $(BASENAME).$(PREFIX1).dix .deps
+.deps/$(PREFIX1).dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX1).dix >$@
 
-.deps/$(PREFIX1b).dix: $(BASENAME).$(PREFIX1).dix .deps
+.deps/$(PREFIX1b).dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX1).dix >$@
 
-.deps/$(PREFIX1).post.dix: $(BASENAME).post-$(LANG2).dix .deps
+.deps/$(PREFIX1).post.dix: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
-.deps/$(PREFIX1b).post.dix: $(BASENAME).post-$(LANG2).dix .deps
+.deps/$(PREFIX1b).post.dix: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
-.deps/$(LANG1).post.dix: $(BASENAME).post-$(LANG1).dix .deps
+.deps/$(LANG1).post.dix: $(BASENAME).post-$(LANG1).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG1).dix >$@
 
-.deps/$(LANG1b).post.dix: $(BASENAME).post-$(LANG1).dix .deps
+.deps/$(LANG1b).post.dix: $(BASENAME).post-$(LANG1).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG1).dix >$@
 
-.deps/$(LANG2).post.dix: $(BASENAME).post-$(LANG2).dix .deps
+.deps/$(LANG2).post.dix: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
-.deps/$(LANG2b).post.dix: $(BASENAME).post-$(LANG2).dix .deps
+.deps/$(LANG2b).post.dix: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 		             
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix
@@ -269,4 +266,4 @@ install-data-local:
 	$(INSTALL_DATA) oc_aran-es.mode $(apertium_oc_esmodesdir)
 	$(INSTALL_DATA) es-oc_aran.mode $(apertium_oc_esmodesdir)
 	
-CLEANFILES = -r $(TARGETS) .deps
+CLEANFILES = -r $(TARGETS)
