@@ -131,12 +131,16 @@ modes: modes.xml
 
 clean-dicts:
 	touch $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(PREFIX1).dix
+	touch $(BASENAME).$(LANG1a).dix $(BASENAME).$(LANG1b).dix $(BASENAME).$(PREFIX1c).dix
 	rm $(BASENAME).$(LANG1).dix
+	rm $(BASENAME).$(LANG1a).dix
+	rm $(BASENAME).$(LANG1b).dix
+	rm $(BASENAME).$(LANG1c).dix
 	rm $(BASENAME).$(LANG2).dix
 	rm $(BASENAME).$(PREFIX1).dix
 	
-apertium_en_afdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
-apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
+apertium_sh_mkdir=$(prefix)/share/apertium/$(PREFIX1)/
+apertium_sh_mk_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX2a).autogen.bin $(PREFIX2b).autogen.bin $(PREFIX2c).autogen.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
