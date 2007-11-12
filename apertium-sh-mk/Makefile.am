@@ -139,7 +139,7 @@ clean-dicts:
 	rm $(BASENAME).$(LANG2).dix
 	rm $(BASENAME).$(PREFIX1).dix
 	
-apertium_sh_mkdir=$(prefix)/share/apertium/$(PREFIX1)/
+apertium_sh_mkdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_sh_mk_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX2a).autogen.bin $(PREFIX2b).autogen.bin $(PREFIX2c).autogen.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
@@ -147,6 +147,7 @@ apertium_sh_mk_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
+		    $(BASENAME).$(PREFIX1).t1x \
 		    modes clean-dicts
 		  
 #                    $(PREFIX1).autopgen.bin 
