@@ -1,69 +1,141 @@
 #!/usr/bin/env python
 
-import types
-
+# GTK oriented packages
+import gtk
 import pygtk
 pygtk.require('2.0')
-import gtk
-import xml
-import logging
-from subprocess import Popen, PIPE
 
+# Logging
+import logging
+
+# Process oriented packages
+from subprocess import Popen, PIPE
+import threading
+from Queue import Queue
+
+# XML packages
+import xml
 try:
     import xml.etree.ElementTree as ET # Python 2.5
 except:
-    try:
-        import elementtree.ElementTree as ET
-    except:
-        print "Could not load the ElementTree module"
-        exit(1)
+    import elementtree.ElementTree as ET
 
-env = {} # my idiosyncratic way of storing globals
+# Our config file
+import config 
 
-class FoldBox(gtk.HBox):
-    def __init__(self, text_buffer):
-        gtk.HBox.__init__(self, homogeneous = False)
+# Custom widget with horizontal pane allowing for the easy
+# vertical resizing of boxes
+from VSizerPane import VSizerPane
+
+
+
+# Global variables
+class Globals:
+    lang_code = ''
+    mode = ''
+    stages = None # Linked list of stages
+    pipeline_executor = None
+
+
+
+class View(gtk.Expander):
+    """
+    A GTK expander containing a scrollable text window and a
+    VSizerPane at the bottom
+    """
+    window = None # if the text box is detached into a window
+
+    def __init__(self, label, text_buffer):
+        gtk.Expander.__init__(self, label)
 
         text_view = gtk.TextView(text_buffer)
         text_view.set_editable(True)
         text_view.set_wrap_mode(gtk.WRAP_WORD)
         text_view.show()
-        
+
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.show()
         scrolled_window.add_with_viewport(text_view)
+        scrolled_window.set_size_request(-1, 200)
 
-        self.pack_start(scrolled_window)
+        sizer_pane = VSizerPane('handle.xpm', scrolled_window)
+        sizer_pane.show()
+        
+        vbox = gtk.VBox(homogeneous = False)
+        vbox.show()
+        vbox.pack_start(scrolled_window, expand = True, fill = True)
+        vbox.pack_start(sizer_pane, expand = False, fill = True)
 
-class FoldBoxRow(gtk.HBox):
-    def __init__(self, stages):
-        gtk.HBox.__init__(self, stages)
+        self.add(vbox)
+        self.set_expanded(True)
+    
 
-        for stage in stages:
-            fold_box = FoldBox(stage.text_buffer)
-            fold_box.show()
-            self.pack_start(fold_box)
 
+class PipelineExecutor(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.queue = Queue()
+        self.setDaemon(True)
+
+    def run(self):
+        while True:
+            stage = self.queue.get()
+            
+            while self.queue.qsize() > 0:
+                stage = self.queue.get()
+
+            stage.run()
+
+    def add(self, stage):
+        self.queue.put(stage)
+    
 
 
 class Stage:
     def __init__(self, command_line):
         logging.debug('creating stage with command_line %s' % str(command_line))
-        self.text_buffer = gtk.TextBuffer()
         self.command_line = command_line
+        self.next = None
+        
+        self.text_buffer = gtk.TextBuffer()
+        self.update_handler = self.text_buffer.connect("changed", self.update)
 
     def run(self):
-        logging.debug("Running %s" % str(self.command_line))
+        if self.next == None:
+            return
+        
+        proc = Popen(self.next.command_line, stdin = PIPE, stdout = PIPE)
 
-    def update(self, widget, previous_buffer):
-        logging.debug("Running %s" % str(self.command_line))
-        p = Popen(self.command_line, stdin = PIPE, stdout = PIPE)
-        out, err = p.communicate(previous_buffer.get_text(previous_buffer.get_start_iter(),
-                                                          previous_buffer.get_end_iter()))
-        self.text_buffer.set_text(out)
+        try:
+            out, err = proc.communicate(self.text_buffer.get_text(self.text_buffer.get_start_iter(),
+                                                                  self.text_buffer.get_end_iter()))
 
-    
+            gtk.gdk.threads_enter()
+            self.next.text_buffer.handler_block(self.next.update_handler)
+            self.next.text_buffer.set_text(out.strip())
+            self.next.text_buffer.handler_unblock(self.next.update_handler)
+            gtk.gdk.threads_leave()
+
+            self.next.run()
+
+        except Exception, e:
+            logging.error("Cripes! %s" % str(e))
+
+    def update(self, widget, *args):
+        Globals.pipeline_executor.add(self)
+
+    def __iter__(self):
+        def itr(stage):
+            while stage != None:
+                yield stage
+                stage = stage.next
+
+        return itr(self)
+
+
 def menu_item(label, item = None):
+    import types
+
     menu_item = gtk.MenuItem(label)
     menu_item.show()
 
@@ -83,149 +155,170 @@ def menu(*items):
 
     return menu
 
-env['apertium-bin-path'] = '/usr/local/bin'
-env['apertium-dict-path'] = '/usr/local/share/apertium'
+def menubar():
+    bar_items = (menu_item("File", menu(menu_item("Open", menu_file_open),
+                                        menu_item("Exit", quit))),
+                 menu_item("Compile"))
+
+    menu_bar = gtk.MenuBar()
+    for item in bar_items:
+        menu_bar.append(item)
+    menu_bar.show()
+
+    return menu_bar
+
+
+
+def load_mode_file(filename):
+    pass
+
+def menu_file_open(widget, data = None):
+    if "open_dialog" not in self.__dict__:
+        self.open_dialog = gtk.FileSelection("Select the modes file")
+        self.open_dialog.ok_button.connect("clicked",
+                                           load_mode_file(self.open_dialog.get_filename()))
+        self.open_dialog.ok_button.connect("clicked",
+                                           lambda w: self.open_dialog.hide())
+        self.open_dialog.cancel_button.connect("clicked",
+                                               lambda w: self.open_dialog.hide())
+
+    self.open_dialog.show()
+
+
+
+def quit(widget, data = None):
+    gtk.main_quit()
+
+def delete_event(widget, event, data = None):
+    return False
+
+def main_window():
+    def make_stage_name(command_line):
+        s = " ".join(command_line)
+        
+        if len(s) > 64:
+            return s[0:64] + "..."
+        else:
+            return s
+    
+    def make_handle_box(stages):
+        view_box = gtk.VBox(homogeneous = False)
+
+        for stage in stages:
+            view = View(make_stage_name(stage.command_line), stage.text_buffer)
+            view.show()
+            view_box.pack_start(view, expand = False, fill = True)
+
+        return view_box
+    
+    view_box = make_handle_box(Globals.stages)
+    view_box.show()
+
+    vbox = gtk.VBox(homogeneous = False, spacing = 5)
+    vbox.show()
+
+    vbox.pack_start(menubar(), expand = False)
+    vbox.pack_start(view_box, expand = True)
+
+    scrolled_window = gtk.ScrolledWindow()
+    scrolled_window.show()
+    scrolled_window.add_with_viewport(vbox)
+
+    window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+    window.add(scrolled_window)
+
+    window.connect("delete_event", delete_event)
+    window.connect("destroy", quit)
+
+    window.resize(500, 400)
+
+    window.show()
+    
+
 
 def apertium_program(program):
     # TODO: Make this search for the Apertium path
-    return "%s/%s" % (env['apertium-bin-path'], program)
+    return "%s/%s" % (config.apertium_bin_path, program)
 
 def apertium_dictionary(dictionary):
     # TODO: Make this search for the Apertium path
-    return "%s/apertium-%s/%s" % (env['apertium-dict-path'], env['lang-code'], dictionary) 
-
-
-
-def print_usage(self):
-    raise Exception("usage: apertium-view [<modes file>] [<language code>]")
-
-
+    return "%s/apertium-%s/%s" % (config.apertium_dict_path, Globals.lang_code, dictionary) 
 
 def setup_mode(mode):
-    stages = [Stage("")]
+    stages = Stage("")
 
-    for program in mode.findall('.//program'):
-        command = apertium_program(program.attrib['name']).split(' ')
+    def add(stages):
+        for program in mode.findall('.//program'):
+            command = apertium_program(program.attrib['name']).split(' ')
+            if len(command) > 1 and command[1] == '$1':
+                command[1] = '-g'
 
-        for param in program.findall('.//file'):
-            command.append(apertium_dictionary(param.attrib['name']))
+            for param in program.findall('.//file'):
+                command.append(apertium_dictionary(param.attrib['name']))
 
-        stages.append(Stage(tuple(command)))
+            stages.next = Stage(tuple(command))
+            stages = stages.next
 
-    for i, stage in enumerate(stages[0:-1]):
-        stage.text_buffer.connect("changed", stages[i + 1].update, stage.text_buffer)
+    add(stages)
 
     return stages
 
 
 
-class Apertium:
-    stages = []
-
-    def __init__(self):
-        def create_window():        
-            fold_box_row = FoldBoxRow(self.stages)
-            fold_box_row.show()
-
-            vbox = gtk.VBox(homogeneous = False, spacing = 5)
-            vbox.show()
-            
-            vbox.pack_start(self.menubar(), expand = False)
-            vbox.pack_start(fold_box_row, expand = True)
-
-            self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-            self.window.add(vbox)
-        
-            self.window.connect("delete_event", self.delete_event)
-            self.window.connect("destroy", self.quit)
-
-            self.window.show()
-
-        self.setup_debugging()
-        self.process_command_line()
-        logging.debug('parsed command line')
-
-        self.stages = setup_mode(env['mode'])
-        create_window()
-
-    def setup_debugging(self):
-        logging.basicConfig(level=logging.DEBUG,
-                            format='%(asctime)s %(levelname)-8s %(message)s',
-                            datefmt='%a, %d %b %Y %H:%M:%S',
-                            filename='apertium.log',
-                            filemode='w')
+def setup_logging():
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s %(levelname)-8s %(message)s',
+                        datefmt='%a, %d %b %Y %H:%M:%S',
+                        filename='apertium.log',
+                        filemode='w')
 
 
-    def process_command_line(self):
-        import sys
-        logging.debug('argv == %s' % sys.argv)
 
-        env['lang-code'] = sys.argv[1]
+def print_usage():
+    print "usage: apertium-view [<modes file>] [<language code>]"
 
-        def process_modes(mode_file, mode_code = None):
-            logging.debug("mode_file == %s" % mode_file)
-            tree = ET.parse(mode_file)
+def process_command_line():
+    import sys
 
-            def find_mode():
-                if mode_code != None:
-                    for mode in tree.findall('mode'):
-                        if mode.attrib['name'] == mode_code:
-                            return mode
+    logging.debug('Command line is %s' % sys.argv)
+    Globals.lang_code = sys.argv[1]
 
-                        self.print_usage()
+    def process_modes(mode_file, mode_code = None):
+        logging.debug("Using mode file %s" % mode_file)
+        tree = ET.parse(mode_file)
 
-                else:
-                    logging.debug('returning first mode')
-                    return tree.find('mode')
+        def find_mode():
+            if mode_code != None:
+                logging.debug('Looking for mode code %s' % mode_code)
+                for mode in tree.findall('mode'):
+                    if mode.attrib['name'] == mode_code:
+                        return mode
 
-            return find_mode()
+                    print_usage()
 
-        env['mode'] = process_modes(*sys.argv[2:4])
-                
+            else:
+                logging.debug('No mode code specified, using first one in file')
+                return tree.find('mode')
 
-    def load_mode_file(self, filename):
-        tree = ET.parse(filename)
+        return find_mode()
 
-    def quit(self, widget, data = None):
-        gtk.main_quit()
+    Globals.mode = process_modes(*sys.argv[2:4])
+    logging.debug('Parsed command line')
 
-    def delete_event(self, widget, event, data = None):
-        return False
 
-    def menu_file_open(self, widget, data = None):
-        if "open_dialog" not in self.__dict__:
-            self.open_dialog = gtk.FileSelection("Select the modes file")
-            self.open_dialog.ok_button.connect("clicked",
-                                               self.load_mode_file(self.open_dialog.get_filename()))
-            self.open_dialog.ok_button.connect("clicked",
-                                               lambda w: self.open_dialog.hide())
-            self.open_dialog.cancel_button.connect("clicked",
-                                                   lambda w: self.open_dialog.hide())
 
-        self.open_dialog.show()
-
-    def menubar(self):
-        bar_items = (menu_item("File", menu(menu_item("Open", self.menu_file_open),
-                                            menu_item("Exit", self.quit))),
-                     menu_item("Compile"))
-        
-        menu_bar = gtk.MenuBar()
-        for item in bar_items:
-            menu_bar.append(item)
-        menu_bar.show()
-
-        return menu_bar
-        
-    def main(self):
-        gtk.main()
-        logging.debug('Graceful shutdown')
+def init():
+    setup_logging()
+    process_command_line()
+    Globals.stages = setup_mode(Globals.mode)
+    Globals.pipeline_executor = PipelineExecutor()
+    Globals.pipeline_executor.start()
+    main_window()
 
 if __name__ == "__main__":
-    try:
-        apertium = Apertium()
-        apertium.main()
-        
-    except Exception, e:
-        print e
-        logging.error(e)
-        exit(1)
+    gtk.gdk.threads_init()
+    init()
+    logging.debug('Completed init phase')
+    gtk.main()
+    logging.debug('Graceful shutdown')
+
