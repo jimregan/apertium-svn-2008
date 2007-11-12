@@ -10,6 +10,18 @@ AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
 
+AC_PATH_PROG(XSLTPROC, xsltproc, no)
+if test x$ac_cv_path_XSLTPROC = x
+then
+  AC_MSG_ERROR([You don't have xsltproc installed.])
+fi
+if test x$ac_cv_path_XSLTPROC = xno
+then
+  AC_MSG_ERROR([You don't have xsltproc installed.])
+fi
+
+
+
 PKG_CHECK_MODULES(APERTIUM, apertium-3.0 >= 3.0.0)
 
 MODES="modes";
