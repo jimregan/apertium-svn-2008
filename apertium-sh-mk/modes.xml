@@ -23,7 +23,7 @@
     </pipeline>
   </mode>
 
-  <mode name="mk-sh">
+  <mode name="mk-sh_BS">
     <pipeline>
       <program name="lt-proc">
         <file name="mk-sh.automorf.bin"/>
@@ -38,12 +38,60 @@
         <file name="mk-sh.autobil.bin"/>
       </program>
       <program name="lt-proc -g">
-        <file name="mk-sh.autogen.bin"/>
+        <file name="mk-sh_BS.autogen.bin"/>
       </program>
 <!--      <program name="lt-proc -p">
-        <file name="mk-sh.autopgen.bin"/>
+        <file name="mk-sh_BS.autopgen.bin"/>
       </program> -->
     </pipeline>
   </mode>
+
+  <mode name="mk-sh_HR">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="mk-sh.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="mk-sh.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-sh-mk.mk-sh.t1x"/>
+        <file name="mk-sh.t1x.bin"/>
+        <file name="mk-sh.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="mk-sh_HR.autogen.bin"/>
+      </program>
+<!--      <program name="lt-proc -p">
+        <file name="mk-sh_HR.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
+  <mode name="mk-sh_SR">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="mk-sh.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="mk-sh.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-sh-mk.mk-sh.t1x"/>
+        <file name="mk-sh.t1x.bin"/>
+        <file name="mk-sh.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="mk-sh_SR.autogen.bin"/>
+      </program>
+<!--      <program name="lt-proc -p">
+        <file name="mk-sh_SR.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
+
 
 </modes>

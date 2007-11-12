@@ -1,22 +1,57 @@
-VERSION=0.1
+VhahahaERSION=0.1
 LANG1=sh
+LANG1a=sh_BS
+LANG1b=sh_HR
+LANG1c=sh_SR
 LANG2=mk
 PREFIX1=$(LANG1)-$(LANG2)
 PREFIX2=$(LANG2)-$(LANG1)
+PREFIX2a=$(LANG2)-$(LANG1a)
+PREFIX2b=$(LANG2)-$(LANG1b)
+PREFIX2c=$(LANG2)-$(LANG1c)
 
 BASENAME=apertium-$(PREFIX1)
 
-TARGETS_COMMON = $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1)-$(LANG2).dix \
-     $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
+TARGETS_COMMON = $(BASENAME).$(LANG1a).dix  $(BASENAME).$(LANG1b).dix $(BASENAME).$(LANG1c).dix \
+	$(PREFIX2a).autogen.bin $(PREFIX2b).autogen.bin $(PREFIX2c).autogen.bin \
+	$(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1)-$(LANG2).dix \
+	$(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
 	$(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
-     $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes \
-     clean-dicts
+	$(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+	$(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes \
+	clean-dicts
 
 #    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin 
 
+$(BASENAME).$(LANG1a).dix:
+	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
+	xsltproc --stringparam alt $(LANG1a) alt.xsl $(BASENAME).$(LANG1).dix >$@
+
+$(PREFIX2a).autogen.bin: $(BASENAME).$(LANG1a).dix
+	apertium-validate-dictionary $(BASENAME).$(LANG1a).dix
+	lt-comp rl $(BASENAME).$(LANG1a).dix $@
+
+$(BASENAME).$(LANG1b).dix:
+	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
+	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(LANG1).dix >$@
+
+$(PREFIX2b).autogen.bin: $(BASENAME).$(LANG1b).dix
+	apertium-validate-dictionary $(BASENAME).$(LANG1b).dix
+	lt-comp rl $(BASENAME).$(LANG1b).dix $@
+
+$(BASENAME).$(LANG1c).dix:
+	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
+	xsltproc --stringparam alt $(LANG1c) alt.xsl $(BASENAME).$(LANG1).dix >$@
+
+$(PREFIX2c).autogen.bin: $(BASENAME).$(LANG1c).dix
+	apertium-validate-dictionary $(BASENAME).$(LANG1c).dix
+	lt-comp rl $(BASENAME).$(LANG1c).dix $@
+
 $(BASENAME).$(LANG1).dix:
 	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
+	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(LANG1).dix > dix.tmp 
+	mv dix.tmp $@
+
 $(BASENAME).$(LANG2).dix:
 	xmllint --xinclude $(BASENAME).$(LANG2).dix.xml > $(BASENAME).$(LANG2).dix
 $(BASENAME).$(LANG1)-$(LANG2).dix:
@@ -46,9 +81,9 @@ $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 	lt-comp rl $(BASENAME).$(PREFIX1).dix $@
 
-$(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
-	lt-comp rl $(BASENAME).$(LANG1).dix $@
+#$(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
+#	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
+#	lt-comp rl $(BASENAME).$(LANG1).dix $@
 
 #$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 #	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
@@ -102,6 +137,7 @@ clean-dicts:
 	
 apertium_en_afdir=$(prefix)/share/apertium-1.0/$(PREFIX1)/
 apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
+		    $(PREFIX2a).autogen.bin $(PREFIX2b).autogen.bin $(PREFIX2c).autogen.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
