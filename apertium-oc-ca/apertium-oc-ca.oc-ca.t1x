@@ -4,6 +4,7 @@
     <def-cat n="nom">
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
       <cat-item tags="np.loc"/>
+      <cat-item tags="np.al"/>
     </def-cat>
 
      <def-cat n="ant">
@@ -98,12 +99,12 @@
 			<cat-item lemma="anar" tags="vblex.*"/>
 		</def-cat>		
 		
-   <def-cat n="verb"><!--tots els verbs -->
+<!--   <def-cat n="verb">
       <cat-item tags="vblex.*"/>
       <cat-item tags="vbser.*"/>
       <cat-item tags="vbhaver.*"/>
       <cat-item tags="vbmod.*"/>
-    </def-cat>
+    </def-cat>-->
 		
  		<def-cat n="aux"><!--verbs que fan d'aux seguits de pp-->
       <cat-item tags="vbhaver.*"/>
@@ -280,6 +281,7 @@
       <attr-item tags="n"/>
       <attr-item tags="n.acr"/>
       <attr-item tags="n.unc"/>
+      <attr-item tags="np.al"/>
       <attr-item tags="np.loc"/>
       <attr-item tags="np.ant"/>
     </def-attr>
@@ -478,8 +480,9 @@
 
   </section-def-attrs>
   <section-def-vars>
-    <def-var n="tipusrel"/>
-    <def-var n="tipusprep"/>
+    <def-var n="verb"/>
+     <def-var n="tipusrel"/>
+   <def-var n="tipusprep"/>
     <def-var n="tipusverb"/>
     <def-var n="tipusnom"/>
     <def-var n="numero"/>
@@ -11514,6 +11517,10 @@
 			<call-macro n="f_bcond">
 				<with-param pos="2"/>
 			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
 		</action>
 	</rule>
 	
