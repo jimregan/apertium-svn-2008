@@ -231,11 +231,13 @@ EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
            $(PREFIX2)-supervised.make $(PREFIX2)-unsupervised.make \
            $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
                                   
-modes: modes.xml
+modes: modes.xml Makefile.am
 	apertium-gen-modes modes.xml
+	@cp *.mode modes/
 	
-$(INSTALL_MODES): modes.xml
+$(INSTALL_MODES): modes.xml Makefile.am
 	apertium-gen-modes modes.xml
+	@cp *.mode modes/
 
 apertium_oc_esdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_oc_esmodesdir=$(prefix)/share/apertium/modes/
