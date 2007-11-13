@@ -27,12 +27,11 @@ import config
 # vertical resizing of boxes
 from VSizerPane import VSizerPane
 
-
-
 # Global variables
 class Globals:
     lang_code = ''
     mode = ''
+    marcar = 0
     stages = None # Linked list of stages
     pipeline_executor = None
 
@@ -104,8 +103,18 @@ class Stage:
     def run(self):
         if self.next == None:
             return
-        
-        proc = Popen(self.next.command_line, stdin = PIPE, stdout = PIPE)
+
+	# set the marking (on or off)
+        if len(self.next.command_line) > 1 and self.next.command_line[1] == '$1' and Globals.marcar == 1:
+	    cmdline = self.next.command_line;
+	    cmdline = (cmdline[0], '-g', cmdline[2]);
+        elif len(self.next.command_line) > 1 and self.next.command_line[1] == '$1' and Globals.marcar == 0:
+	    cmdline = self.next.command_line;
+	    cmdline = (cmdline[0], '-n', cmdline[2]);
+        else:
+	    cmdline = self.next.command_line;
+	    
+        proc = Popen(cmdline, stdin = PIPE, stdout = PIPE)
 
         try:
             out, err = proc.communicate(self.text_buffer.get_text(self.text_buffer.get_start_iter(),
@@ -191,6 +200,17 @@ def quit(widget, data = None):
 def delete_event(widget, event, data = None):
     return False
 
+#
+# There is probably a much nicer way of doing this.
+#
+def checkbox_event(widget, *args):
+    if Globals.marcar == 1:
+      Globals.marcar = 0
+    else:
+      Globals.marcar = 1
+
+    Globals.stages.update(widget);
+      
 def main_window():
     def make_stage_name(command_line):
         s = " ".join(command_line)
@@ -220,10 +240,21 @@ def main_window():
     view_box.show()
 
     vbox = gtk.VBox(homogeneous = False, spacing = 5)
+    vbox_options = gtk.VBox(homogeneous = False, spacing = 5)
     vbox.show()
 
     vbox.pack_start(menubar(), expand = False)
+    # There is probably a much nicer way of doing this.
+    vbox.pack_start(vbox_options, expand = False)
+
+    marcar_box =  gtk.CheckButton('Mark unknown words')
+    vbox_options.show()
+    marcar_box.show()
+    marcar_box.connect("clicked", checkbox_event);
+    vbox_options.pack_end(marcar_box, expand = False, fill = True)
+
     vbox.pack_start(view_box, expand = True)
+
 
     scrolled_window = gtk.ScrolledWindow()
     scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
@@ -236,7 +267,7 @@ def main_window():
     window.connect("delete_event", delete_event)
     window.connect("destroy", quit)
 
-    window.resize(500, 400)
+    window.resize(400, 500)
 
     window.show()
     
@@ -256,9 +287,7 @@ def setup_mode(mode):
     def add(stages):
         for program in mode.findall('.//program'):
             command = apertium_program(program.attrib['name']).split(' ')
-            if len(command) > 1 and command[1] == '$1':
-                command[1] = '-g'
-
+                
             for param in program.findall('.//file'):
                 command.append(apertium_dictionary(param.attrib['name']))
 
