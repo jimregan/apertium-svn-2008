@@ -135,15 +135,13 @@ class Stage:
 
 
 def menu_item(label, item = None):
-    import types
-
     menu_item = gtk.MenuItem(label)
     menu_item.show()
 
-    if type(item) == types.MethodType:
+    if type(item) == type(lambda: 2):
         menu_item.connect("activate", item)
 
-    elif type(item) == gtk.Menu:
+    elif type(item) == gtk.Menu: 
         menu_item.set_submenu(item)
 
     return menu_item
@@ -222,6 +220,7 @@ def main_window():
     vbox.pack_start(view_box, expand = True)
 
     scrolled_window = gtk.ScrolledWindow()
+    scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
     scrolled_window.show()
     scrolled_window.add_with_viewport(vbox)
 
