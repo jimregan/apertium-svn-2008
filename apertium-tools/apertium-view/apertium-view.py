@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # GTK oriented packages
-import gtk
+import gtk, sys
 import pygtk
 pygtk.require('2.0')
 
@@ -316,6 +316,11 @@ def init():
     main_window()
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2: #{
+        print 'Usage: apertium-view.py <pair name> <modes file> [direction]';
+        sys.exit(-1);
+    #}
+
     gtk.gdk.threads_init()
     init()
     logging.debug('Completed init phase')
