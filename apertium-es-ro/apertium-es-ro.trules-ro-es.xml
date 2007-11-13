@@ -3538,6 +3538,69 @@
     </rule> 
 
 <rule>
+<!-- REGLA 32abis simple DELIA: NOM (ind)+ ADJ = relații internaționale-->
+      <pattern>        
+        <pattern-item n="nom"/>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action> 
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="1"/>
+          <with-param pos="2"/> 
+	</call-macro> 
+          <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+               <out>
+                  
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_adj"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>                  
+                </out>
+              </when>
+	      <otherwise>
+               <out>
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+	           <b/>
+                   <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_adj"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+              </otherwise>
+            </choose>
+         </action>
+    </rule> 
+
+<rule>
 <!-- REGLA 32abis DELIA: NOM + ADJ + DETA + NP oficiile consulare ale României = las oficinas consulares de Rumanía-->
       <pattern>        
         <pattern-item n="nom"/>
@@ -3644,7 +3707,7 @@
 
 
 <rule>
-<!-- REGLA 32bisbis DELIA: NOM (def)+ DETA + Rel Cărui + Nom /cartea a cărei copertă = libro cuya portada-->
+<!-- REGLA 32bisbis DELIA: NOM (def)+ DETA + Rel Cărui + Nom /cartea a cărei copertă = el libro cuya portada-->
       <pattern>        
         <pattern-item n="nom"/>
         <pattern-item n="deta"/>
@@ -5746,7 +5809,7 @@ is not applicable because gender and number can not be taken from previous rules
       <pattern>
         <pattern-item n="nom"/>
         <pattern-item n="adjlui"/>
-        <pattern-item n="npant"/>
+        <pattern-item n="np"/>
       </pattern>
       <action> 
          <call-macro n="f_concord1">
@@ -5792,7 +5855,7 @@ is not applicable because gender and number can not be taken from previous rules
                  <b pos="2"/>
                   <lu>
                     <clip pos="3" side="tl" part="lem"/>
-                    <clip pos="3" side="tl" part="a_npant"/>
+                    <clip pos="3" side="tl" part="a_np"/>
                     <clip pos="3" side="tl" part="gen"/>
                     <clip pos="3" side="tl" part="nbr"/>
                   </lu>
@@ -5809,7 +5872,7 @@ is not applicable because gender and number can not be taken from previous rules
 		  <b pos="1"/>
                   <lu>
                     <clip pos="2" side="tl" part="lem"/>
-                    <clip pos="2" side="tl" part="a_npant"/>
+                    <clip pos="2" side="tl" part="a_np"/>
                     <clip pos="2" side="tl" part="gen"/>
                     <clip pos="2" side="tl" part="nbr"/>
                   </lu>
