@@ -57,7 +57,7 @@ class View(gtk.Expander):
         scrolled_window.show()
         scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scrolled_window.add_with_viewport(text_view)
-        scrolled_window.set_size_request(-1, 200)
+        scrolled_window.set_size_request(-1, 100)
 
         sizer_pane = VSizerPane('handle.xpm', scrolled_window)
         sizer_pane.show()
