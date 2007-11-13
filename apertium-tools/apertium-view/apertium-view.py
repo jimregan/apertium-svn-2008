@@ -203,10 +203,16 @@ def main_window():
     def make_handle_box(stages):
         view_box = gtk.VBox(homogeneous = False)
 
+        view_list = []
+
         for stage in stages:
             view = View(make_stage_name(stage.command_line), stage.text_buffer)
+            view_list.append(view)
             view.show()
             view_box.pack_start(view, expand = False, fill = True)
+
+        for view in view_list[1:-1]:
+            view.set_expanded(False)
 
         return view_box
     
