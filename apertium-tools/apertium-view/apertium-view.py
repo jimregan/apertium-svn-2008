@@ -316,7 +316,7 @@ def init():
     main_window()
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2: #{
+    if len(sys.argv) < 3: #{
         print 'Usage: apertium-view.py <pair name> <modes file> [direction]';
         sys.exit(-1);
     #}
