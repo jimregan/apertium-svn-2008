@@ -81,6 +81,10 @@ public:
   //True if all source words are aligned with at least one target
   //word, and vice versa
   bool allwords_aligned();
+
+  //True if the first source word and the last source word are aligned 
+  //with at least one target word and vice versa
+  bool all_end_words_aligned();
   
   friend ostream& operator << (ostream& os, Alignment& al);
 

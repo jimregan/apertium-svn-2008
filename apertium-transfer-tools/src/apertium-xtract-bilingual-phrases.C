@@ -176,6 +176,11 @@ int main(int argc, char* argv[]) {
 
   time_t start_time, end_time;
 
+  int nbilph=0;
+  //int ndiscarded_bilph=0;
+
+  int nalig=0;
+
   start_time=time(NULL);
   cerr<<"Bilingual phrases extraction started at: "<<ctime(&start_time);
   vector<Alignment> bilingual_phrases;
@@ -184,21 +189,39 @@ int main(int argc, char* argv[]) {
     getline(*falg,onealg);
     if(onealg.length()>0) {
       Alignment al(onealg);
+      nalig++;
+      //if(al.allwords_aligned()) {
+      bilingual_phrases=al.extract_bilingual_phrases(min, max);
 
-      if(al.allwords_aligned()) {
-	bilingual_phrases=al.extract_bilingual_phrases(min, max);
-
-	for (unsigned i=0; i<bilingual_phrases.size(); i++)
-	  (*fout)<<bilingual_phrases[i]<<"\n";
-      } else {
-	cerr<<"Warning: Alignment discarded due to words not aligned: ";
-	cerr<<al.to_string()<<"\n";
+      for (unsigned i=0; i<bilingual_phrases.size(); i++) {
+	nbilph++;
+	//if(bilingual_phrases[i].allwords_aligned()) {
+	(*fout)<<bilingual_phrases[i]<<"\n";
+	//} else {
+	//  cerr<<"Warning: Bilingual phrase discarded due to words not aligned: ";
+	//  cerr<<bilingual_phrases[i].to_string()<<"\n";
+	//  ndiscarded_bilph++;
+	//}
       }
+      //} else {
+      //  cerr<<"Warning: Alignment discarded due to words not aligned: ";
+      //  cerr<<al.to_string()<<"\n";
+      //  ndiscarded_alig++;
+      //}
     }
   }
 
   end_time=time(NULL);
   cerr<<"Bilingual phrases extraction finished at: "<<ctime(&end_time)<<"\n";
+  cerr<<"Number of alignments read: "<<nalig<<"\n";
+  //cerr<<"Number of alignments discarded: "<<ndiscarded_alig<<" ";
+  //cerr<<"("<<(((double)ndiscarded_alig)/((double)nalig))*100.0<<" %)\n";
+  //cerr<<"Number of alignments finaly used: "<<nalig-ndiscarded_alig<<"\n";
+
+  cerr<<"Number of bilingual phrases extracted: "<<nbilph<<"\n";
+  //cerr<<"Number of bilingual phrases discarded: "<<ndiscarded_bilph<<" ";
+  //cerr<<"("<<(((double)ndiscarded_bilph)/((double)nbilph))*100.0<<" %)\n";
+  
   cerr<<"Bilingual phrases extraction took "<<difftime(end_time, start_time)<<" seconds\n";
 
   delete falg;

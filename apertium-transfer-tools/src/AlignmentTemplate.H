@@ -32,10 +32,11 @@ using namespace std;
 #include "Alignment.H"
 #include "LexicalizedWords.H"
 
+
 class AlignmentTemplate:public Alignment {
 private:
   vector<string> restrictions;
-  bool valid; //While extracting the AT this flag is modified
+  int invalid; //While extracting the AT this flag is modified
 
   static LexicalizedWords source_lexicalized_words;
   static LexicalizedWords target_lexicalized_words;
@@ -44,7 +45,17 @@ private:
   static bool is_translation_ok(string t);
 
 public: 
-       
+
+  //Set of constant to identify why an AT is discarded (invalid)
+  static const int VALID = 0;
+  static const int INVALID_WRONG_OPEN_WORDS = 1;       
+  static const int INVALID_NO_OK_TRANSLATIONS = 2;
+  static const int INVALID_DIFFERENT_TRANSLATIONS = 3;
+  static const int INVALID_RESTRICTIONS = 4;
+  static const int INVALID_NO_EQUALCAT = 5;
+  static const int INVALID_EQUIVALENT_WORD_FOR_WORD = 6;
+  static const int INVALID_OTHERS = 7;
+
   AlignmentTemplate();
 
   AlignmentTemplate(string al);
@@ -63,7 +74,9 @@ public:
    * if 'equalcat' is true the fisrt tag of aligned (open) words must be
    * the same
    */
-  bool is_valid(bool equalcat=false);
+  bool is_valid(bool equalcat, bool noword4word, FSTProcessor &fstp, Alignment &bilph);
+
+  int invalid_reason();
 
   /** Test wheter the alignments between open words in source and
    * target language are ok, i.e., all source open words are aligned

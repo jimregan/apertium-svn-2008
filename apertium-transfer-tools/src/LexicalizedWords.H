@@ -35,7 +35,7 @@ using namespace std;
 
 class LexicalizedWords {
 private:
-  //set with all close words (first is the 'lemma' and second is the 'tags')
+  //set with all lexicalized words (first is the 'lemma' and second is the 'tags')
   set<pair<string, string> > lexicalized_words;
 
   string global_regexp;

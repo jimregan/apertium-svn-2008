@@ -90,7 +90,9 @@ LexicalizedWords::insert(string lemma, string tags) {
   //cerr<<"REG EXP(4): "<<regular_exp<<"\n";
 
   if (lemma.length()>0)
-    regular_exp="("+lemma+")"+"("+regular_exp+")";
+    regular_exp="(^"+lemma+")"+"("+regular_exp+")$";
+  else
+    regular_exp ="[^<]" + regular_exp + "$";
 
   regular_exp="("+ regular_exp +")";
 
@@ -100,7 +102,7 @@ LexicalizedWords::insert(string lemma, string tags) {
     global_regexp+= "|";
   global_regexp+=regular_exp;
 
-  //cerr<<"Global reg exp: "<<global_regexp<<"\n";
+  //cerr<<"Global reg exp: "<<global_regexp<<"\n\n";
 }
 
 void 
@@ -122,6 +124,8 @@ LexicalizedWords::insert_ends() {
 bool 
 LexicalizedWords::is_lexicalized_word(string word) {
   int res=regexec(&compiled_global_regexp, word.c_str(), 0, NULL, 0);
+
+  //cerr<<"Word: "<<word<<" is lexicalized? "<<(res==0)<<"\n";
 
   return (res==0); //true if regular exp. was matched
 }

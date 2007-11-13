@@ -308,6 +308,48 @@ Alignment::allwords_aligned() {
 }
 
 bool 
+Alignment::all_end_words_aligned() {
+
+  //Test if the fisrt source word is aligned with at least one target word
+  bool is_aligned=false;
+  for(unsigned j=0; (j<target.size()) && (!is_aligned); j++) {
+    if (alignment[0][j])
+      is_aligned=true;
+  }
+  if (!is_aligned)
+    return false;
+
+  //Test if the last source word is aligned with at least one target word
+  is_aligned=false;
+  for(unsigned j=0; (j<target.size()) && (!is_aligned); j++) {
+    if (alignment[source.size()-1][j])
+      is_aligned=true;
+  }
+  if (!is_aligned)
+    return false;
+
+  //Test if the first target word is aligned with at least one source word
+  is_aligned=false;
+  for(unsigned i=0; (i<source.size()) && (!is_aligned); i++) {
+    if (alignment[i][0])
+      is_aligned=true;
+  }
+  if (!is_aligned)
+    return false;
+
+  //Test if the last target word is aligned with at least one source word
+  is_aligned=false;
+  for(unsigned i=0; (i<source.size()) && (!is_aligned); i++) {
+    if (alignment[i][target.size()-1])
+      is_aligned=true;
+  }
+  if (!is_aligned)
+    return false;
+
+  return true;
+}
+
+bool 
 Alignment::are_the_same_alignment(const Alignment& al2) {
   bool ok=true;
 

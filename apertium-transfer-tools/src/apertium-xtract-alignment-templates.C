@@ -168,7 +168,6 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
   
-
   cerr<<"Alignment template extractor's configuration file: '"<<atx_file<<"'\n";
   cerr<<"Bilingual dictionary to be used to learn restrictions: '"<<bil_dic<<"'\n";
   cerr<<"Bilingual phrases will be read from file '"<<phrases_file<<"'\n";
@@ -232,22 +231,49 @@ int main(int argc, char* argv[]) {
 
   string onealg;
 
-  long nbilph=0;
+  double nbilph=0.0;
+  double ndiscarded_bilph=0.0;
+  double ndiscarded_invalid_alignment=0.0;
+  double ndiscarded_wrong_open_words=0.0;
+  double ndiscarded_not_reproducible=0.0;
+  double ndiscarded_not_equal_cat=0.0;
+  double ndiscarded_equivalent_word4word=0.0;
 
   while (!fbil->eof()) {
     getline(*fbil,onealg);
     if(onealg.length()>0) {
-      nbilph++;
+      nbilph+=1.0;
       Alignment bil_phrase(onealg);
 
-      AlignmentTemplate at=AlignmentTemplate::xtract_alignment_template(bil_phrase, fstp);
+      if (bil_phrase.all_end_words_aligned()) {
+	AlignmentTemplate at=AlignmentTemplate::xtract_alignment_template(bil_phrase, fstp);
 
-      if (at.is_valid(equalcat)) {
-	if ((!noword4word) || ((noword4word) && (!at.is_equivalent_to_word_for_word(bil_phrase, fstp))))
-	  (*fout)<<at<<"\n";	
+	if (at.is_valid(equalcat, noword4word, fstp, bil_phrase)) {
+	  (*fout)<<at<<"\n";
+	} else {
+	  ndiscarded_bilph+=1.0;
+          if (at.invalid_reason() == AlignmentTemplate::INVALID_WRONG_OPEN_WORDS) {
+	    ndiscarded_wrong_open_words+=1.0;
+	    cerr<<"Warning: AT discarded due to wrong alignments: ";
+	    cerr<<bil_phrase.to_string()<<"\n";
+            cerr<<at<<"\n";
+	  } else if (at.invalid_reason() == AlignmentTemplate::INVALID_NO_OK_TRANSLATIONS)
+	    ndiscarded_not_reproducible+=1.0;
+	  else if (at.invalid_reason() == AlignmentTemplate::INVALID_DIFFERENT_TRANSLATIONS)
+	    ndiscarded_not_reproducible+=1.0;
+	  else if (at.invalid_reason() == AlignmentTemplate::INVALID_NO_EQUALCAT)
+	    ndiscarded_not_equal_cat+=1.0;
+	  else if (at.invalid_reason() == AlignmentTemplate::INVALID_EQUIVALENT_WORD_FOR_WORD)
+	    ndiscarded_equivalent_word4word+=1.0;
+	}
+      } else {
+	ndiscarded_bilph+=1.0;
+	ndiscarded_invalid_alignment+=1.0;
+	cerr<<"Warning: Bilingual phrase discarded due to end words not aligned: ";
+	cerr<<bil_phrase.to_string()<<"\n";
       }
 
-      if ((nbilph%100000)==0)
+      if ((((int)nbilph)%100000)==0)
 	cerr<<nbilph<<" bilingual phrases processed\n";
     }
   }
@@ -255,6 +281,31 @@ int main(int argc, char* argv[]) {
   end_time=time(NULL);
   cerr<<"Alignment templates extraction finished at: "<<ctime(&end_time)<<"\n";
   cerr<<"Alignment templates extraction took "<<difftime(end_time, start_time)<<" seconds\n";
+
+  cerr<<"Number of bilingual phrases read: "<<nbilph<<"\n";
+  cerr<<"Number of bilingual phrases discarded: "<<ndiscarded_bilph<<" ";
+  cerr<<"("<<(ndiscarded_bilph/nbilph)*100.0<<" %)\n";
+
+  cerr<<"Number of bilingual phrases discarded because (over the number of discarded):\n";
+  cerr<<"   alignments not valid: "<<ndiscarded_invalid_alignment<<" ";
+  cerr<<"("<<(ndiscarded_invalid_alignment/ndiscarded_bilph)*100.0<<" %)\n";
+  cerr<<"   wrong open words alignments: "<<ndiscarded_wrong_open_words<<" ";
+  cerr<<"("<<(ndiscarded_wrong_open_words/ndiscarded_bilph)*100.0<<" %)\n";
+  cerr<<"   bil. ph. not reproducible: "<<ndiscarded_not_reproducible<<" ";
+  cerr<<"("<<(ndiscarded_not_reproducible/ndiscarded_bilph)*100.0<<" %)\n";
+  cerr<<"   not equal cat: "<<ndiscarded_not_equal_cat<<" ";
+  cerr<<"("<<(ndiscarded_not_equal_cat/ndiscarded_bilph)*100.0<<" %)\n";
+  cerr<<"   equivalent to word for word: "<<ndiscarded_equivalent_word4word<<" ";
+  cerr<<"("<<(ndiscarded_equivalent_word4word/ndiscarded_bilph)*100.0<<" %)\n";
+
+  double ndiscarded_rest=ndiscarded_bilph-(ndiscarded_invalid_alignment +
+                                           ndiscarded_wrong_open_words +
+                                           ndiscarded_not_reproducible +
+                                           ndiscarded_not_equal_cat +
+                                           ndiscarded_equivalent_word4word);
+
+  cerr<<"   rest:"<<ndiscarded_rest<<" ";
+  cerr<<"   ("<<(ndiscarded_rest/ndiscarded_bilph)*100.0<<" %)\n";
 
   delete fbil;
   delete fout;

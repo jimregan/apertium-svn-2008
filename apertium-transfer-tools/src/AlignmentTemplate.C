@@ -28,11 +28,11 @@ LexicalizedWords AlignmentTemplate::source_lexicalized_words;
 LexicalizedWords AlignmentTemplate::target_lexicalized_words;
 
 AlignmentTemplate::AlignmentTemplate() {
-  valid=true;
+  invalid=VALID;
 }
 
 AlignmentTemplate::AlignmentTemplate(string al):Alignment(al,5) {
-  valid=true;
+  invalid=VALID;
   vector<string> v;
 
   v=Utils::split_string(al, " | ");
@@ -47,7 +47,7 @@ AlignmentTemplate::AlignmentTemplate(string al):Alignment(al,5) {
 }
 
 AlignmentTemplate::AlignmentTemplate(const AlignmentTemplate& al):Alignment(al) {
-  valid=al.valid;
+  invalid=al.invalid;
   restrictions=al.restrictions;
 }
     
@@ -65,9 +65,9 @@ AlignmentTemplate::get_count() {
 }
 
 bool
-AlignmentTemplate::is_valid(bool equalcat) {
+AlignmentTemplate::is_valid(bool equalcat, bool noword4word, FSTProcessor& fstp, Alignment& bilph) {
 
-  if(!valid)
+  if(invalid!=VALID)
     return false;
 
   //Now follows some additional validations
@@ -75,7 +75,7 @@ AlignmentTemplate::is_valid(bool equalcat) {
   //There cannot be INVALID restrictions
   for (unsigned i=0; i<restrictions.size(); i++) {
     if (restrictions[i]=="__INVALID__") {
-      valid=false;
+      invalid=INVALID_RESTRICTIONS;
       return false;
     }
   }
@@ -90,13 +90,28 @@ AlignmentTemplate::is_valid(bool equalcat) {
 	string first_sl_tag=Utils::get_first_tag(source[i]);
 	string first_tl_tag=Utils::get_first_tag(target[j]);
 
-	if (first_sl_tag!=first_tl_tag)
+	if (first_sl_tag!=first_tl_tag) {
+	  invalid=INVALID_NO_EQUALCAT;
 	  return false;
+	}
       }
     }
   }
 
+  if (noword4word) {
+    if (is_equivalent_to_word_for_word(bilph, fstp)) {
+      invalid=INVALID_EQUIVALENT_WORD_FOR_WORD;
+      return false;
+    }
+  }
+
+  invalid=VALID;
   return true;
+}
+
+int 
+AlignmentTemplate::invalid_reason() {
+  return invalid;
 }
 
 string
@@ -140,7 +155,7 @@ AlignmentTemplate
 AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) {
   AlignmentTemplate at;
 
-  at.valid=true;
+  at.invalid=VALID;
   at.alignment=al.alignment;
   at.score=0;
 
@@ -180,13 +195,13 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
   }
 
   if (nopen_source!=nopen_target) {
-    at.valid=false;
+    at.invalid=INVALID_WRONG_OPEN_WORDS;
     at.restrictions.push_back("__INVALID__");
     return at;
   }
 
   if (!at.are_open_word_aligments_ok()) {
-    at.valid=false;
+    at.invalid=INVALID_WRONG_OPEN_WORDS;
     at.restrictions.push_back("__INVALID__");
     return at;
   }
@@ -208,7 +223,7 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
       biltrans=fstp.biltransWithoutQueue(w, false);
 
       if (!is_translation_ok(biltrans)) {
-	at.valid=false;
+	at.invalid=INVALID_NO_OK_TRANSLATIONS;
 	cerr<<"Error in AlignmentTemplate::xtract_alignment_template: ";
 	cerr<<"There were no OK translation for source word '"<<w<<"', translation was: '"<<biltrans<<"'\n";
 	at.restrictions.push_back("__INVALID__");
@@ -224,7 +239,7 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 	string tlemma=Utils::substitute(Utils::get_lemma(Utils::remove_begin_and_end_marks(al.target[tlp])),"_"," ");
 
 	if (Utils::strtolower(blemma) != Utils::strtolower(tlemma)) {
-	  at.valid=false;
+	  at.invalid=INVALID_DIFFERENT_TRANSLATIONS;
 	  cerr<<"Warning: The AT extracted from the following alignment cannot be used.\n";
 	  cerr<<al<<"\n";
 	  cerr<<"Cause: translation of '"<<w<<"' is '"<<blemma<<"', but it should be '"<<tlemma<<"'\n";
@@ -232,8 +247,10 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 	  return at;
 	}
       } else {
-	cerr<<"AL: "<<al<<"\n";
-	at.valid=false;
+	cerr<<"Warning: The AT extracted from the following alignment cannot be used.\n";
+	cerr<<al<<"\n";
+	cerr<<"Cause: bug not solved\n";
+	at.invalid=INVALID_OTHERS;
 	at.restrictions.push_back("__INVALID__");
 	return at;
       }      
@@ -396,6 +413,7 @@ AlignmentTemplate::are_open_word_aligments_ok() {
 	return false;
     }
   }
+
   return true;
 }
 
