@@ -131,7 +131,7 @@ modes: modes.xml
 
 clean-dicts:
 	touch $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(PREFIX1).dix
-	touch $(BASENAME).$(LANG1a).dix $(BASENAME).$(LANG1b).dix $(BASENAME).$(PREFIX1c).dix
+	touch $(BASENAME).$(LANG1a).dix $(BASENAME).$(LANG1b).dix $(BASENAME).$(LANG1c).dix
 	rm $(BASENAME).$(LANG1).dix
 	rm $(BASENAME).$(LANG1a).dix
 	rm $(BASENAME).$(LANG1b).dix
