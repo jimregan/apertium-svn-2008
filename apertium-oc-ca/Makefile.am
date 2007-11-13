@@ -7,6 +7,7 @@ PREFIX1=$(LANG1)-$(LANG2)
 PREFIX1b=$(LANG1b)-$(LANG2)
 PREFIX2=$(LANG2)-$(LANG1)
 PREFIX2b=$(LANG2)-$(LANG1b)
+INSTALL_MODES=oc-ca.mode ca-oc.mode oc_aran-ca.mode ca-oc_aran.mode
 
 BASENAME=apertium-$(PREFIX1)
 
@@ -17,62 +18,59 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1b).automorf.bin \
                  $(PREFIX1).autogen.bin $(PREFIX1b).autogen.bin \
                  $(PREFIX2).autogen.bin $(PREFIX2b).autogen.bin \
                  $(PREFIX1).autopgen.bin $(PREFIX1b).autopgen.bin \
-                 $(PREFIX2).autopgen.bin $(PREFIX2b).autopgen.bin 
+                 $(PREFIX2).autopgen.bin $(PREFIX2b).autopgen.bin modes
      
 TARGETS = $(TARGETS_COMMON) $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
           $(PREFIX1b).t1x.bin $(PREFIX1b).t2x.bin $(PREFIX1b).t3x.bin \
           $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
           $(PREFIX2b).t1x.bin $(PREFIX2b).t2x.bin $(PREFIX2b).t3x.bin \
-          $(PREFIX1).t1x. $(PREFIX1).t2x $(PREFIX1).t3x \
+          $(PREFIX1).t1x $(PREFIX1).t2x $(PREFIX1).t3x \
           $(PREFIX1b).t1x $(PREFIX1b).t2x $(PREFIX1b).t3x \
           $(PREFIX2).t1x $(PREFIX2).t2x $(PREFIX2).t3x \
-          $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x 
+          $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x
 
-.deps:
-	mkdir .deps
-	
-.deps/$(LANG1).metadix: $(BASENAME).$(LANG1).metadix .deps
+.deps/$(LANG1).metadix: $(BASENAME).$(LANG1).metadix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(LANG1).metadix >$@
 
 .deps/$(LANG1).dix: .deps/$(LANG1).metadix
 	xsltproc buscaPar.xsl .deps/$(LANG1).metadix | uniq >$$$$tmp1 && \
 	xsltproc $$$$tmp1 .deps/$(LANG1).metadix > $@ && rm $$$$tmp1
 
-.deps/$(LANG1b).metadix: $(BASENAME).$(LANG1).metadix .deps
+.deps/$(LANG1b).metadix: $(BASENAME).$(LANG1).metadix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(LANG1).metadix >$@
 
 .deps/$(LANG1b).dix: .deps/$(LANG1b).metadix
 	xsltproc buscaPar.xsl .deps/$(LANG1b).metadix | uniq >$$$$tmp1 && \
 	xsltproc $$$$tmp1 .deps/$(LANG1b).metadix > $@ && rm $$$$tmp1
 
-.deps/$(LANG2).dix: $(BASENAME).$(LANG2).dix .deps
+.deps/$(LANG2).dix: $(BASENAME).$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(LANG2).dix >$@
 
-.deps/$(LANG2b).dix: $(BASENAME).$(LANG2).dix .deps
+.deps/$(LANG2b).dix: $(BASENAME).$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(LANG2).dix >$@
 
-.deps/$(PREFIX1).dix: $(BASENAME).$(PREFIX1).dix .deps
+.deps/$(PREFIX1).dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).$(PREFIX1).dix >$@
 
-.deps/$(PREFIX1b).dix: $(BASENAME).$(PREFIX1).dix .deps
+.deps/$(PREFIX1b).dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).$(PREFIX1).dix >$@
 
-.deps/$(PREFIX1).post.dix: $(BASENAME).post-$(LANG2).dix .deps
+.deps/$(PREFIX1).post.dix: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
-.deps/$(PREFIX1b).post.dix: $(BASENAME).post-$(LANG2).dix .deps
+.deps/$(PREFIX1b).post.dix: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
-.deps/$(LANG1).post.dix: $(BASENAME).post-$(LANG1).dix .deps
+.deps/$(LANG1).post.dix: $(BASENAME).post-$(LANG1).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG1).dix >$@
 
-.deps/$(LANG1b).post.dix: $(BASENAME).post-$(LANG1).dix .deps
+.deps/$(LANG1b).post.dix: $(BASENAME).post-$(LANG1).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG1).dix >$@
 
-.deps/$(LANG2).post.dix: $(BASENAME).post-$(LANG2).dix .deps
+.deps/$(LANG2).post.dix: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 
-.deps/$(LANG2b).post.dix: $(BASENAME).post-$(LANG2).dix .deps
+.deps/$(LANG2b).post.dix: $(BASENAME).post-$(LANG2).dix
 	xsltproc --stringparam alt $(LANG1b) alt.xsl $(BASENAME).post-$(LANG2).dix >$@
 		             
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix
@@ -228,16 +226,18 @@ EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
            $(BASENAME).$(LANG2).tsx $(PREFIX1).prob $(PREFIX2).prob \
            $(PREFIX1b).prob $(PREFIX2b).prob \
-           buscaPar.xsl principal.xsl apertium-oc-ca.oc.metadix modes.xml \
+           buscaPar.xsl principal.xsl $(BASENAME).$(LANG1).metadix modes.xml \
            $(PREFIX1)-supervised.make $(PREFIX1)-unsupervised.make \
            $(PREFIX2)-supervised.make $(PREFIX2)-unsupervised.make \
            $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
                                   
-modes: modes.xml
+modes: modes.xml Makefile.am
 	apertium-gen-modes modes.xml
+	@cp *.mode modes
 	
-$(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode $(PREFIX2b).mode: modes.xml
+$(INSTALL_MODES): modes.xml Makefile.am
 	apertium-gen-modes modes.xml
+	@cp *.mode modes
 
 apertium_oc_cadir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_oc_camodesdir=$(prefix)/share/apertium/modes/
@@ -259,13 +259,13 @@ apertium_oc_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1b).t1x $(PREFIX1b).t2x $(PREFIX1b).t3x \
                     $(PREFIX2).t1x $(PREFIX2).t2x $(PREFIX2).t3x \
                     $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x \
-                    $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode $(PREFIX2b).mode
+                    $(INSTALL_MODES) modes
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_oc_camodesdir)
-	$(INSTALL_DATA) $(PREFIX1b).mode $(apertium_oc_camodesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_oc_camodesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_oc_camodesdir)
+	$(INSTALL_DATA) oc-ca.mode $(apertium_oc_camodesdir)
+	$(INSTALL_DATA) ca-oc.mode $(apertium_oc_camodesdir)
+	$(INSTALL_DATA) oc_aran-ca.mode $(apertium_oc_camodesdir)
+	$(INSTALL_DATA) ca-oc_aran.mode $(apertium_oc_camodesdir)
 	
-CLEANFILES = -r $(TARGETS) .deps
+CLEANFILES = -r $(TARGETS)
