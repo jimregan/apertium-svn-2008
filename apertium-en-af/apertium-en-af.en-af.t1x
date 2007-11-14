@@ -121,9 +121,91 @@
     <def-var n="attr-tag-1"/>
     <def-var n="attr-tag-2"/>
     <def-var n="pred-tag"/>
+    <def-var n="pre-adj-tag-1"/>
+    <def-var n="pre-adj-tag-2"/>
   </section-def-vars>
 
   <section-def-macros>
+    <def-macro n="synthetic-to-analytical-conversion-1" npar="1">
+      <let><var n="pre-adj-tag-1"/><lit v=""/></let>
+      <choose>
+        <when>
+          <test>
+            <not> <!-- If we're dealing with an analytical adjective in the target -->
+              <equal>
+                <clip pos="1" side="tl" part="a_adj"/>
+                <lit-tag v="adj.sint"/>
+              </equal>
+            </not>
+          </test>
+          <choose>
+            <when>
+              <test>
+                <equal>
+                  <clip pos="1" side="sl" part="a_adj"/>
+                  <lit-tag v="adj.sint.comp"/>
+                </equal>
+              </test>
+              <append n="pre-adj-tag-1">
+                <lit v="meer"/><lit-tag v="preadv"/><lit-tag v="sint"/>
+              </append>
+            </when>
+            <when>
+              <test>
+                <equal>
+                  <clip pos="1" side="sl" part="a_adj"/>
+                  <lit-tag v="adj.sint.sup"/>
+                </equal>
+              </test>
+              <append n="pre-adj-tag-1">
+                <lit v="mees"/><lit-tag v="preadv"/><lit-tag v="sint"/>
+              </append>
+            </when>
+          </choose>
+        </when>
+      </choose>
+    </def-macro>
+
+    <def-macro n="synthetic-to-analytical-conversion-2" npar="1">
+      <let><var n="pre-adj-tag-2"/><lit v=""/></let>
+      <choose>
+        <when>
+          <test>
+            <not> <!-- If we're dealing with an analytical adjective in the target -->
+              <equal>
+                <clip pos="1" side="tl" part="a_adj"/>
+                <lit-tag v="adj.sint"/>
+              </equal>
+            </not>
+          </test>
+          <choose>
+            <when>
+              <test>
+                <equal>
+                  <clip pos="1" side="sl" part="a_adj"/>
+                  <lit-tag v="adj.sint.comp"/>
+                </equal>
+              </test>
+              <append n="pre-adj-tag-2">
+                <lit v="meer"/><lit-tag v="preadv"/><lit-tag v="sint"/>
+              </append>
+            </when>
+            <when>
+              <test>
+                <equal>
+                  <clip pos="1" side="sl" part="a_adj"/>
+                  <lit-tag v="adj.sint.sup"/>
+                </equal>
+              </test>
+              <append n="pre-adj-tag-2">
+                <lit v="mees"/><lit-tag v="preadv"/><lit-tag v="sint"/>
+              </append>
+            </when>
+          </choose>
+        </when>
+      </choose>
+    </def-macro>
+
     <def-macro n="test-if-synthetic-1" npar="1">
       <choose>
         <when>
@@ -349,6 +431,9 @@
         <pattern-item n="genitive"/>
       </pattern>
       <action>
+        <call-macro n="synthetic-to-analytical-conversion-1">
+          <with-param pos="2"/>
+        </call-macro>
         <call-macro n="test-if-synthetic-1">
           <with-param pos="2"/>
         </call-macro>
@@ -365,6 +450,9 @@
               <clip pos="1" side="tl" part="nbr"/>
             </lu>
 	    <b pos="1"/>
+            <lu>
+              <var n="pre-adj-tag-1"/>
+            </lu>
               <lu>
                 <clip pos="2" side="tl" part="lem"/>
     	        <clip pos="2" side="tl" part="a_adj"/>
@@ -398,6 +486,9 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="synthetic-to-analytical-conversion-1">
+          <with-param pos="2"/>
+        </call-macro>
         <call-macro n="test-if-synthetic-1">
           <with-param pos="2"/>
         </call-macro>
@@ -414,6 +505,9 @@
               <clip pos="1" side="tl" part="nbr"/>
             </lu>
 	    <b pos="1"/>
+            <lu>
+              <var n="pre-adj-tag-1"/>
+            </lu>
             <lu>
               <clip pos="2" side="tl" part="lem"/>
     	      <clip pos="2" side="tl" part="a_adj"/>
@@ -441,6 +535,9 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="synthetic-to-analytical-conversion-1">
+          <with-param pos="1"/>
+        </call-macro>
         <call-macro n="test-if-synthetic-1">
           <with-param pos="1"/>
         </call-macro>
@@ -451,6 +548,9 @@
               <tag><clip pos="2" side="sl" part="gen"/></tag>
               <tag><var n="nombre"/></tag>
 	    </tags>
+            <lu>
+              <var n="pre-adj-tag-1"/>
+            </lu>
               <lu>
                 <clip pos="1" side="tl" part="lem"/>
     	        <clip pos="1" side="tl" part="a_adj"/>
@@ -508,6 +608,12 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="synthetic-to-analytical-conversion-1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="synthetic-to-analytical-conversion-2">
+          <with-param pos="3"/>
+        </call-macro>
         <call-macro n="test-if-synthetic-1">
           <with-param pos="1"/>
         </call-macro>
@@ -520,6 +626,9 @@
               <tag><lit-tag v="ADJP"/></tag>
 	    </tags>
             <lu>
+              <var n="pre-adj-tag-1"/>
+            </lu>
+            <lu>
               <clip pos="1" side="tl" part="lem"/>
     	      <clip pos="1" side="tl" part="a_adj"/>
               <var n="attr-tag-1"/>
@@ -530,6 +639,9 @@
               <clip pos="2" side="tl" part="a_conj"/>
             </lu>
 	    <b/>
+            <lu>
+              <var n="pre-adj-tag-2"/>
+            </lu>
             <lu>
               <clip pos="3" side="tl" part="lem"/>
     	      <clip pos="3" side="tl" part="a_adj"/>
@@ -587,6 +699,12 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="synthetic-to-analytical-conversion-1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="synthetic-to-analytical-conversion-2">
+          <with-param pos="2"/>
+        </call-macro>
         <call-macro n="test-if-synthetic-1">
           <with-param pos="1"/>
         </call-macro>
@@ -601,11 +719,17 @@
               <tag><var n="nombre"/></tag>
 	    </tags>
             <lu>
+              <var n="pre-adj-tag-1"/>
+            </lu>
+            <lu>
               <clip pos="1" side="tl" part="lem"/>
     	      <clip pos="1" side="tl" part="a_adj"/>
               <var n="attr-tag-1"/>
             </lu>
 	    <b/>
+            <lu>
+              <var n="pre-adj-tag-2"/>
+            </lu>
             <lu>
               <clip pos="2" side="tl" part="lem"/>
     	      <clip pos="2" side="tl" part="a_adj"/>
@@ -671,6 +795,10 @@
         <pattern-item n="adj"/>
       </pattern>
       <action>
+        <call-macro n="synthetic-to-analytical-conversion-1">
+          <with-param pos="1"/>
+        </call-macro>
+
       <choose>
         <when>
           <test>
@@ -700,6 +828,9 @@
                 <tags>
                   <tag><lit-tag v="ADJ"/></tag>
                 </tags>
+                <lu>
+                  <var n="pre-adj-tag-1"/>
+                </lu>
                 <lu>
                   <clip pos="1" side="tl" part="lem"/>
                   <clip pos="1" side="tl" part="a_adj"/>
