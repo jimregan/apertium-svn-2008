@@ -2,6 +2,7 @@
 
 # GTK oriented packages
 import gtk, sys
+import gtk.glade
 import pygtk
 pygtk.require('2.0')
 
@@ -37,38 +38,84 @@ class Globals:
 
 
 
-class View(gtk.Expander):
-    """
-    A GTK expander containing a scrollable text window and a
-    VSizerPane at the bottom
-    """
-    window = None # if the text box is detached into a window
+def text_window(title, text_buffer):
+    wTree = gtk.glade.XML("TextWindow.glade")
+    
+    wnd = wTree.get_widget("text_window")
+    wnd.set_title(title)
+
+    def close(widget, data = None):
+        wnd.hide()
+        wnd.destroy()
+
+    wnd.connect("destroy", close)
+    
+    text_view = wTree.get_widget("text_view")
+    text_view.set_buffer(text_buffer)
+
+    wTree.signal_autoconnect({'on_btn_close_clicked': close})
+    
+    wnd.show()
+    
+
+class View(gtk.HBox):
+
+    class Expander(gtk.Expander):
+        """
+        A GTK expander containing a scrollable text window and a
+        VSizerPane at the bottom
+        """
+        window = None # if the text box is detached into a window
+
+        def __init__(self, label, text_buffer):
+            gtk.Expander.__init__(self, label)
+
+            text_view = gtk.TextView(text_buffer)
+            text_view.set_editable(True)
+            text_view.set_wrap_mode(gtk.WRAP_WORD)
+            text_view.show()
+
+            scrolled_window = gtk.ScrolledWindow()
+            scrolled_window.show()
+            scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+            scrolled_window.add_with_viewport(text_view)
+            scrolled_window.set_size_request(-1, 100)
+
+            sizer_pane = VSizerPane('handle.xpm', scrolled_window)
+            sizer_pane.show()
+
+            vbox = gtk.VBox(homogeneous = False)
+            vbox.show()
+            vbox.pack_start(scrolled_window, expand = True, fill = True)
+            vbox.pack_start(sizer_pane, expand = False, fill = True)
+
+            self.add(vbox)
+            self.set_expanded(True)
 
     def __init__(self, label, text_buffer):
-        gtk.Expander.__init__(self, label)
-
-        text_view = gtk.TextView(text_buffer)
-        text_view.set_editable(True)
-        text_view.set_wrap_mode(gtk.WRAP_WORD)
-        text_view.show()
-
-        scrolled_window = gtk.ScrolledWindow()
-        scrolled_window.show()
-        scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scrolled_window.add_with_viewport(text_view)
-        scrolled_window.set_size_request(-1, 100)
-
-        sizer_pane = VSizerPane('handle.xpm', scrolled_window)
-        sizer_pane.show()
+        gtk.HBox.__init__(self)
         
+        self.expander = View.Expander(label, text_buffer)
+        self.expander.show()
+
+        popout_button = gtk.Button("p")
+        popout_button.connect("clicked", self.open_text_window, label, text_buffer)
+        popout_button.show()
+
         vbox = gtk.VBox(homogeneous = False)
         vbox.show()
-        vbox.pack_start(scrolled_window, expand = True, fill = True)
-        vbox.pack_start(sizer_pane, expand = False, fill = True)
 
-        self.add(vbox)
-        self.set_expanded(True)
-    
+        vbox.pack_start(popout_button, expand = False, fill = True)
+
+        self.pack_start(self.expander, expand = True, fill = True)
+        self.pack_start(vbox, expand = False, fill = True)
+
+    def open_text_window(self, widget, label, text_buffer):
+        self.set_expanded(False)
+        text_window(label, text_buffer)
+
+    def set_expanded(self, val):
+        return self.expander.set_expanded(val)
 
 
 class PipelineExecutor(threading.Thread):
