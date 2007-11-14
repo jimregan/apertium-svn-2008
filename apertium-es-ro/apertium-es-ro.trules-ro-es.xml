@@ -24,6 +24,9 @@
     <def-cat n="detcel">
       <cat-item lemma="cel" tags="det.*"/>
     </def-cat>
+    <def-cat n="dettuturor">
+      <cat-item lemma="tuturor" tags="det.*"/>
+    </def-cat>
     <def-cat n="deta">
       <cat-item lemma="al" tags="det.*"/>
     </def-cat>
@@ -3538,6 +3541,89 @@
     </rule> 
 
 <rule>
+<!-- REGLA 32aabis simple DELIA: NOM (ind)+ ADJ + ADJ= instrumente juridice comunitare = instrumentos jurídicos comunitarios-->
+      <pattern>        
+        <pattern-item n="nom"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action> 
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord3">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+          <with-param pos="3"/> 
+	</call-macro> 
+          <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+               <out>
+                  
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_adj"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu> 
+                  <b/>
+                  <lu>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <clip pos="3" side="tl" part="a_adj"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>                    
+                </out>
+              </when>
+	      <otherwise>
+               <out>
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+	           <b/>
+                   <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_adj"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <clip pos="3" side="tl" part="a_adj"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>  
+                </out>
+              </otherwise>
+            </choose>
+         </action>
+    </rule> 
+
+
+<rule>
 <!-- REGLA 32abis simple DELIA: NOM (ind)+ ADJ = relații internaționale-->
       <pattern>        
         <pattern-item n="nom"/>
@@ -5802,8 +5888,40 @@ is not applicable because gender and number can not be taken from previous rules
         </choose>
       </action>
     </rule>
+
+<rule>  
+   <!--  REGLA 22 DELIA: VB + TUTUROR = VB + A TODOS, otherwise DE TODOS  ex. am spus tuturor = he dicho a todos, a todo el mundo / casa tuturor = la casa de todos -->
+      <pattern>
+        <pattern-item n="verb"/>
+        <pattern-item n="dettuturor"/>
+      </pattern>
+      <action>
+             <call-macro n="modcase">
+               <with-param pos="1"/>
+            </call-macro>
+	       <out>
+                  <lu>
+                <clip pos="1" side="tl" part="lem"/>	     
+                <clip pos="1" side="tl" part="a_verb"/>
+                <clip pos="1" side="tl" part="temps"/>
+                <clip pos="1" side="tl" part="persona"/>
+                <clip pos="1" side="tl" part="gen"/>
+                <clip pos="1" side="tl" part="nbr"/>
+	       </lu>
+		<b/>
+		  <lu>
+                   <lit v="a"/>
+		   <lit-tag v="pr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                   <lit v="tod@s"/>
+                   <lit-tag v="det"/>
+                </lu> 
+                </out>
+       </action>
+    </rule>
   
- 
   <rule>  
    <!--  REGLA 22 DELIA: NOM + LUI + NOM PROPI DG  ex. mormântul lui Isus = la tumba de Jesús -->
       <pattern>
