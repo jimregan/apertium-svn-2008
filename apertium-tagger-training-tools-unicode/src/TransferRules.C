@@ -130,12 +130,12 @@ TransferRules::match_regular_expression(wstring s, int pos_regex) {
 }
 
 bool 
-TransferRules::is_segmentation_point(int tag_eof, vector<TaggerWord*>& vwords, int position, int &advance) {
-  set<TTag> tags=vwords[position]->get_tags();
+TransferRules::is_segmentation_point(int tag_eof, deque<TaggerWord>& vwords, int position, int &advance) {
+  set<TTag> tags=vwords[position].get_tags();
       
   advance=0;
    
-  if(vwords[position]->get_plus_cut()) // This is a multiword unit
+  if(vwords[position].get_plus_cut()) // This is a multiword unit
     return false;
    
   if (tags.size()>1) //This is an umbiguous word
@@ -146,7 +146,7 @@ TransferRules::is_segmentation_point(int tag_eof, vector<TaggerWord*>& vwords, i
   }
 
   
-  wstring forma_superficial=vwords[position]->get_superficial_form();
+  wstring forma_superficial=vwords[position].get_superficial_form();
 
   for (int i=0; i<superficial_forms.size(); i++) {
     if (forma_superficial == superficial_forms[i])
@@ -154,7 +154,7 @@ TransferRules::is_segmentation_point(int tag_eof, vector<TaggerWord*>& vwords, i
   }
       
   TTag tag=(*tags.begin()); //An unambiguous word, it has only one tag
-  wstring stag=vwords[position]->get_lexical_form(tag, tag_eof);
+  wstring stag=vwords[position].get_lexical_form(tag, tag_eof);
 
   //Transfer rules are reviewed. If no transfer rule is
   //applicable, this word can be a segmentation point
@@ -181,11 +181,11 @@ TransferRules::is_segmentation_point(int tag_eof, vector<TaggerWord*>& vwords, i
 	    rule_matched=false;
 	    break;
 	  }
-	  tags=vwords[inicio_regla+k]->get_tags();
+	  tags=vwords[inicio_regla+k].get_tags();
 	  set<TTag>::iterator it;
 	  bool hay_etq=false;
 	  for(it=tags.begin(); it!=tags.end(); it++) {
-            wstring sit=vwords[inicio_regla+k]->get_lexical_form((TTag&)(*it), tag_eof);
+            wstring sit=vwords[inicio_regla+k].get_lexical_form((TTag&)(*it), tag_eof);
 	    if (match_regular_expression(sit, transfer_rules[i][k])) {
 	      hay_etq=true; //At least one tag matches the position of
   	                    //the rules being considered

@@ -101,6 +101,12 @@ PathsPruner::compute_paths_ranking() {
     p.first=i;
     p.second=a_priori_likelihood(i);
 
+    //Utils::print_debug("PATH ");
+    //Utils::print_debug(i);
+    //Utils::print_debug(", a_priori_likelihood: ");
+    //Utils::print_debug(p.second);
+    //Utils::print_debug("\n");
+
     prob_path.push_back(p);
     sum_likelihood+=p.second;
   }
@@ -110,13 +116,13 @@ PathsPruner::compute_paths_ranking() {
     prob_path[i].second=prob_path[i].second/sum_likelihood;
   
 
-  Utils::print_debug("Before sort\n-----------------------\n");
-  for(int i=0; i<prob_path.size(); i++) {
-    Utils::print_debug(prob_path[i].first);
-    Utils::print_debug(" ");
-    Utils::print_debug(prob_path[i].second);
-    Utils::print_debug("\n");
-  }
+  //Utils::print_debug("Before sort\n-----------------------\n");
+  //for(int i=0; i<prob_path.size(); i++) {
+  //  Utils::print_debug(prob_path[i].first);
+  //  Utils::print_debug(" ");
+  //  Utils::print_debug(prob_path[i].second);
+  //  Utils::print_debug("\n");
+  //}
 
   //Sort
   pair_comparer_greater<pair<int, double> > comparer;
@@ -124,13 +130,13 @@ PathsPruner::compute_paths_ranking() {
 
   reset_paths_counter();
 
-  Utils::print_debug("After sort\n-----------------------\n");
-  for(int i=0; i<prob_path.size(); i++) {
-    Utils::print_debug(prob_path[i].first);
-    Utils::print_debug(" ");
-    Utils::print_debug(prob_path[i].second);
-    Utils::print_debug("\n");
-  }
+  //Utils::print_debug("After sort\n-----------------------\n");
+  //for(int i=0; i<prob_path.size(); i++) {
+  //  Utils::print_debug(prob_path[i].first);
+  //  Utils::print_debug(" ");
+  //  Utils::print_debug(prob_path[i].second);
+  //  Utils::print_debug("\n");
+  //}
 
   Utils::print_debug("Calculating the number of paths that will be taken into account\n");
   Utils::print_debug("----------------------------------------------\n");
@@ -229,220 +235,194 @@ PathsPruner::get_probmass_considered() {
   return probmass_considered;
 }
 
-/*
-//Esta implementación no tiene en cuenta la etiqueta de la 
-//ultima palabra del segmento anterior
 double 
 PathsPruner::a_priori_likelihood(int path) {
-  static double prob_unknown=transition_prob_unknown_words();
-
-  set<TTag> open_class = tagger_data.getOpenClass();
-
+  double ret_prob;
   vector <TTag> tagseq;
-  TTag tag1, tag2;
-  set<TTag> tags1, tags2;
-  set<TTag>::iterator it;
-  int k1, k2;
 
-  double ret_prob=1.0;
+  TTag tag;
+  set<TTag> tags, pretags;
+  set<TTag>::iterator itag, jtag;
+
+  map <int, map <int, double> > alpha, beta;
 
   seg->get_path(tagseq, path);
 
+  //Utils::print_debug("Caculating a priori likelihood for path ");
+  //Utils::print_debug(path);
+  //Utils::print_debug(":\n");
+  //if (Utils::debug) {
+  //  for(int i=0; i<tagseq.size(); i++) {
+  //    cerr<<UtfConverter::toUtf8(tagger_data.getArrayTags()[tagseq[i]])<<" ";
+  //  }
+  //  cerr<<"\n";
+  //}
 
-  if (seg->vwords.size()==0) {
-    cerr<<"Error in PathsPruner::a_priori_likelihood: Segment length is null\n";
-  }
-
-  tag1=tagseq[0];
-
-  if(tag1<0) 
-    tags1=open_class;
-  else
-    tags1=seg->vwords[0].get_tags();
-
-  if(tagger_data.getOutput().has_not(tags1)) {
-    cerr<<"Error: In PathsPruner::a_priori_likelihood:\n";
-    cerr<<"A new ambiguty class was found\n";
-    exit(1);
-  }
-
-  k1=tagger_data.getOutput()[tags1];
-
-  for (int i=1; i<tagseq.size(); i++) {     
-    tag2=tagseq[i];
-    if (tag2<0) //This is an unknown word
-      tags2=open_class;
-    else   
-      tags2=seg->vwords[i].get_tags();
-     
-    if(tagger_data.getOutput().has_not(tags2)) {
-      cerr<<"Error: In PathsPruner::a_priori_likelihood:\n";
-      cerr<<"A new ambiguity class was found\n";
-      exit(1);
-    }
-      
-    k2=tagger_data.getOutput()[tags2];
-
-    double prob=0;
-      
-    if ((tag1>=0)&&(tag2<0)) { //2nd word is unknown
-      for(it=open_class.begin(); it!=open_class.end(); it++) {
-	prob+=tagger_data.getA()[tag1][*it];
-      }
-      prob=tagger_data.getB()[tag1][k1]*(prob/((double)open_class.size()));
-    } 
-
-    else if((tag1<0)&&(tag2>=0)) { //1st word in unknown
-      for(it=open_class.begin(); it!=open_class.end(); it++) {
-	prob+=tagger_data.getB()[*it][k1]*tagger_data.getA()[*it][tag2];
-      }
-      prob=prob/((double)open_class.size());
-    } 
-
-    else if((tag1<0)&&(tag2<0)) { //Boths words are unknown
-      prob=prob_unknown;
-    } 
-
-    else  
-      prob=tagger_data.getB()[tag1][k1]*tagger_data.getA()[tag1][tag2];
-
-    ret_prob*=prob;
-
-    tag1=tag2;
-    tags1=tags2;
-    k1=k2;
-  }
-
-
-  //We need to take into account also the emission probability of the
-  //last tag (tag1). It can come from an unknown word
-  double prob=0;
-
-  if(tag1<0) { //Word is unknown
-    for(it=open_class.begin(); it!=open_class.end(); it++)
-      prob+=tagger_data.getB()[*it][k1];
-    prob=prob/((double)open_class.size());
-  } else { 
-    prob=tagger_data.getB()[tag1][k1];
-  }
-
-  ret_prob*=prob;
-
-  if (ret_prob<=0.0) {
-    cerr<<"Warning: a priori likelihood of path "<<path<<" is null, prob: "<<ret_prob<<"\n";
+  if ((seg->vwords_before.size()==0) || (seg->vwords_after.size()==0)) {
+    cerr<<"Error: This segment has no context\n";
     cerr<<"SEGMENT: ";
     for(int i=0; i<seg->vwords.size(); i++) {
-      cerr<<seg->vwords[i].get_superficial_form()<<" ";
+      cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
     }
-    cerr<<"\nPATH: ";      
-    for(int i=0; i<tagseq.size(); i++) {
-      cerr<<tagseq[i]<<" ";
-    }
-    cerr<<"\n";
-   
-    ret_prob=DBL_MIN;
+    exit(EXIT_FAILURE);
   }
 
-  return ret_prob;
-}
-*/
+  if (seg->vwords_before.front().get_tags().size()!=1) {
+    cerr<<"Error in PathsPruner::a_priori_likelihood: First word of seg->vwords_before is ambiguous\n";
+    cerr<<"SEGMENT: ";
+    for(int i=0; i<seg->vwords.size(); i++) {
+      cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
+    }
+    cerr<<"WORDS BEFORE: ";
+    for(int i=0; i<seg->vwords_before.size(); i++) {
+      cerr<<UtfConverter::toUtf8(seg->vwords_before[i].get_superficial_form())<<" ";
+    }
+    exit(EXIT_FAILURE);
+  } 
 
-//En esta implementación se tiene en cuenta la etiqueta de la ultima
-//palabra del segmento anterior.
-double 
-PathsPruner::a_priori_likelihood(int path) {
-  static double prob_unknown=transition_prob_unknown_words();
+  if (seg->vwords_after.back().get_tags().size()!=1) {
+    cerr<<"Error in PathsPruner::a_priori_likelihood: Last word of seg->vwords_after is ambiguous\n";
+    cerr<<"SEGMENT: ";
+    for(int i=0; i<seg->vwords.size(); i++) {
+      cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
+    }
+    cerr<<"WORDS AFTER: ";
+    for(int i=0; i<seg->vwords_after.size(); i++) {
+      cerr<<UtfConverter::toUtf8(seg->vwords_after[i].get_superficial_form())<<" ";
+    }
+    exit(EXIT_FAILURE);
+  } 
 
-  set<TTag> open_class = tagger_data.getOpenClass();
-
-  vector <TTag> tagseq;
-  TTag tag1, tag2;
-  set<TTag> tags1, tags2;
-  set<TTag>::iterator it;
-  int k1, k2;
-
-  double ret_prob=1.0;
-
-  seg->get_path(tagseq, path);
-
-  tag1=last_tag_previous_segment;
-
-  if(tag1<0) //The last word of the previous segment was unknown
-    tags1=tagger_data.getOpenClass();
-  else
-    tags1.insert(last_tag_previous_segment); //We can do that because
-  //the last word of each
-  //segment is always unambiguous
-
-
-  if(tagger_data.getOutput().has_not(tags1)) {
-    cerr<<"Error: In PathsPruner::a_priori_likelihood:\n";
-    cerr<<"A new ambiguty class was found\n";
-    exit(1);
+  if (seg->vwords.size() != tagseq.size()) {
+    cerr<<"Error: Number of tags in tagseq differs from number of words in seg->vwords\n";
+    cerr<<"SEGMENT: ";
+    for(int i=0; i<seg->vwords.size(); i++) {
+      cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
+    }
+    exit(EXIT_FAILURE);
   }
 
-  k1=tagger_data.getOutput()[tags1];
-   
-  for (int i=0; i<tagseq.size(); i++) {      
-     
-    tag2=tagseq[i];
-    if (tag2<0) //This is an unknown word
-      tags2=tagger_data.getOpenClass();
-    else   
-      tags2=seg->vwords[i].get_tags();
-     
-    if(tagger_data.getOutput().has_not(tags2)) {
+  //Forward probabilities
+  tag = *(seg->vwords_before.front().get_tags().begin()); //Not ambiguous
+  alpha[0][tag] = 1;
+  pretags=seg->vwords_before.front().get_tags();
+
+  //Utils::print_debug("alpha[0][");
+  //Utils::print_debug(tagger_data.getArrayTags()[tag]);
+  //Utils::print_debug("]=");
+  //Utils::print_debug(alpha[0][tag]);
+  //Utils::print_debug("\n");
+
+  for (int i=1; i<seg->vwords_before.size(); i++) {
+    tags=seg->vwords_before[i].get_tags();
+    if (tags.size()==0)
+      tags=tagger_data.getOpenClass();
+    if(tagger_data.getOutput().has_not(tags)) {
       cerr<<"Error: In PathsPruner::a_priori_likelihood:\n";
       cerr<<"A new ambiguity class was found\n";
-      exit(1);
+      exit(EXIT_FAILURE);
     }
-      
-    k2=tagger_data.getOutput()[tags2];
 
-    double prob=0;
-      
-    if ((tag1>=0)&&(tag2<0)) { //2nd word is unknown
-      for(it=open_class.begin(); it!=open_class.end(); it++) {
-	prob+=tagger_data.getA()[tag1][*it];
-      }
-      prob=tagger_data.getB()[tag1][k1]*(prob/((double)open_class.size()));
-    } 
+    k = tagger_data.getOutput()[tags];
 
-    else if((tag1<0)&&(tag2>=0)) { //1st word in unknown
-      for(it=open_class.begin(); it!=open_class.end(); it++) {
-	prob+=tagger_data.getB()[*it][k1]*tagger_data.getA()[*it][tag2];
-      }
-      prob=prob/((double)open_class.size());
-    } 
+    for (itag=tags.begin(); itag!=tags.end(); itag++)
+      for (jtag=pretags.begin(); jtag!=pretags.end(); jtag++)
+	alpha[i][*itag]+= alpha[i-1][*jtag]*tagger_data.getA()[*jtag][*itag]*tagger_data.getB()[*itag][k];
 
-    else if((tag1<0)&&(tag2<0)) { //Boths words are unknown
-      prob=prob_unknown;
-    } 
+    //if(Utils::debug) {
+    //  for (itag=tags.begin(); itag!=tags.end(); itag++)
+    //	  cerr<<"alpha["<<i<<"]["<<UtfConverter::toUtf8(tagger_data.getArrayTags()[*itag])<<"]="<<alpha[i][*itag]<<"\n";
+    //}
 
-    else  
-      prob=tagger_data.getB()[tag1][k1]*tagger_data.getA()[tag1][tag2];
-
-    ret_prob*=prob;
-
-    tag1=tag2;
-    tags1=tags2;
-    k1=k2;
+    pretags=tags;
   }
 
-
-  //We need to take into account also the emission probability of the
-  //last tag (tag1). It can come from an unknown word
-  double prob=0;
-
-  if(tag1<0) { //Word is unknown
-    for(it=open_class.begin(); it!=open_class.end(); it++)
-      prob+=tagger_data.getB()[*it][k1];
-    prob=prob/((double)open_class.size());
-  } else { 
-    prob=tagger_data.getB()[tag1][k1];
+  tags=seg->vwords.front().get_tags();
+  if (tags.size()==0)
+    tags=tagger_data.getOpenClass();
+  if(tagger_data.getOutput().has_not(tags)) {
+    cerr<<"Error: In PathsPruner::a_priori_likelihood:\n";
+    cerr<<"A new ambiguity class was found\n";
+    exit(EXIT_FAILURE);
   }
 
-  ret_prob*=prob;
+  k = tagger_data.getOutput()[tags];
+
+  ret_prob=0.0;
+  for (jtag=pretags.begin(); jtag!=pretags.end(); jtag++)
+    ret_prob+=alpha[seg->vwords_before.size()-1][*jtag]*tagger_data.getA()[*jtag][tagseq.front()]*tagger_data.getB()[tagseq.front()][k];
+
+  //Sequence of tags of the path being evaluated
+  for(int i=1; i<seg->vwords.size(); i++) {
+    tags=seg->vwords[i].get_tags();
+    if(tags.size()==0)
+      tags=tagger_data.getOpenClass();
+    if(tagger_data.getOutput().has_not(tags)) {
+      cerr<<"Error: In PathsPruner::a_priori_likelihood:\n";
+      cerr<<"A new ambiguity class was found\n";
+      exit(EXIT_FAILURE);
+    }
+
+    k = tagger_data.getOutput()[tags];
+
+    ret_prob*=tagger_data.getA()[tagseq[i-1]][tagseq[i]]*tagger_data.getB()[tagseq[i]][k];
+
+    pretags=tags;
+  }
+
+  //Backward probabilities
+  tags=seg->vwords_after.front().get_tags();
+  if(tags.size()==0)
+    tags=tagger_data.getOpenClass();
+  if(tagger_data.getOutput().has_not(tags)) {
+    cerr<<"Error: In PathsPruner::a_priori_likelihood:\n";
+    cerr<<"A new ambiguity class was found\n";
+    exit(EXIT_FAILURE);
+  }
+
+  k = tagger_data.getOutput()[tags];
+
+  for (jtag=tags.begin(); jtag!=tags.end(); jtag++) {
+    beta[0][*jtag]=ret_prob*tagger_data.getA()[tagseq.back()][*jtag]*tagger_data.getB()[*jtag][k];
+  }
+
+  //if(Utils::debug) {
+  //  for (jtag=tags.begin(); jtag!=tags.end(); jtag++)
+  //    cerr<<"beta[0]["<<UtfConverter::toUtf8(tagger_data.getArrayTags()[*jtag])<<"]="<<beta[0][*jtag]<<"\n";
+  //}
+
+  pretags=tags;
+
+  for (int i=1; i<seg->vwords_after.size(); i++) {
+    tags=seg->vwords_after[i].get_tags();
+    if (tags.size()==0)
+      tags=tagger_data.getOpenClass();
+    if(tagger_data.getOutput().has_not(tags)) {
+      cerr<<"Error: In PathsPruner::a_priori_likelihood:\n";
+      cerr<<"A new ambiguity class was found\n";
+      exit(EXIT_FAILURE);
+    }
+
+    k = tagger_data.getOutput()[tags];
+
+    for (itag=tags.begin(); itag!=tags.end(); itag++)
+      for (jtag=pretags.begin(); jtag!=pretags.end(); jtag++) 
+	beta[i][*itag]+= beta[i-1][*jtag]*tagger_data.getA()[*jtag][*itag]*tagger_data.getB()[*itag][k];
+
+    //if(Utils::debug) {
+    //  for (itag=tags.begin(); itag!=tags.end(); itag++)
+    //    cerr<<"beta["<<i<<"]["<<UtfConverter::toUtf8(tagger_data.getArrayTags()[*itag])<<"]="<<beta[i][*itag]<<"\n";
+    //}
+
+    pretags=tags;
+  }
+
+  tag = *(seg->vwords_after.back().get_tags().begin());
+  ret_prob = beta[seg->vwords_after.size()-1][tag];
+
+  //Utils::print_debug("Return value: ");
+  //Utils::print_debug(ret_prob);
+  //Utils::print_debug("\n");
 
   if (ret_prob<=0.0) {
     cerr<<"Warning: a priori likelihood of path "<<path<<" is null, prob: "<<ret_prob<<"\n";
@@ -462,25 +442,3 @@ PathsPruner::a_priori_likelihood(int path) {
   return ret_prob;
 }
 
-
-double
-PathsPruner::transition_prob_unknown_words() {
-  set<TTag> tags1, tags2;
-  set<TTag>::iterator itag1, itag2;
-  int k1, k2;    
-   
-  tags1=tags2=tagger_data.getOpenClass();
-
-  k1=k2=tagger_data.getOutput()[tags1];
-   
-  double prob=0;
-  for(itag1=tags1.begin(); itag1!=tags1.end(); itag1++) {
-    double prob2=0;
-    for(itag2=tags2.begin(); itag2!=tags2.end(); itag2++) {
-      prob2+=tagger_data.getA()[*itag1][*itag2]; 
-    }
-    prob+=tagger_data.getB()[*itag1][k1]*(prob2/((double)tags2.size()));
-  }
-
-  return prob/((double)tags1.size());
-}

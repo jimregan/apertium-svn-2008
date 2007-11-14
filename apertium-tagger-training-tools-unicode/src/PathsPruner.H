@@ -49,8 +49,6 @@ private:
    */
   double a_priori_likelihood(int path);
 
-  double transition_prob_unknown_words();
-
 public:
   static int mode;
   static int latency;

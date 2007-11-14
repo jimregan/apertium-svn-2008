@@ -25,10 +25,12 @@
 
 #include "Segment.H"
 
+#include <deque>
+
 #include <apertium/utf_converter.h>
 
-//map<string, TTag> Segment::tag_index;
 map<wstring, TTag, Ltstr> Segment::tag_index;
+
 Segment::Segment() {
   npaths=0;
 }
@@ -59,109 +61,183 @@ Segment::get_path(vector <TTag>& etqpart, int path) {
   return s;
 }
 
-/** TRANSLATION PENDING **/
 Segment*
-Segment::new_segment(MorphoStream &ms, TransferRules* tr) {
+Segment::new_segment(MorphoStream &ms, TransferRules* tr,  TaggerData &td) {
   TaggerWord *word=NULL;
   set<TTag> tags;
   set<TTag>::iterator itag;
   vector<TTag> auxvec;
-   
-  static int index_busca_corte=0;
-  static vector<TaggerWord*> palabras_frase; 
-   
-  Segment* seg=new Segment();
-   
-  if ((index_busca_corte<=0) || (index_busca_corte>=palabras_frase.size())) {
-    //Tenemos que leer una nueva frase (hasta encontrar un punto)
-      
-    //Liberamos la frase anterior
-    for(int i=0; i<palabras_frase.size(); i++)
-      delete palabras_frase[i];
-    palabras_frase.clear();
-      
-    bool continuar=true;
-    while(continuar) {
+
+  static int index_start=1;
+  static deque<TaggerWord> wordsbuffer;
+  static bool first_call=true;
+  static bool end_of_corpus_reached=false;
+
+
+  if (first_call) {
+    TaggerWord eosword;
+    eosword.add_tag(td.getTagIndex()[L"TAG_SENT"], L"", td.getPreferRules());
+    wordsbuffer.push_back(eosword);
+
+    //Fill the buffer of words
+    while (wordsbuffer.size()<TAGGER_WORD_BUFFER_SIZE) {
       word=ms.get_next_word();
             
-      if(word==NULL)
+      if(word==NULL) {
+	end_of_corpus_reached=true;
 	break;
-         
-      palabras_frase.push_back(word);
-      tags=word->get_tags();
-         	 
-      if (tags.size()==0) //Palabra desconocida (fin lectura frase)
-	continuar=false;
-
-      //Comprobamos si ya tenemos un frase completa
-      if ((tags.size()==1) && (((*tags.begin())==tag_index[L"TAG_SENT"]) ||
-			       ((*tags.begin())==tag_index[L"TAG_kEOF"]) ||
-			       ((*tags.begin())==tag_index[L"TAG_LQUEST"]))) {
-	continuar=false; //Ya tenemos una frase completa      
       }
+
+      wordsbuffer.push_back(*word);
+      delete word;
     }
-           
-    index_busca_corte=0;
-      
-    /*    
-    cerr<<"SENTENCE: ";
-    for(int i=0; i<palabras_frase.size(); i++) {
-      cerr<<palabras_frase[i]->get_superficial_form()<<" ";
-      //cerr<<palabras_frase[i]->get_string_tags()<<"\n";
+
+    first_call=false;
+  }
+
+  /*
+    cerr<<"BUFFER (begining): ";
+    for (int i=0; i<wordsbuffer.size(); i++) {
+    cerr<<"["<<wordsbuffer[i].get_superficial_form()<<"] ";
     }
     cerr<<"\n";
-    */
-  }
+    cerr<<"Buffer size (begining): "<<wordsbuffer.size()<<"\n";
+    cerr<<"Index start (begining): "<<index_start<<"\n";
+  */
 
-  int ncaminos=1; //Nº de caminos del segmento que se devuelve
+  Segment* seg=new Segment();
+  int number_of_paths=1; 
    
-  //De la frase que tenemos en palabras_frase extraemos el siguiente segmento
-  //a partir de index_busca_corte
-  int punto_corte=-1;
-  int avance; //Nº de palabras que podemos saltar en busca de un punto de corte
-  for(int i=index_busca_corte; i<palabras_frase.size(); i++) {
-    //cerr<<"Is segmentation point word at "<<i<<"? "<<flush;
-    if (tr->is_segmentation_point(tag_index[L"TAG_kEOF"], palabras_frase, i, avance)) {
-      //cerr<<"yes\n";
-      //Podemos cortar por aquí
-      punto_corte=i;
+  int segmentation_point=-1;
+  int advance; //Number of word that can be skipped when looking for a segmentation point
+  for(int i=index_start; i<wordsbuffer.size(); i++) {
+    if (tr->is_segmentation_point(tag_index[L"TAG_kEOF"], wordsbuffer, i, advance)) {
+      segmentation_point=i;
       break;
     } else{
-      //cerr<<"no\n";
-      i+=avance;
+      i+=advance;
     }
   }
 
-  if ((punto_corte==-1)&&(palabras_frase.size()>0)) {
-    cerr<<"Error: (serious) No segmentation point was found in the whole sentence\n";
-    cerr<<"Sentece length: "<<palabras_frase.size()<<"\n";
-    cerr<<"SENTECE: ";
-    for(int i=0; i<palabras_frase.size(); i++)
-      cerr<<UtfConverter::toUtf8(palabras_frase[i]->get_superficial_form())<<" ";
-    cerr<<"\n";   
-    exit(1);
+  if ((segmentation_point==-1) && (!end_of_corpus_reached)) {
+    cerr<<"Error: No segmentation point was found.\n";
+    cerr<<"Try making the buffer longer, current maximum size is "<<TAGGER_WORD_BUFFER_SIZE<<"\n";
+    cerr<<"See Segment.H, TAGGER_WORD_BUFFER_SIZE constant\n";
+    exit(EXIT_FAILURE);
   }
-   
-  //Ya tenemos el segmento a devolver. Desde index_busca_corte hasta punto_corte
-  //(ambos inclusive)
-  for(int i=index_busca_corte; i<=punto_corte; i++) {
-    tags=palabras_frase[i]->get_tags();
+
+  //cerr<<"Segmentation point: "<<segmentation_point<<"\n";
+
+  //The segment to return is from index_start to segmentation_point
+  for(int i=index_start; i<=segmentation_point; i++) {
+    tags=wordsbuffer[i].get_tags();
     seg->contador_caminos.push_back(auxvec);
     if (tags.size()>0) {
-      ncaminos*=tags.size();
-      for(itag=tags.begin(); itag!=tags.end(); itag++) //Inseertamos las etiquetas
+      number_of_paths*=tags.size();
+      for(itag=tags.begin(); itag!=tags.end(); itag++)
 	seg->contador_caminos.back().push_back(*itag);
     } else {
-      seg->contador_caminos.back().push_back(-1); //Palabra desconocida
-    }
-    seg->vwords.push_back(*palabras_frase[i]);      
-  }
-      
-  index_busca_corte=punto_corte+1; //Para la proxima busqueda
+      //seg->contador_caminos.back().push_back(-1); //Palabra desconocida
 
-  //Ya tenemos el número de caminos, inicalizamos los fijos de cada nodo 
-  //(nº de veces que se tiene que usar una etiqueta
-  //antes de pasar a la siguiente)
+      tags=td.getOpenClass();
+      number_of_paths*=tags.size();
+
+      for(itag=tags.begin(); itag!=tags.end(); itag++)
+	seg->contador_caminos.back().push_back(*itag);
+    }
+    seg->vwords.push_back(wordsbuffer[i]);
+  }
+  
+  //Calculate which words can be removed from the buffer, we need some
+  //words before the segment being return, more concretely, from the
+  //last non-ambiguous word until the first word of the segment being
+  //returned
+  int preserve_word_from=-1;
+  for (int i=(index_start-1); i>=0; i--) {
+    if (wordsbuffer[i].get_tags().size()==1) {
+      preserve_word_from=i;
+      break;
+    }
+  }
+
+  //cerr<<"Preserve words from index: "<<preserve_word_from<<"\n";
+
+  for(int i=0; i<preserve_word_from; i++) {
+    wordsbuffer.pop_front();
+    segmentation_point--;
+    index_start--; 
+  }
+
+  /*
+    cerr<<"BUFFER (after removing words): ";
+    for (int i=0; i<wordsbuffer.size(); i++) {
+    cerr<<"["<<wordsbuffer[i].get_superficial_form()<<"] ";
+    }
+    cerr<<"\n";
+    cerr<<"Buffer size (after removing words): "<<wordsbuffer.size()<<"\n";
+    cerr<<"Index start (after removing words): "<<index_start<<"\n";
+    cerr<<"Segmention point (after removing words): "<<segmentation_point<<"\n";
+  */
+
+  //Refill the buffer
+  if (!end_of_corpus_reached) {
+    while (wordsbuffer.size()<TAGGER_WORD_BUFFER_SIZE) {
+      word=ms.get_next_word();
+            
+      if(word==NULL) {
+	end_of_corpus_reached=true;
+	break;
+      }
+
+      wordsbuffer.push_back(*word);
+      delete word;
+    }
+  }
+
+  /*
+    cerr<<"BUFFER (after refill): ";
+    for (int i=0; i<wordsbuffer.size(); i++) {
+    cerr<<"["<<wordsbuffer[i].get_superficial_form()<<"] ";
+    }
+    cerr<<"\n";
+    cerr<<"Buffer size (after refill): "<<wordsbuffer.size()<<"\n";
+    cerr<<"Index start (after refill): "<<index_start<<"\n";
+    cerr<<"Segmention point (after refill): "<<segmentation_point<<"\n";
+  */
+ 
+  //Now we retrieve words before and after this segment, for the
+  //calculus of the alphas and betas in the pruning method
+  for (int i=0; i<index_start; i++)
+    seg->vwords_before.push_back(wordsbuffer[i]);
+
+  bool found_forward=false;
+  for(int i=segmentation_point+1; i<wordsbuffer.size(); i++) {
+    seg->vwords_after.push_back(wordsbuffer[i]);
+    if (wordsbuffer[i].get_tags().size()==1) {
+      found_forward=true;
+      break;
+    }
+  }
+
+  if (!found_forward) {
+    if (!end_of_corpus_reached) {
+      cerr<<"Error: No unambiguous word was found when looking fordward.\n";
+      cerr<<"Try making the buffer longer, current maximum size is "<<TAGGER_WORD_BUFFER_SIZE<<"\n";
+      cerr<<"See Segment.H, TAGGER_WORD_BUFFER_SIZE constant\n";
+      exit(EXIT_FAILURE);
+    }  else {
+      TaggerWord eosword;
+      eosword.add_tag(td.getTagIndex()[L"TAG_SENT"], L"", td.getPreferRules());
+      seg->vwords_after.push_back(eosword);
+    }
+  }
+  
+  index_start=segmentation_point+1; //For the next search
+
+  //We have the total number of disambiguation paths for this segment.
+  //Now we initialize the structure used to retrieve all the paths in
+  //an efficient way. (nfijos_caminos = nº de veces que se tiene que
+  //usar una etiqueta antes de pasar a la siguiente)
   for(int i=0; i<seg->contador_caminos.size(); i++) {
     int fijo=1;
     for(int j=i+1; j<seg->contador_caminos.size(); j++) {
@@ -170,10 +246,10 @@ Segment::new_segment(MorphoStream &ms, TransferRules* tr) {
     seg->nfijo_caminos.push_back(fijo);
   }
      
-  if(seg->vwords.size()==0)    //Se acabó
+  if(seg->vwords.size()==0)    //That's all folks
     seg->npaths=0;
   else
-    seg->npaths=ncaminos;
-      
+    seg->npaths=number_of_paths;
+ 
   return seg;   
 }

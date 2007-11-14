@@ -154,6 +154,12 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
   //siendo tratado, sigma_I-1 (no homografa por la politica de corte)
   TTag last_etq_segmento_ant;      
 
+  //This is to avoid translating the same string more than once.
+  //It could happen because of the unknown words, as they have more than
+  //one part-of-speech tag
+  map<wstring, wstring> translation_of_path;
+  map<wstring, bool> string_already_used; //for the batch mode
+
   int next_save_probs;
 
   if (save_after_nwords>0)
@@ -204,7 +210,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     translations.clear();
 
     //Tomamos el segmento siguiente
-    seg=Segment::new_segment(morpho_stream, transfer_rules);
+    seg=Segment::new_segment(morpho_stream, transfer_rules, tagger_data);
     if(seg->get_number_paths()==0)
       break;
           
@@ -214,9 +220,24 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     //Para tenerlo en cuenta a la hora de actualizar las estadísticas
     bool hay_caminos_prohibidos=false;
 
-    //Si el segmento tiene demasiados caminos nos lo saltamos
-    if (seg->get_number_paths()>MAX_PATH_PER_SEGMENT) { 
-      cerr<<"Warning: Segment has "<<seg->get_number_paths()<<" disambiguation paths. Skipping\n";
+    translation_of_path.clear();
+    string_already_used.clear();
+
+    //We calculate how many translations needs to be performed 
+    //for this segment
+    int number_of_translations_to_perform=1;
+    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++) {
+      if (seg->vwords[npalabras].get_tags().size()>0)
+	number_of_translations_to_perform*=seg->vwords[npalabras].get_tags().size();
+    }
+
+    //If the segment has too many paths or too many translations, skip it
+    if ((seg->get_number_paths()>MAX_PATHS_PER_SEGMENT) || 
+	(seg->get_number_paths()<0) ||
+	(number_of_translations_to_perform>MAX_TRANSLATIONS_PER_SEGMENT) ||
+	(number_of_translations_to_perform<0)) { 
+      cerr<<"Warning: Segment has "<<seg->get_number_paths()<<" disambiguation paths ";
+      cerr<<"and "<<number_of_translations_to_perform<<" translations to perform. Skipping\n";      
       cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
         cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
@@ -225,6 +246,10 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+        last_etq_segmento_ant=-1;
+
       continue;
     }
     
@@ -236,15 +261,31 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     Utils::print_debug(" - NPATHS: ");
     Utils::print_debug(seg->get_number_paths());
     Utils::print_debug("\n--------------------------------------------------------\n");
+    Utils::print_debug("WORDS BEFORE: \n");
+    for(int npalabras=0; npalabras<seg->vwords_before.size(); npalabras++){
+      Utils::print_debug("   ");
+      Utils::print_debug(seg->vwords_before[npalabras].get_superficial_form());
+      Utils::print_debug("    ");
+      Utils::print_debug(seg->vwords_before[npalabras].get_string_tags());
+      Utils::print_debug("\n");
+    }
     Utils::print_debug("SEGMENT: \n");
     for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++){
+      Utils::print_debug("   ");
       Utils::print_debug(seg->vwords[npalabras].get_superficial_form());
-      Utils::print_debug(" ");
+      Utils::print_debug("    ");
       Utils::print_debug(seg->vwords[npalabras].get_string_tags());
       Utils::print_debug("\n");
     }
+    Utils::print_debug("WORDS AFTER: \n");
+    for(int npalabras=0; npalabras<seg->vwords_after.size(); npalabras++){
+      Utils::print_debug("   ");
+      Utils::print_debug(seg->vwords_after[npalabras].get_superficial_form());
+      Utils::print_debug("    ");
+      Utils::print_debug(seg->vwords_after[npalabras].get_string_tags());
+      Utils::print_debug("\n");
+    }
     Utils::print_debug("\n");
-    
 
     map<wstring, double> translations_likelihoods;
     //Calculamos sus traducciones
@@ -269,7 +310,10 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	} else {
 
 	  if(fpaths.is_open()) {
-	    fpaths<<UtfConverter::toUtf8(cadena)<<"^.<sent>$[\n]"<<flush;
+	    if(!string_already_used[cadena])
+	      fpaths<<UtfConverter::toUtf8(cadena)<<"^.<sent>$[\n]"<<flush;
+	    string_already_used[cadena]=true;
+
 	    continue;
 	  }
 
@@ -281,23 +325,36 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	  wstring tradcadena;
 
 	  if(ftrans.is_open()) {
-	    string straux;
-	    getline(ftrans, straux);
-	    tradcadena=UtfConverter::fromUtf8(straux);
+	    if (translation_of_path.find(cadena) == translation_of_path.end()) {
+	      string straux;
+	      getline(ftrans, straux);
+	      tradcadena=UtfConverter::fromUtf8(straux);
+	      translation_of_path[cadena]=tradcadena;
+	    } else {
+	      tradcadena=translation_of_path[cadena];
+	      Utils::print_debug("(actually not performed) ");
+	    }
 	    if (!(translations[TL1]->are_translations_ok()))
 	      tradcadena=TRANSLATION_NOT_USED;
 	  } else {
-	    if(translations[TL1]->are_translations_ok())
-	      tradcadena=Utils::translate(Utils::translation_script, cadena);
-	    else
+	    if(translations[TL1]->are_translations_ok()) {
+	      if (translation_of_path.find(cadena) == translation_of_path.end()) {
+		tradcadena=Utils::translate(Utils::translation_script, cadena);
+		translation_of_path[cadena]=tradcadena;
+	      } else {
+		tradcadena=translation_of_path[cadena];
+		Utils::print_debug("(actually not performed) ");
+	      }
+	    } else
 	      tradcadena=TRANSLATION_NOT_USED;
 	  }
 
 	  if(flike.is_open()) {
 	    string strlikelihood;
-	    getline(flike, strlikelihood);	  
-	    translations_likelihoods[tagger_utils::trim(tradcadena)]=atof(strlikelihood.c_str());
-	    //translations_likelihoods[tagger_utils::trim(tradcadena)]=wcstod(strlikelihood.c_str(),NULL);
+	    if (!string_already_used[cadena]) {
+	      getline(flike, strlikelihood);
+	      translations_likelihoods[tagger_utils::trim(tradcadena)]=atof(strlikelihood.c_str());
+	    }
 	  }
 
 	  translations[TL1]->set_path_translation(tradcadena, ncamino);
@@ -311,6 +368,8 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	      cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
 	    cerr<<"\n";
 	  }
+
+	  string_already_used[cadena]=true;
 	}
       } 
       else {
@@ -328,6 +387,18 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       //Batch mode
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+        last_etq_segmento_ant=-1;
+
+      cuenta_segmentos++;
+      cuenta_palabras+=seg->vwords.size();
+      cuenta_caminos+=seg->get_number_paths();
+
+      //if (cuenta_palabras>=corpus_length) {
+      //	break;
+      //}	 
+
       continue;
     }
 
@@ -343,6 +414,10 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+        last_etq_segmento_ant=-1;
+
       continue;
     }
 
@@ -357,6 +432,10 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+        last_etq_segmento_ant=-1;
+
       continue;
     }
 
@@ -373,9 +452,13 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
       cerr<<"\n";
-      //We store the last of the segment being skipped
+      //We store the last tag of the segment being skipped
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+        last_etq_segmento_ant=-1;
+
       continue;
     }
 
@@ -407,6 +490,10 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     //Nos quedamos con la última etiqueta del segmento
     cadena=seg->get_path(etqpart, 0);
     last_etq_segmento_ant=etqpart.back();
+    //BEGIN NEW
+    if(seg->vwords.back().get_tags().size()==0)
+      last_etq_segmento_ant=-1;
+    //END NEW
 
     //Vemos si tenemos que guardar los parámetros
     if (cuenta_palabras>=next_save_probs) {
@@ -520,6 +607,13 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
   TTag last_etq_segmento_ant;      
 
   int next_save_probs;
+
+  //This is to avoid translating the same string more than once.
+  //It could happen because of the unknown words, as they have more than
+  //one part-of-speech tag
+  map<wstring, wstring> translation_of_path;
+  map<wstring, bool> string_already_used; //for the batch mode
+
   if (save_after_nwords>0)
     next_save_probs=save_after_nwords;
   else
@@ -579,7 +673,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     translations.clear();
 
     //Tomamos el segmento siguiente
-    seg=Segment::new_segment(morpho_stream, transfer_rules);
+    seg=Segment::new_segment(morpho_stream, transfer_rules, tagger_data);
     if(seg->get_number_paths()==0)
       break;
       
@@ -591,9 +685,24 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     //Para tenerlo en cuenta a la hora de actualizar las estadísticas
     bool hay_caminos_prohibidos=false;
 
-    //Si el segmento tiene demasiados caminos nos lo saltamos
-    if (seg->get_number_paths()>MAX_PATH_PER_SEGMENT) { 
-      cerr<<"Warning: Segment has "<<seg->get_number_paths()<<" disambiguation paths. Skipping\n";      
+    translation_of_path.clear();
+    string_already_used.clear();
+
+    //We calculate how many translations needs to be performed 
+    //for this segment
+    int number_of_translations_to_perform=1;
+    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++) {
+      if (seg->vwords[npalabras].get_tags().size()>0)
+	number_of_translations_to_perform*=seg->vwords[npalabras].get_tags().size();
+    }
+
+    //If the segment has too many paths or too many translations, skip it
+    if ((seg->get_number_paths()>MAX_PATHS_PER_SEGMENT) || 
+	(seg->get_number_paths()<0) ||
+	(number_of_translations_to_perform>MAX_TRANSLATIONS_PER_SEGMENT) ||
+	(number_of_translations_to_perform<0)) { 
+      cerr<<"Warning: Segment has "<<seg->get_number_paths()<<" disambiguation paths ";
+      cerr<<"and "<<number_of_translations_to_perform<<" translations to perform. Skipping\n";      
       cerr<<"SEGMENT: ";
       for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
         cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
@@ -602,9 +711,13 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+        last_etq_segmento_ant=-1;
+
       continue;
     }
-    
+
     Utils::print_debug("\nA NEW SEGMENT BEGINS (");
     Utils::print_debug(cuenta_palabras);
     Utils::print_debug(")-----------------------------\n");
@@ -613,15 +726,32 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     Utils::print_debug(" - NPATHS: ");
     Utils::print_debug(seg->get_number_paths());
     Utils::print_debug("\n--------------------------------------------------------\n");
+    Utils::print_debug("WORDS BEFORE: \n");
+    for(int npalabras=0; npalabras<seg->vwords_before.size(); npalabras++){
+      Utils::print_debug("   ");
+      Utils::print_debug(seg->vwords_before[npalabras].get_superficial_form());
+      Utils::print_debug("    ");
+      Utils::print_debug(seg->vwords_before[npalabras].get_string_tags());
+      Utils::print_debug("\n");
+    }
     Utils::print_debug("SEGMENT: \n");
     for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++){
+      Utils::print_debug("   ");
       Utils::print_debug(seg->vwords[npalabras].get_superficial_form());
-      Utils::print_debug(" ");
+      Utils::print_debug("    ");
       Utils::print_debug(seg->vwords[npalabras].get_string_tags());
       Utils::print_debug("\n");
     }
+    Utils::print_debug("WORDS AFTER: \n");
+    for(int npalabras=0; npalabras<seg->vwords_after.size(); npalabras++){
+      Utils::print_debug("   ");
+      Utils::print_debug(seg->vwords_after[npalabras].get_superficial_form());
+      Utils::print_debug("    ");
+      Utils::print_debug(seg->vwords_after[npalabras].get_string_tags());
+      Utils::print_debug("\n");
+    }
     Utils::print_debug("\n");
-    
+
     //First we calculate the a priori likelihood in order to take into
     //account only the most promising paths
     pruner->compute_paths_ranking();
@@ -645,23 +775,34 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 	if(is_feasible_path(last_etq_segmento_ant, etqpart)) {
 	  if (seg->get_number_paths()>1) {
 	    wstring cadtrans;
-	    string straux;
-	    getline(ftrans, straux);
-	    cadtrans=UtfConverter::fromUtf8(straux);
+
+	    if (translation_of_path.find(cadena) == translation_of_path.end()) {
+	      string straux;
+	      getline(ftrans, straux);
+	      cadtrans=UtfConverter::fromUtf8(straux);
+
+	      translation_of_path[cadena]=cadtrans;
+	    } else {
+	      cadtrans=translation_of_path[cadena];
+	      Utils::print_debug("(actually not performed) ");
+	    }
 	    paths_translations[ncamino]=cadtrans;
 
 	    if(flike.is_open()) {
 	      string strlikelihood;
-	      getline(flike, strlikelihood);
-	      translations_likelihoods[tagger_utils::trim(cadtrans)]=atof(strlikelihood.c_str());
+
+	      if (!string_already_used[cadena]) {
+		getline(flike, strlikelihood);
+		translations_likelihoods[tagger_utils::trim(cadtrans)]=atof(strlikelihood.c_str());
+	      }
 	    }
 	  }
 	}
+	string_already_used[cadena]=true;
       }
     }
 
     //Calculamos sus traducciones
-    //for(int ncamino=0; ncamino<seg->get_number_paths(); ncamino++) {
     int ncamino;
     pruner->reset_paths_counter();
     ncamino=pruner->get_next_path();
@@ -689,8 +830,16 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 	  if(translations[TL1]->are_translations_ok()) {
 	    if (ftrans.is_open()) 
 	      tradcadena=paths_translations[ncamino];
-	    else
-	      tradcadena=Utils::translate(Utils::translation_script, cadena);
+	    else {
+
+	      if (translation_of_path.find(cadena) == translation_of_path.end()) {
+		tradcadena=Utils::translate(Utils::translation_script, cadena);
+		translation_of_path[cadena]=tradcadena;
+	      } else {
+		tradcadena=translation_of_path[cadena];
+		Utils::print_debug("(actually not performed) ");
+	      }
+	    }
 	  } else
 	    tradcadena=TRANSLATION_NOT_USED;
 
@@ -730,13 +879,16 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+	last_etq_segmento_ant=-1;
+
       continue;
     }
 
     //We test if there are transaltions, this segment could have all
     //the paths forbidden
-    if((translations[TL1]->get_number_translations()==0) &&
-       (hay_caminos_prohibidos)) {
+    if((translations[TL1]->get_number_translations()==0) && (hay_caminos_prohibidos)) {
 
       cerr<<"Warning: This segment has all its paths forbidden. Skipping\n";
       cerr<<"SEGMENT: ";
@@ -746,6 +898,10 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+	last_etq_segmento_ant=-1;
+
       continue;
     }
 
@@ -765,6 +921,10 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       //We store the last of the segment being skipped
       cadena=seg->get_path(etqpart, 0);
       last_etq_segmento_ant=etqpart.back();
+
+      if(seg->vwords.back().get_tags().size()==0)
+	last_etq_segmento_ant=-1;
+
       continue;
     }
     if(flike.is_open()) 
@@ -794,6 +954,9 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     //Nos quedamos con la última etiqueta del segmento
     cadena=seg->get_path(etqpart, 0);
     last_etq_segmento_ant=etqpart.back();
+
+    if(seg->vwords.back().get_tags().size()==0)
+      last_etq_segmento_ant=-1;
 
     //We test if we need to update the molde used for prunning
     if (cuenta_palabras>=next_update_pruning_model) {
@@ -827,12 +990,12 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       cout<<"Average number of paths per segment length\n";
       cout<<"--------------------------------------------------------\n"<<flush;
       for(itmap=long_segmentos.begin(); itmap!=long_segmentos.end(); itmap++)
-	cout<<(*itmap).first<<L" "<<((double)caminos_long_segmentos[(*itmap).first])/((double)(*itmap).second)<<"\n";
+	cout<<(*itmap).first<<" "<<((double)caminos_long_segmentos[(*itmap).first])/((double)(*itmap).second)<<"\n";
 
       cout<<"Average number of different translations per segment length\n";
       cout<<"--------------------------------------------------------\n"<<flush;
       for(itmap=long_segmentos.begin(); itmap!=long_segmentos.end(); itmap++)
-	cout<<(*itmap).first<<L" "<<((double)trads_long_segmentos[TL1][(*itmap).first])/((double)(*itmap).second)<<"\n";
+	cout<<(*itmap).first<<" "<<((double)trads_long_segmentos[TL1][(*itmap).first])/((double)(*itmap).second)<<"\n";
 
 
       cout<<"Total number of paths treated per segment length\n";
@@ -841,7 +1004,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       for(map<int, pair<int, int> >::iterator it=pruning_stats.begin(); 
 	  it!=pruning_stats.end(); it++) {
 	cout<<(*it).first<<" "<<(*it).second.first<<" "<<(*it).second.second
-	     <<" --> "<<((double)(*it).second.second)/((double)(*it).second.first)<<"\n";
+            <<" --> "<<((double)(*it).second.second)/((double)(*it).second.first)<<"\n";
       }
 
       cout<<"Average of probability mass taken into account per segment length\n";
@@ -957,7 +1120,7 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
 
     int k=tagger_data.getOutput()[tags];
     if ((k>=tagger_data.getM())||(k<0)) {
-      cerr<<"Error: Ambiguity class number out of range: "<<k<<"\n";
+      cerr<<"Error (1): Ambiguity class number out of range: "<<k<<"\n";
       cerr<<"Word: "<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<"\n";
       cerr<<"Ambiguity class: "<<UtfConverter::toUtf8(seg->vwords[i].get_string_tags())<<"\n";
       cerr<<"Amb. class size: "<<tags.size()<<"\n";
@@ -978,9 +1141,14 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
     Utils::print_debug("\n");
     Utils::print_debug("              TAGS: ");
     for(int j=0; j<etqpart.size(); j++) {
-      if(etqpart[j]==-1)
-	Utils::print_debug("__UNKNOWN__");
-      else
+      if(etqpart[j]==-1) {
+	cerr<<"Error: Unknown tag found.\n";
+	cerr<<"SEGMENT: ";
+	for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+	  cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+	cerr<<"\n";
+	exit(EXIT_FAILURE);
+      } else
 	Utils::print_debug(tagger_data.getArrayTags()[etqpart[j]]);
       Utils::print_debug(" ");
     }
@@ -1003,6 +1171,10 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
 
       tag2=etqpart[j];
       tags=seg->vwords[j].get_tags();
+
+      if (tags.size()==0)
+	tags=tagger_data.getOpenClass();
+
       if(tag2>=tagger_data.getN()) {
 	cerr<<"Error: Tag number out of range: "<<tag2<<"\n";
 	cerr<<"Word: "<<UtfConverter::toUtf8(seg->vwords[j].get_superficial_form())<<"\n";
@@ -1014,7 +1186,7 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
       if(tag2>=0) { //No es una palabra desconocida
 	int k=tagger_data.getOutput()[tags];
 	if ((k>=tagger_data.getM())||(k<0)) {
-	  cerr<<"Error: Ambiguity class number out of range: "<<k<<"\n";
+	  cerr<<"Error (2): Ambiguity class number out of range: "<<k<<"\n";
 	  cerr<<"Word: "<<UtfConverter::toUtf8(seg->vwords[j].get_superficial_form())<<"\n";
 	  cerr<<"Ambiguity class: "<<UtfConverter::toUtf8(seg->vwords[j].get_string_tags())<<"\n";
 	  cerr<<"Amb. class size: "<<tags.size()<<"\n";
@@ -1025,12 +1197,12 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
 	tags_count_for_emis[tag2]+=prob_este_camino;
 	
       } else { //Palabra desconocida
-	set<TTag>::iterator itag;
-	int k=tagger_data.getOutput()[tagger_data.getOpenClass()];
-	for(itag=tagger_data.getOpenClass().begin(); itag!=tagger_data.getOpenClass().end(); itag++) {
-	  emis[*itag][k]+=prob_este_camino/((double)tagger_data.getOpenClass().size());
-	  tags_count_for_emis[*itag]+=prob_este_camino/((double)tagger_data.getOpenClass().size());
-	}
+	cerr<<"Error: Unknown tag found.\n";
+	cerr<<"SEGMENT: ";
+	for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+	  cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+	cerr<<"\n";
+	exit(EXIT_FAILURE);
       }
         
       //cerr<<"tag1 = "<<tag1<<"; tag2 = "<<tag2<<"\n";
@@ -1038,7 +1210,7 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
       if((tag1>=0)&&(tag2>=0)) { //Ninguna de las dos es desconocida
 	//cerr<<"Ambas son conocidas\n";
 	tags_pair[tag1][tag2]+=prob_este_camino;
-      } 
+      }
         
       else if ((tag1<0)&&(tag2>=0)) { //La primera es desconocida
 	set<TTag>::iterator itag;
@@ -1047,23 +1219,14 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
 	  tags_pair[*itag][tag2]+=prob_este_camino/((double)tagger_data.getOpenClass().size());
       } 
 
-      else if ((tag1>=0)&&(tag2<0)) { //La segunda es desconocida
-	set<TTag>::iterator itag;
-	//cerr<<"La segunda es desconocida\n";
-	for(itag=tagger_data.getOpenClass().begin(); itag!=tagger_data.getOpenClass().end(); itag++)
-	  tags_pair[tag1][*itag]+=prob_este_camino/((double)tagger_data.getOpenClass().size());	       
-      } 
-
-      else { //Ambas son desconocidas
-	//cerr<<"Ambas son desconocidas\n";
-	double prob_aux=prob_este_camino/((double)tagger_data.getOpenClass().size());
-	prob_aux=prob_aux/((double)tagger_data.getOpenClass().size());		  
-	set<TTag>::iterator itag, jtag;
-	for(itag=tagger_data.getOpenClass().begin(); itag!=tagger_data.getOpenClass().end(); itag++){
-	  for(jtag=tagger_data.getOpenClass().begin(); jtag!=tagger_data.getOpenClass().end(); jtag++){
-	    tags_pair[*itag][*jtag]+=prob_aux;
-	  }
-	}
+      else {
+	cerr<<"Error: Unknown tag found.\n";
+	cerr<<"SEGMENT: ";
+	for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+	  cerr<<UtfConverter::toUtf8(seg->vwords[npalabras].get_superficial_form())<<" ";
+	cerr<<"\n"; 
+	cerr<<"tag1 = "<<tag1<<"; tag2 = "<<tag2<<"\n";
+	exit(EXIT_FAILURE);
       }
 	   
       tag1=tag2;
