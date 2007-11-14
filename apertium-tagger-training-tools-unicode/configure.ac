@@ -33,7 +33,7 @@ AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 # Checks for programs.
 
 AC_MSG_CHECKING([Compilation architecture: PPC, i686, Other])
-ARCH=$(/bin/arch)
+ARCH=$(/bin/uname -m)
 if test x$ARCH = xppc
 then
   AC_MSG_RESULT([PowerPC])
