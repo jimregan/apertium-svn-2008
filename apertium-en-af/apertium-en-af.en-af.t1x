@@ -132,10 +132,16 @@
         <when>
           <test>
             <not> <!-- If we're dealing with an analytical adjective in the target -->
-              <equal>
-                <clip pos="1" side="tl" part="a_adj"/>
-                <lit-tag v="adj.sint"/>
-              </equal>
+              <or>
+                <equal>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <lit-tag v="adj.sint.comp"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <lit-tag v="adj.sint.sup"/>
+                </equal>
+              </or>
             </not>
           </test>
           <choose>
