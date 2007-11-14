@@ -113,23 +113,22 @@ TransferRules::match_regular_expression(string s, int pos_regex) {
 }
 
 bool 
-TransferRules::is_segmentation_point(int tag_eof, vector<TaggerWord*>& vwords, int position, int &advance) {
-  set<TTag> tags=vwords[position]->get_tags();
-      
+TransferRules::is_segmentation_point(int tag_eof, deque<TaggerWord>& vwords, int position, int &advance) {
+  set<TTag> tags=vwords[position].get_tags();
+
   advance=0;
    
-  if(vwords[position]->get_plus_cut()) // This is a multiword unit
+  if(vwords[position].get_plus_cut()) // This is a multiword unit
     return false;
    
   if (tags.size()>1) //This is an umbiguous word
     return false;
-      
+  
   if (tags.size()==0) { //This is an unknown word
     return true;
   }
-
   
-  string forma_superficial=vwords[position]->get_superficial_form();
+  string forma_superficial=vwords[position].get_superficial_form();
 
   for (int i=0; i<superficial_forms.size(); i++) {
     if (forma_superficial == superficial_forms[i])
@@ -137,7 +136,7 @@ TransferRules::is_segmentation_point(int tag_eof, vector<TaggerWord*>& vwords, i
   }
       
   TTag tag=(*tags.begin()); //An unambiguous word, it has only one tag
-  string stag=vwords[position]->get_lexical_form(tag, tag_eof);
+  string stag=vwords[position].get_lexical_form(tag, tag_eof);
 
   //Transfer rules are reviewed. If no transfer rule is
   //applicable, this word can be a segmentation point
@@ -157,18 +156,18 @@ TransferRules::is_segmentation_point(int tag_eof, vector<TaggerWord*>& vwords, i
 
 	//Now that we know that the tag appears in the rule i, we need
 	//to test if rule match for at least one combination of tags
-	//of the rest of the words
+	//of the rest of the words in the segment
 	bool rule_matched=true;
 	for(unsigned int k=0; ((rule_matched)&&(k<transfer_rules[i].size())); k++) {
 	  if ((inicio_regla+k)>=(vwords.size())) {
 	    rule_matched=false;
 	    break;
 	  }
-	  tags=vwords[inicio_regla+k]->get_tags();
+	  tags=vwords[inicio_regla+k].get_tags();
 	  set<TTag>::iterator it;
 	  bool hay_etq=false;
 	  for(it=tags.begin(); it!=tags.end(); it++) {
-            string sit=vwords[inicio_regla+k]->get_lexical_form((TTag&)(*it), tag_eof);
+            string sit=vwords[inicio_regla+k].get_lexical_form((TTag&)(*it), tag_eof);
 	    if (match_regular_expression(sit, transfer_rules[i][k])) {
 	      hay_etq=true; //At least one tag matches the position of
   	                    //the rules being considered

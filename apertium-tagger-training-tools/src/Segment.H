@@ -33,11 +33,14 @@
 #include <vector>
 
 #include <apertium/TaggerWord.H>
+#include <apertium/TaggerData.H>
 #include <apertium/MorphoStream.H>
 #include <apertium/TaggerUtils.H>
 
 #include "StringCollection.H"
 #include "TransferRules.H"
+
+#define TAGGER_WORD_BUFFER_SIZE 100
 
 using namespace std;
 
@@ -54,10 +57,13 @@ private:
 public:
 
   vector<TaggerWord> vwords;
-  
+
+  vector<TaggerWord> vwords_before;
+  vector<TaggerWord> vwords_after;
+
   Segment();
 
-  static Segment* new_segment(MorphoStream &ms, TransferRules* tr);
+  static Segment* new_segment(MorphoStream &ms, TransferRules* tr, TaggerData &td);
 
   int get_number_paths();
 

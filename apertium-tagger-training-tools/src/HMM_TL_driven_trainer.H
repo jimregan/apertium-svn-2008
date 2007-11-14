@@ -60,7 +60,8 @@
 #include "Translations.H"
 #include "TransferRules.H"
 
-#define MAX_PATH_PER_SEGMENT 100000
+#define MAX_PATHS_PER_SEGMENT 25000000
+#define MAX_TRANSLATIONS_PER_SEGMENT 100000 //NEW
 
 #define TL1 0
 #define TL2 1

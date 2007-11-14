@@ -16,7 +16,7 @@ EXTRA_DIST = xtract-trules.xsl xtract-regex-trules.sh gen_crp_file.sh gen_dic_fi
 
 apertium_tagger_tl_trainer_SOURCES =  HMM_TL_driven_trainer.H  Segment.H \
             StringCollection.H  TransferRules.H  Translations.H  Utils.H PathsPruner.H \
-            SmoothUtils.H apertium-tagger-tl-trainer.C  \
+            SmoothUtils.H HashMap.H apertium-tagger-tl-trainer.C  \
             HMM_TL_driven_trainer.C Segment.C  StringCollection.C  TransferRules.C \
             Translations.C  Utils.C PathsPruner.C SmoothUtils.C
 apertium_tagger_tl_trainer_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)

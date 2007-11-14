@@ -29,11 +29,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <deque>
 
 #include <sys/types.h>
 #include <regex.h>
 
 #include <apertium/TaggerWord.H>
+#include <apertium/TaggerData.H>
 
 //#define LEMMA "([-0-9a-zñçáéíóúàèìòùäëïöüâêîôûA-ZÑÇ_ÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÂÊÎÔÛãõÃÕ\\._'·,]+)"
 
@@ -63,7 +65,7 @@ public:
 
   bool match_regular_expression(string s, int pos_regex);
 
-  bool is_segmentation_point(int tag_eof, vector<TaggerWord*>& vwords, int position, int &advance);
+  bool is_segmentation_point(int tag_eof, deque<TaggerWord>& vwords, int position, int &advance);
 
   void set_superficial_forms(string s);
 
