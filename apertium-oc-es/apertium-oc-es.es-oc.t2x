@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
 <interchunk>
   <section-def-cats>
 
@@ -24,7 +24,7 @@
     <def-cat n="SV"><!--Verb conjugat, i tb infinitiu per quan el tagger s'equivoca. -->
 <!--      <cat-item lemma="verbcj" tags="SV.*"/>
       <cat-item tags="Vcop.*"/>
-      <cat-item lemma="mod" tags="SV.*"/><!-#-MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: sï¿½que ï¿½ 'haig de'. -#->
+      <cat-item lemma="mod" tags="SV.*"/><!-#-MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: s�que � 'haig de'. -#->
       <cat-item lemma="auxmod_inf" tags="SV.*"/>
       <cat-item lemma="auxmod_mod_inf" tags="SV.*"/>
       <cat-item lemma="do_inf" tags="SV.*"/>
@@ -51,12 +51,12 @@
     </def-cat>
    
 		<def-cat n="esser_pp">
-      <cat-item lemma="haver_pp" tags="SV.vbser.*"/>
-      <cat-item lemma="haver_adv_pp" tags="SV.vbser.*"/>
-      <cat-item lemma="pro_haver_pp" tags="SV.vbser.*"/>
-      <cat-item lemma="pro_pro_haver_pp" tags="SV.vbser.*"/>
-<cat-item lemma="pro_haver_adv_pp" tags="SV.vbser.*"/>
-<cat-item lemma="pro_pro_haver_adv_pp" tags="SV.vbser.*"/>
+      <cat-item lemma="aux_pp" tags="SV.vbser.*"/>
+      <cat-item lemma="aux_adv_pp" tags="SV.vbser.*"/>
+      <cat-item lemma="pro_aux_pp" tags="SV.vbser.*"/>
+      <cat-item lemma="pro_pro_aux_pp" tags="SV.vbser.*"/>
+<cat-item lemma="pro_aux_adv_pp" tags="SV.vbser.*"/>
+<cat-item lemma="pro_pro_aux_adv_pp" tags="SV.vbser.*"/>
     </def-cat>
 
 <def-cat n="QUEREL">
@@ -84,7 +84,7 @@
 
      <def-cat n="pp">
       <cat-item lemma="pp"  tags="SA.*"/>
-      <cat-item lemma="adj"  tags="SA.*"/><!-- BCN per que agafi bï¿½resolutions adopted -->
+      <cat-item lemma="adj"  tags="SA.*"/><!-- BCN per que agafi b�resolutions adopted -->
     </def-cat>
 
      <def-cat n="DET">
@@ -172,12 +172,19 @@
       <attr-item tags="vbmod"/>
       <attr-item tags="HAVER"/>
     </def-attr>
+
+	<def-attr n="tverb">
+		<attr-item tags="vben"/>
+		<attr-item tags="vba"/>
+		<attr-item tags="vbdins"/>
+		<attr-item tags="vbsus"/>
+	</def-attr>
       
   <def-attr n="a_SN">
           <attr-item tags="DET"/>
 	  <attr-item tags="UNDET"/>
 	  <attr-item tags="NUM"/>
-	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaciï¿½que farï¿½el postchunk detectant els PDET. -->
+	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaci�que far�el postchunk detectant els PDET. -->
       </def-attr>
 
   </section-def-attrs>
@@ -198,26 +205,122 @@
 <section-def-lists>
 	<def-list n="prde">
 		<list-item v="de"/>
-		<list-item v="cap de"/>
-		<list-item v="a trauèrs de"/>
-		<list-item v="un pialèr de"/>
+		<list-item v="a rel de"/>
+		<list-item v="a trav�s de"/>
+		<list-item v="d'en�� de"/>
+		<list-item v="a causa de"/>
+		<list-item v="dins de"/>
+		<list-item v="en comptes de"/>
+		<list-item v="per tal de"/>
+		<list-item v="un munt de"/>
+		<list-item v="al costat de"/>
+		<list-item v="vora de"/>
+		<list-item v="a la vora de"/>
+		<list-item v="per mitj� de"/>
+<!--		<list-item v="cap de"/>
+		<list-item v="a trau�rs de"/>
+		<list-item v="un pial�r de"/>
 		<list-item v="per causa de"/>
 		<list-item v="per medi de"/>
-		<list-item v="a arraïtz de"/>
+		<list-item v="a arra�tz de"/>
 		<list-item v="a compdar de"/>
 		<list-item v="a despiet de"/>
-		<list-item v="entà per'mor de"/>
+		<list-item v="ent� per'mor de"/>
 		<list-item v="des de"/>
 		<list-item v="malgrat de"/>
 		<list-item v="alloc de"/>
-		<list-item v="dempús de"/>
-		<list-item v="despús de"/>
-		<list-item v="ath cant de"/>
+		<list-item v="demp�s de"/>
+		<list-item v="desp�s de"/>
+		<list-item v="ath cant de"/>-->
 	</def-list>
 </section-def-lists>
 
 
 <section-def-macros>
+
+	<def-macro n="cv_prep" npar="2">
+		<choose> <!--canvia la prepo de lloc-->
+			<when>
+				<test>
+					<or>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="a"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="en"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="dins"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="sus"/>
+						</equal>
+					</or>
+				</test>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vba"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="a"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vben"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="en"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vbdins"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="dins"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vbsus"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="sus"/>
+						</let>
+					</when>
+				</choose>
+			
+			</when>
+		</choose>
+	</def-macro>
 
 	<def-macro n="partitiu" npar="1">
 		<choose>
@@ -357,7 +460,7 @@
 			<var n="tipus_rel"/>
 			<lit v=""/>
 		</let>
-		<choose><!-- si hi ha un vostè-->
+		<choose><!-- si hi ha un vost�-->
 			<when>
 				<test>
 					<and>
@@ -369,10 +472,10 @@
 							<clip pos="1" part="pers"/>
 							<lit-tag v="p3"/>
 						</equal>
-						<equal>
+				<!--		<equal>
 							<clip pos="1" part="nbr"/>
 							<lit-tag v="sg"/>
-						</equal>
+						</equal>-->
 					</and>
 				</test>
 				<let>
@@ -450,7 +553,7 @@
 							<let><var n="concord"/><lit-tag v="no"/></let>
 						</otherwise>
 					</choose>
-				</when> <!--no Ã©s 1a pers-->
+				</when> <!--no és 1a pers-->
 				<otherwise>
 					<choose>
 						<when>
@@ -480,8 +583,8 @@
 									<let><var n="concord"/><lit-tag v="no"/></let>
 								</otherwise>
 							</choose>
-						</when> <!--no Ã©s 2a pers-->
-						<otherwise><!--Ã©s 3a pers-->
+						</when> <!--no és 2a pers-->
+						<otherwise><!--és 3a pers-->
 							<choose>
 								<when>
 									<test>
@@ -522,7 +625,7 @@
 					</choose>
 				</otherwise>
 			</choose>
-		</when><!--no Ã©s pl-->
+		</when><!--no és pl-->
 		<otherwise>
 			<let><var n="concord"/><lit-tag v="no"/></let>
 		</otherwise>
@@ -649,7 +752,7 @@
 			</choose>
 		</otherwise>
 	</choose>
-	<choose><!--i aquÃ­ la pers-->
+	<choose><!--i aquí la pers-->
 		<when>
 			<test>
 				<or>
@@ -708,7 +811,7 @@
 							</test>
 							<let><var n="pers_subj"/><lit-tag v="p1"/></let>
 						</when>
-<!-- Ã©s p2 -->
+<!-- és p2 -->
 					</choose>
 				</when>
 			</choose>
@@ -717,7 +820,7 @@
 
 </def-macro>
 
-<def-macro n="concord_sa" npar="2"><!--assigna el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tÃ­a es interesante" -> "interesante" concordarÃ  amb "aperÃ§u")-->
+<def-macro n="concord_sa" npar="2"><!--assigna el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tía es interesante" -> "interesante" concordarà amb "aperçu")-->
 					<choose>
 						<when> 
 							<test>
@@ -870,7 +973,7 @@
 	</choose>
 </def-macro>
 
-  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc contï¿½o no format. Cal posar aquesta funciï¿½en les regles en quï¿½desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si contï¿½format cal conservar-la, si no en contï¿½cal eliminar-la perquï¿½no apareguin dos espais seguits. -->
+  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc cont�o no format. Cal posar aquesta funci�en les regles en qu�desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont�format cal conservar-la, si no en cont�cal eliminar-la perqu�no apareguin dos espais seguits. -->
      	<choose>
      	  <when>
      	    <test>
@@ -948,6 +1051,65 @@
 					<clip pos="1" part="lem"/>
 					<clip pos="1" part="tags"/>
 					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+	
+	<rule comment="REGLA: SV adv SN">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="modifica_sv">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="lema_prn">
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="adv"/>
+						</equal>
+					</test>
+					<let>
+						<clip pos="2" part="lem"/>
+						<lit v="controla_adv"/>
+					</let>
+				</when>
+			</choose>
+
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+			</out>
+			<call-macro n="partitiu" alt="oc-ca">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
 				</chunk>
 			</out>
 		</action>
@@ -1187,7 +1349,7 @@
 		</action>
 	</rule>
 
-<!-- no cal perquè l'adv va entre l'aux i el pp...?
+<!-- no cal perqu� l'adv va entre l'aux i el pp...?
 	<rule comment="REGLA: SN sp  adv esser_pp">
 		<pattern>
 			<pattern-item n="SN"/>
@@ -1279,6 +1441,43 @@
 		</action>
 	</rule>	
 
+	<rule comment="REGLA: SA vbcop SN">
+		<pattern>
+			<pattern-item n="SA"/>
+			<pattern-item n="vbcop"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="concord_sa">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="partitiu" alt="oc-ca">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="whole"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>	
+
 	<rule comment="REGLA: SN vbcop ADV SA">
 		<pattern>
 			<pattern-item n="SN"/>
@@ -1318,6 +1517,52 @@
 				<b pos="3"/>
 				<chunk>
 					<clip pos="4" part="whole"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>	
+	
+	<rule comment="REGLA: SA vbcop ADV SN">
+		<pattern>
+			<pattern-item n="SA"/>
+			<pattern-item n="vbcop"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="concord_sa">
+				<with-param pos="4"/>
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="partitiu" alt="oc-ca">
+				<with-param pos="4"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
 				</chunk>
 			</out>
 		</action>
@@ -1649,6 +1894,95 @@
 		</action>
 	</rule> 
 
+	<rule comment="REGLA: SV sprep">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="lema_prn">
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<and>
+							<not>
+								<equal>
+									<clip pos="1" part="tverb"/>
+									<lit-tag v="nopart"/>
+								</equal>
+							</not>
+							<equal>
+								<clip pos="2" part="tprep"/>
+								<lit-tag v="de"/>
+							</equal>
+							<or>
+								<equal>
+									<clip pos="3" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+								<equal>
+									<clip pos="3" part="tnom"/>
+									<lit-tag v="part"/>
+								</equal>
+							</or>
+						</and>
+					</test>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<lit-tag v="treu_det"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+					<call-macro n="f_bcond">
+						<with-param pos="2"/>
+					</call-macro>
+				</when>
+				<otherwise>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+						<b pos="2"/>
+						<chunk>
+							<clip pos="3" part="lem"/>
+							<clip pos="3" part="tags"/>
+							<clip pos="3" part="chcontent"/>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+		</action>
+	</rule>
+	
 	<rule comment="REGLA: SN sprep vbcop adv SN">
 		<pattern>
 			<pattern-item n="SN"/>

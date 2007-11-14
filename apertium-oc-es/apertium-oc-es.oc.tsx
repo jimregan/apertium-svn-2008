@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <tagger name="occitan">
 <tagset>
   <def-label name="QUECNJ" closed="true">
@@ -6,12 +6,6 @@
   </def-label>
   <def-label name="QUEREL" closed="true">
     <tags-item lemma="que" tags="rel.*"/>
-  </def-label>
-  <def-label name="MOLTADV" closed="true">
-    <tags-item lemma="molt" tags="adv"/>
-  </def-label>
-  <def-label name="MOLTPREADV" closed="true">
-    <tags-item lemma="molt" tags="preadv"/>
   </def-label>
 <!--  
   <def-label name="VOLERMOD" closed="true">
@@ -92,7 +86,7 @@
     <tags-item tags="num"/>
 	 <tags-item tags="num.*"/>
   </def-label>
-<!-- aixÃ² en aranÃ¨s no hi Ã©s!  
+<!-- això en aranès no te gaire sentit no?  
   <def-label name="PREDETNT" closed="true">
     <tags-item tags="predet.nt.*"/>
   </def-label>
@@ -121,37 +115,32 @@
   <def-label name="PRNPRO" closed="true">
     <tags-item tags="prn.pro.*"/>
   </def-label>
-<!-- Afegit 10/11/05 MG Ho he tret perquÃ¨ aixÃ² Ã©s per l'auxiliar "anar" del catalÃ  CA 
-  <def-label name="VA">
-    <tags-item lemma ="anar" tags="vblex.pri.*"/>
+<!--  <def-label name="AVERLEXINF" closed="true">MG: és millor que les probabilitats d'aquest verb es calculin junt amb les dels altres verbs lèxics
+	  <tags-item lemma="aver" tags="vblex.inf"/>
   </def-label>
--->
-  <def-label name="AUERLEXINF" closed="true">
-	  <tags-item lemma="auer" tags="vblex.inf"/>
+  <def-label name="AVERLEXGER" closed="true">
+	  <tags-item lemma="aver" tags="vblex.ger"/>
   </def-label>
-  <def-label name="AUERLEXGER" closed="true">
-	  <tags-item lemma="auer" tags="vblex.ger"/>
+  <def-label name="AVERLEXPP" closed="true">
+	  <tags-item lemma="aver" tags="vblex.pp.*"/>
   </def-label>
-  <def-label name="AUERLEXPP" closed="true">
-	  <tags-item lemma="auer" tags="vblex.pp.*"/>
+  <def-label name="AVERLEXPFCI" closed="true">
+	  <tags-item lemma="aver" tags="vblex.pri.*"/>
+	  <tags-item lemma="aver" tags="vblex.fti.*"/>
+	  <tags-item lemma="aver" tags="vblex.cni.*"/>
   </def-label>
-  <def-label name="AUERLEXPFCI" closed="true">
-	  <tags-item lemma="auer" tags="vblex.pri.*"/>
-	  <tags-item lemma="auer" tags="vblex.fti.*"/>
-	  <tags-item lemma="auer" tags="vblex.cni.*"/>
+  <def-label name="AVERLEXIPI" closed="true">
+	  <tags-item lemma="aver" tags="vblex.pii.*"/>
+	  <tags-item lemma="aver" tags="vblex.ifi.*"/>
   </def-label>
-  <def-label name="AUERLEXIPI" closed="true">
-	  <tags-item lemma="auer" tags="vblex.pii.*"/>
-	  <tags-item lemma="auer" tags="vblex.ifi.*"/>
+  <def-label name="AVERLEXSUBJ" closed="true">
+	  <tags-item lemma="aver" tags="vblex.prs.*"/>
+	  <tags-item lemma="aver" tags="vblex.pis.*"/>
+	  <tags-item lemma="aver" tags="vblex.fts.*"/>
   </def-label>
-  <def-label name="AUERLEXSUBJ" closed="true">
-	  <tags-item lemma="auer" tags="vblex.prs.*"/>
-	  <tags-item lemma="auer" tags="vblex.pis.*"/>
-	  <tags-item lemma="auer" tags="vblex.fts.*"/>
-  </def-label>
-  <def-label name="AUERLEXIMP" closed="true">
-	  <tags-item lemma="auer" tags="vblex.imp.*"/>
-  </def-label>
+  <def-label name="AVERLEXIMP" closed="true">
+	  <tags-item lemma="aver" tags="vblex.imp.*"/>
+  </def-label> -->
   <def-label name="VLEXINF">
     <tags-item tags="vblex.inf"/>
   </def-label>
@@ -320,7 +309,7 @@
     </sequence>
   </def-mult>
  
-  <def-mult name="INFLEXPRNENC">
+<!--  <def-mult name="INFLEXPRNENC">
     <sequence>
       <label-item label="VLEXINF"/>
       <label-item label="PRNENC"/>
@@ -330,8 +319,8 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
    </sequence>
-  </def-mult>
-  <def-mult name="GERLEXPRNENC">
+  </def-mult> en occità, el pronom va davant l'infinitiu-->
+<!--  <def-mult name="GERLEXPRNENC">
     <sequence>
       <label-item label="VLEXGER"/>
       <label-item label="PRNENC"/>
@@ -341,7 +330,7 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
    </sequence>
-  </def-mult>
+  </def-mult> en occità, el pronom va davant el gerundi-->
   <def-mult name="IMPLEXPRNENC">
     <sequence>
       <label-item label="VLEXIMP"/>
@@ -353,40 +342,40 @@
       <label-item label="PRNENC"/>
    </sequence>
   </def-mult>
-  <def-mult name="AUERINFLEXPRNENC">
+<!--  <def-mult name="AVERINFLEXPRNENC">
 	  <sequence>
-	  <label-item label="AUERLEXINF"/>
+	  <label-item label="AVERLEXINF"/>
 	  <label-item label="PRNENC"/>
   </sequence>
   <sequence>
-	  <label-item label="AUERLEXINF"/>
+	  <label-item label="AVERLEXINF"/>
 	  <label-item label="PRNENC"/>
 	  <label-item label="PRNENC"/>
   </sequence>
-</def-mult>
-<def-mult name="AUERGERLEXPRNENC">
+</def-mult> occità no -->
+<!--<def-mult name="AVERGERLEXPRNENC">
 	<sequence>
-		<label-item label="AUERLEXGER"/>
+		<label-item label="AVERLEXGER"/>
 		<label-item label="PRNENC"/>
 	</sequence>
 	<sequence>
-		<label-item label="AUERLEXGER"/>
+		<label-item label="AVERLEXGER"/>
 		<label-item label="PRNENC"/>
 		<label-item label="PRNENC"/>
 	</sequence>
-</def-mult>
-<def-mult name="AUERIMPLEXPRNENC">
+</def-mult> occità no -->
+<def-mult name="AVERIMPLEXPRNENC">
 	<sequence>
-		<label-item label="AUERLEXIMP"/>
+		<label-item label="AVERLEXIMP"/>
 		<label-item label="PRNENC"/>
 	</sequence>
 	<sequence>
-		<label-item label="AUERLEXIMP"/>
+		<label-item label="AVERLEXIMP"/>
 		<label-item label="PRNENC"/>
 		<label-item label="PRNENC"/>
 	</sequence>
   </def-mult>
-  <def-mult name="INFSERPRNENC" closed="true">
+<!--  <def-mult name="INFSERPRNENC" closed="true">
     <sequence>
       <label-item label="VSERINF"/>
       <label-item label="PRNENC"/>
@@ -407,7 +396,7 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
     </sequence>
-  </def-mult>
+  </def-mult> occità no -->
   <def-mult name="IMPSERPRNENC" closed="true">
     <sequence>
       <label-item label="VSERIMP"/>
@@ -419,7 +408,7 @@
       <label-item label="PRNENC"/>
     </sequence>
   </def-mult>
-  <def-mult name="INFHABERPRNENC" closed="true">
+<!--  <def-mult name="INFHABERPRNENC" closed="true">
     <sequence>
       <label-item label="VHABERINF"/>
       <label-item label="PRNENC"/>
@@ -440,8 +429,8 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
     </sequence>
-  </def-mult>
-  <def-mult name="INFMODPRNENC" closed="true">
+  </def-mult> en occità no-->
+ <!-- <def-mult name="INFMODPRNENC" closed="true">
     <sequence>
       <label-item label="VMODALINF"/>
       <label-item label="PRNENC"/>
@@ -462,7 +451,7 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
     </sequence>
-  </def-mult>
+  </def-mult> en occità no-->
   <def-mult name="IMPMODPRNENC" closed="true">
     <sequence>
       <label-item label="VMODALIMP"/>
@@ -479,11 +468,11 @@
   <forbid>
 	  <label-sequence>
 		  <label-item label="PRNPRO"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="PRNPROREF"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  
 	  <label-sequence>
@@ -664,15 +653,15 @@
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="ANTROPONIM"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="TOPONIM"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="NPALTRES"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="ANTROPONIM"/>
@@ -840,23 +829,23 @@
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="APREP"/>
-		  <label-item label="AUERLEXPFCI"/>
+		  <label-item label="AVERLEXPFCI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="APREP"/>
-		  <label-item label="AUERLEXIPI"/>
+		  <label-item label="AVERLEXIPI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="APREP"/>
-		  <label-item label="AUERLEXSUBJ"/>
+		  <label-item label="AVERLEXSUBJ"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="APREP"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="APREP"/>
-		  <label-item label="AUERIMPLEXPRNENC"/>
+		  <label-item label="AVERIMPLEXPRNENC"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="APREP"/>
@@ -912,32 +901,28 @@
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="PREP"/>
-		  <label-item label="AUERLEXPFCI"/>
+		  <label-item label="AVERLEXPFCI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="PREP"/>
-		  <label-item label="AUERLEXIPI"/>
+		  <label-item label="AVERLEXIPI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="PREP"/>
-		  <label-item label="AUERLEXSUBJ"/>
+		  <label-item label="AVERLEXSUBJ"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="PREP"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="PREP"/>
-		  <label-item label="AUERIMPLEXPRNENC"/>
+		  <label-item label="AVERIMPLEXPRNENC"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="PREP"/>
 		  <label-item label="VLEXPFCI"/>
 	  </label-sequence>
-<!--	  <label-sequence>
-		  <label-item label="PREP"/>
-		  <label-item label="VA"/>
-	  </label-sequence>-->
 	  <label-sequence>
 		  <label-item label="PREP"/>
 		  <label-item label="VLEXIPI"/>
@@ -1008,28 +993,28 @@
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETM"/>
-		  <label-item label="AUERLEXPFCI"/>
+		  <label-item label="AVERLEXPFCI"/>
 	  </label-sequence>
 	  
 	  <label-sequence>
 		  <label-item label="DETM"/>
-		  <label-item label="AUERLEXIPI"/>
+		  <label-item label="AVERLEXIPI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETM"/>
-		  <label-item label="AUERLEXSUBJ"/>
+		  <label-item label="AVERLEXSUBJ"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETM"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETM"/>
-		  <label-item label="AUERLEXGER"/>
+		  <label-item label="AVERLEXGER"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETM"/>
-		  <label-item label="AUERLEXPFCI"/>
+		  <label-item label="AVERLEXPFCI"/>
 	  </label-sequence>
 	
 	  <label-sequence>
@@ -1114,23 +1099,23 @@
 	  </label-sequence>-->
 	  <label-sequence>
 		  <label-item label="DETF"/>
-		  <label-item label="AUERLEXPFCI"/>
+		  <label-item label="AVERLEXPFCI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETF"/>
-		  <label-item label="AUERLEXIPI"/>
+		  <label-item label="AVERLEXIPI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETF"/>
-		  <label-item label="AUERLEXSUBJ"/>
+		  <label-item label="AVERLEXSUBJ"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETF"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETF"/>
-		  <label-item label="AUERLEXGER"/>
+		  <label-item label="AVERLEXGER"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETF"/>
@@ -1218,23 +1203,23 @@
 	  </label-sequence>-->
 	  <label-sequence>
 		  <label-item label="DETMF"/>
-		  <label-item label="AUERLEXPFCI"/>
+		  <label-item label="AVERLEXPFCI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETMF"/>
-		  <label-item label="AUERVLEXIPI"/>
+		  <label-item label="AVERVLEXIPI"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETMF"/>
-		  <label-item label="AUERLEXSUBJ"/>
+		  <label-item label="AVERLEXSUBJ"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETMF"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="DETMF"/>
-		  <label-item label="AUERLEXGER"/>
+		  <label-item label="AVERLEXGER"/>
 	  </label-sequence>
 	 
 	  <label-sequence>
@@ -1323,11 +1308,11 @@
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="QUECNJ"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="QUEREL"/>
-		  <label-item label="AUERLEXIMP"/>
+		  <label-item label="AVERLEXIMP"/>
 	  </label-sequence>
 	  <label-sequence>
 		  <label-item label="QUECNJ"/>
@@ -1513,10 +1498,6 @@
 		  <label-item label="VLEXIMP"/>
 		  <label-item label="VLEXPFCI"/>
 	  </label-sequence>
-<!--	  <label-sequence>
-		  <label-item label="VLEXIMP"/>
-		  <label-item label="VA"/>
-	  </label-sequence>-->
 	  <label-sequence>
 		  <label-item label="VLEXIMP"/>
 		  <label-item label="VLEXIPI"/>
@@ -1597,10 +1578,6 @@
 		  <label-item label="VSERIMP"/>
 		  <label-item label="VLEXPFCI"/>
 	  </label-sequence>
-	<!--  <label-sequence>
-		  <label-item label="VSERIMP"/>
-		  <label-item label="VA"/>
-	  </label-sequence>-->
 	  <label-sequence>
 		  <label-item label="VSERIMP"/>
 		  <label-item label="VLEXIPI"/>
@@ -1673,10 +1650,6 @@
 		  <label-item label="VMODALIMP"/>
 		  <label-item label="VLEXPFCI"/>
 	  </label-sequence>
-<!--	  <label-sequence>
-		  <label-item label="VMODALIMP"/>
-		  <label-item label="VA"/>
-	  </label-sequence>-->
 	  <label-sequence>
 		  <label-item label="VMODALIMP"/>
 		  <label-item label="VLEXIPI"/>
@@ -1797,11 +1770,7 @@
 		  <label-item label="PREPDET"/>
 		  <label-item label="SENT"/>
 	  </label-sequence>
-	  <label-sequence>
-		  <label-item label="MOLTPREADV"/>
-		  <label-item label="SENT"/>
-	  </label-sequence>
-	  <label-sequence><!--Afegides les 3 segÃ¼ents 30/11/05 MG -->
+	  <label-sequence><!--Afegides les 3 següents 30/11/05 MG -->
 		  <label-item label="INTNOM"/>
 		  <label-item label="NOMF"/>
 	  </label-sequence>
@@ -1912,7 +1881,6 @@
 		<label-set>
 			<label-item label="PRNPRO"/>
 			<label-item label="VLEXPFCI"/>
-<!-- 			<label-item label="VA"/> -->
 			<label-item label="VLEXIPI"/>
 			<label-item label="VLEXSUBJ"/>
 			<label-item label="VSERPFCI"/>
@@ -1926,22 +1894,23 @@
 			<label-item label="VMODALSUBJ"/>
 			<label-item label="VOLERMOD"/>
 			<label-item label="VOLERLEX"/>
+			<label-item label="AVERLEXINF"/>
+			<label-item label="VLEXINF"/>
+			<label-item label="VSERINF"/>
+			<label-item label="VHABERINF"/>
+			<label-item label="VMODALINF"/>
+			<label-item label="AVERLEXGER"/>
+			<label-item label="VLEXGER"/>
+			<label-item label="VSERGER"/>
+			<label-item label="VHABERGER"/>
+			<label-item label="VMODALGER"/>
+
+
+
 		</label-set>
    </enforce-after>  
   
-  <enforce-after label="MOLTPREADV">
-	  <label-set>
-		  <label-item label="ADV"/>
-		  <label-item label="ADJM"/>
-		  <label-item label="ADJF"/>
-		  <label-item label="ADJMF"/>
-		  <label-item label="VMODALPARTPI"/>
-		  <label-item label="VLEXPARTPI"/>
-		  <label-item label="VOLERMOD"/>
-		  <label-item label="VOLERLEX"/>
-		  <label-item label="PREADV"/>
-      </label-set>
-     </enforce-after> <!--Afegit 11/11/05 MG -->
+ 
   </enforce-rules>
 
   <preferences>
