@@ -482,7 +482,6 @@
   <section-def-vars>
     <def-var n="verb"/>
      <def-var n="tipusrel"/>
-   <def-var n="tipusprep"/>
     <def-var n="tipusverb"/>
     <def-var n="tipusnom"/>
     <def-var n="numero"/>
@@ -1139,99 +1138,6 @@
 						<clip pos="2" side="tl" part="nbr"/>
 						<lit-tag v="sg"/>
 					</let>
-				</otherwise>
-			</choose>
-		</def-macro>
-
-	<def-macro n="f_prep" npar="1">
-			<choose>
-				<when>
-					<test>
-						<equal>
-							<clip pos="1" side="sl" part="lem"/>
-							<lit v="a"/>
-						</equal>
-					</test>
-					<let>
-						<var n="tipusprep"/>
-						<lit-tag v="a"/>
-					</let>
-				</when>
-				<otherwise>
-					<choose>
-						<when>
-							<test>
-								<equal>
-									<clip pos="1" side="sl" part="lem"/>
-									<lit v="en"/>
-								</equal>
-							</test>
-							<let>
-								<var n="tipusprep"/>
-								<lit-tag v="en"/>
-							</let>
-						</when>
-						<otherwise>
-							<choose>
-								<when>
-									<test>
-										<equal>
-											<clip pos="1" side="sl" part="lem"/>
-											<lit v="de"/>
-										</equal>
-									</test>
-									<let>
-										<var n="tipusprep"/>
-										<lit-tag v="de"/>
-									</let>
-								</when>
-								<otherwise>
-								<choose>
-									<when>
-										<test>
-											<or>
-												<equal>
-													<clip pos="1" side="sl" part="lem"/>
-													<lit v="tà"/>
-												</equal>
-												<equal>
-													<clip pos="1" side="sl" part="lem"/>
-													<lit v="entà"/>
-												</equal>
-											</or>
-										</test>
-										<let>
-											<var n="tipusprep"/>
-											<lit-tag v="ta"/>
-										</let>
-									</when>
-									<otherwise>
-										<choose>
-											<when>
-												<test>
-													<equal>
-														<clip pos="1" side="sl" part="lem"/>
-														<lit v="sus"/>
-													</equal>
-												</test>
-												<let>
-													<var n="tipusprep"/>
-													<lit-tag v="sus"/>
-												</let>
-											</when>
-											<otherwise>
-											<let>
-												<var n="tipusprep"/>
-												<lit-tag v=""/>
-											</let>
-										</otherwise>
-									</choose>
-								</otherwise>
-							</choose>
-						</otherwise>
-					</choose>
-				</otherwise>
-			</choose>
 				</otherwise>
 			</choose>
 		</def-macro>
@@ -6023,11 +5929,14 @@
 					</out>
 				</when>
 				<otherwise>
+					<let>
+						<var n="lema"/>
+						<clip pos="1" side="sl" part="lem"/>
+					</let>
 					<out>
-						<chunk name="pr" case="caseFirstWord">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="PREP"/></tag>
-								<tag><var n="tipusprep"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="whole"/>
@@ -6056,6 +5965,10 @@
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
+			</let>
+			<let>
+				<var n="lema"/>
+				<lit v=""/>
 			</let>
 		</action>
 	</rule>
@@ -7967,11 +7880,14 @@
 					</out>
 				</when>
 				<otherwise>
+					<let>
+						<var n="lema"/>
+						<clip pos="1" side="sl" part="lem"/>
+					</let>
 					<out>
-						<chunk name="pr" case="caseFirstWord">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="PREP"/></tag>
-								<tag><var n="tipusprep"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="whole"/>
@@ -8013,6 +7929,10 @@
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
 			</let>
+			<let>
+				<var n="lema"/>
+				<lit v=""/>
+			</let>
 		</action>
 	</rule>
 
@@ -8034,9 +7954,6 @@
 				<with-param pos="4"/>
 			</call-macro>
 			<call-macro n="firstWord">
-				<with-param pos="1"/>
-			</call-macro>
-			<call-macro n="f_prep">
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="verb_ref">
@@ -8092,11 +8009,14 @@
 					</out>
 				</when>
 				<otherwise>
+					<let>
+						<var n="lema"/>
+						<clip pos="1" side="sl" part="lem"/>
+					</let>
 					<out>
-						<chunk name="pr" case="caseFirstWord">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="PREP"/></tag>
-								<tag><var n="tipusprep"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="whole"/>
@@ -8145,6 +8065,10 @@
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
+			</let>
+			<let>
+				<var n="lema"/>
+				<lit v=""/>
 			</let>
 		</action>
 	</rule>
@@ -8209,11 +8133,14 @@
 					</out>
 				</when>
 				<otherwise>
+					<let>
+						<var n="lema"/>
+						<clip pos="1" side="sl" part="lem"/>
+					</let>
 					<out>
-						<chunk name="pr" case="caseFirstWord">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="PREP"/></tag>
-								<tag><var n="tipusprep"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="whole"/>
@@ -8252,6 +8179,10 @@
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
 			</let>
+			<let>
+				<var n="lema"/>
+				<lit v=""/>
+			</let>
 		</action>
 	</rule>
 
@@ -8273,9 +8204,6 @@
 				<with-param pos="2"/>
 			</call-macro>
 			<call-macro n="firstWord">
-				<with-param pos="1"/>
-			</call-macro>
-			<call-macro n="f_prep">
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="verb_ref">
@@ -8331,11 +8259,14 @@
 					</out>
 				</when>
 				<otherwise>
+					<let>
+						<var n="lema"/>
+						<clip pos="1" side="sl" part="lem"/>
+					</let>
 					<out>
-						<chunk name="pr" case="caseFirstWord">
+						<chunk namefrom="lema" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="PREP"/></tag>
-								<tag><var n="tipusprep"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="whole"/>
@@ -8384,6 +8315,10 @@
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
+			</let>
+			<let>
+				<var n="lema"/>
+				<lit v=""/>
 			</let>
 		</action>
 	</rule>
@@ -13700,20 +13635,24 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
-			<call-macro n="f_prep">
-				<with-param pos="1"/>
-			</call-macro>
+			<let>
+				<var n="lema"/>
+				<clip pos="1" side="sl" part="lem"/>
+			</let>
 			<out>
-				<chunk name="pr" case="caseFirstWord">
+				<chunk namefrom="lema" case="caseFirstWord">
 					<tags>
 						<tag><lit-tag v="PREP"/></tag>
-						<tag><var n="tipusprep"/></tag>
 					</tags>
 					<lu>
 						<clip pos="1" side="tl" part="whole"/>
 					</lu>
 				</chunk>
 			</out>
+			<let>
+				<var n="lema"/>
+				<lit v=""/>
+			</let>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
