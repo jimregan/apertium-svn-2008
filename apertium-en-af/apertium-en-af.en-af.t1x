@@ -772,6 +772,63 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: PR INF">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="verbnm"/>
+      </pattern>
+      <action>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="lem"/>
+                <lit v="to"/>
+              </equal>
+            </test>
+            <out>
+              <chunk name="inf">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+                <lu>
+                  <lit v="om"/>
+                  <lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="te"/>
+                  <lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+                  <clip pos="2" side="tl" part="temps"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+          <otherwise>
+            <out>
+              <chunk name="inf">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="prep"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+                  <clip pos="2" side="tl" part="temps"/>
+                </lu>
+              </chunk>
+            </out> 
+          </otherwise>
+        </choose>
+      </action>
+    </rule>
 
     <rule comment="REGLA: REL">
       <pattern>
@@ -1017,17 +1074,12 @@
                 <tags>
                   <tag><lit-tag v="V"/></tag>
                 </tags>
-              <lu>
-	          <lit     v="om te"/>
-		  <lit-tag v="pr"/>
-              </lu>
-	      <b/>
-              <lu>
+                <lu>
                   <clip pos="1" side="tl" part="lemh"/>
                   <clip pos="1" side="tl" part="a_verb"/>
 		  <lit-tag v="inf"/>
 		  <clip pos="1" side="tl" part="lemq"/>
-              </lu>
+                </lu>
               </chunk>
             </out>
           </when>
@@ -1096,6 +1148,7 @@
               </chunk>
             </out>
           </when>
+
 
           <when>							<!-- If it is a past participle, the verb 'to be' or in the past -->
             <test> 
