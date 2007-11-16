@@ -5,6 +5,7 @@ import gtk, sys
 import gtk.glade
 import pygtk
 pygtk.require('2.0')
+import gtksourceview2
 
 # Logging
 import logging
@@ -35,7 +36,8 @@ class Globals:
     marcar = 0
     stages = None # Linked list of stages
     pipeline_executor = None
-
+    source_lang_manager = None
+    source_style_manager = None
 
 
 def text_window(title, text_buffer):
@@ -70,7 +72,7 @@ class View(gtk.HBox):
         def __init__(self, label, text_buffer):
             gtk.Expander.__init__(self, label)
 
-            text_view = gtk.TextView(text_buffer)
+            text_view = gtksourceview2.View(text_buffer)
             text_view.set_editable(True)
             text_view.set_wrap_mode(gtk.WRAP_WORD)
             text_view.show()
@@ -137,14 +139,22 @@ class PipelineExecutor(threading.Thread):
         self.queue.put(stage)
     
 
-
 class Stage:
-    def __init__(self, command_line):
+    def __init__(self, command_line = None):
         logging.debug('creating stage with command_line %s' % str(command_line))
         self.command_line = command_line
         self.next = None
+        self.preproc_cmdline = None
+        self.postproc_cmdline = None
         
-        self.text_buffer = gtk.TextBuffer()
+        self.text_buffer = gtksourceview2.Buffer()
+
+        #self.text_buffer.set_language(Globals.source_lang_manager.get_lang)
+        self.text_buffer.set_language(Globals.source_lang_manager.get_language('apertium'))
+        self.text_buffer.set_style_scheme(Globals.source_style_manager.get_scheme('kate'))
+        self.text_buffer.set_highlight_syntax(True)
+        self.text_buffer.set_highlight_matching_brackets(False)
+
         self.update_handler = self.text_buffer.connect("changed", self.update)
 
     def run(self):
@@ -161,15 +171,21 @@ class Stage:
         else:
 	    cmdline = self.next.command_line;
 	    
-        proc = Popen(cmdline, stdin = PIPE, stdout = PIPE)
-
         try:
-            out, err = proc.communicate(self.text_buffer.get_text(self.text_buffer.get_start_iter(),
-                                                                  self.text_buffer.get_end_iter()))
+            def call(cmdline, buffer):
+                proc = Popen(cmdline, stdin = PIPE, stdout = PIPE)
+                return proc.communicate(buffer)
+            
+            buffer_text = self.text_buffer.get_text(self.text_buffer.get_start_iter(),
+                                                    self.text_buffer.get_end_iter())
+
+            for _cmd in [self.preproc_cmdline, cmdline, self.postproc_cmdline]:
+                if _cmd != None:
+                    buffer_text, err = call(_cmd, buffer_text)
 
             gtk.gdk.threads_enter()
             self.next.text_buffer.handler_block(self.next.update_handler)
-            self.next.text_buffer.set_text(out.strip())
+            self.next.text_buffer.set_text(buffer_text.strip())
             self.next.text_buffer.handler_unblock(self.next.update_handler)
             gtk.gdk.threads_leave()
 
@@ -260,7 +276,10 @@ def checkbox_event(widget, *args):
       
 def main_window():
     def make_stage_name(command_line):
-        s = " ".join(command_line)
+        if command_line != None:
+            s = " ".join(command_line)
+        else:
+            s = "N/A"
         
         if len(s) > 64:
             return s[0:64] + "..."
@@ -329,7 +348,7 @@ def apertium_dictionary(dictionary):
     return "%s/apertium-%s/%s" % (config.apertium_dict_path, Globals.lang_code, dictionary) 
 
 def setup_mode(mode):
-    stages = Stage("")
+    stages = Stage()
 
     def add(stages):
         for program in mode.findall('.//program'):
@@ -342,6 +361,12 @@ def setup_mode(mode):
             stages = stages.next
 
     add(stages)
+
+    start_stage = stages
+    last_stage = [stage for stage in stages if stage.next != None and stage.next.next == None][0]
+
+    start_stage.preproc_cmdline = (apertium_program('apertium-destxt'),)
+    last_stage.postproc_cmdline = (apertium_program('apertium-retxt'),)
 
     return stages
 
@@ -402,6 +427,9 @@ if __name__ == "__main__":
         print 'Usage: apertium-view.py <pair name> <modes file> [direction]';
         sys.exit(-1);
     #}
+
+    Globals.source_lang_manager = gtksourceview2.language_manager_get_default()
+    Globals.source_style_manager = gtksourceview2.style_scheme_manager_get_default()
 
     gtk.gdk.threads_init()
     init()
