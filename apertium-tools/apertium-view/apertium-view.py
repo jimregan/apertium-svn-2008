@@ -5,7 +5,13 @@ import gtk, sys
 import gtk.glade
 import pygtk
 pygtk.require('2.0')
-import gtksourceview2
+
+try:
+    import gtksourceview2 as sourceview
+    
+except:
+    import SourceViewDummy as sourceview
+
 
 # Logging
 import logging
@@ -72,7 +78,7 @@ class View(gtk.HBox):
         def __init__(self, label, text_buffer):
             gtk.Expander.__init__(self, label)
 
-            text_view = gtksourceview2.View(text_buffer)
+            text_view = sourceview.View(text_buffer)
             text_view.set_editable(True)
             text_view.set_wrap_mode(gtk.WRAP_WORD)
             text_view.show()
@@ -147,11 +153,11 @@ class Stage:
         self.preproc_cmdline = None
         self.postproc_cmdline = None
         
-        self.text_buffer = gtksourceview2.Buffer()
+        self.text_buffer = sourceview.Buffer()
 
         #self.text_buffer.set_language(Globals.source_lang_manager.get_lang)
         self.text_buffer.set_language(Globals.source_lang_manager.get_language('apertium'))
-        self.text_buffer.set_style_scheme(Globals.source_style_manager.get_scheme('kate'))
+        self.text_buffer.set_style_scheme(Globals.source_style_manager.get_scheme('tango'))
         self.text_buffer.set_highlight_syntax(True)
         self.text_buffer.set_highlight_matching_brackets(False)
 
@@ -428,8 +434,8 @@ if __name__ == "__main__":
         sys.exit(-1);
     #}
 
-    Globals.source_lang_manager = gtksourceview2.language_manager_get_default()
-    Globals.source_style_manager = gtksourceview2.style_scheme_manager_get_default()
+    Globals.source_lang_manager  = sourceview.language_manager_get_default()
+    Globals.source_style_manager = sourceview.style_scheme_manager_get_default()
 
     gtk.gdk.threads_init()
     init()
