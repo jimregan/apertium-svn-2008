@@ -46,6 +46,17 @@ class Globals:
     source_style_manager = None
 
 
+
+def make_source_view(text_buffer):
+    text_view = sourceview.View(text_buffer)
+    text_view.set_editable(True)
+    text_view.set_wrap_mode(gtk.WRAP_WORD)
+    text_view.show()
+    
+    return text_view
+
+
+
 def text_window(title, text_buffer):
     wTree = gtk.glade.XML("TextWindow.glade")
     
@@ -57,10 +68,11 @@ def text_window(title, text_buffer):
         wnd.destroy()
 
     wnd.connect("destroy", close)
-    
-    text_view = wTree.get_widget("text_view")
-    text_view.set_buffer(text_buffer)
 
+    text_view = make_source_view(text_buffer)
+    scrolled_window = wTree.get_widget("scrolled_window")
+    scrolled_window.add_with_viewport(text_view)
+    
     wTree.signal_autoconnect({'on_btn_close_clicked': close})
     
     wnd.show()
@@ -78,10 +90,7 @@ class View(gtk.HBox):
         def __init__(self, label, text_buffer):
             gtk.Expander.__init__(self, label)
 
-            text_view = sourceview.View(text_buffer)
-            text_view.set_editable(True)
-            text_view.set_wrap_mode(gtk.WRAP_WORD)
-            text_view.show()
+            text_view = make_source_view(text_buffer)
 
             scrolled_window = gtk.ScrolledWindow()
             scrolled_window.show()
