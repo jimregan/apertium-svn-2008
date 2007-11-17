@@ -2,14 +2,16 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import xmlrpclib;
 import web;
-
-serv = xmlrpclib.Server('http://localhost:8081');
+from config import Config;
+from pair import Pair;
 
 class Globals: #{
 	counter = 0;
+	config = Config('config/config.xml');	
 #}
+
+Globals.config.parse_config();
 
 render = web.template.render('templates/');
 
@@ -21,7 +23,7 @@ urls = (
 class form: #{
 
     def GET(self, name): #{
-	pairs = serv.language_pairs();
+	pairs = Globals.config.get_pairs().keys();
 	post_data = {'selected_pair': 'apertium-es-gl'};
 	print render.index(pairs, post_data, cache=False);
     #}
@@ -33,7 +35,7 @@ class add: #{
         post_data = web.input(name = []);
         print dir(post_data);
         print post_data
-	pairs = serv.language_pairs();
+	pairs = Globals.config.get_pairs().keys();
 	print render.index(pairs, post_data, cache=False);
     #}
 #}
