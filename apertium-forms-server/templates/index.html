@@ -1,4 +1,4 @@
-$def with (pairs, post_data)
+$def with (pairs, tags, post_data)
 
 <form action="add" method="POST" name="dixform">
 <div id="language_bar">
@@ -7,13 +7,22 @@ ca · en · es
 <div>
   <div width="100%">                                                            <!-- Header -->
     Language pair: <select name="selected_pair" onChange="dixform.submit();">
-$for pair in pairs:
-    <option value="$pair"
+$for pair in pairs: 
+    $<option value="$pair">$pair</option>
 
     </select>
     Part-of-speech: <select name="selected_tag" onChange="dixform.submit();">
+$for tag in tags:
+    $if tag == post_data['selected_tag']:
+         <option value="$tag" selected>$tag</option>
+    $else:
+         <option value="$tag">$tag</option>
 
     </select>
+
+    <input type="submit" name="clear_box" value="Clear">
+    <input type="submit" name="preview_box" value="Preview">
+    <input type="submit" name="commit_box" value="Commit">
 
   </div>
 </div>
