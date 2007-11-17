@@ -1117,6 +1117,53 @@
       </pattern>
       <action>
         <choose>
+          <when>        <!-- I am loved -> Ek word lief gehê. He is hated -> Hy word gehaat. -->
+            <test>      <!-- It is thought that... -> Dit word gedink dat... -->
+	      <and>     <!-- is/am/are + <pp> -> word + <pp> -->
+                <equal>
+                  <clip pos="1" side="sl" part="a_verb"/>
+                  <lit-tag v="vbser"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="temps"/>
+                  <lit-tag v="pri"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp"/>
+                </equal>
+	      </and>
+            </test>
+            <out>
+              <chunk name="verb">
+                <tags>
+                  <tag><lit-tag v="V"/></tag>
+                </tags>
+                <lu>
+                  <lit v="word"/>
+                  <lit-tag v="vblex"/>
+                  <lit-tag v="pres"/>
+                </lu>
+	      </chunk>
+              <b/>
+              <chunk name="verb_participle">
+	        <tags>
+	          <tag><lit-tag v="V"/></tag>
+	          <tag><lit-tag v="PART"/></tag>
+	        </tags>
+	        <lu>
+	          <lit v="ge"/>
+	        </lu>
+                <lu>
+                  <clip pos="2" side="tl" part="lemh"/>
+                  <clip pos="2" side="tl" part="a_verb"/>
+	          <lit-tag v="inf"/>
+                  <clip pos="2" side="tl" part="lemh"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+
           <when>						<!-- If the first verb is a past participle -->
             <test>   
                 <equal>
@@ -1153,7 +1200,6 @@
               </chunk>
             </out>
           </when>
-
 
           <when>							<!-- If it is a past participle, the verb 'to be' or in the past -->
             <test> 
