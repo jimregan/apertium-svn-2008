@@ -9,6 +9,8 @@ import tenjin
 from tenjin.helpers import *   # or escape, to_str
 engine = tenjin.Engine();
 
+from interface import Interface;
+
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 
@@ -58,7 +60,10 @@ class form: #{
 	    'pairs': pairs
 	};
 
-	print engine.render('templates/index.pyhtml', post_data);
+#	print engine.render('templates/index.pyhtml', post_data);
+
+	i = Interface();
+	print i.display(post_data);
     #}
 #}
 
