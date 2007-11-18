@@ -59,7 +59,6 @@ class Dictionary: #{
 	#}
 
 	def get_paradigms_by_tag(self, _tag): #{
-		print 'get_paradigms_by_tag(' + _tag + '),' , len(self.paradigms[_tag]) , 'paradigms';
 		return self.paradigms[_tag];
 	#}
 

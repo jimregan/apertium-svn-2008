@@ -39,7 +39,10 @@ $for tag in tags.keys():
       Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>
       <select name="left_paradigm">
 $for left_paradigm in left_paradigms:
-    <option value="$left_paradigm.name">$left_paradigm.name</option>
+    $if left_paradigm.name == post_data['left_paradigm']:
+        <option value="$left_paradigm.name" selected>$left_paradigm.name</option>
+    $else:
+        <option value="$left_paradigm.name">$left_paradigm.name</option>
 
       </select>
   </div>
@@ -58,7 +61,10 @@ $for left_paradigm in left_paradigms:
       Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>
       <select name="right_paradigm">
 $for right_paradigm in right_paradigms:
-    <option value="$right_paradigm.name">$right_paradigm.name</option>
+    $if right_paradigm.name == post_data['right_paradigm']:
+        <option value="$right_paradigm.name" selected>$right_paradigm.name</option>
+    $else:
+        <option value="$right_paradigm.name">$right_paradigm.name</option>
 
       </select>
 

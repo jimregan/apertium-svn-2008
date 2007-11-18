@@ -30,7 +30,9 @@ class form: #{
 	    'selected_pair': pairs.keys()[0], 
 	    'selected_tag': 'n', 
 	    'left_lemma': '', 
-	    'right_lemma': ''
+	    'right_lemma': '',
+	    'left_paradigm': '',
+	    'right_paradigm': ''
 	};
         print post_data;
 	print render.index(pairs, tags, paradigms_left, paradigms_right, post_data, cache=False);
@@ -43,10 +45,14 @@ class add: #{
         post_data = web.input(name = []);
 	pairs = Globals.config.get_pairs();
 
-        print post_data;
+	current_pair = post_data['selected_pair'];
+	current_tag = post_data['selected_tag'];
 
-	tags = Globals.config.pairs[pairs.keys()[0]].get_tags();
-	print render.index(pairs, tags, post_data, cache=False);
+	tags = Globals.config.pairs[current_pair].get_tags();
+	paradigms_left = Globals.config.pairs[current_pair].dictionary['left'].get_paradigms_by_tag('n');
+	paradigms_right = Globals.config.pairs[current_pair].dictionary['right'].get_paradigms_by_tag('n');
+
+	print render.index(pairs, tags, paradigms_left, paradigms_right, post_data, cache=False);
     #}
 #}
 
