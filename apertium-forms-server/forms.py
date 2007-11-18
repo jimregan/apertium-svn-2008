@@ -32,7 +32,8 @@ class form: #{
 	    'left_lemma': '', 
 	    'right_lemma': '',
 	    'left_paradigm': '',
-	    'right_paradigm': ''
+	    'right_paradigm': '',
+	    'restriction': ''
 	};
         print post_data;
 	print render.index(pairs, tags, paradigms_left, paradigms_right, post_data, cache=False);
@@ -49,8 +50,8 @@ class add: #{
 	current_tag = post_data['selected_tag'];
 
 	tags = Globals.config.pairs[current_pair].get_tags();
-	paradigms_left = Globals.config.pairs[current_pair].dictionary['left'].get_paradigms_by_tag('n');
-	paradigms_right = Globals.config.pairs[current_pair].dictionary['right'].get_paradigms_by_tag('n');
+	paradigms_left = Globals.config.pairs[current_pair].dictionary['left'].get_paradigms_by_tag(current_tag);
+	paradigms_right = Globals.config.pairs[current_pair].dictionary['right'].get_paradigms_by_tag(current_tag);
 
 	print render.index(pairs, tags, paradigms_left, paradigms_right, post_data, cache=False);
     #}

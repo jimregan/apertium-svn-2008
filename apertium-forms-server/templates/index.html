@@ -48,6 +48,23 @@ $for left_paradigm in left_paradigms:
   </div>
     <!-- Bidix side -->
   <div id="centre">
+    <input type="radio" name="restriction" value="none" \
+    $if post_data['restriction'] != 'LR' and post_data['restriction'] == 'RL':
+        checked>←→<br />
+    $else:
+        >←→<br />
+
+    <input type="radio" name="restriction" value="LR" \
+    $if post_data['restriction'] == 'LR':
+        checked>→→<br />
+    $else:
+        >→→<br />
+
+    <input type="radio" name="restriction" value="RL" \
+    $if post_data['restriction'] == 'RL':
+        checked>←←<br />
+    $else:
+        >→→<br />
 
     <input type="submit" name="clear_box" value="Clear">
     <input type="submit" name="preview_box" value="Preview">
