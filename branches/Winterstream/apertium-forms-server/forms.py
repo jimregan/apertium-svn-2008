@@ -22,8 +22,9 @@ class form: #{
 
     def GET(self, name): #{
 	pairs = serv.language_pairs();
+        tags = []
 	post_data = {'selected_pair': 'apertium-es-gl'};
-	print render.index(pairs, post_data, cache=False);
+	print render.index(pairs, tags, post_data, cache=False);
     #}
 #}
 
@@ -33,8 +34,9 @@ class add: #{
         post_data = web.input(name = []);
         print dir(post_data);
         print post_data
+        tags = []
 	pairs = serv.language_pairs();
-	print render.index(pairs, post_data, cache=False);
+	print render.index(pairs, tags, post_data, cache=False);
     #}
 #}
 
