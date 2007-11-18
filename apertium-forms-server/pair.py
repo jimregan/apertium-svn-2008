@@ -8,6 +8,11 @@ import Ft;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
 
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
+sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+
+
+
 class Tag: #{
 	name = None;
 
@@ -62,28 +67,34 @@ class Dictionary: #{
 		return self.paradigms;
 	#}
 
+	def get_glosses(self): #{
+		return self.glosses;
+	#}
+
 	def get_paradigms_by_tag(self, _tag): #{
 		return self.paradigms[_tag];
 	#}
 
 	def get_paradigm(self, _name, _tag): #{
-		for paradigm in self.paradigms[_tag]: #{
+		for paradigm in self.paradigms[_tag].values(): #{
 			if paradigm.name == _name: #{
 				path = ".//pardef[@n='" + _name + "']";
-				print path;
 				res = self.doc.xpath(path)[0];
 				
 				for entrada in Ft.Xml.XPath.Evaluate('.//e', contextNode=res): #{
 					symlist = '';
 
 					pair = Ft.Xml.XPath.Evaluate('.//p', contextNode=entrada)[0]; 
-					left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].nodeValue; 
+					left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild; 
+					if type(left) != type(None): #{
+						left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild.nodeValue;
+					#}
+					if type(left) == type(None): #{
+						left = '';
+					#}
 					right = Ft.Xml.XPath.Evaluate('.//r', contextNode=pair)[0]; 
 
-					print str(left) + ':';
-					
 					for symbol in Ft.Xml.XPath.Evaluate('.//s', contextNode=right): #{
-						print symlist;
 						if symlist != '': #{
 							symlist = symlist + '.' + symbol.getAttributeNS(None, 'n');
 						#}
@@ -94,18 +105,16 @@ class Dictionary: #{
 
 					paradigm.add_stem(left, symlist);
 				#}
+
+				return paradigm;
 			#}
 		#}
-
-		print 'stems: ' , len(paradigm.get_stems());
-
-		return paradigm;
 	#}
 
 	def set_paradigms_by_tag(self, _tag): #{
 		print self.side + ' set_paradigms_by_tag(' + _tag + ')';
 		paradigms = self.doc.xpath('//pardef');
-		self.paradigms[_tag] = [];
+		self.paradigms[_tag] = {};
 		needle = '.*__' + _tag + '$';
 		print needle;
 		patron = re.compile(needle);
@@ -113,7 +122,7 @@ class Dictionary: #{
 			n = paradigm.getAttributeNS(None, 'n');
 			if(patron.match(n)): #{
 				p = Paradigm(n);
-				self.paradigms[_tag].append(p);
+				self.paradigms[_tag][n] = p;
 			#}
 		#}
 
@@ -123,6 +132,11 @@ class Dictionary: #{
 	def set_display(self, _mode): #{
 		self.display = _mode;
 	#}
+
+	def get_display(self): #{
+		return self.display;
+	#}
+
 
 	def add_gloss(self, _paradigm, _gloss): #{
 		print '  % ' + self.side + ' add_gloss(' + _paradigm + ', ' + _gloss + ')';

@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Apertium dictionary management</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+  <link rel="stylesheet" type="text/css" href="styles/default.css"/>
+  <script src="js/boxover.js"></script> 
+</head>
+<body>
+<form action="add" method="POST" name="dixform">
+<a href="http://xixona.dlsi.ua.es:8080/">home</a>
+<div id="language_bar">
+ca · en · es
+</div>
+<div>
+  <div width="100%">                                                            <!-- Header -->
+    Language pair: <select name="selected_pair" onChange="dixform.submit();">
+<?py for pair in pairs.keys():  ?>
+<?py    if pair == selected_pair: ?>
+         <option value="${pair}" selected>${pair}</option>
+<?py    else: ?>
+         <option value="${pair}">${pair}</option>
+<?py #endfor ?> 
+
+    </select>
+    Part-of-speech: <select name="selected_tag" onChange="dixform.submit();">
+<?py for tag in tags.keys(): ?>
+<?py    if tag == selected_tag: ?>
+         <option value="${tag}" selected>${tag}</option>
+<?py    else: ?>
+         <option value="${tag}">${tag}</option>
+<?py #endfor ?> 
+
+    </select>
+  </div>
+  <hr />
+  <div> <!-- Left -->
+      Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>
+      <input type="text" name="left_lemma" value="${left_lemma}">
+      Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>
+      <select name="left_paradigm">
+<?py for left_p in left_paradigms: ?>
+<?py    if left_display_mode == 'list' and left_p not in left_glosses: ?>
+<?py        continue ?>
+<?py    #endif ?>
+<?py    if left_p == left_paradigm: ?>
+<?py        if left_p in left_glosses: ?>
+                <option value="${left_p}" selected>${left_glosses[left_p]}</option>
+<?py        else:  ?>
+                <option value="${left_p}" selected>${left_p}</option>
+<?py        #endif ?>
+<?py    else: ?>
+<?py        if left_p in left_glosses: ?>
+                <option value="${left_p}">${left_glosses[left_p]}</option>
+<?py        else:  ?>
+                <option value="${left_p}">${left_p}</option>
+<?py        #endif ?>
+<?py    #endif ?>
+<?py #endfor ?> 
+
+      </select>
+
+<?py if type(left_paradigms[left_p].get_stems()) != type(None): ?>
+<?py     for left_s in left_paradigms[left_p].get_stems(): ?>
+             ${left_s}
+<?py     #endfor ?>
+<?py else: ?>
+         No stems
+<?py #endif ?>	
+
+  </div>
+    <!-- Bidix side -->
+  <div id="centre">
+<?py if restriction != 'LR' and restriction != 'RL': ?>
+    <input type="radio" name="restriction" value="none" checked>←→<br />
+<?py else: ?>
+    <input type="radio" name="restriction" value="none">←→<br />
+<?py #endif ?>
+
+<?py if restriction == 'LR': ?>
+    <input type="radio" name="restriction" value="LR" checked>→→<br />
+<?py else: ?>
+    <input type="radio" name="restriction" value="LR">→→<br />
+<?py #endif ?>
+
+<?py if restriction == 'RL': ?>
+    <input type="radio" name="restriction" value="RL" checked>←←<br />
+<?py else: ?>
+    <input type="radio" name="restriction" value="RL">←←<br />
+<?py #endif ?>
+
+    <input type="submit" name="clear_box" value="Clear">
+    <input type="submit" name="preview_box" value="Preview">
+    <input type="submit" name="commit_box" value="Commit">
+
+  </div>
+    <!-- Right side -->
+  <div id="right">
+      Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>
+      <input type="text" name="right_lemma" value="${right_lemma}">
+      Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>
+      <select name="right_paradigm">
+<?py for right_p in right_paradigms: ?>
+<?py    if right_display_mode == 'list' and right_p not in right_glosses: ?>
+<?py        continue ?>
+<?py    #endif ?>
+<?py    if right_p == right_paradigm: ?>
+<?py        if right_p in right_glosses: ?>
+                <option value="${right_p}" selected>${right_glosses[right_p]}</option>
+<?py        else:  ?>
+                <option value="${right_p}" selected>${right_p}</option>
+<?py        #endif ?>
+<?py    else: ?>
+<?py        if right_p in right_glosses: ?>
+                <option value="${right_p}">${right_glosses[right_p]}</option>
+<?py        else:  ?>
+                <option value="${right_p}">${right_p}</option>
+<?py        #endif ?>
+<?py    #endif ?>
+<?py #endfor ?>
+
+      </select>
+
+  </div>
+</div>
+</form>
+
+</body>
+</html>

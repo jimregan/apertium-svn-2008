@@ -6,11 +6,15 @@ import sys, string, codecs, xml, os;
 from xml.dom import minidom;
 from xml import xpath;
 
+
 import Ft;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
 
 from pair import *;
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
+sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+
 
 class Config: #{
 	
@@ -29,6 +33,11 @@ class Config: #{
 		for node in Ft.Xml.XPath.Evaluate(path, contextNode=self.config): #{
 			#pair_name = node.getAttribute('n');
 			pair_name = node.getAttributeNS(None, 'n');
+			enabled = node.getAttributeNS(None, 'enabled');
+
+			if enabled == 'no': #{
+				continue;
+			#}
 
 			self.pairs[pair_name] = Pair(self.working_directory, pair_name, node);
 			self.pairs[pair_name].cache = self.cache_directory + pair_name + '/';
@@ -65,7 +74,6 @@ class Config: #{
 	#}
 
 	def get_pairs(self): #{
-		print self.pairs;
 		return self.pairs;
 	#}
 
