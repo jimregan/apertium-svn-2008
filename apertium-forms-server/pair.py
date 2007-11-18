@@ -89,4 +89,8 @@ class Pair: #{
 		print 'add_tag(' + _name + ')';
 		self.tags[_name] = Tag(_name, _list);
 	#}
+
+	def get_tags(self): #{
+		return self.tags;
+	#}
 #}

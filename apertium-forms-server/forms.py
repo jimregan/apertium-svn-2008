@@ -7,7 +7,6 @@ from config import Config;
 from pair import Pair;
 
 class Globals: #{
-	counter = 0;
 	config = Config('config/config.xml');	
 #}
 
@@ -23,9 +22,10 @@ urls = (
 class form: #{
 
     def GET(self, name): #{
-	pairs = Globals.config.get_pairs().keys();
-	post_data = {'selected_pair': 'apertium-es-gl'};
-	print render.index(pairs, post_data, cache=False);
+	pairs = Globals.config.get_pairs();
+	tags = Globals.config.pairs['apertium-es-ca'].get_tags();
+	post_data = {'selected_pair': pairs.keys()[0], 'selected_tag': 'n'};
+	print render.index(pairs, tags, post_data, cache=False);
     #}
 #}
 
@@ -34,9 +34,10 @@ class add: #{
     def POST(self): #{
         post_data = web.input(name = []);
         print dir(post_data);
-        print post_data
-	pairs = Globals.config.get_pairs().keys();
-	print render.index(pairs, post_data, cache=False);
+        print post_data;
+	pairs = Globals.config.get_pairs();
+	tags = Globals.config.pairs[pairs.keys()[0]].get_tags();
+	print render.index(pairs, tags, post_data, cache=False);
     #}
 #}
 
