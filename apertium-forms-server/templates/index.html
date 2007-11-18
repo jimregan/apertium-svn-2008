@@ -1,10 +1,10 @@
-$def with (pairs, tags, post_data)
+$def with (pairs, tags, left_paradigms, right_paradigms, post_data)
 
 <html>
 <head>
   <title>Apertium dictionary management</title>
-  <link rel="stylesheet" type="text/css" href="styles/default.css"/>
-  <script src="js/boxover.js"></script> 
+  <link rel="stylesheet" type="text/css" href="/styles/default.css"/>
+  <script src="/js/boxover.js"></script> 
 </head>
 <body>
 <form action="add" method="POST" name="dixform">
@@ -35,7 +35,13 @@ $for tag in tags.keys():
   <div>
     <!-- Left side -->
       Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>
+      <input type="text" name="left_lemma" value="$post_data['left_lemma']">
+      Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>
+      <select name="left_paradigm">
+$for left_paradigm in left_paradigms:
+    <option value="$left_paradigm.name">$left_paradigm.name</option>
 
+      </select>
   </div>
     <!-- Bidix side -->
   <div id="centre">
@@ -47,6 +53,14 @@ $for tag in tags.keys():
   </div>
     <!-- Right side -->
   <div id="right">
+      Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>
+      <input type="text" name="right_lemma" value="$post_data['right_lemma']">
+      Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>
+      <select name="right_paradigm">
+$for right_paradigm in right_paradigms:
+    <option value="$right_paradigm.name">$right_paradigm.name</option>
+
+      </select>
 
   </div>
 </div>

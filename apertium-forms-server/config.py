@@ -2,49 +2,55 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml;
+import sys, string, codecs, xml, os;
 from xml.dom import minidom;
 from xml import xpath;
+
+import Ft;
+from Ft.Xml.Domlette import NonvalidatingReader;
+from Ft.Xml.XPath import Evaluate;
 
 from pair import *;
 
 class Config: #{
 	
 	def __init__(self, filename): #{
-		self.config = minidom.parse(filename).documentElement;
+		self.config = NonvalidatingReader.parseUri('file:///' + filename);
 		self.pairs = {};
-		self.working_directory = '';
+		self.working_directory = None;
 	#}
 
 	def parse_config(self): #{
-		self.working_directory = self.config.getElementsByTagName('wd')[0].firstChild.nodeValue;
-		self.cache_directory = self.config.getElementsByTagName('cache')[0].firstChild.nodeValue;
+		self.working_directory = self.config.xpath('/webforms/directories/wd')[0].firstChild.nodeValue;
+		self.cache_directory = self.config.xpath('/webforms/directories/cache')[0].firstChild.nodeValue;
 
 		path = '/webforms/pairs/pair';
 
-		for node in xpath.Evaluate(path, self.config): #{
-			pair_name = node.getAttribute('n');
+		for node in Ft.Xml.XPath.Evaluate(path, contextNode=self.config): #{
+			#pair_name = node.getAttribute('n');
+			pair_name = node.getAttributeNS(None, 'n');
 
 			self.pairs[pair_name] = Pair(self.working_directory, pair_name, node);
 			self.pairs[pair_name].cache = self.cache_directory + pair_name + '/';
 			
-			for enabled_tag in node.getElementsByTagName('tag'): #{
-				tag_name = enabled_tag.getAttribute('n');
+			for enabled_tag in Ft.Xml.XPath.Evaluate(".//tag",contextNode=node): #{
+				tag_name = enabled_tag.getAttributeNS(None, 'n');
 				shows = [];
 
-				for show_tag in enabled_tag.getElementsByTagName('show'): #{
-					shows.append(show_tag.getAttribute('syms'));
+				for show_tag in Ft.Xml.XPath.Evaluate('.//show', contextNode= enabled_tag): #{
+					shows.append(show_tag.getAttributeNS(None, 'syms'));
 				#}
 
-				for side in enabled_tag.getElementsByTagName('side'): #{
-					paradigm_display_mode = '';
-					current_side = side.getAttribute('n');
+				for side in Ft.Xml.XPath.Evaluate('.//side', contextNode=enabled_tag): #{
+					paradigm_display_mode = None;
+					current_side = side.getAttributeNS(None, 'n');
 
-					for gloss_section in side.getElementsByTagName('paradigms'): #{
-						paradigm_display_mode = gloss_section.getAttribute('display');
-						for gloss in gloss_section.getElementsByTagName('paradigm'): #{
-							name  = gloss.getAttribute('n');
-							comment  = gloss.getAttribute('c');
+					for gloss_section in Ft.Xml.XPath.Evaluate('.//paradigms', contextNode=side): #{
+						paradigm_display_mode = gloss_section.getAttributeNS(None, 'display');
+
+						for gloss in Ft.Xml.XPath.Evaluate('.//paradigm', contextNode=gloss_section): #{
+							name  = gloss.getAttributeNS(None, 'n');
+							comment  = gloss.getAttributeNS(None, 'c');
 
 							self.pairs[pair_name].dictionary[current_side].add_gloss(name, comment);
 						#}

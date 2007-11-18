@@ -2,12 +2,12 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import web;
+import web, os;
 from config import Config;
 from pair import Pair;
 
 class Globals: #{
-	config = Config('config/config.xml');	
+	config = Config(os.getcwd() + '/config/config.xml');	
 #}
 
 Globals.config.parse_config();
@@ -24,8 +24,16 @@ class form: #{
     def GET(self, name): #{
 	pairs = Globals.config.get_pairs();
 	tags = Globals.config.pairs['apertium-es-ca'].get_tags();
-	post_data = {'selected_pair': pairs.keys()[0], 'selected_tag': 'n'};
-	print render.index(pairs, tags, post_data, cache=False);
+	paradigms_left = Globals.config.pairs['apertium-es-ca'].dictionary['left'].get_paradigms_by_tag('n');
+	paradigms_right = Globals.config.pairs['apertium-es-ca'].dictionary['right'].get_paradigms_by_tag('n');
+	post_data = {
+	    'selected_pair': pairs.keys()[0], 
+	    'selected_tag': 'n', 
+	    'left_lemma': '', 
+	    'right_lemma': ''
+	};
+        print post_data;
+	print render.index(pairs, tags, paradigms_left, paradigms_right, post_data, cache=False);
     #}
 #}
 
@@ -33,9 +41,10 @@ class add: #{
 
     def POST(self): #{
         post_data = web.input(name = []);
-        print dir(post_data);
-        print post_data;
 	pairs = Globals.config.get_pairs();
+
+        print post_data;
+
 	tags = Globals.config.pairs[pairs.keys()[0]].get_tags();
 	print render.index(pairs, tags, post_data, cache=False);
     #}
