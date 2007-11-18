@@ -33,8 +33,12 @@ class Paradigm: #{
 		self.gloss = _gloss;
 	#}
 
-	def add_stem(self, _stem): #{
-		self.stems.append(_stem);
+	def add_stem(self, _stem, _symlist): #{
+		self.stems.append((_stem, _symlist));
+	#}
+
+	def get_stems(self): #{
+		return self.stems;
 	#}
 #}
 
@@ -60,6 +64,42 @@ class Dictionary: #{
 
 	def get_paradigms_by_tag(self, _tag): #{
 		return self.paradigms[_tag];
+	#}
+
+	def get_paradigm(self, _name, _tag): #{
+		for paradigm in self.paradigms[_tag]: #{
+			if paradigm.name == _name: #{
+				path = ".//pardef[@n='" + _name + "']";
+				print path;
+				res = self.doc.xpath(path)[0];
+				
+				for entrada in Ft.Xml.XPath.Evaluate('.//e', contextNode=res): #{
+					symlist = '';
+
+					pair = Ft.Xml.XPath.Evaluate('.//p', contextNode=entrada)[0]; 
+					left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].nodeValue; 
+					right = Ft.Xml.XPath.Evaluate('.//r', contextNode=pair)[0]; 
+
+					print str(left) + ':';
+					
+					for symbol in Ft.Xml.XPath.Evaluate('.//s', contextNode=right): #{
+						print symlist;
+						if symlist != '': #{
+							symlist = symlist + '.' + symbol.getAttributeNS(None, 'n');
+						#}
+						if symlist == '': #{
+							symlist = symlist + symbol.getAttributeNS(None, 'n');
+						#}
+					#}
+
+					paradigm.add_stem(left, symlist);
+				#}
+			#}
+		#}
+
+		print 'stems: ' , len(paradigm.get_stems());
+
+		return paradigm;
 	#}
 
 	def set_paradigms_by_tag(self, _tag): #{

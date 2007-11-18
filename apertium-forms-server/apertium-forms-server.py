@@ -48,10 +48,15 @@ class add: #{
 
 	current_pair = post_data['selected_pair'];
 	current_tag = post_data['selected_tag'];
+	left_paradigm = post_data['left_paradigm'];
+	right_paradigm = post_data['right_paradigm'];
 
 	tags = Globals.config.pairs[current_pair].get_tags();
 	paradigms_left = Globals.config.pairs[current_pair].dictionary['left'].get_paradigms_by_tag(current_tag);
 	paradigms_right = Globals.config.pairs[current_pair].dictionary['right'].get_paradigms_by_tag(current_tag);
+
+	stems_left = Globals.config.pairs[current_pair].dictionary['left'].get_paradigm(left_paradigm, current_tag).get_stems();
+	stems_right = Globals.config.pairs[current_pair].dictionary['right'].get_paradigm(right_paradigm, current_tag).get_stems();
 
 	print render.index(pairs, tags, paradigms_left, paradigms_right, post_data, cache=False);
     #}
