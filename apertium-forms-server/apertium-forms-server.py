@@ -82,6 +82,9 @@ class add: #{
 	glosses_left = dictionary_left.get_glosses();
 	glosses_right = dictionary_right.get_glosses();
 
+	print paradigms_left[left_paradigm].get_stems();
+	print paradigms_right[right_paradigm].get_stems();
+
 	post_data = {
 	    'selected_pair': current_pair, 
 	    'selected_tag': current_tag, 

@@ -39,6 +39,7 @@ class Paradigm: #{
 	#}
 
 	def add_stem(self, _stem, _symlist): #{
+		print 'add_stem(' + _stem + ', ' + _symlist + ')';
 		self.stems.append((_stem, _symlist));
 	#}
 
