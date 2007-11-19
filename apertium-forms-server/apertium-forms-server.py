@@ -37,6 +37,7 @@ class form: #{
 	tags = Globals.config.pairs['apertium-sh-mk'].get_tags();
 
 	dictionary_left = Globals.config.pairs['apertium-sh-mk'].dictionary['left'];
+	dictionary_bidix = Globals.config.pairs['apertium-sh-mk'].dictionary['bidix'];
 	dictionary_right = Globals.config.pairs['apertium-sh-mk'].dictionary['right'];
 	paradigms_left = Globals.config.pairs['apertium-sh-mk'].dictionary['left'].get_paradigms_by_tag('n');
 	paradigms_right = Globals.config.pairs['apertium-sh-mk'].dictionary['right'].get_paradigms_by_tag('n');
@@ -91,6 +92,7 @@ class add: #{
 
 	dictionary_left = Globals.config.pairs[current_pair].dictionary['left'];
 	dictionary_right = Globals.config.pairs[current_pair].dictionary['right'];
+	dictionary_bidix = Globals.config.pairs[current_pair].dictionary['bidix'];
 
 	tags = Globals.config.pairs[current_pair].get_tags();
 	paradigms_left = dictionary_left.get_paradigms_by_tag(current_tag);
@@ -106,6 +108,7 @@ class add: #{
 	    'left_lemma': post_data['left_lemma'], 
 	    'right_lemma': post_data['right_lemma'],
 	    'left_dictionary': dictionary_left,
+	    'bidix_dictionary': dictionary_bidix,
 	    'right_dictionary': dictionary_right,
 	    'left_paradigm': left_paradigm,
 	    'right_paradigm': right_paradigm,

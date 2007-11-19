@@ -87,6 +87,11 @@ class Interface: #{
 
 		self.show_preview(post_data, 'left');
 
+		left_entrada = self.show_entrada(post_data, 'left');
+		print '  <pre>';
+		print left_entrada.replace('<', '&lt;').replace('>', '&gt;');
+		print '  </pre>';
+
                 print '  </div>';
 
                 print '    <!-- Bidix side -->';
@@ -114,6 +119,11 @@ class Interface: #{
                 print '    <input type="submit" name="commit_box" value="Commit">';
                 print '';
                 print '  </div>';
+
+		print '<pre>';
+		bidix_entrada = self.show_entrada(post_data, 'bidix');
+		print bidix_entrada.replace('<', '&lt;').replace('>', '&gt;');
+		print '</pre>';
 
 
                 print '  <div> <!-- Right -->';
@@ -145,6 +155,11 @@ class Interface: #{
 		print '    </p>';
 
 		self.show_preview(post_data, 'right');
+
+		right_entrada = self.show_entrada(post_data, 'right');
+		print '  <pre>';
+		print right_entrada.replace('<', '&lt;').replace('>', '&gt;');
+		print '  </pre>';
 
                 print '  </div>';
                 print '</div>';
@@ -185,6 +200,45 @@ class Interface: #{
 		#}
 	#}
 
+	def show_entrada(self, post_data, _side): #{
+		if post_data['previewing'] == 'on': #{
+			if _side == 'bidix': #{
+				dictionary = post_data[_side + '_dictionary'];
+	
+				if type(dictionary) != None: #{
+					_lemma1 = post_data['left_lemma'];
+					_lemma2 = post_data['right_lemma'];
+					_tag = post_data['selected_tag'];
+					_comment = '';
+					_restriction = post_data['restriction'];
+					_author = 'webform';
+		
+		        		entrada = dictionary.generate_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author);
+	
+					return entrada;
+				#}
+			#}
+
+			if _side == 'right' or _side == 'left' and post_data[_side + '_paradigm']: #{
+				dictionary = post_data[_side + '_dictionary'];
+				paradigm = post_data[_side + '_dictionary'].get_paradigm(post_data[_side + '_paradigm'], post_data['selected_tag']);
+	
+				if type(paradigm) != type(None): #{
+					_lemma = post_data[_side + '_lemma'];
+					_paradigm = paradigm.name;
+					_comment = '';
+					_author = 'webform';
+		
+					entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, _comment, _author);
+	
+					return entrada;
+				#}
+			#}
+		#}
+
+
+		return '';
+	#}
 
 	def incondicional(self, _lemma, _paradigm): #{
 		if _paradigm.count('/') < 1: #{

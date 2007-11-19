@@ -89,44 +89,51 @@ class Dictionary: #{
 	#}
 
 	def get_paradigm(self, _name, _tag): #{
-		for paradigm in self.paradigms[_tag].values(): #{
-			if paradigm.name == _name: #{
-				paradigm.stems = [];
-				print >> sys.stderr, 'get_paradigm ' , paradigm.name , _name;
-				path = ".//pardef[@n='" + _name + "']";
-				res = self.doc.xpath(path)[0];
-				
-				for entrada in Ft.Xml.XPath.Evaluate('.//e', contextNode=res): #{
-					symlist = '';
-
-					pair = Ft.Xml.XPath.Evaluate('.//p', contextNode=entrada)[0]; 
-					left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild; 
-					if type(left) != type(None): #{
-						left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild.nodeValue;
-					#}
-
-					if type(left) == type(None): #{
-						left = '';
-					#}
-
-					right = Ft.Xml.XPath.Evaluate('.//r', contextNode=pair)[0]; 
-
-					for symbol in Ft.Xml.XPath.Evaluate('.//s', contextNode=right): #{
-						if symlist != '': #{
-							symlist = symlist + '.' + symbol.getAttributeNS(None, 'n');
-						#}
-						if symlist == '': #{
-							symlist = symlist + symbol.getAttributeNS(None, 'n');
-						#}
-					#}
-
-					print >> sys.stderr, 'get_paradigm ' , left , symlist;
-					paradigm.add_stem(left, symlist);
-				#}
-
-				return paradigm;
+		paradigm = None;
+		for _paradigm in self.paradigms[_tag].values(): #{
+			if _paradigm.name == _name: #{	
+				paradigm = _paradigm;	
 			#}
 		#}
+		
+		if paradigm == None: #{
+			return None;
+		#}
+
+		paradigm.stems = [];
+		print >> sys.stderr, 'get_paradigm ' , paradigm.name , _name;
+		path = ".//pardef[@n='" + _name + "']";
+		res = self.doc.xpath(path)[0];
+		
+		for entrada in Ft.Xml.XPath.Evaluate('.//e', contextNode=res): #{
+			symlist = '';
+
+			pair = Ft.Xml.XPath.Evaluate('.//p', contextNode=entrada)[0]; 
+			left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild; 
+			if type(left) != type(None): #{
+				left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild.nodeValue;
+			#}
+
+			if type(left) == type(None): #{
+				left = '';
+			#}
+
+			right = Ft.Xml.XPath.Evaluate('.//r', contextNode=pair)[0]; 
+
+			for symbol in Ft.Xml.XPath.Evaluate('.//s', contextNode=right): #{
+				if symlist != '': #{
+					symlist = symlist + '.' + symbol.getAttributeNS(None, 'n');
+				#}
+				if symlist == '': #{
+					symlist = symlist + symbol.getAttributeNS(None, 'n');
+				#}
+			#}
+
+			print >> sys.stderr, 'get_paradigm ' , left , symlist;
+			paradigm.add_stem(left, symlist);
+		#}
+
+		return paradigm;
 	#}
 
 	def set_paradigms_by_tag(self, _tag): #{
@@ -173,6 +180,54 @@ class Dictionary: #{
 		print '  % ' + self.side + ' add_gloss(' + _paradigm + ', ' + _gloss + ')';
 		self.glosses[_paradigm] = _gloss;
 	#}
+
+        def generate_monodix_entrada(self, _lemma, _paradigm, _comment, _author): #{
+                incondicional = self.incondicional(_lemma, _paradigm);
+		print >> sys.stderr, 'lemma: ' + _lemma + ', paradigm: ' + _paradigm + ', comment: ' + _comment + ', author: ' + _author;
+
+                if _comment != '': #{
+                        entrada = '<e lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>' +  '<!-- ' + _comment + ' -.' + "\n";
+                else: #{
+                        entrada = '<e lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
+                #}
+
+		print >> sys.stderr, entrada;
+
+                return entrada;
+        #}
+
+        def generate_bidix_entrada(self, _lemma1, _lemma2, _tag, _restriction, _comment, _author): #{
+                # <e><p><l>lemma1<s n="tag"/></l><r>lemma2<s n="tag"/></r></p></e>
+
+                if _restriction == "none" or _restriction == '': #{
+                        entrada = '<e a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
+
+                else: #{
+                        entrada = '<e r="' + _restriction +  '" a="' + _author + '"><p><l>' + _lemma1 + '<s n="' + _tag + '"/></l><r>' + _lemma2 + '<s n="' + _tag + '"/></r></p></e>' + "\n";
+                #}
+
+                if _comment != "": #{
+                        entrada = entrada + '<!-- ' + _comment + ' -->' + "\n"; 
+                #}
+
+
+                return entrada;
+        #}
+
+
+
+        def incondicional(self, _lemma, _paradigm): #{
+                if _paradigm.count('/') < 1: #{
+                        return _lemma;
+                #}
+
+                bar_pos = _paradigm.find('/');
+                und_pos = _paradigm.find('_');
+                chr_str =  (und_pos - bar_pos) - 1;
+
+                return _lemma[0:(len(_lemma) - chr_str)];
+        #}
+
 #}
 
 class Pair: #{
