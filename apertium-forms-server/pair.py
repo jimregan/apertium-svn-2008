@@ -22,6 +22,10 @@ class Tag: #{
 			print '% ' + s;
 		#}
 	#}
+
+	def get_list(self): #{
+		return self.list;
+	#}
 #}
 
 class Paradigm: #{
@@ -37,7 +41,7 @@ class Paradigm: #{
 	#}
 
 	def add_stem(self, _stem, _symlist): #{
-		print 'add_stem(' + _stem + ', ' + _symlist + ')';
+		print >> sys.stderr, 'add_stem(' + _stem + ', ' + _symlist + ')';
 		self.stems.append((_stem, _symlist));
 	#}
 
@@ -61,6 +65,15 @@ class Dictionary: #{
 		self.side = _side;
 		self.paradigms = {};
 		self.glosses = {};
+		self.tags = _tags;
+	#}
+
+	def get_tags(self): #{
+		return self.tags;
+	#}
+
+	def get_tag_by_tag(self, _tag): #{
+		return self.tags[_tag];
 	#}
 
 	def get_paradigms(self): #{
@@ -78,6 +91,7 @@ class Dictionary: #{
 	def get_paradigm(self, _name, _tag): #{
 		for paradigm in self.paradigms[_tag].values(): #{
 			if paradigm.name == _name: #{
+				paradigm.stems = [];
 				print >> sys.stderr, 'get_paradigm ' , paradigm.name , _name;
 				path = ".//pardef[@n='" + _name + "']";
 				res = self.doc.xpath(path)[0];

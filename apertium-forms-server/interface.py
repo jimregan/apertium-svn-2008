@@ -2,11 +2,19 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml, re;
-
-import Ft;
+import sys, string, codecs, xml, re, Ft;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
+
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
+sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+
+#
+#	This class implements the HTML interface for the 
+#	forms. If you want to change how they look, make
+#	the change here. 
+#
+
 
 
 class Interface: #{
@@ -16,8 +24,8 @@ class Interface: #{
                 print '<head>';
                 print '  <title>Apertium dictionary management</title>';
                 print '  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> ';
-                print '  <link rel="stylesheet" type="text/css" href="styles/default.css"/>';
-                print '  <script src="js/boxover.js"></script> ';
+                print '  <link rel="stylesheet" type="text/css" href="/static/styles/default.css"/>';
+                print '  <script src="/static/js/boxover.js"></script> ';
                 print '</head>';
                 print '<body>';
                 print '<form action="add" method="POST" name="dixform">';
@@ -46,10 +54,15 @@ class Interface: #{
 		#}
                 print '    </select>';
                 print '  </div>';
+		print '</div>';
+		print '<div>';
                 print '  <hr />';
-                print '  <div> <!-- Left -->';
+                print '  <div id="left"> <!-- Left -->';
+		print '    <p>';
                 print '      Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>';
                 print '      <input type="text" name="left_lemma" value="' + post_data['left_lemma'] + '">';
+		print '    </p>';
+		print '    <p>';
                 print '      Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>';
                 print '      <select name="left_paradigm">';
                 for left_p in post_data['left_paradigms']: #{
@@ -70,13 +83,9 @@ class Interface: #{
 			#}
 		#}
                 print '      </select>';
+		print '    </p>';
 
-                if type(post_data['left_paradigms'][left_p].get_stems()) != type(None): #{
-                        for left_s in post_data['left_paradigms'][left_p].get_stems(): #{
-                                print '             ' + left_s;
-                else: #{
-                        print '         No stems'; 
-		#}
+		self.show_preview(post_data, 'left');
 
                 print '  </div>';
 
@@ -108,13 +117,15 @@ class Interface: #{
 
 
                 print '  <div> <!-- Right -->';
+		print '    <p>';
                 print '      Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>';
                 print '      <input type="text" name="right_lemma" value="' + post_data['right_lemma'] + '">';
+		print '    </p>';
+		print '    <p>';
                 print '      Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>';
                 print '      <select name="right_paradigm">';
                 for right_p in post_data['right_paradigms']: #{
-                        #if post_data['right_display_mode'] == 'list' and right_p not in post_data['right_glosses']: #{
-                        if post_data['right_display_mode'] == 'list': #{
+                        if post_data['right_display_mode'] == 'list' and right_p not in post_data['right_glosses']: #{
                                 continue;
                         #}
                         if right_p == post_data['right_paradigm']: #{
@@ -131,19 +142,59 @@ class Interface: #{
                         #}
                 #}
                 print '      </select>';
+		print '    </p>';
 
-		right_paradigm = post_data['right_dictionary'].get_paradigm(right_p, post_data['selected_tag']);
-                if type(right_paradigm.get_stems()) != type(None): #{
-                        for right_s in post_data['right_paradigms'][right_p].get_stems(): #{
-                                print '             ' , right_s;
-                else: #{
-                        print '         No stems';
-                #}
+		self.show_preview(post_data, 'right');
 
                 print '  </div>';
-
+                print '</div>';
 
                 print '</body>';
                 print '</html>';
+	#}
+
+	def show_preview(self, post_data, _side): #
+		print >> sys.stderr, 'right paradigm: ' , post_data['right_paradigm'];
+		p = _side + '_paradigm';
+		if post_data['previewing'] == 'on': #{
+			paradigm = post_data[_side + '_dictionary'].get_paradigm(post_data[p], post_data['selected_tag']);
+			if type(paradigm) == type(None): #{
+				return;
+			#}
+	                if type(paradigm.get_stems()) != type(None): #{
+	                        for s in post_data[_side + '_paradigms'][paradigm.name].get_stems(): #{
+					shows = post_data[_side + '_dictionary'].get_tag_by_tag(post_data['selected_tag']).get_list();
+
+					if len(shows) > 0: #{
+						for show in post_data[_side + '_dictionary'].get_tag_by_tag(post_data['selected_tag']).get_list(): #{
+							if show == s[1]: #{
+				                                print post_data[_side + '_lemma'] + s[0] + '<br />';
+								print '<span id="symbol_list">' + s[1] + '</span>';
+								print '<p />';
+							#}
+						#}
+					else: #{
+		                                print self.incondicional(post_data[_side + '_lemma'], post_data[_side + '_paradigm']) + s[0] + '<br />';
+						print '<span id="symbol_list">' + s[1] + '</span>';
+						print '<p />';
+					#}
+				#}
+	                else: #{
+	                        print '         No stems';
+	                #}
+		#}
+	#}
+
+
+	def incondicional(self, _lemma, _paradigm): #{
+		if _paradigm.count('/') < 1: #{
+			return _lemma;
+		#}
+	
+		bar_pos = _paradigm.find('/');
+		und_pos = _paradigm.find('_');
+		chr_str =  (und_pos - bar_pos) - 1;
+
+		return _lemma[0:(len(_lemma) - chr_str)];
 	#}
 #}
