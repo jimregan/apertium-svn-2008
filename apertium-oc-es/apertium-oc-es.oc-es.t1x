@@ -78,7 +78,6 @@
     </def-cat>
     
     <def-cat n="rel">
-      <cat-item tags="prn.rel.*"/>
       <cat-item tags="rel.*"/>
     </def-cat>
     
@@ -467,9 +466,9 @@
     <def-var n="tipusprep"/>
     <def-var n="tipusverb"/>
     <def-var n="tipusnom"/>
-    <def-var n="numero"/>
+    <def-var n="numero" v="sg"/>
     <def-var n="persona"/>
-    <def-var n="genero"/>
+    <def-var n="genero" v="m"/>
     <def-var n="concDet"/>
     <def-var n="concAdj"/>
     <def-var n="concPrimero"/>
@@ -989,7 +988,7 @@
 
 
 
-    <def-macro n="f_prep" npar="1"><!--mireia: carme canvia -->
+    <def-macro n="f_prep" npar="1">
       <choose>
 	<when>
 	  <test>
@@ -5609,7 +5608,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: VERB ADV" alt="oc"><!-- mireia regla rara-->
+    <rule comment="REGLA: VERB ADV" alt="oc"><!-- mireia majuscules-->
       <pattern>
 	<pattern-item n="verbpers"/>
 	<pattern-item n="adv_preadv"/>
@@ -12118,7 +12117,7 @@
 	<pattern-item n="pp"/>
       </pattern>
       <action>
-	<call-macro n="comprova_auxiliar"><!--mireia vaig per aquí-->
+	<call-macro n="comprova_auxiliar">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
@@ -12211,20 +12210,12 @@
 		  <tag><var n="tipusverb"/></tag>
 		</tags>
 		<lu>
-	    <clip pos="1" side="tl" part="lemh"/>
-	    <clip pos="1" side="tl" part="a_verb"/>
-	    <clip pos="1" side="tl" part="temps" link-to="3"/>
-	    <clip pos="1" side="tl" part="pers" link-to="4"/>
-	    <clip pos="1" side="tl" part="nbr" link-to="5"/>
-	    <clip pos="1" side="tl" part="lemq"/>
-		  
-	    <!--<clip pos="1" side="tl" part="lem"/>
-		      <clip pos="1" side="tl" part="a_verb"/>
-		      <clip pos="1" side="tl" part="temps"/>
-		      <clip pos="1" side="tl" part="pers"/>
-		      <clip pos="1" side="tl" part="gen"/>
-		      <clip pos="1" side="tl" part="nbr" link-to="5"/>
-		      <clip pos="1" side="tl" part="lemq"/> -->
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps" link-to="3"/>
+		  <clip pos="1" side="tl" part="pers" link-to="4"/>
+		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
 		<b pos="1"/>
 		<lu>
@@ -12250,18 +12241,12 @@
 		  <tag><var n="tipusverb"/></tag>
 		</tags>
 		<lu>
-	    <clip pos="1" side="tl" part="lemh"/>
-	    <clip pos="1" side="tl" part="a_verb"/>
-	    <clip pos="1" side="tl" part="temps" link-to="3"/>
-	    <clip pos="1" side="tl" part="pers" link-to="4"/>
-	    <clip pos="1" side="tl" part="nbr" link-to="5"/>
-	    <clip pos="1" side="tl" part="lemq"/>
-		  <!--<clip pos="1" side="tl" part="lem"/>
-		      <clip pos="1" side="tl" part="a_verb"/>
-		      <clip pos="1" side="tl" part="temps"/>
-		      <clip pos="1" side="tl" part="pers"/>
-		      <clip pos="1" side="tl" part="gen"/>
-		      <clip pos="1" side="tl" part="nbr" link-to="5"/>-->
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps" link-to="3"/>
+		  <clip pos="1" side="tl" part="pers" link-to="4"/>
+		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
 		<b pos="1"/>
 		<lu>
@@ -12334,13 +12319,6 @@
 	    <clip pos="2" side="tl" part="pers" link-to="4"/>
 	    <clip pos="2" side="tl" part="nbr" link-to="5"/>
 	    <clip pos="2" side="tl" part="lemq"/>
-	      <!--						<clip pos="2" side="tl" part="lem"/>
-		  <clip pos="2" side="tl" part="a_verb"/>
-		  <clip pos="2" side="tl" part="temps"/>
-		  <clip pos="2" side="tl" part="pers"/>
-		  <clip pos="2" side="tl" part="gen"/>
-		  <clip pos="2" side="tl" part="nbr"/>
-		  <clip pos="2" side="tl" part="lemq"/> -->
 	    </lu>
 	    <b pos="2"/>
 	    <lu>
@@ -12415,17 +12393,18 @@
 		  <get-case-from pos="2">
 		    <clip pos="1" side="tl" part="lem"/>
 		  </get-case-from>
-		  <lit-tag v="prn.pro"/>
+		  <clip pos="1" side="tl" part="a_prn"/>
+		  <clip pos="1" side="tl" part="tipus_prn"/>
 		  <clip pos="1" side="tl" part="tipoenc_pro"/>
 		</lu>
 		<b pos="2"/>
 		<lu>
-	    <clip pos="2" side="tl" part="lemh"/>
-	    <clip pos="2" side="tl" part="a_verb"/>
-	    <clip pos="2" side="tl" part="temps" link-to="3"/>
-	    <clip pos="2" side="tl" part="pers" link-to="4"/>
-	    <clip pos="2" side="tl" part="nbr" link-to="5"/>
-	    <clip pos="2" side="tl" part="lemq"/>
+		  <clip pos="2" side="tl" part="lemh"/>
+		  <clip pos="2" side="tl" part="a_verb"/>
+		  <clip pos="2" side="tl" part="temps" link-to="3"/>
+		  <clip pos="2" side="tl" part="pers" link-to="4"/>
+		  <clip pos="2" side="tl" part="nbr" link-to="5"/>
+		  <clip pos="2" side="tl" part="lemq"/>
 		</lu>
 		<b pos="3"/>
 		<lu>
@@ -12450,18 +12429,16 @@
 		  <tag><var n="tipusverb"/></tag>
 		</tags>
 		<lu>
-		  <clip pos="1" side="tl" part="lem"/>
-		  <lit-tag v="prn.pro"/>
-		  <clip pos="1" side="tl" part="tipoenc_pro"/>
+		  <clip pos="1" side="tl" part="whole"/>
 		</lu>
 		<b pos="1"/>
 		<lu>
-	    <clip pos="2" side="tl" part="lemh"/>
-	    <clip pos="2" side="tl" part="a_verb"/>
-	    <clip pos="2" side="tl" part="temps" link-to="3"/>
-	    <clip pos="2" side="tl" part="pers" link-to="4"/>
-	    <clip pos="2" side="tl" part="nbr" link-to="5"/>
-	    <clip pos="2" side="tl" part="lemq"/>
+		  <clip pos="2" side="tl" part="lemh"/>
+		  <clip pos="2" side="tl" part="a_verb"/>
+		  <clip pos="2" side="tl" part="temps" link-to="3"/>
+		  <clip pos="2" side="tl" part="pers" link-to="4"/>
+		  <clip pos="2" side="tl" part="nbr" link-to="5"/>
+		  <clip pos="2" side="tl" part="lemq"/>
 		</lu>
 		<b pos="2"/>
 		<lu>
@@ -12516,9 +12493,8 @@
 	</call-macro>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>
-	
-	<out alt="oc@aran">
+	</call-macro>	
+	<out>
 	  <chunk name="pro_pro_verb" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
@@ -12529,41 +12505,28 @@
 	      <tag><var n="tipusverb"/></tag>
 	    </tags>
 	    <lu>
-	      <get-case-from pos="1">
-		<clip pos="2" side="tl" part="lem"/> 
-	      </get-case-from>
-	      <lit-tag v="prn.pro"/>
-	      <clip pos="2" side="tl" part="tipoenc_pro"/>
+	      <clip pos="1" side="tl" part="whole"/> 
 	    </lu>
 	    <b pos="1"/>
 	    <lu>
-	      <get-case-from pos="2">
-		<clip pos="1" side="tl" part="lem"/> 
-	      </get-case-from>
-	      <lit-tag v="prn.pro"/>
-	      <clip pos="1" side="tl" part="tipoenc_pro"/>
+	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
 	    <b pos="2"/>
 	    <lu>
-	    <clip pos="3" side="tl" part="lemh"/>
-	    <clip pos="3" side="tl" part="a_verb"/>
-	    <clip pos="3" side="tl" part="temps" link-to="3"/>
-	    <clip pos="3" side="tl" part="pers" link-to="4"/>
-	    <clip pos="3" side="tl" part="nbr" link-to="5"/>
-	    <clip pos="3" side="tl" part="lemq"/>
-	      <!--						<clip pos="3" side="tl" part="lem"/>
-		  <clip pos="3" side="tl" part="a_verb"/>
-		  <clip pos="3" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="pers"/>
-		  <clip pos="3" side="tl" part="gen"/>
-		  <clip pos="3" side="tl" part="nbr" link-to="5"/>
-		  <clip pos="3" side="tl" part="lemq"/> -->
+	      <clip pos="3" side="tl" part="lemh"/>
+	      <clip pos="3" side="tl" part="a_verb"/>
+	      <clip pos="3" side="tl" part="temps" link-to="3"/>
+	      <clip pos="3" side="tl" part="pers" link-to="4"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="5"/>
+	      <clip pos="3" side="tl" part="lemq"/>	
 	    </lu>
 	    <b pos="3"/>
 	    <lu>
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_pp"/>
-	      <lit-tag v="m.sg"/>
+	      <clip pos="4" side="tl" part="gen"/> 
+	      <clip pos="4" side="tl" part="nbr"/>
+	    <!--  <lit-tag v="m.sg"/>-->
 	      <clip pos="4" side="tl" part="lemq"/>    
 	    </lu> 
 	  </chunk>
@@ -12635,7 +12598,8 @@
 		  <get-case-from pos="2">
 		    <clip pos="1" side="tl" part="lem"/> 
 		  </get-case-from>
-		  <lit-tag v="prn.pro"/>
+		  <clip pos="1" side="tl" part="a_prn"/>
+		  <clip pos="1" side="tl" part="tipus_prn"/>
 		  <clip pos="1" side="tl" part="tipoenc_pro"/>
 		</lu>
 		<b pos="2"/>
@@ -12644,12 +12608,12 @@
 		</lu>
 		<b pos="3"/>
 		<lu>
-	    <clip pos="3" side="tl" part="lemh"/>
-	    <clip pos="3" side="tl" part="a_verb"/>
-	    <clip pos="3" side="tl" part="temps" link-to="3"/>
-	    <clip pos="3" side="tl" part="pers" link-to="4"/>
-	    <clip pos="3" side="tl" part="nbr" link-to="5"/>
-	    <clip pos="3" side="tl" part="lemq"/>
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <clip pos="3" side="tl" part="a_verb"/>
+		  <clip pos="3" side="tl" part="temps" link-to="3"/>
+		  <clip pos="3" side="tl" part="pers" link-to="4"/>
+		  <clip pos="3" side="tl" part="nbr" link-to="5"/>
+		  <clip pos="3" side="tl" part="lemq"/>
 		</lu>
 		<b pos="4"/>
 		<lu>
@@ -12674,9 +12638,7 @@
 		  <tag><var n="tipusverb"/></tag>
 		</tags>
 		<lu>
-		  <clip pos="1" side="tl" part="lem"/> 
-		  <lit-tag v="prn.pro"/>
-		  <clip pos="1" side="tl" part="tipoenc_pro"/>
+		  <clip pos="1" side="tl" part="whole"/> 
 		</lu>
 		<b pos="1"/>
 		<lu>
@@ -12684,12 +12646,12 @@
 		</lu>
 		<b pos="3"/>
 		<lu>
-	    <clip pos="3" side="tl" part="lemh"/>
-	    <clip pos="3" side="tl" part="a_verb"/>
-	    <clip pos="3" side="tl" part="temps" link-to="3"/>
-	    <clip pos="3" side="tl" part="pers" link-to="4"/>
-	    <clip pos="3" side="tl" part="nbr" link-to="5"/>
-	    <clip pos="3" side="tl" part="lemq"/>
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <clip pos="3" side="tl" part="a_verb"/>
+		  <clip pos="3" side="tl" part="temps" link-to="3"/>
+		  <clip pos="3" side="tl" part="pers" link-to="4"/>
+		  <clip pos="3" side="tl" part="nbr" link-to="5"/>
+		  <clip pos="3" side="tl" part="lemq"/>
 		</lu>
 		<b pos="4"/>
 		<lu>
@@ -12741,6 +12703,10 @@
 	  <with-param pos="2"/>
 	  <with-param pos="3"/>
 	</call-macro>
+	<let>	    
+	  <clip pos="1" side="tl" part="tipus_prn"/>
+	  <lit-tag v="enc"/>
+	</let>
 	<out>
 	  <chunk name="auxinf_enc_pp" case="caseFirstWord">
 	    <tags>
@@ -12761,9 +12727,7 @@
 		<clip pos="2" side="tl" part="lemq"/> 
 	      </lu>
 	      <lu>
-		<clip pos="1" side="tl" part="lem"/> 
-		<lit-tag v="prn.enc"/>
-		<clip pos="1" side="tl" part="tipoenc_pro"/>
+		<clip pos="1" side="tl" part="whole"/> 
 	      </lu>
 	    </mlu>
 	    <b pos="1"/>
@@ -12807,6 +12771,10 @@
 	  <with-param pos="2"/>
 	  <with-param pos="4"/>
 	</call-macro>
+	<let>	    
+	  <clip pos="1" side="tl" part="tipus_prn"/>
+	  <lit-tag v="enc"/>
+	</let>
 	<choose>
 	  <when>
 	    <test>
@@ -12849,7 +12817,8 @@
 		    <get-case-from pos="2">
 		      <clip pos="1" side="tl" part="lem"/> 
 		    </get-case-from>
-		    <lit-tag v="prn.enc"/>
+		    <clip pos="1" side="tl" part="a_prn"/>
+		    <clip pos="1" side="tl" part="tipus_prn"/>
 		    <clip pos="1" side="tl" part="tipoenc_pro"/>
 		  </lu>
 		</mlu>
@@ -12889,7 +12858,8 @@
 		    <get-case-from pos="2">
 		      <clip pos="1" side="tl" part="lem"/> 
 		    </get-case-from>
-		    <lit-tag v="prn.enc"/>
+		    <clip pos="1" side="tl" part="a_prn"/>
+		    <clip pos="1" side="tl" part="tipus_prn"/>
 		    <clip pos="1" side="tl" part="tipoenc_pro"/>
 		  </lu>
 		</mlu>
@@ -12957,6 +12927,14 @@
 	  <with-param pos="4"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<let>	    
+	  <clip pos="1" side="tl" part="tipus_prn"/>
+	  <lit-tag v="enc"/>
+	</let>
+	<let>	    
+	  <clip pos="2" side="tl" part="tipus_prn"/>
+	  <lit-tag v="enc"/>
+	</let>
 	<out>
 	  <chunk name="auxinf_enc_enc_pp" case="caseFirstWord">
 	    <tags>
@@ -12982,13 +12960,12 @@
 		<get-case-from pos="2">
 		  <clip pos="1" side="tl" part="lem"/> 
 		</get-case-from>
-		<lit-tag v="prn.enc"/>
+		<clip pos="1" side="tl" part="a_prn"/>
+		<clip pos="1" side="tl" part="tipus_prn"/>
 		<clip pos="1" side="tl" part="tipoenc_pro"/>
 	      </lu>
 	      <lu>
-		<clip pos="2" side="tl" part="lem"/> 
-		<lit-tag v="prn.enc"/>
-		<clip pos="2" side="tl" part="tipoenc_pro"/>
+		<clip pos="2" side="tl" part="whole"/> 
 	      </lu>
 	    </mlu>
 	    <b pos="1"/>
@@ -13045,6 +13022,14 @@
 	  <with-param pos="5"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<let>	    
+	  <clip pos="1" side="tl" part="tipus_prn"/>
+	  <lit-tag v="enc"/>
+	</let>
+	<let>	    
+	  <clip pos="2" side="tl" part="tipus_prn"/>
+	  <lit-tag v="enc"/>
+	</let>
 	<choose>
 	  <when>
 	    <test>
@@ -13087,13 +13072,12 @@
 		    <get-case-from pos="2">
 		      <clip pos="1" side="tl" part="lem"/> 
 		    </get-case-from>
-		    <lit-tag v="prn.enc"/>
+		    <clip pos="1" side="tl" part="a_prn"/>
+		    <clip pos="1" side="tl" part="tipus_prn"/>
 		    <clip pos="1" side="tl" part="tipoenc_pro"/>
 		  </lu>
 		  <lu>
-		    <clip pos="2" side="tl" part="lem"/> 
-		    <lit-tag v="prn.enc"/>
-		    <clip pos="2" side="tl" part="tipoenc_pro"/>
+		    <clip pos="2" side="tl" part="whole"/> 
 		  </lu>
 		</mlu>
 		<b pos="2"/>
@@ -13132,13 +13116,12 @@
 		    <get-case-from pos="2">
 		      <clip pos="1" side="tl" part="lem"/> 
 		    </get-case-from>
-		    <lit-tag v="prn.enc"/>
+		    <clip pos="1" side="tl" part="a_prn"/>
+		    <clip pos="1" side="tl" part="tipus_prn"/>
 		    <clip pos="1" side="tl" part="tipoenc_pro"/>
 		  </lu>
 		  <lu>
-		    <clip pos="2" side="tl" part="lem"/> 
-		    <lit-tag v="prn.enc"/>
-		    <clip pos="2" side="tl" part="tipoenc_pro"/>
+		    <clip pos="2" side="tl" part="whole"/>
 		  </lu>
 		</mlu>
 		<b pos="1"/>
@@ -13352,8 +13335,7 @@
 	      <equal>
 		<clip pos="1" side="sl" part="lem"/>
 		<lit v="dont"/>
-	      </equal>
-	      
+	      </equal>	      
 	    </test>
 	    <out>
 	      <chunk name="rel" case="caseFirstWord">
@@ -13372,12 +13354,24 @@
 		</lu>
 		<b/>
 		<lu>
-		  <lit v="el qual"/>
-		  <clip pos="1" side="tl" part="a_prn"/>
+		  <lit v="el cual"/><!--mireia error variable -->
 		  <clip pos="1" side="tl" part="tipus_prn"/> 
 		  <var n="genero"/>
 		  <var n="numero"/>
+		</lu> <!--
+		<lu>
+		  <lit v="el"/>
+		  <lit-tag v="det.def"/>
+		  <var n="genero"/>
+		  <var n="numero"/>
 		</lu> 
+		<b/>
+		<lu>		  
+		  <lit v="que"/>
+		  <clip pos="1" side="tl" part="tipus_prn"/> 
+		  <clip pos="1" side="tl" part="gen"/> 
+		  <clip pos="1" side="tl" part="nbr"/> 
+		</lu> -->
 	      </chunk>
 	    </out>  
 	  </when>
@@ -13396,7 +13390,6 @@
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="lem"/>  
-		  <clip pos="1" side="tl" part="a_prn"/>
 		  <clip pos="1" side="tl" part="tipus_prn"/> 
 		  <clip pos="1" side="tl" part="gen"/>
 		  <clip pos="1" side="tl" part="nbr"/>
@@ -13437,7 +13430,7 @@
       </action>
     </rule>
     
-    <rule comment="CNJ">
+    <rule comment="CNJSUB">
       <pattern>
 	<pattern-item n="cnjsub"/>
       </pattern>
@@ -13466,7 +13459,7 @@
       </action>
     </rule>
     
-    <rule comment="CNJ">
+    <rule comment="CNJADV">
       <pattern>
 	<pattern-item n="cnjadv"/>
       </pattern>
