@@ -11,8 +11,6 @@ from Ft.Xml.XPath import Evaluate;
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 
-
-
 class Tag: #{
 	name = None;
 
@@ -44,6 +42,7 @@ class Paradigm: #{
 	#}
 
 	def get_stems(self): #{
+		print >> sys.stderr, self.stems;
 		return self.stems;
 	#}
 #}
@@ -55,7 +54,7 @@ class Dictionary: #{
 	side = None;
 
 	def __init__(self, _side, _language, _file, _doc, _tags): #{
-		self.display = 'all';
+		self.display = {};
 		self.language = _language;
 		self.file = _file;
 		self.doc = _doc;
@@ -79,6 +78,7 @@ class Dictionary: #{
 	def get_paradigm(self, _name, _tag): #{
 		for paradigm in self.paradigms[_tag].values(): #{
 			if paradigm.name == _name: #{
+				print >> sys.stderr, 'get_paradigm ' , paradigm.name , _name;
 				path = ".//pardef[@n='" + _name + "']";
 				res = self.doc.xpath(path)[0];
 				
@@ -90,9 +90,11 @@ class Dictionary: #{
 					if type(left) != type(None): #{
 						left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild.nodeValue;
 					#}
+
 					if type(left) == type(None): #{
 						left = '';
 					#}
+
 					right = Ft.Xml.XPath.Evaluate('.//r', contextNode=pair)[0]; 
 
 					for symbol in Ft.Xml.XPath.Evaluate('.//s', contextNode=right): #{
@@ -104,6 +106,7 @@ class Dictionary: #{
 						#}
 					#}
 
+					print >> sys.stderr, 'get_paradigm ' , left , symlist;
 					paradigm.add_stem(left, symlist);
 				#}
 
@@ -130,11 +133,24 @@ class Dictionary: #{
 		print self.side + '  set ' , len(self.paradigms[_tag]) , 'paradigms';
 	#}
 
-	def set_display(self, _mode): #{
-		self.display = _mode;
+	def set_display(self, _tag, _mode): #{
+		if _mode == None or _mode == '': #{
+			self.display[_tag] = 'all';
+		#}
+		if _mode != None and _mode != '': #{
+			self.display[_tag] = _mode;
+		#}
 	#}
 
-	def get_display(self): #{
+	def get_display_by_tag(self, _tag): #{
+		if _tag in self.display: #{
+			return self.display[_tag];
+		#}
+
+		return 'all';
+	#}
+
+	def get_displays(self): #{
 		return self.display;
 	#}
 

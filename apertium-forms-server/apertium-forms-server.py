@@ -15,6 +15,7 @@ sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 
 
+i = Interface();
 
 class Globals: #{
 	config = Config(os.getcwd() + '/config/config.xml');	
@@ -52,8 +53,8 @@ class form: #{
 	    'right_paradigm': '',
 	    'left_glosses': glosses_left,
 	    'right_glosses': glosses_right,
-	    'left_display_mode': dictionary_left.get_display(),
-	    'right_display_mode': dictionary_right.get_display(),
+	    'left_display_mode': dictionary_left.get_display_by_tag('n'),
+	    'right_display_mode': dictionary_right.get_display_by_tag('n'),
 	    'left_paradigms': paradigms_left,
 	    'right_paradigms': paradigms_right,
 	    'restriction': '',
@@ -62,7 +63,6 @@ class form: #{
 
 #	print engine.render('templates/index.pyhtml', post_data);
 
-	i = Interface();
 	print i.display(post_data);
     #}
 #}
@@ -75,8 +75,18 @@ class add: #{
 
 	current_pair = post_data['selected_pair'];
 	current_tag = post_data['selected_tag'];
-	left_paradigm = post_data['left_paradigm'];
-	right_paradigm = post_data['right_paradigm'];
+	left_paradigm = '';
+	right_paradigm = '';
+	try: #{
+            left_paradigm = post_data['left_paradigm'];
+        except: #{
+	    print >> sys.stderr, 'Error';
+        #}
+	try: #{
+            right_paradigm = post_data['right_paradigm'];
+        except: #{
+	    print >> sys.stderr, 'Error';
+        #}
 
 	dictionary_left = Globals.config.pairs[current_pair].dictionary['left'];
 	dictionary_right = Globals.config.pairs[current_pair].dictionary['right'];
@@ -87,29 +97,29 @@ class add: #{
 	glosses_left = dictionary_left.get_glosses();
 	glosses_right = dictionary_right.get_glosses();
 
-	print paradigms_left[left_paradigm].get_stems();
-	print paradigms_right[right_paradigm].get_stems();
-
 	post_data = {
 	    'selected_pair': current_pair, 
 	    'selected_tag': current_tag, 
 	    'tags': tags, 
 	    'left_lemma': post_data['left_lemma'], 
 	    'right_lemma': post_data['right_lemma'],
+	    'left_dictionary': dictionary_left,
+	    'right_dictionary': dictionary_right,
 	    'left_paradigm': left_paradigm,
 	    'right_paradigm': right_paradigm,
 	    'left_paradigms': paradigms_left,
 	    'left_glosses': glosses_left,
 	    'right_glosses': glosses_right,
-	    'left_display_mode': dictionary_left.get_display(),
-	    'right_display_mode': dictionary_right.get_display(),
+	    'left_display_mode': dictionary_left.get_display_by_tag(current_tag),
+	    'right_display_mode': dictionary_right.get_display_by_tag(current_tag),
 	    'right_paradigms': paradigms_right,
 	    'restriction': post_data['restriction'],
 	    'pairs': pairs
 	};
 
-	print engine.render('templates/index.pyhtml', post_data);
+#	print engine.render('templates/index.pyhtml', post_data);
 
+	print i.display(post_data);
     #}
 #}
 

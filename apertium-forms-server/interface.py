@@ -40,7 +40,7 @@ class Interface: #{
                 for tag in post_data['tags'].keys(): #{
                         if tag == post_data['selected_tag']: #{
                                 print '         <option value="' + tag + '" selected>' + tag + '</option>';
-                        else: #}
+                        else: #{
                                 print '         <option value="' + tag + '">' + tag + '</option>';
 			#}
 		#}
@@ -59,12 +59,12 @@ class Interface: #{
                         if left_p == post_data['left_paradigm']: #{
                                 if left_p in post_data['left_glosses']: #{
                                         print '                <option value="' + left_p + '" selected>' + post_data['left_glosses'][left_p] + '</option>';
-                                else: #}
+                                else: #{
                                         print '                <option value="' + left_p + '" selected>' + left_p + '</option>';
-                        else: #}
+                        else: #{
                                 if left_p in post_data['left_glosses']: #{
                                         print '                <option value="' + left_p + '">' + post_data['left_glosses'][left_p] + '</option>';
-                                else: #}
+                                else: #{
                                         print '                <option value="' + left_p + '">' + left_p + '</option>';
 				#}
 			#}
@@ -80,6 +80,32 @@ class Interface: #{
 
                 print '  </div>';
 
+                print '    <!-- Bidix side -->';
+                print '  <div id="centre">';
+                if post_data['restriction'] != 'LR' and post_data['restriction'] != 'RL': #{
+                        print '    <input type="radio" name="restriction" value="none" checked>←→<br />';
+                else: #{
+                        print '    <input type="radio" name="restriction" value="none">←→<br />';
+                #}
+                print '';
+                if post_data['restriction'] == 'LR': #{
+                        print '    <input type="radio" name="restriction" value="LR" checked>→→<br />';
+                else: #{
+                        print '    <input type="radio" name="restriction" value="LR">→→<br />';
+                #}
+                print '';
+                if post_data['restriction'] == 'RL': #{
+                        print '    <input type="radio" name="restriction" value="RL" checked>←←<br />';
+                else: #{
+                        print '    <input type="radio" name="restriction" value="RL">←←<br />';
+                #}
+                print '';
+                print '    <input type="submit" name="clear_box" value="Clear">';
+                print '    <input type="submit" name="preview_box" value="Preview">';
+                print '    <input type="submit" name="commit_box" value="Commit">';
+                print '';
+                print '  </div>';
+
 
                 print '  <div> <!-- Right -->';
                 print '      Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>';
@@ -87,27 +113,29 @@ class Interface: #{
                 print '      Paradigm:<sup><span class="tooltip" title="header=[Paradigm] body=[Paradigms define how a word inflects, select the one that fits the lemma you added.]">?</span></sup>';
                 print '      <select name="right_paradigm">';
                 for right_p in post_data['right_paradigms']: #{
-                        if post_data['right_display_mode'] == 'list' and right_p not in post_data['right_glosses']: #{
+                        #if post_data['right_display_mode'] == 'list' and right_p not in post_data['right_glosses']: #{
+                        if post_data['right_display_mode'] == 'list': #{
                                 continue;
                         #}
                         if right_p == post_data['right_paradigm']: #{
                                 if right_p in post_data['right_glosses']: #{
                                         print '                <option value="' + right_p + '" selected>' + post_data['right_glosses'][right_p] + '</option>';
-                                else: #}
+                                else: #{
                                         print '                <option value="' + right_p + '" selected>' + right_p + '</option>';
-                        else: #}
+                        else: #{
                                 if right_p in post_data['right_glosses']: #{
                                         print '                <option value="' + right_p + '">' + post_data['right_glosses'][right_p] + '</option>';
-                                else: #}
+                                else: #{
                                         print '                <option value="' + right_p + '">' + right_p + '</option>';
                                 #}
                         #}
                 #}
                 print '      </select>';
 
-                if type(post_data['right_paradigms'][right_p].get_stems()) != type(None): #{
+		right_paradigm = post_data['right_dictionary'].get_paradigm(right_p, post_data['selected_tag']);
+                if type(right_paradigm.get_stems()) != type(None): #{
                         for right_s in post_data['right_paradigms'][right_p].get_stems(): #{
-                                print '             ' + right_s;
+                                print '             ' , right_s;
                 else: #{
                         print '         No stems';
                 #}

@@ -64,8 +64,8 @@ class Config: #{
 							self.pairs[pair_name].dictionary[current_side].add_gloss(name, comment);
 						#}
 					#}
-					
-					self.pairs[pair_name].dictionary[current_side].set_display(paradigm_display_mode);
+
+					self.pairs[pair_name].dictionary[current_side].set_display(tag_name, paradigm_display_mode);
 				#}
 
 				self.pairs[pair_name].add_tag(tag_name, shows);
