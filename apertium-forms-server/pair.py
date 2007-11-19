@@ -7,6 +7,7 @@ import sys, string, codecs, xml, re;
 import Ft;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
+from Ft.Xml.Domlette import Print, PrettyPrint;
 
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
@@ -41,12 +42,12 @@ class Paradigm: #{
 	#}
 
 	def add_stem(self, _stem, _symlist): #{
-		print >> sys.stderr, 'add_stem(' + _stem + ', ' + _symlist + ')';
+		#print >> sys.stderr, 'add_stem(' + _stem + ', ' + _symlist + ')';
 		self.stems.append((_stem, _symlist));
 	#}
 
 	def get_stems(self): #{
-		print >> sys.stderr, self.stems;
+		#print >> sys.stderr, self.stems;
 		return self.stems;
 	#}
 #}
@@ -100,7 +101,11 @@ class Dictionary: #{
 			return None;
 		#}
 
-		paradigm.stems = [];
+		# paradigm already loaded
+		if len(paradigm.stems) > 0: #{
+			return paradigm;
+		#}
+
 		print >> sys.stderr, 'get_paradigm ' , paradigm.name , _name;
 		path = ".//pardef[@n='" + _name + "']";
 		res = self.doc.xpath(path)[0];
@@ -214,20 +219,50 @@ class Dictionary: #{
                 return entrada;
         #}
 
-
-
         def incondicional(self, _lemma, _paradigm): #{
                 if _paradigm.count('/') < 1: #{
                         return _lemma;
                 #}
 
-                bar_pos = _paradigm.find('/');
-                und_pos = _paradigm.find('_');
-                chr_str =  (und_pos - bar_pos) - 1;
+                paradigm = _paradigm.decode('utf-8');
+                bar_pos = paradigm.find('/');
+                und_pos = paradigm.find('_');
+                chr_str = (und_pos - bar_pos) - 1;
+                l = _lemma.decode('utf-8');
+                r = l[0:(len(_lemma) - chr_str)];
 
-                return _lemma[0:(len(_lemma) - chr_str)];
+                return r.encode('utf-8');
         #}
 
+	def commit(self, _entrada): #{
+		print >> sys.stderr, '> ' , self.file;
+		print >> sys.stderr, self.side + ' commit(';
+		print >> sys.stderr, _entrada;
+		print >> sys.stderr, ')';
+
+		for section in self.doc.xpath('.//section'): #{
+			print >> sys.stderr , '+ section : ' + section.getAttributeNS(None, 'id');
+			if section.getAttributeNS(None, 'id') == 'main': #{
+				print >> sys.stderr , 'Writing to file....';
+				insertion_point = section;
+				print >>sys.stderr , insertion_point;
+				child_doc = NonvalidatingReader.parseString(_entrada.encode('utf-8'), 'urn:bogus:dummy');
+				print >> sys.stderr, child_doc;
+				child_node = child_doc.xpath('.//e')[0];
+				print >> sys.stderr, child_node;
+				insertion_point.appendChild(child_node);
+
+				f = open(self.file, 'w');
+				Print(self.doc, stream=f);
+				f.close();
+				print >> sys.stderr, 'Written.';
+
+#				return;
+			#}
+		#}
+
+		print >> sys.stderr, 'Failed :(';
+	#}
 #}
 
 class Pair: #{
@@ -272,5 +307,12 @@ class Pair: #{
 
 	def get_tags(self): #{
 		return self.tags;
+	#}
+
+	def commit(self, _left, _bidix, _right): #{
+		print >> sys.stderr , 'commit()';
+		self.dictionary['left'].commit(_left);
+		self.dictionary['bidix'].commit(_bidix);
+		self.dictionary['right'].commit(_right);
 	#}
 #}

@@ -48,6 +48,7 @@ class form: #{
 	    'selected_pair': pairs.keys()[0], 
 	    'selected_tag': 'n', 
 	    'tags': tags, 
+	    'committing': 'no', 
 	    'previewing': 'off', 
 	    'left_lemma': '', 
 	    'right_lemma': '',
@@ -100,7 +101,19 @@ class add: #{
 	glosses_left = dictionary_left.get_glosses();
 	glosses_right = dictionary_right.get_glosses();
 
+	committing = 'no';
+	try: #{
+		print >> sys.stderr, 'commit box: ' , post_data['commit_box'];
+		if post_data['commit_box'] == 'Commit': #
+			committing = 'yes';
+		#}
+	#}
+	except: #{
+		print >> sys.stderr, 'commit box error';
+	#}
+
 	post_data = {
+	    'committing': committing,
 	    'selected_pair': current_pair, 
 	    'selected_tag': current_tag, 
 	    'tags': tags, 

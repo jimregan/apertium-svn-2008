@@ -3,7 +3,6 @@
 # -*- encoding: utf-8 -*-
 
 import sys, string, codecs, xml, re, Ft;
-from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
 
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
@@ -20,6 +19,33 @@ sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 class Interface: #{
 	
 	def display(self, post_data): #{
+
+		if post_data['committing'] == 'yes': #{
+			left_entrada = self.show_entrada(post_data, 'left');
+			bidix_entrada = self.show_entrada(post_data, 'bidix');
+			right_entrada = self.show_entrada(post_data, 'right');
+
+			print '<pre>';
+			print left_entrada.replace('<', '&lt;').replace('>', '&gt;');
+			print "\n";
+			print bidix_entrada.replace('<', '&lt;').replace('>', '&gt;');
+			print "\n";
+			print right_entrada.replace('<', '&lt;').replace('>', '&gt;');
+			print '</pre>';
+
+			selected_pair = post_data['selected_pair'];
+			pairs = post_data['pairs'];
+			post_data['left_dictionary'].commit(left_entrada);
+			post_data['bidix_dictionary'].commit(bidix_entrada);
+			post_data['right_dictionary'].commit(right_entrada);
+
+#			pairs[selected_pair].commit(left_entrada, bidix_entrada, right_entrada);
+
+                	print '<a href="http://xixona.dlsi.ua.es:8080/">again!</a>';
+
+			return;
+		#}
+
                 print '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">';
                 print '<head>';
                 print '  <title>Apertium dictionary management</title>';
@@ -235,8 +261,6 @@ class Interface: #{
 				#}
 			#}
 		#}
-
-
 		return '';
 	#}
 
@@ -245,10 +269,13 @@ class Interface: #{
 			return _lemma;
 		#}
 	
-		bar_pos = _paradigm.find('/');
-		und_pos = _paradigm.find('_');
-		chr_str =  (und_pos - bar_pos) - 1;
+		paradigm = _paradigm.decode('utf-8');
+		bar_pos = paradigm.find('/');
+		und_pos = paradigm.find('_');
+		chr_str = (und_pos - bar_pos) - 1;
+		l = _lemma.decode('utf-8');
+		r = l[0:(len(_lemma) - chr_str)];
 
-		return _lemma[0:(len(_lemma) - chr_str)];
+		return r.encode('utf-8');
 	#}
 #}
