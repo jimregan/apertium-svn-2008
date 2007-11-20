@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="iso-8859-15"?> <!-- -*- nxml -*- -->
 <interchunk>
   <section-def-cats>
 
@@ -11,17 +11,12 @@
     </def-cat>
     
      
-    <def-cat n="pr"><!-- BCN-->
+    <def-cat n="pr">
       <cat-item tags="PREP"/>
       <cat-item tags="PREP.*"/>
     </def-cat>
     
-    <!--
-	<def-cat n="SN_nopron">
-	<cat-item tags="SN.DET.*"/>
-	<cat-item tags="SN.UNDET.*"/>
-	<cat-item tags="SN.NUM.*"/>
-	</def-cat>-->
+  
 
     <def-cat n="SV">
       <cat-item tags="SV.*"/>
@@ -49,20 +44,14 @@
 
     <def-cat n="quecnj">
       <cat-item lemma="que" tags="cnjsub"/>
+      <cat-item lemma="que" tags="rel.an.mf.sp"/><!--para esta regla, si el tagger se equivoca, que entre igual. -->
     </def-cat>
 
-    <def-cat n="PRNS">
-      <cat-item tags="PRN.subj.*"/>
-    </def-cat>
-
+  
     <def-cat n="SA">
       <cat-item tags="SA.*"/>
     </def-cat>
 
-    <def-cat n="pp">
-      <cat-item lemma="pp"  tags="SA.*"/>
-      <cat-item lemma="adj"  tags="SA.*"/><!-- BCN per que agafi bï¿½resolutions adopted -->
-    </def-cat>
 
     <def-cat n="DET">
       <cat-item tags="DET.*"/>
@@ -76,10 +65,7 @@
       <cat-item tags="sent"/>
     </def-cat>
 
-    <def-cat n="cnjcoo"> <!-- BCN-->
-      <cat-item tags="cnjcoo"/>
-    </def-cat>
-
+  
 
   </section-def-cats>
 
@@ -105,6 +91,7 @@
       <attr-item tags="sus"/>
       <attr-item tags="de"/>
       <attr-item tags="en"/>
+      <attr-item tags="para"/>
     </def-attr>
     <def-attr n="pers">
       <attr-item tags="p1"/>
@@ -151,7 +138,6 @@
       <attr-item tags="vbhaver"/>
       <attr-item tags="vbser"/>
       <attr-item tags="vbmod"/>
-      <attr-item tags="HAVER"/>
     </def-attr>
     
     <def-attr n="a_SN">
@@ -297,7 +283,7 @@
 
     </def-macro>
 
-    <def-macro n="concord_sa" npar="2"><!--assinga el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tÃ­a es interesante" -> "interesante" concordarÃ  amb "aperÃ§u")-->
+    <def-macro n="concord_sa" npar="2"><!--assinga el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu padre es interesante" -> "interesante" concordarà  amb el subjecte)-->
       <choose>
 	<when> 
 	  <test>
@@ -404,7 +390,7 @@
 	</when>
       </choose>
     </def-macro>
-    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc contï¿½o no format. Cal posar aquesta funciï¿½en les regles en quï¿½desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si contï¿½format cal conservar-la, si no en contï¿½cal eliminar-la perquï¿½no apareguin dos espais seguits. -->
+    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conte o no format. Cal posar aquesta funcio les regles en que desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conte cal eliminar-la perque no apareguin dos espais seguits. -->
       <choose>
 	<when>
 	  <test>
@@ -423,7 +409,7 @@
     </def-macro>
 
     <def-macro n="cv_prep" npar="2">
-      <choose> <!--canvia la prepo de lloc-->
+      <choose> <!--canvia la prepo si cal-->
 	<when>
 	  <test>
 	    <or>
@@ -474,38 +460,7 @@
 	    </when>
 	  </choose>
 	</when>
-	<!--		<when><!-#-canvia SN á  inf per SN para inf-#->
-	    <test>
-	    <and>
-	    <equal>
-	    <clip pos="1" part="a_SN"/>
-	    <lit-tag v="SN"/>
-	    </equal>
-	    <equal>
-	    <clip pos="2" part="tprep"/>
-	    <lit-tag v="a"/>
-	    </equal>
-	    <or>
-	    <equal>
-	    <clip pos="3" part="lem"/>
-	    <lit v="inf"/>
-	    </equal>
-	    <equal>
-	    <clip pos="3" part="lem"/>
-	    <lit v="pro_inf"/>
-	    </equal>
-	    <equal>
-	    <clip pos="3" part="lem"/>
-	    <lit v="pro_pro_inf"/>
-	    </equal>
-	    </or>
-	    </and>
-	    </test>
-	    <let>
-	    <clip pos="2" part="tprep"/>
-	    <lit-tag v="para"/>
-	    </let>
-	    </when>	-->
+
       </choose>
     </def-macro>
 
@@ -534,6 +489,7 @@
 	<b pos="1"/>-->
 
     <!--REGLES GENERALS -->
+
     <rule comment="REGLA: SN">
       <pattern>
 	<pattern-item n="SN"/>
@@ -757,6 +713,82 @@
       </action>
     </rule>
     
+
+   <rule comment="REGLA: prep sprep">
+      <pattern>
+	<pattern-item n="pr"/>
+	<pattern-item n="pr"/>
+	<pattern-item n="SA"/>
+      </pattern>
+      <action>
+	<call-macro n="assigna_gen_nbr">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="2" part="tprep"/>
+		  <lit-tag v="de"/>
+		</equal>
+		<or>
+		  <equal>
+		    <clip pos="3" part="nbr"/>
+		    <lit-tag v="pl"/>
+		  </equal>
+		  <equal>
+		    <clip pos="3" part="tnom"/>
+		    <lit-tag v="part"/>
+		  </equal>
+		</or>
+	      </and>
+	    </test>
+	    <out>
+	      <chunk>
+		<clip pos="1" part="lem"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk>
+		<clip pos="3" part="lem"/>
+		<clip pos="3" part="tags"/>
+		<lit-tag v="treu_det"/>
+		<clip pos="3" part="chcontent"/>
+	      </chunk>
+	    </out>
+	    <call-macro n="f_bcond">
+	      <with-param pos="2"/>
+	    </call-macro>
+	  </when>
+	  <otherwise>
+	    <out>
+	      <chunk>
+		<clip pos="1" part="lem"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk>
+		<clip pos="2" part="lem"/>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk>
+		<clip pos="3" part="lem"/>
+		<clip pos="3" part="tags"/>
+		<clip pos="3" part="chcontent"/>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>
+      </action>
+    </rule>
+
+
+
     <rule comment="REGLA: SV sprep">
       <pattern>
 	<pattern-item n="SV"/>
@@ -856,7 +888,7 @@
 	<out>
 	  <chunk>
 	    <get-case-from pos="1">
-	      <lit v="nomes"/>
+	      <lit v="solo"/>
 	    </get-case-from>
 	    <clip pos="1" part="tags"/>
 	    <clip pos="1" part="chcontent"/>
@@ -1094,7 +1126,7 @@
 	<with-param pos="2"/>
 	</call-macro>
 	</when>
-	<otherwise><!-#-Quan SN no ï¿½ pronom subjecte, per tant, quan ï¿½ qualsevol altre SN -#->
+	<otherwise><!-#-Quan SN no es pronom subjecte, per tant, quan es qualsevol altre SN -#->
 	<out>
 	<chunk>
 	<clip pos="1" part="lem"/>

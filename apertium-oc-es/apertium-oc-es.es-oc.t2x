@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="iso-8859-15"?> <!-- -*- nxml -*- -->
 <interchunk>
   <section-def-cats>
 
@@ -21,7 +21,7 @@
       <cat-item tags="SN.NUM.*"/>
     </def-cat>
 
-    <def-cat n="SV"><!--Verb conjugat, i tb infinitiu per quan el tagger s'equivoca. -->
+    <def-cat n="SV"><!--Verb conjugat i tb infinitiu per quan el tagger s'equivoca. -->
 <!--      <cat-item lemma="verbcj" tags="SV.*"/>
       <cat-item tags="Vcop.*"/>
       <cat-item lemma="mod" tags="SV.*"/><!-#-MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: s�que � 'haig de'. -#->
@@ -259,6 +259,10 @@
 							<clip pos="2" part="lem"/>
 							<lit v="sus"/>
 						</equal>
+						<equal>
+							<clip pos="2" part="lem"/>
+							<lit v="amb"/>
+						</equal>
 					</or>
 				</test>
 				<choose>
@@ -323,7 +327,7 @@
 	</def-macro>
 
 	<def-macro n="partitiu" npar="1">
-		<choose>
+		<choose alt="oc">
 			<when>
 				<test>
 					<or>
@@ -395,6 +399,40 @@
 				</out>
 			</when>
 		</choose>
+		<choose alt="oc@aran">
+			<when>
+				<test>
+					<or>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="part_aran"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="partadj_nom_aran"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="partadj_adj_nom_aran"/>
+						</equal>
+					</or>
+				</test>
+				<out>
+					<chunk>
+						<get-case-from pos="1">
+							<lit v="partitiu"/>
+							</get-case-from>
+						<lit-tag v="part"/>
+						<lit v="{^de"/>
+						<lit-tag v="pr"/>
+						<lit v="$}"/>
+					</chunk>
+					<b/>
+				</out>
+			</when>
+		</choose>
+
+
 	</def-macro>
 
 	<def-macro n="dona_info" npar="1">
@@ -1007,7 +1045,7 @@
 			<call-macro n="lema_prn">
 				<with-param pos="1"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
 			</call-macro>
 			<out>
@@ -1102,7 +1140,7 @@
 				</chunk>
 				<b pos="2"/>
 			</out>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="3"/>
 			</call-macro>
 			<out>
@@ -1142,7 +1180,7 @@
 							</in>
 						</not>
 					</test>
-					<call-macro n="partitiu" alt="oc-ca">
+					<call-macro n="partitiu">
 						<with-param pos="2"/>
 					</call-macro>
 				</when>
@@ -1189,7 +1227,7 @@
 							</in>
 						</not>
 					</test>
-					<call-macro n="partitiu" alt="oc-ca">
+					<call-macro n="partitiu">
 						<with-param pos="2"/>
 					</call-macro>
 				</when>
@@ -1208,14 +1246,52 @@
 				</chunk>
 				<b pos="3"/>
 			</out>
-			<call-macro n="partitiu" alt="oc-ca">
+<!--			<call-macro n="partitiu">
 				<with-param pos="4"/>
-			</call-macro>
+			</call-macro>-->
 			<out>
 				<chunk>
 					<clip pos="4" part="lem"/>
 					<clip pos="4" part="tags"/>
 					<clip pos="4" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+
+	<rule comment="REGLA: SN cnjcoo SN">
+		<pattern>
+			<pattern-item n="SN"/>
+			<pattern-item n="cnjcoo"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="partitiu">
+				<with-param pos="2"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
 				</chunk>
 			</out>
 		</action>
@@ -1418,8 +1494,12 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="1"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1455,8 +1535,9 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="3"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="concord_pp">
 				<with-param pos="3"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1471,6 +1552,11 @@
 					<clip pos="2" part="chcontent"/>
 				</chunk>
 				<b pos="2"/>
+			</out>
+			<call-macro n="partitiu">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
 				<chunk>
 					<clip pos="3" part="whole"/>
 				</chunk>
@@ -1493,8 +1579,12 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="1"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1537,8 +1627,9 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="4"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="concord_pp">
 				<with-param pos="4"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1559,6 +1650,11 @@
 					<clip pos="3" part="chcontent"/>
 				</chunk>
 				<b pos="3"/>
+			</out>
+			<call-macro n="partitiu">
+				<with-param pos="4"/>
+			</call-macro>
+			<out>
 				<chunk>
 					<clip pos="4" part="lem"/>
 					<clip pos="4" part="tags"/>
@@ -1583,8 +1679,12 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="1"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1600,7 +1700,7 @@
 				</chunk>
 				<b pos="2"/>
 			</out>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="3"/>
 			</call-macro>
 			<out>
@@ -1626,8 +1726,12 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="1"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1649,7 +1753,7 @@
 				</chunk>
 				<b pos="3"/>
 			</out>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="4"/>
 			</call-macro>
 			<out>
@@ -1682,8 +1786,12 @@
 				<with-param pos="1"/>
 				<with-param pos="5"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1709,7 +1817,7 @@
 							</in>
 						</not>
 					</test>
-					<call-macro n="partitiu" alt="oc-ca">
+					<call-macro n="partitiu">
 						<with-param pos="3"/>
 					</call-macro>
 				</when>
@@ -1756,8 +1864,12 @@
 				<with-param pos="1"/>
 				<with-param pos="6"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1783,7 +1895,7 @@
 							</in>
 						</not>
 					</test>
-					<call-macro n="partitiu" alt="oc-ca">
+					<call-macro n="partitiu">
 						<with-param pos="3"/>
 					</call-macro>
 				</when>
@@ -1835,8 +1947,12 @@
 				<with-param pos="1"/>
 				<with-param pos="5"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -1862,7 +1978,7 @@
 							</in>
 						</not>
 					</test>
-					<call-macro n="partitiu" alt="oc-ca">
+					<call-macro n="partitiu">
 						<with-param pos="3"/>
 					</call-macro>
 				</when>
@@ -2003,8 +2119,12 @@
 				<with-param pos="1"/>
 				<with-param pos="6"/>
 			</call-macro>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="concord_pp">
+				<with-param pos="1"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -2030,7 +2150,7 @@
 							</in>
 						</not>
 					</test>
-					<call-macro n="partitiu" alt="oc-ca">
+					<call-macro n="partitiu">
 						<with-param pos="3"/>
 					</call-macro>
 				</when>
@@ -2055,7 +2175,7 @@
 				</chunk>
 				<b pos="5"/>
 			</out>
-			<call-macro n="partitiu" alt="oc-ca">
+			<call-macro n="partitiu">
 				<with-param pos="6"/>
 			</call-macro>
 			<out>

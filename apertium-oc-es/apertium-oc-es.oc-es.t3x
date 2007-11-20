@@ -11,12 +11,12 @@
       <cat-item name="inf"/>
     </def-cat>
     
-    <def-cat n="nomes">
-      <cat-item name="nomes"/>
+    <def-cat n="solo">
+      <cat-item name="solo"/>
     </def-cat>
-    <def-cat n="pas">
+ <!--   <def-cat n="pas">
       <cat-item name="pas"/>
-    </def-cat>
+    </def-cat>  MG -->
     
     <def-cat n="nom">
       <cat-item name="nom"/>
@@ -49,6 +49,7 @@
     <def-attr n="tprep">
       <attr-item tags="a"/>
       <attr-item tags="en"/>
+      <attr-item tags="para"/>
     </def-attr>
     <def-attr n="pers">
       <attr-item tags="p1"/>
@@ -80,7 +81,6 @@
       <attr-item tags="DET"/>
       <attr-item tags="UNDET"/>
       <attr-item tags="NUM"/>
-      <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaci?que far?el postchunk detectant els PDET. -->
     </def-attr>
 
 
@@ -90,7 +90,6 @@
       <attr-item tags="vbhaver"/>
       <attr-item tags="vbser"/>
       <attr-item tags="vbmod"/>
-      <attr-item tags="HAVER"/>
     </def-attr>
 
     <def-attr n="a_nom">
@@ -159,22 +158,24 @@
       </action>
     </rule> 
     
-    <rule comment="converteix no en només, si cal">
+    <rule comment="converteix no en 'sólo', si cal">
       <pattern>
-	<pattern-item n="nomes"/>
+	<pattern-item n="solo"/>
       </pattern>
       <action>
 	<out>
 	  <lu>
 	    <get-case-from pos="1">
-	      <lit v="només"/>
+	      <lit v="sólo"/>
 	    </get-case-from>
 	    <clip pos="1" part="a_adv"/>
 	  </lu> 
 	</out>
       </action>
     </rule>
-    <rule comment="converteix no en pas, si cal">
+
+
+  <!--  <rule comment="converteix no en pas, si cal">
       <pattern>
 	<pattern-item n="pas"/>
       </pattern>
@@ -188,7 +189,7 @@
 	  </lu> 
 	</out>
       </action>
-    </rule>
+    </rule> MG -->
     
     <rule comment="fa els canvis de prepo">
       <pattern>
