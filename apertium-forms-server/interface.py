@@ -152,7 +152,7 @@ class Interface: #{
                 print '  </div>';
 
 
-                print '  <div> <!-- Right -->';
+                print '  <div id="right"> <!-- Right -->';
 		print '    <p>';
                 print '      Lemma:<sup><span class="tooltip" title="header=[Lemma] body=[Type in the lemma, or citation form of the word you wish to add.]">?</span></sup>';
                 print '      <input type="text" name="right_lemma" value="' + post_data['right_lemma'] + '">';
@@ -209,11 +209,12 @@ class Interface: #{
 					if len(shows) > 0: #{
 						for show in post_data[_side + '_dictionary'].get_tag_by_tag(post_data['selected_tag']).get_list(): #{
 							if show == s[1]: #{
-				                                print post_data[_side + '_lemma'] + s[0] + '<br />';
+				                                print self.incondicional(post_data[_side + '_lemma'], paradigm.name) + s[0] + '<br />';
 								print '<span id="symbol_list">' + s[1] + '</span>';
 								print '<p />';
 							#}
 						#}
+
 					else: #{
 		                                print self.incondicional(post_data[_side + '_lemma'], post_data[_side + '_paradigm']) + s[0] + '<br />';
 						print '<span id="symbol_list">' + s[1] + '</span>';
@@ -274,7 +275,7 @@ class Interface: #{
 		und_pos = paradigm.find('_');
 		chr_str = (und_pos - bar_pos) - 1;
 		l = _lemma.decode('utf-8');
-		r = l[0:(len(_lemma) - chr_str)];
+		r = l[0:(len(l) - chr_str)];
 
 		return r.encode('utf-8');
 	#}

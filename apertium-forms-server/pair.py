@@ -208,7 +208,8 @@ class Dictionary: #{
                         entrada = '<e a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
 
                 else: #{
-                        entrada = '<e r="' + _restriction +  '" a="' + _author + '"><p><l>' + _lemma1 + '<s n="' + _tag + '"/></l><r>' + _lemma2 + '<s n="' + _tag + '"/></r></p></e>' + "\n";
+                        entrada = '<e r="' + _restriction +  '" a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
+
                 #}
 
                 if _comment != "": #{
@@ -229,7 +230,7 @@ class Dictionary: #{
                 und_pos = paradigm.find('_');
                 chr_str = (und_pos - bar_pos) - 1;
                 l = _lemma.decode('utf-8');
-                r = l[0:(len(_lemma) - chr_str)];
+                r = l[0:(len(l) - chr_str)];
 
                 return r.encode('utf-8');
         #}
