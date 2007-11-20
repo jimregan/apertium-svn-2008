@@ -4,6 +4,7 @@
     <def-cat n="nom">
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
       <cat-item tags="np.loc"/>
+      <cat-item tags="np.al"/>
     </def-cat>
 
     <def-cat n="ant">
@@ -272,6 +273,7 @@
       <attr-item tags="n"/>
       <attr-item tags="n.acr"/>
       <attr-item tags="n.unc"/>
+      <attr-item tags="np.al"/>
       <attr-item tags="np.loc"/>
       <attr-item tags="np.ant"/>
     </def-attr>
@@ -463,7 +465,6 @@
   </section-def-attrs>
   <section-def-vars>
     <def-var n="tipusrel"/>
-    <def-var n="tipusprep"/>
     <def-var n="tipusverb"/>
     <def-var n="tipusnom"/>
     <def-var n="numero" v="&amp;lt;sg&amp;gt;"/>
@@ -708,10 +709,16 @@
 		  <clip pos="1" side="sl" part="tipoenc_pro"/>
 		  <lit-tag v="ref.p3.mf.sp"/>
 		</equal>
-		<equal>
-		  <clip pos="2" side="sl" part="pers"/>
-		  <lit-tag v="p3"/>
-		</equal>
+		<or>
+		  <equal>
+		    <clip pos="2" side="sl" part="pers"/>
+		    <lit-tag v="p3"/>
+		  </equal>
+		  <equal>
+		    <clip pos="2" side="sl" part="temps"/>
+                    <lit-tag v="inf"/>
+               </equal>
+		</or>
 	      </and>
 	      <and>
 		<equal>
@@ -790,6 +797,102 @@
 	</when>
       </choose>
     </def-macro>
+
+    <def-macro n="verb_ref_mod" npar="3"><!-- aquesta macro canvia el significat de certs verbs reflexius-->
+
+      <choose> <!--si el prn és ref...-->
+	<when>
+	  <test>
+	    <or>
+	      <and>
+		<equal>
+		  <clip pos="1" side="sl" part="tipoenc_pro"/>
+		  <lit-tag v="ref.p3.mf.sp"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="sl" part="pers"/>
+		  <lit-tag v="p3"/>
+		</equal>
+	      </and>
+	      <and>
+		<equal>
+		  <clip pos="1" side="sl" part="pers"/>
+		  <lit-tag v="p2"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="sl" part="pers"/>
+		  <lit-tag v="p2"/>
+		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="nbr"/>
+		  <clip pos="2" side="sl" part="nbr"/>
+		</equal>
+	      </and>
+	      <and>
+		<equal>
+		  <clip pos="1" side="sl" part="pers"/>
+		  <lit-tag v="p1"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="sl" part="pers"/>
+		  <lit-tag v="p1"/>
+		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="nbr"/>
+		  <clip pos="2" side="sl" part="nbr"/>
+		</equal>
+	      </and>
+	    </or>
+	  </test>
+	  <choose> <!-- canvia aquests verbs-->
+	    <when>
+	      <test>
+		<or>
+		  <equal caseless="yes">
+		    <clip pos="3" side="sl" part="lem"/>
+		    <lit v="sonar"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="3" side="sl" part="lem"/>
+		    <lit v="apelar"/>
+		  </equal>
+		</or>
+	      </test>
+	      <let>
+		<clip pos="3" side="tl" part="lem"/>
+		<lit v="llamar"/>
+	      </let>
+	    </when>
+	    <when>
+	      <test>
+		<equal caseless="yes">
+		  <clip pos="3" side="sl" part="lem"/>
+		  <lit v="avisar"/>
+		</equal>
+	      </test>
+	      <let>
+		<clip pos="3" side="tl" part="lem"/>
+		<lit v="dar# cuenta"/>
+	      </let>
+	    </when>
+	    <when>
+	      <test>
+		<equal caseless="yes">
+		  <clip pos="3" side="sl" part="lem"/>
+		  <lit v="pausar"/>
+		</equal>
+	      </test>
+	      <let>
+		<clip pos="3" side="tl" part="lem"/>
+		<lit v="descansar"/>
+	      </let>
+	    </when>
+	  </choose>
+	</when>
+      </choose>
+    </def-macro>
+
+
 
     <def-macro n="comprova_auxiliar" npar="2">
       <choose>
@@ -986,84 +1089,6 @@
       </choose>
     </def-macro>
 
-
-
-    <def-macro n="f_prep" npar="1">
-      <choose>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="lem"/>
-	      <lit v="a"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v="a"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="lem"/>
-	      <lit v="en"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v="en"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="lem"/>
-	      <lit v="de"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v="de"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <or>
-	      <equal>
-		<clip pos="1" side="sl" part="lem"/>
-		<lit v="tà"/>
-	      </equal>
-	      <equal>
-		<clip pos="1" side="sl" part="lem"/>
-		<lit v="entà"/>
-	      </equal>
-	    </or>
-	  </test>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v="ta"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="lem"/>
-	      <lit v="sus"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v="sus"/>
-	  </let>
-	</when>
-	<otherwise>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v=""/>
-	  </let>
-	</otherwise>
-      </choose>
-    </def-macro>
 
 
     <def-macro n="tipus_verb" npar="1">
@@ -5877,11 +5902,14 @@
 	    </out>
 	  </when>
 	  <otherwise>
+	    <let>
+	      <var n="lema"/>
+	      <clip pos="1" side="sl" part="lem"/>
+	    </let>
 	    <out>
-	      <chunk name="pr" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="PREP"/></tag>
-		  <tag><var n="tipusprep"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="whole"/>
@@ -5890,7 +5918,7 @@
 	      <b pos="1"/>
 	      <chunk name="inf">
 		<tags>
-		  <tag><lit-tag v="SV"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
 		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="2" side="tl" part="temps"/></tag>
 		  <tag><var n="tipusverb"/></tag>
@@ -5910,6 +5938,10 @@
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
+	</let>
+	<let>
+	  <var n="lema"/>
+	  <lit v=""/>
 	</let>
       </action>
     </rule>
@@ -7025,7 +7057,7 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="ger-enc" case="caseFirstWord">
+	  <chunk name="ger_enc" case="caseFirstWord">
 	    <tags>
 		  <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -7078,7 +7110,7 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="ger-enc" case="caseFirstWord">
+	  <chunk name="ger_enc_enc" case="caseFirstWord">
 	    <tags>
 		  <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -7583,6 +7615,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -7642,6 +7678,14 @@
 	</call-macro>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
 	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
@@ -7712,6 +7756,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="2" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -7754,11 +7802,14 @@
 	    </out>
 	  </when>
 	  <otherwise>
+	    <let>
+	      <var n="lema"/>
+	      <clip pos="1" side="sl" part="lem"/>
+	    </let>
 	    <out>
-	      <chunk name="pr" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="PREP"/></tag>
-		  <tag><var n="tipusprep"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="whole"/>
@@ -7798,6 +7849,10 @@
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
+	<let>
+	  <var n="lema"/>
+	  <lit v=""/>
+	</let>
       </action>
     </rule>
 
@@ -7821,8 +7876,13 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="f_prep">
-	  <with-param pos="1"/>
+	<call-macro n="verb_ref">
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+	  <with-param pos="2"/>
+	  <with-param pos="4"/>
 	</call-macro>
 	<let>	    
 	  <clip pos="2" side="tl" part="tipus_prn"/>
@@ -7872,12 +7932,15 @@
 	      </chunk>
 	    </out>
 	  </when>
-	  <otherwise>
+	  <otherwise>	
+	    <let>
+	      <var n="lema"/>
+	      <clip pos="1" side="sl" part="lem"/>
+	    </let>
 	    <out>
-	      <chunk name="pr" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="PREP"/></tag>
-		  <tag><var n="tipusprep"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="whole"/>
@@ -7923,6 +7986,10 @@
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
+	<let>
+	  <var n="lema"/>
+	  <lit v=""/>
+	</let>
       </action>
     </rule>
     
@@ -7941,6 +8008,10 @@
 	</call-macro>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+	  <with-param pos="3"/>
+	  <with-param pos="2"/>
 	</call-macro>
 	<choose>
 	  <when>
@@ -7980,11 +8051,14 @@
 	    </out>
 	  </when>
 	  <otherwise>
+	    <let>
+	      <var n="lema"/>
+	      <clip pos="1" side="sl" part="lem"/>
+	    </let>
 	    <out>
-	      <chunk name="pr" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="PREP"/></tag>
-		  <tag><var n="tipusprep"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="whole"/>
@@ -8021,6 +8095,10 @@
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
+	<let>
+	  <var n="lema"/>
+	  <lit v=""/>
+	</let>
       </action>
     </rule>
 
@@ -8044,8 +8122,13 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="f_prep">
-	  <with-param pos="1"/>
+	<call-macro n="verb_ref">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+	  <with-param pos="2"/>
+	  <with-param pos="4"/>
 	</call-macro>
 	<choose>
 	  <when>
@@ -8088,11 +8171,14 @@
 	    </out>
 	  </when>
 	  <otherwise>
+	    <let>
+	      <var n="lema"/>
+	      <clip pos="1" side="sl" part="lem"/>
+	    </let>
 	    <out>
-	      <chunk name="pr" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="PREP"/></tag>
-		  <tag><var n="tipusprep"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="whole"/>
@@ -8137,6 +8223,10 @@
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
+	</let>
+	<let>
+	  <var n="lema"/>
+	  <lit v=""/>
 	</let>
       </action>
     </rule>
@@ -8420,6 +8510,11 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -8486,6 +8581,11 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="2" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -8551,6 +8651,11 @@
 	</call-macro>
 	<call-macro n="lema_adv">
 	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
 	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
@@ -8694,6 +8799,11 @@
 	<call-macro n="lema_adv">
 	  <with-param pos="3"/>
 	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	  <with-param pos="4"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -8836,6 +8946,11 @@
 	<call-macro n="lema_adv">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="2" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -8967,6 +9082,11 @@
 	</call-macro>
 	<call-macro n="lema_adv">
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="3"/>
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
 	</call-macro>
 	<let>	    
 	  <clip pos="3" side="tl" part="tipus_prn"/>
@@ -9100,6 +9220,16 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -9181,6 +9311,16 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="3"/>
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="2" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -9260,6 +9400,16 @@
 	</call-macro>
 	<call-macro n="lema_adv">
 	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
 	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
@@ -9420,6 +9570,16 @@
 	<call-macro n="lema_adv">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	  <with-param pos="5"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -9579,6 +9739,16 @@
 	<call-macro n="lema_adv">
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="3"/>
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="2" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -9727,6 +9897,16 @@
 	</call-macro>
 	<call-macro n="lema_adv">
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="3"/>
+	  <with-param pos="1"/>
+	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="verb_ref_mod">
+	  <with-param pos="4"/>
+	  <with-param pos="1"/>
+	  <with-param pos="5"/>
 	</call-macro>
 	<let>	    
 	  <clip pos="3" side="tl" part="tipus_prn"/>
@@ -11489,6 +11669,10 @@
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
 	</call-macro>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
     
@@ -12180,6 +12364,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="lema_adv">
+	  <with-param pos="2"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -12189,7 +12376,7 @@
 	      </in>
 	    </test>
 	    <out>
-	      <chunk name="no" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><clip pos="2" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -12258,7 +12445,7 @@
 		</lu> 
 	      </chunk>
 	      <b pos="2"/>
-	      <chunk name="adv">
+	      <chunk namefrom="lema">
 		<tags>
 		  <tag><clip pos="2" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -12359,6 +12546,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="lema_adv">
+	  <with-param pos="3"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -12368,7 +12558,7 @@
 	      </in>
 	    </test>
 	    <out>
-	      <chunk name="no" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><clip pos="3" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -12450,7 +12640,7 @@
 		</lu> 
 	      </chunk>
 	      <b pos="3"/>
-	      <chunk name="adv">
+	      <chunk namefrom="lema">
 		<tags>
 		  <tag><clip pos="3" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -12564,6 +12754,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="lema_adv">
+	  <with-param pos="4"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -12573,7 +12766,7 @@
 	      </in>
 	    </test>
 	    <out>
-	      <chunk name="no" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><clip pos="4" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -12663,7 +12856,7 @@
 		</lu> 
 	      </chunk>
 	      <b pos="4"/>
-	      <chunk name="adv">
+	      <chunk namefrom="lema">
 		<tags>
 		  <tag><clip pos="4" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -12771,6 +12964,9 @@
 	  <with-param pos="2"/>
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="lema_adv">
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>	    
 	  <clip pos="1" side="tl" part="tipus_prn"/>
 	  <lit-tag v="enc"/>
@@ -12784,7 +12980,7 @@
 	      </in>
 	    </test>
 	    <out>
-	      <chunk name="no" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><clip pos="3" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -12873,7 +13069,7 @@
 		</lu> 
 	      </chunk>
 	      <b pos="2"/>
-	      <chunk name="adv">
+	      <chunk namefrom="lema">
 		<tags>
 		  <tag><clip pos="3" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -13017,6 +13213,9 @@
 	  <with-param pos="5"/>
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="lema_adv">
+	  <with-param pos="4"/>
+	</call-macro>
 	<call-macro n="comprova_auxiliar_ref">
 	  <with-param pos="3"/>
 	  <with-param pos="5"/>
@@ -13039,7 +13238,7 @@
 	      </in>
 	    </test>
 	    <out>
-	      <chunk name="no" case="caseFirstWord">
+	      <chunk namefrom="lema" case="caseFirstWord">
 		<tags>
 		  <tag><clip pos="4" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -13134,7 +13333,7 @@
 		</lu> 
 	      </chunk>
 	      <b pos="2"/>
-	      <chunk name="adv">
+	      <chunk namefrom="lema">
 		<tags>
 		  <tag><clip pos="4" side="tl" part="a_adv"/></tag>		
 		</tags>
@@ -13492,20 +13691,24 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="f_prep">
-	  <with-param pos="1"/>
-	</call-macro>
+	<let>
+	  <var n="lema"/>
+	  <clip pos="1" side="sl" part="lem"/>
+	</let>
 	<out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk namefrom="lema" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
-	      <tag><var n="tipusprep"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="lema"/>
+	  <lit v=""/>
+	</let>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
