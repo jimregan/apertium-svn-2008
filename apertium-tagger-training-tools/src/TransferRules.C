@@ -55,7 +55,7 @@ TransferRules::read_rules_from_file(string filename) {
       //At least one element
       if (splitted[0]=="REGEX") {
 	regex="";
-	for(int i=1; i<splitted.size(); i++) {
+	for(size_t i=1; i<splitted.size(); i++) {
 	  if (splitted[i]=="__LEMMA__")
 	    regex+=LEMMA;
 	  else if (splitted[i]=="__TAGS__")
@@ -67,7 +67,7 @@ TransferRules::read_rules_from_file(string filename) {
 	regular_expressions.push_back(regex);
       } else if (splitted[0]=="RULE") {
 	rule.clear();
-	for(int i=1; i<splitted.size(); i++) 
+	for(size_t i=1; i<splitted.size(); i++) 
 	  rule.push_back(atoi(splitted[i].c_str())+offset_regex);
 	//cerr<<"Inserting rule ("<<rule.size()<<"): ";
 	//for(int i=0; i<rule.size(); i++)
@@ -130,7 +130,7 @@ TransferRules::is_segmentation_point(int tag_eof, deque<TaggerWord>& vwords, int
   
   string forma_superficial=vwords[position].get_superficial_form();
 
-  for (int i=0; i<superficial_forms.size(); i++) {
+  for (size_t i=0; i<superficial_forms.size(); i++) {
     if (forma_superficial == superficial_forms[i])
       return false;
   }
@@ -197,7 +197,7 @@ TransferRules::set_superficial_forms(string s) {
   superficial_forms=Utils::split_string(s,"|");
 
   Utils::print_debug("\nSuperficial forms that will never be a segmentation point: ");
-  for(int i=0; i<superficial_forms.size(); i++) {
+  for(size_t i=0; i<superficial_forms.size(); i++) {
     Utils::print_debug(superficial_forms[i]);
     Utils::print_debug(" ");
   }

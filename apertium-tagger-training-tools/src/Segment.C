@@ -48,7 +48,7 @@ Segment::get_path(vector <TTag>& etqpart, int path) {
   etqpart.clear();
   string s="";
    
-  for(int i=0; i<contador_caminos.size(); i++) {
+  for(size_t i=0; i<contador_caminos.size(); i++) {
     int tag_position=((int)(path/nfijo_caminos[i]))%contador_caminos[i].size();            
     s+=vwords[i].get_lexical_form(contador_caminos[i][tag_position], tag_index["TAG_kEOF"]);
     if ((!vwords[i].get_plus_cut()) && (i<(contador_caminos.size()-1)))
@@ -108,7 +108,7 @@ Segment::new_segment(MorphoStream &ms, TransferRules* tr,  TaggerData &td) {
    
   int segmentation_point=-1;
   int advance; //Number of word that can be skipped when looking for a segmentation point
-  for(int i=index_start; i<wordsbuffer.size(); i++) {
+  for(size_t i=index_start; i<wordsbuffer.size(); i++) {
     if (tr->is_segmentation_point(tag_index["TAG_kEOF"], wordsbuffer, i, advance)) {
       segmentation_point=i;
       break;
@@ -209,7 +209,7 @@ Segment::new_segment(MorphoStream &ms, TransferRules* tr,  TaggerData &td) {
     seg->vwords_before.push_back(wordsbuffer[i]);
 
   bool found_forward=false;
-  for(int i=segmentation_point+1; i<wordsbuffer.size(); i++) {
+  for(size_t i=segmentation_point+1; i<wordsbuffer.size(); i++) {
     seg->vwords_after.push_back(wordsbuffer[i]);
     if (wordsbuffer[i].get_tags().size()==1) {
       found_forward=true;
@@ -236,9 +236,9 @@ Segment::new_segment(MorphoStream &ms, TransferRules* tr,  TaggerData &td) {
   //Now we initialize the structure used to retrieve all the paths in
   //an efficient way. (nfijos_caminos = nº de veces que se tiene que
   //usar una etiqueta antes de pasar a la siguiente)
-  for(int i=0; i<seg->contador_caminos.size(); i++) {
+  for(size_t i=0; i<seg->contador_caminos.size(); i++) {
     int fijo=1;
-    for(int j=i+1; j<seg->contador_caminos.size(); j++) {
+    for(size_t j=i+1; j<seg->contador_caminos.size(); j++) {
       fijo*=seg->contador_caminos[j].size();
     }
     seg->nfijo_caminos.push_back(fijo);

@@ -183,7 +183,7 @@ Utils::split_string(const string& input, const string& delimiter) {
   string s="";
   pos=0;
 
-  while (pos<input.size()) {
+  while (pos<(int)input.size()) {
     new_pos=input.find(delimiter, pos);
     if(new_pos<0)
       new_pos=input.size();

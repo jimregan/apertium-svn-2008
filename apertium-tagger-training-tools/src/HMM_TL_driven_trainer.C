@@ -80,6 +80,13 @@ HMM_TL_driven_trainer::HMM_TL_driven_trainer(string tsxfile, TransferRules* tr) 
   transfer_rules=tr;  
 
   Segment::set_tag_index(tagger_data.getTagIndex());
+
+  //NEW
+  if (tagger_data.getOpenClass().size()==0) {
+    cerr<<"Inserting TAG_kUNDEF in open_class because it was empty\n";
+    tagger_data.getOpenClass().insert(tagger_data.getTagIndex()["TAG_kUNDEF"]);
+  }
+  //
 }
 
 HMM_TL_driven_trainer::~HMM_TL_driven_trainer() {
@@ -113,7 +120,7 @@ HMM_TL_driven_trainer::set_use_tags_rules(bool b) {
 
 void 
 HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords, string filename, ofstream& fpaths, ifstream& ftrans, ifstream& flike){
-  int i, j, k;
+  //int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
   map<int, map<int, double> > emis; //NxM
@@ -178,15 +185,15 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       <<"Ready for training...... go!\n\n";
 
   //Counters initialization.
-  for(i=0; i<tagger_data.getN(); i++) {
+  for(int i=0; i<tagger_data.getN(); i++) {
     tags_count[i]=0;
     tags_count_for_emis[i]=0;
-    for(j=0; j<tagger_data.getN(); j++)
+    for(int j=0; j<tagger_data.getN(); j++)
       tags_pair[i][j]=0;
   }
-  for(k=0; k<tagger_data.getM(); k++) {
+  for(int k=0; k<tagger_data.getM(); k++) {
     ambclass_count[k]=0;
-    for(i=0; i<tagger_data.getN(); i++) {
+    for(int i=0; i<tagger_data.getN(); i++) {
       if (tagger_data.getOutput()[k].find(i)!=tagger_data.getOutput()[k].end())
 	emis[i][k]=0;
     }  
@@ -205,7 +212,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 
     if (seg!=NULL)
       delete seg;
-    for(i=0; i<translations.size(); i++)
+    for(size_t i=0; i<translations.size(); i++)
       delete translations[i];
     translations.clear();
 
@@ -226,7 +233,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     //We calculate how many translations needs to be performed 
     //for this segment
     int number_of_translations_to_perform=1;
-    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++) {
+    for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++) {
       if (seg->vwords[npalabras].get_tags().size()>0)
 	number_of_translations_to_perform*=seg->vwords[npalabras].get_tags().size();
     }
@@ -239,7 +246,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       cerr<<"Warning: Segment has "<<seg->get_number_paths()<<" disambiguation paths ";
       cerr<<"and "<<number_of_translations_to_perform<<" translations to perform. Skipping\n";      
       cerr<<"SEGMENT: ";
-      for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+      for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
         cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
       cerr<<"\n";
       
@@ -262,17 +269,17 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     Utils::print_debug(seg->get_number_paths());
     Utils::print_debug("\n--------------------------------------------------------\n");
     Utils::print_debug("WORDS BEFORE: \n");
-    for(int npalabras=0; npalabras<seg->vwords_before.size(); npalabras++){
+    for(size_t npalabras=0; npalabras<seg->vwords_before.size(); npalabras++){
       Utils::print_debug("   "+seg->vwords_before[npalabras].get_superficial_form()+" ");
       Utils::print_debug("   "+seg->vwords_before[npalabras].get_string_tags()+"\n");
     }
     Utils::print_debug("SEGMENT: \n");
-    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++){
+    for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++){
       Utils::print_debug("   "+seg->vwords[npalabras].get_superficial_form()+" ");
       Utils::print_debug("   "+seg->vwords[npalabras].get_string_tags()+"\n");
     }
     Utils::print_debug("WORDS AFTER: \n");
-    for(int npalabras=0; npalabras<seg->vwords_after.size(); npalabras++){
+    for(size_t npalabras=0; npalabras<seg->vwords_after.size(); npalabras++){
       Utils::print_debug("   "+seg->vwords_after[npalabras].get_superficial_form()+" ");
       Utils::print_debug("   "+seg->vwords_after[npalabras].get_string_tags()+"\n");
     }
@@ -347,7 +354,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 	  if (trim(tradcadena).length()==0) {
 	    cerr<<"Error: There is a path with a null translation: "<<cadena<<"\n";
 	    cerr<<"SEGMENT: ";
-	    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+	    for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	      cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
 	    cerr<<"\n";
 	  }
@@ -391,7 +398,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     if(translations[TL1]->get_number_translations()<=0) {
       cerr<<"Warning: This segment has no translations into TL 1. Skipping\n";
       cerr<<"SEGMENT: ";
-      for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+      for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
       cerr<<"\n"; 
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
@@ -409,7 +416,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     if((translations[TL1]->get_number_translations()==0)&&(hay_caminos_prohibidos)) {
       cerr<<"Warning: This segment has all its paths forbidden. Skipping\n";
       cerr<<"SEGMENT: ";
-      for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+      for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
       cerr<<"\n";
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
@@ -432,7 +439,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
     if (!translations[TL1]->are_translations_ok()) {
       cerr<<"Warning: This segment has no OK translations. Skipping\n";
       cerr<<"SEGMENT: ";
-      for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+      for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
       cerr<<"\n";
       //We store the last tag of the segment being skipped
@@ -524,14 +531,14 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 
   if (seg!=NULL)
     delete seg;
-  for(i=0; i<translations.size(); i++)
+  for(size_t i=0; i<translations.size(); i++)
     delete translations[i];
   translations.clear();
 }
 
 void 
 HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ifstream& ftrans, ifstream& flike) {
-  int i, j, k;
+  //int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
   map<int, map<int, double> > emis; //NxM
@@ -623,14 +630,14 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       <<"Ready for training...... go!\n\n";
 
   //Counters initialization. 
-  for(i=0; i<tagger_data.getN(); i++) {
+  for(int i=0; i<tagger_data.getN(); i++) {
     tags_count[i]=0;
     tags_count_for_emis[i]=0;
-    for(j=0; j<tagger_data.getN(); j++)
+    for(int j=0; j<tagger_data.getN(); j++)
       tags_pair[i][j]=0;
   }
-  for(k=0; k<tagger_data.getM(); k++) {
-    for(i=0; i<tagger_data.getN(); i++) {
+  for(int k=0; k<tagger_data.getM(); k++) {
+    for(int i=0; i<tagger_data.getN(); i++) {
       if (tagger_data.getOutput()[k].find(i)!=tagger_data.getOutput()[k].end())
 	emis[i][k]=0;
     }  
@@ -651,7 +658,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     if (pruner!=NULL)
       delete pruner;
 
-    for(i=0; i<translations.size(); i++)
+    for(size_t i=0; i<translations.size(); i++)
       delete translations[i];
     translations.clear();
 
@@ -674,7 +681,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     //We calculate how many translations needs to be performed 
     //for this segment
     int number_of_translations_to_perform=1;
-    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++) {
+    for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++) {
       if (seg->vwords[npalabras].get_tags().size()>0)
 	number_of_translations_to_perform*=seg->vwords[npalabras].get_tags().size();
     }
@@ -687,7 +694,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       cerr<<"Warning: Segment has "<<seg->get_number_paths()<<" disambiguation paths ";
       cerr<<"and "<<number_of_translations_to_perform<<" translations to perform. Skipping\n";      
       cerr<<"SEGMENT: ";
-      for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+      for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
         cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
       cerr<<"\n";
       
@@ -710,17 +717,17 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     Utils::print_debug(seg->get_number_paths());
     Utils::print_debug("\n--------------------------------------------------------\n");
     Utils::print_debug("WORDS BEFORE: \n");
-    for(int npalabras=0; npalabras<seg->vwords_before.size(); npalabras++){
+    for(size_t npalabras=0; npalabras<seg->vwords_before.size(); npalabras++){
       Utils::print_debug("   "+seg->vwords_before[npalabras].get_superficial_form()+" ");
       Utils::print_debug("   "+seg->vwords_before[npalabras].get_string_tags()+"\n");
     }
     Utils::print_debug("SEGMENT: \n");
-    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++){
+    for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++){
       Utils::print_debug("   "+seg->vwords[npalabras].get_superficial_form()+" ");
       Utils::print_debug("   "+seg->vwords[npalabras].get_string_tags()+"\n");
     }
     Utils::print_debug("WORDS AFTER: \n");
-    for(int npalabras=0; npalabras<seg->vwords_after.size(); npalabras++){
+    for(size_t npalabras=0; npalabras<seg->vwords_after.size(); npalabras++){
       Utils::print_debug("   "+seg->vwords_after[npalabras].get_superficial_form()+" ");
       Utils::print_debug("   "+seg->vwords_after[npalabras].get_string_tags()+"\n");
     }
@@ -816,7 +823,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 	  if (trim(tradcadena).length()==0) {
 	    cerr<<"Error: There is a path with a null translation: "<<cadena<<"\n";
 	    cerr<<"SEGMENT: ";
-	    for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+	    for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	      cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
 	    cerr<<"\n";
 	  }
@@ -839,7 +846,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     if(translations[TL1]->get_number_translations()<=0) {
       cerr<<"Warning: This segment has no translations into TL 1. Skipping\n";
       cerr<<"SEGMENT: ";
-      for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+      for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
       cerr<<"\n"; 
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
@@ -858,7 +865,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
 
       cerr<<"Warning: This segment has all its paths forbidden. Skipping\n";
       cerr<<"SEGMENT: ";
-      for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+      for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
       cerr<<"\n";
       //Nos quedamos con la última etiqueta del segmento que nos saltamos
@@ -881,7 +888,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     if (!translations[TL1]->are_translations_ok()) {
       cerr<<"Warning: This segment has no OK translations. Skipping\n";
       cerr<<"SEGMENT: ";
-      for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+      for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
       cerr<<"\n";
       //We store the last of the segment being skipped
@@ -1022,7 +1029,7 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
     delete seg;
   if(pruner!=NULL)
     delete pruner;
-  for(i=0; i<translations.size(); i++)
+  for(size_t i=0; i<translations.size(); i++)
     delete translations[i];
   translations.clear();
 }
@@ -1041,8 +1048,8 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
 
   vector<TTag> etqpart;
 
-  double sum_probs=0;
-  int ncamino;
+  //double sum_probs=0;
+  //int ncamino;
 
   map<int, double> prob_each_path;
   double sum_prob_each_path=0.0;
@@ -1053,7 +1060,7 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
   for (int i=0; i<seg->get_number_paths(); i++) {
     double prob_este_camino=1; // p(g_i|s,M_tag)
 
-    for(int j=0; j<trans.size(); j++) {
+    for(size_t j=0; j<trans.size(); j++) {
       if (trans[j]->are_translations_ok())
 	prob_este_camino*=trans[j]->get_path_probability(i);
     }
@@ -1079,7 +1086,7 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
 
   //Update the number of times each ambiguity class have been seen
   //(this is not an estimation)
-  for(int i=0; i<seg->vwords.size(); i++) {
+  for(size_t i=0; i<seg->vwords.size(); i++) {
     tags=seg->vwords[i].get_tags();
     if (tags.size()==0)
       tags=tagger_data.getOpenClass();
@@ -1106,11 +1113,11 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
     Utils::print_debug(prob_este_camino);
     Utils::print_debug("\n");
     Utils::print_debug("              TAGS: ");
-    for(int j=0; j<etqpart.size(); j++) {
+    for(size_t j=0; j<etqpart.size(); j++) {
       if(etqpart[j]==-1) {
 	cerr<<"Error: Unknown tag found.\n";
 	cerr<<"SEGMENT: ";
-	for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+	for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	  cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
 	cerr<<"\n";
 	exit(EXIT_FAILURE);
@@ -1122,14 +1129,14 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
     
 
     tag1=last_tag_prev_segment;
-    for(int j=0; j<etqpart.size(); j++) {
+    for(size_t j=0; j<etqpart.size(); j++) {
 
       //Update tags_cout
       if (tag1>=0) {
 	tags_count[tag1]+=prob_este_camino;
       } else {
 	set<TTag>::iterator itag;
-	int k=tagger_data.getOutput()[tagger_data.getOpenClass()];
+	//int k=tagger_data.getOutput()[tagger_data.getOpenClass()];
 	for(itag=tagger_data.getOpenClass().begin(); itag!=tagger_data.getOpenClass().end(); itag++) {
 	  tags_count[*itag]+=prob_este_camino/((double)tagger_data.getOpenClass().size());
 	}
@@ -1165,7 +1172,7 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
       } else { //Palabra desconocida
 	cerr<<"Error: Unknown tag found.\n";
 	cerr<<"SEGMENT: ";
-	for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+	for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	  cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
 	cerr<<"\n";
 	exit(EXIT_FAILURE);
@@ -1188,7 +1195,7 @@ HMM_TL_driven_trainer::update_counts(Segment* seg, vector<Translations*> &trans,
       else {
 	cerr<<"Error: Unknown tag found.\n";
 	cerr<<"SEGMENT: ";
-	for(int npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
+	for(size_t npalabras=0; npalabras<(seg->vwords.size()); npalabras++)
 	  cerr<<seg->vwords[npalabras].get_superficial_form()<<" ";
 	cerr<<"\n"; 
 	cerr<<"tag1 = "<<tag1<<"; tag2 = "<<tag2<<"\n";
@@ -1219,7 +1226,7 @@ HMM_TL_driven_trainer::init_allowed_bigrams() {
   for(unsigned int i=0; i<tagger_data.getEnforceRules().size(); i++) {
     for(int j=0; j<tagger_data.getN(); j++) {
       found = false;
-      for (int j2=0; j2<tagger_data.getEnforceRules()[i].tagsj.size(); j2++) {
+      for (size_t j2=0; j2<tagger_data.getEnforceRules()[i].tagsj.size(); j2++) {
 	if (tagger_data.getEnforceRules()[i].tagsj[j2]==j) {
 	  found = true;
 	  break;
@@ -1242,7 +1249,7 @@ HMM_TL_driven_trainer::is_feasible_path(const TTag& last_etq_ant, const vector<T
     return true;
 
   etqi=last_etq_ant; // Será no homografa
-  for(int j=0; j<etqpart.size(); j++) {
+  for(size_t j=0; j<etqpart.size(); j++) {
     etqj=etqpart[j];
       
     if(etqj>=tagger_data.getN()) {

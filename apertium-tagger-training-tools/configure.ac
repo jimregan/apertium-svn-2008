@@ -32,23 +32,37 @@ AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 
 # Checks for programs.
 
-AC_MSG_CHECKING([Compilation architecture: PPC, i686, Other])
-ARCH=$(/bin/uname -m)
+AC_MSG_CHECKING([Compilation architecture: PPC, i686, x86_64, Other])
+if test x$(which arch) = x
+then ARCH=$($(which uname) -m)
+else ARCH=$($(which arch))
+fi
+
 if test x$ARCH = xppc
 then
   AC_MSG_RESULT([PowerPC])
-  CFLAGS="$CFLAGS -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer"
-  CXXFLAGS="$CXXFLAGS -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer"
+  CFLAGS="-Wall -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer $CFLAGS"
+  CXXFLAGS="-Wall -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer $CXXFLAGS"
 else
   if test x$ARCH = xi686
   then
     AC_MSG_RESULT([i686])
-    CFLAGS="$CFLAGS -ansi -march=i686 -O3 -fno-pic -fomit-frame-pointer"
-    CXXFLAGS="$CXXFLAGS -ansi -march=i686 -O3 -fno-pic -fomit-frame-pointer"
+    CFLAGS="-Wall -ansi -march=i686 -O3 -fomit-frame-pointer -funroll-loops $CFLAGS"
+    CXXFLAGS="-Wall -ansi -march=i686 -O3 \
+              -fomit-frame-pointer -funroll-loops $CXXFLAGS"
+  
   else
-    AC_MSG_RESULT([Other])
-    CFLAGS="$CFLAGS -ansi -O3"
-    CXXFLAGS="$CXXFLAGS -ansi -O3"
+    if test x$ARCH = xx86_64
+    then
+      AC_MSG_RESULT([x86_64])
+      CFLAGS="-Wall -ansi -O3 -mtune=nocona -fomit-frame-pointer -funroll-loops $CFLAGS"
+      CXXFLAGS="-Wall -ansi -O3 -mtune=nocona \
+              -fomit-frame-pointer -funroll-loops $CXXFLAGS"
+    else
+      AC_MSG_RESULT([Other])
+      CFLAGS="-Wall -ansi -O3 $CFLAGS"
+      CXXFLAGS="-Wall -ansi -O3 $CXXFLAGS"
+    fi
   fi
 fi
 

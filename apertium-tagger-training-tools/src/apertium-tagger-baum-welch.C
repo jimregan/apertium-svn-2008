@@ -62,14 +62,14 @@ void check_file(FILE *f, const string& path) {
 void apply_rules() {
   bool found;
 
-  for(int i=0; i<tagger_data.getForbidRules().size(); i++) {
+  for(size_t i=0; i<tagger_data.getForbidRules().size(); i++) {
     tagger_data.getA()[tagger_data.getForbidRules()[i].tagi][tagger_data.getForbidRules()[i].tagj] = ZERO;
   }
 
-  for(int i=0; i<tagger_data.getEnforceRules().size(); i++) {
+  for(size_t i=0; i<tagger_data.getEnforceRules().size(); i++) {
     for(int j=0; j<tagger_data.getN(); j++) {
       found = false;
-      for (int j2=0; j2<tagger_data.getEnforceRules()[i].tagsj.size(); j2++) {
+      for (size_t j2=0; j2<tagger_data.getEnforceRules()[i].tagsj.size(); j2++) {
         if (tagger_data.getEnforceRules()[i].tagsj[j2]==j) {
           found = true;
           break;

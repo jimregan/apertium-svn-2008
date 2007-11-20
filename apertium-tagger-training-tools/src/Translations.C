@@ -257,7 +257,7 @@ Translations::calculate_probability_each_path() {
 
     paths_same_trans=get_paths_same_translation(i);
 
-    for(int j=0; j<paths_same_trans.size(); j++) 
+    for(size_t j=0; j<paths_same_trans.size(); j++) 
       set_path_weigh(paths_same_trans[j],((double)1.0)/((double)paths_same_trans.size()));
   }
 
