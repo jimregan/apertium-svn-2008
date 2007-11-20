@@ -89,14 +89,20 @@ class Dictionary: #{
 
 	def get_paradigm(self, _name, _tag): #{
 		paradigm = None;
-		for _paradigm in self.paradigms[_tag].values(): #{
-			if _paradigm.name == _name: #{	
-				paradigm = _paradigm;	
-			#}
-		#}
+
+		paradigm = self.paradigms[_tag].get(_name);
 		
 		if paradigm == None: #{
-			return None;
+			print >> sys.stderr, 'We didn`t find the paradigm in the hash';
+			for _paradigm in self.paradigms[_tag].values(): #{
+				if _paradigm.name == _name: #{	
+					paradigm = _paradigm;	
+				#}
+			#}
+
+			if paradigm == None: #{
+				return None;
+			#}
 		#}
 
 		# paradigm already loaded
@@ -183,14 +189,18 @@ class Dictionary: #{
 		self.glosses[_paradigm] = _gloss;
 	#}
 
-        def generate_monodix_entrada(self, _lemma, _paradigm, _comment, _author): #{
+        def generate_monodix_entrada(self, _lemma, _paradigm, _restriction, _comment, _author): #{
                 incondicional = self.incondicional(_lemma, _paradigm);
 		print >> sys.stderr, 'lemma: ' + _lemma + ', paradigm: ' + _paradigm + ', comment: ' + _comment + ', author: ' + _author;
 
+		if _restriction == "none" or _restriction == '': #{
+			entrada = '<e lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
+		else: #{
+			entrada = '<e r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
+		#}
+
                 if _comment != '': #{
-                        entrada = '<e lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>' +  '<!-- ' + _comment + ' -.' + "\n";
-                else: #{
-                        entrada = '<e lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
+			entrada = entrada +  '<!-- ' + _comment + ' -.' + "\n";
                 #}
 
 		print >> sys.stderr, entrada;

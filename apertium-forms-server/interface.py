@@ -145,8 +145,8 @@ class Interface: #{
                 print '    <input type="submit" name="commit_box" value="Commit">';
                 print '';
 
-		print '<pre>';
 		bidix_entrada = self.show_entrada(post_data, 'bidix');
+		print '<pre>';
 		print bidix_entrada.replace('<', '&lt;').replace('>', '&gt;');
 		print '</pre>';
                 print '  </div>';
@@ -252,11 +252,12 @@ class Interface: #{
 	
 				if type(paradigm) != type(None): #{
 					_lemma = post_data[_side + '_lemma'];
+					_restriction = post_data['restriction'];
 					_paradigm = paradigm.name;
 					_comment = '';
 					_author = 'webform';
 		
-					entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, _comment, _author);
+					entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, _restriction, _comment, _author);
 	
 					return entrada;
 				#}
