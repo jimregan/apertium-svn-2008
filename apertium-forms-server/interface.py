@@ -144,12 +144,12 @@ class Interface: #{
                 print '    <input type="submit" name="preview_box" value="Preview">';
                 print '    <input type="submit" name="commit_box" value="Commit">';
                 print '';
-                print '  </div>';
 
 		print '<pre>';
 		bidix_entrada = self.show_entrada(post_data, 'bidix');
 		print bidix_entrada.replace('<', '&lt;').replace('>', '&gt;');
 		print '</pre>';
+                print '  </div>';
 
 
                 print '  <div> <!-- Right -->';

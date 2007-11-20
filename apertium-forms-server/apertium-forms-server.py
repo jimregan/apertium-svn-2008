@@ -10,13 +10,12 @@ from interface import Interface;
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 
-i = Interface();
-
 class Globals: #{
 	config = Config(os.getcwd() + '/config/config.xml');	
 #}
 
 Globals.config.parse_config();
+i = Interface();
 
 urls = (
     '/add', 'add',
@@ -74,6 +73,7 @@ class add: #{
 	current_tag = post_data['selected_tag'];
 	left_paradigm = '';
 	right_paradigm = '';
+
 	try: #{
             left_paradigm = post_data['left_paradigm'];
         except: #{
@@ -107,6 +107,7 @@ class add: #{
 	#}
 
 	post_data = {
+	    'commit_box': '',
 	    'committing': committing,
 	    'selected_pair': current_pair, 
 	    'selected_tag': current_tag, 
