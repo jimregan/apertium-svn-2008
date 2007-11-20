@@ -246,19 +246,14 @@ class Dictionary: #{
 			if section.getAttributeNS(None, 'id') == 'main': #{
 				print >> sys.stderr , 'Writing to file....';
 				insertion_point = section;
-				print >>sys.stderr , insertion_point;
 				child_doc = NonvalidatingReader.parseString(_entrada.encode('utf-8'), 'urn:bogus:dummy');
-				print >> sys.stderr, child_doc;
 				child_node = child_doc.xpath('.//e')[0];
-				print >> sys.stderr, child_node;
 				insertion_point.appendChild(child_node);
 
 				f = open(self.file, 'w');
 				Print(self.doc, stream=f);
 				f.close();
 				print >> sys.stderr, 'Written.';
-
-#				return;
 			#}
 		#}
 
