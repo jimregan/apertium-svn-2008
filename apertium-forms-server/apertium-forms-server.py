@@ -5,15 +5,10 @@
 import web, os, codecs, sys;
 from config import Config;
 from pair import Pair;
-import tenjin
-from tenjin.helpers import *   # or escape, to_str
-engine = tenjin.Engine();
-
 from interface import Interface;
 
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
-
 
 i = Interface();
 
@@ -22,8 +17,6 @@ class Globals: #{
 #}
 
 Globals.config.parse_config();
-
-#render = web.template.render('templates/');
 
 urls = (
     '/add', 'add',
@@ -34,18 +27,21 @@ class form: #{
 
     def GET(self, name): #{
 	pairs = Globals.config.get_pairs();
-	tags = Globals.config.pairs['apertium-sh-mk'].get_tags();
+	default_pair = pairs.keys()[0];
+	tags = Globals.config.pairs[default_pair].get_tags();
 
-	dictionary_left = Globals.config.pairs['apertium-sh-mk'].dictionary['left'];
-	dictionary_bidix = Globals.config.pairs['apertium-sh-mk'].dictionary['bidix'];
-	dictionary_right = Globals.config.pairs['apertium-sh-mk'].dictionary['right'];
-	paradigms_left = Globals.config.pairs['apertium-sh-mk'].dictionary['left'].get_paradigms_by_tag('n');
-	paradigms_right = Globals.config.pairs['apertium-sh-mk'].dictionary['right'].get_paradigms_by_tag('n');
-	glosses_left = Globals.config.pairs['apertium-sh-mk'].dictionary['left'].get_glosses();
-	glosses_right = Globals.config.pairs['apertium-sh-mk'].dictionary['right'].get_glosses();
+	dictionary_left = Globals.config.pairs[default_pair].dictionary['left'];
+	dictionary_bidix = Globals.config.pairs[default_pair].dictionary['bidix'];
+	dictionary_right = Globals.config.pairs[default_pair].dictionary['right'];
+
+	paradigms_left = Globals.config.pairs[default_pair].dictionary['left'].get_paradigms_by_tag('n');
+	paradigms_right = Globals.config.pairs[default_pair].dictionary['right'].get_paradigms_by_tag('n');
+
+	glosses_left = Globals.config.pairs[default_pair].dictionary['left'].get_glosses();
+	glosses_right = Globals.config.pairs[default_pair].dictionary['right'].get_glosses();
 
 	post_data = {
-	    'selected_pair': pairs.keys()[0], 
+	    'selected_pair': default_pair, 
 	    'selected_tag': 'n', 
 	    'tags': tags, 
 	    'committing': 'no', 
@@ -63,8 +59,6 @@ class form: #{
 	    'restriction': '',
 	    'pairs': pairs
 	};
-
-#	print engine.render('templates/index.pyhtml', post_data);
 
 	print i.display(post_data);
     #}
@@ -134,8 +128,6 @@ class add: #{
 	    'restriction': post_data['restriction'],
 	    'pairs': pairs
 	};
-
-#	print engine.render('templates/index.pyhtml', post_data);
 
 	print i.display(post_data);
     #}
