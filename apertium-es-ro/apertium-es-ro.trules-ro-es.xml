@@ -24,18 +24,15 @@
     <def-cat n="detcel">
       <cat-item lemma="cel" tags="det.*"/>
     </def-cat>
-    <def-cat n="dettuturor">
-      <cat-item lemma="tuturor" tags="det.*"/>
-    </def-cat>
     <def-cat n="deta">
       <cat-item lemma="al" tags="det.*"/>
     </def-cat>
     <def-cat n="detdem">
       <cat-item tags="det.dem.*"/>
     </def-cat>
-    <def-cat n="detdef">
-      <cat-item tags="det.def.*"/>
-    </def-cat>
+     <def-cat n="dettuturor">
+      <cat-item lemma="tuturor" tags="det.def.*"/>
+    </def-cat> 
     <def-cat n="detind">
       <cat-item tags="det.ind.*"/>
     </def-cat>
@@ -48,6 +45,9 @@
     </def-cat>
     <def-cat n="adjlui">
       <cat-item lemma="lui" tags="adj.*"/>
+    </def-cat>
+    <def-cat n="adjtot">
+      <cat-item lemma="tot" tags="adj.*"/>
     </def-cat>
     <def-cat n="adj">
       <cat-item tags="adj.*"/>
@@ -65,7 +65,7 @@
     </def-cat>
     <def-cat n="advmai">
       <cat-item lemma="mai" tags="adv"/>
-    </def-cat>    
+    </def-cat>      
     <def-cat n="advca">
       <cat-item lemma="ca" tags="adv"/>
     </def-cat>
@@ -308,9 +308,6 @@
       <attr-item tags="det.dem"/>
       <attr-item tags="det.pos"/>
       <attr-item tags="predet"/>
-    </def-attr>
-    <def-attr n="a_detdef">
-      <attr-item tags="det.def"/>
     </def-attr>
     <def-attr n="a_predet">
       <attr-item tags="predet"/>
@@ -3478,6 +3475,150 @@
     </rule>
 
 <rule>
+<!-- REGLA 32abisX DELIA: DETA + Nom DG a temperaturii= de la temperatura-->
+      <pattern>        
+        <pattern-item n="deta"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+         <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+                 <out>
+                  <lu>
+		    <lit v="de"/>  
+		    <lit-tag v="pr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_nom"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+         </action>
+    </rule> 
+
+<rule>
+<!-- REGLA 32abisXX DELIA: DETA + Nom DG a temperaturii medii + ADJ= de la temperatura promedia-->
+      <pattern>        
+        <pattern-item n="deta"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="3"/> 
+	</call-macro>
+                 <out>
+                  <lu>
+		    <lit v="de"/>  
+		    <lit-tag v="pr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_nom"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <clip pos="3" side="tl" part="a_adj"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+         </action>
+    </rule> 
+
+<rule>
+<!-- REGLA 32abisXXX DELIA: DETA + Nom DG a temperaturii medii globale+ ADJ= de la temperatura promedia global-->
+      <pattern>        
+        <pattern-item n="deta"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="f_concord3">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+          <with-param pos="4"/> 
+	</call-macro>
+                 <out>
+                  <lu>
+		    <lit v="de"/>  
+		    <lit-tag v="pr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_nom"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <clip pos="3" side="tl" part="a_adj"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                   <b/>
+                  <lu>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_adj"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+         </action>
+    </rule> 
+
+
+
+
+<rule>
 <!-- REGLA 32bis DELIA: NOM (ind)+ DETA + NP politică a României = política de Rumanía-->
       <pattern>        
         <pattern-item n="nom"/>
@@ -6255,6 +6396,48 @@ is not applicable because gender and number can not be taken from previous rules
       </action>
     </rule>
 
+<rule>
+<!-- REGLA 27bis: ADJECTIU TOT NOM = toți copiii = tots els xiquets -->
+      <pattern>
+        <pattern-item n="adjtot"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>  
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="1"/> 
+	</call-macro>  	
+               <out>
+                  <lu> 		 
+                    <clip pos="1" side="tl" part="lem"/> 
+                    <clip pos="1" side="tl" part="a_adj"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/> 
+		   </get-case-from>
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_nom"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+              
+      </action>
+    </rule>
+
 <rule>  
    <!--  REGLA 22 DELIA: VB + TUTUROR = VB + A TODOS, otherwise DE TODOS  ex. am spus tuturor = he dicho a todos, a todo el mundo / casa tuturor = la casa de todos -->
       <pattern>
@@ -6281,8 +6464,43 @@ is not applicable because gender and number can not be taken from previous rules
                   </lu>
                  <b/>
                   <lu>
-                   <lit v="tod@s"/>
-                   <lit-tag v="det"/>
+                   <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_det"/>	
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                </lu> 
+                </out>
+       </action>
+    </rule>
+
+<rule>  
+   <!--  REGLA 22 DELIA: NOM + TUTUROR = NOM + DE TODOS ex. casa tuturor = la casa de todos -->
+      <pattern>
+        <pattern-item n="nom"/>
+        <pattern-item n="dettuturor"/>
+      </pattern>
+      <action>
+             <call-macro n="modcase">
+               <with-param pos="1"/>
+            </call-macro>
+	       <out>
+                  <lu>
+                    <clip pos="1" side="tl" part="lem"/>
+		    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+	          </lu>
+		<b/>
+		  <lu>
+                   <lit v="de"/>
+		   <lit-tag v="pr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                   <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_det"/>	
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
                 </lu> 
                 </out>
        </action>
@@ -6741,7 +6959,11 @@ is not applicable because gender and number can not be taken from previous rules
           </otherwise>
         </choose>
       </action>
-    </rule>      
+    </rule> 
+
+
+
+     
     <rule>
 <!-- REGLA 27: ADJECTIU NOM -->
       <pattern>
