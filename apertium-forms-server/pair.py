@@ -105,7 +105,7 @@ class Dictionary: #{
 			#}
 		#}
 
-		# paradigm already loaded
+		# paradigm stems already loaded
 		if len(paradigm.stems) > 0: #{
 			return paradigm;
 		#}
@@ -119,6 +119,7 @@ class Dictionary: #{
 
 			pair = Ft.Xml.XPath.Evaluate('.//p', contextNode=entrada)[0]; 
 			left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild; 
+
 			if type(left) != type(None): #{
 				left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild.nodeValue;
 			#}
