@@ -2,19 +2,13 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml, os;
-from xml.dom import minidom;
-from xml import xpath;
-
-
-import Ft;
+import sys, string, codecs, xml, os, Ft;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
-
 from pair import *;
+
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
-
 
 class Config: #{
 	
@@ -31,7 +25,6 @@ class Config: #{
 		path = '/webforms/pairs/pair';
 
 		for node in Ft.Xml.XPath.Evaluate(path, contextNode=self.config): #{
-			#pair_name = node.getAttribute('n');
 			pair_name = node.getAttributeNS(None, 'n');
 			enabled = node.getAttributeNS(None, 'enabled');
 
@@ -84,5 +77,4 @@ class Config: #{
 	def show_config(self): #{
 		return self.config.toprettyxml();
 	#}
-
 #}

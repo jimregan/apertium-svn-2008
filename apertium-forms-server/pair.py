@@ -2,12 +2,10 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml, re;
-
-import Ft;
+import sys, string, codecs, xml, re, Ft;
 from Ft.Xml.Domlette import NonvalidatingReader;
-from Ft.Xml.XPath import Evaluate;
 from Ft.Xml.Domlette import Print, PrettyPrint;
+from Ft.Xml.XPath import Evaluate;
 
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
