@@ -144,7 +144,6 @@ class Dictionary: #{
 		paradigms = self.doc.xpath('//pardef');
 		self.paradigms[_tag] = {};
 		needle = '.*__' + _tag + '$';
-		print needle;
 		patron = re.compile(needle);
 		for paradigm in paradigms: #{
 			n = paradigm.getAttributeNS(None, 'n');
@@ -161,6 +160,7 @@ class Dictionary: #{
 		if _mode == None or _mode == '': #{
 			self.display[_tag] = 'all';
 		#}
+
 		if _mode != None and _mode != '': #{
 			self.display[_tag] = _mode;
 		#}
@@ -180,7 +180,6 @@ class Dictionary: #{
 
 
 	def add_gloss(self, _paradigm, _gloss): #{
-		print '  % ' + self.side + ' add_gloss(' + _paradigm + ', ' + _gloss + ')';
 		self.glosses[_paradigm] = _gloss;
 	#}
 
