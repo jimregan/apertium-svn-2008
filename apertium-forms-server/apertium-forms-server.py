@@ -28,31 +28,34 @@ class form: #{
 	pairs = Globals.config.get_pairs();
 	default_pair = pairs.keys()[0];
 	tags = Globals.config.pairs[default_pair].get_tags();
+	default_tag = tags.keys()[0];
 
 	dictionary_left = Globals.config.pairs[default_pair].dictionary['left'];
 	dictionary_bidix = Globals.config.pairs[default_pair].dictionary['bidix'];
 	dictionary_right = Globals.config.pairs[default_pair].dictionary['right'];
 
-	paradigms_left = Globals.config.pairs[default_pair].dictionary['left'].get_paradigms_by_tag('n');
-	paradigms_right = Globals.config.pairs[default_pair].dictionary['right'].get_paradigms_by_tag('n');
+	paradigms_left = Globals.config.pairs[default_pair].dictionary['left'].get_paradigms_by_tag(default_tag);
+	paradigms_right = Globals.config.pairs[default_pair].dictionary['right'].get_paradigms_by_tag(default_tag);
 
 	glosses_left = Globals.config.pairs[default_pair].dictionary['left'].get_glosses();
 	glosses_right = Globals.config.pairs[default_pair].dictionary['right'].get_glosses();
 
 	post_data = {
 	    'selected_pair': default_pair, 
-	    'selected_tag': 'n', 
+	    'selected_tag': default_tag, 
 	    'tags': tags, 
 	    'committing': 'no', 
 	    'previewing': 'off', 
 	    'left_lemma': '', 
 	    'right_lemma': '',
+	    'left_comment': '', 
+	    'right_comment': '',
 	    'left_paradigm': '',
 	    'right_paradigm': '',
 	    'left_glosses': glosses_left,
 	    'right_glosses': glosses_right,
-	    'left_display_mode': dictionary_left.get_display_by_tag('n'),
-	    'right_display_mode': dictionary_right.get_display_by_tag('n'),
+	    'left_display_mode': dictionary_left.get_display_by_tag(default_tag),
+	    'right_display_mode': dictionary_right.get_display_by_tag(default_tag),
 	    'left_paradigms': paradigms_left,
 	    'right_paradigms': paradigms_right,
 	    'restriction': '',
@@ -113,6 +116,8 @@ class add: #{
 	    'selected_tag': current_tag, 
 	    'tags': tags, 
 	    'previewing': 'on', 
+	    'left_comment': post_data['left_comment'], 
+	    'right_comment': post_data['right_comment'],
 	    'left_lemma': post_data['left_lemma'], 
 	    'right_lemma': post_data['right_lemma'],
 	    'left_dictionary': dictionary_left,

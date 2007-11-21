@@ -195,13 +195,13 @@ class Dictionary: #{
 		print >> sys.stderr, 'lemma: ' + _lemma + ', paradigm: ' + _paradigm + ', comment: ' + _comment + ', author: ' + _author;
 
 		if _restriction == "none" or _restriction == '': #{
-			entrada = '<e lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
+			entrada = "\n" + '<e lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
 		else: #{
-			entrada = '<e r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
+			entrada = "\n" + '<e r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
 		#}
 
                 if _comment != '': #{
-			entrada = entrada +  '<!-- ' + _comment + ' -.' + "\n";
+			entrada = entrada +  '<!-- ' + _comment + ' -->' + "\n";
                 #}
 
 		print >> sys.stderr, entrada;
@@ -213,10 +213,10 @@ class Dictionary: #{
                 # <e><p><l>lemma1<s n="tag"/></l><r>lemma2<s n="tag"/></r></p></e>
 
                 if _restriction == "none" or _restriction == '': #{
-                        entrada = '<e a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
+                        entrada = "\n" + '<e a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
 
                 else: #{
-                        entrada = '<e r="' + _restriction +  '" a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
+                        entrada = "\n" + '<e r="' + _restriction +  '" a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
 
                 #}
 
@@ -224,6 +224,7 @@ class Dictionary: #{
                         entrada = entrada + '<!-- ' + _comment + ' -->' + "\n"; 
                 #}
 
+		print >> sys.stderr, entrada;
 
                 return entrada;
         #}
