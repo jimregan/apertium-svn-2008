@@ -278,7 +278,7 @@ class Dictionary: #{
 		entrada = entrada + '  </p>' + "\n";
 		entrada = entrada + '</e>' + "\n";
 
-                if _comment != "": #{
+                if _comment != '': #{
                         entrada = entrada + '<!-- ' + _comment + ' -->' + "\n"; 
                 #}
 
@@ -302,29 +302,32 @@ class Dictionary: #{
                 return r.encode('utf-8');
         #}
 
-	def commit(self, _entrada): #{
+	def append(self, _entrada): #{
 		print >> sys.stderr, '> ' , self.file;
-		print >> sys.stderr, self.side + ' commit(';
+		print >> sys.stderr, self.side + ' append(';
 		print >> sys.stderr, _entrada;
 		print >> sys.stderr, ')';
 
 		for section in self.doc.xpath('.//section'): #{
 			print >> sys.stderr , '+ section : ' + section.getAttributeNS(None, 'id');
 			if section.getAttributeNS(None, 'id') == 'main': #{
-				print >> sys.stderr , 'Writing to file....';
+				print >> sys.stderr , 'Appending to section....';
 				insertion_point = section;
 				child_doc = NonvalidatingReader.parseString(_entrada.encode('utf-8'), 'urn:bogus:dummy');
 				child_node = child_doc.xpath('.//e')[0];
 				insertion_point.appendChild(child_node);
-
-				f = open(self.file, 'w');
-				Print(self.doc, stream=f);
-				f.close();
-				print >> sys.stderr, 'Written.';
+				print >> sys.stderr , 'Appended.';
 			#}
 		#}
+	#}
 
-		print >> sys.stderr, 'Failed :(';
+	def commit(self): #{
+		print >> sys.stderr, 'Writing out DOM to ' + self.file;
+		f = open(self.file, 'w');
+		Print(self.doc, stream=f);
+		f.close();
+		print >> sys.stderr, 'Written.';
+
 	#}
 #}
 
@@ -372,10 +375,11 @@ class Pair: #{
 		return self.tags;
 	#}
 
-	def commit(self, _left, _bidix, _right): #{
-		print >> sys.stderr , 'commit()';
-		self.dictionary['left'].commit(_left);
-		self.dictionary['bidix'].commit(_bidix);
-		self.dictionary['right'].commit(_right);
+	def commit(self): #{
+		print >> sys.stderr , self.name + ' commit()';
+
+		self.dictionary['left'].commit();
+		self.dictionary['bidix'].commit();
+		self.dictionary['right'].commit();
 	#}
 #}

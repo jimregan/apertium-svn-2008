@@ -19,8 +19,28 @@ i = Interface();
 
 urls = (
     '/add', 'add',
+    '/commit/(.*)', 'commit',
     '/(.*)', 'form'
 )
+
+class commit: #{
+    
+    def GET(self, name): #{
+        print >> sys.stderr , 'Commit called for ' + name;
+        pairs = Globals.config.get_pairs();
+        if name in pairs: #{
+	    print '<html>';
+            print 'Commit called for ' + name + '<br />';
+            pair = pairs[name];
+	    print 'Comitting...<br />';
+            pair.commit();
+	    print 'Committed.</html>';
+	    return;
+        #}
+
+	print 'Error in commit.';
+    #}
+#}
 
 class form: #{
 

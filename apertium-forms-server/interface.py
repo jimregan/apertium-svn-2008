@@ -33,11 +33,9 @@ class Interface: #{
 
 			selected_pair = post_data['selected_pair'];
 			pairs = post_data['pairs'];
-			post_data['left_dictionary'].commit(left_entrada);
-			post_data['bidix_dictionary'].commit(bidix_entrada);
-			post_data['right_dictionary'].commit(right_entrada);
-
-#			pairs[selected_pair].commit(left_entrada, bidix_entrada, right_entrada);
+			post_data['left_dictionary'].append(left_entrada);
+			post_data['bidix_dictionary'].append(bidix_entrada);
+			post_data['right_dictionary'].append(right_entrada);
 
                 	print '<a href="http://xixona.dlsi.ua.es:8080/">again!</a>';
 
@@ -262,6 +260,8 @@ class Interface: #{
                 print '</form>';
                 print '</body>';
                 print '</html>';
+			
+		return '';
 	#}
 
 	def show_preview(self, post_data, _side): #
