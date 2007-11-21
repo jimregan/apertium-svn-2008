@@ -215,9 +215,53 @@ class Dictionary: #{
                 return entrada;
         #}
 
-        def generate_bidix_entrada(self, _lemma1, _lemma2, _paradigm1, _paradigm2, _restriction, _comment, _author): #{
-                # <e><p><l>lemma1<s n="tag"/></l><r>lemma2<s n="tag"/></r></p></e>
-		_tag = '';
+        def generate_bidix_entrada(self, _lemma1, _lemma2, _paradigm1, _paradigm2, _tag, _restriction, _comment, _author): #{
+		if _lemma1 == '' or _lemma2 == '' or _paradigm1 == None or _paradigm2 == None: #
+			return '';
+		#}
+
+		_symbol_list_left = '';
+		_symbol_list_right = '';
+
+		if _tag == 'n': #{
+
+			stems_left = _paradigm1.get_stems();
+			stems_right = _paradigm2.get_stems();
+	
+			if len(stems_left) == len(stems_right): #{
+				tags_left = set();
+				for stem in stems_left: #{
+					tags_left = tags_left | set(stem[1].split('.'));
+				#}
+	
+				tags_right = set();
+				for stem in stems_right: #{
+					tags_right = tags_right | set(stem[1].split('.'));
+				#}
+	
+				print >> sys.stderr , 'tags_left:' , tags_left;
+				print >> sys.stderr , 'tags_right:' , tags_right;
+				print >> sys.stderr , 'symdiff:' , tags_left ^ tags_right;
+			#}
+
+			_symbol_list_left = '<s n="n"/>';
+			_symbol_list_right = '<s n="n"/>';
+		#}
+
+		if _tag == 'vblex': #{
+			_symbol_list_left = '<s n="vblex"/>';
+			_symbol_list_right = '<s n="vblex"/>';
+		#}
+
+		if _tag == 'adj': #{
+			_symbol_list_left = '<s n="adj"/>';
+			_symbol_list_right = '<s n="adj"/>';
+		#}
+
+		if _tag == 'adv': #{
+			_symbol_list_left = '<s n="adv"/>';
+			_symbol_list_right = '<s n="adv"/>';
+		#}
 
 		entrada = '';
 
@@ -229,8 +273,8 @@ class Dictionary: #{
 		#}
 
 		entrada = entrada + '  <p>' + "\n"; 
-		entrada = entrada + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n";
-		entrada = entrada + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n";
+		entrada = entrada + '    <l>' + _lemma1 + _symbol_list_left + '</l>' + "\n";
+		entrada = entrada + '    <r>' + _lemma2 + _symbol_list_right + '</r>' + "\n";
 		entrada = entrada + '  </p>' + "\n";
 		entrada = entrada + '</e>' + "\n";
 
