@@ -313,8 +313,10 @@ class Interface: #{
 					_comment = '';
 					_restriction = post_data['restriction'];
 					_author = 'webform';
+					_paradigm1 = post_data['left_dictionary'].get_paradigm(post_data['left_paradigm'], post_data['selected_tag']);
+					_paradigm2 = post_data['right_dictionary'].get_paradigm(post_data['right_paradigm'], post_data['selected_tag']);
 		
-		        		entrada = dictionary.generate_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author);
+		        		entrada = dictionary.generate_bidix_entrada(_lemma1, _lemma2, _paradigm1, _paradigm2, _restriction, _comment, _author);
 	
 					return entrada;
 				#}

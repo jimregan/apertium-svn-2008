@@ -192,13 +192,19 @@ class Dictionary: #{
 
         def generate_monodix_entrada(self, _lemma, _paradigm, _restriction, _comment, _author): #{
                 incondicional = self.incondicional(_lemma, _paradigm);
+
 		print >> sys.stderr, 'lemma: ' + _lemma + ', paradigm: ' + _paradigm + ', comment: ' + _comment + ', author: ' + _author;
 
+		entrada = '';
 		if _restriction == "none" or _restriction == '': #{
-			entrada = "\n" + '<e lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
+			entrada = entrada + '<e lm="' + _lemma + '" a="' + _author + '">' + "\n";
 		else: #{
-			entrada = "\n" + '<e r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n" + '  <i>' + incondicional + '</i>' + "\n" + '  <par n="' + _paradigm + '"/>' + "\n" + '</e>';
+			entrada = entrada + '<e r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n";
 		#}
+
+		entrada = entrada + '  <i>' + incondicional + '</i>' + "\n";
+		entrada = entrada + '  <par n="' + _paradigm + '"/>' + "\n";
+		entrada = entrada + '</e>';
 
                 if _comment != '': #{
 			entrada = entrada +  '<!-- ' + _comment + ' -->' + "\n";
@@ -209,16 +215,24 @@ class Dictionary: #{
                 return entrada;
         #}
 
-        def generate_bidix_entrada(self, _lemma1, _lemma2, _tag, _restriction, _comment, _author): #{
+        def generate_bidix_entrada(self, _lemma1, _lemma2, _paradigm1, _paradigm2, _restriction, _comment, _author): #{
                 # <e><p><l>lemma1<s n="tag"/></l><r>lemma2<s n="tag"/></r></p></e>
+		_tag = '';
+
+		entrada = '';
 
                 if _restriction == "none" or _restriction == '': #{
-                        entrada = "\n" + '<e a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
+                        entrada = entrada + '<e a="' + _author + '">' + "\n";
 
                 else: #{
-                        entrada = "\n" + '<e r="' + _restriction +  '" a="' + _author + '">' + "\n" + '  <p>' + "\n" + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n" + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n" + '  </p>' + "\n" + '</e>' + "\n";
+                        entrada = entrada + '<e r="' + _restriction + '" a="' + _author + '">' + "\n";
+		#}
 
-                #}
+		entrada = entrada + '  <p>' + "\n"; 
+		entrada = entrada + '    <l>' + _lemma1 + '<s n="' + _tag + '"/></l>' + "\n";
+		entrada = entrada + '    <r>' + _lemma2 + '<s n="' + _tag + '"/></r>' + "\n";
+		entrada = entrada + '  </p>' + "\n";
+		entrada = entrada + '</e>' + "\n";
 
                 if _comment != "": #{
                         entrada = entrada + '<!-- ' + _comment + ' -->' + "\n"; 
