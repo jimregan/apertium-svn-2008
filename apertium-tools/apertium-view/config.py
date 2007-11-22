@@ -1,3 +1,3 @@
 
-apertium_bin_path =  '/home/spectre/local/bin'
-apertium_dict_path = '/home/spectre/local/share/apertium'
+apertium_bin_path =  '/usr/local/bin'
+apertium_dict_path = '/usr/local/share/apertium'
