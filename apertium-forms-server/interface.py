@@ -39,7 +39,7 @@ class Interface: #{
 
                 	print '<a href="http://xixona.dlsi.ua.es:8080/">again!</a>';
 
-			return;
+			return '';
 		#}
 
                 #print '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">';
