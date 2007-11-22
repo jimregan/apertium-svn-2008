@@ -242,15 +242,31 @@ class Dictionary: #{
 				print >> sys.stderr , 'tags_left:' , tags_left;
 				print >> sys.stderr , 'tags_right:' , tags_right;
 				print >> sys.stderr , 'symdiff:' , tags_left ^ tags_right;
+
+				_symbol_list_left = '<s n="n"/>';
+                                if len(list(tags_left ^ tags_right)) > 0: #{
+                                        _symbol_list_right = '<s n="n"/><s n="' + list(tags_left ^ tags_right)[0] + '"/>';
+                                else:
+                                        _symbol_list_right = '<s n="n"/>';
+                                #}
+
+
+			else: #{
+
+				_symbol_list_left = '<s n="n"/>';
+				_symbol_list_right = '<s n="n"/>';
 			#}
 
-			_symbol_list_left = '<s n="n"/>';
-			_symbol_list_right = '<s n="n"/>';
 		#}
 
 		if _tag == 'vblex': #{
 			_symbol_list_left = '<s n="vblex"/>';
 			_symbol_list_right = '<s n="vblex"/>';
+		#}
+
+		if _tag == 'ij': #{
+			_symbol_list_left = '<s n="ij"/>';
+			_symbol_list_right = '<s n="ij"/>';
 		#}
 
 		if _tag == 'adj': #{
@@ -261,6 +277,40 @@ class Dictionary: #{
 		if _tag == 'adv': #{
 			_symbol_list_left = '<s n="adv"/>';
 			_symbol_list_right = '<s n="adv"/>';
+		#}
+
+		if _tag == 'np': #{
+
+			stems_left = _paradigm1.get_stems();
+			stems_right = _paradigm2.get_stems();
+	
+			if len(stems_left) == len(stems_right): #{
+				tags_left = set();
+				for stem in stems_left: #{
+					tags_left = tags_left | set(stem[1].split('.'));
+				#}
+	
+				tags_right = set();
+				for stem in stems_right: #{
+					tags_right = tags_right | set(stem[1].split('.'));
+				#}
+	
+				print >> sys.stderr , 'tags_left:' , tags_left;
+				print >> sys.stderr , 'tags_right:' , tags_right;
+				print >> sys.stderr , 'symdiff:' , tags_left ^ tags_right;
+
+				_symbol_list_left = '<s n="np"/>';
+				if len(list(tags_left ^ tags_right)) > 0: #{
+					_symbol_list_right = '<s n="np"/><s n="' + list(tags_left ^ tags_right)[0] + '"/>';
+				else:
+					_symbol_list_right = '<s n="np"/>';
+				#}
+
+			else: #{
+
+				_symbol_list_left = '<s n="np"/>';
+				_symbol_list_right = '<s n="np"/>';
+			#}
 		#}
 
 		entrada = '';

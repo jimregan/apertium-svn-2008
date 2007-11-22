@@ -335,7 +335,7 @@ class Interface: #{
 		
 					if _restriction == 'LR' and _side == 'right': #{
 						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, 'RL', _comment, _author);
-					elif _restriction == 'RL' and _side == 'left': #{
+					elif _restriction == 'RL' and _side == 'right': #{
 						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, 'LR', _comment, _author);
 					else: #{
 						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, _restriction, _comment, _author);
