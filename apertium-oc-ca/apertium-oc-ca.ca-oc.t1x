@@ -593,6 +593,89 @@
 
 
 <section-def-macros>
+	
+			<def-macro n="verb_ref" npar="2"><!-- aquesta macro canvia el significat de certs verbs reflexius-->
+
+			<choose> <!--si el prn és ref...-->
+				<when>
+					<test>
+						<or>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="tipoenc_pro"/>
+									<lit-tag v="ref.p3.mf.sp"/>
+								</equal>
+								<or>
+									<equal>
+										<clip pos="2" side="sl" part="pers"/>
+										<lit-tag v="p3"/>
+									</equal>
+									<equal>
+										<clip pos="2" side="sl" part="temps"/>
+										<lit-tag v="inf"/>
+									</equal>
+								</or>	
+							</and>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="nbr"/>
+									<clip pos="2" side="sl" part="nbr"/>
+								</equal>
+							</and>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="pers"/>
+									<lit-tag v="p1"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p1"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="nbr"/>
+									<clip pos="2" side="sl" part="nbr"/>
+								</equal>
+							</and>
+						</or>
+					</test>
+					<choose> <!-- canvia aquests verbs-->
+						<when>
+							<test>
+									<equal caseless="yes">
+										<clip pos="2" side="sl" part="lem"/>
+										<lit v="dir"/>
+									</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="sonar"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="plantejar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="prepausar"/>
+							</let>
+						</when>
+					</choose>
+				</when>
+			</choose>
+		</def-macro>
+
 
 		<def-macro n="f_per" npar="1">
 			<choose>
@@ -746,7 +829,7 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="haver# de"/>
 					</equal>
@@ -1225,9 +1308,9 @@
 		<choose>
 			<when>
 				<test>
-					<equal>
+					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
-						<lit v="haver de"/>
+						<lit v="haver# de"/>
 					</equal>
 				</test>
 				<let>
@@ -3577,7 +3660,7 @@
 		<choose>
 			<when>
 				<test>
-							<equal>
+							<equal caseless="yes">
 								<clip pos="1" side="tl" part="lem"/>
 								<lit v="lo"/>
 							</equal>
@@ -7300,6 +7383,10 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -7386,6 +7473,10 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="posa_prn">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
 			<choose>
@@ -7527,6 +7618,10 @@
 				<call-macro n="posa_prn">
 				<with-param pos="3"/>
 			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -7617,6 +7712,10 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="posa_prn">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="2"/>
 				<with-param pos="4"/>
 			</call-macro>
 			<choose>
@@ -7759,6 +7858,10 @@
 				<with-param pos="2"/>
 			</call-macro>
 				<call-macro n="posa_prn">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="3"/>
 				<with-param pos="2"/>
 			</call-macro>
 			<choose>
@@ -18686,7 +18789,9 @@
 						<var n="prnpro_afegit"/>
 					</lu>
 					<lu>
-						<clip pos="1" side="tl" part="lemh"/> 
+						<get-case-from pos="2">
+							<clip pos="1" side="tl" part="lemh"/> 
+						</get-case-from>
 						<clip pos="1" side="tl" part="a_verb"/>
 						<clip pos="1" side="tl" part="temps" link-to="3"/>
 						<clip pos="1" side="tl" part="pers" link-to="4"/>
