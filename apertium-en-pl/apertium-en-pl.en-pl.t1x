@@ -41,6 +41,7 @@
     </def-cat>
     <def-cat n="prep"> <!-- preposition -->
       <cat-item tags="pr"/>
+      <cat-item tags="pr.*"/>
     </def-cat>
   </section-def-cats>
 
@@ -96,6 +97,9 @@
       <attr-item tags="acc"/>
       <attr-item tags="dat"/>
       <attr-item tags="gen"/>
+      <attr-item tags="locc"/>
+      <attr-item tags="inst"/>
+      <attr-item tags="voc"/>
     </def-attr>
     <def-attr n="pers">			<!-- Person -->
        <attr-item tags="p1"/>
@@ -182,7 +186,7 @@
       </pattern>
       <action>
         <out>
-          <chunk name="nom" case="caseFirstWord">
+          <chunk name="nom-gen" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="NP"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
@@ -198,6 +202,40 @@
         </out>
       </action>
     </rule>
+
+    <rule comment="REGLA: PR NOM">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+	      <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: PR">
       <pattern>
