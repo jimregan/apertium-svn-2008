@@ -614,6 +614,10 @@
 										<clip pos="2" side="sl" part="temps"/>
 										<lit-tag v="inf"/>
 									</equal>
+									<equal>
+										<clip pos="2" side="sl" part="temps"/>
+										<lit-tag v="ger"/>
+									</equal>
 								</or>	
 							</and>
 							<and>
@@ -647,7 +651,7 @@
 						</or>
 					</test>
 					<choose> <!-- canvia aquests verbs-->
-						<when>
+						<when alt="oc">
 							<test>
 									<equal caseless="yes">
 										<clip pos="2" side="sl" part="lem"/>
@@ -668,6 +672,92 @@
 							</test>
 							<let>
 								<clip pos="2" side="tl" part="lem"/>
+								<lit v="prepausar"/>
+							</let>
+						</when>
+					</choose>
+				</when>
+			</choose>
+		</def-macro>
+		
+				<def-macro n="verb_ref_mod" npar="3"><!-- aquesta macro canvia el significat de certs verbs reflexius-->
+
+			<choose> <!--si el prn és ref...-->
+				<when>
+					<test>
+						<or>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="tipoenc_pro"/>
+									<lit-tag v="ref.p3.mf.sp"/>
+								</equal>
+								<or>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p3"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="temps"/>
+									<lit-tag v="inf"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="temps"/>
+									<lit-tag v="ger"/>
+								</equal>
+							</or>
+							</and>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p2"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="nbr"/>
+									<clip pos="2" side="sl" part="nbr"/>
+								</equal>
+							</and>
+							<and>
+								<equal>
+									<clip pos="1" side="sl" part="pers"/>
+									<lit-tag v="p1"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p1"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="nbr"/>
+									<clip pos="2" side="sl" part="nbr"/>
+								</equal>
+							</and>
+						</or>
+					</test>
+					<choose> <!-- canvia aquests verbs-->
+						<when alt="oc">
+							<test>
+								<equal caseless="yes">
+									<clip pos="3" side="sl" part="lem"/>
+									<lit v="dir"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="3" side="tl" part="lem"/>
+								<lit v="sonar"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="3" side="sl" part="lem"/>
+									<lit v="plantejar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="3" side="tl" part="lem"/>
 								<lit v="prepausar"/>
 							</let>
 						</when>
@@ -7618,8 +7708,9 @@
 				<call-macro n="posa_prn">
 				<with-param pos="3"/>
 			</call-macro>
-			<call-macro n="verb_ref">
+			<call-macro n="verb_ref_mod">
 				<with-param pos="1"/>
+				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
 			<choose>
@@ -7714,8 +7805,9 @@
 			<call-macro n="posa_prn">
 				<with-param pos="4"/>
 			</call-macro>
-			<call-macro n="verb_ref">
+			<call-macro n="verb_ref_mod">
 				<with-param pos="2"/>
+				<with-param pos="3"/>
 				<with-param pos="4"/>
 			</call-macro>
 			<choose>
@@ -7860,8 +7952,9 @@
 				<call-macro n="posa_prn">
 				<with-param pos="2"/>
 			</call-macro>
-			<call-macro n="verb_ref">
+			<call-macro n="verb_ref_mod">
 				<with-param pos="3"/>
+				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
 			<choose>
@@ -7954,6 +8047,11 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="posa_prn">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
 			<choose>
@@ -8098,6 +8196,10 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<out>
 				<chunk name="pro_pro_verb" case="caseFirstWord">
 					<tags>
@@ -8151,6 +8253,10 @@
 			</call-macro>
 			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="2"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<out alt="oc">
 				<chunk name="pro_pro_verb" case="caseFirstWord">
@@ -8258,6 +8364,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<out>
 				<chunk name="pro_pro_verb" case="caseFirstWord">
 					<tags>
@@ -8318,6 +8429,11 @@
 			</call-macro>
 			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<out alt="oc">
 				<chunk name="pro_pro_verb" case="caseFirstWord">
@@ -8509,6 +8625,10 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="2"/>
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
 				<chunk name="inf_enc" case="caseFirstWord">
 					<tags>
@@ -8551,6 +8671,10 @@
 			</call-macro>
 			<call-macro n="f_per" alt="oc@aran">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<let>
 				<var n="lema"/>
@@ -8629,6 +8753,10 @@
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<choose alt="oc">
 				<when>
@@ -8731,6 +8859,10 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="2"/>
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
 				<chunk name="inf_enc_enc" case="caseFirstWord">
 					<tags>
@@ -8777,6 +8909,10 @@
 			</call-macro>
 			<call-macro n="f_per" alt="oc@aran">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<let>
 				<var n="lema"/>
@@ -8865,6 +9001,10 @@
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<choose alt="oc">
 				<when>
@@ -8980,6 +9120,10 @@
 			</call-macro>
 			<call-macro n="f_per" alt="oc@aran">
 				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="4"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<let>
 				<var n="lema"/>
@@ -9109,6 +9253,10 @@
 			<call-macro n="f_per" alt="oc@aran">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="4"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<let>
 				<var n="lema"/>
 				<clip pos="2" side="sl" part="lem"/>
@@ -9222,6 +9370,10 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="2"/>
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
 				<chunk name="pro_ger" case="caseFirstWord" alt="oc">
 					<tags>
@@ -9311,6 +9463,10 @@
 			</call-macro>
 			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
 			</call-macro>
 			<out alt="oc">
 				<chunk name="pro_ger" case="caseFirstWord">
@@ -9421,6 +9577,10 @@
 		</pattern>
 		<action>
 			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref">
+				<with-param pos="2"/>
 				<with-param pos="1"/>
 			</call-macro>
 			<out>
@@ -9730,6 +9890,11 @@
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -9809,6 +9974,11 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="posa_prn_compost">
+				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
 				<with-param pos="3"/>
 				<with-param pos="4"/>
 			</call-macro>
@@ -9943,6 +10113,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<out>
 				<chunk name="pro_pro_verb" case="caseFirstWord">
 					<tags>
@@ -9991,6 +10166,11 @@
 		<action>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="4"/>
+				<with-param pos="5"/>
 			</call-macro>
 			<out alt="oc">
 				<chunk name="pro_pro_verb" case="caseFirstWord">
@@ -10095,7 +10275,12 @@
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
-			<choose>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
+		<choose>
 				<when>
 					<test>
 						<equal>
@@ -10234,6 +10419,11 @@
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -10315,6 +10505,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<out>
 				<chunk name="pro_pro_verb" case="caseFirstWord">
 					<tags>
@@ -10366,6 +10561,11 @@
 		<action>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<out alt="oc">
 				<chunk name="pro_pro_verb" case="caseFirstWord">
@@ -11630,6 +11830,11 @@
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -11772,6 +11977,11 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="posa_prn_compost">
+				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
 				<with-param pos="3"/>
 				<with-param pos="4"/>
 			</call-macro>
@@ -12134,6 +12344,11 @@
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -12413,6 +12628,11 @@
 				<with-param pos="2"/>
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
@@ -12518,6 +12738,11 @@
 		<action>
 			<call-macro n="vauxiliar_pro" alt="oc">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
+				<with-param pos="5"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
 				<with-param pos="4"/>
 				<with-param pos="5"/>
 			</call-macro>
@@ -12841,6 +13066,11 @@
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="4"/>
+				<with-param pos="5"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -13375,6 +13605,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<out>
 				<chunk name="auxinf_enc_pp" case="caseFirstWord">
 					<tags>
@@ -13438,6 +13673,11 @@
 			</call-macro>
 			<call-macro n="f_per" alt="oc@aran">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<out>
 				<chunk namefrom="lema" case="caseFirstWord">
@@ -13534,6 +13774,11 @@
 			</call-macro>
 			<call-macro n="f_concord_prn_pp">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
 				<with-param pos="4"/>
 			</call-macro>
 			<call-macro n="firstWord">
@@ -13707,6 +13952,11 @@
 				<with-param pos="1"/>
 				<with-param pos="3"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<call-macro n="f_concord_prn_pp">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
@@ -13829,6 +14079,11 @@
 		</pattern>
 		<action>
 			<call-macro n="vauxiliar_pro" alt="oc">
+				<with-param pos="4"/>
+				<with-param pos="3"/>
+				<with-param pos="5"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
 				<with-param pos="4"/>
 				<with-param pos="3"/>
 				<with-param pos="5"/>
@@ -14050,6 +14305,11 @@
 				<with-param pos="2"/>
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<call-macro n="f_concord_prn_pp">
 				<with-param pos="3"/>
 				<with-param pos="4"/>
@@ -14256,6 +14516,11 @@
 				<with-param pos="2"/>
 				<with-param pos="5"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
+				<with-param pos="5"/>
+			</call-macro>
 			<call-macro n="f_concord_prn_pp">
 				<with-param pos="4"/>
 				<with-param pos="5"/>
@@ -14448,6 +14713,11 @@
 				<with-param pos="1"/>
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="1"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<call-macro n="f_concord_prn_pp">
 				<with-param pos="3"/>
 				<with-param pos="4"/>
@@ -14584,6 +14854,11 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="vauxiliar_pro" alt="oc">
+				<with-param pos="4"/>
+				<with-param pos="3"/>
+				<with-param pos="6"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
 				<with-param pos="4"/>
 				<with-param pos="3"/>
 				<with-param pos="6"/>
@@ -14828,6 +15103,11 @@
 				<with-param pos="2"/>
 				<with-param pos="5"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
+				<with-param pos="5"/>
+			</call-macro>
 			<call-macro n="f_concord_prn_pp">
 				<with-param pos="4"/>
 				<with-param pos="5"/>
@@ -15053,6 +15333,11 @@
 				<with-param pos="3"/>
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="1"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
@@ -15114,6 +15399,11 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="vauxiliar_pro" alt="oc">
+				<with-param pos="3"/>
+				<with-param pos="2"/>
+				<with-param pos="5"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
 				<with-param pos="3"/>
 				<with-param pos="2"/>
 				<with-param pos="5"/>
@@ -15356,6 +15646,11 @@
 			<call-macro n="posa_prn">
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -15490,6 +15785,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+				<with-param pos="5"/>
+			</call-macro>
 			<out>
 				<chunk name="pro_pro_anar_a_inf" case="caseFirstWord" alt="oc">
 					<tags>
@@ -15594,6 +15894,11 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="posa_prn">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="1"/>
 				<with-param pos="3"/>
 			</call-macro>
 			<choose>
@@ -15721,7 +16026,12 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
-			<out>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
+		<out>
 				<chunk name="pro_pro_anar_a_inf" case="caseFirstWord" alt="oc">
 					<tags>
 						<tag><lit-tag v="SV"/></tag>
@@ -16386,6 +16696,11 @@
 			<call-macro n="posa_prn">
 				<with-param pos="5"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+				<with-param pos="5"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -16663,6 +16978,11 @@
 			<call-macro n="posa_prn">
 				<with-param pos="5"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -16918,6 +17238,11 @@
 			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+				<with-param pos="5"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -17158,6 +17483,11 @@
 			<call-macro n="f_lex_adv">
 				<with-param pos="5"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+				<with-param pos="5"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -17378,6 +17708,11 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="posa_prn">
+				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="5"/>
+				<with-param pos="2"/>
 				<with-param pos="4"/>
 			</call-macro>
 			<choose>
@@ -17684,6 +18019,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<call-macro n="posa_prn">
 				<with-param pos="1"/>
 			</call-macro>
@@ -17965,6 +18305,11 @@
 			<call-macro n="f_lex_adv">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="5"/>
+				<with-param pos="2"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
@@ -18211,6 +18556,11 @@
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="1"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -18748,6 +19098,11 @@
 			<call-macro n="posa_prn">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -18847,6 +19202,11 @@
 			</call-macro>
 			<call-macro n="posa_prn">
 				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -19088,6 +19448,11 @@
 			<call-macro n="posa_prn">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -19264,6 +19629,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<out>
 				<chunk name="pro_pro_verb_inf" case="caseFirstWord">
 					<tags>
@@ -19331,6 +19701,11 @@
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="4"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -19516,6 +19891,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -19656,6 +20036,11 @@
 			<call-macro n="posa_prn">
 				<with-param pos="2"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -19749,6 +20134,11 @@
 			</call-macro>
 			<call-macro n="posa_prn">
 				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -19976,6 +20366,11 @@
 			<call-macro n="posa_prn">
 				<with-param pos="2"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -20153,6 +20548,11 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+				<with-param pos="4"/>
+			</call-macro>
 			<out>
 				<chunk name="pro_pro_verb_inf" case="caseFirstWord">
 					<tags>
@@ -20214,6 +20614,11 @@
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="2"/>
+				<with-param pos="4"/>
+				<with-param pos="5"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -20390,6 +20795,11 @@
 			</call-macro>
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<choose>
 				<when>
