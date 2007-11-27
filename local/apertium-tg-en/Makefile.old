@@ -1,0 +1,33 @@
+LTCOMP=/home/spectre/local/bin/lt-comp
+APT=/home/spectre/local/bin/apertium-preprocess-transfer
+GENMODES=/home/spectre/local/bin/apertium-gen-modes
+
+LTCOMP=/home/spectre/svnroot/unicode-local/bin/lt-comp
+APT=/home/spectre/svnroot/unicode-local/bin/apertium-preprocess-transfer
+GENMODES=/home/spectre/svnroot/unicode-local/bin/apertium-gen-modes
+
+all:
+	xmllint --xinclude apertium-tg-en.en.dix.xml > apertium-tg-en.en.dix
+	xmllint --xinclude apertium-tg-en.tg.dix.xml > apertium-tg-en.tg.dix
+	xmllint --xinclude apertium-tg-en.tg-en.dix.xml > apertium-tg-en.tg-en.dix
+
+	$(LTCOMP) lr apertium-tg-en.en.dix en-tg.automorf.bin
+	$(LTCOMP) lr apertium-tg-en.tg.dix tg-en.automorf.bin
+
+	$(LTCOMP) lr apertium-tg-en.tg-en.dix tg-en.autobil.bin
+	$(LTCOMP) rl apertium-tg-en.tg-en.dix en-tg.autobil.bin
+
+	$(LTCOMP) rl apertium-tg-en.tg.dix en-tg.autogen.bin
+	$(LTCOMP) rl apertium-tg-en.en.dix tg-en.autogen.bin
+
+	$(APT) apertium-tg-en.tg-en.t1x tg-en.t1x.bin
+	$(APT) apertium-tg-en.en-tg.t1x en-tg.t1x.bin
+
+	$(LTCOMP) lr apertium-tg-en.post-en.dix tg-en.autopgen.bin
+
+	$(GENMODES) modes.xml
+
+	rm apertium-tg-en.en.dix apertium-tg-en.tg.dix apertium-tg-en.tg-en.dix
+
+clean:
+	rm -rf *.bin modes

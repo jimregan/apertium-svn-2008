@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modes>
+  <mode name="sv-da" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="sv-da.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="sv-da.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-sv-da.trules-sv-da.xml"/>
+        <file name="trules-sv-da.bin"/>
+        <file name="sv-da.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="sv-da.autogen.bin"/>
+      </program>
+<!--  <program name="lt-proc -p">
+        <file name="sv-da.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
+  <mode name="da-sv" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="da-sv.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="da-sv.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-sv-da.trules-da-sv.xml"/>
+        <file name="trules-da-sv.bin"/>
+        <file name="da-sv.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="da-sv.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="da-sv.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+</modes>

@@ -1,0 +1,133 @@
+apertium-tagger-training-tools
+
+This software is GPL. It is provided as is, WITHOUT any guarantee, in
+the hope that it will be useful.
+
+(c) 2004-2006 Felipe Sánchez Martínez
+(c) 2006 Universitat d'Alacant
+---------------------------------------------------------------------
+
+This package provides a set of tools to train and test the
+hidden-Markov-model-based part-of-speech tagger module of the apertium
+machine translation engine (http://www.apertium.org).
+
+The main program provided with this package apertium-tagger-tl-trainer
+uses information from the target language to train the part-of-speech
+tagger used in apertium in an unsupervised way, i. e. without human
+intervention. This method has been already described (see below) and
+is known to give better results than the standard Baum-Welch algorithm
+used to train hidden-Markov-model-based part-of-speech taggers when no
+tagged text is available.
+
+Comments on this software are VERY welcome, do not hesitate to write
+me for comments, feedback or just to tell me that you found this
+software useful.
+
+If you use this software for research, or for any other particular
+purpose, I would be very grateful if you could cite one or both of the
+following research papers describing this software:
+
+* Felipe Sánchez-Martínez, Juan Antonio Pérez-Ortiz, Mikel
+  L. Forcada. Exploring the use of target-language information to
+  train the part-of-speech tagger of machine translation systems. In
+  Lecture Notes in Computer Science 3230 (Advances in Natural Language
+  Processing, Proceedings of EsTAL - España for Natural Language
+  Processing), p. 137-148, October 20-22, 2004, Alicante, Spain.
+
+  @incollection{sanchezmartinez04,
+  author    = {S{\'{a}}nchez-Mart{\'{\i}}nez, Felipe 
+               and P{\'{e}}rez-Ortiz, Juan Antonio 
+               and Forcada, Mikel L.},
+  title     = {Exploring the use of target-language information to train the
+               part-of-speech tagger of machine translation systems},
+  booktitle = {Advances in Natural Language Processing, Proceedings of 
+               4th International Conference {EsTAL}},
+  publisher = {Springer-Verlag},
+  year      = {2004},
+  month     = {October},
+  volume  = {3230},
+  series  = {Lecture Notes in Computer Science},
+  pages   = {137--148},
+  address = {},
+  note    = {},
+  location     = {Alicante, Spain},
+  copyright    = {Springer-Verlag},
+  isbn         = {3-540-23498-5},
+  issn         = {0302-9743},
+  }
+
+
+* Felipe Sánchez-Martínez, Juan Antonio Pérez-Ortiz, Mikel L. Forcada.
+  Speeding up target-language driven part-of-speech tagger training for
+  machine translation. In Lecture Notes in Computer Science 4293 (Advances in
+  Artificial Intelligence, Proceedings of MICAI 2006, 5th Mexican
+  International Conference on Artificial Intelligence) , p. 844-854,
+  November 13-17, 2006, Apizaco, Mexico.
+
+  @incollection{sanchezmartinez06,
+  author = {S{\'{a}}nchez-Mart{\'{\i}}nez, Felipe
+            and P{\'{e}}rez-Ortiz, Juan Antonio
+            and Forcada, Mikel L.},
+  title =  {Speeding up target-language driven part-of-speech tagger
+            training for machine translation},
+  booktitle = {{MICAI} 2006: {A}dvances in {A}rtificial {I}ntelligence,
+               Proceedings of the 5th {M}exican {I}nternational {C}onference
+               on {A}rtificial {I}ntelligence},
+  year = {2006},
+  publisher = {Springer-Verlag},
+  volume =       {4293},
+  pages =        {844--854},
+  series =       {Lecture Notes in Computer Science},
+  month =        {November},
+  location     = {Apizaco, Mexico},
+  copyright    = {Springer-Verlag},
+  isbn         = {3-540-37334-9},
+  issn         = {0302-9743},
+  }
+
+Contact information:
+---------------------------------------------------------------------
+
+Felipe Sánchez Martínez
+
+Departament de Llenguatges y Sistemes Informàtics
+Universitat d'Alacant
+E-03071 Alacant (Spain)
+
+fsanchez@dlsi.ua.es
+http://www.dlsi.ua.es/~fsanchez
+
+Installation
+---------------------------------------------------------------------
+To install apertium-tagger-training-tools you need to have installed
+the following packages:
+
+libxml2, at least version 2.6.17 
+lttoolbox, at least version 3.0.0
+apertium, at least version 3.0.0
+
+Once you have all the required software installed, install
+apertium-tagger-training-tools in the common way:
+
+$ ./configure && make
+
+and as a root
+
+# make install
+
+Good luck!
+
+Acknowledgements
+---------------------------------------------------------------------
+Software funded by the Spanish Ministry of Science and Technology
+through project TIC2003-08681-C02-01, and by the Spanish Ministry of
+Education and Science and the European Social Found through research
+grant BES-2004-4711.
+
+References
+---------------------------------------------------------------------
+Please visit http://www.dlsi.ua.es/~fsanchez/publications.html
+
+Example of use
+---------------------------------------------------------------------
+Have a look at the 'example' directory

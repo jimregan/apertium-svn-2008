@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<modes>
+  <mode name="fr-nl">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="fr-nl.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="fr-nl.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-fr-nl.trules-fr-nl.xml"/>
+        <file name="trules-fr-nl.bin"/>
+        <file name="fr-nl.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="fr-nl.autogen.bin"/>
+      </program>
+<!--      <program name="lt-proc -p">
+        <file name="fr-nl.autopgen.bin"/>
+      </program>  -->
+    </pipeline>
+  </mode>
+
+  <mode name="nl-fr">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="nl-fr.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="nl-fr.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-fr-nl.trules-nl-fr.xml"/>
+        <file name="trules-nl-fr.bin"/>
+        <file name="nl-fr.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="nl-fr.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="nl-fr.autopgen.bin"/>
+      </program> 
+    </pipeline>
+  </mode>
+
+</modes>

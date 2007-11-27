@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project name="cross-dics" basedir="." default="cross">
+
+	<description>Cross dictionaries</description>
+
+	<property name="dics.dir" location="dics" />
+	<property name="crp.dir" location="crp" />
+
+	<!-- Dictionaries to cross -->
+	<property name="bil-AB" value="${dics.dir}/apertium-bb-aa.bb-aa.dix" />
+	<property name="bil-BC" value="${dics.dir}/apertium-bb-cc.bb-cc.dix" />
+	<property name="monol-A" value="${dics.dir}/apertium-bb-aa.aa.dix" />
+	<property name="monol-C" value="${dics.dir}/apertium-bb-cc.cc.dix" />
+	<property name="mod-AB" value="-n" />
+	<property name="mod-BC" value="-n" />
+	<property name="cross-model" value="schemas/cross-model-test.xml" />
+
+	<!-- Dictionary (to sort, to reverse, etc) -->
+   <!-- Example: -->
+	<property name="dic" value="dics/apertium-aa-bb.aa.dix" />
+	<property name="dic-type" value="-mon" /> <!-- or -bil -->
+	<property name="out" value="apertium-aa-cc.aa-sorted.dix" />
+	
+	<!-- Dictionaries to merge -->
+	<!--
+	<property name="bil-AB1" value="${dics.dir}/apertium-aa-bb.aa-bb-1.dix" />
+	<property name="mod-AB1" value="-n" />	
+	<property name="monol-A1" value="${dics.dir}/apertium-aa-bb.aa-1.dix" />
+	<property name="monol-B1" value="${dics.dir}/apertium-aa-bb.aa-1.dix" />
+	
+	<property name="bil-AB2" value="${dics.dir}/apertium-aa-bb.aa-bb-2.dix" />
+	<property name="mod-AB2" value="-n" />
+	<property name="monol-A2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
+	<property name="monol-B2" value="${dics.dir}/apertium-aa-bb.aa-2.dix" />
+	-->
+	
+	<!-- EXAMPLES -->
+	<!-- Dictionaries to cross (ca-pt example) -->
+	<!--
+	<property name="bil-AB" value="${dics.dir}/apertium-es-ca.es-ca.dix" />
+	<property name="bil-BC" value="${dics.dir}/apertium-es-pt.es-pt.dix" />	
+	<property name="monol-A" value="${dics.dir}/apertium-es-ca.ca.dix" />
+	<property name="monol-C" value="${dics.dir}/apertium-es-pt.pt.dix" />
+	<property name="mod-AB" value="-n" />
+	<property name="mod-BC" value="-n" />
+	<property name="cross-model" value="schemas/cross-model-test.xml" />
+	-->
+
+	<!-- Dictionaries to merge (example) -->
+	<!--
+	<property name="bil-AB1" value="dix/apertium-es-fr.es-fr-crossed.dix" />
+	<property name="mod-AB1" value="-n" />
+	<property name="monol-A1" value="dix/apertium-es-fr.es-crossed.dix" />
+	<property name="monol-B1" value="dix/apertium-es-fr.fr-crossed.dix" />
+	<property name="bil-AB2" value="dix/apertium-es-fr.es-fr-crossed-specul.dix"/>
+	<property name="mod-AB2" value="-n" />
+	<property name="monol-A2" value="dix/apertium-es-fr.es-crossed-specul.dix" />
+	<property name="monol-B2" value="dix/apertium-es-fr.fr-crossed-specul.dix" />
+	-->
+		
+	<!-- Directories -->
+	<property name="build.dir" location="classes" />
+	<property name="src.dir" location="src/" />
+	<property name="log.dir" location="log" />
+	<property name="dix.dir" location="dix" />
+	<property name="zip.dir" location="zip" />
+	<property name="lib.dir" location="lib" />
+	<property name="zip" value="compara-entradas" />
+	<property name="zip.file" value="crossdics" />
+	<property name="appName" value="cross-dics" />
+	<property name="root-folder" value="svn-cross-dics" />
+	
+	<!-- PROPERTIES -->
+	<!-- Memory -->
+	<property name="minMem" value="32" />
+	<property name="maxMem" value="150" />
+	<!-- Time Stamp -->
+	<tstamp>
+		<format property="pack.timestamp" pattern="yyMMdd-HHmm" />
+	</tstamp>
+	<!-- Main class -->
+	<property name="mainClass" value="ProcessDics" />
+	<!-- Log files -->
+	<property name="outputFile" value="${log.dir}/cross-dics.log" />
+	<!-- Use pattern detection for crossing? -->
+	<property name="use-patterns" value="yes" />
+
+	
+	<!-- TASKS -->
+	
+	<!-- Prepare Consistent -->
+	<target name="prepare-consistent">
+		<echo message="Preparing to enhance..." />
+		<condition property="dics-available">
+			<and>
+				<available file="${bil-AB}" />
+				<available file="${bil-BC}" />
+				<available file="${monol-A}" />
+				<available file="${monol-C}" />
+			</and>
+		</condition>
+		<echo message="Done" />
+		<fail unless="dics-available">'Some dictionaries are not available!</fail>
+	</target>
+
+	<!-- Prepare -->
+	<target name="prepare">
+		<mkdir dir="${dics.dir}" />
+		<mkdir dir="${log.dir}" />
+		<mkdir dir="${dix.dir}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${lib.dir}" />
+		<mkdir dir="${zip.dir}" />
+	</target>
+
+	<!-- Compile -->
+	<target name="compile" depends="check-java-version,prepare">
+		<echo message="Compiling Java sources..." />
+		<javac destdir="${build.dir}/" deprecation="on">
+			<include name="**/*.java" />
+			<src path="${src.dir}" />
+		</javac>
+		<antcall target="jar" />
+		<echo message="Done!" />
+	</target>
+	
+<target name="check-java-version">
+    <condition property="java.version.ok">
+      <or>
+        <equals arg1="${ant.java.version}" arg2="1.5"/>
+        <equals arg1="${ant.java.version}" arg2="1.6"/>
+      </or>
+    </condition>
+           <fail unless="java.version.ok">Java 1.5 or higher is required; found Java ${ant.java.version} in ${java.home}</fail>
+  </target>	
+
+	<!-- Reverse -->
+	<target name="reverse" depends="compile">
+		<echo message="Reversing '${dic}'..." />
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="reverse" />
+			<arg value="${dic}" />
+			<arg value="${out}" />
+		</java>
+		<antcall target="clean" />
+		<echo message="Log in '${docs.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Format -->
+	<target name="format">
+		<echo message="Formatting '${dic}'..." />
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="format" />
+			<arg value="${dic-type}" />			
+			<arg value="${dic}" />
+			<arg value="${out}" />
+		</java>
+		<antcall target="clean" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Sort -->
+	<target name="sort" depends="compile">
+		<echo message="Sorting '${dic}'..." />
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="sort" />
+			<arg value="${dic-type}" />
+			<arg value="${dic}" />
+			<arg value="${out}" />
+		</java>
+		<antcall target="clean" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Make consistent -->
+	<target name="consistent" depends="prepare-consistent" if="dics-available">
+		<echo message="Running '${mainClass} consistent' ..." />
+		<echo message="Creating consistent dictionaries..." />
+		<echo message="  ${monol-A}" />
+		<echo message="  ${monol-C}" />
+		<echo message="  ${bil-AB}" />
+		<echo message="  ${bil-BC}" />
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="consistent" />
+
+			<arg value="-bilAB" />
+			<arg value="${mod-AB}" />
+			<arg value="${bil-AB}" />
+			
+			<arg value="-bilBC" />
+			<arg value="${mod-BC}" />
+			<arg value="${bil-BC}" />
+			
+			<arg value="-monA" />
+			<arg value="${monol-A}" />
+			
+			<arg value="-monC" />
+			<arg value="${monol-C}" />
+		</java>
+		<antcall target="clean" />
+		<echo message="Results in '${docs.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Prepare Cross -->
+	<target name="prepare-cross">
+		<echo message="Preparing to cross..." />
+		<condition property="dics-available">
+			<and>
+				<available file="${bil-AB}" />
+				<available file="${bil-BC}" />
+				<available file="${monol-A}" />
+				<available file="${monol-C}" />
+			</and>
+		</condition>
+		<echo message="Done" />
+		<fail unless="dics-available">Usage: ant cross -Dbil-AB bilAB.dix -Dbil-BC bilBC.dix -Dmonol-A monA.dix -Dmonol-C monC.dix [-Dmod-AB -r] [-Dmod-BC -r] (or indicate de dictionaries in build.xml)</fail>
+	</target>
+	<target name="cross-not-available">
+		<echo message="Cross task is not available."/>
+	</target>
+
+	<!-- Cross action -->
+	<target name="cross" depends="prepare-cross" if="dics-available">
+		<echo message="Crossing dictionaries..." />
+		<echo message="  ${monol-A}" />
+		<echo message="  ${monol-C}" />
+		<echo message="  ${bil-AB}" />
+		<echo message="  ${bil-BC}" />
+
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="cross" />
+			
+			<arg value="-bilAB" />
+			<arg value="${mod-AB}" />			
+			<arg value="${bil-AB}" />
+
+			
+			<arg value="-bilBC" />
+			<arg value="${mod-BC}" />			
+			<arg value="${bil-BC}" />
+			
+			<arg value="-monA" />
+			<arg value="${monol-A}" />
+			
+			<arg value="-monC" />
+			<arg value="${monol-C}" />
+			
+			<arg value="-cross-model" />
+			<arg value="${cross-model}" />
+		</java>
+		<antcall target="clean" />
+		<echo message="Results in 'dix' folder." />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Prepare Merge -->
+	<target name="prepare-merge">
+		<echo message="Preparing to merge..." />
+		<condition property="merge-dics-available">
+			<and>
+				<available file="${bil-AB1}" />
+				<available file="${bil-AB2}" />
+				<available file="${monol-A1}" />
+				<available file="${monol-B1}" />
+				<available file="${monol-A2}" />
+				<available file="${monol-B2}" />
+			</and>
+		</condition>
+		<echo message="Done" />
+		<fail unless="merge-dics-available">Usage: ant merge
+		-Dbil-AB1 bilAB1.dix -DbilAB2 bilAB2.dix -Dmonol-A1
+		monA1.dix -Dmonol-A2 monA2.dix -Dmonol-B1 monB1.dix
+		-Dmonol-B2 monB2.dix</fail>
+	</target>
+
+	<!-- Merge action -->
+	<target name="merge" depends="compile,prepare-merge" if="merge-dics-available">
+		<echo message="Merging dictionaries..." />
+		<echo message="  ${bil-AB1}" />	
+		<echo message="  ${monol-A1}" />	
+		<echo message="  ${monol-B1}" />	
+
+		<echo message="  ${bil-AB2}" />	
+		<echo message="  ${monol-A2}" />	
+		<echo message="  ${monol-B2}" />	
+
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="merge" />
+
+			<!-- dic set 1 -->			
+			<arg value="-bilAB" />
+			<arg value="${mod-AB1}" />			
+			<arg value="${bil-AB1}" />
+
+			<arg value="-monA1" />
+			<arg value="${monol-A1}" />
+			
+			<arg value="-monB" />
+			<arg value="${monol-B1}" />
+			
+			<!-- dic set 2 -->
+			<arg value="-bilAB2" />
+			<arg value="${mod-AB2}" />			
+			<arg value="${bil-AB2}" />
+			
+			<arg value="-monA2" />
+			<arg value="${monol-A2}" />
+			
+			<arg value="-monB2" />
+			<arg value="${monol-B2}" />
+			
+		</java>
+		<antcall target="clean" />
+		<echo message="Results in '${log.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Merge-morph action -->
+	<target name="merge-morph" depends="compile">
+		<echo message="Merging morphological dictionaries..." />
+		<echo message="  ${monol-A1}" />	
+		<echo message="  ${monol-A2}" />	
+		<echo message="  ${out}" />	
+
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="merge-morph" />
+
+			<arg value="-monA1" />
+			<arg value="${monol-A1}" />
+			
+			<arg value="-monA2" />
+			<arg value="${monol-A2}" />
+			
+			<arg value="-out" />
+			<arg value="${out}" />
+			
+		</java>
+		<antcall target="clean" />
+		<echo message="Results in '${log.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Merge-bil action -->
+	<target name="merge-bil" depends="compile">
+		<echo message="Merging bilingual dictionaries..." />
+		<echo message="  ${bil-AB1}" />
+		<echo message="  ${mod-AB1}" />		
+		<echo message="  ${bil-AB2}" />
+		<echo message="  ${mod-AB2}" />	
+		<echo message="  ${out}" />	
+
+		<java classname="${mainClass}" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="merge-bil" />
+
+			<arg value="-bilAB1" />
+			<arg value="${mod-AB1}" />			
+			<arg value="${bil-AB1}" />
+			
+			<arg value="-bilAB2" />
+			<arg value="${mod-AB2}" />			
+			<arg value="${bil-AB2}" />
+			
+			<arg value="-out" />
+			<arg value="${out}" />
+			
+		</java>
+		<antcall target="clean" />
+		<echo message="Results in '${log.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Clean -->
+	<target name="clean">
+	</target>
+
+	<!-- Pack -->
+	<target name="pack" depends="prepare">
+		<echo message="Packing files..." />
+		<delete>
+			<fileset dir="${zip.dir}/" includes="*.tar.gz"/>
+		</delete>
+		
+		<tar tarfile="${zip.dir}/${zip.file}.tar">
+			<tarfileset dir="../">
+				<include name="${root-folder}/build.xml"/>
+				<!-- root -->
+				<include name="${root-folder}/src/*.java"/>
+				<!-- dictools -->
+				<include name="${root-folder}/src/dictools/*.java"/>
+				<include name="${root-folder}/src/dictools/crossmodel/*.java"/>
+				<!-- dics -->
+				<include name="${root-folder}/src/dics/elements/dtd/*.java"/>
+				<include name="${root-folder}/src/dics/elements/utils/*.java"/>
+				<!-- misc -->
+				<include name="${root-folder}/src/misc/*.java"/>
+				<include name="${root-folder}/src/misc/eues/*.java"/>
+
+				<include name="${root-folder}/dics"/>
+				<include name="${root-folder}/dix"/>
+				<include name="${root-folder}/schemas/*.xml"/>
+				<include name="${root-folder}/lib/cross-dics.jar"/>
+				<include name="${root-folder}/log"/>
+				<include name="${root-folder}/META-INF/manifest.mf"/>
+				<include name="${root-folder}/AUTHORS"/>
+				<include name="${root-folder}/COPYING"/>
+				<include name="${root-folder}/README"/>								
+			</tarfileset>
+		</tar>
+		<gzip zipfile="${zip.dir}/${zip.file}.tar.gz" src="${zip.dir}/${zip.file}.tar"/>
+		<delete file="${zip.dir}/${zip.file}.tar" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Help -->
+	<target name="help">
+		<echo message="Usage: ant [options ...]" />
+		<echo message="" />
+		<echo message="Where options include;" />
+
+		<echo message="  consistent -Dbil-AB AB.dix [-Dmod-AB -r] -Dbil-BC BC.dix [-Dmod-BC -r] -Dmonol-A monA.dix -Dmonol-C monC.dix   (generates consistent dictionaries)" />
+		<echo message="  cross      -Dbil-AB AB.dix [-Dmod-AB -r] -Dbil-BC BC.dix [-Dmod-BC -r] -Dmonol-A monA.dix -Dmonol-C monC.dix   (generates crossed dictionaries)" />
+		<echo message="  merge      -Dbil-AB1 AB1.dix [-Dmod-AB1 -r] -DbilAB2 AB2.dix [-Dmod-AB2 -r] -Dmonol-A1 A1.dix -Dmonol-A2 A2.dix -Dmonol-B1 B1.dix -Dmonol-B2 B2.dix" />
+
+		<echo message="  reverse    -Ddic dic.dix [-Dout rev-dic-name.dix]   (reverses a dictionary)" />
+		<echo message="  format     -Ddic dic.dix [-Dout formatted-dic-name.dix]   (formats a given dictionary)" />
+
+		<echo message="  compile    (compiles source files)" />
+		
+		<echo message="  help       (shows this help file)" />
+	</target>
+
+   <!-- Jar -->
+	<target name="jar">
+		<mkdir dir="lib"/>
+		<jar destfile="lib/${appName}.jar" basedir="${build.dir}/"
+		manifest="META-INF/manifest.mf"/>
+	</target>
+
+   <!-- HowTo-->
+	<target name="howto" depends="compile">
+		<echo message="Crossing dictionaries..." />
+
+		<java classname="HowTo" classpath="${lib.dir}/${appName}.jar" fork="true" output="${outputFile}">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+			<arg value="cross" />
+		</java>
+		<antcall target="clean" />
+		<echo message="Results in '${log.dir}/${outputFile}'" />
+		<echo message="Done!" />
+	</target>
+
+	<!-- Test -->
+	<target name="test" depends="compile">
+		<echo message="Testing..." />
+		<java classname="Test" classpath="${lib.dir}/${appName}.jar" fork="true">
+			<jvmarg value="-Xms${minMem}m" />
+			<jvmarg value="-Xmx${maxMem}m" />
+		</java>
+		<antcall target="clean" />
+		<echo message="Done!" />
+	</target>
+
+</project>

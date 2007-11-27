@@ -1,0 +1,92 @@
+apertium-forms-server
+======================================================
+
+You need:
+
+* python (>= 2.4)
+* python-4suite-xml (>= 1.0.2)
+* python-webpy (= 0.22)
+
+On debian you can get them by apt-get installing those
+package names. I'm fairly sure the first two won't change
+much and break anything, but for python-webpy, as it is 
+quite alpha, I'm only guarantee'ing with this version.
+
+Running it:
+
+Set up the config file in config/config.xml, then run:
+
+ $ python apertium-forms-server.py
+
+then navigate to: 
+
+ http://localhost:8080
+
+You can keep adding entries, when you want to save the 
+entries to the files, navigate to:
+
+ http://localhost:8080/commit/<pair name>
+
+Known bugs:
+
+* Bidix entries aren't made correctly for complex patterns,
+  for example, f/m sg/pl → mf sp requires 5 entries in the 
+  bidix.
+
+Wishlist:
+
+* The gloss should really be attached to each paradigm,
+  not to the dictionary.
+* Writing files is really slow, but it isn't in PHP,
+  what do they do differently? Is this something that can
+  be fixed in cDomlette at the expense of more memory?
+* In some cases the code is overly complex, possibly 
+  double checking variables. It was written in a hurry. 
+  Probably it would be good to go through each function
+  and check for this sort of thing.
+
+Files and directories:
+
+The server is broadly laid out along the lines of MVC,
+although this is broken when and where I please. 
+
+* interface.py: Holds the class to generate the HTML.
+* pair.py: Holds the various classes representing the 
+  parts of the dictionary we need to use.
+* apertium-forms-server.py: Runs the http servlet, and 
+  controls POST / GET on the forms.
+
+There is an extra file, config.py, which loads the config
+file (normally in config/config.xml) and sets up the 
+various structures in pair.py.
+
+The static/ directory contains javascript and CSS that 
+needs to be served statically. This needs to be here for
+webpy to show them
+
+Coding style:
+
+I like braces, they make blocks easier to distinguish. I
+use them in python even though it often it makes coding 
+difficult. For example, I try to avoid using if/elif/else
+blocks, because python does not provide a way to use my 
+preferred coding style:
+
+if x < y: #{
+
+#} else: #{
+
+#}
+
+So, if possible, try and do the same, sometimes in 
+desperation I do:
+
+if x < y: #{
+
+else: #{
+
+#}
+
+Probably best to avoid it though.
+
+

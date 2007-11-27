@@ -1,0 +1,80 @@
+apertium-transfer-tools: example of use
+
+This software is GPL. It is provided as is, WITHOUT any guarantee, in
+the hope that it will be useful.
+
+(c) 2006-2007 Felipe Sánchez Martínez
+---------------------------------------------------------------------
+
+To use this package you need:
+
+* To provide a parallel corpus in the usual format, one sentence per
+  line. This parallel corpus must be in two gziped files (one per
+  language):
+  - L1.txt.gz
+  - L2.txt.gz
+
+* To have GIZA++ installed with all the stuff needed to run GIZA++
+  properly.
+
+* Apertium data for the language pair involved. Obviously you do not
+  need to have the transfer rules files, you need:
+  - Two monolingual dictionaries (one for each language)
+  - A bilingual dictionary
+  - The input files (.prob) used by the part-of-speech tagger for each
+    language
+
+In this folder you can find: 
+
+* A 'Makefile' in which you can specify all the parameters used for
+  the extraction of the alignment templates and the posterior generation
+  of transfer rules. You may need to change the value for the following
+  variables:
+   - DATADIR must be the path in which the Apertium linguistic is
+   - GIZADIR must be the path to the GIZA++ installation
+   - L1 must be one of the languages involved
+   - L2 must be the other language involved
+
+* An script to filter the extracted alignment templates
+  ('filter_alignment_templates.awk'). Yo do not need to modify it.
+
+* Various scripts with the form 'preprocess_L1_L1-L2.sh' to preprocess
+  the output of the part-of-speech tagger when analyzing the L1.txt.gz
+  corpus to translate for language L1 to language L2. Note that the
+  scripts provided do not perform any transformation, but they could
+  need to perform some transformations (depending on the language pair)
+  because of the tagger output. 
+
+* Two XML files with the form 'apertium-es-pt.transfer-at.L1-L2.atx'
+  defining which categories are lexicalized for the extraction of the
+  alignment templates that are then used to generate the transfer rules
+  to translate from L1 to L2.
+
+* An XML file 'apertium-es-pt.posttransfer.ptx' defining the set of
+  multi-lexical units to be used by the apertium-posttransfer
+  program. Multi-lexical units are for verbs with clitics pronouns. 
+
+* An XML file 'modes.xml' to be used to translate when using the
+  automatically inferred transfer rules. Apertium linguistic
+  packages uses the modes.xml file to select which modules must be
+  executed to carry out the translation. The modes.xml file provided
+  here introduces the use of the apertium-posttransfer module that is
+  used to make some lexical units to be joined up (after transference)
+  into a multi-lexical unit.
+
+Once you have the needed data to obtained the transfer rules type
+
+$ make
+
+and after a big while you will have two XML files with the inferred
+rules:
+
+  - trules.L1-L2.xml
+  - trules.L2-L1.xml
+
+These files can be directly used (in conjunction with
+apertium-es-pt.posttransfer.ptx file) to carry out the translation
+with the Apertium MT engine.
+
+
+Good luck!

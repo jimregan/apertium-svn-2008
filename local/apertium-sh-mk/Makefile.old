@@ -1,0 +1,27 @@
+LTCOMP=/home/spectre/svnroot/unicode-local/bin/lt-comp
+APT=/home/spectre/svnroot/unicode-local/bin/apertium-preprocess-transfer
+GENMODES=/home/spectre/svnroot/unicode-local/bin/apertium-gen-modes
+
+all:
+	xmllint --xinclude apertium-sh-mk.mk.dix.xml > apertium-sh-mk.mk.dix
+	xmllint --xinclude apertium-sh-mk.sh.dix.xml > apertium-sh-mk.sh.dix
+	xmllint --xinclude apertium-sh-mk.sh-mk.dix.xml > apertium-sh-mk.sh-mk.dix
+
+	$(LTCOMP) lr apertium-sh-mk.mk.dix mk-sh.automorf.bin
+	$(LTCOMP) lr apertium-sh-mk.sh.dix sh-mk.automorf.bin
+
+	$(LTCOMP) lr apertium-sh-mk.sh-mk.dix sh-mk.autobil.bin
+	$(LTCOMP) rl apertium-sh-mk.sh-mk.dix mk-sh.autobil.bin
+
+	$(LTCOMP) rl apertium-sh-mk.sh.dix mk-sh.autogen.bin
+	$(LTCOMP) rl apertium-sh-mk.mk.dix sh-mk.autogen.bin
+
+	$(APT) apertium-sh-mk.sh-mk.t1x sh-mk.t1x.bin
+	$(APT) apertium-sh-mk.mk-sh.t1x mk-sh.t1x.bin
+
+	$(GENMODES) modes.xml
+
+	rm *.dix
+
+clean:
+	rm -rf *.bin modes

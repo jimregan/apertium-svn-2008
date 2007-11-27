@@ -1,0 +1,56 @@
+Instruccions d'instal·lació
+*******************************
+
+Aquest programari és GPL. 
+
+(c) 2006 Universitat d'Alacant
+---------------------------------------------------------------------
+
+
+La instal·lació s'ha de realitzar en un màquina Unix que tinga instal·lat un
+servidor web Apache amb php. Així, s'ha de procedir primerament a fer la 
+instal·lació del servidor php si no estigués ja feta. Una vegada estiga resolt 
+el punt anterior es procedeix a fer la instal·lació pròpiament dita.
+
+S'obté el paquet apertium-lexical-webform-0.9 i es descomprimeix dins del 
+directori on vaja a deixar-se la ferramenta de formularis d'inserció:
+
+  # cd /ruta/dels/formularis
+  # tar -xvzf /ruta/apertium-lexical-webform-0.9.tar.gz
+
+S'ha de tenir en compte que l'Apache sols serveix les pàgines que estan dintre 
+del directori arrel amb què l'hem configurat. Per tant el directori on deixem 
+els formularis ha de ser un subdirectori que estiga dintre de l'arrel del 
+servidor Apache. 
+
+Seguidament s'edita el fitxer de configuració que està en 
+
+  private/config.php
+
+i es dóna un valor adequat a les variables de configuració:
+
+* $anmor: ruta sencera on es troba l'analitzador morfològic lt-proc.
+* $dicos_path: ruta on es troben els diccionaris finals i el binaris 
+  compilats de cada diccionari. Este directori ha de contindre un
+  subdirectori per a cada diccionari amb què pot treballar el formulari. 
+  El nom del subdirectori ha de seguir la següent sintaxi: 
+  
+	paradigmas-ll-rr 
+
+  on ll i rr són les inicials del parell de llengües del traductor en 
+  concret. En cada directori es deixen els diccionaris finals amb què
+  treballa el traductor i els corresponents binaris compilats. Aquestos 
+  directoris es poden substituir per enllaços simbòlics en cas que es 
+  troben en diferents llocs.
+  
+* $usuaris_professionals: un llistat amb els usuaris professionals del 
+  sistema que tenen permís per a inserir als diccionaris del formulari i 
+  validar paraules pendents de confirmació.
+  
+* $mail: Adreça electrònica de l'administrador encarregat dels formularis. 
+  Quan algú sol·licite donar-se d'alta com a usuari s'enviarà un correu 
+  electrònic a aquesta adreça.
+
+Una vegada s'han configurat els paràmetres d'aquest fitxer, el servidor de
+formularis ja es troba en funcionament.
+

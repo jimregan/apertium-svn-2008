@@ -1,0 +1,133 @@
+apertium-tagger-training-tools: example of use
+
+This software is GPL. It is provided as is, WITHOUT any guarantee, in
+the hope that it will be useful.
+
+(c) 2004-2006 Felipe Sánchez Martínez
+(c) 2006 Universitat d'Alacant
+---------------------------------------------------------------------
+
+In this folder you can find the scripts used when training the tagger
+used in apertium by means of the target-language-driven training
+method implemented in this package.
+
+Now follows a detailed explanation on how to used this package.
+
+
+Locale settings
+---------------------------------------------------------------------
+You need to set the appropriate locale. Note that apertium and
+apertium-tagger-training-tools NOW support UTF-based locales, and
+apertium-tagger-training-tools has ONLY been tested with UTF-8 locales.
+
+The programs implemented in this package will use the user's locale
+found in LC_ALL. Therefore, you only need to conveniently set up this
+variable.
+
+
+Building a target language model with apertium-trigrams-langmodel
+-------------------------------------------------------------------- I
+I suppose you will use the language model software provided within
+this package, but another language model could be used. If you plan to
+use another language model please skip this section.
+
+Requirements: A raw corpus of the target language (corpus.txt)
+
+$ apertium-trigrams-langmodel -t -i corpus.txt > model.lm
+
+
+Preparing the language pair to be used
+-------------------------------------------------------------------- 
+A part-of-speech tagger for the source language (SL) will be trained
+using information from the target language (TL). Therefore, you need
+the data required to translate SL disambiguation hypotheses into the
+TL. From http://apertium.sourceforge.net you can download data for
+some language pairs. The method implemented in this package is
+appropriate for those language whose part-of-speech tagger was
+unsupervisedly trained.
+
+To prepare and compile the required language-pair data follow the
+instruction provided at the linguistic package itself. Usually you
+only need to type make.
+
+
+Preparing the source-language data
+--------------------------------------------------------------------
+Requirements: A raw corpus of the source language (corpus.txt)
+              A source dictionary (dic.dix)
+              A compiled dictionary of the source language (dic.bin)
+              A tagger definition file (tagger.tsx)
+              The file with the transfer rules to be used (trules.xml)
+
+$ apertium-tagger-gen-crp-file corpus.txt dic.bin > lang.crp
+$ apertium-tagger-gen-dic-file dic.dix dic.bin tagger.tsx > lang.dic
+$ apertium-xtract-regex-trules trules.xml > regexp-trules.txt
+
+NOTE: dic.bin was generated when preparing the language pair data.
+      dic.dix, tagger.tsx and trules.xml are provided with the
+      language-pair package.
+
+
+Preparing the translation scrip
+--------------------------------------------------------------------
+The TL-driven training algorithm needs to be provided with a
+translation script conveniently configured to translate a given
+disambiguation hypothesis into the TL.
+
+Together with this packages you can find the script
+'translation-script-es-ca.sh'. It is configured to translates Spanish
+disambiguation hypothesis into Catalan. Edit this file and change the
+DATA and DIRECTION variables. DATA must point to the folder holding
+the language-pair data previously prepared; DIRECTION must store the
+translation direction.
+
+
+Preparing the likelihood script
+--------------------------------------------------------------------
+To estimate the likelihood of each translation the TL-driven algorithm
+is provided with an script. In this package you can find an example of
+this script called 'likelihood-script-catalan.sh'. It uses the
+apertium-trigrams-langmodel package to calculate the likelihood of
+each input string.
+
+Change this script to use the desired data or to use another language
+model. Keep in mind that the TL-driven algorithm will provide an input
+TL string to the script and that it expects a likelihood, i. e. a
+double value, conveniently formated using the appropriate locale.
+
+
+Training through the TL-driven algorithm
+--------------------------------------------------------------------
+Training without disambiguation hypothesis pruning:
+
+$ apertium-tagger-tl-trainer --train 500000 --tsxfile tagger.tsx
+--file lang --tscript translation-script.sh --lscript
+likelihood-script.sh --trules regexp-trules.txt
+
+Training with disambiguation hypothesis pruning, you need an intial
+model ('initialmodel.prob') estimated through another training method
+(Kupiec, Baum-Welch, ...):
+
+$ apertium-tagger-tl-trainer --tsxfile tagger.tsx --train 500000
+--prune 1 1000 0.6 1 --initprob initialmodel.prob --file lang 
+--tscript translation-script.sh --lscript likelihood-script.sh 
+--trules regexp-trules.txt  --supforms "me|te|se|el|la|de|a|por"
+
+WARNING: Some language pairs perform some orthographical operations
+after the transfer module. In those cases is a good idea to provide
+the superficial forms (words) involved in those operations through the
+--supforms parameter. For example, in the case of the es-ca language
+pair:
+
+$ apertium-tagger-tl-trainer --train 500000 --tsxfile tagger.tsx
+--file lang --tscript translation-script.sh --lscript
+likelihood-script.sh --trules regexp-trules.txt 
+--supforms "me|te|se|el|la|de|a|por"
+
+
+For more options:
+
+$ apertium-tagger-tl-trainer --help
+
+
+Good luck!
