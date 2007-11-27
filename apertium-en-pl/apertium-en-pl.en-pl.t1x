@@ -236,6 +236,57 @@
       </action>
     </rule>
 
+    <!-- FIXME: This rule reorders words in a way that feels more natural to me
+                but this hasn't been verified by a native speaker -->
+    <rule comment="REGLA: PR NOM genitive NOM ~~ e.g. with brother's dog - z psem brata">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="genitive"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+	      <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk name="prep-nom" case="Aa">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <clip pos="4" side="tl" part="a_nom"/>
+              <clip pos="4" side="tl" part="gen"/>
+              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
+            </lu>
+          </chunk>
+          <b pos="2"/>
+          <chunk name="nom-gen" case="Aa">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="gen"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: PR">
       <pattern>
