@@ -174,10 +174,10 @@
     </def-attr>
 
 	<def-attr n="tverb">
-		<attr-item tags="vben"/>
-		<attr-item tags="vba"/>
-		<attr-item tags="vbdins"/>
-		<attr-item tags="vbsus"/>
+		<attr-item tags="vbamb_a"/>
+		<attr-item tags="vba_en"/>
+		<attr-item tags="vba_sus"/>
+
 	</def-attr>
       
   <def-attr n="a_SN">
@@ -191,6 +191,7 @@
 
 
   <section-def-vars>
+		<def-var n="tipusverb"/>
 		<def-var n="pronom"/>
     <def-var n="nombre_subj"/>
     <def-var n="tipus_rel"/>
@@ -238,8 +239,131 @@
 
 <section-def-macros>
 
-	<def-macro n="cv_prep" npar="2">
-		<choose> <!--canvia la prepo de lloc-->
+<!--	<def-macro n="cv_prep_verb" npar="1">
+		<choose> 
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="tverb"/>
+						<lit-tag v="vbamb_a"/>
+					</equal>
+				</test>
+				<let>
+					<var n="tipusverb"/>
+					<lit v="amb_a"/>
+				</let>
+			</when>
+			<otherwise>
+				<choose> 
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tverb"/>
+								<lit-tag v="vba_en"/>
+							</equal>
+						</test>
+						<let>
+							<var n="tipusverb"/>
+							<lit v="a_en"/>
+						</let>
+					</when>
+					<otherwise>
+						<choose> 
+							<when>
+								<test>
+									<equal>
+										<clip pos="1" part="tverb"/>
+										<lit-tag v="vba_sus"/>
+									</equal>
+								</test>
+								<let>
+									<var n="tipusverb"/>
+									<lit v="a_sus"/>
+								</let>
+							</when>
+
+							<otherwise>
+								<let>
+									<var n="tipusverb"/>
+									<lit v="niflowers"/>
+								</let>
+							</otherwise>
+						</choose>
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+	</def-macro>
+
+	<def-macro n="cv_prep" npar="1">
+		<choose> 
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="amb"/>
+						</equal>
+						<equal>
+							<var n="tipusverb"/>
+							<lit v="amb_a"/>
+						</equal>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="a"/>
+				</let>
+			</when>
+			<otherwise>
+				<choose> 
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="a"/>
+							</equal>
+						</test>
+						<choose> 
+							<when>
+								<test>
+									<equal>
+										<var n="tipusverb"/>
+										<lit v="a_sus"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="1" part="lem"/>
+									<lit v="sus"/>
+								</let>
+							</when>
+							<otherwise>
+								<choose> 
+									<when>
+										<test>
+											<equal>
+												<var n="tipusverb"/>
+												<lit v="a_en"/>
+											</equal>
+										</test>
+										<let>
+											<clip pos="1" part="lem"/>
+											<lit v="en"/>
+										</let>
+									</when>
+								</choose>
+							</otherwise>
+						</choose>
+
+					</when>
+				</choose>
+			</otherwise>
+		</choose>
+	</def-macro>-->
+
+
+<!--	<def-macro n="cv_prep" npar="2">
+		<choose> 
 			<when>
 				<test>
 					<or>
@@ -324,7 +448,7 @@
 			
 			</when>
 		</choose>
-	</def-macro>
+	</def-macro>-->
 
 	<def-macro n="partitiu" npar="1">
 		<choose alt="oc">
@@ -1425,60 +1549,6 @@
 		</action>
 	</rule>
 
-<!-- no cal perquè l'adv va entre l'aux i el pp...?
-	<rule comment="REGLA: SN sp  adv esser_pp">
-		<pattern>
-			<pattern-item n="SN"/>
-			<pattern-item n="pr"/>
-			<pattern-item n="SN"/>
-			<pattern-item n="adv"/>
-			<pattern-item n="esser_pp"/>
-		</pattern>
-		<action>
-			<call-macro n="concord_pp">
-				<with-param pos="1"/>
-				<with-param pos="5"/>
-			</call-macro>
-			<call-macro n="assigna_gen_nbr">
-				<with-param pos="1"/>
-			</call-macro>
-			<call-macro n="assigna_gen_nbr">
-				<with-param pos="3"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-				<b pos="4"/>
-				<chunk>
-					<clip pos="5" part="lem"/>
-					<clip pos="5" part="tags"/>
-					<clip pos="5" part="chcontent"/>
-				</chunk>
-			</out>
-		</action>
-	</rule>-->
-
 <!-- regles de verb cop  -->
 	<rule comment="REGLA: SN vbcop SA">
 		<pattern>
@@ -2010,64 +2080,6 @@
 		</action>
 	</rule> 
 
-	<rule comment="REGLA: SV sprep">
-		<pattern>
-			<pattern-item n="SV"/>
-			<pattern-item n="pr"/>
-			<pattern-item n="SN"/>
-		</pattern>
-		<action>
-			<call-macro n="assigna_gen_nbr">
-				<with-param pos="1"/>
-			</call-macro>
-			<call-macro n="assigna_gen_nbr">
-				<with-param pos="3"/>
-			</call-macro>
-			<call-macro n="cv_prep">
-				<with-param pos="1"/>
-				<with-param pos="2"/>
-			</call-macro>
-			<call-macro n="lema_prn">
-				<with-param pos="3"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="2" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="3"/>
-					</call-macro>
-				</when>
-			</choose>
-			<out>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-			</out>
-		</action>
-	</rule>
 	
 	<rule comment="REGLA: SN sprep vbcop adv SN">
 		<pattern>
@@ -2179,7 +2191,6 @@
 				<var n="pronom"/>
 				<lit v=""/>
 			</let>
-		
 			<out>
 				<chunk>
 					<clip pos="1" part="whole"/>
