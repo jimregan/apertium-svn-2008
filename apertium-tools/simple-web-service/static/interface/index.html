@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <title>Apertium</title>
+    <style type="text/css">
+        @import "/static/js/dojo/dijit/themes/tundra/tundra.css";
+        @import "/static/js/dojo/dojo/1.0.0/dojo/resources/dojo.css"
+    </style>
+
+    <script type="text/javascript" src="/static/js/dojo/dojo/dojo.js"
+            djConfig="parseOnLoad: true"></script>
+
+    <script type="text/javascript">
+       dojo.require("dojo.parser");
+       dojo.require("dijit.Editor");
+       dojo.require("dijit.layout.SplitContainer");
+       dojo.require("dijit.layout.ContentPane");
+     </script>
+  </head>
+
+  <body class="tundra">
+    <div dojoType="dijit.layout.SplitContainer"
+         orientation="vertical"
+         sizerWidth="7"
+         activeSizing="true"
+         style="border: 1px solid #bfbfbf; width: 100%; height: 100%;">
+
+      <div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="20">
+        <textarea id="editor" dojoType="dijit.Editor" 
+                  plugins="" onDisplayChanged="update()"
+                  layoutAlign="client"></textarea>
+      </div>
+
+      <div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="20">
+        <div id="output" style="width: 100%; height 100%"></div>
+      </div>
+    </div>
+
+    <script>
+      updates = 0;
+      processedUpdates = 0;
+
+      function update(e) {
+        updates += 1;
+      }
+
+      function scheduleCheck() {
+        setTimeout('checkDirty()', 200);
+      }
+
+      function checkDirty() {
+        try {
+          if (processedUpdates < updates) {
+            processedUpdates = updates;
+
+            dojo.xhrPost({ 
+              // The following URL must match that used to test the server.
+              url: "http://localhost:8081/translate/en-af", 
+              handleAs: "text",
+
+              // The LOAD function will be called on a successful response.
+              load: function(response, ioArgs) {
+                dojo.byId("output").innerHTML = response;
+                scheduleCheck();
+                return response;
+              },
+
+              // The ERROR function will be called in an error case.
+              error: function(response, ioArgs) {
+                console.error("HTTP status code: ", ioArgs.xhr.status);
+                scheduleCheck();
+                return response;
+              },
+
+              content: { 'text': dijit.byId('editor').getValue(false) }
+            });
+
+          } else {
+            scheduleCheck();
+          }
+        } catch (e) {
+          document.getElementById('output').innerHTML = e.toString();
+          scheduleCheck();
+        }
+      }
+
+      document.getElementById('output').innerHTML = 'blah';
+      dojo.addOnLoad(scheduleCheck);
+    </script>
+   </body>
+</html>

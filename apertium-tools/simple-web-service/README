@@ -1,0 +1,33 @@
+WARNING - this is as pre-pre-pre-alpha as software gets.
+
+This runs a small web service which interfaces with Apertium,
+allowing a user to get a GUI via his or her web browser.
+
+Currently, you must run the service on port 8081 (due
+to hardcoding in index.html).
+
+First, run
+  tar xjvf js.tar.bz2 in the static directory.
+
+Start the service by executing
+  python apertium_service.py 8081
+
+Now, point your browser at
+  http://localhost:8081/static/interface/index.html
+
+You should see a very rudimentary interface with a text
+box at the top and a text box at the bottom. Chances are
+that this setup is NOT going to work for you, due to
+hardcoded crap in apertium_service.py and index.html;
+specifically:
+  - index.html: The line
+      url: "http://localhost:8081/translate/en-af"
+      ensures that the web service will only attempt English to
+      Afrikaans translations.
+
+  - apertium_service.py: The subprocess code assumes that the Apertium
+      executables are under /usr/local/bin
+
+If you can fix this hardcoded crap, I would be grateful. I will eventually
+do it.
+
