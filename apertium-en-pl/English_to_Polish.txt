@@ -1,0 +1,167 @@
+﻿==Roadmap==
+
+===apertium-en-pl 0.1===
+
+*'''Vocabulary''': The [http://www.aqa.org.uk/qual/pdf/AQA-3686-W-SP-09.PDF GCSE Polish course specification] contains a dictionary of the most important words.
+::<u>Current coverage</u>: Monodix (499/2855, 17%) &mdash; Bidix: (599/2855, 19%) <small>[14:12, 28 October 2007 (UTC)]</small>
+
+==Morphology==
+
+===Nouns===
+Polish is a highly inflected language; nouns (and adjectives describing them) are declined according to gender, number, and case. Traditionally, Polish is considered to have 3 genders (masculine, feminine, and neuter), but the more modern view<ref>Jagodziński [http://grzegorj.w.interia.pl/gram/przypdys.html Jak przedstawić obraz polskiej deklinacji? – How to present a view of the Polish declension?]</ref>  is that is contains 5<ref>Though Willim mentions that it may contain as many as 9! - [http://ifa.amu.edu.pl/plm/files/Abstracts/PLM2007_Abstract_Willim.pdf On gender resolution in Polish]</ref>: masculine person (m1 in Apertium), masculine animate (m2), masculine inanimate (m3), feminine, and neuter. The masculine genders can be thought of as steps: in the absence of a particular rule for that case, the rule beneath applies -- a rule for m3 applies to m2 and m1, a rule for m2 applies to m1.
+
+The cases are: nominative (subject), accusative (object), dative (indirect object), genitive (possessive, negative object, quantities), locative (used only with prepositions), instrumental (by means of something), and vocative (addressing something).
+
+===Verbs===
+
+Polish has typically two forms for each verb, the perfective and the imperfective aspect. These usually come with a change in stem, for example:
+
+{|class=wikitable
+! Imperfective !! Perfective !! Gloss
+|-
+| widzieć      || zobaczyć   || to see
+|-
+| stawiać      || postawić   || to set up
+|-
+|}
+
+The perfective denotes a completed action. According to Wikipedia, "The aspectual distinctions exist on the lexical level &mdash; there is no unique method to form a perfective verb from a given imperfective one."<ref>Wikipedia [http://en.wikipedia.org/wiki/Grammatical_aspect#Aspect_in_Slavic_languages Grammatical aspect in Slavic languages]</ref>
+
+The imperfective is used for the present tense ('Co robisz?': 'What are you doing?') and for negative commands ('Nie rób tego': 'don't (ever) do that', or to use Hiberno English 'don't be doing that'); the perfective for the simple future ('Czy zrobisz to?': 'Will you do it?') and for positive commands ('Zrób to szybciej': 'Do it faster')
+
+<blockquote>
+[I]n some verbs the perfective form (for example, napisać) is formed out of an underlying
+imperfective form (pisać), via a prefixisation process that many linguists would argue
+is a clear example of derivational morphology. On the other hand, in some verbs the
+imperfective form (for example, kupować) is formed out of an underlying perfective
+form (kupić), via a ‘suffixisational’ process that many linguists would argue is a clear
+example of inflectional morphology. Furthermore, in yet other verbs (namely verbs
+in suppletive pairs such as brać/wziąć) all linguists (as far as we are aware) would
+agree that there is no morphological link whatsoever between the two verbs.
+<ref name="pairing">Młynarczyk [http://igitur-archive.library.uu.nl/dissertations/2004-0309-140804/inhoud.htm Aspectual Pairing in Polish]</ref>
+</blockquote>
+
+;Apertium notes
+
+As this is lexicalised, there is only one way to deal with it, and that is in the dictionaries, each verb will have two entries in the bilingual dictionary, one for perfective and one for imperfective.
+
+For example:
+
+<pre>
+    <e><p><l>read<s n="vblex"/></l><r>czytać<s n="vblex"/><s n="imperf"/></r></p></e>
+    <e><p><l>read<s n="vblex"/></l><r>przeczytać<s n="vblex"/><s n="perf"/></r></p></e>
+</pre>
+
+==== Further complications ====
+
+As well as perfective/imperfective pairs, there are also habitual verbs (''czytywałem'' - I used to read from time to time), and there are pairs which distinguish between non-determined and determined motion (''chodzić'' - to go, with no particular destination in mind vs. ''iść'' - to go, with a destination in mind). 
+
+Młynarczyk<ref name="pairing"/> argues that Polish aspect can be further divided, based on the addition of "empty" prefixes, the prefix ''po'', the infix ''ną'', or with a morphonological change, and provides this table:
+
+{|class=wikitable
+! !! ep !! po- !! -ną- !! mpc
+|-
+| class1 || yes || || || 
+|-
+| class2 || || yes || || 
+|-
+| class3 || yes || yes || || 
+|-
+| class4 || yes || yes || yes ||
+|-
+| class5 || || || || yes
+|-
+|}
+
+Labenz <ref name="event">Labenz [http://staff.science.uva.nl/~michiell/docs/thesisPL.pdf Event-calculus semantics of Polish aspect]</ref> further refines this:
+
+{|class=wikitable
+! Class !! Aspect and formant !! Aktionsart !! Example
+|-
+|-
+| 1s || impfv || state || wierzyć 'to be believing'
+|-
+| 1s || pfv, ep || inception of an ongoing state || uwierzyć 'to have started believing'
+|-
+| 1t || impfv || transition || grubnąć 'to be growing fat(ter)'
+|-
+| 1t || pfv, ep || completed transition || zgrubnąć 'to have grown fat'
+|-
+| 2 || impfv || activity || siedzieć 'to be sitting'
+|-
+| 2 || pfv, po- || terminated activity || posiedzieć 'to have been sitting a bit'
+|-
+| 3 || impfv || ongoing accomplishment || czytać 'to be reading'
+|-
+| 3 || pfv, ep || accomplishment || przeczytać 'to have read'
+|-
+| 3 || pfv, po- || terminated accomplishment || poczytać 'to have been reading a bit'
+|-
+| 4 || impfv || semelfactive activity || pukać 'to be knocking'
+|-
+| 4 || pfv, ep || completed semelfactive || zapukać 'to have knocked'
+|-
+| 4 || pfv, po- || non-minimal semelfactive || popukać 'to have been knocking a bit'
+|-
+| 4 || pfv, -ną- || minimal semelfactive || puknąć 'to have knocked once'
+|-
+| 5 || pfv, mp || achievement || kupić 'to have bought'
+|-
+| 5 || impfv || ongoing achievement || kupować 'to be buying'
+|-
+|}
+
+In Apertium, these aspect differences can be handled in the Polish monodix.
+
+<!--- Russian is similar: http://www.unc.edu/depts/slavdept/lajanda/clustersrewritefinal.doc --->
+
+==Syntax==
+
+===Articles===
+
+Polish doesn't have articles, so translating English→Polish, we'll need to remove them, translating Polish→English, we'll need to add them. 
+
+<pre>
+   Mam               zegar
+   mieć+p1.sg.pres 
+   have+I            clock+nom
+`I have a clock'
+</pre>
+
+;Apertium notes
+
+There aren't really any rules to this, so the fallback will be "if we can't tell for sure, leave them out".
+
+===Word order===
+
+Basic English and Polish word order are the same, SVO; however, as Polish morphology details the part of speech, Polish word order can vary to provide emphasis.
+
+"Ja kocham Ciebie" = "I love you"
+
+"Ciebie ja kocham" = "I love ''you''"
+
+===Object dropping===
+
+In answering questions, it is common in Polish to omit the object ("Czy kupiłeś piwo? - Kupiłem": "Did you buy beer? - I bought"). However, as Polish speakers of English commonly drop the object in English, perhaps it's acceptable for us to do so too.<ref>Kowaluk [http://www.rceal.cam.ac.uk/Publications/Working/Vol6/Kowaluk.pdf Null objects in Polish: Pronouns and determiners in Second Language Acquisition]</ref>
+
+==Resources==
+
+===Polish-English texts under free licences===
+{{see-also|Corpora}}
+*[http://www.oreilly.com/openbook/freedom/index.html Free As In Freedom] - [http://stallman.helion.pl/ W obronie wolności] ("In the Defense of Freedom")
+*[http://www.gutenberg.org/dirs/etext04/lchch10.txt Chess and Checkers: the Way to Mastership] - [http://www.gutenberg.org/files/15201/15201-8.txt Szachy i Warcaby: Droga do mistrzostwa]
+*[http://en.wikisource.org/wiki/The_Tragedy_of_Romeo_and_Juliet The Tragedy of Romeo and Juliet] - [http://pl.wikisource.org/wiki/Romeo_i_Julia Romeo i Julia]
+*[http://en.wikisource.org/wiki/Robinson_Crusoe Robinson Crusoe] - [http://pl.wikisource.org/wiki/Robinson_Cruzoe Przypadki Robinsona Cruzoe]
+**Wikisource has a mechanism where they ''try'' to present automatic bilingual editions of any works they have: see [http://pl.wikisource.org/wiki/Robinson_Cruzoe?match=en Robinson Crusoe] for example. Unfortunately, it doesn't work, as different choices have been made in the laying out of different language editions. But it looks interesting.
+*[http://languagetool.cvs.sourceforge.net/*checkout*/languagetool/JLanguageTool/src/rules/false-friends.xml False friends dictionary] Also contains French and German.
+*[http://jv.gilead.org.il/pg/7jrny10.txt Journey to the Centre of the Earth] - [http://jv.gilead.org.il/zydorczak/terre-pl00.htm Podróż do środka Ziemi]
+*The Outpost (contained in [http://www.gutenberg.org/dirs/etext05/8pltl10.txt Selected Polish Tales]) - [http://pl.wikisource.org/wiki/Plac%C3%B3wka Placówka]
+
+===Polish texts under free licences===
+*[http://www.mimuw.edu.pl/polszczyzna/ Enriched Corpus of the Frequency Dictionary] - Monolingual corpus of Polish. Manually tagged. A [http://korpus.pl/download/frek.bin.tar.bz2 compiled version] for [http://poliqarp.sourceforge.net/ Poliqarp] is also available.
+
+===Polish grammar===
+*[http://free.of.pl/g/grzegorj/gram/gram00.html A Grammar of the Polish Language] by Grzegorz Jagodziński
+*[http://polish.slavic.pitt.edu/grammar.pdf A Grammar of Contemporary Polish] by Oscar E. Swan
+
+
