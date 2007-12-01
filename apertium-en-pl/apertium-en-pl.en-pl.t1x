@@ -224,6 +224,7 @@
       </action>
     </rule>
 
+    <!-- FIXME: there are more complicated cases to be handled with prepositions -->
     <rule comment="REGLA: PR NOM">
       <pattern>
         <pattern-item n="prep"/>
@@ -256,7 +257,40 @@
         </out>
       </action>
     </rule>
-
+    <rule comment="REGLA: PR (a/the) NOM">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="det_ignore"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+	      <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="gen"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+    
     <!-- This rule reorders the words so that the word inflected to match the preposition is beside the preposition -->
     <rule comment="REGLA: PR NOM genitive NOM ~~ e.g. with brother's dog - z psem brata">
       <pattern>
@@ -300,13 +334,62 @@
               <clip pos="2" side="tl" part="a_nom"/>
               <clip pos="2" side="tl" part="gen"/>
               <clip pos="2" side="tl" part="nbr"/>
-	      <lit-tag v="gen"/>
+	            <lit-tag v="gen"/>
             </lu>
           </chunk>
         </out>
       </action>
     </rule>
 
+    <rule comment="REGLA: PR (a/the) NOM genitive NOM ~~ e.g. with brother's dog - z psem brata">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="det_ignore"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="genitive"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+	      <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="prep-nom" case="Aa">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <clip pos="5" side="tl" part="a_nom"/>
+              <clip pos="5" side="tl" part="gen"/>
+              <clip pos="5" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="nom-gen" case="Aa">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="gen"/>
+              <clip pos="3" side="tl" part="nbr"/>
+	            <lit-tag v="gen"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
     <rule comment="REGLA: PR">
       <pattern>
