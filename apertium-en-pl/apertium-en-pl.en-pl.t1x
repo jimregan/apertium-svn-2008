@@ -134,6 +134,8 @@
     <def-var n="numero"/>
     <def-var n="caseFirstWord"/>
     <def-var n="nombre"/>
+    <def-var n="group_gender"/>
+    <def-var n="last_verb"/>
   </section-def-vars>
 
   <section-def-lists>
@@ -174,11 +176,25 @@
       <list-item v="Dr."/>
     </def-list>
     <def-list n="na_accusative">
-      <list-item v="koncert"/>
+      <list-item v="concert"/>
     </def-list>
   </section-def-lists>
 
   <section-rules>
+  
+  <rule comment="Drop the/a">
+     <pattern>
+       <pattern-item n="det_ignore"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <lit v=""/>
+         </lu>
+       </out>
+     </action>
+  </rule>
+  
     <rule comment="REGLA: NOM">
       <pattern>
         <pattern-item n="nom"/>
@@ -239,7 +255,7 @@
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
-        <lit-tag v="pr"/>
+              <lit-tag v="pr"/>
             </lu>
           </chunk>
           <b/>
