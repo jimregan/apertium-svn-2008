@@ -14,6 +14,7 @@ class Config: #{
 	
 	def __init__(self, filename): #{
 		self.config = NonvalidatingReader.parseUri('file:///' + filename);
+		self.log_file = '';
 		self.pairs = {};
 		self.working_directory = None;
 	#}
@@ -21,6 +22,7 @@ class Config: #{
 	def parse_config(self): #{
 		self.working_directory = self.config.xpath('/webforms/directories/wd')[0].firstChild.nodeValue;
 		self.cache_directory = self.config.xpath('/webforms/directories/cache')[0].firstChild.nodeValue;
+		self.log_file = self.config.xpath('/webforms/log-file')[0].firstChild.nodeValue;
 
 		path = '/webforms/pairs/pair';
 
