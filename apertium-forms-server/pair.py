@@ -186,7 +186,7 @@ class Dictionary: #{
 	#}
 
 
-	def add_gloss(self, _paradigm, _gloss): #{
+	def add_gloss(self, _tag, _paradigm, _gloss): #{
 		self.glosses[_paradigm] = _gloss;
 	#}
 

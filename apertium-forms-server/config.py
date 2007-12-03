@@ -54,7 +54,7 @@ class Config: #{
 							name  = gloss.getAttributeNS(None, 'n');
 							comment  = gloss.getAttributeNS(None, 'c');
 
-							self.pairs[pair_name].dictionary[current_side].add_gloss(name, comment);
+							self.pairs[pair_name].dictionary[current_side].add_gloss(tag_name, name, comment);
 						#}
 					#}
 
@@ -64,6 +64,24 @@ class Config: #{
 				self.pairs[pair_name].add_tag(tag_name, shows);
 			#}
 		#}
+
+
+#
+#	Speedup idea: Load all glossed paradigm entries at the start.
+#
+
+#		for pair in self.pairs: #{
+#			for side in self.pairs[pair].dictionary.keys(): #{
+#				for tag in self.pairs[pair].dictionary[side].paradigms.keys(): #{
+#					for paradigm in self.pairs[pair].dictionary[side].paradigms[tag].keys(): #{
+#						print self.pairs[pair].dictionary[side].paradigms[tag].get(paradigm).name;
+#						self.pairs[pair].dictionary[side].get_paradigm(tag.encode('utf-8'), paradigm.encode('utf-8'));
+#					#}
+#				#}
+#			#}
+#		#}
+
+
 	#}
 
 	def get_pairs(self): #{
