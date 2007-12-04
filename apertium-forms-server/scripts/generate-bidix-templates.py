@@ -22,12 +22,13 @@ right_file = os.getcwd() + '/' + sys.argv[3];
 
 print left_file , bidix_file , right_file;
 
-path = '/dictionary/pardefs/pardef';
 
 left = NonvalidatingReader.parseUri('file://' + left_file);
+bidix = NonvalidatingReader.parseUri('file://' + bidix_file);
 right = NonvalidatingReader.parseUri('file://' + right_file);
 	
 def generate_monodix_hash(context): #{
+	path = '/dictionary/pardefs/pardef';
 	paradigms = {};
 	for paradigm in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
 		current_paradigm = paradigm.getAttributeNS(None, 'n');
@@ -73,8 +74,32 @@ def generate_monodix_hash(context): #{
 	return paradigms;
 #}
 
+def generate_entry_list(context, paradigms): #{
+	path = '/dictionary/section[@id="main"]/e';
+	entries = [];
+	for entry in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
+		lema = entry.getAttributeNS(None, 'lm');
+		pars = Ft.Xml.XPath.Evaluate('.//par', contextNode=entry);
+		if len(pars) >= 1: #{
+			par = pars[0].getAttributeNS(None, 'n');
+			for hash in paradigms: #{
+				if par in paradigms[hash]: #{
+					entries.append((lema, hash));
+					print lema, hash, par;	
+				#}
+			#}
+		#}
+	#}
+
+	return entries;
+#}
+
 left_paradigms = generate_monodix_hash(left);
 right_paradigms = generate_monodix_hash(right);
+
+left_entries = generate_entry_list(left, left_paradigms);
+right_entries = generate_entry_list(right, right_paradigms);
+
 
 print 'Left paradigms: ';
 for key in left_paradigms.keys(): #{
