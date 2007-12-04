@@ -2,7 +2,7 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml, os, Ft, re, md5;
+import sys, string, codecs, xml, os, Ft, re, md5, cStringIO;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
 
@@ -97,11 +97,24 @@ def generate_entry_list(context, paradigms): #{
 def generate_correspondences(context, left_entries, right_entries): #{
 	path = '/dictionary/section[@id="main"]/e';
 	matrix = {};
+	current_left_lemma = '';
+	entradas = '';
 	for entry in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
 		left = Ft.Xml.XPath.Evaluate('.//l', contextNode=entry);	
 		if len(left) >= 1: #{
 			try: #{
 				left_lemma = left[0].firstChild.nodeValue;
+
+				if left_lemma != current_left_lemma and left_lemma != '': #{
+					current_left_lemma = left_lemma;
+				elif left_lemma != current_left_lemma and left_lemma == '': #{
+					current_left_lemma = left_lemma;
+				else:
+					current_left_lemma = '';
+				#}
+
+#				print current_left_lemma , left_lemma;
+
 			except: #{
 				continue;
 			#}
@@ -132,7 +145,6 @@ def generate_correspondences(context, left_entries, right_entries): #{
 	                        #}
 	                #}
 
-
 	                if ignoring == 1: #{
 				continue;
                 	#}
@@ -157,6 +169,21 @@ def generate_correspondences(context, left_entries, right_entries): #{
 			#}
 	
 			matrix[left_hash][right_hash] =  matrix[left_hash][right_hash] + 1;
+
+			buf = cStringIO.StringIO();
+			Ft.Xml.Domlette.Print(entry, stream=buf, encoding='utf-8')
+			new_entrada = buf.getvalue();
+			buf.close();
+	
+			if left_lemma == current_left_lemma: #{
+				print 'Appending for: ' , left_hash , ':' , right_hash;
+				entradas = entradas + '\n' + new_entrada.replace(left_lemma, 'lemma1').replace(right_lemma, 'lemma2');
+			else: #{
+				print u'→', entradas;
+				entradas = '';
+				entradas = entradas + '\n' + new_entrada.replace(left_lemma, 'lemma1').replace(right_lemma, 'lemma2');
+				print u'ø', entradas;
+			#}
 	
 			#print matrix[left_hash][right_hash], '\t', left_lemma, '\t', left_entries[left_lemma], '\t', right_lemma, '\t', right_entries[right_lemma];
 
