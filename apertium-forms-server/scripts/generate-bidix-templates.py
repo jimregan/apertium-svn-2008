@@ -76,16 +76,16 @@ def generate_monodix_hash(context): #{
 
 def generate_entry_list(context, paradigms): #{
 	path = '/dictionary/section[@id="main"]/e';
-	entries = [];
+	entries = {};
 	for entry in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
 		lema = entry.getAttributeNS(None, 'lm');
 		pars = Ft.Xml.XPath.Evaluate('.//par', contextNode=entry);
-		if len(pars) >= 1: #{
+		if len(pars) >= 1 and lema.count(' ') < 1: #{
 			par = pars[0].getAttributeNS(None, 'n');
 			for hash in paradigms: #{
 				if par in paradigms[hash]: #{
-					entries.append((lema, hash));
-					print lema, hash, par;	
+					entries[lema] = hash;
+					#print lema, hash, par;	
 				#}
 			#}
 		#}
@@ -94,19 +94,90 @@ def generate_entry_list(context, paradigms): #{
 	return entries;
 #}
 
+def generate_correspondences(context, left_entries, right_entries): #{
+	path = '/dictionary/section[@id="main"]/e';
+	matrix = {};
+	for entry in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
+		left = Ft.Xml.XPath.Evaluate('.//l', contextNode=entry);	
+		if len(left) >= 1: #{
+			try: #{
+				left_lemma = left[0].firstChild.nodeValue;
+			except: #{
+				continue;
+			#}
+		else: #{
+			continue;
+		#}
+
+		right = Ft.Xml.XPath.Evaluate('.//r', contextNode=entry);	
+		if len(right) >= 1: #{
+			try: #{
+				right_lemma = right[0].firstChild.nodeValue;
+			except: #{
+				continue;
+			#}
+		else: #{
+			continue;
+		#}
+
+		left_symbol = Ft.Xml.XPath.Evaluate('.//s', contextNode=left[0]);
+		if len(left_symbol) >= 1: #{
+			left_symbol = left_symbol[0].getAttributeNS(None, 'n');
+                	
+			ignoring = 1;
+
+	                for tag in categories: #{
+	                        if tag == left_symbol: #{
+	                                ignoring = 0;
+	                        #}
+	                #}
+
+
+	                if ignoring == 1: #{
+				continue;
+                	#}
+		#}
+
+		if len(Ft.Xml.XPath.Evaluate('.//b', contextNode=entry)) > 0: #{
+			continue;
+		#}
+
+		#print left_lemma, '\t', right_lemma;
+
+		try: #{
+			left_hash = left_entries[left_lemma];
+			right_hash = right_entries[right_lemma];
+
+			if left_entries[left_lemma] not in matrix: #{
+				matrix[left_hash] = {};
+			#}
+	
+			if right_hash not in matrix[left_hash]: #{
+				matrix[left_hash][right_hash] = 0;
+			#}
+	
+			matrix[left_hash][right_hash] =  matrix[left_hash][right_hash] + 1;
+	
+			#print matrix[left_hash][right_hash], '\t', left_lemma, '\t', left_entries[left_lemma], '\t', right_lemma, '\t', right_entries[right_lemma];
+
+		except: #{
+			continue;
+		#}
+	#}
+
+	return matrix;
+#}
+
 left_paradigms = generate_monodix_hash(left);
 right_paradigms = generate_monodix_hash(right);
 
 left_entries = generate_entry_list(left, left_paradigms);
 right_entries = generate_entry_list(right, right_paradigms);
 
+matrix = generate_correspondences(bidix, left_entries, right_entries);
 
-print 'Left paradigms: ';
-for key in left_paradigms.keys(): #{
-	print key, str(left_paradigms[key]);
-#}
-
-print 'Right paradigms: ';
-for key in right_paradigms.keys(): #{
-	print key, str(right_paradigms[key]);
+for left in matrix: #{
+	for right in matrix[left]: #{
+		print matrix[left][right], '\t', left, '\t', right;
+	#}
 #}
