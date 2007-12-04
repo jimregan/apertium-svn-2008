@@ -160,34 +160,31 @@ class add: #{
 #}
 
 if __name__ == "__main__": #{
-    try: 
+    try: #{
         pid = os.fork();
-        if pid > 0:
-            # exit first parent
+        if pid > 0: #{
             sys.exit(0);
-    except OSError, e: 
+        #}
+    except OSError, e: #{
         print >>sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror); 
         sys.exit(1);
+    #}
 
-    # decouple from parent environment
     #os.chdir("/");
     os.setsid();
     os.umask(0);
 
-    # do second fork
-    try: 
+    try: #{
         pid = os.fork();
-        if pid > 0:
-            # exit from second parent, print eventual PID before
+        if pid > 0: #{
             print "Daemon PID %d" % pid;
             sys.exit(0);
-    except OSError, e: 
+        #}
+    except OSError, e: #{
         print >>sys.stderr, "fork #2 failed: %d (%s)" % (e.errno, e.strerror);
         sys.exit(1);
+    #}
 
-    # Redirect standard file descriptors
     sys.stderr = open(Globals.config.log_file, 'a+')
-
-    # start the daemon main loop
     web.run(urls, globals());
 #}
