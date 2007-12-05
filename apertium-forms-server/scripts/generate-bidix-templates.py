@@ -2,7 +2,7 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml, os, Ft, re, md5, cStringIO;
+import sys, string, codecs, xml, os, Ft, re, md5, cStringIO, xmldiff;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
 
@@ -125,6 +125,50 @@ def retrieve_category(entry, side): #{
 	return '';
 #}
 
+def retrieve_diff(existing, new): #{
+	diff = '';
+
+	print ' %%%%%%%%%%%%%% ';
+	print ' %% existing %% ';
+	print ' ' , existing;
+	print ' %% new %% '; 
+	print ' ' , new;
+	print ' %% diff %% ';
+
+	print ' %%%%%%%%%%%%%% ';
+
+	existing_doc = NonvalidatingReader.parseString(existing);
+	new_doc = NonvalidatingReader.parseString(new);
+
+
+
+	for node in existing_doc.xpath('.//e'): #{
+		for new_node in new_doc.xpath('.//e'): #{
+			buf_existing = cStringIO.StringIO();
+			Ft.Xml.Domlette.Print(node, stream=buf_existing, encoding='utf-8');
+			buf_old_val = buf_existing.getvalue();
+			buf_existing.close();
+
+			buf_new = cStringIO.StringIO();
+			Ft.Xml.Domlette.Print(new_node, stream=buf_new, encoding='utf-8');
+			buf_new_val = buf_new.getvalue();
+			buf_new.close();
+
+			buf_old_val = buf_old_val.strip('[\n\t ]')
+			buf_new_val = buf_new_val.strip('[\n\t ]')
+
+			print 'old: ' + buf_old_val;
+			print 'new: ' + buf_new_val;
+
+			if buf_old_val != buf_new_val: #{
+				diff = diff + buf_new_val;
+			#}
+		#}
+	#}
+
+	return diff_entrada;
+#}
+
 def generate_templates(context, left_entries, right_entries): #{
 
 	path = '/dictionary/section[@id="main"]/e';
@@ -194,6 +238,7 @@ def generate_templates(context, left_entries, right_entries): #{
 			template_matrix[left_hash][right_hash][bidix_hash] = '';
 			template_matrix[left_hash][right_hash][bidix_hash] = template_matrix[left_hash][right_hash][bidix_hash] + '\n' + entrada;
 		else: #{
+			#print return_diff(template_matrix[left_hash][right_hash][bidix_hash], entrada);
 			template_matrix[left_hash][right_hash][bidix_hash] = template_matrix[left_hash][right_hash][bidix_hash] + '\n' +  entrada;
 		#}
 
