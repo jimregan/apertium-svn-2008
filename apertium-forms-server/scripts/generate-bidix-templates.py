@@ -64,12 +64,14 @@ def generate_monodix_hash(context): #{
 		#}
 		m = md5.new();
 		m.update(str(set(paradigm_hash)));
-		if m.hexdigest() not in paradigms: #{
-			paradigms[current_category + '.' + m.hexdigest()] = [];
+		key = current_category + '.' + m.hexdigest();
+		if key not in paradigms: #{
+			paradigms[key] = [];
 		#}
 
+
 		print >> sys.stderr, current_category + '.' + m.hexdigest() , current_paradigm;
-		paradigms[current_category + '.' + m.hexdigest()].append(current_paradigm); 
+		paradigms[key].append(current_paradigm); 
 	#}
 
 	return paradigms;
@@ -81,12 +83,15 @@ def generate_entry_list(context, paradigms): #{
 	for entry in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
 		lema = entry.getAttributeNS(None, 'lm');
 		pars = Ft.Xml.XPath.Evaluate('.//par', contextNode=entry);
-		if len(pars) >= 1 and lema.count(' ') < 1: #{
+		if len(pars) >= 1: #{
 			par = pars[0].getAttributeNS(None, 'n');
 			for hash in paradigms: #{
 				if par in paradigms[hash]: #{
+					if lema not in entries: #{
+						entries[lema] = {};
+					#}
 					category = hash.split('.')[0];
-					entries[lema + '.' + category] = hash;
+					entries[lema][category] = hash;
 
 					print >> sys.stderr, 'generate_entry_list:', lema + '.' + category, ';', par, ';',  hash;
 				#}
@@ -97,125 +102,78 @@ def generate_entry_list(context, paradigms): #{
 	return entries;
 #}
 
-def generate_correspondences(context, left_entries, right_entries): #{
-	path = '/dictionary/section[@id="main"]/e';
-	matrix = {};
-	for entry in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
-		left = Ft.Xml.XPath.Evaluate('.//l', contextNode=entry);	
-		if len(left) >= 1: #{
-			try: #{
-				left_lemma = left[0].firstChild.nodeValue;
-			except: #{
-				continue;
+def retrieve_lemma(entry, side): #{
+
+	full_lemma = '';
+	for kid in side[0].childNodes: #{
+		if type(kid) == Ft.Xml.Domlette.Text: #{
+			if full_lemma == '': #{
+				full_lemma = kid.nodeValue;
+			else: #{
+				full_lemma = full_lemma + ' ' + kid.nodeValue;
 			#}
-		else: #{
-			continue;
-		#}
-
-		right = Ft.Xml.XPath.Evaluate('.//r', contextNode=entry);	
-		if len(right) >= 1: #{
-			try: #{
-				right_lemma = right[0].firstChild.nodeValue;
-			except: #{
-				continue;
-			#}
-		else: #{
-			continue;
-		#}
-
-		left_symbol = Ft.Xml.XPath.Evaluate('.//s', contextNode=left[0]);
-		if len(left_symbol) >= 1: #{
-			left_symbol = left_symbol[0].getAttributeNS(None, 'n');
-                	
-			ignoring = 1;
-	                for tag in categories: #{
-	                        if tag == left_symbol: #{
-	                                ignoring = 0;
-	                        #}
-	                #}
-	                if ignoring == 1: #{
-				continue;
-                	#}
-		#}
-
-		if len(Ft.Xml.XPath.Evaluate('.//b', contextNode=entry)) > 0: #{
-			continue;
-		#}
-
-		#print left_lemma, '\t', right_lemma;
-
-		try: #{
-			left_hash = left_entries[left_lemma];
-			right_hash = right_entries[right_lemma];
-
-			if left_entries[left_lemma] not in matrix: #{
-				matrix[left_hash] = {};
-			#}
-	
-			if right_hash not in matrix[left_hash]: #{
-				matrix[left_hash][right_hash] = 0;
-			#}
-	
-			matrix[left_hash][right_hash] =  matrix[left_hash][right_hash] + 1;
-
-			#print matrix[left_hash][right_hash], '\t', left_lemma, '\t', left_entries[left_lemma], '\t', right_lemma, '\t', right_entries[right_lemma];
-
-		except: #{
-			continue;
 		#}
 	#}
 
-	return matrix;
+	return full_lemma;
 #}
 
-def generate_templates(context, matrix, left_entries, right_entries): #{
+def retrieve_category(entry, side): #{
+	for kid in Ft.Xml.XPath.Evaluate('.//s', contextNode=side[0]): #{
+		return kid.getAttributeNS(None, 'n');
+	#}
+	return '';
+#}
 
-	print '\n\n\n';
+def generate_templates(context, left_entries, right_entries): #{
 
 	path = '/dictionary/section[@id="main"]/e';
 	template_matrix = {};
 
 	for entry in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
-		left = Ft.Xml.XPath.Evaluate('.//l', contextNode=entry);	
-		if len(left) >= 1: #{
-			try: #{
-				left_lemma = left[0].firstChild.nodeValue;
-			except: #{
-				continue;
-			#}
-		else: #{
+		entry.removeAttributeNS(None, 'a');
+		if len(Ft.Xml.XPath.Evaluate('.//i', contextNode=entry)) > 0: #{
+			continue;
+		#}
+		left = Ft.Xml.XPath.Evaluate('.//l', contextNode=entry);
+		right = Ft.Xml.XPath.Evaluate('.//r', contextNode=entry);
+
+		left_lemma = retrieve_lemma(entry, left);
+		right_lemma = retrieve_lemma(entry, right);
+
+		left_symbol = retrieve_category(entry, left);
+		right_symbol = retrieve_category(entry, right);
+
+		if left_symbol == '' or right_symbol == '': #{
+			print >> sys.stderr, 'No category found in the bidix for ' , left_lemma , ':' , right_lemma;
 			continue;
 		#}
 
-		right = Ft.Xml.XPath.Evaluate('.//r', contextNode=entry);	
-		if len(right) >= 1: #{
-			try: #{
-				right_lemma = right[0].firstChild.nodeValue;
-			except: #{
-				continue;
-			#}
-		else: #{
+		if left_symbol not in categories and right_symbol not in categories: #{
 			continue;
 		#}
 
-		if len(Ft.Xml.XPath.Evaluate('.//b', contextNode=entry)) > 0: #{
-			continue;
-		#}
+		print >> sys.stderr, left_lemma , left_symbol , ':' , right_lemma, right_symbol;
 
 		if left_lemma not in left_entries: #{
-			#print 'Key not found [l]: ' , left_lemma , '(' + str(len(left_entries)) + ')';
+			#print >> sys.stderr, 'Key not found [l]: ' , left_lemma , '(' + str(len(left_entries)) + ')';
 			continue;
 		#}
-		left_hash = left_entries[left_lemma];
-
+		try:
+			left_hash = left_entries[left_lemma][left_symbol];
+		except:
+			continue;
 
 		if right_lemma not in right_entries: #{
-			#print 'Key not found [r]: ' , right_lemma , '(' + str(len(right_entries)) + ')';
+			#print >> sys.stderr, 'Key not found [r]: ' , right_lemma , '(' + str(len(right_entries)) + ')';
 			continue;
 		#}
-		right_hash = right_entries[right_lemma];
+		try:
+			right_hash = right_entries[right_lemma][right_symbol];
+		except: 
+			continue;
 
-		if left_entries[left_lemma] not in template_matrix: #{
+		if left_hash not in template_matrix: #{
 			template_matrix[left_hash] = {};
 		#}
 
@@ -230,7 +188,7 @@ def generate_templates(context, matrix, left_entries, right_entries): #{
 		Ft.Xml.Domlette.Print(entry, stream=buf, encoding='utf-8');
 		entrada = buf.getvalue();
 		buf.close();
-		entrada = entrada.replace(left_lemma, 'lemma1').replace(right_lemma, 'lemma2');
+		entrada = entrada.replace('<b/>', ' ').replace(left_lemma, 'lemma1').replace(right_lemma, 'lemma2');
 
 		if bidix_hash not in template_matrix[left_hash][right_hash]: #{
 			template_matrix[left_hash][right_hash][bidix_hash] = '';
@@ -242,7 +200,6 @@ def generate_templates(context, matrix, left_entries, right_entries): #{
 		#print template_matrix[left_hash][right_hash][bidix_hash];
 	#}
 
-
 	for left in template_matrix: #{
 		for right in template_matrix[left]: #{
 			for bidix in template_matrix[left][right]: #{
@@ -251,18 +208,6 @@ def generate_templates(context, matrix, left_entries, right_entries): #{
 			#}
 		#}
 	#}
-
-#
-#	if left_lemma == current_left_lemma: #{
-#		print 'Appending for: ' , left_hash , ':' , right_hash;
-#		entradas = entradas + '\n' + new_entrada.replace(left_lemma, 'lemma1').replace(right_lemma, 'lemma2');
-#	else: #{
-#		print u'→', entradas;
-#		entradas = '';
-#		entradas = entradas + '\n' + new_entrada.replace(left_lemma, 'lemma1').replace(right_lemma, 'lemma2');
-#		print u'ø', entradas;
-#	#}
-#	
 #}
 
 
@@ -273,8 +218,6 @@ right_paradigms = generate_monodix_hash(right);
 left_entries = generate_entry_list(left, left_paradigms);
 right_entries = generate_entry_list(right, right_paradigms);
 
-matrix = generate_correspondences(bidix, left_entries, right_entries);
-
-templates = generate_templates(bidix, matrix, left_entries, right_entries);
+templates = generate_templates(bidix, left_entries, right_entries);
 
 #eof
