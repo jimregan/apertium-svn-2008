@@ -2,7 +2,7 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml, os, Ft, re, md5, cStringIO, xmldiff;
+import sys, string, codecs, xml, os, Ft, re, md5, cStringIO;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
 
@@ -19,9 +19,6 @@ if len(sys.argv) < 4: #{
 left_file  = os.getcwd() + '/' + sys.argv[1];
 bidix_file = os.getcwd() + '/' + sys.argv[2];
 right_file = os.getcwd() + '/' + sys.argv[3];
-
-print left_file , bidix_file , right_file;
-
 
 left = NonvalidatingReader.parseUri('file://' + left_file);
 bidix = NonvalidatingReader.parseUri('file://' + bidix_file);
@@ -70,7 +67,7 @@ def generate_monodix_hash(context): #{
 		#}
 
 
-		print >> sys.stderr, current_category + '.' + m.hexdigest() , current_paradigm;
+		print >> sys.stderr, 'generate_monodix_hash: ' + current_category + '.' + m.hexdigest() , current_paradigm;
 		paradigms[key].append(current_paradigm); 
 	#}
 
@@ -125,48 +122,57 @@ def retrieve_category(entry, side): #{
 	return '';
 #}
 
-def retrieve_diff(existing, new): #{
-	diff = '';
+def equal_entries(entry1, entry2): #{
+	equal = False;
+	buf = cStringIO.StringIO();
+	Ft.Xml.Domlette.PrettyPrint(entry1, stream=buf, encoding='utf-8');
+	entrada1 = buf.getvalue();
+	buf.close();
 
-	print ' %%%%%%%%%%%%%% ';
-	print ' %% existing %% ';
-	print ' ' , existing;
-	print ' %% new %% '; 
-	print ' ' , new;
-	print ' %% diff %% ';
+	buf = cStringIO.StringIO();
+	Ft.Xml.Domlette.PrettyPrint(entry2, stream=buf, encoding='utf-8');
+	entrada2 = buf.getvalue();
+	buf.close();
 
-	print ' %%%%%%%%%%%%%% ';
+	print >> sys.stderr, '--';
+	print >> sys.stderr, 'entrada1: ', entrada1;
+	print >> sys.stderr, 'entrada2: ', entrada2;
+	print >> sys.stderr, '--';
+
+	if entrada1 == entrada2: #{
+		equal = True;
+	#}
+
+	print >> sys.stderr, equal;
+	print >> sys.stderr, '--';
+
+	return equal;
+#}
+
+def entry_exists(existing, new): #{
+
+	existing = str('<doc>' + existing.encode('ascii', 'ignore') + '</doc>');
+	new = str('<doc>' + new.encode('ascii', 'ignore') + '</doc>');
+
+	print >> sys.stderr, ' %%%%%%%%%%%%%% ';
+	print >> sys.stderr, ' %% existing %% ';
+	print >> sys.stderr, ' ' , existing;
+	print >> sys.stderr, ' %% new %% '; 
+	print >> sys.stderr, ' ' , new;
+	print >> sys.stderr, ' %%%%%%%%%%%%%% ';
 
 	existing_doc = NonvalidatingReader.parseString(existing);
 	new_doc = NonvalidatingReader.parseString(new);
 
-
-
 	for node in existing_doc.xpath('.//e'): #{
 		for new_node in new_doc.xpath('.//e'): #{
-			buf_existing = cStringIO.StringIO();
-			Ft.Xml.Domlette.Print(node, stream=buf_existing, encoding='utf-8');
-			buf_old_val = buf_existing.getvalue();
-			buf_existing.close();
-
-			buf_new = cStringIO.StringIO();
-			Ft.Xml.Domlette.Print(new_node, stream=buf_new, encoding='utf-8');
-			buf_new_val = buf_new.getvalue();
-			buf_new.close();
-
-			buf_old_val = buf_old_val.strip('[\n\t ]')
-			buf_new_val = buf_new_val.strip('[\n\t ]')
-
-			print 'old: ' + buf_old_val;
-			print 'new: ' + buf_new_val;
-
-			if buf_old_val != buf_new_val: #{
-				diff = diff + buf_new_val;
+			if equal_entries(node, new_node) == True: #{
+				return True;
 			#}
 		#}
 	#}
 
-	return diff_entrada;
+	return False;
 #}
 
 def generate_templates(context, left_entries, right_entries): #{
@@ -176,6 +182,9 @@ def generate_templates(context, left_entries, right_entries): #{
 
 	for entry in Ft.Xml.XPath.Evaluate(path, contextNode=context): #{
 		entry.removeAttributeNS(None, 'a');
+		entry.removeAttributeNS(None, 'c');
+		entry.removeAttributeNS(None, 'srl');
+		entry.removeAttributeNS(None, 'slr');
 		if len(Ft.Xml.XPath.Evaluate('.//i', contextNode=entry)) > 0: #{
 			continue;
 		#}
@@ -197,7 +206,7 @@ def generate_templates(context, left_entries, right_entries): #{
 			continue;
 		#}
 
-		print >> sys.stderr, left_lemma , left_symbol , ':' , right_lemma, right_symbol;
+		#print >> sys.stderr, 'generate_templates: ' + left_lemma , left_symbol , ':' , right_lemma, right_symbol;
 
 		if left_lemma not in left_entries: #{
 			#print >> sys.stderr, 'Key not found [l]: ' , left_lemma , '(' + str(len(left_entries)) + ')';
@@ -238,24 +247,66 @@ def generate_templates(context, left_entries, right_entries): #{
 			template_matrix[left_hash][right_hash][bidix_hash] = '';
 			template_matrix[left_hash][right_hash][bidix_hash] = template_matrix[left_hash][right_hash][bidix_hash] + '\n' + entrada;
 		else: #{
-			#print return_diff(template_matrix[left_hash][right_hash][bidix_hash], entrada);
-			template_matrix[left_hash][right_hash][bidix_hash] = template_matrix[left_hash][right_hash][bidix_hash] + '\n' +  entrada;
+			if entry_exists(template_matrix[left_hash][right_hash][bidix_hash], entrada) != True: #{
+				template_matrix[left_hash][right_hash][bidix_hash] = template_matrix[left_hash][right_hash][bidix_hash] + '\n' +  entrada;
+			#}
 		#}
 
 		#print template_matrix[left_hash][right_hash][bidix_hash];
 	#}
+	
+	templates = {};
 
 	for left in template_matrix: #{
 		for right in template_matrix[left]: #{
 			for bidix in template_matrix[left][right]: #{
-				print '*** ' , bidix , ' ***';
-				print template_matrix[left][right][bidix];
+				# limpiador.n.b82ab3a79f3fd8ea98cde45a4ed183e0:netejador.n.b82ab3a79f3fd8ea98cde45a4ed183e0
+				col = bidix.split(':');
+				hash_left = col[0].split('.')[1] + '.' + col[0].split('.')[2];
+				hash_right = col[1].split('.')[1] + '.' + col[1].split('.')[2];
+				hash = hash_left + ':' + hash_right;
+				comment = col[0].split('.')[0] + '.' + col[0].split('.')[1] + ':' + col[1].split('.')[0] + '.' + col[1].split('.')[1];
+
+				if left not in templates: #{
+					templates[left] = {};
+				#}
+
+				if right not in templates[left]: #{
+					#templates[left][right] = {};
+
+					templates[left][right] = '';
+				#}
+
+				#templates[left][right][hash] = template_matrix[left][right][bidix] + '<!-- ' + comment + ' -->';
+
+				templates[left][right] = template_matrix[left][right][bidix] + '<!-- ' + comment + ' -->';
 			#}
 		#}
 	#}
+
+	print '<templates>'
+	for left in templates: #{
+		print '  <left id="' + left + '">';
+		for right in templates[left]: #{
+			print '    <right id="' + right + '">';
+			#for bidix in templates[left][right]: #{
+			#print *** ' , bidix , ' ***';
+			col = bidix.split(':');
+			#print '      <template posl="' + col[0].split('.')[0] + '" posr="' + col[1].split('.')[0] +  '">';
+			print '      <template>';
+
+			#print templates[left][right][bidix];
+
+			print templates[left][right];
+			print '      </template>';
+
+			#}
+			print '    </right>'
+		#}
+		print '  </left>';
+	#}
+	print '</templates>'
 #}
-
-
 
 left_paradigms = generate_monodix_hash(left);
 right_paradigms = generate_monodix_hash(right);
