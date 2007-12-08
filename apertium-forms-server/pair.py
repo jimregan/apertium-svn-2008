@@ -2,7 +2,7 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml, re, Ft;
+import sys, string, codecs, xml, re, Ft, md5, cStringIO;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.Domlette import Print, PrettyPrint;
 from Ft.Xml.XPath import Evaluate;
@@ -56,7 +56,7 @@ class Dictionary: #{
 	file = None;
 	side = None;
 
-	def __init__(self, _side, _language, _file, _doc, _tags): #{
+	def __init__(self, _side, _language, _file, _doc, _tags, _templates): #{
 		self.display = {};
 		self.language = _language;
 		self.file = _file;
@@ -65,6 +65,13 @@ class Dictionary: #{
 		self.paradigms = {};
 		self.glosses = {};
 		self.tags = _tags;
+		self.hashes = {};
+		self.templates = _templates;
+
+		if _side == 'bidix': #{
+			self.hashes_left = {};
+			self.hashes_right = {};
+		#}
 	#}
 
 	def get_tags(self): #{
@@ -146,6 +153,34 @@ class Dictionary: #{
 		return paradigm;
 	#}
 
+	def hash_paradigm(self, _paradigm, _tag): #{
+                paradigm_hash = [];
+		current_paradigm = _paradigm.getAttributeNS(None, 'n');
+		current_category = _tag;
+
+                for entrada in Ft.Xml.XPath.Evaluate('.//e', contextNode=_paradigm): #{
+                        restriction = entrada.getAttributeNS(None, 'r');
+                        if type(restriction) == None: #{
+                                restriction = '';
+                        #}
+
+                        symbols = '';
+
+                        for symbol in  Ft.Xml.XPath.Evaluate('.//s', contextNode=entrada): #{
+                                symbols = symbols + symbol.getAttributeNS(None, 'n') + '.';
+                        #}
+
+                        paradigm_hash.append((restriction, symbols));
+                #}
+                m = md5.new();
+                m.update(str(set(paradigm_hash)));
+                key = current_category + '.' + m.hexdigest();
+
+                #print >> sys.stderr, 'generate_hash: ' + current_category + '.' + m.hexdigest() , current_paradigm;
+
+		return current_category + '.' + m.hexdigest();
+	#}
+
 	def set_paradigms_by_tag(self, _tag): #{
 		print self.side + ' set_paradigms_by_tag(' + _tag + ')';
 		paradigms = self.doc.xpath('//pardef');
@@ -157,6 +192,7 @@ class Dictionary: #{
 			if(patron.match(n)): #{
 				p = Paradigm(n);
 				self.paradigms[_tag][n] = p;
+				self.hashes[n.decode('utf-8')] = self.hash_paradigm(paradigm, _tag);
 			#}
 		#}
 
@@ -215,126 +251,68 @@ class Dictionary: #{
                 return entrada;
         #}
 
-        def generate_bidix_entrada(self, _lemma1, _lemma2, _paradigm1, _paradigm2, _tag, _restriction, _comment, _author): #{
-		if _lemma1 == '' or _lemma2 == '' or _paradigm1 == None or _paradigm2 == None: #
-			return '';
-		#}
-
-		_symbol_list_left = '';
-		_symbol_list_right = '';
-
-		if _tag == 'n': #{
-
-			stems_left = _paradigm1.get_stems();
-			stems_right = _paradigm2.get_stems();
-	
-			if len(stems_left) == len(stems_right): #{
-				tags_left = set();
-				for stem in stems_left: #{
-					tags_left = tags_left | set(stem[1].split('.'));
-				#}
-	
-				tags_right = set();
-				for stem in stems_right: #{
-					tags_right = tags_right | set(stem[1].split('.'));
-				#}
-	
-				print >> sys.stderr , 'tags_left:' , tags_left;
-				print >> sys.stderr , 'tags_right:' , tags_right;
-				print >> sys.stderr , 'symdiff:' , tags_left ^ tags_right;
-
-				_symbol_list_left = '<s n="n"/>';
-                                if len(list(tags_left ^ tags_right)) > 0: #{
-                                        _symbol_list_right = '<s n="n"/><s n="' + list(tags_left ^ tags_right)[0] + '"/>';
-                                else:
-                                        _symbol_list_right = '<s n="n"/>';
-                                #}
-
-
-			else: #{
-
-				_symbol_list_left = '<s n="n"/>';
-				_symbol_list_right = '<s n="n"/>';
-			#}
-
-		#}
-
-		if _tag == 'vblex': #{
-			_symbol_list_left = '<s n="vblex"/>';
-			_symbol_list_right = '<s n="vblex"/>';
-		#}
-
-		if _tag == 'ij': #{
-			_symbol_list_left = '<s n="ij"/>';
-			_symbol_list_right = '<s n="ij"/>';
-		#}
-
-		if _tag == 'adj': #{
-			_symbol_list_left = '<s n="adj"/>';
-			_symbol_list_right = '<s n="adj"/>';
-		#}
-
-		if _tag == 'adv': #{
-			_symbol_list_left = '<s n="adv"/>';
-			_symbol_list_right = '<s n="adv"/>';
-		#}
-
-		if _tag == 'np': #{
-
-			stems_left = _paradigm1.get_stems();
-			stems_right = _paradigm2.get_stems();
-	
-			if len(stems_left) == len(stems_right): #{
-				tags_left = set();
-				for stem in stems_left: #{
-					tags_left = tags_left | set(stem[1].split('.'));
-				#}
-	
-				tags_right = set();
-				for stem in stems_right: #{
-					tags_right = tags_right | set(stem[1].split('.'));
-				#}
-	
-				print >> sys.stderr , 'tags_left:' , tags_left;
-				print >> sys.stderr , 'tags_right:' , tags_right;
-				print >> sys.stderr , 'symdiff:' , tags_left ^ tags_right;
-
-				_symbol_list_left = '<s n="np"/>';
-				if len(list(tags_left ^ tags_right)) > 0: #{
-					_symbol_list_right = '<s n="np"/><s n="' + list(tags_left ^ tags_right)[0] + '"/>';
-				else:
-					_symbol_list_right = '<s n="np"/>';
-				#}
-
-			else: #{
-
-				_symbol_list_left = '<s n="np"/>';
-				_symbol_list_right = '<s n="np"/>';
-			#}
-		#}
-
-		entrada = '';
+        def generate_generic_bidix_entrada(self, _lemma1, _lemma2, _tag, _restriction, _comment, _author): #{
+                entrada = '';
 
                 if _restriction == "none" or _restriction == '': #{
                         entrada = entrada + '<e a="' + _author + '">' + "\n";
 
                 else: #{
                         entrada = entrada + '<e r="' + _restriction + '" a="' + _author + '">' + "\n";
-		#}
-
-		entrada = entrada + '  <p>' + "\n"; 
-		entrada = entrada + '    <l>' + _lemma1 + _symbol_list_left + '</l>' + "\n";
-		entrada = entrada + '    <r>' + _lemma2 + _symbol_list_right + '</r>' + "\n";
-		entrada = entrada + '  </p>' + "\n";
-		entrada = entrada + '</e>' + "\n";
-
-                if _comment != '': #{
-                        entrada = entrada + '<!-- ' + _comment + ' -->' + "\n"; 
                 #}
 
-		print >> sys.stderr, entrada;
+		_symbol_list_left = '<s n="' + _tag + '"/>';
+		_symbol_list_right = '<s n="' + _tag + '"/>';
+
+                entrada = entrada + '  <p>' + "\n";
+                entrada = entrada + '    <l>' + _lemma1 + _symbol_list_left + '</l>' + "\n";
+                entrada = entrada + '    <r>' + _lemma2 + _symbol_list_right + '</r>' + "\n";
+                entrada = entrada + '  </p>' + "\n";
+                entrada = entrada + '</e>' + "\n";
+
+                if _comment != '': #{
+                        entrada = entrada + '<!-- ' + _comment + ' -->' + "\n";
+                #}
+
+                print >> sys.stderr, entrada;
 
                 return entrada;
+	#}
+
+        def generate_bidix_entrada(self, _lemma1, _lemma2, _paradigm1, _paradigm2, _tag, _restriction, _comment, _author): #{
+		print >> sys.stderr,  'generate_bidix_entrada (' + self.side + ')';
+
+		if _lemma1 == '' or _lemma2 == '' or _paradigm1 == None or _paradigm2 == None: #
+			return '';
+		#}
+
+		if _tag == 'n' or _tag == 'adj' or _tag == 'np': #{
+			hash_left = self.hashes_left[_paradigm1.name];
+			hash_right = self.hashes_right[_paradigm2.name];
+			print >> sys.stderr, 'left: ' + hash_left + '; right: ' + hash_right + '; n. templates: ' + str(len(self.templates));
+	
+			if hash_left not in self.templates: #{
+				print >> sys.stderr, 'left hash not found in templates: ' + hash_left;
+				return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author); 
+			#}
+
+			if hash_right not in self.templates[hash_left]: #{
+				print >> sys.stderr, 'right hash not found in templates[' + hash_left + ']: ' + hash_right;
+				for key in self.templates[hash_left]: #{
+					print >>sys.stderr, '* ' + key; 
+				#}
+				return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author); 
+			#}
+	
+			entrada = self.templates[hash_left][hash_right];
+			entrada = entrada.replace('lemma1', _lemma1).replace('lemma2', _lemma2);
+
+                	print >> sys.stderr, entrada;
+			
+			return entrada;
+		#}
+
+                return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author);
         #}
 
         def incondicional(self, _lemma, _paradigm): #{
@@ -391,6 +369,7 @@ class Pair: #{
 		self.dictionary = {};
 		self.cache = {};
 		self.tags = {};
+		self.templates = {};
 
 		self.populate();
 	#}
@@ -405,13 +384,23 @@ class Pair: #{
 
 			print ' % (' + current_dict + ') ' + side + ', ' + filename;
 			doc = NonvalidatingReader.parseUri('file:///' + filename);
-			self.dictionary[side] = Dictionary(side, current_dict, filename, doc, self.tags);
+			self.dictionary[side] = Dictionary(side, current_dict, filename, doc, self.tags, self.templates);
 		#}
-
+		self.dictionary['bidix'].hashes_left = self.dictionary['left'].hashes;
+		self.dictionary['bidix'].hashes_right = self.dictionary['right'].hashes;
 	#}
 
 	def dictionary(self, _side): #{
 		return self.dictionaries[_side];
+	#}
+
+	def set_templates(self, _templates): #{
+		print >> sys.stderr , 'Loaded ' + str(len(_templates)) + ' templates';
+		self.templates = _templates;
+
+		self.dictionary['left'].templates = _templates;
+		self.dictionary['bidix'].templates = _templates;
+		self.dictionary['right'].templates = _templates;
 	#}
 
 	def add_tag(self, _name, _list): #{

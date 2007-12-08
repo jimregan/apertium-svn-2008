@@ -160,31 +160,31 @@ class add: #{
 #}
 
 if __name__ == "__main__": #{
-    try: #{
-        pid = os.fork();
-        if pid > 0: #{
-            sys.exit(0);
-        #}
-    except OSError, e: #{
-        print >>sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror); 
-        sys.exit(1);
-    #}
-
-    #os.chdir("/");
-    os.setsid();
-    os.umask(0);
-
-    try: #{
-        pid = os.fork();
-        if pid > 0: #{
-            print "Daemon PID %d" % pid;
-            sys.exit(0);
-        #}
-    except OSError, e: #{
-        print >>sys.stderr, "fork #2 failed: %d (%s)" % (e.errno, e.strerror);
-        sys.exit(1);
-    #}
-
-    sys.stderr = open(Globals.config.log_file, 'a+')
+#    try: #{
+#        pid = os.fork();
+#        if pid > 0: #{
+#            sys.exit(0);
+#        #}
+#    except OSError, e: #{
+#        print >>sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror); 
+#        sys.exit(1);
+#    #}
+#
+#    #os.chdir("/");
+#    os.setsid();
+#    os.umask(0);
+#
+#    try: #{
+#        pid = os.fork();
+#        if pid > 0: #{
+#            print "Daemon PID %d" % pid;
+#            sys.exit(0);
+#        #}
+#    except OSError, e: #{
+# #       print >>sys.stderr, "fork #2 failed: %d (%s)" % (e.errno, e.strerror);
+#        sys.exit(1);
+#    #}
+#
+#    sys.stderr = open(Globals.config.log_file, 'a+')
     web.run(urls, globals());
 #}

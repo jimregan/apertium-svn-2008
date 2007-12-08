@@ -2,7 +2,7 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import sys, string, codecs, xml, os, Ft;
+import sys, string, codecs, xml, os, Ft, re, md5, cStringIO;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.XPath import Evaluate;
 from pair import *;
@@ -17,11 +17,45 @@ class Config: #{
 		self.log_file = '';
 		self.pairs = {};
 		self.working_directory = None;
+		self.templates_directory = None;
+	#}
+
+	def load_templates(self, _file): #{
+		print 'templates: ' + 'file:///' + self.working_directory + '/' + self.templates_directory + '/' + _file;
+		tmpldoc = NonvalidatingReader.parseUri('file:///' + self.working_directory + '/' + self.templates_directory + '/' + _file);
+
+		matrix = {};
+
+		for left in Ft.Xml.XPath.Evaluate('.//left', contextNode=tmpldoc): #{
+			left_hash = left.getAttributeNS(None, 'id');
+			if left_hash not in matrix: #{
+				matrix[left_hash] = {};
+			#}
+			for right in Ft.Xml.XPath.Evaluate('.//right', contextNode=left): #{
+				right_hash = right.getAttributeNS(None, 'id');
+				if right_hash not in matrix[left_hash]: #{
+					matrix[left_hash][right_hash] = '';
+				#}
+				for template in  Ft.Xml.XPath.Evaluate('.//template', contextNode=right): #{
+				        buf = cStringIO.StringIO();
+				        Ft.Xml.Domlette.Print(template, stream=buf, encoding='utf-8');
+				        text = buf.getvalue();
+				        buf.close();
+
+					matrix[left_hash][right_hash] = text.replace('<template>', '').replace('</template>', '');
+
+					print 'Added template (' + left_hash + ':' + right_hash + '); length: ' + str(len(text));
+				#}
+			#}
+		#}
+
+		return matrix;
 	#}
 
 	def parse_config(self): #{
 		self.working_directory = self.config.xpath('/webforms/directories/wd')[0].firstChild.nodeValue;
 		self.cache_directory = self.config.xpath('/webforms/directories/cache')[0].firstChild.nodeValue;
+		self.templates_directory = self.config.xpath('/webforms/directories/templates')[0].firstChild.nodeValue;
 		self.log_file = self.config.xpath('/webforms/log-file')[0].firstChild.nodeValue;
 
 		path = '/webforms/pairs/pair';
@@ -36,7 +70,12 @@ class Config: #{
 
 			self.pairs[pair_name] = Pair(self.working_directory, pair_name, node);
 			self.pairs[pair_name].cache = self.cache_directory + pair_name + '/';
-			
+				
+			templates = {};
+			for tmpls in Ft.Xml.XPath.Evaluate(".//templates",contextNode=node): #{
+				templates = self.load_templates(tmpls.getAttributeNS(None, 'file'));
+			#}
+
 			for enabled_tag in Ft.Xml.XPath.Evaluate(".//tag",contextNode=node): #{
 				tag_name = enabled_tag.getAttributeNS(None, 'n');
 				shows = [];
@@ -65,6 +104,7 @@ class Config: #{
 
 				self.pairs[pair_name].add_tag(tag_name, shows);
 			#}
+			self.pairs[pair_name].set_templates(templates);
 		#}
 
 
