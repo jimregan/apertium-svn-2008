@@ -19,6 +19,10 @@
      <cat-item tags="det"/>
      <cat-item tags="det.*"/>
   </def-cat>
+  <def-cat n="prefix-adj">
+     <cat-item tags="pref.adj"/>
+     <cat-item tags="pref.adj.*"/>
+  </def-cat>
 </section-def-cats>
 
 <section-def-attrs>
@@ -35,6 +39,10 @@
 
   <def-attr n="a_adj">
      <attr-item tags="adj"/>
+     <attr-item tags="adj.pos"/>
+     <attr-item tags="adj.comp"/>
+     <attr-item tags="adj.sup"/>
+     <attr-item tags="adj.itg"/>
   </def-attr>
 
   <def-attr n="a_prn">
@@ -112,7 +120,23 @@
      </action>
   </rule>
 
-
+  <rule>
+     <pattern>
+       <pattern-item n="prefix-adj"/>
+       <pattern-item n="adj"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <clip pos="2" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_adj"/>
+           <clip pos="2" side="tl" part="gen"/>
+           <clip pos="2" side="tl" part="nbr"/>
+           <lit-tag v="nom"/>
+         </lu>
+       </out>
+     </action>
+  </rule>
 
   <rule>
      <pattern>
