@@ -59,7 +59,7 @@ template = {
 
 # Default global values
 class Globals:
-    lt_proc_path  = '/usr/local/bin/lt-proc'
+    lt_proc_path  = '/usr/local/bin/lt-proc' # default location for lt-proc
 
 # Parse an XML document and return a DOM tree. 
 def load_xml_file(filename):
@@ -70,19 +70,45 @@ def extract_entries(doc, side='l'):
     return doc.xpath("/dictionary/section[@id='main']/e/p/" + side)
 
 def make_input_list(lst):
+    """lst is list of DOM nodes. Get all the child text nodes for each
+    node and concatenate the text in those nodes. Form a list of these
+    new strings.
+
+    If n is the tree <p>foo</b>bar</p>, we will extract 'foobar' from n.
+    One should probably take special care of the <b/> tags; this is not
+    currently done.
+    """
     return [nodes_to_string(node.xpath('./text()')) for node in lst]
 
 pattern = re.compile(r'<s n="([a-zA-Z0-9]*)"/>')
 def transform_tags(tag):
+    """Change a tag of the form <s n=\"tagname\"> to <tagname>"""
     return pattern.sub(r'<\1>', tag)
 
 def make_compare_list(lst):
     return [transform_tags(nodes_to_string(node.childNodes)) for node in lst]
 
 def process_output(output):
+    """Split a set of newline separated morphological analyses,
+and for each morphological analysis, strip off '^' and '$'
+and split the analysis along the character '/'. This creates
+a list of lists.
+
+    For example,
+      ^vat/vat<n><sg>/vat<vblex><pres>/vat<vblex><inf>$
+      ^kla/kla<vblex><pres>/kla<vblex><inf>$
+      ^nag/nag<n><sg>$
+      
+    will be split into
+      [['vat', 'vat<n><sg>', 'vat<vblex><pres>', 'vat<vblex><inf>'],
+       ['kla', 'kla<vblex><pres>', 'kla<vblex><inf>'],
+       ['nag', 'nag<n><sg>']]"""
     return [line.strip('^$').split('/') for line in output.split('\n')]
 
 def extract_tags(s):
+    """Given an entry such as: 'foo<bar><baz>', return ('foo', '<bar><baz>').
+    We ignore <g> and <b/> tags. Thus, we will split 'foo<g><b/>bar</g><baz>'
+    into ('foo<g><b/>bar</g>', '<baz>')."""
     i = 0
     while True:
         if s[i] == '<':
@@ -98,6 +124,13 @@ def extract_tags(s):
         i += 1
 
 def call(name, input=''):
+    """A convenience function to invoke a subprocess with the
+    parameter list name (where the first argument is the name
+    of an executable). The subprocess is fed the contents of
+    input via stdin. We collect the output of both stdout and
+    stderr from the subprocess. If stderr is not empty, we
+    raise an exception, otherwise we return the contents of
+    stdout."""
     proc = Popen(name, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate(input)
     
