@@ -17,6 +17,32 @@ from Ft.Xml.Domlette import Print, PrettyPrint;
 from Ft.Xml.XPath import Evaluate;
 
 """
+This tool is used to find entries which are in the bidix but not in a monodix.
+
+If a word is in a monodix, then lt-proc will produce one or more morphological
+analyses for the word. For example, the Afrikaans word 'vat' is both a noun and
+a verb. The Afrikaans monodix contains both these meanings. Therefore, when
+we feed 'vat' to 'lt-proc af-en.automorf.bin', it will produce:
+  ^vat/vat<n><sg>/vat<vblex><pres>/vat<vblex><inf>$^./.<sent>
+
+In the monodix, we are likely to have two entries:
+  <e><p><l>barrel<s n=\"n\"/></l><r>vat<s n=\"n\"/></r></p></e>
+and
+  <e><p><l>take<s n=\"vblex\"/></l><r>vat<s n=\"vblex\"/></r></p></e>
+
+So, we can extract 'vat<n>' and 'vat<vblex>' from the bidix. One can see that
+  vat<n> is a substring of vat<n><sg>
+and that
+  vat<vblex> is a substring of <vat><vblex><pres> as well as vat<vblex><inf>
+
+In other words, if a bidix definition such as 'vat<n>' has a corresponding
+monodix entry, then the morphological analyser when given the word 'vat',  must
+produce at least one string of which 'vat<n>' will be a substring. In the
+above example, that string is 'vat<n><sg>'.
+
+Conversely, if the morphological analyser produces no such string, then
+there is no corresponding monodix entry. This is exactly the property we use
+to find the missing monodix entries.
 """
 
 
@@ -24,7 +50,7 @@ from Ft.Xml.XPath import Evaluate;
 template = {
     '<vblex>'  : '<par n="breek__vblex"/>',
     '<adj>'    : '<par n="dadelik__adj"/>',
-    '<n>'      : '<par n="appèl__n"/>',
+    '<n>'      : '<par n="artikel__n"/>',
     '<n><unc>' : '<par n="poësie__n__unc"/>',
     '<np>'     : '<par n="Engeland__np"/>',
     '<adv>'    : '<par n="miskien__adv"/>',
@@ -134,6 +160,17 @@ def nodes_to_string(lst):
 
 
 
+def eliminate_duplicates(lst):
+    seen_before = {}
+    new_lst = []
+
+    for item in lst:
+        if item not in seen_before:
+            seen_before[item] = True
+            new_lst.append(item)
+
+    return new_lst
+    
 
 def main(automorf_path, bidix_path, lt_proc_path=Globals.lt_proc_path, output=None, side='l'):
     """usage: find-missing-monodix-entries.py <options>
@@ -166,7 +203,7 @@ def main(automorf_path, bidix_path, lt_proc_path=Globals.lt_proc_path, output=No
     doc = load_xml_file(bidix_path)
     entries = extract_entries(doc, side)
     missing = find_missing_entries(automorf_path, entries)
-    write_entries_to_file(out_file, missing)
+    write_entries_to_file(out_file, eliminate_duplicates(missing))
     out_file.close()
     
     exit(0)
