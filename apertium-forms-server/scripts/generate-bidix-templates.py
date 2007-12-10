@@ -16,9 +16,9 @@ if len(sys.argv) < 4: #{
 	sys.exit(-1);
 #}
 
-left_file  = os.getcwd() + '/' + sys.argv[1];
-bidix_file = os.getcwd() + '/' + sys.argv[2];
-right_file = os.getcwd() + '/' + sys.argv[3];
+left_file  =  sys.argv[1];
+bidix_file =  sys.argv[2];
+right_file =  sys.argv[3];
 
 left = NonvalidatingReader.parseUri('file://' + left_file);
 bidix = NonvalidatingReader.parseUri('file://' + bidix_file);
