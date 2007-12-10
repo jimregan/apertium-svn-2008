@@ -307,6 +307,7 @@
     <def-attr n="a_num">
       <attr-item tags="num"/>
       <attr-item tags="num.percent"/>
+      <attr-item tags="det.def"/>
     </def-attr>
 
     <def-attr n="a_verb">
@@ -600,7 +601,16 @@
 	  <list-item v="impliquer"/> ja els faré quan tingui els par verb, que està sent un caos-->
     </def-list>
 
-  
+   <def-list n="numerals">
+      <list-item v="veintiuno"/>
+      <list-item v="trenta y uno"/>
+      <list-item v="cuarenta y uno"/>
+      <list-item v="cincuenta y uno"/>
+      <list-item v="sesenta y uno"/>
+      <list-item v="setenta y uno"/>
+      <list-item v="ochenta y uno"/>
+      <list-item v="noventa y uno"/>
+    </def-list>
 
   </section-def-lists>
 
@@ -3597,6 +3607,31 @@
       </choose>
     </def-macro>
 
+
+
+<def-macro n="numeral" npar="2">
+      <choose>
+	<when>
+	  <test>
+	    <and>
+	      <in caseless="yes">
+		<clip pos="1" side="tl" part="lem"/>
+		<list n="numerals"/>
+	      </in>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="m"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <let>
+	      <clip pos="1" side="tl" part="a_num"/>
+	      <lit-tag v="det.def"/>
+	  </let>
+	</when>
+      </choose>
+</def-macro>
+	    
   </section-def-macros> 
 
   <section-rules>
@@ -3844,6 +3879,10 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="tipus_nom">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="numeral">
+	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
 	<choose>
@@ -4134,6 +4173,10 @@
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>	
+	<call-macro n="numeral">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<out>
 	  <chunk name="det_num_nom" case="caseFirstWord">
 	    <tags>
@@ -4841,6 +4884,10 @@
 	<call-macro n="f_lexicadj">
 	  <with-param pos="3"/>
 	</call-macro>
+	<call-macro n="numeral">
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
 	<out>
 	  <chunk name="num_adv_adj_nom" case="caseFirstWord">
 	    <tags>
@@ -4910,6 +4957,10 @@
 	</call-macro>
 	<call-macro n="f_lexicadj">
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="numeral">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
 	</call-macro>
 	<out>
 	  <chunk name="num_adj_nom" case="caseFirstWord">
@@ -4982,6 +5033,10 @@
 	</call-macro>
 	<call-macro n="f_lexicadj">
 	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="numeral">
+	  <with-param pos="1"/>
+	  <with-param pos="5"/>
 	</call-macro>
 	<out>
 	  <chunk name="num_adj_cnjcoo_adj_nom" case="caseFirstWord">
@@ -5061,6 +5116,10 @@
 	</call-macro>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="numeral">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
 	</call-macro>
 	<out>
 	  <chunk name="num_nom_adj" case="caseFirstWord">
@@ -5265,6 +5324,10 @@
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_nom">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="numeral">
+	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
 	<out>
