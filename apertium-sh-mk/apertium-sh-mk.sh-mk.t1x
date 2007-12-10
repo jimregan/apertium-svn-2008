@@ -6,13 +6,15 @@
      <cat-item tags="n.*"/>
      <cat-item tags="np.*"/>
   </def-cat>
+  <def-cat n="vblex">
+     <cat-item tags="vblex.*"/>
+  </def-cat>
   <def-cat n="prn">
      <cat-item tags="prn.*"/>
   </def-cat>
   <def-cat n="adj">
      <cat-item tags="adj.*"/>
   </def-cat>
-
   <def-cat n="pr">
      <cat-item tags="pr"/>
   </def-cat>
@@ -23,6 +25,9 @@
   <def-cat n="prefix-adj">
      <cat-item tags="pref.adj"/>
      <cat-item tags="pref.adj.*"/>
+  </def-cat>
+  <def-cat n="exp">
+     <cat-item tags="part.exp"/>
   </def-cat>
 </section-def-cats>
 
@@ -46,10 +51,21 @@
      <attr-item tags="adj.itg"/>
   </def-attr>
 
+  <def-attr n="a_vrb">
+     <attr-item tags="vblex"/>
+  </def-attr>
 
   <def-attr n="a_prn">
      <attr-item tags="prn"/>
      <attr-item tags="prn.itg"/>
+  </def-attr>
+
+  <def-attr n="tns">
+     <attr-item tags="pri"/>
+     <attr-item tags="imp"/>
+     <attr-item tags="aor"/>
+     <attr-item tags="fti"/>
+     <attr-item tags="past"/>
   </def-attr>
 
   <def-attr n="gen">
@@ -106,6 +122,51 @@
 
   <rule>
      <pattern>
+       <pattern-item n="vblex"/>
+     </pattern>
+     <action>
+       <choose>
+         <!--  When a verb is in the future indicative
+               we need to add the expectative particle  -->
+         <when>
+           <test>
+             <equal>
+               <clip pos="1" side="sl" part="tns"/>
+               <lit-tag v="fti"/>
+             </equal>
+           </test>
+           <out>
+             <lu>
+               <lit v="ќе"/>
+               <lit-tag v="part.exp"/>
+             </lu>
+	     <b/>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_vrb"/>
+	       <lit-tag v="pri"/>
+               <clip pos="1" side="tl" part="prs"/>
+               <clip pos="1" side="tl" part="nbr"/>
+             </lu>
+           </out>
+         </when>
+         <otherwise>
+           <out>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_vrb"/>
+               <clip pos="1" side="tl" part="tns"/>
+               <clip pos="1" side="tl" part="prs"/>
+               <clip pos="1" side="tl" part="nbr"/>
+             </lu>
+           </out>
+         </otherwise>
+       </choose>
+     </action>
+  </rule>
+
+  <rule>
+     <pattern>
        <pattern-item n="adj"/>
      </pattern>
      <action>
@@ -144,6 +205,8 @@
        </choose>
      </action>
   </rule>
+
+
 
   <rule>
      <pattern>
