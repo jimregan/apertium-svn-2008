@@ -125,43 +125,15 @@
        <pattern-item n="vblex"/>
      </pattern>
      <action>
-       <choose>
-         <!--  When a verb is in the future indicative
-               we need to add the expectative particle  -->
-         <when>
-           <test>
-             <equal>
-               <clip pos="1" side="sl" part="tns"/>
-               <lit-tag v="fti"/>
-             </equal>
-           </test>
-           <out>
-             <lu>
-               <lit v="ќе"/>
-               <lit-tag v="part.exp"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_vrb"/>
-	       <lit-tag v="pri"/>
-               <clip pos="1" side="tl" part="prs"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </when>
-         <otherwise>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_vrb"/>
-               <clip pos="1" side="tl" part="tns"/>
-               <clip pos="1" side="tl" part="prs"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </otherwise>
-       </choose>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_vrb"/>
+           <clip pos="1" side="tl" part="tns"/>
+           <clip pos="1" side="tl" part="prs"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+       </out>
      </action>
   </rule>
 
