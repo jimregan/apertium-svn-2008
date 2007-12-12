@@ -143,6 +143,10 @@
 	  <attr-item tags="ND"/>
       </def-attr>
 
+   <def-attr n="tnom">
+          <attr-item tags="loc"/>
+      </def-attr>
+
 		<def-attr n="tipusrel">
 			<attr-item tags="quan"/>
 		</def-attr>
@@ -239,216 +243,30 @@
 
 <section-def-macros>
 
-<!--	<def-macro n="cv_prep_verb" npar="1">
-		<choose> 
-			<when>
-				<test>
-					<equal>
-						<clip pos="1" part="tverb"/>
-						<lit-tag v="vbamb_a"/>
-					</equal>
-				</test>
-				<let>
-					<var n="tipusverb"/>
-					<lit v="amb_a"/>
-				</let>
-			</when>
-			<otherwise>
-				<choose> 
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="tverb"/>
-								<lit-tag v="vba_en"/>
-							</equal>
-						</test>
-						<let>
-							<var n="tipusverb"/>
-							<lit v="a_en"/>
-						</let>
-					</when>
-					<otherwise>
-						<choose> 
-							<when>
-								<test>
-									<equal>
-										<clip pos="1" part="tverb"/>
-										<lit-tag v="vba_sus"/>
-									</equal>
-								</test>
-								<let>
-									<var n="tipusverb"/>
-									<lit v="a_sus"/>
-								</let>
-							</when>
 
-							<otherwise>
-								<let>
-									<var n="tipusverb"/>
-									<lit v="niflowers"/>
-								</let>
-							</otherwise>
-						</choose>
-					</otherwise>
-				</choose>
-			</otherwise>
-		</choose>
-	</def-macro>
 
-	<def-macro n="cv_prep" npar="1">
+	<def-macro n="cv_prep" npar="2">
 		<choose> 
 			<when>
 				<test>
 					<and>
 						<equal>
 							<clip pos="1" part="lem"/>
-							<lit v="amb"/>
+							<lit v="a"/>
 						</equal>
 						<equal>
-							<var n="tipusverb"/>
-							<lit v="amb_a"/>
+							<clip pos="2" part="tnom"/>
+							<lit-tag v="loc"/>
 						</equal>
 					</and>
 				</test>
 				<let>
 					<clip pos="1" part="lem"/>
-					<lit v="a"/>
+					<lit v="en"/>
 				</let>
 			</when>
-			<otherwise>
-				<choose> 
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="lem"/>
-								<lit v="a"/>
-							</equal>
-						</test>
-						<choose> 
-							<when>
-								<test>
-									<equal>
-										<var n="tipusverb"/>
-										<lit v="a_sus"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="1" part="lem"/>
-									<lit v="sus"/>
-								</let>
-							</when>
-							<otherwise>
-								<choose> 
-									<when>
-										<test>
-											<equal>
-												<var n="tipusverb"/>
-												<lit v="a_en"/>
-											</equal>
-										</test>
-										<let>
-											<clip pos="1" part="lem"/>
-											<lit v="en"/>
-										</let>
-									</when>
-								</choose>
-							</otherwise>
-						</choose>
-
-					</when>
-				</choose>
-			</otherwise>
 		</choose>
-	</def-macro>-->
-
-
-<!--	<def-macro n="cv_prep" npar="2">
-		<choose> 
-			<when>
-				<test>
-					<or>
-						<equal>
-							<clip pos="2" part="lem"/>
-							<lit v="a"/>
-						</equal>
-						<equal>
-							<clip pos="2" part="lem"/>
-							<lit v="en"/>
-						</equal>
-						<equal>
-							<clip pos="2" part="lem"/>
-							<lit v="dins"/>
-						</equal>
-						<equal>
-							<clip pos="2" part="lem"/>
-							<lit v="sus"/>
-						</equal>
-						<equal>
-							<clip pos="2" part="lem"/>
-							<lit v="amb"/>
-						</equal>
-					</or>
-				</test>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="tverb"/>
-								<lit-tag v="vba"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="2" part="lem"/>
-							<lit v="a"/>
-						</let>
-					</when>
-				</choose>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="tverb"/>
-								<lit-tag v="vben"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="2" part="lem"/>
-							<lit v="en"/>
-						</let>
-					</when>
-				</choose>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="tverb"/>
-								<lit-tag v="vbdins"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="2" part="lem"/>
-							<lit v="dins"/>
-						</let>
-					</when>
-				</choose>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="tverb"/>
-								<lit-tag v="vbsus"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="2" part="lem"/>
-							<lit v="sus"/>
-						</let>
-					</when>
-				</choose>
-			
-			</when>
-		</choose>
-	</def-macro>-->
+	</def-macro>
 
 	<def-macro n="partitiu" npar="1">
 		<choose alt="oc">
@@ -873,214 +691,104 @@
 	</choose>
 </def-macro>
 
-<def-macro n="assigna_nombre_subj" npar="1">
-	<choose><!--mirem el nbr-->
-		<when>
-			<test>
-				<or>
+
+	<def-macro n="concord_sa" npar="2"><!--assigna el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tía es interesante" -> "interesante" concordarà amb "aperçu")-->
+		<choose>
+			<when> 
+				<test>
 					<equal>
-						<var n="nombre_subj"/>
-						<lit v="no_assignat"/>
+						<clip pos="1" part="gen"/>
+						<lit-tag v="f"/>
 					</equal>
+				</test>
+				<let>
+					<clip pos="2" part="gen"/>
+					<lit-tag v="f"/>
+				</let>
+			</when>
+			<otherwise>
+				<let>
+					<clip pos="2" part="gen"/>
+					<lit-tag v="m"/>
+				</let>
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when> 
+				<test>
 					<equal>
-						<var n="nombre_subj"/>
-						<lit v=""/>
+						<clip pos="1" part="nbr"/>
+						<lit-tag v="pl"/>
 					</equal>
+				</test>
+				<let>
+					<clip pos="2" part="nbr"/>
+					<lit-tag v="pl"/>
+				</let>
+			</when>
+			<otherwise>
+				<let>
+					<clip pos="2" part="nbr"/>
+					<lit-tag v="sg"/>
+				</let>
+			</otherwise>
+		</choose>
+	</def-macro>
+
+	<def-macro n="concord_pp" npar="2">
+		<choose>
+			<when> 
+				<test>
 					<equal>
-						<var n="nombre_subj"/>
-						<lit v=""/>
+						<clip pos="1" part="gen"/>
+						<lit-tag v="f"/>
 					</equal>
-				</or>
-			</test>
-			<let><var n="nombre_subj"/><clip pos="1" part="nbr"/></let>
-		</when>
-		<otherwise>
-			<choose>
-				<when>
-					<test>
-						<or>
-						<equal>
-							<var n="nombre_subj"/>
-							<lit-tag v="vist_sg"/>
-						</equal>
-						<equal>
-							<var n="nombre_subj"/>
-							<lit-tag v="sg"/>
-						</equal>
-						</or>
-					</test>
-					<let><var n="nombre_subj"/><lit-tag v="pl"/></let>
-				</when>
-			</choose>
-		</otherwise>
-	</choose>
-	<choose><!--i aquí la pers-->
-		<when>
-			<test>
-				<or>
-				<equal>
-					<var n="pers_subj"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<var n="pers_subj"/>
-					<lit v=""/>
-				</equal>
-				</or>
-			</test>
-			<choose>
-				<when>
-					<test>
-						<equal>
-							<clip pos="1" part="pers"/>
-							<lit-tag v="p1"/>
-						</equal>
-					</test>
-					<let><var n="pers_subj"/><lit-tag v="p1"/></let>
-				</when>
-				<otherwise>
-					<choose>
-						<when>
-							<test>
-								<equal>
-									<clip pos="1" part="pers"/>
-									<lit-tag v="p2"/>
-								</equal>
-							</test>
-							<let><var n="pers_subj"/><lit-tag v="p2"/></let>
-						</when>
-						<otherwise><let><var n="pers_subj"/><lit-tag v="p3"/></let></otherwise>
-					</choose>
-				</otherwise>
-			</choose>
-		</when>
-		<otherwise>
-			<choose>
-				<when>
-					<test>
-						<equal>
-							<var n="pers_subj"/>
-							<lit-tag v="p2"/>
-						</equal>
-					</test>
-					<choose>
-						<when>
-							<test>
-								<equal>
-									<clip pos="1" part="pers"/>
-									<lit-tag v="p1"/>
-								</equal>
-							</test>
-							<let><var n="pers_subj"/><lit-tag v="p1"/></let>
-						</when>
-<!-- és p2 -->
-					</choose>
-				</when>
-			</choose>
-		</otherwise>
-	</choose>
+				</test>
+				<let>
+					<clip pos="2" part="gen_pp"/>
+					<lit-tag v="f"/>
+				</let>
+			</when>
+			<otherwise>
+				<let>
+					<clip pos="2" part="gen_pp"/>
+					<lit-tag v="m"/>
+				</let>
+			</otherwise>
+		</choose>
 
-</def-macro>
+		<choose>
+			<when> 
+				<test>
+					<equal>
+						<clip pos="1" part="nbr"/>
+						<lit-tag v="pl"/>
+					</equal>
+				</test>
+				<let>
+					<clip pos="2" part="nbr_pp"/>
+					<lit-tag v="pl"/>
+				</let>
+			</when>
+			<otherwise>
+				<let>
+					<clip pos="2" part="nbr_pp"/>
+					<lit-tag v="sg"/>
+				</let>
+			</otherwise>
+		</choose>
+	</def-macro>
 
-<def-macro n="concord_sa" npar="2"><!--assigna el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tía es interesante" -> "interesante" concordarà amb "aperçu")-->
-					<choose>
-						<when> 
-							<test>
-								<equal>
-									<clip pos="1" part="gen"/>
-									<lit-tag v="f"/>
-								</equal>
-							</test>
-							<let>
-								<clip pos="2" part="gen"/>
-								<lit-tag v="f"/>
-							</let>
-						</when>
-						<otherwise>
-							<let>
-								<clip pos="2" part="gen"/>
-								<lit-tag v="m"/>
-							</let>
-						</otherwise>
-					</choose>
-	
-					<choose>
-						<when> 
-							<test>
-								<equal>
-									<clip pos="1" part="nbr"/>
-									<lit-tag v="pl"/>
-								</equal>
-							</test>
-							<let>
-								<clip pos="2" part="nbr"/>
-								<lit-tag v="pl"/>
-							</let>
-						</when>
-						<otherwise>
-							<let>
-								<clip pos="2" part="nbr"/>
-								<lit-tag v="sg"/>
-							</let>
-						</otherwise>
-					</choose>
-	
-</def-macro>
-
-<def-macro n="concord_pp" npar="2">
-					<choose>
-						<when> 
-							<test>
-								<equal>
-									<clip pos="1" part="gen"/>
-									<lit-tag v="f"/>
-								</equal>
-							</test>
-							<let>
-								<clip pos="2" part="gen_pp"/>
-								<lit-tag v="f"/>
-							</let>
-						</when>
-						<otherwise>
-							<let>
-								<clip pos="2" part="gen_pp"/>
-								<lit-tag v="m"/>
-							</let>
-						</otherwise>
-					</choose>
-	
-					<choose>
-						<when> 
-							<test>
-								<equal>
-									<clip pos="1" part="nbr"/>
-									<lit-tag v="pl"/>
-								</equal>
-							</test>
-							<let>
-								<clip pos="2" part="nbr_pp"/>
-								<lit-tag v="pl"/>
-							</let>
-						</when>
-						<otherwise>
-							<let>
-								<clip pos="2" part="nbr_pp"/>
-								<lit-tag v="sg"/>
-							</let>
-						</otherwise>
-					</choose>
-	
-</def-macro>
-
-<def-macro n="concord_sn" npar="2"> <!--asgina gen i nbr en els sn GD o ND quan van seguits de vcop. (p.ex. "esta chica es mi ayudante)-->
-	<choose>
-		<when> 
-			<test>
+	<def-macro n="concord_sn" npar="2"> <!--asgina gen i nbr en els sn GD o ND quan van seguits de vcop. (p.ex. "esta chica es mi ayudante)-->
+		<choose>
+			<when> 
+				<test>
 					<equal>
 						<clip pos="2" part="gen"/>
 						<lit-tag v="GD"/>
 					</equal>
-			</test>
+				</test>
 					<choose>
 						<when> 
 							<test>
@@ -1101,16 +809,16 @@
 							</let>
 						</otherwise>
 					</choose>
-		</when>
-	</choose>
-	<choose>
-		<when> 
-			<test>
-					<equal>
-						<clip pos="2" part="nbr"/>
-						<lit-tag v="ND"/>
-					</equal>
-			</test>
+				</when>
+			</choose>
+			<choose>
+				<when> 
+					<test>
+						<equal>
+							<clip pos="2" part="nbr"/>
+							<lit-tag v="ND"/>
+						</equal>
+					</test>
 					<choose>
 						<when> 
 							<test>
@@ -1131,9 +839,9 @@
 							</let>
 						</otherwise>
 					</choose>
-		</when>
-	</choose>
-</def-macro>
+				</when>
+			</choose>
+		</def-macro>
 
   <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc cont�o no format. Cal posar aquesta funci�en les regles en qu�desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont�format cal conservar-la, si no en cont�cal eliminar-la perqu�no apareguin dos espais seguits. -->
      	<choose>
@@ -1286,6 +994,10 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="2"/>
 			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -1333,6 +1045,10 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -1370,9 +1086,9 @@
 				</chunk>
 				<b pos="3"/>
 			</out>
-<!--			<call-macro n="partitiu">
+			<call-macro n="partitiu">
 				<with-param pos="4"/>
-			</call-macro>-->
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="4" part="lem"/>
@@ -1412,6 +1128,11 @@
 					<clip pos="2" part="chcontent"/>
 				</chunk>
 				<b pos="2"/>
+			</out>
+				<call-macro n="partitiu">
+					<with-param pos="1"/>
+				</call-macro>
+			<out>
 				<chunk>
 					<clip pos="3" part="lem"/>
 					<clip pos="3" part="tags"/>
@@ -1519,6 +1240,10 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
 			<out>
@@ -1863,6 +1588,10 @@
 				<with-param pos="1"/>
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -1940,6 +1669,10 @@
 			<call-macro n="concord_pp">
 				<with-param pos="1"/>
 				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<out>
 				<chunk>
@@ -2024,6 +1757,10 @@
 				<with-param pos="1"/>
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -2107,6 +1844,10 @@
 			<call-macro n="concord_pp">
 				<with-param pos="1"/>
 				<with-param pos="4"/>
+			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<out>
 				<chunk>

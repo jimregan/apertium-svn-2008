@@ -426,92 +426,28 @@
      	</choose>
      </def-macro>
 
-<def-macro n="cv_prep" npar="2">
-	<choose> <!--canvia la prepo de lloc-->
-		<when>
-			<test>
-				<or>
-					<equal>
-						<clip pos="2" part="tprep"/>
-						<lit-tag v="a"/>
-					</equal>
-					<equal>
-						<clip pos="2" part="tprep"/>
-						<lit-tag v="ta"/>
-					</equal>
-					<equal>
-						<clip pos="2" part="tprep"/>
-						<lit-tag v="en"/>
-					</equal>
-					<equal>
-						<clip pos="2" part="tprep"/>
-						<lit-tag v="sus"/>
-					</equal>
-				</or>
-			</test>
-			<choose>
-				<when>
-					<test>
+	<def-macro n="cv_prep" npar="2">
+		<choose> 
+			<when>
+				<test>
+					<and>
 						<equal>
-							<clip pos="1" part="tverb"/>
-							<lit-tag v="vba"/>
-						</equal>
-					</test>
-					<let>
-						<clip pos="2" part="tprep"/>
-						<lit-tag v="a"/>
-					</let>
-				</when>
-			</choose>
-			<choose>
-				<when>
-					<test>
-						<equal>
-							<clip pos="1" part="tverb"/>
-							<lit-tag v="vben"/>
-						</equal>
-					</test>
-					<let>
-						<clip pos="2" part="tprep"/>
-						<lit-tag v="en"/>
-					</let>
-				</when>
-			</choose>
-		</when>
-<!--		<when><!-#-canvia SN à inf per SN para inf-#->
-			<test>
-				<and>
-					<equal>
-						<clip pos="1" part="a_SN"/>
-						<lit-tag v="SN"/>
-					</equal>
-					<equal>
-						<clip pos="2" part="tprep"/>
-						<lit-tag v="a"/>
-					</equal>
-					<or>
-						<equal>
-							<clip pos="3" part="lem"/>
-							<lit v="inf"/>
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
 						</equal>
 						<equal>
-							<clip pos="3" part="lem"/>
-							<lit v="pro_inf"/>
+							<clip pos="2" part="tnom"/>
+							<lit-tag v="loc"/>
 						</equal>
-						<equal>
-							<clip pos="3" part="lem"/>
-							<lit v="pro_pro_inf"/>
-						</equal>
-					</or>
-				</and>
-			</test>
-			<let>
-				<clip pos="2" part="tprep"/>
-				<lit-tag v="para"/>
-			</let>
-		</when>	-->
-	</choose>
-</def-macro>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="a"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
 
 </section-def-macros>
 
@@ -684,7 +620,71 @@
 			</choose>
 		</action>
 	</rule>
-	
+
+		<rule comment="REGLA: sprep">
+		<pattern>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<and>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="de"/>
+							</equal>
+							<or>
+								<equal>
+									<clip pos="2" part="nbr"/>
+									<lit-tag v="pl"/>
+								</equal>
+								<equal>
+									<clip pos="2" part="tnom"/>
+									<lit-tag v="part"/>
+								</equal>
+							</or>
+						</and>
+					</test>
+					<out>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<lit-tag v="treu_det"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+					</out>
+					<call-macro n="f_bcond">
+						<with-param pos="2"/>
+					</call-macro>
+				</when>
+				<otherwise>
+					<out>
+						<chunk>
+							<clip pos="1" part="lem"/>
+							<clip pos="1" part="tags"/>
+							<clip pos="1" part="chcontent"/>
+						</chunk>
+						<b pos="1"/>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+		</action>
+	</rule>
+
 	<rule comment="REGLA: prep sprep">
 		<pattern>
 			<pattern-item n="pr"/>
@@ -693,6 +693,14 @@
 		</pattern>
 		<action>
 			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
 			<choose>
@@ -725,6 +733,7 @@
 						<chunk>
 							<clip pos="3" part="lem"/>
 							<clip pos="3" part="tags"/>
+							<lit-tag v="treu_det"/>
 							<clip pos="3" part="chcontent"/>
 						</chunk>
 					</out>
@@ -767,6 +776,14 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="3"/>
 			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep" alt="oc@aran">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -797,6 +814,7 @@
 						<chunk>
 							<clip pos="3" part="lem"/>
 							<clip pos="3" part="tags"/>
+							<lit-tag v="treu_det"/>
 							<clip pos="3" part="chcontent"/>
 						</chunk>
 					</out>
@@ -842,9 +860,9 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="3"/>
 			</call-macro>
-			<call-macro n="cv_prep">
-				<with-param pos="1"/>
+			<call-macro n="cv_prep" alt="oc@aran">
 				<with-param pos="2"/>
+				<with-param pos="3"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -959,9 +977,9 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="4"/>
 			</call-macro>
-			<call-macro n="cv_prep">
-				<with-param pos="1"/>
+			<call-macro n="cv_prep" alt="oc@aran">
 				<with-param pos="3"/>
+				<with-param pos="4"/>
 			</call-macro>
 			<choose>
 				<when>
@@ -1005,6 +1023,7 @@
 						<chunk>
 							<clip pos="4" part="lem"/>
 							<clip pos="4" part="tags"/>
+							<lit-tag v="treu_det"/>
 							<clip pos="4" part="chcontent"/>
 						</chunk>
 					</out>

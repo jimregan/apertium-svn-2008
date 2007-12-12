@@ -2,8 +2,11 @@
 <postchunk>
   <section-def-cats>
 
-     <def-cat n="prep">
+  <!--   <def-cat n="prep">
       <cat-item name="pr"/>
+    </def-cat>-->
+    <def-cat n="pr">
+      <cat-item name="a"/>
     </def-cat>
 
    
@@ -191,7 +194,7 @@
 			</action>
 		</rule>
 		
-		<rule comment="fa els canvis de prepo">
+<!--		<rule comment="fa els canvis de prepo">
 			<pattern>
 				<pattern-item n="prep"/>
 			</pattern>
@@ -230,7 +233,7 @@
 					</lu> 
 				</out> 				
 			</action>
-		</rule> 
+		</rule> -->
 
 		<rule comment="treu el det 2elem">
 			<pattern>
@@ -429,5 +432,32 @@
 			</action>
 		</rule>
 	
+				<rule comment="CHUNK: canvia les prepos que fa falta">
+			<pattern>
+				<pattern-item n="pr"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="en"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+				</out>
+			</action>
+		</rule>
+		
 	</section-rules>
 </postchunk>

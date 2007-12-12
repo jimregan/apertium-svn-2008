@@ -53,9 +53,6 @@
 		
     <def-cat n="pr">
       <cat-item name="en"/>
-      <cat-item name="sus"/>
-      <cat-item name="dins"/>
-      <cat-item name="a"/>
     </def-cat>
 
     <def-cat n="qui">
@@ -569,6 +566,33 @@
 				</out>  
 			</action>
 		</rule> 
+
+		<rule comment="CHUNK: canvia les prepos que fa falta">
+			<pattern>
+				<pattern-item n="pr"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="a"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+				</out>
+			</action>
+		</rule>
 
 
 </section-rules>
