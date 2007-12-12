@@ -335,6 +335,31 @@
            </out>
          </when>
 
+	 <!-- When the preposition is "iz", set the case of the 
+	      following noun to the gen. -->
+         <when>
+           <test>
+             <equal>
+               <clip pos="1" side="tl" part="lem"/>
+               <lit v="iz"/>
+             </equal>
+           </test>
+           <out>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_prp"/>
+             </lu>
+             <b/>
+             <lu>
+               <clip pos="2" side="tl" part="lem"/>
+               <clip pos="2" side="tl" part="a_nom"/>
+               <clip pos="2" side="tl" part="gen"/>
+               <lit-tag v="gen"/>
+               <clip pos="2" side="tl" part="nbr"/>
+             </lu>
+           </out>
+         </when>
+
 	 <!-- When the preposition is "u", set the case of the 
 	      following noun to the locative. -->
          <when>
@@ -447,6 +472,40 @@
                <clip pos="3" side="tl" part="a_nom"/>
                <clip pos="3" side="tl" part="gen"/>
                <lit-tag v="loc"/>
+               <clip pos="3" side="tl" part="nbr"/>
+             </lu>
+           </out>
+         </when>
+
+
+	 <!-- When the preposition is "iz", set the case of the 
+	      following noun to the genitive. -->
+         <when>
+           <test>
+             <equal>
+               <clip pos="1" side="tl" part="lem"/>
+               <lit v="iz"/>
+             </equal>
+           </test>
+           <out>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_prp"/>
+             </lu>
+             <b/>
+             <lu>
+               <clip pos="2" side="tl" part="lem"/>
+               <clip pos="2" side="tl" part="a_adj"/>
+               <clip pos="3" side="tl" part="gen"/>
+               <clip pos="3" side="tl" part="nbr"/>
+               <lit-tag v="gen"/>
+             </lu>
+	     <b/>
+             <lu>
+               <clip pos="3" side="tl" part="lem"/>
+               <clip pos="3" side="tl" part="a_nom"/>
+               <clip pos="3" side="tl" part="gen"/>
+               <lit-tag v="gen"/>
                <clip pos="3" side="tl" part="nbr"/>
              </lu>
            </out>
