@@ -199,6 +199,7 @@
 
     <def-cat n="per">
       <cat-item lemma="per" tags="pr"/>
+      <cat-item lemma="per a" tags="pr"/>
     </def-cat>
 
     <def-cat n="de">
@@ -341,8 +342,8 @@
 
   </section-def-attrs>
   <section-def-vars>
-    <def-var n="nombre"/>
-    <def-var n="genere"/>
+    <def-var n="nombre" v="&amp;lt;sg&amp;gt;"/>
+    <def-var n="genere" v="&amp;lt;m&amp;gt;"/>
     <def-var n="concDet"/>
     <def-var n="concAdj"/>
     <def-var n="concPrimero"/>
@@ -352,10 +353,11 @@
     <def-var n="exclamativa"/>
     <def-var n="caseFirstWord"/> 
     <def-var n="lema"/>
-    <def-var n="EOS"/>
+    <def-var n="EOS" v="true"/>
     <def-var n="paraula1"/>
     <def-var n="SVnegatiu"/>
     <def-var n="auxiliar"/>
+    <def-var n="tempsv"/>
   </section-def-vars>
 
   <section-def-lists>
@@ -369,6 +371,15 @@
       <list-item v="gaire"/>
       <list-item v="tant"/>
       <list-item v="massa"/>
+    </def-list>
+
+
+
+ <def-list n="preps_inf">
+      <list-item v="so as to"/>
+      <list-item v="with a view to"/>
+      <list-item v="to"/>
+      <list-item v="in order to"/>
     </def-list>
   </section-def-lists>
 
@@ -446,7 +457,9 @@
       </choose> 
     </def-macro>
 
-    <def-macro n="firstWord" npar="1">
+   
+
+ <def-macro n="firstWord" npar="1">
       <choose>
 	<when>
 	  <test>
@@ -857,6 +870,79 @@
 
       </choose>
     </def-macro>
+
+
+
+
+<def-macro n="prep_inf" npar="2">
+      <choose>
+	<when>
+	  <test>
+	    <or>
+	      <equal caseless="yes">	      
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="per"/>
+	      </equal>
+	      <equal caseless="yes">	      
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="per a"/>
+	      </equal>
+	    </or>
+	  </test>
+	  <let>
+	    <clip pos="1" side="tl" part="lem"/>
+	    <lit v="to"/>
+	  </let>
+	</when>
+      </choose>
+      <choose>
+	<when>
+	  <test>
+	    <not>
+	      <in caseless="yes">
+		<clip pos="1" side="tl" part="lem"/>
+		<list n="preps_inf"/>
+	      </in>
+	    </not>
+	  </test>
+	  <let>	    
+	    <clip pos="2" side="tl" part="temps"/>
+	    <lit-tag v="ger"/>
+	  </let>
+	  <let>
+	    <var n="tempsv"/>
+	    <lit v="ger"/>
+	  </let>
+	  <choose>	    
+	    <when>
+	      <test>
+		<equal caseless="yes">
+		  <clip pos="2" side="sl" part="lem"/> 
+		  <lit v="poder"/>
+		</equal>
+	      </test>
+	      <let>		     
+		<clip pos="2" side="tl" part="lem"/>
+		<get-case-from pos="2">
+		  <lit v="be able to"/>
+		</get-case-from>
+	      </let>
+	      <let>		     
+		<clip pos="2" side="tl" part="a_verb"/>
+		<lit-tag v="vbmod"/>
+	      </let>
+	    </when>
+	  </choose>
+	</when>
+	<otherwise>
+	  <let>
+	    <var n="tempsv"/>
+	    <lit v="inf"/>
+	  </let>
+	</otherwise>
+      </choose>
+</def-macro>
+
 
   </section-def-macros> 
 
@@ -2001,7 +2087,11 @@
 		</lu> 
 	      </chunk>
 	      <b/>
-	    </out>  
+	    </out> 
+	    <let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	    </let>
 	  </when>
 	</choose>	  
 	<choose>
@@ -4237,25 +4327,28 @@
 
     <rule comment="PER + INF (per ajudar - to help (en general; cal estudiar quan hi va gerundi)">
       <pattern>
-	<pattern-item n="per"/> 
+	<pattern-item n="prep"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>       	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>    
+	</call-macro>      	
+	<call-macro n="prep_inf">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>
-	  <chunk name="to" case="caseFirstWord">
+	  <chunk name="pr" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
 	    <lu>
-	      <lit v="to"/>
-	      <clip pos="1" side="tl" part="tags"/>
+	      <clip pos="1" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
 	  <b pos="1"/>
-	  <chunk name="inf">
+	  <chunk namefrom="tempsv">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>

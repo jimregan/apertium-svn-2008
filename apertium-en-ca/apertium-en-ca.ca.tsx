@@ -1015,6 +1015,10 @@
       <label-item label="CNJSUBS"/>
       <label-item label="VLEXIMP"/>
     </label-sequence>
+ <label-sequence><!-- 'si guanya' -->
+      <label-item label="CNJADV"/>
+      <label-item label="VLEXIMP"/>
+    </label-sequence>
 
     <label-sequence>
       <label-item label="QUEREL"/>
@@ -1032,6 +1036,10 @@
       <label-item label="CNJSUBS"/>
       <label-item label="VSERIMP"/>
     </label-sequence>
+    <label-sequence>
+      <label-item label="CNJADV"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
    <label-sequence>
       <label-item label="QUEREL"/>
       <label-item label="VSERIMP"/>
@@ -1046,6 +1054,10 @@
     </label-sequence> -->
      <label-sequence>
       <label-item label="CNJSUBS"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+     <label-sequence>
+      <label-item label="CNJADV"/>
       <label-item label="VMODALIMP"/>
     </label-sequence>
     <label-sequence>
