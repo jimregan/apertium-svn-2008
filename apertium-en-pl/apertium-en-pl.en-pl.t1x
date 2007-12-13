@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
 
 <transfer default="chunk">
 <section-def-cats>
@@ -52,6 +52,10 @@
       <cat-item tags="pr"/>
       <cat-item tags="pr.*"/>
     </def-cat>
+    <def-cat n="number"> <!-- number -->
+      <cat-item tags="num"/>
+      <cat-item tags="num.*"/>
+    </def-cat>
     <def-cat n="num_234w">
       <cat-item lemma="two" tags="num"/>
       <cat-item lemma="three" tags="num"/>
@@ -101,6 +105,9 @@
     <def-attr n="a_det">
       <attr-item tags="det.ind"/>
       <attr-item tags="det.def"/>
+    </def-attr>
+    <def-attr n="a_num">
+      <attr-item tags="num"/>
     </def-attr>
     <def-attr n="a_rel">
       <attr-item tags="rel"/>
@@ -154,7 +161,8 @@
     <def-var n="caseFirstWord"/>
     <def-var n="nombre"/>
     <def-var n="group_gender"/>
-    <def-var n="last_verb"/>
+    <def-var n="nn_num"/>
+    <def-var n="nn_nom"/>
     <def-var n="lastVerb"/>
   </section-def-vars>
 
@@ -467,6 +475,126 @@
                 </lu>
               </chunk>
             </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: NUM NOM">
+      <pattern>
+        <pattern-item n="number"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal> <!-- nom, if no verb yet -->
+                  <var n="lastVerb"/>
+                  <lit v=""/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="one"/>
+                </equal>
+                <not>
+                  <equal>
+                    <clip pos="2" side="tl" part="nbr"/>
+                    <lit-tag v="pl"/>
+                  </equal>
+                </not>
+              </and>
+            </test>
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nom"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nom"/>
+            </append>
+          </when>
+          <when>
+            <test>
+              <and>
+                <equal> <!-- nom, if no verb yet -->
+                  <var n="lastVerb"/>
+                  <lit v=""/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="one"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="tl" part="nbr"/>
+                  <lit-tag v="pl"/>
+                </equal>
+              </and>
+            </test>
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+          </when>
+<!--          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="one"/>
+                </equal>
+              </and>
+            </test>
+          </when>
+-->
+        </choose>
+              
+        <out>
+          <chunk name="num">
+            <tags>
+              <tag><lit-tag v="NUM"/></tag>
+            </tags>
+            <lu>
+              <var n="nn_num"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="nom">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <var n="nn_nom"/>
+            </lu>
+          </chunk>
+        </out>
       </action>
     </rule>
 
