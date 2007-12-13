@@ -8,6 +8,7 @@
   </def-cat>
   <def-cat n="vblex">
     <cat-item tags="vblex.*"/>
+    <cat-item tags="vbser.*"/>
   </def-cat>
   <def-cat n="prn">
      <cat-item tags="prn.*"/>
@@ -49,6 +50,9 @@
 
   <def-attr n="a_vrb">
      <attr-item tags="vblex"/>
+     <attr-item tags="vbmod"/>
+     <attr-item tags="vbser"/>
+     <attr-item tags="vbhaver"/>
   </def-attr>
 
   <def-attr n="a_adj">
@@ -191,19 +195,54 @@
        <pattern-item n="vblex"/>
      </pattern>
      <action>
-       <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_vrb"/>
-           <clip pos="1" side="tl" part="tns"/>
-           <clip pos="1" side="tl" part="prs"/>
-           <clip pos="1" side="tl" part="nbr"/>
-         </lu>
-       </out>
-       <let>
-         <var n="motion"/>
-	 <lit v="true"/>
-       </let>
+       <choose>
+	 <!--  Translate imperfect in Macedonian as conjugated
+               'to be' in the present tense plus the L-participle -->       
+         <when>
+           <test>
+             <equal>
+               <clip pos="1" side="sl" part="tns"/>
+               <lit v="pii"/>
+             </equal>
+           </test>
+           <out>
+             <lu>
+	       <lit v="biti"/>
+	       <lit-tag v="vbser"/>
+	       <lit-tag v="pri"/>
+               <clip pos="1" side="tl" part="prs"/>
+               <clip pos="1" side="tl" part="nbr"/>
+             </lu>
+	     <b/>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_vrb"/>
+	       <lit-tag v="lp"/>
+	       <lit-tag v="m"/>
+               <clip pos="1" side="tl" part="nbr"/>
+             </lu>
+           </out>
+           <let>
+             <var n="motion"/>
+             <lit v="true"/>
+           </let>
+	 </when>
+	 <otherwise>
+           <out>
+             <lu>
+               <clip pos="1" side="tl" part="lem"/>
+               <clip pos="1" side="tl" part="a_vrb"/>
+               <clip pos="1" side="tl" part="tns"/>
+               <clip pos="1" side="tl" part="prs"/>
+               <clip pos="1" side="tl" part="nbr"/>
+             </lu>
+           </out>
+           <let>
+             <var n="motion"/>
+             <lit v="true"/>
+           </let>
+         </otherwise>
+       </choose>
      </action>
   </rule>
 
