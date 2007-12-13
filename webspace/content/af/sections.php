@@ -14,7 +14,8 @@ $subsections = array
    (
    	"link@Engels-Afrikaans"=>"http://interpret.co.za/",
    	"translatetext"=>"Vertaal teks",
-   	"translatedoc"=>"Vertaal dokument"   	
+   	"translatedoc"=>"Vertaal dokument",
+   	"surfandtranslate"=>"Surf &amp; translate"   	   	
    ),
 "documentation" =>array
    (

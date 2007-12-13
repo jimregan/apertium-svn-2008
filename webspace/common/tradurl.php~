@@ -22,9 +22,6 @@
   error_reporting(0);
   
   $resultado = join("",file($inurl));
-  
-  shell_exec("cat $resultado | LANG=es_ES.UTF-8 sed 's/ţ/ț/g' | LANG=es_ES.UTF-8 sed 's/ş/ș/g'");
-  
   $resultado = utf8_encode($resultado);
   
   vacio($resultado,"Page not found");

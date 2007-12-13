@@ -13,7 +13,9 @@ $subsections = array
    "testdrive"=>array
    (
    	"translatetext"=>"Tradução de texto",
-   	"translatedoc"=>"Tradução de documentos"
+   	"translatedoc"=>"Tradução de documentos",
+   	"surfandtranslate"=>"Navegar e traduzir"
+   	
    ),
 "documentation" =>array
    (

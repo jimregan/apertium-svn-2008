@@ -14,7 +14,8 @@ $subsections = array
    (
    	"link@español &ndash; galego"=>"http://sli.uvigo.es/tradutor",
    	"translatetext"=>"Tradución de texto",
-   	"translatedoc"=>"Tradución de documentos"  	   	
+   	"translatedoc"=>"Tradución de documentos",
+   	"surfandtranslate"=>"Navegar e traducir"   	  	
    ),
 "documentation" =>array
    (

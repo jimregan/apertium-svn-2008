@@ -40,11 +40,11 @@ function translate($doctype, $dir, $markUnknown) {
 	$tempfile = tempnam("/tmp","translate");
 	$tempfile = $tempfile . "." . $doctype;
 
-  //if ($dir == "ro-es" ) {
-	//$cmd = "cat $tempfile | LANG=en_GB.UTF-8 sed 's/ţ/ț/g' | LANG=en_GB.UTF-8 sed 's/ş/ș/g' | PATH=$APERTIUM_PATH:\$PATH " . $APERTIUM_TRANSLATOR . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . "";  
-  //} else {
+  if ($dir == "ro-es" ) {
+	$cmd = "cat $tempfile | LANG=en_GB.UTF-8 sed 's/ţ/ț/g' | LANG=en_GB.UTF-8 sed 's/ş/ș/g' | PATH=$APERTIUM_PATH:\$PATH " . $APERTIUM_TRANSLATOR . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . "";  
+  } else {
   	$cmd = "PATH=$APERTIUM_PATH:\$PATH " . $APERTIUM_TRANSLATOR . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
-  	//}  
+  	}  
   
   $str = shell_exec($cmd);
 

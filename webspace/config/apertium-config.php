@@ -9,4 +9,10 @@ $APERTIUM_PATH= "/home/fran/svnroot/local/unicode/bin";
 $INTERNOSTRUM_LING_DATA = "/home/ebenimeli/archive/internostrum";
 //$INTERNOSTRUM_LING_DATA = "/home/ebenimeli/datos/internostrum";
 
+//$TURL_PATH = "/home/ebenimeli/myscripts/turl/turl";
+$TURL_PATH = "/usr/local/bin/turl";
+
+//$WWW_ROOT_DIR = "svn-apertium-www";
+$WWW_ROOT_DIR = "apertium-www";
+
 ?>

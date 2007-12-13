@@ -13,7 +13,8 @@
    "testdrive"=>array
    (
    	"translatetext"=>"Traduction de texte",
-   	"translatedoc"=>"Traduction de documents"  	   	
+   	"translatedoc"=>"Traduction de documents",
+   	"surfandtranslate"=>"Surf &amp; translate"   	   	
    ),
 "documentation" =>array
    (

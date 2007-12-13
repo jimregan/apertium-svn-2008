@@ -14,6 +14,7 @@
    (
    	"translatetext"=>"Traducció de text",
    	"translatedoc"=>"Traducció de documents",
+   	"surfandtranslate"=>"Traduir i navegar",   	
    	"internostrum"=>"interNOSTRUM"   	   	
    ),
 "documentation" =>array
