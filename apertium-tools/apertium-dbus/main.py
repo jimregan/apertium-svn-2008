@@ -12,7 +12,7 @@ import dbus.mainloop.glib
 
 
 class ApertiumInfo(service.Object):
-	interface = "org.apertium.AperiumInfo"
+	interface = "org.apertium.Info"
 
 	@service.method(ApertiumInfo.interface, in_signature='', out_signature='s')
 	def directory(self):
