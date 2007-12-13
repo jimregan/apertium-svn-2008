@@ -23,15 +23,15 @@ function getPair($lang) {
 		//case "af":
 			//return "af-en";
 			//break;
-		//case "oc":
-			//return "oc-ca";
-			//break;
+		case "oc":
+			return "oc-ca";
+			break;
 		case "gl":
 			return "gl-es";
 			break;
-		//case "ro":
-			//return "ro-es";
-			//break;
+		case "ro":
+			return "ro-es";
+			break;
 		default:
 			return "";
 			break;
