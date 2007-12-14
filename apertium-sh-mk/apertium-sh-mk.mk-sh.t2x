@@ -18,6 +18,9 @@
       <cat-item tags="SA"/>
       <cat-item tags="SA.*"/>
     </def-cat>
+    <def-cat n="CNJCOO">
+      <cat-item tags="cnjcoo"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -97,6 +100,49 @@
         </out>
       </action>
     </rule>
+
+    <rule comment="REGLA: SP SN CNJCOO SN">
+      <pattern>
+        <pattern-item n="SP"/>
+        <pattern-item n="SN"/>
+        <pattern-item n="CNJCOO"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+	  <b/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="a_sintagma"/>
+            <clip pos="2" part="gen"/>
+            <clip pos="2" part="nbr"/>
+            <clip pos="1" part="cas"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+	  <b/>
+          <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+            <clip pos="3" part="chcontent"/>
+          </chunk>
+	  <b/>
+          <chunk>
+            <clip pos="4" part="lem"/>
+            <clip pos="4" part="a_sintagma"/>
+            <clip pos="4" part="gen"/>
+            <clip pos="4" part="nbr"/>
+            <clip pos="1" part="cas"/>
+            <clip pos="4" part="chcontent"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 
 
   </section-rules>
