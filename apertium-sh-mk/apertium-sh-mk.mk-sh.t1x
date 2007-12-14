@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transfer>
+<transfer default="chunk">
 
 <section-def-cats>
   <def-cat n="nom">
@@ -9,6 +9,11 @@
   <def-cat n="vblex">
     <cat-item tags="vblex.*"/>
     <cat-item tags="vbser.*"/>
+  </def-cat>
+  <def-cat n="prn-pers">
+     <cat-item tags="prn.p1.*"/>
+     <cat-item tags="prn.p2.*"/>
+     <cat-item tags="prn.p3.*"/>
   </def-cat>
   <def-cat n="prn">
      <cat-item tags="prn.*"/>
@@ -116,19 +121,83 @@
 </section-def-vars>
 
 <section-rules>
+
+<!-- Sintagmas nominales -->
+
+  <rule>
+     <pattern>
+       <pattern-item n="prn-pers"/>
+     </pattern>
+     <action>
+       <out>
+         <chunk name="prn" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="1" side="tl" part="prs"/></tag>
+             <tag><clip pos="1" side="tl" part="gen"/></tag>
+             <tag><clip pos="1" side="tl" part="nbr"/></tag>
+             <tag><lit-tag v="nom"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_prn"/>
+             <clip pos="1" side="tl" part="prs" link-to="2"/>
+             <clip pos="1" side="tl" part="gen" link-to="3"/>
+             <clip pos="1" side="tl" part="nbr" link-to="4"/>
+             <lit-tag v="5"/>
+           </lu>
+         </chunk>
+       </out>
+     </action>
+  </rule>
+
+
+  <rule>
+     <pattern>
+       <pattern-item n="prn"/>
+     </pattern>
+     <action>
+       <out>
+         <chunk name="prn" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="1" side="tl" part="gen"/></tag>
+             <tag><clip pos="1" side="tl" part="nbr"/></tag>
+             <tag><lit-tag v="nom"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_prn"/>
+             <clip pos="1" side="tl" part="gen" link-to="2"/>
+             <clip pos="1" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+         </chunk>
+       </out>
+     </action>
+  </rule>
+
   <rule>
      <pattern>
        <pattern-item n="nom"/>
      </pattern>
      <action>
        <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_nom"/>
-           <clip pos="1" side="tl" part="gen"/>
-           <lit-tag v="nom"/>
-           <clip pos="1" side="tl" part="nbr"/>
-         </lu>
+         <chunk name="nom" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="1" side="tl" part="gen"/></tag>
+             <tag><clip pos="1" side="tl" part="nbr"/></tag>
+             <tag><lit-tag v="nom"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_nom"/>
+             <clip pos="1" side="tl" part="gen" link-to="2"/>
+             <clip pos="1" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+	 </chunk>
        </out>
        <let>
          <var n="motion"/>
@@ -139,18 +208,31 @@
 
   <rule>
      <pattern>
-       <pattern-item n="num"/>
+       <pattern-item n="nom"/>
+       <pattern-item n="det"/>
      </pattern>
      <action>
        <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_num"/>
-           <clip pos="1" side="tl" part="gen"/>
-           <lit-tag v="nom"/>
-           <clip pos="1" side="tl" part="nbr"/>
-         </lu>
+         <chunk name="nom" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="1" side="tl" part="gen"/></tag>
+             <tag><clip pos="1" side="tl" part="nbr"/></tag>
+             <tag><lit-tag v="nom"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_nom"/>
+             <clip pos="1" side="tl" part="gen" link-to="2"/>
+             <clip pos="1" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+	 </chunk>
        </out>
+       <let>
+         <var n="motion"/>
+	 <lit v="false"/>
+       </let>
      </action>
   </rule>
 
@@ -158,111 +240,176 @@
   <rule>
      <pattern>
        <pattern-item n="adj"/>
+       <pattern-item n="nom"/>
      </pattern>
      <action>
        <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_adj"/>
-           <clip pos="1" side="tl" part="gen"/>
-           <clip pos="1" side="tl" part="nbr"/>
-           <lit-tag v="nom"/>
-         </lu>
+         <chunk name="adj_nom" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="2" side="tl" part="gen"/></tag>
+             <tag><clip pos="2" side="tl" part="nbr"/></tag>
+             <tag><lit-tag v="nom"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_adj"/>
+             <clip pos="2" side="tl" part="gen" link-to="2"/>
+             <clip pos="2" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+           <b/>    
+           <lu>
+             <clip pos="2" side="tl" part="lem"/>
+             <clip pos="2" side="tl" part="a_nom"/>
+             <clip pos="2" side="tl" part="gen" link-to="2"/>
+             <clip pos="2" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+	 </chunk>
        </out>
+       <let>
+         <var n="motion"/>
+	 <lit v="false"/>
+       </let>
      </action>
   </rule>
 
   <rule>
      <pattern>
-       <pattern-item n="prn"/>
-     </pattern>
-     <action>
-       <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_prn"/>
-           <clip pos="1" side="tl" part="prs"/>
-           <clip pos="1" side="tl" part="gen"/>
-           <clip pos="1" side="tl" part="nbr"/>
-           <lit-tag v="nom"/>
-         </lu>
-       </out>
-     </action>
-  </rule>
-
-  <rule>
-     <pattern>
-       <pattern-item n="vblex"/>
-     </pattern>
-     <action>
-       <choose>
-	 <!--  Translate imperfect in Macedonian as conjugated
-               'to be' in the present tense plus the L-participle -->       
-         <when>
-           <test>
-             <equal>
-               <clip pos="1" side="sl" part="tns"/>
-               <lit-tag v="pii"/>
-             </equal>
-           </test>
-           <out>
-             <lu>
-	       <lit v="biti"/>
-	       <lit-tag v="vbser"/>
-	       <lit-tag v="pri"/>
-               <clip pos="1" side="tl" part="prs"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_vrb"/>
-	       <lit-tag v="lp"/>
-	       <lit-tag v="m"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-           </out>
-           <let>
-             <var n="motion"/>
-             <lit v="true"/>
-           </let>
-	 </when>
-	 <otherwise>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_vrb"/>
-               <clip pos="1" side="tl" part="tns"/>
-               <clip pos="1" side="tl" part="prs"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
-           </out>
-           <let>
-             <var n="motion"/>
-             <lit v="true"/>
-           </let>
-         </otherwise>
-       </choose>
-     </action>
-  </rule>
-
-
-
-  <!-- We need to drop determiners, ideally we should do this 
-       some other way, or more cleverly work out some way to
-       use them to help decide about cases. -->   
-  <rule>
-     <pattern>
+       <pattern-item n="adj"/>
        <pattern-item n="det"/>
+       <pattern-item n="nom"/>
      </pattern>
      <action>
        <out>
-         <lu>
-           <lit v=""/>
-         </lu>
+         <chunk name="adj_nom" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="3" side="tl" part="gen"/></tag>
+             <tag><clip pos="3" side="tl" part="nbr"/></tag>
+             <tag><lit-tag v="nom"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_adj"/>
+             <clip pos="3" side="tl" part="gen" link-to="2"/>
+             <clip pos="3" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+           <b/>    
+           <lu>
+             <clip pos="3" side="tl" part="lem"/>
+             <clip pos="3" side="tl" part="a_nom"/>
+             <clip pos="3" side="tl" part="gen" link-to="2"/>
+             <clip pos="3" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+	 </chunk>
        </out>
+       <let>
+         <var n="motion"/>
+	 <lit v="false"/>
+       </let>
      </action>
   </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="adj"/>
+       <pattern-item n="adj"/>
+       <pattern-item n="nom"/>
+     </pattern>
+     <action>
+       <out>
+         <chunk name="adj_adj_nom" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="3" side="tl" part="gen"/></tag>
+             <tag><clip pos="3" side="tl" part="nbr"/></tag>
+             <tag><lit-tag v="nom"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_adj"/>
+             <clip pos="3" side="tl" part="gen" link-to="2"/>
+             <clip pos="3" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+           <b/>    
+           <lu>
+             <clip pos="2" side="tl" part="lem"/>
+             <clip pos="2" side="tl" part="a_adj"/>
+             <clip pos="3" side="tl" part="gen" link-to="2"/>
+             <clip pos="3" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+           <b/>    
+           <lu>
+             <clip pos="3" side="tl" part="lem"/>
+             <clip pos="3" side="tl" part="a_nom"/>
+             <clip pos="3" side="tl" part="gen" link-to="2"/>
+             <clip pos="3" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+	 </chunk>
+       </out>
+       <let>
+         <var n="motion"/>
+	 <lit v="false"/>
+       </let>
+     </action>
+  </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="adj"/>
+       <pattern-item n="det"/>
+       <pattern-item n="adj"/>
+       <pattern-item n="nom"/>
+     </pattern>
+     <action>
+       <out>
+         <chunk name="adj_adj_nom" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="4" side="tl" part="gen"/></tag>
+             <tag><clip pos="4" side="tl" part="nbr"/></tag>
+             <tag><lit-tag v="nom"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_adj"/>
+             <clip pos="4" side="tl" part="gen" link-to="2"/>
+             <clip pos="4" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+           <b/>    
+           <lu>
+             <clip pos="3" side="tl" part="lem"/>
+             <clip pos="3" side="tl" part="a_adj"/>
+             <clip pos="4" side="tl" part="gen" link-to="2"/>
+             <clip pos="4" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+           <b/>    
+           <lu>
+             <clip pos="4" side="tl" part="lem"/>
+             <clip pos="4" side="tl" part="a_nom"/>
+             <clip pos="4" side="tl" part="gen" link-to="2"/>
+             <clip pos="4" side="tl" part="nbr" link-to="3"/>
+             <lit-tag v="4"/>
+           </lu>
+	 </chunk>
+       </out>
+       <let>
+         <var n="motion"/>
+	 <lit v="false"/>
+       </let>
+     </action>
+  </rule>
+
+<!-- Sintagmas adjetivos -->
 
   <rule>
      <pattern>
@@ -287,272 +434,133 @@
              </and>
            </test>
            <out>
-	     <lu>
-               <lit v="naj"/>
-	     </lu>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <lit-tag v="adj.comp"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <clip pos="2" side="tl" part="nbr"/>
-               <lit-tag v="nom"/>
-             </lu>
+             <chunk name="adj" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SA"/></tag>
+                 <tag><clip pos="2" side="tl" part="gen"/></tag>
+                 <tag><clip pos="2" side="tl" part="nbr"/></tag>
+                 <tag><lit-tag v="nom"/></tag>
+               </tags>
+               <lu>
+                 <lit v="naj"/>
+               </lu>
+               <lu>
+                 <clip pos="2" side="tl" part="lem"/>
+                 <lit-tag v="adj.comp"/>
+                 <clip pos="2" side="tl" part="gen"/>
+                 <clip pos="2" side="tl" part="nbr"/>
+                 <lit-tag v="nom"/>
+               </lu>
+	     </chunk>
            </out>
          </when>
          <otherwise>
            <out>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_adj"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <clip pos="2" side="tl" part="nbr"/>
-               <lit-tag v="nom"/>
-             </lu>
+             <chunk name="adj" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SA"/></tag>
+                 <tag><clip pos="2" side="tl" part="gen"/></tag>
+                 <tag><clip pos="2" side="tl" part="nbr"/></tag>
+                 <tag><lit-tag v="nom"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="2" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_adj"/>
+                 <clip pos="2" side="tl" part="gen"/>
+                 <clip pos="2" side="tl" part="nbr"/>
+                 <lit-tag v="nom"/>
+               </lu>
+	     </chunk>
            </out>
          </otherwise>
        </choose>
      </action>
   </rule>
 
+<!-- Sintagmas verbales -->
+
   <rule>
      <pattern>
-       <pattern-item n="pr"/>
-       <pattern-item n="nom"/>
+       <pattern-item n="vblex"/>
      </pattern>
      <action>
        <choose>
-	 <!-- When the preposition is "на", and the noun 
-              following is an antonym  set the case of 
-              the following proper noun to the locative 
-              and drop the preposition. -->
-         <when>
-           <test>
-             <and>
-               <equal>
-                 <clip pos="1" side="sl" part="lem"/>
-                 <lit v="на"/>
-               </equal>
-               <equal>
-                 <clip pos="2" side="tl" part="a_nom"/>
-                 <lit-tag v="np.ant"/>
-               </equal>
-             </and>
-           </test>
-           <out>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_nom"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <lit-tag v="gen"/>
-             </lu>
-           </out>
-         </when>
-
-
-	 <!-- When the preposition is "o", set the case of the 
-	      following noun to the locative. -->
+	 <!--  Translate imperfect in Macedonian as conjugated
+               'to be' in the present tense plus the L-participle -->       
          <when>
            <test>
              <equal>
-               <clip pos="1" side="tl" part="lem"/>
-               <lit v="o"/>
+               <clip pos="1" side="sl" part="tns"/>
+               <lit-tag v="pii"/>
              </equal>
            </test>
            <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_nom"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <lit-tag v="loc"/>
-               <clip pos="2" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="verb" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SV"/></tag>
+                 <tag><clip pos="1" side="tl" part="tns"/></tag>
+                 <tag><clip pos="1" side="tl" part="prs"/></tag>
+                 <tag><clip pos="1" side="tl" part="nbr"/></tag>
+               </tags>
+               <lu>
+                 <lit v="biti"/>
+                 <lit-tag v="vbser"/>
+                 <lit-tag v="pri"/>
+                 <clip pos="1" side="tl" part="prs"/>
+                 <clip pos="1" side="tl" part="nbr"/>
+               </lu>
+               <b/>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_vrb"/>
+                 <lit-tag v="lp"/>
+                 <lit-tag v="m"/>
+                 <clip pos="1" side="tl" part="nbr"/>
+               </lu>
+             </chunk>
            </out>
-         </when>
-
-	 <!-- When the preposition is "iz", set the case of the 
-	      following noun to the gen. -->
-         <when>
-           <test>
-             <equal>
-               <clip pos="1" side="tl" part="lem"/>
-               <lit v="iz"/>
-             </equal>
-           </test>
+           <let>
+             <var n="motion"/>
+             <lit v="true"/>
+           </let>
+	 </when>
+	 <otherwise>
            <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_nom"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <lit-tag v="gen"/>
-               <clip pos="2" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="verb" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SV"/></tag>
+                 <tag><clip pos="1" side="tl" part="tns"/></tag>
+                 <tag><clip pos="1" side="tl" part="prs"/></tag>
+                 <tag><clip pos="1" side="tl" part="nbr"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_vrb"/>
+                 <clip pos="1" side="tl" part="tns"/>
+                 <clip pos="1" side="tl" part="prs"/>
+                 <clip pos="1" side="tl" part="nbr"/>
+               </lu>
+             </chunk>
            </out>
-         </when>
-
-	 <!-- When the preposition is "u", set the case of the 
-	      following noun to the locative. -->
-         <when>
-           <test>
-             <equal>
-               <clip pos="1" side="tl" part="lem"/>
-               <lit v="u"/>
-             </equal>
-           </test>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_nom"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <lit-tag v="loc"/>
-               <clip pos="2" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </when>
-
-         <otherwise>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_nom"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <lit-tag v="nom"/>
-               <clip pos="2" side="tl" part="nbr"/>
-             </lu>
-           </out>
-        </otherwise>
-      </choose>       
-    </action>
-  </rule>
-
-  <rule>
-     <pattern>
-       <pattern-item n="adj"/>
-       <pattern-item n="nom"/>
-     </pattern>
-     <action>
-       <!-- Cheat and set the case and number of the adjective
-            to the values from the following noun. -->
-       <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_adj"/>
-           <clip pos="2" side="tl" part="gen"/>
-           <clip pos="2" side="tl" part="nbr"/>
-           <lit-tag v="nom"/>
-         </lu>
-         <b/>
-         <lu>
-           <clip pos="2" side="tl" part="lem"/>
-           <clip pos="2" side="tl" part="a_nom"/>
-           <clip pos="2" side="tl" part="gen"/>
-           <lit-tag v="nom"/>
-           <clip pos="2" side="tl" part="nbr"/>
-         </lu>
-       </out>
+           <let>
+             <var n="motion"/>
+             <lit v="true"/>
+           </let>
+         </otherwise>
+       </choose>
      </action>
   </rule>
 
+<!-- Preposiciones -->
+
   <rule>
      <pattern>
        <pattern-item n="pr"/>
-       <pattern-item n="adj"/>
-       <pattern-item n="nom"/>
      </pattern>
      <action>
        <choose>
-	 <!-- When the preposition is "на", and the noun 
-              following is an antonym  set the case of 
-              the following proper noun to the locative 
-              and drop the preposition. -->
-         <when>
-           <test>
-             <and>
-               <equal>
-                 <clip pos="1" side="sl" part="lem"/>
-                 <lit v="на"/>
-               </equal>
-               <equal>
-                 <clip pos="3" side="tl" part="a_nom"/>
-                 <lit-tag v="np.ant"/>
-               </equal>
-             </and>
-           </test>
-           <out>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_adj"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <clip pos="3" side="tl" part="nbr"/>
-               <lit-tag v="loc"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="3" side="tl" part="lem"/>
-               <clip pos="3" side="tl" part="a_nom"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <lit-tag v="loc"/>
-               <clip pos="3" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </when>
-
-
-	 <!-- When the preposition is "iz", set the case of the 
-	      following noun to the genitive. -->
-         <when>
-           <test>
-             <equal>
-               <clip pos="1" side="tl" part="lem"/>
-               <lit v="iz"/>
-             </equal>
-           </test>
-           <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_adj"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <clip pos="3" side="tl" part="nbr"/>
-               <lit-tag v="gen"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="3" side="tl" part="lem"/>
-               <clip pos="3" side="tl" part="a_nom"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <lit-tag v="gen"/>
-               <clip pos="3" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </when>
-
-
-	 <!-- When the preposition is "o", set the case of the 
-	      following noun to the locative. -->
+         <!-- When the preposition is "o", set the case of the 
+              following noun to the loc. -->
          <when>
            <test>
              <equal>
@@ -561,31 +569,21 @@
              </equal>
            </test>
            <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_adj"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <clip pos="3" side="tl" part="nbr"/>
-               <lit-tag v="loc"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="3" side="tl" part="lem"/>
-               <clip pos="3" side="tl" part="a_nom"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <lit-tag v="loc"/>
-               <clip pos="3" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="prep" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SP"/></tag>
+                 <tag><lit-tag v="loc"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_prp"/>
+               </lu> 
+             </chunk>
            </out>
-         </when>
-
-	 <!-- When the preposition is "u", set the case of the 
-	      following noun to the locative. -->
+        </when>
+  
+         <!-- When the preposition is "u", set the case of the 
+              following noun to the loc. -->
          <when>
            <test>
              <equal>
@@ -594,136 +592,138 @@
              </equal>
            </test>
            <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_adj"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <clip pos="3" side="tl" part="nbr"/>
-               <lit-tag v="loc"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="3" side="tl" part="lem"/>
-               <clip pos="3" side="tl" part="a_nom"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <lit-tag v="loc"/>
-               <clip pos="3" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="prep" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SP"/></tag>
+                 <tag><lit-tag v="loc"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_prp"/>
+               </lu> 
+             </chunk>
            </out>
          </when>
-
-	 <!-- When the preposition is "na", set the case of the 
-	      following noun to the locative if not in motion. -->
+  
+         <!-- When the preposition is "iz", set the case of the 
+              following noun to the gen. -->
          <when>
            <test>
-	     <and>
-               <equal>
-                 <clip pos="1" side="tl" part="lem"/>
-                 <lit v="na"/>
-               </equal>
-               <equal>
-	         <var n="motion"/>
-                 <lit v="false"/>
-               </equal>
-	     </and>
+             <equal>
+               <clip pos="1" side="tl" part="lem"/>
+               <lit v="iz"/>
+             </equal>
            </test>
            <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_adj"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <clip pos="3" side="tl" part="nbr"/>
-               <lit-tag v="loc"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="3" side="tl" part="lem"/>
-               <clip pos="3" side="tl" part="a_nom"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <lit-tag v="loc"/>
-               <clip pos="3" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="prep" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SP"/></tag>
+                 <tag><lit-tag v="gen"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_prp"/>
+               </lu> 
+             </chunk>
            </out>
          </when>
-
-	 <!-- When the preposition is "na", set the case of the 
-	      following noun to the accusative if in motion. -->
+  
+  
+         <!-- When the preposition is "na", and the variable 
+              "motion" is set to false following noun to the loc. -->
          <when>
            <test>
-	     <and>
+             <and>
                <equal>
                  <clip pos="1" side="tl" part="lem"/>
                  <lit v="na"/>
                </equal>
                <equal>
                  <var n="motion"/>
-                 <lit v="true"/>
+                 <lit v="false"/>
                </equal>
              </and>
            </test>
            <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_adj"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <clip pos="3" side="tl" part="nbr"/>
-               <lit-tag v="acc"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="3" side="tl" part="lem"/>
-               <clip pos="3" side="tl" part="a_nom"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <lit-tag v="acc"/>
-               <clip pos="3" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="prep" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SP"/></tag>
+                 <tag><lit-tag v="loc"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_prp"/>
+               </lu> 
+             </chunk>
            </out>
          </when>
+  
+         <!-- When the preposition is "na", and the variable 
+              "motion" is set to true following noun to the acc. -->
+         <when>
+           <test>
+             <and>
+               <equal>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <lit v="na"/>
+               </equal>
+               <equal>
+                 <var n="motion"/>
+                 <lit v="false"/>
+               </equal>
+             </and>
+           </test>
+           <out>
+             <chunk name="prep" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SP"/></tag>
+                 <tag><lit-tag v="acc"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_prp"/>
+               </lu> 
+             </chunk>
+           </out>
+         </when>
+  
 
          <otherwise>
            <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_prp"/>
-             </lu>
-             <b/>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="2" side="tl" part="a_adj"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <clip pos="3" side="tl" part="nbr"/>
-               <lit-tag v="nom"/>
-             </lu>
-	     <b/>
-             <lu>
-               <clip pos="3" side="tl" part="lem"/>
-               <clip pos="3" side="tl" part="a_nom"/>
-               <clip pos="3" side="tl" part="gen"/>
-               <lit-tag v="nom"/>
-               <clip pos="3" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="prep" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SP"/></tag>
+                 <tag><lit-tag v="nom"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_prp"/>
+               </lu>
+             </chunk>
            </out>
-        </otherwise>
-      </choose>       
-    </action>
+         </otherwise>
+       </choose>
+     </action>
   </rule>
 
+<!-- Otras cosas -->
 
+  <rule>
+     <pattern>
+       <pattern-item n="num"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_num"/>
+           <clip pos="1" side="tl" part="gen"/>
+           <lit-tag v="nom"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+       </out>
+     </action>
+  </rule>
 
 </section-rules>
 
