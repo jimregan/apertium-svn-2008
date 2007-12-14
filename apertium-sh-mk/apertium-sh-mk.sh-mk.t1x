@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transfer>
+<transfer default="chunk">
 
 <section-def-cats>
   <def-cat n="nom">
@@ -104,38 +104,33 @@
 </section-def-vars>
 
 <section-rules>
+<!-- Sintagmas nominales -->
+
   <rule>
      <pattern>
        <pattern-item n="nom"/>
      </pattern>
      <action>
        <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_nom"/>
-           <clip pos="1" side="tl" part="gen"/>
-           <clip pos="1" side="tl" part="nbr"/>
-         </lu>
+         <chunk name="nom" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="1" side="tl" part="gen"/></tag>
+             <tag><clip pos="1" side="tl" part="nbr"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>
+             <clip pos="1" side="tl" part="a_nom"/>
+             <clip pos="1" side="tl" part="gen" link-to="2"/>
+             <clip pos="1" side="tl" part="nbr" link-to="3"/>
+           </lu>
+         </chunk>
        </out>
      </action>
   </rule>
 
-  <rule>
-     <pattern>
-       <pattern-item n="vblex"/>
-     </pattern>
-     <action>
-       <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_vrb"/>
-           <clip pos="1" side="tl" part="tns"/>
-           <clip pos="1" side="tl" part="prs"/>
-           <clip pos="1" side="tl" part="nbr"/>
-         </lu>
-       </out>
-     </action>
-  </rule>
+
+<!-- Sintagmas adjetivos -->
 
   <rule>
      <pattern>
@@ -153,35 +148,47 @@
              </equal>
            </test>
            <out>
-             <lu>
-               <lit v="по"/>
-             </lu>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <lit-tag v="adj.pve"/>
-               <clip pos="1" side="tl" part="gen"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="adj" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SA"/></tag>
+                 <tag><clip pos="1" side="tl" part="gen"/></tag>
+                 <tag><clip pos="1" side="tl" part="nbr"/></tag>
+               </tags>
+               <lu>
+                 <lit v="по"/>
+               </lu>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <lit-tag v="adj.comp"/>
+                 <clip pos="1" side="tl" part="gen"/>
+                 <clip pos="1" side="tl" part="nbr"/>
+               </lu>
+             </chunk>
            </out>
          </when>
          <otherwise>
            <out>
-             <lu>
-               <clip pos="1" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_adj"/>
-               <clip pos="1" side="tl" part="gen"/>
-               <clip pos="1" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="adj" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SA"/></tag>
+                 <tag><clip pos="1" side="tl" part="gen"/></tag>
+                 <tag><clip pos="1" side="tl" part="nbr"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="lem"/>
+                 <clip pos="1" side="tl" part="a_adj"/>
+                 <clip pos="1" side="tl" part="gen"/>
+                 <clip pos="1" side="tl" part="nbr"/>
+               </lu>
+             </chunk>
            </out>
          </otherwise>
        </choose>
      </action>
   </rule>
 
-
-
   <rule>
-     <pattern>
+    <pattern>
        <pattern-item n="prefix-adj"/>
        <pattern-item n="adj"/>
      </pattern>
@@ -203,30 +210,69 @@
              </and>
            </test>
            <out>
-             <lu>
-               <lit v="нај"/>
-             </lu>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <lit-tag v="adj.pve"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <clip pos="2" side="tl" part="nbr"/>
-             </lu>
+             <chunk name="adj" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SA"/></tag>
+                 <tag><clip pos="2" side="tl" part="gen"/></tag>
+                 <tag><clip pos="2" side="tl" part="nbr"/></tag>
+               </tags>
+               <lu>
+                 <lit v="нај"/>
+               </lu>
+               <lu>
+                 <clip pos="2" side="tl" part="lem"/>
+                 <lit-tag v="adj.pve"/>
+                 <clip pos="2" side="tl" part="gen"/>
+                 <clip pos="2" side="tl" part="nbr"/>
+               </lu>
+	     </chunk>
            </out>
-         </when>
-         <otherwise>
-           <out>
-             <lu>
-               <clip pos="2" side="tl" part="lem"/>
-               <clip pos="1" side="tl" part="a_adj"/>
-               <clip pos="2" side="tl" part="gen"/>
-               <clip pos="2" side="tl" part="nbr"/>
-             </lu>
-           </out>
-         </otherwise>
-       </choose>
+           </when>
+           <otherwise>
+             <out>
+               <chunk name="adj" case="caseFirstWord">
+                 <tags>
+                   <tag><lit-tag v="SA"/></tag>
+                   <tag><clip pos="2" side="tl" part="gen"/></tag>
+                   <tag><clip pos="2" side="tl" part="nbr"/></tag>
+                 </tags>
+                 <lu>
+                   <clip pos="2" side="tl" part="lem"/>
+                   <clip pos="1" side="tl" part="a_adj"/>
+                   <clip pos="2" side="tl" part="gen"/>
+                   <clip pos="2" side="tl" part="nbr"/>
+                 </lu>
+               </chunk>
+             </out>
+           </otherwise>
+         </choose>
      </action>
    </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="vblex"/>
+     </pattern>
+     <action>
+       <out>
+         <chunk name="verb" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="tns"/></tag>
+              <tag><clip pos="1" side="tl" part="prs"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_vrb"/>
+              <clip pos="1" side="tl" part="tns"/>
+              <clip pos="1" side="tl" part="prs"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+     </action>
+  </rule>
 
 
 </section-rules>
