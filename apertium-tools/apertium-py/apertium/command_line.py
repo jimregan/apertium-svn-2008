@@ -18,9 +18,6 @@ def call(cmdline, _in):
     err = child_err.read()
     child_err.close()
 
-    print "out", out
-    print "err", err
-
     return out, err
 
 class OsCommand(object):

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 # GTK oriented packages
+import gobject
 import gtk, sys
-import gtk.glade
 import pygtk
+
 pygtk.require('2.0')
 
 try:
@@ -21,15 +22,10 @@ from subprocess import Popen, PIPE
 import threading
 from Queue import Queue
 
-# XML packages
-import xml
-try:
-    import xml.etree.ElementTree as ET # Python 2.5
-except:
-    import elementtree.ElementTree as ET
-
-# Our config file
-import config 
+from apertium.service import make_proxy
+from apertium.command_line import call
+from widget import *
+import TextWidget 
 
 # Custom widget with horizontal pane allowing for the easy
 # vertical resizing of boxes
@@ -39,22 +35,27 @@ from VSizerPane import VSizerPane
 class Globals:
     lang_code = ''
     mode = ''
-    marcar = 0
+    marcar = False
     stages = None # Linked list of stages
     pipeline_executor = None
     source_lang_manager = None
     source_style_manager = None
+    handlers = {}
+    wTree = None
 
+
+def show(widget):
+    widget.show()
+    return widget
 
 
 def make_source_view(text_buffer):
     text_view = sourceview.View(text_buffer)
     text_view.set_editable(True)
-    text_view.set_wrap_mode(gtk.WRAP_WORD)
+    text_view.set_wrap_mode(gtk.WRAP_WORD_CHAR)
     text_view.show()
     
     return text_view
-
 
 
 def text_window(title, text_buffer):
@@ -78,63 +79,6 @@ def text_window(title, text_buffer):
     wnd.show()
     
 
-class View(gtk.HBox):
-
-    class Expander(gtk.Expander):
-        """
-        A GTK expander containing a scrollable text window and a
-        VSizerPane at the bottom
-        """
-        window = None # if the text box is detached into a window
-
-        def __init__(self, label, text_buffer):
-            gtk.Expander.__init__(self, label)
-
-            text_view = make_source_view(text_buffer)
-
-            scrolled_window = gtk.ScrolledWindow()
-            scrolled_window.show()
-            scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-            scrolled_window.add_with_viewport(text_view)
-            scrolled_window.set_size_request(-1, 100)
-
-            sizer_pane = VSizerPane('handle.xpm', scrolled_window)
-            sizer_pane.show()
-
-            vbox = gtk.VBox(homogeneous = False)
-            vbox.show()
-            vbox.pack_start(scrolled_window, expand = True, fill = True)
-            vbox.pack_start(sizer_pane, expand = False, fill = True)
-
-            self.add(vbox)
-            self.set_expanded(True)
-
-    def __init__(self, label, text_buffer):
-        gtk.HBox.__init__(self)
-        
-        self.expander = View.Expander(label, text_buffer)
-        self.expander.show()
-
-        popout_button = gtk.Button("p")
-        popout_button.connect("clicked", self.open_text_window, label, text_buffer)
-        popout_button.show()
-
-        vbox = gtk.VBox(homogeneous = False)
-        vbox.show()
-
-        vbox.pack_start(popout_button, expand = False, fill = True)
-
-        self.pack_start(self.expander, expand = True, fill = True)
-        self.pack_start(vbox, expand = False, fill = True)
-
-    def open_text_window(self, widget, label, text_buffer):
-        self.set_expanded(False)
-        text_window(label, text_buffer)
-
-    def set_expanded(self, val):
-        return self.expander.set_expanded(val)
-
-
 class PipelineExecutor(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -143,144 +87,131 @@ class PipelineExecutor(threading.Thread):
 
     def run(self):
         while True:
-            stage = self.queue.get()
+            f = self.queue.get()
             
             while self.queue.qsize() > 0:
-                stage = self.queue.get()
+                f = self.queue.get()
 
-            stage.run()
+            f()
 
     def add(self, stage):
         self.queue.put(stage)
     
 
-class Stage:
-    def __init__(self, command_line = None):
-        logging.debug('creating stage with command_line %s' % str(command_line))
-        self.command_line = command_line
-        self.next = None
-        self.preproc_cmdline = None
-        self.postproc_cmdline = None
-        
-        self.text_buffer = sourceview.Buffer()
 
-        #self.text_buffer.set_language(Globals.source_lang_manager.get_lang)
-        self.text_buffer.set_language(Globals.source_lang_manager.get_language('apertium'))
-        self.text_buffer.set_style_scheme(Globals.source_style_manager.get_scheme('tango'))
-        self.text_buffer.set_highlight_syntax(True)
-        self.text_buffer.set_highlight_matching_brackets(False)
-
-        self.update_handler = self.text_buffer.connect("changed", self.update)
-
-    def run(self):
-        if self.next == None:
-            return
-
-	# set the marking (on or off)
-        if len(self.next.command_line) > 1 and self.next.command_line[1] == '$1' and Globals.marcar == 1:
-	    cmdline = self.next.command_line;
-	    cmdline = (cmdline[0], '-g', cmdline[2]);
-        elif len(self.next.command_line) > 1 and self.next.command_line[1] == '$1' and Globals.marcar == 0:
-	    cmdline = self.next.command_line;
-	    cmdline = (cmdline[0], '-n', cmdline[2]);
-        else:
-	    cmdline = self.next.command_line;
-	    
-        try:
-            def call(cmdline, buffer):
-                proc = Popen(cmdline, stdin = PIPE, stdout = PIPE)
-                return proc.communicate(buffer)
-            
-            buffer_text = self.text_buffer.get_text(self.text_buffer.get_start_iter(),
-                                                    self.text_buffer.get_end_iter())
-
-            for _cmd in [self.preproc_cmdline, cmdline, self.postproc_cmdline]:
-                if _cmd != None:
-                    buffer_text, err = call(_cmd, buffer_text)
-
-            gtk.gdk.threads_enter()
-            self.next.text_buffer.handler_block(self.next.update_handler)
-            self.next.text_buffer.set_text(buffer_text.strip())
-            self.next.text_buffer.handler_unblock(self.next.update_handler)
-            gtk.gdk.threads_leave()
-
-            self.next.run()
-
-        except Exception, e:
-            logging.error("Cripes! %s" % str(e))
-
-    def update(self, widget, *args):
-        Globals.pipeline_executor.add(self)
-
-    def __iter__(self):
-        def itr(stage):
-            while stage != None:
-                yield stage
-                stage = stage.next
-
-        return itr(self)
-
-
-def menu_item(label, item = None):
-    menu_item = gtk.MenuItem(label)
-    menu_item.show()
-
-    if type(item) == type(lambda: 2):
-        menu_item.connect("activate", item)
-
-    elif type(item) == gtk.Menu: 
-        menu_item.set_submenu(item)
-
-    return menu_item
-
-def menu(*items):
-    menu = gtk.Menu()
-
-    for item in items:
-        menu.append(item)
-
-    return menu
-
-def menubar():
-    bar_items = (menu_item("File", menu(menu_item("Open", menu_file_open),
-                                        menu_item("Exit", quit))),
-                 menu_item("Compile"))
-
-    menu_bar = gtk.MenuBar()
-    for item in bar_items:
-        menu_bar.append(item)
-    menu_bar.show()
-
-    return menu_bar
-
-
-
-def load_mode_file(filename):
-    pass
-
-def menu_file_open(widget, data = None):
-    if "open_dialog" not in self.__dict__:
-        self.open_dialog = gtk.FileSelection("Select the modes file")
-        self.open_dialog.ok_button.connect("clicked",
-                                           load_mode_file(self.open_dialog.get_filename()))
-        self.open_dialog.ok_button.connect("clicked",
-                                           lambda w: self.open_dialog.hide())
-        self.open_dialog.cancel_button.connect("clicked",
-                                               lambda w: self.open_dialog.hide())
-
-    self.open_dialog.show()
-
-
-
-def quit(widget, data = None):
+@gtk_handler
+def on_wndMain_destroy(widget, data = None):
     gtk.main_quit()
 
-def delete_event(widget, event, data = None):
+@gtk_handler
+def on_btnQuit_clicked(widget, data = None):
+    gtk.main_quit()
+
+@gtk_handler
+def on_wndMain_delete_event(widget, event, data = None):
     return False
 
-#
-# There is probably a much nicer way of doing this.
-#
+@gtk_handler
+def on_chkMarkUnknown_toggled(widget, data = None):
+    Globals.marcar = not Globals.marcar
+
+@gtk_handler
+def on_comboPair_changed(widget, data = None):
+    setup_pair(widget.get_model().get_value((widget.get_active_iter()), 0))
+    #setup_pair(widget.
+
+
+class Cell(object):
+    def __init__(self, func):
+        self.func = func
+        self.next = lambda x: x
+
+    def __call__(self, val):
+        out = self.func(val)
+        return self.next(out)
+
+    def set_next(self, next):
+        self.next = next
+        return next
+
+
+def make_text_buffer():
+    buf = sourceview.Buffer()
+    buf.set_language(Globals.source_lang_manager.get_language('apertium'))
+    buf.set_style_scheme(Globals.source_style_manager.get_scheme('tango'))
+    buf.set_highlight_syntax(True)
+    buf.set_highlight_matching_brackets(False)
+
+    return buf
+
+def make_text_widget(cmd):
+    text_buffer = make_text_buffer()
+    src_view = show(make_source_view(text_buffer))
+    return text_buffer, TextWidget.make(" ".join(cmd), src_view)
+
+def process_cmd_line(cmd):
+    if len(cmd) > 1   and cmd[1] == '$1' and Globals.marcar:
+        return cmd[0], '-g', cmd[2];
+    elif len(cmd) > 1 and cmd[1] == '$1' and not Globals.marcar:
+        return cmd[0], '-n', cmd[2];
+    else:
+        return cmd
+    
+
+def make_runner(cmd):
+    def runner(val):
+        out, err = call(list(process_cmd_line(cmd)), str(val))
+        return out
+
+    return Cell(runner)
+
+def make_observer(text_buffer, update_handler):
+    def observer(val):
+        gtk.gdk.threads_enter()
+        text_buffer.handler_block(update_handler)
+        text_buffer.set_text(val)
+        text_buffer.handler_unblock(update_handler)
+        gtk.gdk.threads_leave()
+        return val
+
+    return Cell(observer)
+
+def update(widget, runner):
+    def get_text(buf):
+        return buf.get_text(buf.get_start_iter(), buf.get_end_iter())
+
+    Globals.pipeline_executor.add(lambda: runner(get_text(widget)))
+
+def replace_child(container, new_child):
+    child = container.get_children()[0] # we must keep a reference (child) before removing it from portMain
+    container.remove(child)
+    container.add(new_child)
+
+def setup_pair(name):
+    view_box = show(gtk.VBox(homogeneous = False))
+    view_box.set_resize_mode(gtk.RESIZE_PARENT)
+
+    in_filter, out_filter = Globals.info.get_filters('txt')
+    cell = make_runner([in_filter]) # Add the deformatter
+
+    text_buffer, text_widget = make_text_widget(['input text'])
+    update_handler = text_buffer.connect("changed", update, cell)
+    view_box.pack_start(text_widget, expand = False, fill = True)
+
+    for cmd in Globals.info.get_pipeline(name):
+        cell = cell.set_next(make_runner([str(c) for c in cmd]))
+
+        text_buffer, text_widget = make_text_widget(cmd)
+        update_cell = Cell(lambda x: x)
+        update_handler = text_buffer.connect("changed", update, update_cell)
+        cell = cell.set_next(make_observer(text_buffer, update_handler))
+        cell = cell.set_next(update_cell)
+        
+        view_box.pack_start(text_widget, expand = False, fill = True)
+
+    replace_child(Globals.wTree.get_widget("portMain"), view_box)
+
+
 def checkbox_event(widget, *args):
     if Globals.marcar == 1:
       Globals.marcar = 0
@@ -288,103 +219,26 @@ def checkbox_event(widget, *args):
       Globals.marcar = 1
 
     Globals.stages.update(widget);
-      
+
+
+def configure_combo(combo):
+    combo.set_model(gtk.ListStore(gobject.TYPE_STRING))
+    cell = gtk.CellRendererText()
+    combo.pack_start(cell, True)
+    combo.add_attribute(cell, 'text', 0)
+    return combo
+
 def main_window():
-    def make_stage_name(command_line):
-        if command_line != None:
-            s = " ".join(command_line)
-        else:
-            s = "N/A"
-        
-        if len(s) > 64:
-            return s[0:64] + "..."
-        else:
-            return s
+    Globals.wTree = glade_load_and_connect("MainWindow.glade")
+
+    comboPair = configure_combo(Globals.wTree.get_widget("comboPair"))
     
-    def make_handle_box(stages):
-        view_box = gtk.VBox(homogeneous = False)
-
-        view_list = []
-
-        for stage in stages:
-            view = View(make_stage_name(stage.command_line), stage.text_buffer)
-            view_list.append(view)
-            view.show()
-            view_box.pack_start(view, expand = False, fill = True)
-
-        for view in view_list[1:-1]:
-            view.set_expanded(False)
-
-        return view_box
+    for mode in Globals.info.modes():
+        print str(mode)
+        comboPair.append_text(str(mode))
+    comboPair.set_active(0)
     
-    view_box = make_handle_box(Globals.stages)
-    view_box.show()
-
-    vbox = gtk.VBox(homogeneous = False, spacing = 5)
-    vbox_options = gtk.VBox(homogeneous = False, spacing = 5)
-    vbox.show()
-
-    vbox.pack_start(menubar(), expand = False)
-    # There is probably a much nicer way of doing this.
-    vbox.pack_start(vbox_options, expand = False)
-
-    marcar_box =  gtk.CheckButton('Mark unknown words')
-    vbox_options.show()
-    marcar_box.show()
-    marcar_box.connect("clicked", checkbox_event);
-    vbox_options.pack_end(marcar_box, expand = False, fill = True)
-
-    vbox.pack_start(view_box, expand = True)
-
-
-    scrolled_window = gtk.ScrolledWindow()
-    scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-    scrolled_window.show()
-    scrolled_window.add_with_viewport(vbox)
-
-    window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window.add(scrolled_window)
-
-    window.connect("delete_event", delete_event)
-    window.connect("destroy", quit)
-
-    window.resize(400, 500)
-
-    window.show()
     
-
-
-def apertium_program(program):
-    # TODO: Make this search for the Apertium path
-    return "%s/%s" % (config.apertium_bin_path, program)
-
-def apertium_dictionary(dictionary):
-    # TODO: Make this search for the Apertium path
-    return "%s/apertium-%s/%s" % (config.apertium_dict_path, Globals.lang_code, dictionary) 
-
-def setup_mode(mode):
-    stages = Stage()
-
-    def add(stages):
-        for program in mode.findall('.//program'):
-            command = apertium_program(program.attrib['name']).split(' ')
-                
-            for param in program.findall('.//file'):
-                command.append(apertium_dictionary(param.attrib['name']))
-
-            stages.next = Stage(tuple(command))
-            stages = stages.next
-
-    add(stages)
-
-    start_stage = stages
-    last_stage = [stage for stage in stages if stage.next != None and stage.next.next == None][0]
-
-    start_stage.preproc_cmdline = (apertium_program('apertium-destxt'),)
-    last_stage.postproc_cmdline = (apertium_program('apertium-retxt'),)
-
-    return stages
-
 
 
 def setup_logging():
@@ -395,57 +249,20 @@ def setup_logging():
                         filemode='w')
 
 
-
-def print_usage():
-    print "usage: apertium-view [<modes file>] [<language code>]"
-
-def process_command_line():
-    import sys
-
-    logging.debug('Command line is %s' % sys.argv)
-    Globals.lang_code = sys.argv[1]
-
-    def process_modes(mode_file, mode_code = None):
-        logging.debug("Using mode file %s" % mode_file)
-        tree = ET.parse(mode_file)
-
-        def find_mode():
-            if mode_code != None:
-                logging.debug('Looking for mode code %s' % mode_code)
-                for mode in tree.findall('mode'):
-                    if mode.attrib['name'] == mode_code:
-                        return mode
-
-                    print_usage()
-
-            else:
-                logging.debug('No mode code specified, using first one in file')
-                return tree.find('mode')
-
-        return find_mode()
-
-    Globals.mode = process_modes(*sys.argv[2:4])
-    logging.debug('Parsed command line')
-
-
-
 def init():
-    setup_logging()
-    process_command_line()
-    Globals.stages = setup_mode(Globals.mode)
     Globals.pipeline_executor = PipelineExecutor()
     Globals.pipeline_executor.start()
-    main_window()
-
-if __name__ == "__main__":
-    if len(sys.argv) < 3: #{
-        print 'Usage: apertium-view.py <pair name> <modes file> [direction]';
-        sys.exit(-1);
-    #}
 
     Globals.source_lang_manager  = sourceview.language_manager_get_default()
     Globals.source_style_manager = sourceview.style_scheme_manager_get_default()
+    Globals.info = make_proxy("org.apertium.info/", "org.apertium.Info")
 
+    setup_logging()
+    #process_command_line()
+    #Globals.stages = setup_mode(Globals.mode)
+    main_window()
+
+if __name__ == "__main__":
     gtk.gdk.threads_init()
     init()
     logging.debug('Completed init phase')

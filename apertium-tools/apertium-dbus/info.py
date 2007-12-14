@@ -33,12 +33,20 @@ class Info(service.Service):
 
         return modes
 
+
     @service.method("org.apertium.Info", in_signature='s', out_signature='aas')
     def get_pipeline(self, mode):
         import re
         
         mode_content = open(path.join(self.mode_directory(), mode + '.mode')).read()
         return [re.split('[ \t\n]*', command.strip()) for command in mode_content.split('|')]
+
+
+    pipeline_filters = {'txt' : ('apertium-destxt', 'apertium-retxt')}
+
+    @service.method("org.apertium.Info", in_signature='s', out_signature='as')
+    def get_filters(self, _type):
+        return [path.join(self.directory(), 'bin', exe) for exe in self.pipeline_filters[_type]]
 
 
 def quit_handler(*args):
