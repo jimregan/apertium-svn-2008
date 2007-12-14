@@ -1,6 +1,9 @@
 from widget import *
 
 
+MIN_SIZE = 15
+
+
 def get_wTree(widget):
     try:
         return getattr(widget, "wTree")
@@ -13,6 +16,10 @@ def get_widget(self, widget):
     return wTree.get_widget(widget)
 
 
+def set_y_size(widget, sz):
+    widget.set_size_request(-1, max(sz, MIN_SIZE))
+
+
 @gtk_handler
 def on_statusbar_motion_notify_event(widget, event):
     if widget.button_down:
@@ -22,9 +29,7 @@ def on_statusbar_motion_notify_event(widget, event):
         rect = resizee.get_allocation()
         _, y_delta = event.get_coords()
         
-        y_size = rect.height + int(y_delta) - widget.y_offset
-        if y_size > 0:
-            resizee.set_size_request(-1, y_size)
+        set_y_size(resizee, rect.height + int(y_delta) - widget.y_offset)
 
             
 @gtk_handler
@@ -43,11 +48,39 @@ def on_btnCollapsed_toggled(widget, data=None):
     resizee = get_widget(widget, "scrolledwindow")
 
     if not widget.get_active():
-        resizee.set_size_request(-1, widget.old_height)
+        set_y_size(resizee, widget.old_height)
 
     else:
         widget.old_height = resizee.get_allocation().height
-        resizee.set_size_request(-1, 1)
+        set_y_size(resizee, 0)
+
+
+@gtk_handler
+def on_wndText_destroy(widget, data=None):
+    widget.hide()
+    widget.destroy()
+
+
+@gtk_handler
+def on_btnCloseTextWindow_clicked(widget, data=None):
+    get_widget(widget, "wndText").destroy()
+
+
+@gtk_handler
+def on_wndText_delete_event(widget, event, data=None):
+    return False
+
+
+@gtk_handler
+def on_btnOpenWindow_clicked(widget, data=None):
+    wTree = glade_load_and_connect("TextWindow.glade")
+
+    wTree.get_widget("wndText").wTree = wTree
+    wTree.get_widget("wndText").set_title(get_widget(widget, "entry").get_text())
+
+    text_view = make_source_view(widget.text_buffer)
+    scrolled_window = wTree.get_widget("scrolled_window")
+    scrolled_window.add_with_viewport(text_view)
     
 
 def make(txt, child):
@@ -61,6 +94,11 @@ def make(txt, child):
     
     wTree.get_widget("entry").set_text(txt)
     wTree.get_widget("viewport").add(child)
+
+    wTree.get_widget("btnCollapsed").set_active(True)
+    on_btnCollapsed_toggled(wTree.get_widget("btnCollapsed"))
+
+    wTree.get_widget("btnOpenWindow").text_buffer = child.get_buffer()
 
     return widget
     

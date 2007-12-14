@@ -7,13 +7,6 @@ import pygtk
 
 pygtk.require('2.0')
 
-try:
-    import gtksourceview2 as sourceview
-    
-except:
-    import SourceViewDummy as sourceview
-
-
 # Logging
 import logging
 
@@ -26,10 +19,6 @@ from apertium.service import make_proxy
 from apertium.command_line import call
 from widget import *
 import TextWidget 
-
-# Custom widget with horizontal pane allowing for the easy
-# vertical resizing of boxes
-from VSizerPane import VSizerPane
 
 # Global variables
 class Globals:
@@ -117,15 +106,6 @@ def make_text_widget(cmd):
     text_buffer = make_text_buffer()
     src_view = show(make_source_view(text_buffer))
     return text_buffer, TextWidget.make(" ".join(cmd), src_view)
-
-
-def make_source_view(text_buffer):
-    text_view = sourceview.View(text_buffer)
-    text_view.set_editable(True)
-    text_view.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-    text_view.show()
-    
-    return text_view
 
 
 def text_window(title, text_buffer):
