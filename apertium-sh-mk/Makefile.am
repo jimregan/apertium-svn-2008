@@ -85,13 +85,9 @@ $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 #	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 #	lt-comp rl $(BASENAME).$(LANG1).dix $@
 
-#$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-#	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
-#	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
-
-$(PREFIX2b).autopgen.bin: $(BASENAME).post-$(LANG1b).dix
-	apertium-validate-dictionary $(BASENAME).post-$(LANG1b).dix
-	lt-comp lr $(BASENAME).post-$(LANG1b).dix $@
+$(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
+	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
+	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
 
 $(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
@@ -152,7 +148,7 @@ apertium_sh_mk_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
 		    $(BASENAME).$(PREFIX1).t1x \
-		    $(PREFIX2b).autopgen.bin \
+		    $(PREFIX2).autopgen.bin \
 		    modes clean-dicts
 		  
 #                    $(PREFIX1).autopgen.bin 
