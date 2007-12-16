@@ -101,6 +101,74 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: SN SP SN">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SP"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="2" part="lem"/>
+                <lit v="prep__na"/>
+              </equal>
+            </test>
+            <out>
+              <chunk>
+                <clip pos="1" part="lem"/>
+                <clip pos="1" part="a_sintagma"/>
+                <clip pos="1" part="gen"/>
+                <clip pos="1" part="nbr"/>
+                <lit-tag v="gen"/>
+                <clip pos="1" part="chcontent"/>
+              </chunk>
+              <b/>
+              <chunk>
+                <clip pos="3" part="lem"/>
+                <clip pos="3" part="a_sintagma"/>
+                <clip pos="3" part="gen"/>
+                <clip pos="3" part="nbr"/>
+                <lit-tag v="gen"/>
+                <clip pos="3" part="chcontent"/>
+              </chunk>
+            </out>
+          </when>
+          <otherwise>
+            <out>
+              <chunk>
+                <clip pos="1" part="lem"/>
+                <clip pos="1" part="a_sintagma"/>
+                <clip pos="1" part="gen"/>
+                <clip pos="1" part="nbr"/>
+                <clip pos="1" part="cas"/>
+                <clip pos="1" part="chcontent"/>
+              </chunk>
+              <b/>
+              <chunk>
+                <clip pos="2" part="lem"/>
+                <clip pos="2" part="tags"/>
+                <clip pos="2" part="chcontent"/>
+              </chunk>
+              <b/>
+              <chunk>
+                <clip pos="3" part="lem"/>
+                <clip pos="3" part="a_sintagma"/>
+                <clip pos="3" part="gen"/>
+                <clip pos="3" part="nbr"/>
+                <clip pos="3" part="cas"/>
+                <clip pos="3" part="chcontent"/>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
+      </action>
+    </rule>
+
+
+
     <rule comment="REGLA: SP SN CNJCOO SN">
       <pattern>
         <pattern-item n="SP"/>
