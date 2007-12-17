@@ -1,4 +1,4 @@
-#!/usr/bin/python2.5 -Wall
+#!/usr/bin/env python
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
