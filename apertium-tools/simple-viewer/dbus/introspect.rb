@@ -26,9 +26,10 @@ module DBus
 
   # = D-Bus interface class
   #
-  # This class is the interface descriptor that comes from the XML we
-  # parsed from the Introspect() call.
-  # It also is the local definition of inerface exported by the program.
+  # This class is the interface descriptor.  In most cases, the Introspect()
+  # method call instanciates and configures this class for us.
+  #
+  # It also is the local definition of interface exported by the program.
   class Interface
     # The name of the interface.
     attr_reader :name
@@ -240,7 +241,7 @@ module DBus
       end
       [ret, subnodes]
     end
- 
+
     ######################################################################
     private
 
@@ -300,7 +301,7 @@ module DBus
     def check_for_eval(s)
       raise RuntimeException, "invalid internal data" if not s.to_s =~ /^[A-Za-z0-9_]*$/
     end
-  
+
     # FIXME
     def check_for_quoted_eval(s)
       raise RuntimeException, "invalid internal data" if not s.to_s =~ /^[^"]+$/
@@ -326,10 +327,10 @@ module DBus
       m.params.each do |npar|
         paramname, par = npar
         check_for_quoted_eval(par)
-  
+
         # This is the signature validity check
         Type::Parser.new(par).parse
-  
+
         methdef += %{
           msg.add_param("#{par}", arg#{idx})
         }
@@ -348,7 +349,11 @@ module DBus
           @object.bus.send(msg.marshall)
         else
           @object.bus.send_sync(msg) do |rmsg|
-            ret = rmsg.params
+            if rmsg.is_a?(Error)
+              raise rmsg
+            else
+              ret = rmsg.params
+            end
           end
         end
         ret[0]
@@ -389,7 +394,10 @@ module DBus
 
   # D-Bus proxy object class
   #
-  # Class proxying objects that live (remotely) on the bus.
+  # Class representing a remote object in an external application.
+  # Typically, calling a method on an instance of a ProxyObject sends a message
+  # over the bus so that the method is executed remotely on the correctponding
+  # object.
   class ProxyObject
     # The subnodes of the object in the tree.
     attr_accessor :subnodes

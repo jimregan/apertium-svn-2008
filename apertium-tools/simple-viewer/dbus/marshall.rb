@@ -186,7 +186,7 @@ module DBus
         # checks please
         array_sz = get(4).unpack(@uint32)[0]
         raise InvalidPacketException if array_sz > 67108864
-        
+
         align(signature.child.alignment)
         raise IncompleteBufferException if @idx + array_sz > @buffy.size
 
@@ -195,6 +195,13 @@ module DBus
         while @idx - start_idx < array_sz
           packet << do_parse(signature.child)
         end
+
+        if signature.child.sigtype == Type::DICT_ENTRY then
+          packet = packet.inject(Hash.new) do |hash, pair|
+            hash[pair[0]] = pair[1]
+            hash
+	  end
+        end
       when Type::STRUCT
         align(8)
         packet = Array.new
@@ -202,7 +209,7 @@ module DBus
           packet << do_parse(elem)
         end
       when Type::VARIANT
-        string = get_nul_terminated
+        string = get_signature
         # error checking please
         sig = Type::Parser.new(string).parse[0]
         packet = do_parse(sig)
@@ -212,9 +219,14 @@ module DBus
         packet = get_string
       when Type::SIGNATURE
         packet = get_signature
+      when Type::DICT_ENTRY
+        align(8)
+        key = do_parse(signature.members[0])
+        value = do_parse(signature.members[1])
+        packet = [key, value]
       else
         raise NotImplementedError,
-        	"sigtype: #{signature.sigtype} (#{signature.sigtype.chr})"
+	  "sigtype: #{signature.sigtype} (#{signature.sigtype.chr})"
       end
       packet
     end # def do_parse
@@ -262,6 +274,8 @@ module DBus
     # Append the array type _type_ to the packet and allow for appending
     # the child elements.
     def array(type)
+      # Thanks to Peter Rullmann for this line
+      align(4)
       sizeidx = @packet.size
       @packet += "ABCD"
       align(type.alignment)
@@ -322,7 +336,7 @@ module DBus
           val = val.to_a
         end
         if not val.kind_of?(Array)
-          raise TypeException 
+          raise TypeException
         end
         array(type.child) do
           val.each do |elem|
@@ -332,14 +346,14 @@ module DBus
       when Type::STRUCT, Type::DICT_ENTRY
         raise TypeException if not val.kind_of?(Array)
         if type.sigtype == Type::DICT_ENTRY and val.size != 2
-          raise TypeException 
+          raise TypeException
         end
         struct do
           idx = 0
           while val[idx] != nil
             type.members.each do |subtype|
-              raise TypeException if data[idx] == nil
-              append(subtype, data[idx])
+              raise TypeException if val[idx] == nil
+              append(subtype, val[idx])
               idx += 1
             end
           end

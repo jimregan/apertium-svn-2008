@@ -187,7 +187,7 @@ module DBus
       @object_root = Node.new("/")
     end
 
-    # Connect to the bus and initialize the connection by saying 'Hello'.
+    # Connect to the bus and initialize the connection.
     def connect
       parse_session_string
       if @type == "unix:abstract"
@@ -327,7 +327,7 @@ module DBus
         # introspect in synchronous !
         send_sync(m) do |rmsg|
           if rmsg.is_a?(Error)
-            raise rmsg 
+            raise rmsg
           else
             return rmsg.params[0]
           end
@@ -345,7 +345,6 @@ module DBus
       nil
     end
 
-    # FIXME: describe this
     # Issues a call to the org.freedesktop.DBus.Introspectable.Introspect method
     # _dest_ is the service and _path_ the object path you want to introspect
     # If a code block is given, the introspect call in asynchronous. If not
@@ -483,7 +482,7 @@ module DBus
       self.proxy.AddMatch(mr.to_s)
     end
 
-    # Process a message _m) based on its type.
+    # Process a message _m_ based on its type.
     # method call:: FIXME...
     # method call return value:: FIXME...
     # signal:: FIXME...
@@ -669,7 +668,7 @@ module DBus
           b = @buses[socket]
           b.update_buffer
           while m = b.pop_message
-            b.process(m) 
+            b.process(m)
           end
         end
       end
