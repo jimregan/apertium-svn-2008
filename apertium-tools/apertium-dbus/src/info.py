@@ -5,7 +5,7 @@ python example-service.py &
 """
     
 import os.path as path
-import apertium.service as service
+import service
 
 
 class Info(service.Service):

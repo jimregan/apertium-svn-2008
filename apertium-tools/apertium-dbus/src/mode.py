@@ -8,8 +8,8 @@ import os.path as path
 import os
 import logging
 
-import apertium.service as service
-from apertium.command_line import call
+import service
+from command_line import call
 
 class Translate(service.Service):
     def __init__(self, cmdline, mode):
