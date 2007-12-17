@@ -125,14 +125,15 @@ class MainWindow
         options, input = @input_queue.pop # Block until we have something
         options, input = @input_queue.pop until @input_queue.empty? # Then pop the queue until we have the latest item
         begin
-          result = @translator.translate(options, @buffer.get_text(@buffer.start_iter, @buffer.end_iter))
+          result = @translator.translate(options, input)
+
+          Gtk.idle_add do # Queue a buffer in GTK's main loop update
+            @output_buffer.set_text(result)
+            false
+          end
+
         rescue Exception => e
           puts e
-        end
-
-        Gtk.idle_add do # Queue a buffer in GTK's main loop update
-          @output_buffer.set_text(result)
-          false
         end
       end
     end
