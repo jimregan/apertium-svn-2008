@@ -177,7 +177,7 @@ class MainWindow
 end
 
 Gdk::Threads.init
-Gnome::Program.new('Apertium viewer', "0.2")
-MainWindow.new("main_window.glade")
+prog = Gnome::Program.new('Apertium viewer', "0.2")
+wnd = MainWindow.new("main_window.glade")
 Gtk.main
     
