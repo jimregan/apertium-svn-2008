@@ -113,7 +113,7 @@ function translate($text, $dir, $markUnknown) {
   fclose($fd);
   
   if ($dir == "ro-es" ) {
-	$cmd = "cat $tempfile | LANG=en_GB.UTF-8 sed 's/ţ/ț/g' | LANG=en_GB.UTF-8 sed 's/ş/ș/g' | LANG=en_GB.UTF-8 $APERTIUM_TRANSLATOR -f txt $markUnknown $dir";  
+	$cmd = "cat $tempfile | LANG=en_GB.UTF-8 sed 's/ţ/ț/g' | LANG=en_GB.UTF-8 sed 's/ş/ș/g' | LANG=en_GB.UTF-8 $APERTIUM_TRANSLATOR -f txt $markUnknown $dir";
   } else {
   	$cmd = "LANG=es_ES.UTF-8 $APERTIUM_TRANSLATOR -f txt $markUnknown $dir $tempfile";
   	}  

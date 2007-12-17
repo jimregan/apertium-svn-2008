@@ -26,7 +26,7 @@ function show_form($dir) {
 	print '</select></td></label></tr>';
 
 	print '<tr><label for="inurl"><td>URL:</td>';
-	print '<td><input title="' . _("URL to be translated") . '" name="inurl" type="text" value="http://"/></td>';
+	print '<td><input size="40" title="' . _("URL to be translated") . '" name="inurl" type="text" value="http://"/></td>';
 	print '</label></tr>';
 
 	print '<tr><label for="mark"><td>' . _("Mark unknown words") . ':</td>';

@@ -3,13 +3,16 @@
 
   $dir = $_POST["dir"];
   $mark = $_POST["mark"];
-  
+ 
 
   if($dir=="") {
           $dir = $_POST["dir"];
   }
   if($dir=="") {
           $dir = $_GET["dir"];
+  }
+  if($mark=="") {
+          $mark = $_GET["mark"];
   }
   if($inurl=="") {
           $inurl = $_POST["inurl"];
@@ -51,15 +54,16 @@
 <!DOCTYPE html public "-//w3c//dtd html 4.0 transitional//en">
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!--    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> -->
     <title>Apertium</title>
   </head>
 
 <?php 
 	$variante = $_POST["variante"];
-	$mark = $_POST["mark"];	
 	
-   if($variante!=2){?>
+   if($variante!=2){
+  ?>
+  
   <frameset rows="50,*" frameborder="no">
   <?php
    }
