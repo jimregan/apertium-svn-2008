@@ -12,9 +12,19 @@ import gtk
 import gtk.gdk
 import gtk.glade
 import pygtk
+import gettext
 
 import dbus
 
+_ = gettext.gettext
+
+APP='simple-view'
+DIR='po'
+ 
+gettext.bindtextdomain(APP, DIR)
+gettext.textdomain(APP)
+gtk.glade.bindtextdomain(APP, DIR)
+gtk.glade.textdomain(APP)
 
 class Serialize:
     # Don't judge me because of this HORRIBLE scheme.
