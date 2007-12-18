@@ -3,19 +3,6 @@
 <tr>
 
 <!--
-	Project hosted in SourceForge.net
--->
-<td>
-<?php
-print _("Project hosted in");
-?>
-<br/>
-<a href="http://sourceforge.net/">
-	<img src="images/sflogo.png" alt="Sourceforge.net"/>
-</a>
-</td>
-
-<!--
 	Funding
 -->
 <td>
@@ -41,32 +28,66 @@ print _("Project hosted in");
 </a>
 </td>
 
+<!--
+	MAE (Romania)
+-->
+<td>
+<a href="http://www.mae.ro/">
+	<img alt="MAE" src="images/logo_mae_ro_75pc.jpg"/>
+</a>
+</td>
+
 </tr>
 </table>
+
 </div>
+
 
 <!--
 	Signature
 -->
 <div id="footer">
+<table>
+<tr>
+<td>
 Copyright &copy; 2007 <a href="http://www.ua.es">Universidad de Alicante</a><br/>
 <?php
 	print _("Original design by");
 ?>
 &nbsp;<a href="http://www.mdibb.net" title="Website of Matt Dibb">Matt Dibb</a> 2006. <a href="http://jigsaw.w3.org/css-validator/check/referer" title="Validate CSS">CSS</a> <a href="http://validator.w3.org/check/referer" title="Validate XHTML">XHTML</a>
 <br/><br/>
-</div>
+</td>
 
 <!--
 	Creative Commons
 -->
-<div id="creativecommons">
-<br/>
+<td align="right">
 <?php
-print _("This page is subject to a Creative Commons license");
+print _("Creative Commons license");
 ?>
 <br/>
-<a href="http://creativecommons.org/licenses/by-sa/3.0/">
+<a alt="This page is subject to a Creative Commons license" href="http://creativecommons.org/licenses/by-sa/3.0/">
 	<img alt="Creative Commons license" src="images/creativecommons.png"/>
 </a>
+</td>
+
+<!--
+	Project hosted in SourceForge.net
+-->
+<td align="right">
+<?php
+print _("Project hosted in");
+?>
+<br/>
+<a href="http://sourceforge.net/">
+	<img src="images/sflogo.png" alt="Sourceforge.net"/>
+</a>
+</td>
+
+</tr>
+</table>
 </div>
+
+
+
+
