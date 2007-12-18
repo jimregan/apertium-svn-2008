@@ -71,19 +71,17 @@ class MainWindow:
         self.glade = GladeXML(path) # Instantiate our custom Glade class which extends the gtk.glade.GladeXML class
         self.glade.connect(self);   # Try to connect the signals defined in the glade file to methods defined in self
 
+        # Get handles objects of interest in the glade file
         self.buffer         = self.glade.get_widget("txtInput").get_buffer()
         self.output_buffer  = self.glade.get_widget("txtOutput").get_buffer()
         self.wndMain        = self.glade.get_widget("wndMain")
         self.dlgAbout       = self.glade.get_widget("dlgAbout")
         self.chkMarkUnknown = self.glade.get_widget("chkMarkUnknown")
-
         self.comboPair      = self.setup_combo(self.info.modes(), self.glade.get_widget("comboPair"))
 
-        def on_changed(w):
-            self.input_queue.put([self.options(), w.get_text(w.get_start_iter(), w.get_end_iter())])
+        self.buffer.connect("changed", self.on_buffer_changed)
 
-        self.buffer.connect("changed", on_changed)
-
+        # Start the thread which will handle 
         thread.start_new_thread(self.translator_loop, ())
 
         self.load_config()
@@ -124,6 +122,9 @@ class MainWindow:
             except Exception, e:
                 print e # We should probably do exit(1) here
 
+
+    def on_buffer_changed(self, w):
+        self.input_queue.put([self.options(), w.get_text(w.get_start_iter(), w.get_end_iter())])
 
     ###########################################################
     # Implementations of GTK signals defined in the Glade file
@@ -166,6 +167,6 @@ class MainWindow:
 
 if __name__ == "__main__":
     gtk.gdk.threads_init()
-    wnd = MainWindow("main_window.glade")
+    wnd = MainWindow("tolk.glade")
     gtk.main();
 
