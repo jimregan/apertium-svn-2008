@@ -145,10 +145,19 @@ class MainWindow:
     def on_dlgAbout_response(self, widget, response):
         self.dlgAbout.hide()
 
-    def on_comboPair_changed(self, widget):
-        pair_name = widget.get_model().get_value(widget.get_active_iter(), 0)
+    def update_translation_object(self, pair_name):
+        """Given a language pair name like ab-cd, change - to _ so that
+        one gets ab_cd. We must do this, because a D-Bus object name cannot
+        contain dashes.
+
+        Now, create a proxy object to the Apertium D-Bus translator object for
+        the language pair and assign the object to self.translator."""
         dbus_pair_name = "/" + "_".join(pair_name.split("-"))
         self.translator = dbus.Interface(self.bus.get_object("org.apertium.mode", dbus_pair_name), "org.apertium.Mode")
+
+    def on_comboPair_changed(self, widget):
+        pair_name = widget.get_model().get_value(widget.get_active_iter(), 0)
+        self.update_translation_object(pair_name)
         self.buffer.emit("changed")
 
     def on_chkMarkUnknown_toggled(self, widget):
