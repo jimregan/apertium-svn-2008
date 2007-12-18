@@ -1,6 +1,6 @@
 <?php
 	$sections = array("whatisapertium", "whodevelopsit", "downloading", "testdrive", "documentation", "interact", "latestnews", "software", "funding", "users", "contact");
-	$text = array("wat is apertium", "wie ontwikkel dit", "laai af", "toetsbestuur", "dokumentasie", "bespreek", "nuus", "sagteware", "bevondsing", "gebruikers", "kontak");
+	$text = array("wat is Apertium?", "wie ontwikkel dit?", "laai af", "toetsbestuur", "dokumentasie", "bespreek", "nuus", "sagteware", "befondsing", "gebruikers", "kontak");
 
 $subsections = array
 (
@@ -15,7 +15,7 @@ $subsections = array
    	"link@Engels-Afrikaans"=>"http://interpret.co.za/",
    	"translatetext"=>"Vertaal teks",
    	"translatedoc"=>"Vertaal dokument",
-   	"surfandtranslate"=>"Surf &amp; translate"   	   	
+   	"surfandtranslate"=>"Blaai deur die web &amp; vertaal"
    ),
 "documentation" =>array
    (
@@ -36,7 +36,7 @@ $subsections = array
 "software" =>array
 	(
 		"apertium-tagger-training-tools"=>"Opleiding van etiketeerder",
-		"apertium-transfer-tools"=>"Oordrag programme",
+		"apertium-transfer-tools"=>"Oordragprogramme",
 		"lttoolbox"=>"Leksikale transformasie",
 		"apertium-eval-translator"=>"Evaluasie"
 	),
