@@ -273,7 +273,7 @@
       <tags-item tags="det.def.m.*"/>
     </sequence>
   </def-mult>
- <def-mult name="PREPPOS" closed="true">
+<!-- <def-mult name="PREPPOS" closed="true">
     <sequence>
       <label-item label="PREP"/>
       <tags-item tags="det.pos.*"/>
@@ -284,7 +284,7 @@
       <label-item label="PREP"/>
       <tags-item tags="prn.pos.*"/> 
     </sequence>
-  </def-mult> <!--Per ara no funciona (no serveix), potser amb un nou corpus etiquetat desambiguaria correctament -->
+  </def-mult> --><!--Per ara no funciona (no serveix), potser amb un nou corpus etiquetat desambiguaria correctament -->
  
   <def-mult name="INFLEXPRNENC">
     <sequence>
@@ -514,6 +514,14 @@
     <label-sequence>
       <label-item label="ANTROPONIM"/>
       <label-item label="VLEXIMP"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="PRNPOS"/>
+      <label-item label="NOMM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRNPOS"/>
+      <label-item label="NOMF"/>
     </label-sequence>
     <label-sequence>
       <label-item label="TOPONIM"/>

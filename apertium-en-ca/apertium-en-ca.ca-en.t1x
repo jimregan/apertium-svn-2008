@@ -14,6 +14,11 @@
       <cat-item tags="adj.*"/>
       <cat-item tags="adj.pos.*"/>
     </def-cat>
+    <def-cat n="adj_pp">
+      <cat-item tags="adj.*"/>
+      <cat-item tags="adj.pos.*"/>
+      <cat-item tags="vblex.pp.*"/>
+    </def-cat>
     <def-cat n="det"><!--Determinants i predeterminants, van anteposats en català -->
       <cat-item tags="det.dem.*"/>
       <cat-item tags="det.ind.*"/>
@@ -173,6 +178,12 @@
       <cat-item tags="preadv"/>
     </def-cat>
 
+    <def-cat n="més">
+      <cat-item lemma="més" tags="adv"/>
+      <cat-item lemma="més" tags="preadv"/>
+      <cat-item lemma="més" tags="det.*"/>
+    </def-cat>
+
     <def-cat n="adv">
       <cat-item tags="adv"/>
     </def-cat>
@@ -220,6 +231,7 @@
       <attr-item tags="np.ant"/>
       <attr-item tags="np.al"/>	
       <attr-item tags="np.cog"/>
+      <attr-item tags="num"/>
     </def-attr>
 
     <def-attr n="a_np_acr">
@@ -233,6 +245,7 @@
       <attr-item tags="adj.sint.comp"/>
       <attr-item tags="adj.sint.sup"/>
       <attr-item tags="adj.pos"/>
+      <attr-item tags="vblex.pp"/>
     </def-attr>  
 
 
@@ -357,6 +370,7 @@
     <def-var n="paraula1"/>
     <def-var n="SVnegatiu"/>
     <def-var n="auxiliar"/>
+    <def-var n="adv_adjectiu"/>
     <def-var n="tempsv"/>
   </section-def-vars>
 
@@ -887,6 +901,10 @@
 		<clip pos="1" side="sl" part="lem"/>
 		<lit v="per a"/>
 	      </equal>
+	      <equal caseless="yes">	      
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="de"/>
+	      </equal>	      
 	    </or>
 	  </test>
 	  <let>
@@ -941,6 +959,174 @@
 	  </let>
 	</otherwise>
       </choose>
+</def-macro>
+
+
+<def-macro n="adv_adj" npar="2"><!-- (per a fer el comparatiu si cal: 'més fosc' = darker)" -->
+	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="més"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="tl" part="a_adj"/> 
+		  <lit-tag v="adj.sint"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <var n="adv_adjectiu"/>
+		<concat>
+		  <clip pos="2" side="tl" part="lem"/> 
+		  <clip pos="2" side="tl" part="a_adj"/>
+		  <lit-tag v="comp"/>
+		</concat>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="molt més"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="tl" part="a_adj"/> 
+		  <lit-tag v="adj.sint"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>	      
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <lit v="much"/>
+	    </let>
+	    <let>
+	      <var n="adv_adjectiu"/>
+		<concat>
+		  <clip pos="1" side="tl" part="whole"/> 
+		  <lit v="$ ^"/>
+		  <clip pos="2" side="tl" part="lem"/> 
+		  <clip pos="2" side="tl" part="a_adj"/>
+		  <lit-tag v="comp"/>
+		</concat>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="adv_adjectiu"/>
+		<concat>
+		  <clip pos="1" side="tl" part="whole"/> 
+		  <lit v="$ ^"/>
+		  <clip pos="2" side="tl" part="lem"/> 
+		  <clip pos="2" side="tl" part="a_adj"/>
+		</concat>
+	    </let>
+	  </otherwise>
+	</choose>
+</def-macro>
+
+<def-macro n="det_adv_adj" npar="3"><!-- (per a fer el comparatiu i superlatiu si cal: 'més fosc' = 'darker'; 'el més fosc' = 'the darkest')" -->
+	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="2" side="sl" part="lem"/> 
+		  <lit v="més"/>
+		</equal>
+		<equal>
+		  <clip pos="3" side="tl" part="a_adj"/> 
+		  <lit-tag v="adj.sint"/>
+		</equal>
+	      </and>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" side="sl" part="a_det"/>
+		    <lit-tag v="det.def"/>
+		  </equal>
+		</test>		  
+		<let>
+		  <var n="adv_adjectiu"/>
+		  <concat>
+		    <clip pos="3" side="tl" part="lem"/> 
+		    <clip pos="3" side="tl" part="a_adj"/>
+		    <lit-tag v="sup"/>
+		  </concat>
+		</let>
+	      </when>
+	      <otherwise>	  
+		<let>
+		  <var n="adv_adjectiu"/>
+		  <concat>
+		    <clip pos="3" side="tl" part="lem"/> 
+		    <clip pos="3" side="tl" part="a_adj"/>
+		    <lit-tag v="comp"/>
+		  </concat>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="2" side="sl" part="lem"/> 
+		  <lit v="molt més"/>
+		</equal>
+		<equal>
+		  <clip pos="3" side="tl" part="a_adj"/> 
+		  <lit-tag v="adj.sint"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>	      
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <lit v="much"/>
+	    </let>
+	    <let>
+	      <var n="adv_adjectiu"/>
+		<concat>
+		  <clip pos="2" side="tl" part="whole"/> 
+		  <lit v="$ ^"/>
+		  <clip pos="3" side="tl" part="lem"/> 
+		  <clip pos="3" side="tl" part="a_adj"/>
+		  <lit-tag v="comp"/>
+		</concat>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" side="sl" part="a_det"/>
+		    <lit-tag v="det.def"/>
+		  </equal>
+		</test>	
+		<let>  
+		  <clip pos="2" side="tl" part="lem"/> 
+		  <lit v="most"/>
+		</let>
+	      </when>
+	    </choose>		    
+	    <let>
+	      <var n="adv_adjectiu"/>
+		<concat>
+		  <clip pos="2" side="tl" part="whole"/> 
+		  <lit v="$ ^"/>
+		  <clip pos="3" side="tl" part="lem"/> 
+		  <clip pos="3" side="tl" part="a_adj"/>
+		</concat>
+	    </let>
+	  </otherwise>
+	</choose>
 </def-macro>
 
 
@@ -1180,7 +1366,7 @@
     <rule comment="REGLA: NOM ADJ ADJ">
       <pattern>
 	<pattern-item n="nom"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
 	<pattern-item n="adj"/>
       </pattern>
       <action>
@@ -1327,7 +1513,7 @@
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="adv_preadv"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -1339,6 +1525,11 @@
 	<call-macro n="canvia_det">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="det_adv_adj">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
 	</call-macro>
 	<out>  
 	  <chunk name="det_nom_adv_adj" case="caseFirstWord">
@@ -1353,15 +1544,10 @@
 	      <clip pos="2" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
-	    <lu>   
-	      <clip pos="3" side="tl" part="whole"/> 
+            <lu>
+	      <var n="adv_adjectiu"/>
 	    </lu>
 	    <b pos="2"/>
-	    <lu>   
-	      <clip pos="4" side="tl" part="lem"/> 
-	      <clip pos="4" side="tl" part="a_adj"/>
-	    </lu> 
-	    <b pos="3"/>
 	    <lu>         
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
@@ -1369,7 +1555,10 @@
 	      <clip pos="2" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
-	</out>       
+	</out> 
+	<call-macro n="f_bcond">
+	  <with-param pos="3"/>
+	</call-macro>      
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -1382,7 +1571,7 @@
 	<pattern-item n="num"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="adv_preadv"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -1390,6 +1579,10 @@
 	</call-macro>	
 	<call-macro n="nombre_nom">
 	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="adv_adj">
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
 	</call-macro>
 	<out>  
 	  <chunk name="num_nom_adv_adj" case="caseFirstWord">
@@ -1403,15 +1596,10 @@
 	      <clip pos="1" side="tl" part="tags"/>
 	    </lu>
 	    <b pos="1"/>
-	    <lu>   
-	      <clip pos="3" side="tl" part="whole"/> 
+            <lu>
+	      <var n="adv_adjectiu"/>
 	    </lu>
 	    <b pos="2"/>
-	    <lu>   
-	      <clip pos="4" side="tl" part="lem"/> 
-	      <clip pos="4" side="tl" part="a_adj"/>
-	    </lu> 
-	    <b pos="3"/>
 	    <lu>         
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
@@ -1419,7 +1607,10 @@
 	      <clip pos="2" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
-	</out>       
+	</out>   
+	<call-macro n="f_bcond">
+	  <with-param pos="3"/>
+	</call-macro>      
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -1432,9 +1623,9 @@
     <rule comment="REGLA: NOM ADJ conj ADJ NOM (aspecte fràgil i tímida aparença -> fragile look and shy appearance. Regla creada perquè no entrin frases que no toquen en la regla següent">
       <pattern>
 	<pattern-item n="nom"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
 	<pattern-item n="cnjcoo"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
 	<pattern-item n="nom"/>
       </pattern>
       <action>
@@ -1556,7 +1747,7 @@
     <rule comment="REGLA: NOM ADJ conj ADJ (aspecte fràgil i tímid -> fragile and shy look">
       <pattern>
 	<pattern-item n="nom"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
 	<pattern-item n="cnjcoo"/>
 	<pattern-item n="adj"/>
       </pattern>
@@ -1662,9 +1853,9 @@
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
 	<pattern-item n="cnjcoo"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
 	<pattern-item n="nom"/>
       </pattern>
       <action>	
@@ -1953,13 +2144,17 @@
     <rule comment="REGLA: ADV ADJECTIU (per a fer comparatius i superlatius: 'més llarg - longer')">
       <pattern>
 	<pattern-item n="adv_preadv"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adj_pp"/>
       </pattern>
       <action>          	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="adv_adj">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
 	</call-macro>
-	<choose>
+<!--	<choose>
 	  <when>
 	    <test>
 	      <and>
@@ -1972,26 +2167,7 @@
 		  <lit-tag v="adj.sint"/>
 		</equal>
 	      </and>
-	    </test>
-	    <out>
-	      <chunk name="adj" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="SA"/></tag>
-		  <tag><clip pos="2" side="sl" part="gen"/></tag>
-		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
-		</tags>
-		<lu>   
-		  <clip pos="2" side="tl" part="lem"/> 
-		  <clip pos="2" side="tl" part="a_adj"/>
-		  <lit-tag v="comp"/>
-		</lu>
-	      </chunk>
-	    </out>
-	    <call-macro n="f_bcond">
-	      <with-param pos="1"/>
-	    </call-macro>
-	  </when>
-	  <otherwise>	 
+	    </test> -->
 	    <out>
 	      <chunk name="adv_adj" case="caseFirstWord">
 		<tags>
@@ -1999,18 +2175,90 @@
 		  <tag><clip pos="2" side="sl" part="gen"/></tag>
 		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
 		</tags>
-		<lu>   
-		  <clip pos="1" side="tl" part="whole"/> 
-		</lu> 
-		<b pos="1"/>
-		<lu>   
-		  <clip pos="2" side="tl" part="lem"/> 
-		  <clip pos="2" side="tl" part="a_adj"/>
+		<lu> 
+		  <var n="adv_adjectiu"/>
 		</lu>
 	      </chunk>
 	    </out>
-	  </otherwise>
-	</choose>  
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+
+   <rule comment="REGLA: DET ADV ADJECTIU (per a fer comparatius i superlatius: 'la més gran - the biggest; la més important - the most important')">
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="més"/>
+	<pattern-item n="adj_pp"/>
+      </pattern>
+      <action>          	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when><!--trampeta per quan el 'més' no és adv sinó determinant, per a arreglar-ho. -->
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="a_adv"/> 
+		<lit v=""/>
+	      </equal>
+	    </test>
+	    <let>	      
+	      <clip pos="2" side="tl" part="whole"/> 
+	      <concat>
+		<clip pos="2" side="tl" part="lem"/> 
+		<lit-tag v="adv"/>
+	      </concat>
+	    </let>
+	  </when>
+	</choose>	
+	<call-macro n="det_adv_adj">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>	      
+	      
+<!--	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="més"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="tl" part="a_adj"/> 
+		  <lit-tag v="adj.sint"/>
+		</equal>
+	      </and>
+	    </test> -->
+	    <out>
+	      <chunk name="det_adv_adj" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SA"/></tag>
+		  <tag><clip pos="3" side="sl" part="gen"/></tag>
+		  <tag><clip pos="3" side="sl" part="nbr"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_det"/>
+		  <clip pos="1" side="tl" part="nbr"/>
+		</lu>
+		<b pos="1"/>
+		<lu> 
+		  <var n="adv_adjectiu"/>
+		</lu>
+	      </chunk>
+	    </out>
+	    <call-macro n="f_bcond">
+	      <with-param pos="2"/>
+	    </call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -2996,7 +3244,7 @@
 		
 		<out>
 		  <b pos="2"/>
-		  <chunk name="pro" case="caseFirstWord">
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="3" side="tl" part="tipus_prn"/></tag>
@@ -3241,7 +3489,7 @@
 		
 		<out>
 		  <b pos="2"/>
-		  <chunk name="pro" case="caseFirstWord">
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -4296,7 +4544,7 @@
 	      <otherwise>
 		<out>
 		  <b pos="2"/>
-		  <chunk name="pro" case="caseFirstWord">
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -4981,7 +5229,7 @@
 		
 		<out>
 		  <b pos="1"/>
-		  <chunk name="pro" case="caseFirstWord">
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -7398,7 +7646,7 @@
 		
 		<out>
 		  <b pos="3"/>
-		  <chunk name="pro" case="caseFirstWord">
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
@@ -8523,7 +8771,7 @@
 	      <otherwise>
 		<out>
 		  <b pos="3"/>
-		  <chunk name="pro" case="caseFirstWord">
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
@@ -9249,7 +9497,7 @@
 	  <otherwise>	
 	    <out>
 	      <b pos="2"/>
-	      <chunk name="pro" case="caseFirstWord">
+	      <chunk name="pro">
 		<tags>
 		  <tag><lit-tag v="SN"/></tag>
 		  <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
@@ -10364,7 +10612,74 @@
       </action>
     </rule>
     
-
+  <rule comment="PREP PRN personal (amb ell = with him (prn obj))">
+      <pattern>
+	<pattern-item n="prep"/>
+	<pattern-item n="prpers"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="2" side="tl" part="tipus_prn"/> 
+	  <lit-tag v="obj"/>
+	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="2" side="sl" part="pers"/> 
+		  <lit-tag v="p3"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="sl" part="nbr"/> 
+		  <lit-tag v="pl"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="mf"/><!--ells/elles = them (mf)-->
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk name="pr" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk name="prpers">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="2" side="tl" part="pers"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lem"/>  
+	      <clip pos="2" side="tl" part="a_prn"/>  
+	      <clip pos="2" side="tl" part="tipus_prn" link-to="2"/> 
+	      <clip pos="2" side="tl" part="pers"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu> 
+	  </chunk>
+	</out>  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+    
  <rule comment="CNJ">
       <pattern>
 	<pattern-item n="cnj"/>
