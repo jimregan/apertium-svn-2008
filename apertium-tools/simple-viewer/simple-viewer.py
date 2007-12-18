@@ -16,22 +16,24 @@ import pygtk
 
 import dbus # Used to connect to the Apertium D-Bus service
 
-from widget_state import dump_state, load_state
 from i18n import _
 from glade import GladeXML
 
 
 class MainWindow:
-    def setup_combo(self, info, combo):
+    def setup_combo(self, modes, combo):
+        """Set the combo box up to display simple a list of text and
+        add everything in 'modes' to the list.
+        """
         combo.set_model(gtk.ListStore(gobject.TYPE_STRING))
-        cell = gtk.CellRendererText()
-        combo.pack_start(cell, True)
-        combo.add_attribute(cell, "text", 0)
+        cell = gtk.CellRendererText() # Tell the combobox we're just rendering text
+        combo.pack_start(cell, True) # Add the text renderer to the combo box
+        combo.add_attribute(cell, "text", 0) # Tell the combobox that we just want to show text
 
-        for mode in self.info.modes():
+        for mode in modes: # Add everything in 'modes' to the combobox
             combo.append_text(mode)
 
-        combo.set_active(0)
+        combo.set_active(0) # Set the combobox to the first entry
 
         return combo
 
@@ -44,21 +46,30 @@ class MainWindow:
 
 
     def load_config(self):
+        """Read the configuration data. First read default data from 'defaults.cfg'
+        and then user config data from '~/.apertium-simple-viewer.cfg'. Tell the
+        glade object to update stored widget properties based on the config data.
+        """
         self.config.readfp(open('defaults.cfg'))
         self.config.read([os.path.expanduser('~/.apertium-simple-viewer.cfg')])
         self.glade.load_gtk_state(self.config)
 
     def save_config(self):
+        """Store the configuration data to the user file '~/.apertium-simple-viewer.cfg'.
+        Before storing, tell the glade object to dump the widget state to the configuration
+        object self.config.
+        """
         self.glade.dump_gtk_state(self.config)
         self.config.write(open(os.path.expanduser('~/.apertium-simple-viewer.cfg'), 'w'))
     
     def __init__(self, path):
-        self.config = ConfigParser()
+        self.config = ConfigParser() # An object which loads/stores preferences
         self.bus = dbus.SessionBus()
+        # Create a proxy object to the D-Bus object org.apertium.info/ using the interface org.apertium.Info
         self.info = dbus.Interface(self.bus.get_object("org.apertium.info", "/"), "org.apertium.Info")
-        self.input_queue = Queue()
-        self.glade = GladeXML(path)
-        self.glade.connect(self);
+        self.input_queue = Queue()  # Thread communication queue
+        self.glade = GladeXML(path) # Instantiate our custom Glade class which extends the gtk.glade.GladeXML class
+        self.glade.connect(self);   # Try to connect the signals defined in the glade file to methods defined in self
 
         self.buffer         = self.glade.get_widget("txtInput").get_buffer()
         self.output_buffer  = self.glade.get_widget("txtOutput").get_buffer()
@@ -66,7 +77,7 @@ class MainWindow:
         self.dlgAbout       = self.glade.get_widget("dlgAbout")
         self.chkMarkUnknown = self.glade.get_widget("chkMarkUnknown")
 
-        self.comboPair      = self.setup_combo(self.info, self.glade.get_widget("comboPair"))
+        self.comboPair      = self.setup_combo(self.info.modes(), self.glade.get_widget("comboPair"))
 
         def on_changed(w):
             self.input_queue.put([self.options(), w.get_text(w.get_start_iter(), w.get_end_iter())])
@@ -95,6 +106,7 @@ class MainWindow:
 
         self.load_config()
         self.wndMain.show()
+        
 
     def on_btnQuit_clicked(self, widget):
         self.save_config()
