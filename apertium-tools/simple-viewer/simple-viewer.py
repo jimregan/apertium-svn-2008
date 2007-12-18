@@ -84,29 +84,30 @@ class MainWindow:
 
         self.buffer.connect("changed", on_changed)
 
-        def translator_loop():
-            while True:
-                options, _input = self.input_queue.get()
-                while not self.input_queue.empty():
-                    options, _input = self.input_queue.get()
-
-                try:
-                    result = self.translator.translate(options, _input)
-
-                    def update_text():
-                        self.output_buffer.set_text(result)
-                        return False
-
-                    gobject.idle_add(update_text)
-                    
-                except Exception, e:
-                    print e
-
-        thread.start_new_thread(translator_loop, ())
+        thread.start_new_thread(self.translator_loop, ())
 
         self.load_config()
         self.wndMain.show()
+
         
+    def translator_loop(self):
+        while True:
+            options, _input = self.input_queue.get()
+            while not self.input_queue.empty():
+                options, _input = self.input_queue.get()
+
+            try:
+                result = self.translator.translate(options, _input)
+
+                def update_text():
+                    self.output_buffer.set_text(result)
+                    return False
+
+                gobject.idle_add(update_text)
+
+            except Exception, e:
+                print e
+
 
     def on_btnQuit_clicked(self, widget):
         self.save_config()
