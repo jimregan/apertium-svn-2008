@@ -3,10 +3,12 @@
 import os        
 import new
 import sys
-from Queue import Queue
-import thread 
+from Queue import Queue # A queue type to communicate between threads
+import thread # A simple thread launcher
 from ConfigParser import ConfigParser, DuplicateSectionError, NoSectionError
+# The ConfigParser is used to store preferences of the program
 
+# GTK related imports
 import gobject
 import gtk
 import gtk.gdk
@@ -14,9 +16,11 @@ import gtk.glade
 import pygtk
 import gettext
 
-import dbus
+import dbus # Used to connect to the Apertium D-Bus service
 
-_ = gettext.gettext
+from widget_state import dump_state, load_state
+
+_ = gettext.gettext # the i18n function :)
 
 APP='simple-view'
 DIR='po'
@@ -26,69 +30,16 @@ gettext.textdomain(APP)
 gtk.glade.bindtextdomain(APP, DIR)
 gtk.glade.textdomain(APP)
 
-class Serialize:
-    # Don't judge me because of this HORRIBLE scheme.
-    # I really did try to add methods to the GTK classes,
-    # but Python complained loudly.
-    
-    @classmethod
-    def Default(cls):
-        def dump_state(self):
-            return {}
-
-        def load_state(self, p):
-            pass
-
-        return { "dump_state": dump_state,
-                 "load_state": load_state }
-
-
-    @classmethod
-    def Window(cls):
-        def dump_state(self):
-            return { "x_size": self.get_size()[0],
-                     "y_size": self.get_size()[1],
-                     "x_pos":  self.get_position()[0], 
-                     "y_pos":  self.get_position()[1] }
-
-        def load_state(self, p):
-            self.move(int(p["x_pos"]), int(p["y_pos"]))
-            self.resize(int(p["x_size"]), int(p["y_size"]))
-
-        return { "dump_state": dump_state,
-                 "load_state": load_state }
-
-
-    @classmethod
-    def VPaned(cls):
-        def dump_state(self):
-            return { "position": self.get_position() }
-
-        def load_state(self, p):
-            self.set_position(int(p["position"]))
-
-        return { "dump_state": dump_state,
-                 "load_state": load_state }
 
 
 class GladeXML(gtk.glade.XML):
-    def get_codec(self, obj):
-        codec = None
-        try:
-            codec = getattr(Serialize, obj.__class__.__name__)
-        except:
-            codec = Serialize.Default
-
-        return codec()
-    
-
     def get_widgets(self):
         return ((gtk.glade.get_widget_name(w), w) for w in  self.get_widget_prefix(''))
 
     
     def dump_gtk_state(self, cfg):
         for widget_name, widget in self.get_widgets():
-            for key, val in self.get_codec(widget)['dump_state'](widget).iteritems():
+            for key, val in dump_state(widget).iteritems():
                 try:
                     cfg.add_section(widget_name)
                 except DuplicateSectionError, e:
@@ -100,7 +51,7 @@ class GladeXML(gtk.glade.XML):
     def load_gtk_state(self, cfg):
         for widget_name, widget in self.get_widgets():
             try:
-                self.get_codec(widget)['load_state'](widget, dict(cfg.items(widget_name)))
+                load_state(widget, dict(cfg.items(widget_name)))
             except NoSectionError, e:
                 pass
 
