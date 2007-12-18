@@ -13,8 +13,31 @@
     <sdef n="pve"    c="Positive"/>
     <sdef n="comp"   c="Comparative"/>
     <sdef n="sup"    c="Superlative"/>
+
+    <sdef n="num"    c="Numeral"/>
+    <sdef n="sent"    c="Sentence limit"/>
   </sdefs>
   <pardefs>
+     <pardef n="numeros">
+      <e>
+        <re>[۰۱۲۳۴۵۶۷۸۹]+([.,][۰۱۲۳۴۵۶۷۸۹]+)?</re>
+        <p>
+          <l/>
+         <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separa">
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+         <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <pardef n="ﺩﺭ__pr">
       <e>
         <p>
@@ -2234,5 +2257,13 @@
     <e lm="ابتدایی"><i>ابتدایی</i><par n="بزرگ__adj"/></e>    <!-- initial -->
     <e lm="بدوی"><i>بدوی</i><par n="بزرگ__adj"/></e>    <!-- initial -->
     <e lm="پاراف"><i>پاراف</i><par n="بزرگ__adj"/></e>    <!-- initial -->
+  </section>
+  <section id="final" type="inconditional">
+    <e>
+      <par n="numeros"/>
+    </e>
+    <e>
+      <par n="separa"/>
+    </e>
   </section>
 </dictionary>
