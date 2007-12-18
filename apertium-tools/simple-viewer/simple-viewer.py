@@ -91,23 +91,42 @@ class MainWindow:
 
         
     def translator_loop(self):
+        """This runs as a thread which invokes Apertium D-Bus methods.
+
+        We run this in a thread, since it takes a perceptible amount
+        of time to execute an Apertium call.
+
+        Only one Apertium call at most is ever active. We ensure this by
+        running only one thread. This thread receives updates via a queue.
+
+        While it is busy waiting for an Apertium call to return, its
+        update queue might receive requests (this happens when the user is
+        typing while Apertium is running). We're only ever interested in the
+        latest item added to the queue, so we discard everything up to that
+        point.
+        """
         while True:
-            options, _input = self.input_queue.get()
-            while not self.input_queue.empty():
-                options, _input = self.input_queue.get()
+            options, _input = self.input_queue.get() # Block waiting for something to translate
+            while not self.input_queue.empty():          # We're only interested in the latest item in the queue...
+                options, _input = self.input_queue.get() # ...so we discard items until we have the latest item
 
             try:
-                result = self.translator.translate(options, _input)
+                result = self.translator.translate(options, _input) # Invoke the Apertium D-Bus translation service
 
                 def update_text():
+                    """Take the output from the translation and update the output buffer"""
                     self.output_buffer.set_text(result)
                     return False
 
-                gobject.idle_add(update_text)
+                # We probably should call gtk.gdk.thread_enter here...
+                gobject.idle_add(update_text) # Post the function into the GTK main loop
 
             except Exception, e:
-                print e
+                print e # We should probably do exit(1) here
 
+
+    ###########################################################
+    # Implementations of GTK signals defined in the Glade file
 
     def on_btnQuit_clicked(self, widget):
         self.save_config()
@@ -134,6 +153,7 @@ class MainWindow:
 
     def on_chkMarkUnknown_toggled(self, widget):
         self.buffer.emit("changed")
+
 
 if __name__ == "__main__":
     gtk.gdk.threads_init()
