@@ -435,6 +435,10 @@
     </label-sequence> 
     <label-sequence>
       <label-item label="DOVBLEX"/>
+      <label-item label="PRNOBJ"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="DOVBLEX"/>
       <label-item label="NOT"/>
     </label-sequence> 
     <label-sequence>

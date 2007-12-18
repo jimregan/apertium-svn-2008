@@ -132,7 +132,7 @@
       <cat-item tags="vblex.sep.pri.*"/>
     </def-cat>
 
-    <def-cat n="controlverb"> <!-- BCN -->
+    <def-cat n="controlverb"> <!-- BCN (MG: i 'try'? provar de/intentar?-->
       <cat-item lemma="desire" tags="vblex.inf"/>
       <cat-item lemma="need" tags="vblex.inf"/>
       <cat-item lemma="wish" tags="vblex.inf"/>
@@ -1163,7 +1163,7 @@
 	</when>
 	<when><!-- (BCN)-->
 	  <test>
-	    <in>
+	    <in caseless="yes">
 	      <clip pos="1" side="sl" part="lemh"/>
 	      <list n="reportingverb"/>
 	    </in>
@@ -1217,7 +1217,7 @@
 	</when>
 	<when><!-- (BCN)-->
 	  <test>
-	    <in>
+	    <in caseless="yes">
 	      <clip pos="1" side="sl" part="lemh"/>
 	      <list n="reportingverb"/>
 	    </in>
@@ -1476,7 +1476,7 @@
 
 
 
-    <rule comment="REGLA: DET NOM TO INF (BCN:  Regla que canvia la preposició TO de l'anglès per DE del català per A noms de control i per PER per als altres ('the need to work' - 'la necessitat de treballr' vs. 'a book to read' - 'un llibre per llegir'. Com que és d'aplicació general es codifica via regla i no al lèxic. Els noms de control (o equi nouns) es llisten sota la marca equinouns. Amb això evitem duplicar entrades. Les exepcions que hi pugui haver s'han de codificar al lèxic). 
+    <rule comment="REGLA: DET NOM TO INF (BCN:  Regla que canvia la preposició TO de l'anglès per DE del català per A noms de control i per PER per als altres ('the need to work' - 'la necessitat de treballr' vs. 'a book to read' - 'un llibre per llegir'. Com que és d'aplicació general es codifica via regla i no al lèxic. Els noms de control (o equi nouns) es llisten sota la marca equinouns. Amb això evitem duplicar entrades. Les excepcions que hi pugui haver s'han de codificar al lèxic). 
 		   EN principi la regla es justifica per evitar que la prep TO es tradueixi per A.">
 
       <pattern>
@@ -1489,7 +1489,7 @@
 	<choose>
 	  <when>
 	    <test>
-	      <in>
+	      <in caseless="yes">
 		<clip pos="2" side="sl" part="lem"/>
 		<list n="controlnouns"/>
 	      </in>
@@ -1575,7 +1575,7 @@
 		    <lu>
 		      <clip pos="3" side="tl" part="whole"/>
 		    </lu>
-		    <b/>
+		    <b pos="3"/>
 		    <mlu>
 		      <lu>
 			<clip pos="4" side="tl" part="lemh"/>
@@ -1619,7 +1619,7 @@
 		    <lu>
 		      <clip pos="3" side="tl" part="whole"/>
 		    </lu>
-		    <b/>
+		    <b pos="3"/>
 		    <lu>
 		      <clip pos="4" side="tl" part="lemh"/>
 		      <clip pos="4" side="tl" part="a_verb"/>
@@ -1640,6 +1640,187 @@
       </action>
     </rule>
 
+ <rule comment="REGLA: DET NOM TO INF+clitic (igual que l'anterior, amb inf + pronom obj= inf+clític)">
+
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="to"/>
+	<pattern-item n="inf"/>
+	<pattern-item n="probj"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <in caseless="yes">
+		<clip pos="2" side="sl" part="lem"/>
+		<list n="controlnouns"/>
+	      </in>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="lem"/>
+	      <lit v ="de"/>
+	    </let>
+	  </when> 
+	  <otherwise>
+	    <let>
+	      <clip pos="3" side="tl" part="lem"/>
+	      <lit v ="per"/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<call-macro n="genere_nombre">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="det_no">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="tipus_verbs"> <!-- per tractar la cua en verbs multiparaula -->
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+
+	<choose>		<!-- la part del INF per a tractar la cua si enté-->
+	  <when>
+	    <test>
+	      <not>
+		<or>
+		  <equal caseless="yes">
+		    <clip pos="4" side="sl" part="lem"/>
+		    <lit v="will"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="4" side="sl" part="lem"/>
+		    <lit v="shall"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="4" side="sl" part="lem"/>
+		    <lit v="would"/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <var n="tipus_verb"/>
+		    <lit-tag v="pron"/>
+		  </equal>
+		</test>
+		<out>
+
+		  <chunk name="det_nom_to_inf" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SN.DET"/></tag>
+		      <tag><clip pos="2" side="tl" part="gen"/></tag>
+		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="lem"/>
+		      <clip pos="1" side="tl" part="a_det"/>
+		      <clip pos="2" side="tl" part="gen" link-to="3"/>
+		      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <clip pos="2" side="tl" part="lemh"/>
+		      <clip pos="2" side="tl" part="a_nom"/>
+		      <clip pos="2" side="tl" part="gen" link-to="3"/>
+		      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		      <clip pos="2" side="tl" part="lemq"/>
+		    </lu>
+		    <b pos="2"/>
+		    <lu>
+		      <clip pos="3" side="tl" part="whole"/>
+		    </lu>
+		    <b pos="3"/>
+		    <mlu>
+		      <lu>
+			<clip pos="4" side="tl" part="lemh"/>
+			<clip pos="4" side="tl" part="a_verb"/>
+			<clip pos="4" side="tl" part="temps" link-to="5"/>
+		      </lu>
+		      <lu>
+			<lit v="es"/>
+			<lit-tag v="prn.enc.ref.p3.mf.sp"/>
+		      </lu>
+		      <lu>
+			<clip pos="5" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="5" side="tl" part="pers"/>
+			<clip pos="5" side="tl" part="gen"/>
+			<clip pos="5" side="tl" part="nbr"/>
+			<clip pos="4" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise>
+		<out>
+		  <chunk name="det_nom_to_inf" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SN.DET"/></tag>
+		      <tag><clip pos="2" side="tl" part="gen"/></tag>
+		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="lem"/>
+		      <clip pos="1" side="tl" part="a_det"/>
+		      <clip pos="2" side="tl" part="gen" link-to="3"/>
+		      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <clip pos="2" side="tl" part="lemh"/>
+		      <clip pos="2" side="tl" part="a_nom"/>
+		      <clip pos="2" side="tl" part="gen" link-to="3"/>
+		      <clip pos="2" side="tl" part="nbr" link-to="4"/>
+		      <clip pos="2" side="tl" part="lemq"/>
+		    </lu>
+		    <b pos="2"/>
+		    <lu>
+		      <clip pos="3" side="tl" part="whole"/>
+		    </lu>
+		    <b pos="3"/>
+		    <mlu>
+		      <lu>
+			<clip pos="4" side="tl" part="lemh"/>
+			<clip pos="4" side="tl" part="a_verb"/>
+			<clip pos="4" side="tl" part="temps" link-to="5"/>
+		      </lu>
+		      <lu>
+			<clip pos="5" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="5" side="tl" part="pers"/>
+			<clip pos="5" side="tl" part="gen"/>
+			<clip pos="5" side="tl" part="nbr"/>
+			<clip pos="4" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<call-macro n="f_bcond">
+	  <with-param pos="4"/>
+	</call-macro>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: NOM TO INF (BCN:  Regla que canvia la preposició TO de l'anglès per DE del català per A noms de control i per PER per als altres ('the need to work' - 'la necessitat de treballr' vs. 'a book to read' - 'un llibre per llegir'. Com que és d'aplicació general es codifica via regla i no al lèxic. Els noms de control (o equi nouns) es llisten sota la marca equinouns. Amb això evitem duplicar entrades. Les exepcions que hi pugui haver s'han de codificar al lèxic). 
 		   EN principi la regla es justifica per evitar que la prep TO es tradueixi per A.">
@@ -1653,7 +1834,7 @@
 	<choose>
 	  <when>
 	    <test>
-	      <in>
+	      <in caseless="yes">
 		<clip pos="1" side="sl" part="lem"/>
 		<list n="controlnouns"/>
 	      </in>
@@ -1728,7 +1909,7 @@
 		    <lu>
 		      <clip pos="2" side="tl" part="whole"/>
 		    </lu>
-		    <b/>
+		    <b pos="2"/>
 		    <mlu>
 		      <lu>
 			<clip pos="3" side="tl" part="lemh"/>
@@ -1765,7 +1946,7 @@
 		    <lu>
 		      <clip pos="2" side="tl" part="whole"/>
 		    </lu>
-		    <b/>
+		    <b pos="2"/>
 		    <lu>
 		      <clip pos="3" side="tl" part="lemh"/>
 		      <clip pos="3" side="tl" part="a_verb"/>
@@ -1779,6 +1960,168 @@
 	  </when>
 	</choose>
 
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+   <rule comment="REGLA: NOM TO INF + PRNobj">
+
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="to"/>
+	<pattern-item n="inf"/>
+	<pattern-item n="probj"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <in caseless="yes">
+		<clip pos="1" side="sl" part="lem"/>
+		<list n="controlnouns"/>
+	      </in>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="lem"/>
+	      <lit v ="de"/>
+	    </let>
+	  </when> 
+	  <otherwise>
+	    <let>
+	      <clip pos="2" side="tl" part="lem"/>
+	      <lit v ="per"/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<call-macro n="genere_nombre">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipus_verbs"> <!-- per tractar la cua en verbs multiparaula -->
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+
+	<choose>		<!-- la part del INF per a tractar la cua si enté-->
+	  <when>
+	    <test>
+	      <not>
+		<or>
+		  <equal caseless="yes">
+		    <clip pos="3" side="sl" part="lem"/>
+		    <lit v="will"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="3" side="sl" part="lem"/>
+		    <lit v="shall"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="3" side="sl" part="lem"/>
+		    <lit v="would"/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <var n="tipus_verb"/>
+		    <lit-tag v="pron"/>
+		  </equal>
+		</test>
+		<out>
+
+		  <chunk name="nom_to_inf" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SN.UNDET"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="lemh"/>
+		      <clip pos="1" side="tl" part="a_nom"/>
+		      <clip pos="1" side="tl" part="gen" link-to="3"/>
+		      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		      <clip pos="1" side="tl" part="lemq"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <clip pos="2" side="tl" part="whole"/>
+		    </lu>
+		    <b pos="2"/>
+		    <mlu>
+		      <lu>
+			<clip pos="3" side="tl" part="lemh"/>
+			<clip pos="3" side="tl" part="a_verb"/>
+			<clip pos="3" side="tl" part="temps" link-to="5"/>
+		      </lu>
+		      <lu>
+			<lit v="es"/>
+			<lit-tag v="prn.enc.ref.p3.mf.sp"/>
+		      </lu>
+		      <lu>
+			<clip pos="4" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="4" side="tl" part="pers"/>
+			<clip pos="4" side="tl" part="gen"/>
+			<clip pos="4" side="tl" part="nbr"/>
+			<clip pos="3" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise>
+		<out>
+		  <chunk name="nom_to_inf" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SN.UNDET"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="lemh"/>
+		      <clip pos="1" side="tl" part="a_nom"/>
+		      <clip pos="1" side="tl" part="gen" link-to="3"/>
+		      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+		      <clip pos="1" side="tl" part="lemq"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <clip pos="2" side="tl" part="whole"/>
+		    </lu>
+		    <b pos="2"/>
+		    <mlu>
+		      <lu>
+			<clip pos="3" side="tl" part="lemh"/>
+			<clip pos="3" side="tl" part="a_verb"/>
+			<clip pos="3" side="tl" part="temps" link-to="5"/>
+		      </lu>
+		      <lu>
+			<clip pos="4" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="4" side="tl" part="pers"/>
+			<clip pos="4" side="tl" part="gen"/>
+			<clip pos="4" side="tl" part="nbr"/>
+			<clip pos="3" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<call-macro n="f_bcond">
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -1800,7 +2143,7 @@
 	<choose>
 	  <when>
 	    <test>
-	      <in>
+	      <in caseless="yes">
 		<clip pos="3" side="sl" part="lem"/>
 		<list n="controlnouns"/>
 	      </in>
@@ -1897,7 +2240,7 @@
 		    <lu>
 		      <clip pos="4" side="tl" part="whole"/>
 		    </lu>
-		    <b/>
+		    <b pos="4"/>
 		    <mlu>
 		      <lu>
 			<clip pos="5" side="tl" part="lemh"/>
@@ -1950,7 +2293,7 @@
 		    <lu>
 		      <clip pos="4" side="tl" part="whole"/>
 		    </lu>
-		    <b/>
+		    <b pos="4"/>
 		    <lu>
 		      <clip pos="5" side="tl" part="lemh"/>
 		      <clip pos="5" side="tl" part="a_verb"/>
@@ -1964,6 +2307,210 @@
 	  </when>
 	</choose>
 
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+   <rule comment="REGLA: DET ADJ NOM TO INF PRNobj (igual que l'anterior però amb inf + clític).">
+
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="to"/>
+	<pattern-item n="inf"/>
+	<pattern-item n="probj"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <in caseless="yes">
+		<clip pos="3" side="sl" part="lem"/>
+		<list n="controlnouns"/>
+	      </in>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="lem"/>
+	      <lit v ="de"/>
+	    </let>
+	  </when> 
+	  <otherwise>
+	    <let>
+	      <clip pos="4" side="tl" part="lem"/>
+	      <lit v ="per"/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<call-macro n="genere_nombre">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="det_no">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="comparatiu_adj1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="tipus_verbs"> <!-- per tractar la cua en verbs multiparaula -->
+	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<or>
+		  <equal caseless="yes">
+		    <clip pos="5" side="sl" part="lem"/>
+		    <lit v="will"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="5" side="sl" part="lem"/>
+		    <lit v="shall"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="5" side="sl" part="lem"/>
+		    <lit v="would"/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <var n="tipus_verb"/>
+		    <lit-tag v="pron"/>
+		  </equal>
+		</test>
+		<out>
+
+		  <chunk name="det_adj_nom_to_inf" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SN.DET"/></tag>
+		      <tag><clip pos="3" side="tl" part="gen"/></tag>
+		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="lem"/>
+		      <clip pos="1" side="tl" part="a_det"/>
+		      <clip pos="3" side="tl" part="gen" link-to="3"/>
+		      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <clip pos="3" side="tl" part="lemh"/>
+		      <clip pos="3" side="tl" part="a_nom"/>
+		      <clip pos="3" side="tl" part="gen" link-to="3"/>
+		      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		      <clip pos="3" side="tl" part="lemq"/>
+		    </lu>
+		    <b pos="2"/>
+		    <lu>
+		      <var n="adjectiu1"/>
+		      <clip pos="2" side="tl" part="lemh"/> <!-- BCN només el head per evitar la cua dels PP adj-->
+		      <clip pos="2" side="tl" part="a_adj"/>
+		      <clip pos="3" side="tl" part="gen" link-to="3"/>
+		      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		      <clip pos="2" side="tl" part="lemq"/> <!-- la cua--> 
+		    </lu>
+		    <b pos="3"/>
+		    <lu>
+		      <clip pos="4" side="tl" part="whole"/>
+		    </lu>
+		    <b pos="4"/>
+		    <mlu>
+		      <lu>
+			<clip pos="5" side="tl" part="lemh"/>
+			<clip pos="5" side="tl" part="a_verb"/>
+			<clip pos="5" side="tl" part="temps" link-to="5"/>
+
+		      </lu>
+		      <lu>
+			<lit v="es"/>
+			<lit-tag v="prn.enc.ref.p3.mf.sp"/>
+		      </lu>
+		      <lu>
+			<clip pos="6" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="6" side="tl" part="pers"/>
+			<clip pos="6" side="tl" part="gen"/>
+			<clip pos="6" side="tl" part="nbr"/>
+			<clip pos="5" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise>
+		<out>
+		  <chunk name="det_adj_nom_to_inf" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SN.DET"/></tag>
+		      <tag><clip pos="3" side="tl" part="gen"/></tag>
+		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="lem"/>
+		      <clip pos="1" side="tl" part="a_det"/>
+		      <clip pos="3" side="tl" part="gen" link-to="3"/>
+		      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <clip pos="3" side="tl" part="lemh"/>
+		      <clip pos="3" side="tl" part="a_nom"/>
+		      <clip pos="3" side="tl" part="gen" link-to="3"/>
+		      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		      <clip pos="3" side="tl" part="lemq"/>
+		    </lu>
+		    <b pos="2"/>
+		    <lu>
+		      <var n="adjectiu1"/>
+		      <clip pos="2" side="tl" part="lemh"/> <!-- BCN només el head per evitar la cua dels PPs adj-->
+		      <clip pos="2" side="tl" part="a_adj"/>
+		      <clip pos="3" side="tl" part="gen" link-to="3"/>
+		      <clip pos="3" side="tl" part="nbr" link-to="4"/>
+		      <clip pos="2" side="tl" part="lemq"/> <!-- --> 
+		    </lu>
+		    <b pos="3"/>
+		    <lu>
+		      <clip pos="4" side="tl" part="whole"/>
+		    </lu>
+		    <b pos="4"/>
+		    <mlu>
+		      <lu>
+			<clip pos="5" side="tl" part="lemh"/>
+			<clip pos="5" side="tl" part="a_verb"/>
+			<clip pos="5" side="tl" part="temps" link-to="5"/>
+		      </lu>
+		      <lu>
+			<clip pos="6" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="6" side="tl" part="pers"/>
+			<clip pos="6" side="tl" part="gen"/>
+			<clip pos="6" side="tl" part="nbr"/>
+			<clip pos="5" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<call-macro n="f_bcond">
+	  <with-param pos="5"/>
+	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -7976,13 +8523,11 @@
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b pos="2"/>
-
 		    <mlu>
 		      <lu>
 			<clip pos="3" side="tl" part="lemh"/>
 			<clip pos="3" side="tl" part="a_verb"/>
 			<clip pos="3" side="tl" part="temps" link-to="4"/>
-
 		      </lu>
 		      <lu>
 			<lit v="es"/>
@@ -8028,6 +8573,150 @@
 	  </when>
 	</choose>
 
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+ <rule comment="REGLA: ADJ TO INF PRNobj (BCN: canviem la prep TO per DE; els adjectius que no compleixin la regla s'han de codificar al lèxic. Queda com a GD i ND fins al interchunk)">
+      <pattern>
+	<pattern-item n="adj2"/> <!-- BCN només volesm adjs 'reals' no PPs-->
+	<pattern-item n="to"/>
+	<pattern-item n="inf"/>
+	<pattern-item n="probj"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="comparatiu_adj1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipus_verbs"> <!-- per tractar la cua en verbs multiparaula -->
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<choose>                <!-- la part del INF per a tractar la cua si enté-->
+	  <when>
+	    <test>
+	      <not>
+		<or>
+		  <equal caseless="yes">
+		    <clip pos="3" side="sl" part="lem"/>
+		    <lit v="will"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="3" side="sl" part="lem"/>
+		    <lit v="shall"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="3" side="sl" part="lem"/>
+		    <lit v="would"/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <var n="tipus_verb"/>
+		    <lit-tag v="pron"/>
+		  </equal>
+		</test>
+		<out>
+
+		  <chunk name="adj" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SA"/></tag>
+		      <tag><lit-tag v="GD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <var n="adjectiu1"/>
+		      <clip pos="1" side="tl" part="lem"/>
+		      <clip pos="1" side="tl" part="a_adj"/>
+		      <lit-tag v="2"/>
+		      <lit-tag v="3"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <lit v="de"/>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b pos="2"/>
+		    <mlu>
+		      <lu>
+			<clip pos="3" side="tl" part="lemh"/>
+			<clip pos="3" side="tl" part="a_verb"/>
+			<clip pos="3" side="tl" part="temps" link-to="4"/>
+		      </lu>
+		      <lu>
+			<lit v="es"/>
+			<lit-tag v="prn.enc.ref.p3.mf.sp"/>
+		      </lu>
+		      <lu>
+			<clip pos="4" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="4" side="tl" part="pers"/>
+			<clip pos="4" side="tl" part="gen"/>
+			<clip pos="4" side="tl" part="nbr"/>
+			<clip pos="3" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise>
+		<out>
+		  <chunk name="adj" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SA"/></tag>
+		      <tag><lit-tag v="GD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <var n="adjectiu1"/>
+		      <clip pos="1" side="tl" part="lem"/>
+		      <clip pos="1" side="tl" part="a_adj"/>
+		      <lit-tag v="2"/>
+		      <lit-tag v="3"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <lit v="de"/>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b pos="2"/>
+		    <mlu>
+		      <lu>
+			<clip pos="3" side="tl" part="lemh"/>
+			<clip pos="3" side="tl" part="a_verb"/>
+			<clip pos="3" side="tl" part="temps" link-to="4"/>
+		      </lu>
+		      <lu>
+			<clip pos="4" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="4" side="tl" part="pers"/>
+			<clip pos="4" side="tl" part="gen"/>
+			<clip pos="4" side="tl" part="nbr"/>
+			<clip pos="3" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<call-macro n="f_bcond">
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -8172,9 +8861,162 @@
     </rule>
 
 
+   <rule comment="REGLA: ADV ADJ TO INF (BCN: canviem la prep TO per DE; els adjectius que no compleixin la regla s'han de codificar al lèxic. Queda com a GD i ND fins al interchunk)">
+      <pattern>
+	<pattern-item n="adv_preadv"/> 
+	<pattern-item n="adj2"/> <!-- BCN només volem adjs 'reals' no PPs-->
+	<pattern-item n="to"/>
+	<pattern-item n="inf"/>
+	<pattern-item n="probj"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="comparatiu_adj1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipus_verbs"> <!-- per tractar la cua en verbs multiparaula -->
+	  <with-param pos="4"/>
+	</call-macro>
+
+	<choose>                <!-- la part del INF per a tractar la cua si enté-->
+	  <when>
+	    <test>
+	      <not>
+		<or>
+		  <equal caseless="yes">
+		    <clip pos="4" side="sl" part="lem"/>
+		    <lit v="will"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="4" side="sl" part="lem"/>
+		    <lit v="shall"/>
+		  </equal>
+		  <equal caseless="yes">
+		    <clip pos="4" side="sl" part="lem"/>
+		    <lit v="would"/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <var n="tipus_verb"/>
+		    <lit-tag v="pron"/>
+		  </equal>
+		</test>
+		<out>
+
+		  <chunk name="adj" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SA"/></tag>
+		      <tag><lit-tag v="GD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <var n="adjectiu1"/>
+		      <clip pos="2" side="tl" part="lem"/>
+		      <clip pos="2" side="tl" part="a_adj"/>
+		      <lit-tag v="2"/>
+		      <lit-tag v="3"/>
+		    </lu>
+		    <b pos="2"/>
+		    <lu>
+		      <lit v="de"/>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b pos="3"/>
+		    <mlu>
+		      <lu>
+			<clip pos="4" side="tl" part="lemh"/>
+			<clip pos="4" side="tl" part="a_verb"/>
+			<clip pos="4" side="tl" part="temps" link-to="4"/>
+		      </lu>
+		      <lu>
+			<lit v="es"/>
+			<lit-tag v="prn.enc.ref.p3.mf.sp"/>
+		      </lu>
+		      <lu>
+			<clip pos="5" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="5" side="tl" part="pers"/>
+			<clip pos="5" side="tl" part="gen"/>
+			<clip pos="5" side="tl" part="nbr"/>
+			<clip pos="4" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise>
+		<out>
+		  <chunk name="adj" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SA"/></tag>
+		      <tag><lit-tag v="GD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
+		      <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <var n="adjectiu1"/>
+		      <clip pos="2" side="tl" part="lem"/>
+		      <clip pos="2" side="tl" part="a_adj"/>
+		      <lit-tag v="2"/>
+		      <lit-tag v="3"/>
+		    </lu>
+		    <b pos="2"/>
+		    <lu>
+		      <lit v="de"/>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b pos="3"/>
+		    <mlu>
+		      <lu>
+			<clip pos="4" side="tl" part="lemh"/>
+			<clip pos="4" side="tl" part="a_verb"/>
+			<clip pos="4" side="tl" part="temps" link-to="4"/>
+		      </lu>
+		      <lu>
+			<clip pos="5" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="5" side="tl" part="pers"/>
+			<clip pos="5" side="tl" part="gen"/>
+			<clip pos="5" side="tl" part="nbr"/>
+			<clip pos="4" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<call-macro n="f_bcond">
+	  <with-param pos="4"/>
+	</call-macro>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: PREADV ADJECTIU ('very difficult'; queda com a GD i ND fins al interchunk)">
       <pattern>
-	<pattern-item n="adv_preadv"/><!--BCN !!! -->
+	<pattern-item n="adv_preadv"/><!--BCN  -->
 	<pattern-item n="adj"/>
       </pattern>
       <action>    
@@ -8224,9 +9066,32 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>	 
+	</call-macro>	
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="prpers"/>
+		</equal>
+	      </not>
+	    </test>
+	      <let>
+		<var n="lema"/>
+		<lit v="prnsubj2"/><!--lemes 'we all' etc, són subjectes però no desapareixen en el t2x. -->
+	      </let>
+	  </when>
+	  <otherwise>	    
+	      <let>
+		<var n="lema"/>
+		<lit v="prnsubj"/>
+	      </let>
+	  </otherwise>
+	</choose>	
+		  
 	<out>
-	  <chunk name="prnsubj" case="caseFirstWord">
+	  <chunk namefrom="lema" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -8235,7 +9100,6 @@
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu>   
-	      <!--	<clip pos="1" side="tl" part="whole"/> -->
 	      <clip pos="1" side="tl" part="lem"/>  
 	      <clip pos="1" side="tl" part="a_prn"/>  
 	      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/> 
@@ -9094,6 +9958,7 @@
 		<tags>	       
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
+		  <tag><lit-tag v="ifip"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		</tags> 
@@ -9450,6 +10315,9 @@
 	<call-macro n="tipus_verbs">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="pron">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="tipus_verbs2">
 	  <with-param pos="3"/>
 	</call-macro>
@@ -9520,6 +10388,7 @@
 		<tags>	       
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
+		  <tag><lit-tag v="ifip"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		</tags> 
@@ -9665,6 +10534,242 @@
 	</let>
       </action>
     </rule>
+
+<!-- <rule comment="REGLA: VERBcontrol + to + INF (BCN 'try/need/... to do this -> intentar/necessitar/ fer. MG: PENDENT, no m'aclareixo amb els pronoms i els pronominals'">
+      <pattern>
+	<pattern-item n="controlverb"/>
+	<pattern-item n="to"/>
+	<pattern-item n="inf"/>
+	<pattern-item n="probj"/>
+      </pattern>
+      <action>   
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipus_verbs">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="pron">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipus_verbs2">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="pronenc">
+	  <with-param pos="3"/>
+	</call-macro>	
+	<choose>      
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="1" side="sl" part="temps"/>
+		  <lit-tag v="past"/>
+		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="pers"/>
+		  <lit v=""/>
+		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="nbr"/>
+		  <lit v=""/>
+		</equal>
+	      </and>
+	    </test>
+	    <out>
+	      <chunk name="verbcj_inf_perif" case="caseFirstWord">
+		<tags>	       
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+		  <tag><lit-tag v="ifip"/></tag>
+		  <tag><lit-tag v="PD"/></tag>
+		  <tag><lit-tag v="ND"/></tag>
+		</tags> 		
+		<lu>
+		  <var n="pronom"/>
+		  <lit v="anar"/>
+		  <lit-tag v="vaux"/>
+		  <lit-tag v="4"/>
+		  <lit-tag v="5"/>
+		</lu>
+		<b/>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <clip pos="3" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
+		  <var n="pronomenc"/>
+		  <clip pos="3" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <when>
+	    <test>
+	      <equal><!-x-és el cas de 'was' i algun altre, que tenen pers i nbr -x->
+		<clip pos="1" side="sl" part="temps"/>
+		<lit-tag v="past"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk name="verbcj_inf_perif" case="caseFirstWord">
+		<tags>	       
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+		  <tag><lit-tag v="ifip"/></tag>
+		  <tag><clip pos="1" side="tl" part="pers"/></tag>
+		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		</tags> 
+		<lu>
+		  <var n="pronom"/>
+		  <lit v="anar"/>
+		  <lit-tag v="vaux"/>
+		  <clip pos="1" side="tl" part="pers" link-to="4"/>
+		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		</lu>
+		<b/>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <clip pos="3" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
+		  <var n="pronomenc"/>
+		  <clip pos="3" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>	  
+	  <when>	
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="temps"/>
+		<lit-tag v="pres"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	    <out>
+	      <chunk name="verbcj_inf" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+		  <tag><clip pos="1" side="tl" part="temps"/></tag>
+		  <tag><lit-tag v="PD"/></tag>
+		  <tag><lit-tag v="ND"/></tag>
+		</tags>      
+		<lu>   
+		  <var n="pronom"/>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps" link-to="3"/>
+		  <lit-tag v="4"/>
+		  <lit-tag v="5"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu> 
+		<b pos="1"/>
+		<lu>
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <clip pos="3" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
+		  <var n="pronomenc"/>
+		  <clip pos="3" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  
+	  <when>	
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk name="verbcj_inf" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+		  <tag><clip pos="1" side="tl" part="temps"/></tag>
+		  <tag><clip pos="1" side="tl" part="pers"/></tag>
+		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		</tags>      
+		<lu>   
+		  <var n="pronom"/>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps" link-to="3"/>
+		  <clip pos="1" side="tl" part="pers" link-to="4"/>
+		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu> 
+		<b pos="1"/>
+		<lu>
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <clip pos="3" side="tl" part="a_verb"/>
+		  <lit-tag v="inf"/>
+		  <var n="pronomenc"/>
+		  <clip pos="3" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="temps"/>
+                <lit-tag v="ger"/>
+              </equal>
+            </test>
+	    <out>
+	      <chunk name="verbcj_inf" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+		  <tag><clip pos="1" side="tl" part="temps"/></tag>
+		  <tag><lit-tag v="PD"/></tag> <!-x- BCN pingui -x->
+		  <tag><lit-tag v="ND"/></tag> <!-x- BCN -x->
+		</tags>  	
+		<lu>	
+		  <clip pos="1" side="tl" part="lemh"/> 
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps" link-to="3"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <lit-tag v="inf"/>
+		  <var n="pronomenc"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	</when>
+	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+ -->
 
 
     <rule comment="REGLA: AUX + VERBcontrol + to + INF (BCN 'try/need/... to do this -> intentar/necessitar/ fer'">
@@ -10655,14 +11760,14 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: TO INF (BCN canvia la prep 'a' per 'per davant infinitiu')">
+    <rule comment="REGLA: TO INF (BCN canvia la prep 'a' per 'per' davant infinitiu')">
       <pattern>
 	<pattern-item n="to"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
-	  <with-param pos="2"/>
+	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
 	  <with-param pos="2"/>
@@ -10711,7 +11816,7 @@
 		  </equal>
 		</test>
 		<out>		  
-		  <chunk name="inf_enc" case="caseFirstWord">
+		  <chunk name="inf_enc">
 		    <tags>	       
 		      <tag><lit-tag v="SV"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
@@ -10736,7 +11841,7 @@
 	      </when>
 	      <otherwise>
 		<out>
-		  <chunk name="inf" case="caseFirstWord">
+		  <chunk name="inf">
 		    <tags>	       
 		      <tag><lit-tag v="SV"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
@@ -10750,6 +11855,133 @@
 		      <clip pos="2" side="tl" part="temps" link-to="3"/>
 		      <clip pos="2" side="tl" part="lemq"/>
 		    </lu>
+		  </chunk>
+		</out>
+	      </otherwise>
+	    </choose>  
+	  </when>
+	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+ <rule comment="REGLA: TO INF (BCN canvia la prep 'a' per 'per' davant infinitiu')">
+      <pattern>
+	<pattern-item n="to"/>
+	<pattern-item n="inf"/>
+	<pattern-item n="probj"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="tipus_verbs">
+	  <with-param pos="2"/>
+	</call-macro>
+	<let>				<!-- canvi de preposició-->
+	  <clip pos="1" side="tl" part="lem"/>
+	  <lit v ="per"/>
+	</let>
+	<out>
+	  <chunk name="pr" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu> 
+	  </chunk>	  
+	  <b pos="1"/>
+	</out>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<or>
+		  <equal caseless="yes">	    	
+		    <clip pos="2" side="sl" part="lem"/>
+		    <lit v="will"/>
+		  </equal>
+		  <equal caseless="yes">	    	
+		    <clip pos="2" side="sl" part="lem"/>
+		    <lit v="shall"/>
+		  </equal>
+		  <equal caseless="yes">	    	
+		    <clip pos="2" side="sl" part="lem"/>
+		    <lit v="would"/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>	    	
+		    <var n="tipus_verb"/>
+		    <lit-tag v="pron"/>
+		  </equal>
+		</test>
+		<out>		  
+		  <chunk name="inf_enc_enc">
+		    <tags>	       
+		      <tag><lit-tag v="SV"/></tag>
+		      <tag><var n="tipus_verb"/></tag>
+		      <tag><clip pos="2" side="tl" part="temps"/></tag>
+		      <tag><lit-tag v="PD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
+		    </tags> 
+		    <mlu>
+		      <lu>
+			<clip pos="2" side="tl" part="lemh"/> 
+			<clip pos="2" side="tl" part="a_verb"/>
+			<clip pos="2" side="tl" part="temps" link-to="3"/>			
+		      </lu>
+		      <lu>
+			<lit v="es"/>
+			<lit-tag v="prn.enc.ref.p3.mf.sp"/>
+			<clip pos="2" side="tl" part="lemq"/>
+		      </lu>
+		      <lu>
+			<clip pos="3" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="3" side="tl" part="pers"/>
+			<clip pos="3" side="tl" part="gen"/>
+			<clip pos="3" side="tl" part="nbr"/>
+			<clip pos="2" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise>
+		<out>
+		  <chunk name="inf_enc">
+		    <tags>	       
+		      <tag><lit-tag v="SV"/></tag>
+		      <tag><var n="tipus_verb"/></tag>
+		      <tag><clip pos="2" side="tl" part="temps"/></tag>
+		      <tag><lit-tag v="PD"/></tag>
+		      <tag><lit-tag v="ND"/></tag>
+		    </tags> 
+		    <mlu>
+		      <lu>
+			<clip pos="2" side="tl" part="lemh"/> 
+			<clip pos="2" side="tl" part="a_verb"/>
+			<clip pos="2" side="tl" part="temps" link-to="3"/>
+			<clip pos="2" side="tl" part="lemq"/>
+		      </lu>
+		      <lu>
+			<clip pos="3" side="tl" part="lem"/>
+			<lit-tag v="prn.enc"/>
+			<clip pos="3" side="tl" part="pers"/>
+			<clip pos="3" side="tl" part="gen"/>
+			<clip pos="3" side="tl" part="nbr"/>
+			<clip pos="2" side="tl" part="lemq"/>
+		      </lu>
+		    </mlu>
 		  </chunk>
 		</out>
 	      </otherwise>
@@ -10888,7 +12120,7 @@
 		</or>
 	      </not>
 	    </test>
-	    <choose>
+	    <choose><!--mireia2-->
 	      <when>
 		<test>
 		  <equal>	    	
@@ -14719,8 +15951,7 @@ t2x es fa alguna operació que li assigna pers i nbr (en aquest cas caldrà que 
 		<lu>
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_verb"/>
-		  <clip pos="2" side="tl" part="temps"/>		  
-		  <var n="pronomenc"/>
+		  <clip pos="2" side="tl" part="temps"/>
 		  <clip pos="2" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>

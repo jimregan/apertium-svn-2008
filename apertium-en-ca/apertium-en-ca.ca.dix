@@ -79,10 +79,10 @@
     <sdef n="enc"/>
     <sdef n="vbdo"/>
     <sdef n="sint"/>
-    <sdef n="unc"/>
     <sdef n="sep"/>
     <sdef n="pron"/>
     <sdef n="apos"/>
+    <sdef n="percent"/>
   </sdefs>
 
 
@@ -130,7 +130,18 @@
          <r><s n="num"/></r>
         </p>
       </e>
+      <e>
+        <re>[0-9]+([.,][0-9]+)?%</re>
+        <p>
+          <l/>
+         <r><s n="num"/><s n="percent"/></r>
+        </p>
+      </e>
     </pardef>
+
+
+
+
 
     <pardef n="separa">
     
@@ -3249,24 +3260,6 @@
       </e>
     </pardef>
 
-<pardef n="tots_nosaltres__prn">
-      
-      <e>
-        <p>
-          <l></l>
-          <r><s n="prn"/><s n="tn"/><s n="m"/><s n="pl"/></r>
-        </p>
-      </e>
-</pardef>
-
-<pardef n="totes_nosaltres__prn">
-      <e>
-        <p>
-          <l></l>
-          <r><s n="prn"/><s n="tn"/><s n="f"/><s n="pl"/></r>
-        </p>
-      </e>
-    </pardef>
 
  <pardef n="/el_meu__prn">
       
@@ -66004,6 +65997,7 @@
 <e lm="boirós"><i>boir</i><par n="aliment/ós__adj"/></e>
 
 <e lm="descortès"><i>descort</i><par n="afgan/ès__adj"/></e>
+<e lm="compromès"><i>comprom</i><par n="afgan/ès__adj"/></e>
 
 <e lm="proximal"><i>proximal</i><par n="abdominal__adj"/></e>
 
@@ -67915,6 +67909,7 @@
 <e lm="exòtic"><i>exòti</i><par n="acadèmi/c__adj"/></e>
 <e lm="mal educat"><i>mal<b/>educa</i><par n="triparti/t__adj"/></e>
 <e lm="del sud"><i>del<b/>sud</i><par n="multimèdia__adj"/></e>
+<e lm="en desenvolupament"><i>en<b/>desenvolupament</i><par n="multimèdia__adj"/></e>
 <e lm="reeixit"><i>reeixi</i><par n="triparti/t__adj"/></e>
 <e lm="compassiu"><i>compassi</i><par n="abusi/u__adj"/></e>
 <e lm="minúscul"><i>minúscul</i><par n="absolut__adj"/></e>
@@ -70196,12 +70191,16 @@
 <e lm="tot"><i>tot</i><par n="algun__prn"/></e>
 <e lm="un altre"><i>un</i><par n="un/_altre__prn"/></e>
 <e lm="un"><i>un</i><par n="algun__prn"/></e>
-<e lm="tots nosaltres"><i>tots<b/>nosaltres</i><par n="tots_nosaltres__prn"/></e>
-<e lm="totes nosaltres"><i>totes<b/>nosaltres</i><par n="totes_nosaltres__prn"/></e>
-<e lm="tots vosaltres"><i>tots<b/>vosaltres</i><par n="tots_nosaltres__prn"/></e>
-<e lm="totes vosaltres"><i>totes<b/>vosaltres</i><par n="totes_nosaltres__prn"/></e>
-<e lm="tots ells"><i>tots<b/>ells</i><par n="tots_nosaltres__prn"/></e>
-<e lm="totes elles"><i>totes<b/>elles</i><par n="totes_nosaltres__prn"/></e>
+<e lm="tots nosaltres"><p><l>tots<b/>nosaltres</l><r>tots<b/>nosaltres<s n="prn"/><s n="tn"/><s n="p1"/><s n="m"/><s n="pl"/></r></p></e>
+<e lm="totes nosaltres"><p><l>totes<b/>nosaltres</l><r>totes<b/>nosaltres<s n="prn"/><s n="tn"/><s n="p1"/><s n="f"/><s n="pl"/></r></p></e>
+<e lm="tots vosaltres"><p><l>tots<b/>vosaltres</l><r>tots<b/>vosaltres<s n="prn"/><s n="tn"/><s n="p2"/><s n="m"/><s n="pl"/></r></p></e>
+<e lm="totes vosaltres"><p><l>totes<b/>vosaltres</l><r>totes<b/>vosaltres<s n="prn"/><s n="tn"/><s n="p2"/><s n="f"/><s n="pl"/></r></p></e>
+
+<e lm="tots ells"><p><l>tots<b/>ells</l><r>tots<b/>ells<s n="prn"/><s n="tn"/><s n="p3"/><s n="m"/><s n="pl"/></r></p></e>
+<e lm="totes elles"><p><l>totes<b/>elles</l><r>totes<b/>elles<s n="prn"/><s n="tn"/><s n="p3"/><s n="f"/><s n="pl"/></r></p></e>
+
+
+
 
 <e lm="on"><i>on</i><par n="a_on__rel"/></e>
 <e lm="a on"><i>a<b/>on</i><par n="a_on__rel"/></e>
@@ -70595,6 +70594,7 @@
 <e lm="maleta"><i>malet</i><par n="abell/a__n"/></e>
 <e lm="manca"><i>man</i><par n="acústi/ca__n"/></e>
 <e lm="manera"><i>maner</i><par n="abell/a__n"/></e>
+<e lm="cimera"><i>cimer</i><par n="abell/a__n"/></e>
 <e lm="màquina"><i>màquin</i><par n="abell/a__n"/></e>
 <e lm="mar"><i>mar</i><par n="acompanyant__n"/></e>
 <e lm="març"><i>març</i><par n="as__n"/></e>
@@ -83933,6 +83933,7 @@
 <e lm="cuidar"><i>cuid</i><par n="abander/ar__vblex"/></e>
 <e lm="apagar"><i>apag</i><par n="afalag/ar__vblex"/></e>
 <e lm="estar d'acord"><i>es</i><par n="es/tar__vblex"/>	<p>	  <l><b/>d'acord</l>	  <r><g><b/>d'acord</g></r>	</p></e>
+<e lm="estar d'acord amb"><i>es</i><par n="es/tar__vblex"/>	<p>	  <l><b/>d'acord<b/>amb</l>	  <r><g><b/>d'acord<b/>amb</g></r>	</p></e>
 <e lm="gaudir de"><i>gaud</i><par n="abarat/ir__vblex"/>	<p>	  <l><b/>de</l>	  <r><g><b/>de</g></r>	</p></e>
 <e lm="entrar a"><i>entr</i><par n="abander/ar__vblex"/>	<p>	  <l><b/>a</l>	  <r><g><b/>a</g></r>	</p></e>
 <e lm="fer mal">	<i>f</i>	<par n="f/er__vblex"/>	<p>	  <l><b/>mal</l>	  <r><g><b/>mal</g></r>	</p></e>
@@ -84257,6 +84258,7 @@
 <e lm="iniciar"><i>inici</i><par n="acarici/ar__vblex"/></e>
 <e lm="injectar"><i>inject</i><par n="abander/ar__vblex"/></e>
 <e lm="instar"><i>inst</i><par n="abander/ar__vblex"/></e>
+<e lm="acordar"><i>acord</i><par n="abander/ar__vblex"/></e>
 <e lm="integrar"><i>integr</i><par n="abander/ar__vblex"/></e>
 <e lm="intensificar"><i>intensifi</i><par n="abo/car__vblex"/></e>
 <e lm="interceptar"><i>intercept</i><par n="abander/ar__vblex"/></e>
