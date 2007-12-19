@@ -14,20 +14,6 @@ from command_line import call
 translate = None
 
 
-def convert_to_dbus_name(name):
-    import re
-    return re.sub('[-]', '_', name)
-
-class TranslatePair(service.Service):
-    def __init__(self, mode):
-        super(TranslatePair, self).__init__("/" + convert_to_dbus_name(mode))
-        self.mode = mode
-
-    @service.method("org.apertium.Mode", in_signature='a{ss}s', out_signature='s')
-    def translate(self, options, text):
-        return translate.translate(self.mode, options, text)
-
-
 def add_options(cmdline, options):
     default_options = {'mark_unknown': 'false'}
     default_options.update(options)
@@ -47,15 +33,33 @@ def add_options(cmdline, options):
     return cmdline
 
 class Translate(service.Service):
-    def __init__(self, cmdline):
-        super(TranslatePair, self).__init__(cmdline, "/")
-        self.cmdline = cmdline
+    def __init__(self, cmd, modes):
+        super(Translate, self).__init__("/")
+        self.cmd = cmd
+        self.modes = modes
 
     @service.method("org.apertium.Translate", in_signature='sa{ss}s', out_signature='s')
     def translate(self, pair, options, text):
-        out, err = call(cmdline, text)
+        if pair not in self.modes:
+            raise Exception("Invalid language pair")
+            
+        out, err = call(add_options([self.cmd, pair], options), text)
         return out
         
+
+def convert_to_dbus_name(name):
+    import re
+    return re.sub('[-]', '_', name)
+
+class TranslatePair(service.Service):
+    def __init__(self, mode):
+        super(TranslatePair, self).__init__("/" + convert_to_dbus_name(mode))
+        self.mode = mode
+
+    @service.method("org.apertium.Mode", in_signature='a{ss}s', out_signature='s')
+    def translate(self, options, text):
+        return translate.translate(self.mode, options, text)
+
 
 def create_translation_objects():
     global translate
@@ -68,12 +72,11 @@ def create_translation_objects():
     except:
         raise Exception("Could not connect to the Apertium information service")
 
-    translate = Translate(
+    modes = info.modes()
+    translate = Translate(path.join(info.directory(), 'bin', 'apertium'), modes)
 
-    directory = info.directory()
-    for mode in info.modes():
-        cmdline = [path.join(info.directory(), 'bin', 'apertium'), mode]
-        objs.append(TranslatePair(cmdline, mode))
+    for mode in modes:
+        objs.append(TranslatePair(mode))
 
     return objs
         
