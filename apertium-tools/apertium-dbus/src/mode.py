@@ -11,53 +11,69 @@ import logging
 import service
 from command_line import call
 
-class Translate(service.Service):
-    def __init__(self, cmdline, mode):
-        service.Service.__init__(self, '/' + mode)
-        self.cmdline = cmdline
-
-    @service.method("org.apertium.Mode", in_signature='a{ss}s', out_signature='s')
-    def translate(self, options, text):
-        def parse_bool(string):
-            if string == 'true':
-                return True
-            elif string == 'false':
-                return False
-            else:
-                raise Exception("Illegal boolean value")
-        
-        default_options = {'mark_unknown': 'false'}
-        default_options.update(options)
-
-        logging.debug("Seeing options %s" % repr(options))
-
-        cmdline = list(self.cmdline)
-        if not parse_bool(default_options['mark_unknown']):
-            cmdline.append('-u')
-        
-        logging.debug("Cmdline == %s" % repr(cmdline))
-
-        out, err = call(cmdline, text)
-        return out
+translate = None
 
 
 def convert_to_dbus_name(name):
     import re
     return re.sub('[-]', '_', name)
 
+class TranslatePair(service.Service):
+    def __init__(self, mode):
+        super(TranslatePair, self).__init__("/" + convert_to_dbus_name(mode))
+        self.mode = mode
+
+    @service.method("org.apertium.Mode", in_signature='a{ss}s', out_signature='s')
+    def translate(self, options, text):
+        return translate.translate(self.mode, options, text)
+
+
+def add_options(cmdline, options):
+    default_options = {'mark_unknown': 'false'}
+    default_options.update(options)
+
+    def parse_bool(string):
+        if string == 'true':
+            return True
+        elif string == 'false':
+            return False
+        else:
+            raise Exception("Illegal boolean value")
+
+    cmdline = list(cmdline)
+    if not parse_bool(default_options['mark_unknown']):
+        cmdline.append('-u')
+
+    return cmdline
+
+class Translate(service.Service):
+    def __init__(self, cmdline):
+        super(TranslatePair, self).__init__(cmdline, "/")
+        self.cmdline = cmdline
+
+    @service.method("org.apertium.Translate", in_signature='sa{ss}s', out_signature='s')
+    def translate(self, pair, options, text):
+        out, err = call(cmdline, text)
+        return out
+        
+
 def create_translation_objects():
+    global translate
+    
     objs = []
     
-    #try:
-    info = service.make_proxy("org.apertium.info/", "org.apertium.Info")
+    try:
+        info = service.make_proxy("org.apertium.info/", "org.apertium.Info")
 
-    #except:
-    #    raise Exception("Could not connect to the Apertium information service")
+    except:
+        raise Exception("Could not connect to the Apertium information service")
+
+    translate = Translate(
 
     directory = info.directory()
     for mode in info.modes():
         cmdline = [path.join(info.directory(), 'bin', 'apertium'), mode]
-        objs.append(Translate(cmdline, convert_to_dbus_name(mode)))
+        objs.append(TranslatePair(cmdline, mode))
 
     return objs
         
