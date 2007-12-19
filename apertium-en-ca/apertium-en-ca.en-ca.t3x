@@ -6,7 +6,9 @@
     <def-cat n="inf">
       <cat-item name="inf"/>
     </def-cat>
-
+    <def-cat n="inf_inf">
+      <cat-item name="inf_inf"/>
+    </def-cat>
     <def-cat n="ger"> <!-- BCN -->
       <cat-item name="ger"/>
     </def-cat>
@@ -58,6 +60,7 @@
       <cat-item name="pro_do_inf"/> 
       <cat-item name="pro_mod_inf_perif"/>
       <cat-item name="pro_auxmod_mod_inf"/>
+      <cat-item name="pro_auxmod_have_pp"/>
     </def-cat>   
 
 <def-cat n="pottenirenclitic">
@@ -518,6 +521,49 @@
       </action>
     </rule>
 
+
+    <rule comment="CHUNK: INF INF">
+      <pattern>
+	<pattern-item n="inf_inf"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test><!--Si no és PD tampoc serà ND, en principi -->
+	      <not>
+		<equal>
+		  <clip pos="0" part="pers"/>
+		  <lit-tag v="PD"/>
+		</equal>
+	      </not>
+	    </test>      
+	    <out>
+	      <lu>
+		<clip pos="1" part="lemh"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="0" part="pers"/>
+		<clip pos="0" part="nbr"/>
+		<clip pos="1" part="lemq"/>
+	      </lu> 
+	    </out>  
+	  </when>
+	  <otherwise>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	    </out>
+	  </otherwise>
+	</choose>
+	<out>
+	  <b pos="1"/>
+	  <lu>
+	    <clip pos="2" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+    </rule>
+
     <rule comment="CHUNK: GER  (BCN)">
       <pattern>
 	<pattern-item n="ger"/>
@@ -973,6 +1019,10 @@
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_auxmod_mod_inf"/>
 		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="pro_auxmod_have_pp"/>
+		    </equal>
 		  </or>
 		</test>
 		<out>
@@ -1182,6 +1232,10 @@
 		    <equal caseless="yes">
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_auxmod_mod_inf"/>
+		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="pro_auxmod_have_pp"/>
 		    </equal>
 		  </or>
 		</test>

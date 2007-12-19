@@ -438,6 +438,10 @@
       <label-item label="PRNOBJ"/>
     </label-sequence> 
     <label-sequence>
+      <label-item label="VDO"/>
+      <label-item label="PRNOBJ"/>
+    </label-sequence> 
+    <label-sequence>
       <label-item label="DOVBLEX"/>
       <label-item label="NOT"/>
     </label-sequence> 
@@ -448,6 +452,10 @@
     <label-sequence>
       <label-item label="ADJPOS"/>
       <label-item label="NOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRNSUBJ"/>
+      <label-item label="CANNOM"/>
     </label-sequence>
     <label-sequence>
       <label-item label="CANNOM"/>
@@ -638,10 +646,10 @@
       <label-item label="DET"/>
       <label-item label="VAUX"/>
     </label-sequence>
-    <label-sequence><!--MG: soluciona "popular will." però no: yes, they will. Pensar-hi millor. -->
+  <!--  <label-sequence><!-x-MG: soluciona "popular will." però no: yes, they will. Pensar-hi millor. -x->
       <label-item label="VAUX"/>
       <label-item label="SENT"/>
-    </label-sequence>
+    </label-sequence> -->
 
 
 
