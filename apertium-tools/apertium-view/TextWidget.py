@@ -1,5 +1,5 @@
+import os, string
 from widget import *
-
 
 MIN_SIZE = 15
 
@@ -92,6 +92,9 @@ def make(txt, child):
     statusbar = wTree.get_widget("statusbar")
     statusbar.button_down = False
     
+    path = txt.split(' ');
+    path[0] = os.path.basename(path[0]);
+    txt = string.join(path, ' ');
     wTree.get_widget("entry").set_text(txt)
     wTree.get_widget("viewport").add(child)
 
