@@ -7,27 +7,27 @@ APT=/home/spectre/svnroot/unicode-local/bin/apertium-preprocess-transfer
 GENMODES=/home/spectre/svnroot/unicode-local/bin/apertium-gen-modes
 
 all:
-	xmllint --xinclude apertium-tg-en.en.dix.xml > apertium-tg-en.en.dix
-	xmllint --xinclude apertium-tg-en.tg.dix.xml > apertium-tg-en.tg.dix
-	xmllint --xinclude apertium-tg-en.tg-en.dix.xml > apertium-tg-en.tg-en.dix
+	xmllint --xinclude apertium-tg-fa.en.dix.xml > apertium-tg-fa.en.dix
+	xmllint --xinclude apertium-tg-fa.tg.dix.xml > apertium-tg-fa.tg.dix
+	xmllint --xinclude apertium-tg-fa.tg-fa.dix.xml > apertium-tg-fa.tg-fa.dix
 
-	$(LTCOMP) lr apertium-tg-en.en.dix en-tg.automorf.bin
-	$(LTCOMP) lr apertium-tg-en.tg.dix tg-en.automorf.bin
+	$(LTCOMP) lr apertium-tg-fa.en.dix fa-tg.automorf.bin
+	$(LTCOMP) lr apertium-tg-fa.tg.dix tg-fa.automorf.bin
 
-	$(LTCOMP) lr apertium-tg-en.tg-en.dix tg-en.autobil.bin
-	$(LTCOMP) rl apertium-tg-en.tg-en.dix en-tg.autobil.bin
+	$(LTCOMP) lr apertium-tg-fa.tg-fa.dix tg-fa.autobil.bin
+	$(LTCOMP) rl apertium-tg-fa.tg-fa.dix fa-tg.autobil.bin
 
-	$(LTCOMP) rl apertium-tg-en.tg.dix en-tg.autogen.bin
-	$(LTCOMP) rl apertium-tg-en.en.dix tg-en.autogen.bin
+	$(LTCOMP) rl apertium-tg-fa.tg.dix fa-tg.autogen.bin
+	$(LTCOMP) rl apertium-tg-fa.en.dix tg-fa.autogen.bin
 
-	$(APT) apertium-tg-en.tg-en.t1x tg-en.t1x.bin
-	$(APT) apertium-tg-en.en-tg.t1x en-tg.t1x.bin
+	$(APT) apertium-tg-fa.tg-fa.t1x tg-fa.t1x.bin
+	$(APT) apertium-tg-fa.fa-tg.t1x fa-tg.t1x.bin
 
-	$(LTCOMP) lr apertium-tg-en.post-en.dix tg-en.autopgen.bin
+	$(LTCOMP) lr apertium-tg-fa.post-en.dix tg-fa.autopgen.bin
 
 	$(GENMODES) modes.xml
 
-	rm apertium-tg-en.en.dix apertium-tg-en.tg.dix apertium-tg-en.tg-en.dix
+	rm apertium-tg-fa.en.dix apertium-tg-fa.tg.dix apertium-tg-fa.tg-fa.dix
 
 clean:
 	rm -rf *.bin modes
