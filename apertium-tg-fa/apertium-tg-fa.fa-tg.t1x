@@ -13,6 +13,9 @@
   <def-cat n="rel">
     <cat-item tags="rel.*"/>
   </def-cat>
+  <def-cat n="izofa">
+    <cat-item tags="iza"/>
+  </def-cat>
 </section-def-cats>
 
 <section-def-attrs>
@@ -43,28 +46,6 @@
 
   <rule>
      <pattern>
-       <pattern-item n="adj"/>
-       <pattern-item n="nom"/>
-     </pattern>
-     <action>
-       <out>
-         <lu>
-           <clip pos="2" side="tl" part="lem"/>
-	   <clip pos="2" side="tl" part="a_nom"/>
-           <clip pos="2" side="tl" part="nbr"/>
-	   <lit-tag v="iza"/>
-         </lu>
-	 <b/>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_adj"/>
-         </lu>
-       </out>
-     </action>
-  </rule>
-
-  <rule>
-     <pattern>
        <pattern-item n="nom"/>
      </pattern>
      <action>
@@ -74,6 +55,26 @@
            <clip pos="1" side="tl" part="a_nom"/>
            <clip pos="1" side="tl" part="nbr"/>
          </lu>
+       </out>
+     </action>
+  </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="nom"/>
+       <pattern-item n="izofa"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_nom"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+	 <lu>
+           <clip pos="1" side="tl" part="lem"/>
+	   <lit-tag v="izo"/>
+	 </lu>
        </out>
      </action>
   </rule>
