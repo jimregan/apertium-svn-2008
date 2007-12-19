@@ -19,6 +19,8 @@ all:
 	apertium-validate-postchunk apertium-id-ms.id-ms.t3x
 	apertium-preprocess-transfer apertium-id-ms.id-ms.t3x id-ms.t3x.bin
 
+	#clean up temp files
+	rm apertium-id-ms.id.dix apertium-id-ms.ms.dix apertium-id-ms.id-ms.dix
 clean:
 	rm -f *.bin apertium-id-ms.id.dix apertium-id-ms.ms.dix apertium-id-ms.id-ms.dix
 
