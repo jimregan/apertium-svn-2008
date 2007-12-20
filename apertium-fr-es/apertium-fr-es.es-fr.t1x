@@ -453,7 +453,7 @@
     <def-var n="exclamativa"/>
     <def-var n="caseFirstWord"/>
     <def-var n="lema"/>
-    <def-var n="EOS"/>
+    <def-var n="EOS" v="true"/>
     <def-var n="paraula1"/>
     <def-var n="SVnegatiu"/>
     <def-var n="auxiliar"/>
@@ -919,24 +919,25 @@
         <lit v="false"/>
       </let>
     </def-macro>
-    <def-macro n="f_bcond" npar="1">
-<!--Per mirar si el blanc cont?o no format. Cal posar aquesta funci?en les regles en qu?desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont?format cal conservar-la, si no en cont?cal eliminar-la perqu?no apareguin dos espais seguits. -->
+    
+ <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc cont?o no format. Cal posar aquesta funci?en les regles en qu?desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont?format cal conservar-la, si no en cont?cal eliminar-la perqu?no apareguin dos espais seguits. -->
       <choose>
-        <when>
-          <test>
-            <not>
-              <equal>
-                <b pos="1"/>
-                <lit v=" "/>
-              </equal>
-            </not>
-          </test>
-          <out>
-            <b pos="1"/>
-          </out>
-        </when>
+	<when>
+	  <test>
+	    <not>
+	      <equal>
+		<b pos="1"/>
+		<lit v=" "/>
+	      </equal>
+	    </not>
+	  </test>
+	  <out>
+	    <b pos="1"/>
+	  </out>
+	</when>     	    
       </choose>
     </def-macro>
+    
     <def-macro n="f_nploc" npar="1">
       <let>
         <var n="art_np"/>
@@ -3158,8 +3159,23 @@
           <let>
             <clip pos="1" side="tl" part="a_verb"/>
             <lit-tag v="vbser"/>
+          </let> 
+	  <let>
+            <clip pos="2" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="nbr"/>
           </let>
         </when>
+	<otherwise>
+	 <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="avoir"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <lit-tag v="vbhaver"/>
+          </let> 
+	
+	</otherwise>
       </choose>
     </def-macro>
     <def-macro n="vauxiliar_pro" npar="3">
@@ -3895,7 +3911,8 @@
             </out>
             <call-macro n="f_bcond">
               <with-param pos="1"/>
-            </call-macro>
+	      <with-param pos="2"/>
+	    </call-macro>
           </when>
           <otherwise>
             <out>
@@ -4054,9 +4071,11 @@
             </out>
             <call-macro n="f_bcond">
               <with-param pos="3"/>
+	      <with-param pos="4"/>
             </call-macro>
             <call-macro n="f_bcond">
               <with-param pos="5"/>
+              <with-param pos="6"/>
             </call-macro>
           </when>
           <otherwise>
@@ -4184,6 +4203,7 @@
             </out>
             <call-macro n="f_bcond">
               <with-param pos="3"/>
+	      <with-param pos="4"/>
             </call-macro>
           </when>
           <otherwise>
@@ -4313,6 +4333,7 @@
             </out>
             <call-macro n="f_bcond">
               <with-param pos="4"/>
+	      <with-param pos="5"/>
             </call-macro>
           </when>
           <otherwise>
@@ -4421,6 +4442,7 @@
             </out>
             <call-macro n="f_bcond">
               <with-param pos="2"/>
+	      <with-param pos="3"/>
             </call-macro>
           </when>
           <otherwise>
@@ -4536,6 +4558,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="4"/>
+	  <with-param pos="5"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -4610,6 +4633,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="4"/>
+	  <with-param pos="5"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -4695,6 +4719,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="5"/>
+	  <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -4780,6 +4805,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="5"/>
+	  <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -4854,6 +4880,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="4"/>
+	  <with-param pos="5"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -4928,6 +4955,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="4"/>
+	  <with-param pos="5"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -5013,6 +5041,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="5"/>
+	  <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -5098,6 +5127,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="5"/>
+	  <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -8166,6 +8196,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="2"/>
+          <with-param pos="3"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -8453,6 +8484,7 @@
         </choose>
         <call-macro n="f_bcond">
           <with-param pos="3"/>
+          <with-param pos="4"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -8516,6 +8548,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="3"/>
+          <with-param pos="4"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -8608,6 +8641,7 @@
                 </out>
                 <call-macro n="f_bcond">
                   <with-param pos="4"/>
+                  <with-param pos="5"/>
                 </call-macro>
               </when>
               <otherwise>
@@ -8763,6 +8797,7 @@
         </choose>
         <call-macro n="f_bcond">
           <with-param pos="4"/>
+	  <with-param pos="5"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -8932,6 +8967,7 @@
         </choose>
         <call-macro n="f_bcond">
           <with-param pos="4"/>
+	  <with-param pos="5"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -9262,6 +9298,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="4"/>
+	  <with-param pos="5"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -14556,12 +14593,12 @@
         <pattern-item n="pp"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
         <call-macro n="vauxiliar">
           <with-param pos="1"/>
           <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
         </call-macro>
         <out>
           <chunk name="haver_pp" case="caseFirstWord">
@@ -14594,7 +14631,8 @@
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_pp"/>
-              <lit-tag v="m.sg"/>
+              <lit-tag v="m"/>
+	      <clip pos="2" side="tl" part="nbr"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -16245,6 +16283,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="3"/>
+          <with-param pos="4"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -16574,6 +16613,7 @@
         </choose>
         <call-macro n="f_bcond">
           <with-param pos="4"/>
+	  <with-param pos="5"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -16647,6 +16687,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="5"/>
+	  <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -16749,6 +16790,7 @@
                 </out>
                 <call-macro n="f_bcond">
                   <with-param pos="5"/>
+                  <with-param pos="6"/>
                 </call-macro>
               </when>
               <otherwise>
@@ -16924,6 +16966,7 @@
         </choose>
         <call-macro n="f_bcond">
           <with-param pos="5"/>
+	  <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -17115,6 +17158,7 @@
         </choose>
         <call-macro n="f_bcond">
           <with-param pos="5"/>
+	  <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -17485,6 +17529,7 @@
         </out>
         <call-macro n="f_bcond">
           <with-param pos="5"/>
+	  <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -18840,9 +18885,6 @@
         <pattern-item n="lquest"/>
       </pattern>
       <action>
-        <call-macro n="f_bcond">
-          <with-param pos="1"/>
-        </call-macro>
       </action>
    </rule>
     
