@@ -8519,6 +8519,119 @@ Assigna gènere i nombre a adjectiu (GD i ND)
     </rule> 
     
 
+  <rule comment="REGLA: SA SN (London-based design company)">
+      <pattern>
+	<pattern-item n="SA"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="2" part="gen"/>
+		      <lit-tag v="mf"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="2" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>		
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="2" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="2" part="nbr"/>
+		</let>		
+	      </when>
+	      <otherwise>		
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  
+	</out>
+      </action>
+    </rule>
+
+
+
 
     <!--Regles per a sintagmes sols que han pogut quedarse amb GD, ND o PD -->
 

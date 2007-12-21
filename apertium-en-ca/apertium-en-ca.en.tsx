@@ -14,6 +14,9 @@
   <def-label name="NOT" closed="true">
     <tags-item lemma="not" tags="adv"/>
   </def-label>
+  <def-label name="NOADV" closed="true">
+    <tags-item lemma="no" tags="adv"/>
+  </def-label>
   <def-label name="CANNOM" closed="true">
     <tags-item lemma="can" tags="n.*"/>
   </def-label>
@@ -652,6 +655,30 @@
     </label-sequence> -->
 
 
+    <label-sequence>
+      <label-item label="NOADV"/>
+      <label-item label="PAST"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOADV"/>
+      <label-item label="INF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOADV"/>
+      <label-item label="PRES"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOADV"/>
+      <label-item label="GER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOADV"/>
+      <label-item label="NOMSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOADV"/>
+      <label-item label="NOMPL"/>
+    </label-sequence>
 
  </forbid>
 
