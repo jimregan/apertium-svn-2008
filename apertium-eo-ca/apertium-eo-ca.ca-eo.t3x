@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<postchunk>
+
+<section-def-cats>
+
+	<def-cat n="SUBJ">
+      <cat-item name="subj"/>
+ 	</def-cat>
+
+
+</section-def-cats>
+
+<section-def-attrs>
+
+
+
+
+<def-attr n="pers">
+          <attr-item tags="p1"/>
+          <attr-item tags="p2"/>
+          <attr-item tags="p3"/>
+          <attr-item tags="PD"/>
+</def-attr>
+
+      <def-attr n="gen">
+          <attr-item tags="m"/>
+          <attr-item tags="f"/>
+          <attr-item tags="mf"/>
+          <attr-item tags="GD"/>
+          <attr-item tags="nt"/>
+      </def-attr>
+
+   <def-attr n="nbr">
+          <attr-item tags="sg"/>
+          <attr-item tags="pl"/>
+          <attr-item tags="sp"/>
+          <attr-item tags="ND"/>
+      </def-attr>
+
+
+<def-attr n="a_verb">
+	  <attr-item tags="vblex"/>
+	  <attr-item tags="vbser"/>
+	  <attr-item tags="vbhaver"/>
+	  <attr-item tags="vbmod"/>
+	  <attr-item tags="vaux"/>
+</def-attr>
+
+
+      <def-attr n="temps">
+          <attr-item tags="inf"/>
+          <attr-item tags="pres"/>
+          <attr-item tags="past"/>
+          <attr-item tags="pri"/>
+	  <attr-item tags="prs"/>
+	  <attr-item tags="imp"/>
+	  <attr-item tags="pii"/>
+	  <attr-item tags="cni"/>
+	  <attr-item tags="ifi"/>
+	  <attr-item tags="pis"/>
+          <attr-item tags="pp"/>
+          <attr-item tags="ger"/>
+          <attr-item tags="pprs"/>
+          <attr-item tags="subs"/>
+          <attr-item tags="fti"/>
+          <attr-item tags="fts"/>
+      </def-attr>
+
+ <def-attr n="a_SV">
+          <attr-item tags="SVneg"/>
+          <attr-item tags="SV"/>
+</def-attr>     
+
+
+  </section-def-attrs>
+
+<section-def-vars>
+    <def-var n="paraula"/>
+    <def-var n="temps_aux"/>
+  </section-def-vars>
+
+
+
+  <section-rules>
+
+<rule comment="CHUNK: SUBJ">
+      <pattern>
+        <pattern-item n="SUBJ"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="1" part="pers"/>
+		  <lit-tag v="p3"/>
+		</equal>
+		<equal>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="nt"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="p2"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sp"/>
+	    </let>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="mf"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="mf"/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+</rule>
+  </section-rules>
+</postchunk>
