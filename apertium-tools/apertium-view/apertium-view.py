@@ -158,6 +158,12 @@ def on_comboPair_changed(widget, data = None):
     setup_pair(widget.get_model().get_value((widget.get_active_iter()), 0))
 
 
+@gtk_handler
+def on_scrollMain_size_allocate(widget, allocation, data = None):
+    #print "x=%d, y=%d, width=%d, height=%d" % (allocation.x, allocation.y, allocation.width, allocation.height)
+    #TODO: Add code to resize the contents of the main scroll window.
+    pass
+
 def call(params, _input):
     from subprocess import Popen, PIPE
     
@@ -225,18 +231,17 @@ def setup_pair(name):
         
     Currently, we build a pipeline which looks something like the following (for en-af):
     
-    executed when the user types
-    in the first TextView        related to the TextView for lt-proc      related to the TextView for apertium-tagger
+     Filter first TextView       related to the TextView for lt-proc      related to the TextView for apertium-tagger
      __________/\___________    _________________/\__________________    _____________________/\_____________________
     /                       \  /                                     \  /                                            \
     [runner: apertium-destxt]->[runner: lt-proc]->[observer]->[update]->[runner: apertium-tagger]->[observer]->[update]->...
-                                                    \              /\                                \              /\
-                                                     \             /                                  \             /
-                                                   set_text     changed                             set_text     changed
-                                                       \         /                                      \         /
-                                                        \       /                                        \       /
-                                                        \/     /                                         \/     /
-                                                      GTK TextView                                     GTK TextView
+                     /\                             \              /\                                \              /\
+                     /                               \             /                                  \             /
+                  changed                          set_text     changed                             set_text     changed
+                   /                                   \         /                                      \         /
+                  /                                     \       /                                        \       /
+                 /                                      \/     /                                         \/     /
+        GTK TextView                                  GTK TextView                                     GTK TextView
     
     
     Consider the cells related to a the TextView for lt-proc (this TextView should show up as the second TextView from the
@@ -295,8 +300,8 @@ def setup_pair(name):
         
         view_box.pack_start(text_widget, **pack_opts) # Add a TextView to our window
 
-    text_widgets[0].wTree.get_widget("btnCollapsed").set_active(False)
-    text_widgets[-1].wTree.get_widget("btnCollapsed").set_active(False)
+    text_widgets[0].wTree.get_widget("btnCollapsed").set_active(False)  # Uncollapse the first and last 
+    text_widgets[-1].wTree.get_widget("btnCollapsed").set_active(False) # TextViews
 
     replace_child(Globals.wTree.get_widget("portMain"), view_box)
 
