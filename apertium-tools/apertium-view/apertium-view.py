@@ -15,8 +15,8 @@ from subprocess import Popen, PIPE
 import threading
 from Queue import Queue
 
-from apertium.service import make_proxy
-from apertium.command_line import call
+import dbus
+
 from widget import *
 import TextWidget 
 
@@ -158,6 +158,13 @@ def on_comboPair_changed(widget, data = None):
     setup_pair(widget.get_model().get_value((widget.get_active_iter()), 0))
 
 
+def call(params, _input):
+    from subprocess import Popen, PIPE
+    
+    proc = Popen(params, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    return proc.communicate(_input)
+    
+
 def make_runner(cmd):
     def process_cmd_line(cmd):
         if len(cmd) > 1   and cmd[1] == '$1' and Globals.marcar:
@@ -260,7 +267,7 @@ def init():
 
     Globals.source_lang_manager  = sourceview.language_manager_get_default()
     Globals.source_style_manager = sourceview.style_scheme_manager_get_default()
-    Globals.info = make_proxy("org.apertium.info/", "org.apertium.Info")
+    Globals.info = dbus.Interface(dbus.SessionBus().get_object("org.apertium.info", "/"), "org.apertium.Info")
 
     setup_logging()
     main_window()
