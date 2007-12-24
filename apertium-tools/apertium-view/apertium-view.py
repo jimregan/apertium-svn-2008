@@ -183,12 +183,21 @@ def make_runner(cmd):
 
 
 def make_observer(text_buffer, update_handler):
+    """An observer cell is used to update the contents of a GTK text buffer. See the doc for setup_pair to
+    understand where observers fit in.
+    """
+    
     def observer(val):
-        gtk.gdk.threads_enter()
-        text_buffer.handler_block(update_handler)
-        text_buffer.set_text(val)
-        text_buffer.handler_unblock(update_handler)
-        gtk.gdk.threads_leave()
+        def post_update():
+            # If we don't block the onchange event, then we'll invoke two updates
+            # because and update will already occur due to data flowing through
+            # cell pipeline
+            text_buffer.handler_block(update_handler)
+            text_buffer.set_text(val)
+            text_buffer.handler_unblock(update_handler)
+            
+        # This will be executed in the GTK main loop
+        gobject.idle_add(post_update)        
         return val
 
     return Cell(observer)
@@ -208,6 +217,46 @@ def replace_child(container, new_child):
 
 
 def setup_pair(name):
+    """setup_pair is responsible for:
+    1.) Creating the GTK TextViews for each of the stages used in the processing of the pair named by 'name'
+    2.) Creating a dataflow pipeline which will: 
+        2.1) be used to determine in which TextView the user made any changes,
+        2.2) updating the TextViews as data flows through the pipeline.
+        
+    Currently, we build a pipeline which looks something like the following (for en-af):
+    
+    executed when the user types
+    in the first TextView        related to the TextView for lt-proc      related to the TextView for apertium-tagger
+     __________/\___________    _________________/\__________________    _____________________/\_____________________
+    /                       \  /                                     \  /                                            \
+    [runner: apertium-destxt]->[runner: lt-proc]->[observer]->[update]->[runner: apertium-tagger]->[observer]->[update]->...
+                                                    \              /\                                \              /\
+                                                     \             /                                  \             /
+                                                   set_text     changed                             set_text     changed
+                                                       \         /                                      \         /
+                                                        \       /                                        \       /
+                                                        \/     /                                         \/     /
+                                                      GTK TextView                                     GTK TextView
+    
+    
+    Consider the cells related to a the TextView for lt-proc (this TextView should show up as the second TextView from the
+    top in apertium-view for the en-af mode). In order to create what we see in that TextView, 
+      lt-proc /usr/local/share/apertium/apertium-en-af/en-af.automorf.bin
+    must be executed on the input text (from the very first TextView). But the first cell (marked as '[runner: lt-proc]')
+    only invokes lt-proc in a subprocess and pushes the result to the next cell. We would like to display the output of
+    lt-proc in the TextView, so the next cell in the pipeline is an 'observer' which sets the text of the TextView.
+    
+    Suppose now that the user modifies the text in the lt-proc TextView we are considering. We would like this change to
+    be reflected in the *rest* of the TextViews, but the current TextView and all preceding it must remain unchanged.
+    So we insert an update cell *after* the other cells for the lt-proc stage. We set the onchange event of the lt-proc
+    TextView to invoke this update cell.
+
+    Thus, when the user modifies the text in the lt-proc TextView, you can see from the cell pipeline above that the
+    change will flow into the cell which executes apertium-tagger; afterwards the observer cell for the apertium-tagger
+    window will update the contents of the TextView corresponding to the apertium-tagger phase. The data will continue
+    flowing down the pipeline updating the remaining TextViews.
+    """
+    
     def next(cell, obj):
         cell.next = obj
         return cell.next
@@ -232,13 +281,13 @@ def setup_pair(name):
         update_cell = Cell(lambda x: x)
         update_handler = text_buffer.connect("changed", update, update_cell)
 
-        if i == len(pipeline) - 1:
+        if i == len(pipeline) - 1: # Before our last TextView, insert an apertium-retxt phase
             cell = next(cell, make_runner([out_filter]))
         
-        cell = next(cell, make_observer(text_buffer, update_handler))
-        cell = next(cell, update_cell)
+        cell = next(cell, make_observer(text_buffer, update_handler)) # Corresponds to [observer] in description above
+        cell = next(cell, update_cell) # Corresponds to [update] in description above
         
-        view_box.pack_start(text_widget, **pack_opts)
+        view_box.pack_start(text_widget, **pack_opts) # Add a TextView to our window
 
     replace_child(Globals.wTree.get_widget("portMain"), view_box)
 
