@@ -1,7 +1,7 @@
 import os, string
 from widget import *
 
-MIN_SIZE = 15
+MIN_SIZE = 30
 
 
 def get_wTree(widget):
@@ -20,6 +20,10 @@ def set_y_size(widget, sz):
     widget.set_size_request(-1, max(sz, MIN_SIZE))
 
 
+def is_collapsed(widget):
+    return widget.get_active()
+
+
 @gtk_handler
 def on_statusbar_motion_notify_event(widget, event):
     if widget.button_down:
@@ -31,7 +35,7 @@ def on_statusbar_motion_notify_event(widget, event):
         
         set_y_size(resizee, rect.height + int(y_delta) - widget.y_offset)
 
-            
+
 @gtk_handler
 def on_statusbar_button_release_event(widget, event):
     widget.button_down = False
@@ -39,20 +43,21 @@ def on_statusbar_button_release_event(widget, event):
 
 @gtk_handler
 def on_statusbar_button_press_event(widget, event):
-    widget.button_down = True
-    widget.y_offset = int(event.get_coords()[1])
+    if not is_collapsed(get_widget(widget, "btnCollapsed")):
+        widget.button_down = True
+        widget.y_offset = int(event.get_coords()[1])
 
 
 @gtk_handler
 def on_btnCollapsed_toggled(widget, data=None):
     resizee = get_widget(widget, "scrolledwindow")
 
-    if not widget.get_active():
-        set_y_size(resizee, widget.old_height)
+    if not is_collapsed(widget):
+        resizee.show()
 
     else:
         widget.old_height = resizee.get_allocation().height
-        set_y_size(resizee, 0)
+        resizee.hide()
 
 
 @gtk_handler

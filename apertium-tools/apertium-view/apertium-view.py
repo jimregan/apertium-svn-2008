@@ -268,7 +268,13 @@ def setup_pair(name):
     in_filter, out_filter = Globals.info.get_filters('txt') # this will likely be apertium-destxt and apertium-retxt
     cell = make_runner([in_filter]) # Add the deformatter
 
-    text_buffer, text_widget = make_text_widget(['input text'])
+    text_widgets = []
+    def _make_text_widget(*args):
+        text_buffer, text_widget = make_text_widget(*args)
+        text_widgets.append(text_widget)
+        return text_buffer, text_widget
+
+    text_buffer, text_widget = _make_text_widget(['input text'])
     text_buffer.connect("changed", update, cell)
     view_box.pack_start(text_widget, **pack_opts)
 
@@ -276,7 +282,7 @@ def setup_pair(name):
     for i, cmd in enumerate(pipeline):
         cell = next(cell, make_runner([str(c) for c in cmd]))
 
-        text_buffer, text_widget = make_text_widget(cmd)
+        text_buffer, text_widget = _make_text_widget(cmd)
         
         update_cell = Cell(lambda x: x)
         update_handler = text_buffer.connect("changed", update, update_cell)
@@ -288,6 +294,9 @@ def setup_pair(name):
         cell = next(cell, update_cell) # Corresponds to [update] in description above
         
         view_box.pack_start(text_widget, **pack_opts) # Add a TextView to our window
+
+    text_widgets[0].wTree.get_widget("btnCollapsed").set_active(False)
+    text_widgets[-1].wTree.get_widget("btnCollapsed").set_active(False)
 
     replace_child(Globals.wTree.get_widget("portMain"), view_box)
 
