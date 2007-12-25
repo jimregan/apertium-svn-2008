@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <modes>
-  <mode name="tg-fa" install="yes">
+  <mode name="tg-fa-test" install="no">
     <pipeline>
       <program name="lt-proc">
         <file name="tg-fa.automorf.bin"/>
@@ -17,11 +17,58 @@
       <program name="lt-proc -g">
         <file name="tg-fa.autogen.bin"/>
       </program>
-      <program name="lt-proc -p">
+<!--      <program name="lt-proc -p">
         <file name="tg-fa.autopgen.bin"/>
-      </program> 
+      </program>  -->
     </pipeline>
   </mode>
+
+  <mode name="tg-fa" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="tg-fa.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="tg-fa.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-tg-fa.tg-fa.t1x"/>
+        <file name="tg-fa.t1x.bin"/>
+        <file name="tg-fa.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="tg-fa.autogen.bin"/>
+      </program>
+<!--      <program name="lt-proc -p">
+        <file name="tg-fa.autopgen.bin"/>
+      </program>  -->
+    </pipeline>
+  </mode>
+
+  <mode name="fa-tg-test" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="fa-tg.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="fa-tg.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-tg-fa.fa-tg.t1x"/>
+        <file name="fa-tg.t1x.bin"/>
+        <file name="fa-tg.autobil.bin"/>
+      </program>
+      <program name="lt-proc -g">
+        <file name="fa-tg.autogen.bin"/>
+      </program>
+<!--      <program name="lt-proc -p">
+        <file name="fa-tg.autopgen.bin"/>
+      </program> -->
+    </pipeline>
+  </mode>
+
 
   <mode name="fa-tg" install="yes">
     <pipeline>
@@ -37,7 +84,7 @@
         <file name="fa-tg.t1x.bin"/>
         <file name="fa-tg.autobil.bin"/>
       </program>
-      <program name="lt-proc -g">
+      <program name="lt-proc $1">
         <file name="fa-tg.autogen.bin"/>
       </program>
 <!--      <program name="lt-proc -p">
