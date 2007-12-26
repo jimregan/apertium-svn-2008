@@ -48,21 +48,21 @@ function process_form() {
 	**************************
 */
 function show_form($textbox, $dir) {
-	print '<form class="translation" action="' . $_SERVER[PHP_SELF] . '?id=translatetext" method="post">';
-	print '<fieldset><legend></legend><label for="direction">';
+	print '<form name="translationform" class="translation" action="' . $_SERVER[PHP_SELF] . '?id=translatetext" method="post">';
+	print '<fieldset name="fset"><legend></legend><label for="direction">';
 	print _("Translation type:");
 	
 	print ' <select id="direction" name="direction" title="' . _("Select the translation type") . '">';
-
 	include_once("available_pairs.php");
-	
-	print '</select></label><br/><br/><label for="textbox">';
-	print '<textarea id="textbox" name="textbox" cols="50" rows="10" title="' . _("Insert plain text to translate here") . '">';
+	//print '</select></label><br/><br/><label for="textbox">';
+	print '</select></label><br/><br/>';
+	print '<textarea id="thetextbox" name="textbox" cols="50" rows="10" title="' . _("Insert plain text to translate here") . '">';
 
 	$text = stripslashes($textbox);
 	print $text;
 
-	print '</textarea></label><br/><label for="mark">';
+	//print '</textarea></label><br/><label for="mark">';
+	print '</textarea><br/><label for="mark">';
 	print _("Mark unknown words") . " ";
 	print '<input id="mark" value="1" name="mark" type="checkbox" title="Check the box to mark unknown words"/></label>';
 	print '<div><input type="submit" value="' . _("Translate") . '" class="submit" title="' . _("Press button to translate") . '"/>';
