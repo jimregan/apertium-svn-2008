@@ -62,25 +62,20 @@
     </pipeline>
   </mode>
 
-  <mode name="af-en-analysis">
+  <mode name="en-parser" install="yes">
     <pipeline>
       <program name="lt-proc">
-        <file name="af-en.automorf.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-
-  <mode name="af-en-tagger" install="no">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="af-en.automorf.bin"/>
+        <file name="en-af.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g">
-        <file name="af-en.prob"/>
+        <file name="en-af.prob"/>
       </program>
+      <program name="apertium-pretransfer"/>
+      <program name="fix-scol.rb"/>
+      <program name="cass -a -g">
+        <file name="en.fsc"/>
+      </program>
+      <program name="apertium-destxt"/>
     </pipeline>
   </mode>
-
-
 </modes>
