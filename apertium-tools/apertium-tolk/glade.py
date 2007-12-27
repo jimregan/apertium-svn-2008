@@ -34,6 +34,8 @@ class GladeXML(gtk.glade.XML):
         for widget_name, widget in self.get_widgets():
             try:
                 load_state(widget, dict(cfg.items(widget_name)))
+            except KeyError, e:
+                pass
             except NoSectionError, e:
                 pass
 
