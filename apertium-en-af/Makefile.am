@@ -12,10 +12,7 @@ TARGETS_COMMON = $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$
      $(PREFIX2).autogen.bin \
      $(PREFIX2).autopgen.bin \
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes \
-     $(LANG1).fsc
-     
-bin_SCRIPTS = fix-scol.rb
+     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
 
 $(BASENAME).$(LANG1).dix: $(BASENAME).$(LANG1).dix.xml
 	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
@@ -80,8 +77,6 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 	apertium-validate-postchunk $(BASENAME).$(PREFIX2).t3x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t3x $@
 
-$(LANG1).fsc: $(BASENAME).$(LANG1).reg
-	reg $(BASENAME).$(LANG1).reg -o $(LANG1).fsc
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
@@ -122,14 +117,12 @@ apertium_en_af_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
-		    $(PREFIX1).mode $(PREFIX2).mode \
-                    $(LANG1)-parser.mode $(LANG1).fsc 
+		    $(PREFIX1).mode $(PREFIX2).mode
 		  
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_en_modesdir)
-	$(INSTALL_DATA) $(LANG1)-parser.mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_en_afdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x $(apertium_en_afdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x $(apertium_en_afdir)
