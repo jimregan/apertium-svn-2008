@@ -5,6 +5,9 @@
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>
+    <def-cat n="prnperssubj">
+      <cat-item lemma="prnperssubj" tags="SN.*"/>
+    </def-cat>
     
     <def-cat n="negacio"><!-- BCN-->
       <cat-item tags="SN.DET.*.*.negacio"/>
@@ -885,6 +888,51 @@
 					<clip pos="1" part="lem"/>
 					<clip pos="1" part="tags"/>
 					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+
+	<rule comment="REGLA: prnpersubj SN (nosaltres les dones-> nosautras las femnas)">
+		<pattern>
+			<pattern-item n="prnperssubj"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="lema_prn">
+				<with-param pos="1"/>
+			</call-macro>
+<!--			<call-macro n="partitiu">
+				<with-param pos="2"/>
+			</call-macro>-->
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="1" part="gen"/>
+							<lit-tag v="GD"/>
+						</equal>
+					</test>
+					<let>
+						<clip pos="1" part="gen"/>
+						<clip pos="2" part="gen"/>
+					</let>
+				</when>
+			</choose>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
 				</chunk>
 			</out>
 		</action>
