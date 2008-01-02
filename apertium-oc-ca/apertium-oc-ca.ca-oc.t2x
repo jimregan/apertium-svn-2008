@@ -156,6 +156,7 @@
 
 		<def-attr n="lemprn">
 			<attr-item tags="voste"/>
+			<attr-item tags="tothom"/>
 		</def-attr>
 
       <def-attr n="temps">
@@ -416,6 +417,20 @@
 				</let>
 			</when>
 		</choose>
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="lemprn"/>
+						<lit-tag v="tothom"/>
+					</equal>
+				</test>
+				<let>
+					<var n="pronom"/>
+					<lit v="tothom"/>
+				</let>
+			</when>
+		</choose>
 	</def-macro>
 
 	<def-macro n="modifica_sv" npar="1">
@@ -465,6 +480,30 @@
 					<clip pos="1" part="pers"/>
 					<lit-tag v="p2"/>
 				</let>
+				<let>
+					<clip pos="1" part="nbr"/>
+					<lit-tag v="pl"/>
+				</let>
+			</when>
+		</choose>
+		<choose><!-- si hi ha un tothom-->
+			<when>
+				<test>
+					<and>
+						<equal>
+							<var n="pronom"/>
+							<lit v="tothom"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="pers"/>
+							<lit-tag v="p3"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="nbr"/>
+							<lit-tag v="sg"/>
+						</equal>
+					</and>
+				</test>
 				<let>
 					<clip pos="1" part="nbr"/>
 					<lit-tag v="pl"/>

@@ -1521,7 +1521,7 @@
 
 	</def-macro>
 	
-	<def-macro n="voste" npar="1">
+	<def-macro n="info_prn" npar="1">
 		<let>
 			<var n="pronomsubj"/>
 			<lit-tag v=""/>
@@ -1569,6 +1569,20 @@
 				<let>
 					<var n="pronomsubj"/>
 					<lit-tag v="voste"/>
+				</let>
+			</when>
+		</choose>
+		<choose>
+			<when>
+				<test>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="tothom"/>
+					</equal>
+				</test>
+				<let>
+					<var n="pronomsubj"/>
+					<lit-tag v="tothom"/>
 				</let>
 			</when>
 		</choose>
@@ -4149,6 +4163,49 @@
 					</lu>
 				</chunk>
 			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+
+	<rule comment="REGLA: ANTROPÒNIM">
+		<pattern>
+			<pattern-item n="det"/>
+			<pattern-item n="ant"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="det_ant" case="caseFirstWord" alt="oc">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><lit-tag v="sg"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" side="tl" part="whole"/>
+					</lu>
+				</chunk>
+				<chunk name="ant" case="caseFirstWord" alt="oc@aran">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><lit-tag v="sg"/></tag>
+					</tags>
+					<lu>
+						<clip pos="2" side="tl" part="whole"/>
+					</lu>
+				</chunk>
+			</out>
+			<call-macro n="f_bcond" alt="oc@aran">
+				<with-param pos="1"/>
+			</call-macro>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
@@ -21749,7 +21806,7 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
-			<call-macro n="voste">
+			<call-macro n="info_prn">
 				<with-param pos="1"/>
 			</call-macro>
 			<out>
@@ -21789,6 +21846,9 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="info_prn">
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
 				<chunk name="prnsubj" case="caseFirstWord">
 					<tags>
@@ -21797,6 +21857,7 @@
 <!-- 				<tag><clip pos="1" side="tl" part="pers"/></tag> -->
 						<tag><clip pos="1" side="tl" part="gen"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="pronomsubj"/></tag>
 					</tags>
 					<lu>
 						<clip pos="1" side="tl" part="lem"/>  
