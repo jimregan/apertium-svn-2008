@@ -23,6 +23,10 @@ $(BASENAME).$(LANG2).dix:
 	xmllint --xinclude $(BASENAME).$(LANG2).dix.xml > $(BASENAME).$(LANG2).dix
 $(BASENAME).$(LANG1)-$(LANG2).dix:
 	xmllint --xinclude $(BASENAME).$(LANG1)-$(LANG2).dix.xml > $(BASENAME).$(LANG1)-$(LANG2).dix
+$(BASENAME).post-$(LANG1).dix:
+	xmllint --xinclude $(BASENAME).post-$(LANG1).dix.xml > $(BASENAME).post-$(LANG1).dix
+
+# LANG1 → LANG2
      
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
@@ -40,6 +44,12 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
 	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
 
+$(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
+	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $@
+
+# LANG2 → LANG1
+
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
 	lt-comp lr $(BASENAME).$(LANG2).dix $@
@@ -56,29 +66,9 @@ $(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
 	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
 
-$(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
-	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $@
-
-$(PREFIX1).t2x.bin: $(BASENAME).$(PREFIX1).t2x
-	apertium-validate-interchunk $(BASENAME).$(PREFIX1).t2x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t2x $@
-
-$(PREFIX1).t3x.bin: $(BASENAME).$(PREFIX1).t3x
-	apertium-validate-postchunk $(BASENAME).$(PREFIX1).t3x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t3x $@
-
 $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX2).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t1x $@
-
-$(PREFIX2).t2x.bin: $(BASENAME).$(PREFIX2).t2x
-	apertium-validate-interchunk $(BASENAME).$(PREFIX2).t2x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t2x $@
-
-$(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
-	apertium-validate-postchunk $(BASENAME).$(PREFIX2).t3x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t3x $@
 
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
@@ -105,6 +95,7 @@ clean-dicts:
 	rm $(BASENAME).$(LANG1).dix
 	rm $(BASENAME).$(LANG2).dix
 	rm $(BASENAME).$(PREFIX1).dix
+	rm $(BASENAME).post-$(LANG1).dix
 	
 apertium_tg_famodesdir=$(prefix)/share/apertium/modes/
 apertium_tg_fadir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
@@ -114,6 +105,7 @@ apertium_tg_fa_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin  \
 		    $(PREFIX2).t1x.bin \
+	   	    $(PREFIX2).autopgen.bin \
 		    $(PREFIX1).mode $(PREFIX2).mode 
 		  
 # $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin
