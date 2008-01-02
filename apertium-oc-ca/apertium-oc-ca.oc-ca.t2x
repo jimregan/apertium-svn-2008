@@ -26,10 +26,9 @@
       <cat-item tags="SN.NUM.*"/>
     </def-cat>-->
 
-    <def-cat n="SV">
-				<cat-item tags="SV.*"/>
-</def-cat>
-
+		<def-cat n="SV">
+			<cat-item tags="SV.*"/>
+		</def-cat>
  
     <def-cat n="vbcop">
       <cat-item tags="SV.vbcop.*"/>
@@ -48,6 +47,10 @@
 
 		<def-cat n="cnjsub">
       <cat-item lemma="cnjsub" tags="cnjsub"/>
+    </def-cat>
+
+		<def-cat n="cnjadv">
+      <cat-item tags="cnjadv"/>
     </def-cat>
 
 		<def-cat n="quecnj">
@@ -136,16 +139,13 @@
 
       <def-attr n="temps">
           <attr-item tags="inf"/>
-	  <attr-item tags="pres"/>
-	  <attr-item tags="past"/>
 	  <attr-item tags="pri"/>
-	  <attr-item tags="ifip"/>
+	  <attr-item tags="ifi"/>
 	  <attr-item tags="cni"/>
 	  <attr-item tags="fti"/>
 	  <attr-item tags="pp"/>
 	  <attr-item tags="ger"/>
-	  <attr-item tags="pprs"/>
-	  <attr-item tags="subs"/>
+	  <attr-item tags="pii"/>
 	  
       </def-attr>
 
@@ -167,6 +167,7 @@
 	<section-def-vars>
 		<def-var n="tipus_rel"/>
 		<def-var n="uno"/>
+		<def-var n="cond"/>
 		<def-var n="nombre"/>
 		<def-var n="genere"/>
 	</section-def-vars>
@@ -217,6 +218,30 @@
 		</choose>
 		<let>
 			<var n="tipus_rel"/>
+			<lit v=""/>
+		</let>
+		<choose>
+			<when>
+				<test>
+					<and>
+						<equal>
+							<var n="cond"/>
+							<lit v="yes"/>
+						</equal>
+						<equal>
+							<clip pos="1" part="temps"/>
+							<lit-tag v="pii"/>
+						</equal>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="temps"/>
+					<lit-tag v="pis"/>
+				</let>
+			</when>
+		</choose>
+		<let>
+			<var n="cond"/>
 			<lit v=""/>
 		</let>
 	</def-macro>
@@ -474,6 +499,37 @@
 					<b pos="1"/>-->
 
 <!--REGLES GENERALS -->
+
+	<rule comment="REGLA: cnjadv">
+		<pattern>
+			<pattern-item n="cnjadv"/>
+		</pattern>
+		<action>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+			<choose>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="se"/>
+						</equal>
+					</test>
+					<let>
+						<var n="cond"/>
+						<lit v="yes"/>
+					</let>
+				</when>
+			</choose>
+		</action>
+	</rule>
+
+
 	<rule comment="REGLA: SN">
 		<pattern>
 			<pattern-item n="SN"/>

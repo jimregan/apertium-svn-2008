@@ -1381,7 +1381,7 @@
 					</test>
 					<let>
 						<var n="tipusverb"/>
-						<lit v="vbde_per"/>
+						<lit-tag v="vbde_per"/>
 					</let>
 				</when>
 				<otherwise>
@@ -1395,7 +1395,7 @@
 							</test>
 							<let>
 								<var n="tipusverb"/>
-								<lit v="vben_a"/>
+								<lit-tag v="vben_a"/>
 							</let>
 						</when>
 						<otherwise>
@@ -1409,7 +1409,7 @@
 									</test>
 									<let>
 										<var n="tipusverb"/>
-										<lit v="vbsus_a"/>
+										<lit-tag v="vbsus_a"/>
 									</let>
 								</when>
 								<otherwise>
@@ -1423,7 +1423,7 @@
 											</test>
 											<let>
 												<var n="tipusverb"/>
-												<lit v="vbcontra_per"/>
+												<lit-tag v="vbcontra_per"/>
 											</let>
 										</when>
 										<otherwise>
@@ -1437,13 +1437,13 @@
 													</test>
 													<let>
 														<var n="tipusverb"/>
-														<lit v="vbper_de"/>
+														<lit-tag v="vbper_de"/>
 													</let>
 												</when>
 												<otherwise>
 													<let>
 														<var n="tipusverb"/>
-														<lit v="nodef"/>
+														<lit-tag v="nodef"/>
 													</let>
 												</otherwise>
 											</choose>
@@ -13922,16 +13922,39 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
-			<out>
-				<chunk name="cnjadv" case="caseFirstWord">
-					<tags>
-						<tag><clip pos="1" side="tl" part="tags"/></tag>		
-					</tags>
-					<lu>
-						<clip pos="1" side="tl" part="whole"/>
-					</lu>
-				</chunk>
-			</out>
+			<choose>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="1" side="sl" part="lem"/>
+							<lit v="se"/>
+						</equal>
+					</test>
+					<out>
+						<chunk name="se" case="caseFirstWord">
+							<tags>
+								<tag><clip pos="1" side="tl" part="tags"/></tag>		
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="whole"/>
+							</lu>
+						</chunk>
+					</out>
+				</when>
+				<otherwise>
+				
+					<out>
+						<chunk name="cnjadv" case="caseFirstWord">
+							<tags>
+								<tag><clip pos="1" side="tl" part="tags"/></tag>		
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="whole"/>
+							</lu>
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
 			<let>
 				<var n="caseFirstWord"/>
 				<lit v="aa"/>
