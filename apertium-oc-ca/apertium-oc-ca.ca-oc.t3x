@@ -53,6 +53,7 @@
 		
     <def-cat n="pr">
       <cat-item name="en"/>
+      <cat-item name="ta"/>
     </def-cat>
 
     <def-cat n="qui">
@@ -575,14 +576,40 @@
 				<choose>
 					<when>
 						<test>
-							<equal>
-								<clip pos="1" part="lem"/>
-								<lit v="a"/>
-							</equal>
+							<and>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="a"/>
+								</equal>
+								<equal>
+									<clip pos="0" part="lem"/>
+									<lit v="en"/>
+								</equal>
+							</and>
 						</test>
 						<let>
 							<clip pos="1" part="lem"/>
 							<lit v="en"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<and>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="per"/>
+							</equal>
+							<equal>
+								<clip pos="0" part="lem"/>
+								<lit v="ta"/>
+							</equal>
+						</and>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="tà"/>
 						</let>
 					</when>
 				</choose>

@@ -148,6 +148,7 @@
 
    <def-attr n="tnom">
           <attr-item tags="loc"/>
+          <attr-item tags="data"/>
       </def-attr>
 
 		<def-attr n="tipusrel">
@@ -267,6 +268,26 @@
 				<let>
 					<clip pos="1" part="lem"/>
 					<lit v="en"/>
+				</let>
+			</when>
+		</choose>
+		<choose alt="oc@aran"> 
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="per"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="tnom"/>
+							<lit-tag v="data"/>
+						</equal>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="ta"/>
 				</let>
 			</when>
 		</choose>

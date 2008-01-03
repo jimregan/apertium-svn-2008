@@ -505,6 +505,12 @@
 
 	<section-def-lists>
 		
+		<def-list n="dates">
+			<list-item v="nadal"/>
+			<list-item v="pasqua"/>
+			<list-item v="vacances"/>
+		</def-list>
+		
 		<def-list n="locatiu">
 			<list-item v="món"/>
 		  <list-item v="ascensor"/>
@@ -999,10 +1005,26 @@
 					</let>
 				</when>
 				<otherwise>
-					<let>
-						<var n="tipusnom"/>
-						<lit-tag v="ndf"/>
-					</let>
+					<choose>
+						<when>
+							<test>
+								<in caseless="yes">
+									<clip pos="1" side="sl" part="lem"/>
+									<list n="dates"/>
+								</in>
+							</test>
+							<let>
+								<var n="tipusnom"/>
+								<lit-tag v="data"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<var n="tipusnom"/>
+								<lit-tag v="ndf"/>
+							</let>
+						</otherwise>
+					</choose>
 				</otherwise>
 			</choose>
 		</def-macro>
