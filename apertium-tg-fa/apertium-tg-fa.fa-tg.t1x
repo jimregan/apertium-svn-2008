@@ -16,6 +16,17 @@
   <def-cat n="izofa">
     <cat-item tags="iza"/>
   </def-cat>
+  <def-cat n="vpart">
+    <cat-item tags="me"/>
+    <cat-item tags="bi"/>
+    <cat-item tags="neg"/>
+  </def-cat>
+  <def-cat n="verb">
+    <cat-item tags="vbser.*"/>
+    <cat-item tags="vbhaver.*"/>
+    <cat-item tags="vbdo.*"/>
+    <cat-item tags="vblex.*"/>
+  </def-cat>
 </section-def-cats>
 
 <section-def-attrs>
@@ -30,11 +41,33 @@
      <attr-item tags="rel"/>
      <attr-item tags="rel.an"/>
   </def-attr>
+  <def-attr n="a_verb">
+     <attr-item tags="vblex"/>
+     <attr-item tags="vbser"/>
+     <attr-item tags="vbhaver"/>
+     <attr-item tags="vbdo"/>
+  </def-attr>
+  <def-attr n="a_vpart">
+     <attr-item tags="me"/>
+     <attr-item tags="bi"/>
+  </def-attr>
   <def-attr n="a_adj">
      <attr-item tags="adj"/>
      <attr-item tags="pve"/>
      <attr-item tags="comp"/>
      <attr-item tags="sup"/>
+  </def-attr>
+  <def-attr n="temps">
+     <attr-item tags="pri"/>
+     <attr-item tags="prs"/>
+     <attr-item tags="past"/>
+     <attr-item tags="inf"/>
+     <attr-item tags="imp"/>
+  </def-attr>
+  <def-attr n="pers">
+     <attr-item tags="p1"/>
+     <attr-item tags="p2"/>
+     <attr-item tags="p3"/>
   </def-attr>
 </section-def-attrs>
 
@@ -72,12 +105,65 @@
            <clip pos="1" side="tl" part="nbr"/>
          </lu>
 	 <lu>
-           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="2" side="tl" part="lem"/>
 	   <lit-tag v="izo"/>
 	 </lu>
        </out>
      </action>
   </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="vpart"/>
+       <pattern-item n="verb"/>
+     </pattern>
+     <action>
+       <out>
+	 <lu>
+           <clip pos="1" side="tl" part="lem"/>
+<!--           <clip pos="1" side="tl" part="a_vpart"/> -->
+	 </lu>
+         <lu>
+           <clip pos="2" side="tl" part="lem"/>
+           <clip pos="2" side="tl" part="a_verb"/>
+           <clip pos="2" side="tl" part="temps"/>
+           <clip pos="2" side="tl" part="pers"/>
+           <clip pos="2" side="tl" part="nbr"/>
+         </lu>
+       </out>
+     </action>
+  </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="vpart"/>
+       <pattern-item n="vpart"/>
+       <pattern-item n="verb"/>
+     </pattern>
+     <action>
+       <out>
+	 <lu>
+           <clip pos="1" side="tl" part="lem"/>
+<!--           <clip pos="1" side="tl" part="a_vpart"/> -->
+	 </lu>
+	 <lu>
+           <clip pos="2" side="tl" part="lem"/>
+<!--           <clip pos="2" side="tl" part="a_vpart"/> -->
+	 </lu>
+         <lu>
+           <clip pos="3" side="tl" part="lem"/>
+           <clip pos="3" side="tl" part="a_verb"/>
+           <clip pos="3" side="tl" part="temps"/>
+           <clip pos="3" side="tl" part="pers"/>
+           <clip pos="3" side="tl" part="nbr"/>
+         </lu>
+       </out>
+     </action>
+  </rule>
+
+
+
+
 
 </section-rules>
 
