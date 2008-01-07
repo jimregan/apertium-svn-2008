@@ -126,7 +126,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 #           $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix 
 
-modes: modes.xml
+modes: modes.xml clean-dicts
 	apertium-gen-modes modes.xml
 
 clean-dicts:
@@ -149,7 +149,7 @@ apertium_sh_mk_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
 		    $(BASENAME).$(PREFIX1).t1x \
 		    $(PREFIX2).autopgen.bin \
-		    modes clean-dicts
+		    modes 
 		  
 #                    $(PREFIX1).autopgen.bin 
  #                   $(PREFIX2).autopgen.bin 
