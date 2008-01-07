@@ -218,6 +218,10 @@
 
     <def-cat n="per">
       <cat-item lemma="per" tags="pr"/>
+    </def-cat>
+
+    <def-cat n="per_pera">
+      <cat-item lemma="per" tags="pr"/>
       <cat-item lemma="per a" tags="pr"/>
     </def-cat>
 
@@ -969,7 +973,7 @@
 </def-macro>
 
 
-<def-macro n="adv_adj" npar="2"><!-- (per a fer el comparatiu si cal: 'més fosc' = darker)" -->
+<def-macro n="adv_adj" npar="2"><!-- (per a fer el comparatiu si cal: 'més fosc' = darker; i també per a canviar 'well' per 'very' davant adjectius )" -->
 	<choose>
 	  <when>
 	    <test>
@@ -1021,6 +1025,32 @@
 		</concat>
 	    </let>
 	  </when>
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/>
+		  <lit v="ben"/>
+		</equal>
+		<not>
+		  <equal>
+		    <clip pos="2" side="sl" part="a_adj"/>
+		    <lit-tag v="vblex.pp"/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>
+	    <let>
+	      <var n="adv_adjectiu"/>
+		<concat>
+		  <lit v="very"/>
+		  <lit-tag v="preadv"/> 
+		  <lit v="$ ^"/>
+		  <clip pos="2" side="tl" part="lem"/> 
+		  <clip pos="2" side="tl" part="a_adj"/>
+		</concat>
+	    </let>
+	  </when>
 	  <otherwise>
 	    <let>
 	      <var n="adv_adjectiu"/>
@@ -1033,6 +1063,10 @@
 	    </let>
 	  </otherwise>
 	</choose>
+
+	      
+		
+		
 </def-macro>
 
 <def-macro n="det_adv_adj" npar="3"><!-- (per a fer el comparatiu i superlatiu si cal: 'més fosc' = 'darker'; 'el més fosc' = 'the darkest')" -->
@@ -1108,21 +1142,60 @@
 		</concat>
 	    </let>
 	  </when>
-	  <otherwise>
-	    <choose>
-	      <when>
-		<test>
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="2" side="sl" part="lem"/> 
+		  <lit v="més"/>
+		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="a_det"/>
+		  <lit-tag v="det.def"/>
+		</equal>
+	      </and>
+	    </test>	
+	    <let>  
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <lit v="most"/>
+	    </let>		    
+	    <let>
+	      <var n="adv_adjectiu"/>
+		<concat>
+		  <clip pos="2" side="tl" part="whole"/> 
+		  <lit v="$ ^"/>
+		  <clip pos="3" side="tl" part="lem"/> 
+		  <clip pos="3" side="tl" part="a_adj"/>
+		</concat>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="2" side="sl" part="lem"/>
+		  <lit v="ben"/>
+		</equal>
+		<not>
 		  <equal>
-		    <clip pos="1" side="sl" part="a_det"/>
-		    <lit-tag v="det.def"/>
+		    <clip pos="3" side="sl" part="a_adj"/>
+		    <lit-tag v="vblex.pp"/>
 		  </equal>
-		</test>	
-		<let>  
-		  <clip pos="2" side="tl" part="lem"/> 
-		  <lit v="most"/>
-		</let>
-	      </when>
-	    </choose>		    
+		</not>
+	      </and>
+	    </test>
+	    <let>
+	      <var n="adv_adjectiu"/>
+		<concat>
+		  <lit v="very"/>
+		  <lit-tag v="preadv"/> 
+		  <lit v="$ ^"/>
+		  <clip pos="3" side="tl" part="lem"/> 
+		  <clip pos="3" side="tl" part="a_adj"/>
+		</concat>
+	    </let>
+	  </when>
+	  <otherwise>
 	    <let>
 	      <var n="adv_adjectiu"/>
 		<concat>
@@ -2161,20 +2234,6 @@
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-<!--	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<equal caseless="yes">
-		  <clip pos="1" side="sl" part="lem"/> 
-		  <lit v="més"/>
-		</equal>
-		<equal>
-		  <clip pos="2" side="tl" part="a_adj"/> 
-		  <lit-tag v="adj.sint"/>
-		</equal>
-	      </and>
-	    </test> -->
 	    <out>
 	      <chunk name="adv_adj" case="caseFirstWord">
 		<tags>
@@ -6456,6 +6515,68 @@
     </rule>
 
 
+ <rule comment="REGLA: PARTICIPI + per (canvia 'for' per 'by' ja que es considera que generalment serà passiva.">
+      <pattern>
+	<pattern-item n="pp"/>
+	<pattern-item n="per"/>
+      </pattern>
+      <action>       	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="2" side="tl" part="lem"/> 
+	  <lit v="by"/>
+	</let>	  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="lem"/> 
+		<lit v="poder"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <lit v="be able to"/>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="a_pp"/> 
+	      <lit-tag v="vbmod.pp"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk name="pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SA"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
+	    </tags> 	
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_pp"/>
+	      <clip pos="1" side="tl" part="lemq"/>    
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk name="pr">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: VERB no conjugat (perquè posi bé la cua en multiparaules)">
       <pattern>
 	<pattern-item n="inf"/> 
@@ -8836,7 +8957,7 @@
 
     <rule comment="PER + INF (per no oblidar - not to forget">
       <pattern>
-	<pattern-item n="per"/> 
+	<pattern-item n="per_pera"/> 
 	<pattern-item n="no"/> 
 	<pattern-item n="inf"/> 
       </pattern>

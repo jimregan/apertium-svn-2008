@@ -9565,6 +9565,9 @@
 	  <var n="lema"/>
 	  <clip pos="1" side="sl" part="lem"/>
 	</let>
+	<append n="lema">
+	  <lit v="_pp"/>
+	</append>	  
 	<choose>      
 	  <when> 
 	    <test>
@@ -9587,6 +9590,7 @@
 		  <tag><lit-tag v="ifip"/></tag>
 		  <tag><lit-tag v="PD"/></tag>
 		  <tag><lit-tag v="ND"/></tag>
+		  <tag><lit-tag v="GD"/></tag>
 		</tags> 
 		<lu>
 		  <lit v="anar"/>
@@ -9600,6 +9604,14 @@
 		  <clip pos="1" side="tl" part="a_verb"/>
 		  <lit-tag v="inf"/>
 		  <clip pos="1" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_pp"/>
+		  <lit-tag v="6"/>
+		  <lit-tag v="5"/>
+		  <clip pos="2" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -9624,6 +9636,7 @@
 		  <tag><clip pos="1" side="tl" part="temps"/></tag>
 		  <tag><lit-tag v="PD"/></tag>
 		  <tag><lit-tag v="ND"/></tag>
+		  <tag><lit-tag v="GD"/></tag>
 		</tags>      
 		<lu>   
 		  <clip pos="1" side="tl" part="lemh"/>
@@ -9633,6 +9646,14 @@
 		  <lit-tag v="5"/>
 		  <clip pos="1" side="tl" part="lemq"/> 
 		</lu> 
+		<b pos="1"/>
+		<lu>
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_pp"/>
+		  <lit-tag v="6"/>
+		  <lit-tag v="5"/>
+		  <clip pos="2" side="tl" part="lemq"/>
+		</lu>
 	      </chunk>
 	    </out>
 	  </when>
@@ -9652,6 +9673,7 @@
 		  <tag><clip pos="1" side="tl" part="temps"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><lit-tag v="GD"/></tag>
 		</tags>      
 		<lu>   
 		  <clip pos="1" side="tl" part="lemh"/>
@@ -9661,6 +9683,14 @@
 		  <clip pos="1" side="tl" part="nbr" link-to="5"/>
 		  <clip pos="1" side="tl" part="lemq"/>
 		</lu> 
+		<b pos="1"/>
+		<lu>
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_pp"/>
+		  <lit-tag v="6"/>
+		  <lit-tag v="5"/>
+		  <clip pos="2" side="tl" part="lemq"/>
+		</lu>
 	      </chunk>
 	    </out>
 	  </when>
@@ -9690,6 +9720,7 @@
 		  <tag><lit-tag v="ifip"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><lit-tag v="GD"/></tag>
 		</tags> 
 		<lu>
 		  <lit v="anar"/>
@@ -9704,31 +9735,18 @@
 		  <lit-tag v="inf"/>
 		  <clip pos="1" side="tl" part="lemq"/>
 		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_pp"/>
+		  <lit-tag v="6"/>
+		  <lit-tag v="5"/>
+		  <clip pos="2" side="tl" part="lemq"/>
+		</lu>
 	      </chunk>
 	    </out>
 	  </when>
 	</choose>
-	<!-- part del Participi-->
-	<out>
-	  <b pos="1"/>
-	  <chunk name="pp" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="SA"/></tag>
-	      <tag><lit-tag v="GD"/></tag>
-	      <tag><lit-tag v="ND"/></tag>
-	    </tags> 
-	    <lu>
-	      <clip pos="2" side="tl" part="lemh"/> 
-	      <clip pos="2" side="tl" part="a_pp"/>
-	      <lit-tag v="2"/>
-	      <lit-tag v="3"/>
-	      <clip pos="2" side="tl" part="lemq"/><!--deixem treure la cua ja que es cola algun pp (quan hi ha un pp de verb mltiparaula s'ha d'entra l'adjectiu, pero pot ser que el tagger doni el pp--> 
-	    </lu>
-	  </chunk>
-	</out>
-
-
-	<!-- fi de la part del participi -->
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
