@@ -83,10 +83,7 @@
       <cat-item lemma="ger_enc" tags="SV.*"/>
     </def-cat>
     
-    <def-cat n="vbcop">
-      <cat-item tags="Vcop.*"/>
-      <cat-item tags="SV.vbser.*"/>
-    </def-cat>
+  
     
     <def-cat n="vblike">
       <cat-item tags="SV.like.*"/>
@@ -234,7 +231,7 @@
 
   <section-def-macros>
 
-    <def-macro n="nombre_SN" npar="1">
+    <def-macro n="determina_nbr_gen_SN" npar="1">
       <choose><!--To determine value of variables of gender and
 		  number and propagate to other rules.  Variables are
 		  not used again in this rule -->
@@ -303,6 +300,636 @@
       </choose>
     </def-macro>
 
+
+
+ <def-macro n="concord_SN_SV" npar="2">
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj2"/>
+		</equal>
+	      </or>
+	    </test>	    
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="2" part="pers"/>
+		      <lit-tag v="PD"/>
+		    </equal>
+		    <not><!--en les regles de SV no hi entren els 'ger', però s'ha afegit perquè en les regles de reporting verbs hi entren tots els temps -->
+		      <equal>
+			<clip pos="2" part="temps"/>
+			<lit-tag v="ger"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="2" part="pers"/>
+		  <clip pos="1" part="pers"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="2" part="nbr"/>
+		      <lit-tag v="ND"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="temps"/>
+			<lit-tag v="ger"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="2" part="nbr"/>
+		  <clip pos="1" part="nbr"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="2" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<choose>
+		  <when>
+		    <test>
+		      <not>
+			<equal>
+			  <clip pos="1" part="gen"/>
+			  <lit-tag v="mf"/>
+			</equal>
+		      </not>
+		    </test>
+		    <let>
+		      <clip pos="2" part="gen"/>
+		      <clip pos="1" part="gen"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <clip pos="2" part="gen"/>
+		      <lit-tag v="m"/>
+		    </let>
+		  </otherwise>		    
+		</choose>
+	      </when>
+	    </choose>
+	  </when>
+
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="ND"/>
+		  </equal>
+		</test>
+		<choose>
+		  <when>
+		    <test>
+		      <and>
+			<equal>
+			  <clip pos="2" part="temps"/>
+			  <lit-tag v="pri"/>
+			</equal>
+			<equal>
+			  <clip pos="2" part="nbr"/>
+			  <lit-tag v="ND"/>
+			</equal>
+		      </and>
+		    </test>
+		    <let>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </let>
+		  </when>
+		  <when>
+		    <test>
+		      <equal>
+			<clip pos="2" part="temps"/>
+			<lit-tag v="pri"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="sg"/>
+		    </let>
+		  </when>
+		  <when>
+		    <test>
+		      <and>
+			<equal>
+			  <clip pos="2" part="temps"/>
+			  <lit-tag v="ifip"/>
+			</equal>
+			<equal caseless="yes">
+			  <clip pos="2" part="lem"/>
+			  <lit v="be"/>
+			</equal>
+			<equal>
+			  <clip pos="2" part="nbr"/>
+			  <lit-tag v="ND"/>
+			</equal>
+		      </and>
+		    </test>
+		    <let>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="sg"/>
+		    </let>
+		  </otherwise>
+		</choose>
+	      </when>
+	    </choose>
+	    
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="2" part="pers"/>
+		      <lit-tag v="PD"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="temps"/>
+			<lit-tag v="ger"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="2" part="pers"/>
+		  <lit-tag v="p3"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="2" part="nbr"/>
+		      <lit-tag v="ND"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="temps"/>
+			<lit-tag v="ger"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<choose>
+		  <when>
+		    <test>
+		      <not>
+			<equal>
+			  <clip pos="1" part="nbr"/>
+			  <lit-tag v="sp"/>
+			</equal>
+		      </not>
+		    </test>
+		    <let>
+		      <clip pos="2" part="nbr"/>
+		      <clip pos="1" part="nbr"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <clip pos="2" part="nbr"/>
+		      <lit-tag v="sg"/>
+		    </let>
+		  </otherwise>
+		</choose>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="2" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<choose>
+		  <when>
+		    <test>
+		      <not>
+			<equal>
+			  <clip pos="1" part="gen"/>
+			  <lit-tag v="mf"/>
+			</equal>
+		      </not>
+		    </test>
+		    <let>
+		      <clip pos="2" part="gen"/>
+		      <clip pos="1" part="gen"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <clip pos="2" part="gen"/>
+		      <lit-tag v="m"/>
+		    </let>
+		  </otherwise>
+		</choose>
+	      </when>
+	    </choose>
+	  </otherwise>
+	</choose>
+ </def-macro>
+
+<def-macro n="concord_SNcoo_SV" npar="3"><!--per a 2 sintagmes nominals, coordinats entre sí. El nombre del SV serà sempre pl. 
+Arreglar si pot ser alguns errors de concordança encara:
+You and your mother will come - Tu i la vostra mare vindreu
+Your mother and you will come - La vostra mare i tu vindran
+-->
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj2"/>
+		</equal>
+	      </or>
+	    </test>	    
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="3" part="pers"/>
+		      <lit-tag v="PD"/>
+		    </equal>
+		    <not><!--en les regles de SV no hi entren els 'ger', però s'ha afegit perquè en les regles de reporting verbs hi entren tots els temps -->
+		      <equal>
+			<clip pos="3" part="temps"/>
+			<lit-tag v="ger"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="3" part="pers"/>
+		  <clip pos="1" part="pers"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="3" part="nbr"/>
+		      <lit-tag v="ND"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="temps"/>
+			<lit-tag v="ger"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="3" part="nbr"/>
+		  <lit-tag v="pl"/>        <!-- el nombre del verb sempre pl-->
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="3" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<choose>
+		  <when>
+		    <test>
+		      <and>
+			<not>
+			  <equal>
+			    <clip pos="1" part="gen"/>
+			    <lit-tag v="mf"/>
+			  </equal>
+			</not>
+			<equal>
+			  <clip pos="1" part="gen"/>
+			  <clip pos="2" part="gen"/>
+			</equal>
+		      </and>			
+		    </test>
+		    <let>
+		      <clip pos="3" part="gen"/>
+		      <clip pos="1" part="gen"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <clip pos="3" part="gen"/>
+		      <lit-tag v="m"/>
+		    </let>
+		  </otherwise>		    
+		</choose>
+	      </when>
+	    </choose>
+	  </when>
+
+	  <otherwise><!--Quan SN1 no és pronom subjecte, per tant, quan és qualsevol altre SN -->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="ND"/>
+		  </equal>
+		</test>
+		<choose>
+		  <when>
+		    <test>
+		      <and>
+			<equal>
+			  <clip pos="3" part="temps"/>
+			  <lit-tag v="pri"/>
+			</equal>
+			<equal>
+			  <clip pos="3" part="nbr"/>
+			  <lit-tag v="ND"/>
+			</equal>
+		      </and>
+		    </test>
+		    <let>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </let>
+		  </when>
+		  <when>
+		    <test>
+		      <equal>
+			<clip pos="3" part="temps"/>
+			<lit-tag v="pri"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="sg"/>
+		    </let>
+		  </when>
+		  <when>
+		    <test>
+		      <and>
+			<equal>
+			  <clip pos="3" part="temps"/>
+			  <lit-tag v="ifip"/>
+			</equal>
+			<equal caseless="yes">
+			  <clip pos="3" part="lem"/>
+			  <lit v="be"/>
+			</equal>
+			<equal>
+			  <clip pos="3" part="nbr"/>
+			  <lit-tag v="ND"/>
+			</equal>
+		      </and>
+		    </test>
+		    <let>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="sg"/>
+		    </let>
+		  </otherwise>
+		</choose>
+	      </when>
+	    </choose>
+	    
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="3" part="pers"/>
+		      <lit-tag v="PD"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="3" part="temps"/>
+			<lit-tag v="ger"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="3" part="pers"/>
+		  <lit-tag v="p3"/><!-- MG: revisar casos, no sempre serà p3 -->
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="3" part="nbr"/>
+		      <lit-tag v="ND"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="3" part="temps"/>
+			<lit-tag v="ger"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="3" part="nbr"/>
+		  <lit-tag v="pl"/><!--verbs sempre pl-->
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="3" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<choose>
+		  <when>
+		    <test>
+		      <and>
+		      <not>
+			<equal>
+			  <clip pos="1" part="gen"/>
+			  <lit-tag v="mf"/>
+			</equal>
+		      </not>
+		      <equal>
+			<clip pos="1" part="gen"/>
+			<clip pos="2" part="gen"/>
+		      </equal>
+		      </and>	
+		    </test>
+		    <let>
+		      <clip pos="3" part="gen"/>
+		      <clip pos="1" part="gen"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <clip pos="3" part="gen"/>
+		      <lit-tag v="m"/>
+		    </let>
+		  </otherwise>
+		</choose>
+	      </when>
+	    </choose>
+	  </otherwise>
+	</choose>
+	<choose> <!-- per al segon SN, repassar-->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose> 
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+ </def-macro>
+
+
+
+
+<def-macro n="posadet_SN" npar="1">
+ <choose>
+	      <when>
+		<test>
+		  <!-- <and>-->
+		  <or>
+		    <equal caseless="yes">
+		      <clip pos="1" part="lem"/>
+		      <lit v="nom"/>
+		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="1" part="lem"/>
+		      <lit v="adj_nom"/>
+		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="1" part="lem"/>
+		      <lit v="nom_conj_nom"/>
+		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="1" part="lem"/>
+		      <lit v="adj_adj_nom"/>
+		    </equal>
+		    <!--   <equal caseless="yes">
+			 <clip pos="1" part="lem"/>
+			 <lit v="nom_nom"/>
+			 </equal> -->
+		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
+			 <clip pos="1" part="lem"/>
+			 <lit v="adj_nom_nom"/> fer aquest
+			 </equal>
+			 <equal caseless="yes">
+			 <clip pos="1" part="lem"/>
+			 <lit v="adj_nom_conj_nom"/>
+			 </equal> -->
+		  </or>
+		</test>
+		<let>
+		  <clip pos="1" part="a_SN"/>
+		  <lit-tag v="PDET"/>
+		</let>
+	      </when>
+	    </choose>
+</def-macro>
+
+
   </section-def-macros>
 
   <section-rules>
@@ -319,6 +946,9 @@
 	<pattern-item n="SNnorel"/>	
       </pattern>
       <action>
+	<call-macro n="posadet_SN">
+	  <with-param pos="3"/>
+	</call-macro>
 	<choose> <!-- primer assignem els canvis necessaris al verb-->
 	  <when>
 	    <test>
@@ -518,51 +1148,6 @@
 	    </let>
 	  </when>
 	</choose>
-	
-
-	<!--BCN (posa el PDET si cal)-->
-
-	<choose>
-	  <when>
-	    <test>
-	      <!-- <and>-->
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom_conj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_adj_nom"/>
-		</equal>
-		<!--   <equal caseless="yes">
-		     <clip pos="1" part="lem"/>
-		     <lit v="nom_nom"/>
-		     </equal> -->
-		<!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_nom"/> fer aquest
-		     </equal>
-		     <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_conj_nom"/>
-		     </equal> -->
-	      </or>
-	    </test>
-	    <let>
-	      <clip pos="3" part="a_SN"/>
-	      <lit-tag v="PDET"/>
-	    </let>
-	  </when>
-	</choose>
 	<out>
 	  <chunk><!--envio el verb amb la persona i el nombre canviats (he fet els canvis dalt de tot)-->
 	    <clip pos="2" part="lem"/>
@@ -576,7 +1161,7 @@
 	    <clip pos="3" part="chcontent"/>
 	  </chunk>
 	</out>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="3"/>
 	</call-macro>	
       </action>
@@ -590,6 +1175,9 @@
 	<pattern-item n="SNnorel"/>	
       </pattern>
       <action>
+	<call-macro n="posadet_SN">
+	  <with-param pos="4"/>
+	</call-macro>
 	<choose> <!-- primer assignem els canvis necessaris al verb-->
 	  <when>
 	    <test>
@@ -643,7 +1231,6 @@
 	    </out>
 	  </when>
 	</choose>
-
 	<choose><!-- quan el subjecte és un pronom...-->
 	  <when>
 	    <test>
@@ -658,7 +1245,6 @@
 		</equal>
 	      </or>
 	    </test>	    
-	    
 	    <out>
 	      <chunk>
 		<clip pos="2" part="lem"/>
@@ -676,8 +1262,7 @@
 		<lit-tag v="prn.pro"/>
 		<clip pos="1" part="pers"/>
 		<lit-tag v="mf"/>
-		<clip pos="1" part="nbr"/>
-		
+		<clip pos="1" part="nbr"/>		
 		<lit v="$}"/>
 	      </chunk>
 	      <b pos="2"/>
@@ -733,8 +1318,7 @@
 		  <lit-tag v="m"/>
 		</let>
 	      </when>
-	    </choose>
-	    
+	    </choose>	    
 	    <out> 
 	      <chunk><!-- envio la preposició "a" -->
 		<lit v="pr"/>
@@ -817,7 +1401,7 @@
 	    <clip pos="4" part="chcontent"/>
 	  </chunk>
 	</out>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="4"/>
 	</call-macro>	
       </action>
@@ -974,8 +1558,7 @@
 		<lit-tag v="prn.pro"/>
 		<clip pos="1" part="pers"/>
 		<lit-tag v="mf"/>
-		<clip pos="1" part="nbr"/>
-		
+		<clip pos="1" part="nbr"/>		
 		<lit v="$}"/>
 	      </chunk>
 	      <b pos="1"/>
@@ -1031,8 +1614,7 @@
 		  <lit-tag v="m"/>
 		</let>
 	      </when>
-	    </choose>
-	    
+	    </choose>	    
 	    <out> 
 	      <chunk><!-- envio la preposició "a" -->
 		<lit v="pr"/>
@@ -1233,8 +1815,7 @@
 		<lit-tag v="prn.pro"/>
 		<clip pos="1" part="pers"/>
 		<lit-tag v="mf"/>
-		<clip pos="1" part="nbr"/>
-		
+		<clip pos="1" part="nbr"/>		
 		<lit v="$}"/>
 	      </chunk>
 	      <b pos="2"/>
@@ -1339,7 +1920,7 @@
 	    <clip pos="3" part="chcontent"/>
 	  </chunk>
 	</out>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="4"/>
 	</call-macro>	
       </action>
@@ -1429,8 +2010,7 @@
 		<lit-tag v="prn.pro"/>
 		<clip pos="1" part="pers"/>
 		<lit-tag v="mf"/>
-		<clip pos="1" part="nbr"/>
-		
+		<clip pos="1" part="nbr"/>		
 		<lit v="$}"/>
 	      </chunk>
 	      <b pos="1"/>
@@ -1622,8 +2202,7 @@
 		<lit-tag v="prn.pro"/>
 		<clip pos="1" part="pers"/>
 		<lit-tag v="mf"/>
-		<clip pos="1" part="nbr"/>
-		
+		<clip pos="1" part="nbr"/>		
 		<lit v="$}"/>
 	      </chunk>
 	      <b pos="1"/>
@@ -1679,8 +2258,7 @@
 		  <lit-tag v="m"/>
 		</let>
 	      </when>
-	    </choose>
-	    
+	    </choose>	    
 	    <out> 
 	      <chunk><!-- envio la preposició "a" -->
 		<lit v="pr"/>
@@ -2128,6 +2706,13 @@
 	<pattern-item n="SV"/>
       </pattern>
       <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -2145,319 +2730,25 @@
 	<choose>
 	  <when>
 	    <test>
-	      <or>
 		<equal caseless="yes">
 		  <clip pos="1" part="lem"/>
 		  <lit v="prnsubj"/>
 		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-
-	    <choose>
-	      <when>
-		<test>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="prnsubj2"/>
-		    </equal>
-		</test>
-		<out>
-		  <chunk>
-		    <clip pos="1" part="whole"/>
-		  </chunk>
-		  <b pos="1"/>
-		  <chunk>
-		    <clip pos="2" part="whole"/>
-		  </chunk>
-		</out>
-	      </when>
-	      <otherwise>
-		<call-macro n="f_bcond">
-		  <with-param pos="1"/>
-		</call-macro>
-		<out>
-		  <chunk><!--el pronom no l'envio, només el 2n chunk -->
-		    <get-case-from pos="1">
-		      <clip pos="2" part="lem"/>
-		    </get-case-from>
-		    <clip pos="2" part="tags"/>
-		    <clip pos="2" part="chcontent"/>
-		  </chunk>
-		</out>
-	      </otherwise>
-	    </choose>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+		<get-case-from pos="1">
+		  <clip pos="2" part="lem"/>
+		</get-case-from>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
+	      </chunk>
+	    </out>
 	  </when>
-
-
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="2" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="2" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN-->	    
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -2473,7 +2764,7 @@
 	    </out>
 	  </otherwise>
 	</choose>	
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
@@ -2489,6 +2780,17 @@
 	<pattern-item n="SV"/>
       </pattern>
       <action>
+	<call-macro n="concord_SNcoo_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="3"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -2503,393 +2805,24 @@
 	    </let>
 	  </when>
 	</choose>
-	<choose>        <!-- SN1 = pronsubj-->
-	  <when>
-	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="nbr"/>
-		  <lit-tag v="pl"/>        <!-- el nombre del verb pl-->		  
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<not>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			</not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <clip pos="3" part="gen"/>
-			</equal>
-		      </and>			
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <out>
-	      <chunk>     <!-- en aquesta regla sí que enviem el SN1 pronom-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	    </out>
-	  </when>
-
-
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="4" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="4" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="nbr"/>
-		  <lit-tag v="pl"/><!--BCN-->
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<not>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			</not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <clip pos="3" part="gen"/>
-			</equal>
-		      </and>			
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose> <!-- el primer SN-->
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-
-	    <out>
-	      <chunk>
-		<clip pos="1" part="whole"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	    </out>
-	  </otherwise>
-	</choose>	
-
-
-
-	<choose> <!-- per al segon SN-->
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose> 
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <!-- <and>-->
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom_conj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_adj_nom"/>
-		</equal>
-		<!--   <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="nom_nom"/>
-		     </equal> -->
-		<!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_nom"/> fer aquest
-		     </equal>
-		     <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_conj_nom"/>
-		     </equal> -->
-	      </or>
-	    </test>
-	    <let>
-	      <clip pos="3" part="a_SN"/>
-	      <lit-tag v="PDET"/>
-	    </let>
-	  </when>
-	</choose>
-
 	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk>
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
-
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
@@ -2903,6 +2836,13 @@
 	<pattern-item n="SV"/>
       </pattern>
       <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -2920,332 +2860,29 @@
 	<choose>
 	  <when>
 	    <test>
-	      <or>
 		<equal caseless="yes">
 		  <clip pos="1" part="lem"/>
 		  <lit v="prnsubj"/>
 		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="prnsubj2"/>
-		    </equal>
-		</test>
-		<out>
-		  <chunk>
-		    <clip pos="1" part="whole"/>
-		  </chunk>
-		  <b pos="1"/>
-		  <chunk>
-		    <clip pos="2" part="whole"/>
-		  </chunk>
-		  <b pos="2"/>	      
-		  <chunk>
-		    <clip pos="3" part="whole"/>
-		  </chunk>
-		</out>
-	      </when>
-	      <otherwise>
-		<call-macro n="f_bcond">
-		  <with-param pos="1"/>
-		</call-macro>
-		<out>
-		  <chunk><!--el pronom no l'envio -->
-		    <get-case-from pos="1">
-		      <clip pos="2" part="lem"/>
-		    </get-case-from>
-		    <clip pos="2" part="tags"/>
-		    <clip pos="2" part="chcontent"/>
-		  </chunk>
-		  <b pos="2"/>	      
-		  <chunk>
-		    <clip pos="3" part="whole"/>
-		  </chunk>
-		</out>
-	      </otherwise>
-	    </choose>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk><!--el pronom no l'envio -->
+		<get-case-from pos="1">
+		  <clip pos="2" part="lem"/>
+		</get-case-from>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
+	      </chunk>
+	      <b pos="2"/>	      
+	      <chunk>
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	    </out>
 	  </when>
-
-
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="3" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="3" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="3" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="3" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="3" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="3" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-
-
-	    <!--BCN (posa el PDET si cal)-->
-
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-	    <!--BCN (posa el PDET si cal)-->
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN o bé prnsubj2 -->	 
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -3267,7 +2904,7 @@
 	    </out>
 	  </otherwise>
 	</choose>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
@@ -3283,6 +2920,17 @@
 	<pattern-item n="SV"/>
       </pattern>
       <action>
+	<call-macro n="concord_SNcoo_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="3"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -3297,405 +2945,29 @@
 	    </let>
 	  </when>
 	</choose>
-	<choose>        <!-- SN1 = pronsubj-->
-	  <when>
-	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="5" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="5" part="nbr"/>
-		  <lit-tag v="pl"/>        <!-- el nombre del verb pl-->
-		  <!--	  <clip pos="1" part="nbr"/>-->
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<not>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			</not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <clip pos="3" part="gen"/>
-			</equal>
-		      </and>			
-		    </test>
-		    <let>
-		      <clip pos="5" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="5" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <call-macro n="f_bcond">
-	      <with-param pos="1"/>
-	    </call-macro>
-	    <out>
-	      <chunk>     <!-- enviem el SN1 pronom-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	    </out>
-	  </when>
-
-
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="5" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="5" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="5" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="5" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="5" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="5" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="5" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="5" part="nbr"/>
-		  <lit-tag v="pl"/><!--BCN-->
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<not>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			</not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <clip pos="3" part="gen"/>
-			</equal>
-		      </and>			
-		    </test>
-		    <let>
-		      <clip pos="5" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="5" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose> <!-- el primer SN-->
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-
-	    <out>
-	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	    </out>
-	  </otherwise>
-	</choose>	
-
-
-
-	<choose> <!-- per al segon SN-->
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose> 
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <!-- <and>-->
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom_conj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_adj_nom"/>
-		</equal>
-		<!--   <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="nom_nom"/>
-		     </equal> -->
-		<!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_nom"/> fer aquest
-		     </equal>
-		     <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_conj_nom"/>
-		     </equal> -->
-	      </or>
-	    </test>
-	    <let>
-	      <clip pos="3" part="a_SN"/>
-	      <lit-tag v="PDET"/>
-	    </let>
-	  </when>
-	</choose>
-
 	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk>
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	  <b pos="4"/>
 	  <chunk>
-	    <clip pos="5" part="lem"/>
-	    <clip pos="5" part="tags"/>
-	    <clip pos="5" part="chcontent"/>
+	    <clip pos="5" part="whole"/>
 	  </chunk>
 	</out>
 
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
@@ -3708,6 +2980,13 @@
 	<pattern-item n="SA"/>
       </pattern>
       <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -3725,322 +3004,25 @@
 	<choose>
 	  <when>
 	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="prnsubj2"/>
-		    </equal>
-		</test>
-		<out>
-		  <chunk>
-		    <clip pos="1" part="whole"/>
-		  </chunk>
-		  <b pos="1"/>
-		  <chunk>
-		    <clip pos="2" part="whole"/>
-		  </chunk>
-		</out>
-	      </when>
-	      <otherwise>		  
-		<call-macro n="f_bcond">
-		  <with-param pos="1"/>
-		</call-macro>
-		<out>
-		  <chunk><!--el pronom no l'envio, només el 2n chunk -->
-		    <get-case-from pos="1">
-		      <clip pos="2" part="lem"/>
-		    </get-case-from>
-		    <clip pos="2" part="tags"/>
-		    <clip pos="2" part="chcontent"/>
-		  </chunk>
-		</out>
-	      </otherwise>
-	    </choose>
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj"/>
+	      </equal>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+		<get-case-from pos="1">
+		  <clip pos="2" part="lem"/>
+		</get-case-from>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
+	      </chunk>
+	    </out>
 	  </when>
-
-
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="2" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="2" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <!--BCN (posa el PDET si cal)-->
-
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-	    <!--BCN (posa el PDET si cal)-->
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -4056,40 +3038,16 @@
 	    </out>
 	  </otherwise>
 	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<or>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="mf"/>
-		  </equal>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="nt"/>
-		  </equal>
-		</or>
-	      </not>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </otherwise>
-	</choose>
-	<call-macro n="nombre_SN"><!--per al nombre hi ha una macro definida -->
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
 	<let>
 	  <clip pos="3" part="nbr"/>
 	  <var n="nombre"/>
+	</let>
+	<let>
+	  <clip pos="3" part="gen"/>
+	  <var n="genere"/>
 	</let>
 	<out>
 	  <b pos="2"/>
@@ -4110,6 +3068,17 @@
 	<pattern-item n="SA"/>
       </pattern>
       <action>
+	<call-macro n="concord_SNcoo_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="3"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -4124,395 +3093,21 @@
 	    </let>
 	  </when>
 	</choose>
-	<choose>        <!-- SN1 = pronsubj-->
-	  <when>
-	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="nbr"/>
-		  <lit-tag v="pl"/>        <!-- el nombre del verb pl-->
-		  <!--	  <clip pos="1" part="nbr"/>-->
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<not>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			</not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <clip pos="3" part="gen"/>
-			</equal>
-		      </and>			
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <call-macro n="f_bcond">
-	      <with-param pos="1"/>
-	    </call-macro>
-	    <out>
-	      <chunk>     <!-- enviem el SN1 pronom-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	    </out>
-	  </when>
-
-
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="4" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="4" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="nbr"/>
-		  <lit-tag v="pl"/><!--BCN-->
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<not>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			</not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <clip pos="3" part="gen"/>
-			</equal>
-		      </and>			
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose> <!-- el primer SN-->
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-
-	    <out>
-	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	    </out>
-	  </otherwise>
-	</choose>	
-
-
-
-	<choose> <!-- per al segon SN-->
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose> 
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <!-- <and>-->
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom_conj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_adj_nom"/>
-		</equal>
-		<!--   <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="nom_nom"/>
-		     </equal> -->
-		<!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_nom"/> fer aquest
-		     </equal>
-		     <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_conj_nom"/>
-		     </equal> -->
-	      </or>
-	    </test>
-	    <let>
-	      <clip pos="3" part="a_SN"/>
-	      <lit-tag v="PDET"/>
-	    </let>
-	  </when>
-	</choose>
-
 	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk>
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
 
@@ -4550,11 +3145,9 @@
 	    </let>
 	  </otherwise>
 	</choose>
-	<let><var n="nombre"/><lit-tag v="pl"/><!--sempre serà pl-->
-	</let>
 	<let>
-	  <clip pos="5" part="nbr"/>
-	  <var n="nombre"/>
+	  <clip pos="5" part="nbr"/><!--sempre serà pl-->
+	  <lit-tag v="pl"/>
 	</let>
 	<out>
 	  <b pos="4"/>
@@ -4562,300 +3155,16 @@
 	    <clip pos="5" part="whole"/>
 	  </chunk>
 	</out>
-
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
+	<let>
+	  <var n="nombre"/>
+	  <lit-tag v="pl"/>
+	</let>
       </action>
     </rule>
-
-
-    <!--   <rule comment="REGLA: SN Vcop SA">
-	 <pattern>
-	 <pattern-item n="SN"/>
-	 <pattern-item n="vbcop"/>
-	 <pattern-item n="SA"/>	
-	 </pattern>
-	 <action>
-	 <choose>
-	 <when>
-	 <test>
-	 <equal caseless="yes">		
-	 <clip pos="2" part="lem"/>
-	 <lit v="inf"/>
-	 </equal>
-	 </test>
-	 <let>
-	 <clip pos="2" part="temps"/>
-	 <lit-tag v="pri"/>
-	 </let>
-	 </when>
-	 </choose>
-	 <choose>
-	 <when>
-	 <test>
-	 <equal caseless="yes">
-	 <clip pos="1" part="lem"/>
-	 <lit v="prnsubj"/>
-	 </equal>
-	 </test>	    
-	 <choose>
-	 <when>
-	 <test>
-	 <equal>
-	 <clip pos="2" part="pers"/>
-	 <lit-tag v="PD"/>
-	 </equal>
-	 </test>
-	 <let>
-	 <clip pos="2" part="pers"/>
-	 <clip pos="1" part="pers"/>
-	 </let>
-	 </when>
-	 </choose>
-	 <choose>
-	 <when>
-	 <test>
-	 <equal>
-	 <clip pos="2" part="nbr"/>
-	 <lit-tag v="ND"/>
-	 </equal>
-	 </test>
-	 <let>
-	 <clip pos="2" part="nbr"/>
-	 <clip pos="1" part="nbr"/>
-	 </let>
-	 </when>
-	 </choose>
-	 <call-macro n="f_bcond">
-	 <with-param pos="1"/>
-	 </call-macro>
-	 <out>
-	 <chunk> el pronom no l'envio, només el 2n chunk 
-	 <get-case-from pos="1">
-	 <clip pos="2" part="lem"/>
-	 </get-case-from>
-	 <clip pos="2" part="tags"/>
-	 <clip pos="2" part="chcontent"/>
-	 </chunk>
-	 <b pos="2"/>
-	 </out>
-	 </when>
-	 <otherwise>Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN 
-	 <choose>
-	 <when>
-	 <test>
-	 <equal>
-	 <clip pos="1" part="gen"/>
-	 <lit-tag v="GD"/>
-	 </equal>
-	 </test>
-	 <let>
-	 <clip pos="1" part="gen"/>
-	 <lit-tag v="m"/>
-	 </let>
-	 </when>
-	 </choose>
-	 <choose>
-	 <when>
-	 <test>
-	 <equal>
-	 <clip pos="1" part="nbr"/>
-	 <lit-tag v="ND"/>
-	 </equal>
-	 </test>
-	 <choose>
-	 <when>
-	 <test>
-	 <and>
-	 <equal>
-	 <clip pos="2" part="temps"/>
-	 <lit-tag v="pri"/>
-	 </equal>
-	 <equal>
-	 <clip pos="2" part="nbr"/>
-	 <lit-tag v="ND"/>
-	 </equal>
-	 </and>
-	 </test>
-	 <let>
-	 <clip pos="1" part="nbr"/>
-	 <lit-tag v="pl"/>
-	 </let>
-	 </when>
-	 <when>
-	 <test>
-	 <equal>
-	 <clip pos="2" part="temps"/>
-	 <lit-tag v="pri"/>
-	 </equal>
-	 </test>
-	 <let>
-	 <clip pos="1" part="nbr"/>
-	 <lit-tag v="sg"/>
-	 </let>
-	 </when>
-	 <when>
-	 <test>
-	 <and>
-	 <equal>
-	 <clip pos="2" part="temps"/>
-	 <lit-tag v="ifip"/>
-	 </equal>
-	 <equal caseless="yes">
-	 <clip pos="2" part="lem"/>
-	 <lit v="be"/>
-	 </equal>
-	 <equal>
-	 <clip pos="2" part="nbr"/>
-	 <lit-tag v="ND"/>
-	 </equal>
-	 </and>
-	 </test>
-	 <let>
-	 <clip pos="1" part="nbr"/>
-	 <lit-tag v="pl"/>
-	 </let>
-	 </when>
-	 <otherwise>
-	 <let>
-	 <clip pos="1" part="nbr"/>
-	 <lit-tag v="sg"/>
-	 </let>
-	 </otherwise>
-	 </choose>
-	 </when>
-	 </choose>
-	 
-	 <choose>
-	 <when>
-	 <test>
-	 <equal>
-	 <clip pos="2" part="pers"/>
-	 <lit-tag v="PD"/>
-	 </equal>
-	 </test>
-	 <let>
-	 <clip pos="2" part="pers"/>
-	 <lit-tag v="p3"/>
-	 </let>
-	 </when>
-	 </choose>
-	 <choose>
-	 <when>
-	 <test>
-	 <equal>
-	 <clip pos="2" part="nbr"/>
-	 <lit-tag v="ND"/>
-	 </equal>
-	 </test>
-
-<choose>
-<when>
-<test>
-<not>
-<equal>
-<clip pos="1" part="nbr"/>
-<lit-tag v="sp"/>
-</equal>
-</not>
-</test>
-<let>
-<clip pos="2" part="nbr"/>
-<clip pos="1" part="nbr"/>
-</let>
-</when>
-<otherwise>
-<let>
-<clip pos="2" part="nbr"/>
-<lit-tag v="sg"/>
-</let>
-</otherwise>
-</choose>
-</when>
-</choose>
-
-<out>
-<chunk>
-<clip pos="1" part="lem"/>
-<clip pos="1" part="tags"/>
-<clip pos="1" part="chcontent"/>
-</chunk>
-<b pos="1"/>
-<chunk>
-<clip pos="2" part="lem"/>
-<clip pos="2" part="tags"/>
-<clip pos="2" part="chcontent"/>
-</chunk>
-<b pos="2"/>
-</out>
-</otherwise>
-</choose>
-Assigna gènere i nombre a adjectiu (GD i ND) 
-<choose>
-<when>
-<test>
-<not>
-<or>
-<equal>
-<clip pos="1" part="gen"/>
-<lit-tag v="mf"/>
-</equal>
-<equal>  això ho he afegit jo perquè a vegades agafa "it" com a prn.obj.p3.nt i després el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor solució. -carme
-<clip pos="1" part="gen"/>
-<lit-tag v="nt"/>
-</equal>
-</or>
-</not>
-</test>
-<let>
-<clip pos="3" part="gen"/>
-<clip pos="1" part="gen"/>
-</let>
-</when>
-<otherwise>
-<let>
-<clip pos="3" part="gen"/>
-<lit-tag v="m"/>
-</let>
-</otherwise>
-</choose>
-<choose>
-<when>
-<test>
-<not>
-<equal>
-<clip pos="1" part="nbr"/>
-<lit-tag v="sp"/>
-</equal>
-</not>
-</test>
-<let>
-<clip pos="3" part="nbr"/>
-<clip pos="1" part="nbr"/>
-</let>
-</when>
-<otherwise>
-<let>
-<clip pos="3" part="nbr"/>
-<lit-tag v="sg"/>
-</let>
-</otherwise>
-</choose>
-
-<out>
-<chunk>
-<clip pos="3" part="lem"/>
-<clip pos="3" part="tags"/>
-<clip pos="3" part="chcontent"/>
-</chunk>
-</out>
-<call-macro n="nombre_SN">
-<with-param pos="1"/>
-</call-macro>	  
-</action>
-</rule>-->
-
+ 
 
 
     <rule comment="REGLA: SN SV SA and SA (BCN)">
@@ -4867,6 +3176,13 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	<pattern-item n="SA"/>	
       </pattern>
       <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -4884,323 +3200,26 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	<choose>
 	  <when>
 	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="prnsubj2"/>
-		    </equal>
-		</test>
-		<out>
-		  <chunk>
-		    <clip pos="1" part="whole"/>
-		  </chunk>
-		  <b pos="1"/>
-		  <chunk>
-		    <clip pos="2" part="whole"/>
-		  </chunk>
-		  <b pos="2"/>
-		</out>
-	      </when>
-	      <otherwise>
-		<call-macro n="f_bcond">
-		  <with-param pos="1"/>
-		</call-macro>
-		<out>
-		  <chunk><!--el pronom no l'envio, només el 2n chunk -->
-		    <get-case-from pos="1">
-		      <clip pos="2" part="lem"/>
-		    </get-case-from>
-		    <clip pos="2" part="tags"/>
-		    <clip pos="2" part="chcontent"/>
-		  </chunk>
-		  <b pos="2"/>
-		</out>
-	      </otherwise>
-	    </choose>
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj"/>
+	      </equal>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+		<get-case-from pos="1">
+		  <clip pos="2" part="lem"/>
+		</get-case-from>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
+	      </chunk>
+	      <b pos="2"/>
+	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="2" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="2" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <!--BCN (posa el PDET si cal)-->
-
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-	    <!--BCN (posa el PDET si cal)-->
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->	    
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -5218,73 +3237,25 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	  </otherwise>
 	</choose>
 	<!--Assigna gènere i nombre a adjectiu (GD i ND) -->
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<or>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="mf"/>
-		  </equal>
-		  <equal> <!-- això ho he afegit jo perquè a vegades agafa "it" com a prn.obj.p3.nt i després el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor solució. -carme-->
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="nt"/>
-		  </equal>
-		</or>
-	      </not>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	    <let>
-	      <clip pos="5" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	    <let>
-	      <clip pos="5" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </otherwise>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="1" part="nbr"/>
-		  <lit-tag v="sp"/>
-		</equal>
-	      </not>
-	    </test>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <clip pos="1" part="nbr"/>
-	    </let>
-	    <let>
-	      <clip pos="5" part="nbr"/>
-	      <clip pos="1" part="nbr"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	    <let>
-	      <clip pos="5" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </otherwise>
-	</choose>
-
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="3" part="nbr"/>
+	  <var n="nombre"/>
+	</let>
+	<let>
+	  <clip pos="5" part="nbr"/>
+	  <var n="nombre"/>
+	</let>
+	<let>
+	  <clip pos="3" part="gen"/>
+	  <var n="genere"/>
+	</let>
+	<let>
+	  <clip pos="5" part="gen"/>
+	  <var n="genere"/>
+	</let>
 	<out>
 	  <chunk>
 	    <clip pos="3" part="lem"/>
@@ -5301,469 +3272,12 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    <clip pos="5" part="tags"/>
 	    <clip pos="5" part="chcontent"/>
 	  </chunk>
-	</out>
-	<call-macro n="nombre_SN">
-	  <with-param pos="1"/>
-	</call-macro>	  
+	</out> 
       </action>
     </rule>
 
 
-    <rule comment="REGLA: SN SP SV SA and SA (BCN, modificada per MG)">
-      <pattern>
-	<pattern-item n="SN"/>
-	<pattern-item n="pr"/>
-	<pattern-item n="SNnorel"/>	
-	<pattern-item n="SV"/>
-	<pattern-item n="SA"/>	
-	<pattern-item n="cnjcoo"/>	
-	<pattern-item n="SA"/>	
-      </pattern>
-      <action>
-	<choose>
-	  <when>
-	    <test>
-	      <equal caseless="yes">		
-		<clip pos="4" part="lem"/>
-		<lit v="inf"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="4" part="temps"/>
-	      <lit-tag v="pri"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	  </when>
-	</choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-
-	<!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <and>
-		    <equal>
-		      <clip pos="4" part="temps"/>
-		      <lit-tag v="pri"/>
-		    </equal>
-		    <equal>
-		      <clip pos="4" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		  </and>
-		</test>
-		<let>
-		  <clip pos="1" part="nbr"/>
-		  <lit-tag v="pl"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="temps"/>
-		    <lit-tag v="pri"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="nbr"/>
-		  <lit-tag v="sg"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <and>
-		    <equal>
-		      <clip pos="4" part="temps"/>
-		      <lit-tag v="ifip"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="4" part="lem"/>
-		      <lit v="be"/>
-		    </equal>
-		    <equal>
-		      <clip pos="4" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		  </and>
-		</test>
-		<let>
-		  <clip pos="1" part="nbr"/>
-		  <lit-tag v="pl"/>
-		</let>
-	      </when>
-	      <otherwise>
-		<let>
-		  <clip pos="1" part="nbr"/>
-		  <lit-tag v="sg"/>
-		</let>
-	      </otherwise>
-	    </choose>
-	  </when>
-	</choose>
-	
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="4" part="pers"/>
-		<lit-tag v="PD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="4" part="pers"/>
-	      <lit-tag v="p3"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="4" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-
-	    <choose>
-	      <when>
-		<test>
-		  <not>
-		    <equal>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sp"/>
-		    </equal>
-		  </not>
-		</test>
-		<let>
-		  <clip pos="4" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	      <otherwise>
-		<let>
-		  <clip pos="4" part="nbr"/>
-		  <lit-tag v="sg"/>
-		</let>
-	      </otherwise>
-	    </choose>
-	  </when>
-	</choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	
-	<!--BCN (posa el PDET si cal)-->
-
-	<choose>
-	  <when>
-	    <test>
-	      <!-- <and>-->
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="adj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="nom_conj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="adj_adj_nom"/>
-		</equal>
-		<!--   <equal caseless="yes">
-		     <clip pos="1" part="lem"/>
-		     <lit v="nom_nom"/>
-		     </equal> -->
-		<!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-		     <clip pos="1" part="lem"/>
-		     <lit v="adj_nom_nom"/> fer aquest
-		     </equal>
-		     <equal caseless="yes">
-		     <clip pos="1" part="lem"/>
-		     <lit v="adj_nom_conj_nom"/>
-		     </equal> -->
-	      </or>
-	    </test>
-	    <let>
-	      <clip pos="1" part="a_SN"/>
-	      <lit-tag v="PDET"/>
-	    </let>
-	  </when>
-	</choose>
-	<!--BCN (posa el PDET si cal)-->
-
-	<choose> <!-- quan tenim 'of which' en el segon SN i ens ve sense genere i nombre-->
-	  <when>
-	    <test>
-	      <or>
-		<equal>
-		  <clip pos="3" part="nbr"/>
-		  <lit-tag v="ND"/>
-		</equal>
-		<equal>
-		  <clip pos="3" part="gen"/>
-		  <lit-tag v="GD"/>
-		</equal>
-	      </or>
-	    </test>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <clip pos="1" part="nbr"/>
-	    </let>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	</choose>
-	<out>
-	  <chunk>
-	    <clip pos="1" part="lem"/>
-	    <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
-	  </chunk>
-	  <b pos="1"/>
-	  <chunk>
-	    <clip pos="2" part="whole"/>
-	  </chunk>
-	  <b pos="2"/>
-	  <chunk>
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
-	  </chunk>
-	  <b pos="3"/>
-	  <chunk>
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
-	  </chunk>
-	  <b pos="4"/>
-	</out>
-	<!--Assigna gènere i nombre a adjectiu (GD i ND) -->
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<or>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="mf"/>
-		  </equal>
-		  <equal> <!-- això ho he afegit jo perquè a vegades agafa "it" com a prn.obj.p3.nt i després el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor solució. -carme-->
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="nt"/>
-		  </equal>
-		</or>
-	      </not>
-	    </test>
-	    <let>
-	      <clip pos="5" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	    <let>
-	      <clip pos="7" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <clip pos="5" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	    <let>
-	      <clip pos="7" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </otherwise>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="1" part="nbr"/>
-		  <lit-tag v="sp"/>
-		</equal>
-	      </not>
-	    </test>
-	    <let>
-	      <clip pos="5" part="nbr"/>
-	      <clip pos="1" part="nbr"/>
-	    </let>
-	    <let>
-	      <clip pos="7" part="nbr"/>
-	      <clip pos="1" part="nbr"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <clip pos="5" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	    <let>
-	      <clip pos="7" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </otherwise>
-	</choose>
-
-	<out>
-	  <chunk>
-	    <clip pos="5" part="lem"/>
-	    <clip pos="5" part="tags"/>
-	    <clip pos="5" part="chcontent"/>
-	  </chunk>
-	  <b pos="5"/>
-	  <chunk>
-	    <clip pos="6" part="whole"/>
-	  </chunk>
-	  <b pos="6"/>
-	  <chunk>
-	    <clip pos="7" part="lem"/>
-	    <clip pos="7" part="tags"/>
-	    <clip pos="7" part="chcontent"/>
-	  </chunk>
-	</out>
-	<call-macro n="nombre_SN">
-	  <with-param pos="1"/>
-	</call-macro>	  
-      </action>
-    </rule>
-
-
-
-    <rule comment="REGLA: SN adv SV SA (BCN s'ha modificat vcop -> SV)">
+   <rule comment="REGLA: SN adv SV SA">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="ADV"/>
@@ -5771,6 +3285,13 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	<pattern-item n="SA"/>	
       </pattern>
       <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -5788,333 +3309,32 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	<choose>
 	  <when>
 	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="prnsubj2"/>
-		    </equal>
-		</test>
-		<out>
-		  <chunk>
-		    <clip pos="1" part="whole"/>
-		  </chunk>
-		  <b pos="1"/>
-		  <chunk>
-		    <clip pos="2" part="whole"/>
-		  </chunk>
-		  <b pos="2"/>
-		  <chunk>
-		    <clip pos="3" part="whole"/>
-		  </chunk>
-		  <b pos="3"/>
-		</out>
-	      </when>
-	      <otherwise>
-		<call-macro n="f_bcond">
-		  <with-param pos="1"/>
-		</call-macro>
-		<out>
-		  <chunk><!--el pronom no l'envio, només el 2n chunk -->
-		    <get-case-from pos="1">
-		      <clip pos="2" part="lem"/>
-		    </get-case-from>
-		    <clip pos="2" part="tags"/>
-		    <clip pos="2" part="chcontent"/>
-		  </chunk>
-		  <b pos="2"/>
-		  <chunk>
-		    <clip pos="3" part="lem"/>
-		    <clip pos="3" part="tags"/>
-		    <clip pos="3" part="chcontent"/>
-		  </chunk>
-		  <b pos="3"/>
-		</out>
-	      </otherwise>
-	    </choose>
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj"/>
+	      </equal>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+		<get-case-from pos="1">
+		  <clip pos="2" part="lem"/>
+		</get-case-from>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk>
+		<clip pos="3" part="lem"/>
+		<clip pos="3" part="tags"/>
+		<clip pos="3" part="chcontent"/>
+	      </chunk>
+	      <b pos="3"/>
+	    </out>
 	  </when>
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="3" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="3" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="3" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="3" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="3" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="3" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <!--BCN (posa el PDET si cal)-->
-
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-	    <!--BCN (posa el PDET si cal)-->
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->	   
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -6138,57 +3358,17 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	  </otherwise>
 	</choose>
 	<!--Assigna gènere i nombre a adjectiu (GD i ND) -->
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<or>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="mf"/>
-		  </equal>
-		  <equal> <!-- això ho he afegit jo perquè a vegades agafa "it" com a prn.obj.p3.nt i després el passa per aquesta regla (ex: pointed out it is dificult). no estic segura que sigui la millor solució. -carme-->
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="nt"/>
-		  </equal>
-		</or>
-	      </not>
-	    </test>
-	    <let>
-	      <clip pos="4" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <clip pos="4" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </otherwise>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="1" part="nbr"/>
-		  <lit-tag v="sp"/>
-		</equal>
-	      </not>
-	    </test>
-	    <let>
-	      <clip pos="4" part="nbr"/>
-	      <clip pos="1" part="nbr"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <clip pos="4" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </otherwise>
-	</choose>
-
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="4" part="nbr"/>
+	  <var n="nombre"/>
+	</let>
+	<let>
+	  <clip pos="4" part="gen"/>
+	  <var n="genere"/>
+	</let>
 	<out>
 	  <chunk>
 	    <clip pos="4" part="lem"/>
@@ -6196,12 +3376,9 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    <clip pos="4" part="chcontent"/>
 	  </chunk>
 	</out>
-	<call-macro n="nombre_SN">
-	  <with-param pos="1"/>
-	</call-macro>	  
       </action>
     </rule>
-
+ 
 
 
     <rule comment="REGLA: SN and SN ADV SV SA (BCN)">
@@ -6214,6 +3391,17 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	<pattern-item n="SA"/>
       </pattern>
       <action>
+	<call-macro n="concord_SNcoo_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="3"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -6228,394 +3416,25 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    </let>
 	  </when>
 	</choose>
-	<choose>        <!-- SN1 = pronsubj-->
-	  <when>
-	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="5" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="5" part="nbr"/>
-		  <lit-tag v="pl"/>        <!-- el nombre del verb pl-->
-		  <!--	  <clip pos="1" part="nbr"/>-->
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<not>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			</not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <clip pos="3" part="gen"/>
-			</equal>
-		      </and>			
-		    </test>
-		    <let>
-		      <clip pos="5" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="5" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <out>
-	      <chunk>     <!-- enviem el SN1 pronom-->
-		<clip pos="1" part="whole"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	    </out>
-	  </when>
-
-
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="5" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="5" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="5" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="5" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="5" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="5" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="5" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="5" part="nbr"/>
-		  <lit-tag v="pl"/><!--BCN-->
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="5" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<not>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			</not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <clip pos="3" part="gen"/>
-			</equal>
-		      </and>			
-		    </test>
-		    <let>
-		      <clip pos="5" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="5" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose> <!-- el primer SN-->
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-
-	    <out>
-	      <chunk>
-		<clip pos="1" part="whole"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	    </out>
-	  </otherwise>
-	</choose>	
-
-
-
-	<choose> <!-- per al segon SN-->
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose> 
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <!-- <and>-->
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="nom_conj_nom"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="adj_adj_nom"/>
-		</equal>
-		<!--   <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="nom_nom"/>
-		     </equal> -->
-		<!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_nom"/> fer aquest
-		     </equal>
-		     <equal caseless="yes">
-		     <clip pos="3" part="lem"/>
-		     <lit v="adj_nom_conj_nom"/>
-		     </equal> -->
-	      </or>
-	    </test>
-	    <let>
-	      <clip pos="3" part="a_SN"/>
-	      <lit-tag v="PDET"/>
-	    </let>
-	  </when>
-	</choose>
-
 	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk>
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	  <b pos="4"/>
 	  <chunk>
-	    <clip pos="5" part="lem"/>
-	    <clip pos="5" part="tags"/>
-	    <clip pos="5" part="chcontent"/>
+	    <clip pos="5" part="whole"/>
 	  </chunk>
 	</out>
 	<choose> <!-- part del SA per a genere i nombre-->
@@ -6652,11 +3471,9 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    </let>
 	  </otherwise>
 	</choose>
-	<let><var n="nombre"/><lit-tag v="pl"/><!--sempre serà pl-->
-	</let>
 	<let>
-	  <clip pos="6" part="nbr"/>
-	  <var n="nombre"/>
+	  <clip pos="6" part="nbr"/><!--sempre serà pl-->
+	  <lit-tag v="pl"/>
 	</let>
 	<out>
 	  <b pos="5"/>
@@ -6665,14 +3482,18 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	  </chunk>
 	</out>
 
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
+	<let>
+	  <var n="nombre"/>
+	  <lit-tag v="pl"/>
+	</let>
       </action>
     </rule>
 
 
- <!-- <rule comment="REGLA: SN SV SA (they would like to know - mireia)">
+ <!-- <rule comment="REGLA: SN SV pr SV (they would like to know - mireia)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SV"/>
@@ -6991,7 +3812,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    </let>
 	  </otherwise>
 	</choose>
-	<call-macro n="nombre_SN"><!-x-per al nombre hi ha una macro definida -x->
+	<call-macro n="determina_nbr_gen_SN"><!-x-per al nombre hi ha una macro definida -x->
 	  <with-param pos="1"/>
 	</call-macro>
 	<let>
@@ -7005,7 +3826,7 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	  </chunk>
 	</out>
       </action>
-    </rule> -->
+    </rule>  -->
 
    <rule comment="REGLA: reporting VERBS (BCN: per afegir QUE quan tenim un 'reporting' werb seguit d'una clàusula: she said they would go home -- va dir que anirien casa. Falta fer el mateix per quan tenim: SN Vcop SA; SN ADV SV; SN SV SA; a la segona part )">
       <pattern>
@@ -7016,7 +3837,13 @@ Assigna gènere i nombre a adjectiu (GD i ND)
       </pattern>
 
       <action>
-	<!-- Primera part amb SN SV afegint el QUE (idealment hauria d'estar en una macro)-->
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -7034,300 +3861,25 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	<choose>
 	  <when>
 	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <and>
-		    <equal>
-		      <clip pos="2" part="pers"/>
-		      <lit-tag v="PD"/>
-		    </equal>
-		    <not>
-		      <equal>
-		      <clip pos="2" part="temps"/>
-		      <lit-tag v="ger"/>
-		    </equal>
-		    </not>
-		  </and>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <and>
-		    <equal>
-		      <clip pos="2" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		    <not>
-		      <equal>
-		      <clip pos="2" part="temps"/>
-		      <lit-tag v="ger"/>
-		    </equal>
-		    </not>
-		  </and>
-		</test>
-		<let>
-		  <clip pos="2" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="prnsubj2"/>
-		    </equal>
-		</test>
-		<out>
-		  <chunk>
-		    <clip pos="1" part="whole"/>
-		  </chunk>
-		  <b pos="1"/>
-		  <chunk>
-		    <clip pos="2" part="whole"/>
-		  </chunk>
-		</out>
-	      </when>
-	      <otherwise>		    
-		<call-macro n="f_bcond">
-		  <with-param pos="1"/>
-		</call-macro>
-		<out>
-		  <chunk><!--el pronom no l'envio, només el 2n chunk -->
-		    <get-case-from pos="1">
-		      <clip pos="2" part="lem"/>
-		    </get-case-from>
-		    <clip pos="2" part="tags"/>
-		    <clip pos="2" part="chcontent"/>
-		  </chunk>
-		</out>
-	      </otherwise>
-	    </choose>
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj"/>
+	      </equal>
+	    </test>		    
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
 	    <out>
-	      <b/>
-	      <chunk>
-		<lit v="cnjsub"/>
-		<lit-tag v="PREP"/>
-		<lit v="{^"/>
-		<get-case-from pos="2">
-		  <lit v="que"/>
+	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+		<get-case-from pos="1">
+		  <clip pos="2" part="lem"/>
 		</get-case-from>
-		<lit-tag v="cnjsub"/>
-		<lit v="$}"/>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
 	      </chunk>
-	      <b/>
 	    </out>
 	  </when>
-
-
-	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="2" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="2" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-
-	    <choose>
-	      <when>
-		<test>
-		  <and>
-		    <equal>
-		      <clip pos="2" part="pers"/>
-		      <lit-tag v="PD"/>
-		    </equal>
-		    <not>
-		      <equal>
-		      <clip pos="2" part="temps"/>
-		      <lit-tag v="ger"/>
-		    </equal>
-		    </not>
-		  </and>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <and>
-		    <equal>
-		      <clip pos="2" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		    <not>
-		      <equal>
-		      <clip pos="2" part="temps"/>
-		      <lit-tag v="ger"/>
-		    </equal>
-		    </not>
-		  </and>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->	 
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -7355,14 +3907,19 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	    </out>
 	  </otherwise>
 	</choose>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
-	<!-- fi primera part-->      
 
+	<!-- ara la concordança entre el SN 3 i el SV 4 -->
 
-	<!-- còpia de la regla SN SV pq faci la segona part amb els últims SN SV ok (idealment hauria d'estar en una macro)-->
-
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="3"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -7380,97 +3937,11 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 	<choose>
 	  <when>
 	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="3" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
+	      <equal caseless="yes">
+		<clip pos="3" part="lem"/>
+		<lit v="prnsubj"/>
+	      </equal>
 	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <clip pos="3" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		    <equal>
-		      <clip pos="4" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="nbr"/>
-		  <clip pos="3" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="3" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="3" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-
-	    <choose>
-	      <when>
-		<test>
-		    <equal caseless="yes">
-		      <clip pos="3" part="lem"/>
-		      <lit v="prnsubj2"/>
-		    </equal>
-		</test>
-		<out>
-		  <chunk>
-		    <clip pos="3" part="whole"/>
-		  </chunk>
-		  <b pos="3"/>
-		  <chunk>
-		    <clip pos="4" part="whole"/>
-		  </chunk>
-		</out>
-	      </when>
-	      <otherwise>
 	    <call-macro n="f_bcond">
 	      <with-param pos="3"/>
 	    </call-macro>
@@ -7483,214 +3954,8 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 		<clip pos="4" part="chcontent"/>
 	      </chunk>
 	    </out>
-	      </otherwise>
-	    </choose>
 	  </when>
-	  <otherwise>
-	    <choose><!--Quan SN no és prnsubj. -->
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="3" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="4" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="4" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="3" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="nbr"/>
-		      <clip pos="3" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="3" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="3" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="3" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="3" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="3" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="3" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="3" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="3" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="3" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="3" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
+	  <otherwise><!--Quan SN no és prnsubj. --> 	    
 	    <out>
 	      <chunk>
 		<clip pos="3" part="lem"/>
@@ -7704,417 +3969,15 @@ Assigna gènere i nombre a adjectiu (GD i ND)
 		<clip pos="4" part="chcontent"/>
 	      </chunk>
 	    </out>
-	<call-macro n="nombre_SN">
+<!--	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="3"/>
-	</call-macro>
-	<!-- fi de la regla SN SV-->
+	</call-macro> -->
 	  </otherwise>
 	</choose>
       </action>
     </rule>
     
-    <rule comment="REGLA: SN SP SV SA (BCN, modificat per MG)">
-      <pattern>
-	<pattern-item n="SN"/>
-	<pattern-item n="pr"/>
-	<pattern-item n="SNnorel"/>
-	<pattern-item n="SV"/>
-	<pattern-item n="SA"/>
-      </pattern>
-      <action>
-	<choose>
-	  <when>
-	    <test>
-	      <equal caseless="yes">		
-		<clip pos="4" part="lem"/>
-		<lit v="inf"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="4" part="temps"/>
-	      <lit-tag v="pri"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	  </when>
-	</choose>
-	
-<!--Quan SN 1 no és prnsubj, pot ser GD o ND.
-Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pronom subjecte, haura quedat com a GD o ND. A la vegada es fan les comprovacions que toquen el cas que SN no sigui subjecte i, per tant, pugui tenir també ell GD o ND -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="4" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="4" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <!--BCN (posa el PDET si cal)-->
-
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
-	    <!--BCN (posa el PDET si cal)-->
-
-	    <choose> <!-- quan el segon SN és GD o ND-->
-	      <when>
-		<test>
-		    <equal>
-		      <clip pos="3" part="gen"/>
-		      <lit-tag v="GD"/>
-		    </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<or>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="mf"/>
-			  </equal>
-			  <equal>
-			    <clip pos="1" part="gen"/>
-			    <lit-tag v="nt"/>
-			  </equal>
-			</or>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="3" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		    <equal>
-		      <clip pos="3" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="3" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise><!--assigna-li el nombre del verb -->
-		     <let>
-		      <clip pos="3" part="nbr"/>
-		      <clip pos="4" part="nbr"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-
-	    <out>
-	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="whole"/>
-	      </chunk>
-	      <b pos="2"/>
-	      <chunk>
-		<clip pos="3" part="lem"/>
-		<clip pos="3" part="tags"/>
-		<clip pos="3" part="chcontent"/>
-	      </chunk>
-	      <b pos="3"/>
-	      <chunk>
-		<clip pos="4" part="lem"/>
-		<clip pos="4" part="tags"/>
-		<clip pos="4" part="chcontent"/>
-	      </chunk>
-	    </out>
-	<choose><!--Assigna gènere i nombre a l'adjectiu -->
-	  <when>
-	    <test>
-	      <not>
-		<or>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="mf"/>
-		  </equal>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="nt"/>
-		  </equal>
-		</or>
-	      </not>
-	    </test>
-	    <let>
-	      <clip pos="5" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <clip pos="5" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </otherwise>
-	</choose>
-	<call-macro n="nombre_SN"><!--per al nombre hi ha una macro definida -->
-	  <with-param pos="1"/>
-	</call-macro>
-	<let>
-	  <clip pos="5" part="nbr"/>
-	  <var n="nombre"/>
-	</let>
-	<out>
-	  <b pos="4"/>
-	  <chunk>
-	    <clip pos="5" part="whole"/>
-	  </chunk>
-	</out>
-      </action>
-    </rule>
-
+ 
 
     <rule comment="REGLA: SN SP SV (BCN, modificat per MG)">
       <pattern>
@@ -8124,6 +3987,13 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	<pattern-item n="SV"/>
       </pattern>
       <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -8138,244 +4008,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	    </let>
 	  </when>
 	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	  </when>
-	</choose>
-
-<!--Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui pronom subjecte, haura quedat com a GD o ND. A la vegada es fan les comprovacions que toquen el cas que SN no sigui subjecte i, per tant, pugui tenir també ell GD o ND -->
-
-	 
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="4" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="4" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="4" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="4" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="4" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="4" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="4" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
+	
 	    <choose>  <!-- quan el segon SN és GD o ND-->
 	      <when>
 		<test>
@@ -8446,7 +4079,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 		</choose>
 	      </when>
 	    </choose>
-	    <out>
+	    <out><!--aquí enviem el primer SN tant si és pronom subjecte com si no. -->
 	      <chunk>
 		<clip pos="1" part="lem"/>
 		<clip pos="1" part="tags"/>
@@ -8469,12 +4102,328 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 		<clip pos="4" part="chcontent"/>
 	      </chunk>
 	    </out>	
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
     </rule>
 
+   <rule comment="REGLA: SN SP SV SA (BCN, modificat per MG)">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="pr"/>
+	<pattern-item n="SNnorel"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="SA"/>
+      </pattern>
+      <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal caseless="yes">		
+		<clip pos="4" part="lem"/>
+		<lit v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose> <!-- quan el segon SN és GD o ND-->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <or>
+		      <equal>
+			<clip pos="1" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		      <equal>
+			<clip pos="1" part="gen"/>
+			<lit-tag v="nt"/>
+		      </equal>
+		    </or>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="3" part="gen"/>
+		  <clip pos="1" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="3" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="3" part="nbr"/>
+		  <clip pos="1" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise><!--assigna-li el nombre del verb -->
+		<let>
+		  <clip pos="3" part="nbr"/>
+		  <clip pos="4" part="nbr"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+
+	<out><!--aquí enviem el primer SN tant si és pronom subjecte com si no. -->
+	  <chunk>
+	    <clip pos="1" part="lem"/>
+	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="lem"/>
+	    <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="lem"/>
+	    <clip pos="4" part="tags"/>
+	    <clip pos="4" part="chcontent"/>
+	  </chunk>
+	</out>
+	<call-macro n="determina_nbr_gen_SN"><!--Assigna gènere i nombre a l'adjectiu -->
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="5" part="nbr"/>
+	  <var n="nombre"/>
+	</let>
+	<let>
+	  <clip pos="5" part="gen"/>
+	  <var n="genere"/>
+	</let>
+	<out>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+
+    <rule comment="REGLA: SN SP SV SA and SA (BCN, modificada per MG)">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="pr"/>
+	<pattern-item n="SNnorel"/>	
+	<pattern-item n="SV"/>
+	<pattern-item n="SA"/>	
+	<pattern-item n="cnjcoo"/>	
+	<pattern-item n="SA"/>	
+      </pattern>
+      <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal caseless="yes">		
+		<clip pos="4" part="lem"/>
+		<lit v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose> <!-- quan el segon SN és GD o ND (p. ex. quan tenim 'of which' en el segon SN ens ve sense genere i nombre) -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <or>
+		      <equal>
+			<clip pos="1" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		      <equal>
+			<clip pos="1" part="gen"/>
+			<lit-tag v="nt"/>
+		      </equal>
+		    </or>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="3" part="gen"/>
+		  <clip pos="1" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="3" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="3" part="nbr"/>
+		  <clip pos="1" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise><!--assigna-li el nombre del verb -->
+		<let>
+		  <clip pos="3" part="nbr"/>
+		  <clip pos="4" part="nbr"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+
+	<out><!--aquí enviem el primer SN tant si és pronom subjecte com si no. -->
+	  <chunk>
+	    <clip pos="1" part="lem"/>
+	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="lem"/>
+	    <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="lem"/>
+	    <clip pos="4" part="tags"/>
+	    <clip pos="4" part="chcontent"/>
+	  </chunk>
+	  <b pos="4"/>
+	</out>
+	<!--Assigna gènere i nombre a adjectiu (GD i ND) -->
+
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="5" part="nbr"/>
+	  <var n="nombre"/>
+	</let>
+	<let>
+	  <clip pos="7" part="nbr"/>
+	  <var n="nombre"/>
+	</let>
+	<let>
+	  <clip pos="5" part="gen"/>
+	  <var n="genere"/>
+	</let>
+	<let>
+	  <clip pos="7" part="gen"/>
+	  <var n="genere"/>
+	</let>
+	<out>
+	  <chunk>
+	    <clip pos="5" part="lem"/>
+	    <clip pos="5" part="tags"/>
+	    <clip pos="5" part="chcontent"/>
+	  </chunk>
+	  <b pos="5"/>
+	  <chunk>
+	    <clip pos="6" part="whole"/>
+	  </chunk>
+	  <b pos="6"/>
+	  <chunk>
+	    <clip pos="7" part="lem"/>
+	    <clip pos="7" part="tags"/>
+	    <clip pos="7" part="chcontent"/>
+	  </chunk>
+	</out>
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="1"/>
+	</call-macro>	  
+      </action>
+    </rule>
 
 
     <rule comment="REGLA: SN SV SN.negacio (BCN I read no books -- NO llegeixo cap llibre">
@@ -8484,6 +4433,13 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	<pattern-item n="negacio"/>
       </pattern>
       <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -8501,123 +4457,27 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	<choose>
 	  <when>
 	    <test>
-	      <or>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj"/>
-		</equal>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnsubj2"/>
-		</equal>
-	      </or>
-	    </test>	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="prnsubj2"/>
-		    </equal>
-		</test>
-		<out>
-		  <chunk>
-		    <clip pos="1" part="whole"/>
-		  </chunk>
-		  <b pos="1"/>
-		  <chunk>
-		    <lit v="adv"/>
-		    <lit-tag v="NEG"/>
-		    <lit v="{^"/>
-		    <get-case-from pos="2">
-		      <lit v="no"/>
-		    </get-case-from>
-		    <lit-tag v="adv"/>
-		    <lit v="$}"/>
-		  </chunk>
-		</out>
-	      </when>
-	      <otherwise>
-		<call-macro n="f_bcond">
-		  <with-param pos="1"/>
-		</call-macro>
-		<out>
-		  <chunk>
-		    <lit v="adv"/>
-		    <lit-tag v="NEG"/>
-		    <lit v="{^"/>
-		    <get-case-from pos="1">
-		      <lit v="no"/>
-		    </get-case-from>
-		    <lit-tag v="adv"/>
-		    <lit v="$}"/>
-		  </chunk>
-		</out>		  
-	      </otherwise>
-	    </choose>
-	    <out>
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj"/>
+	      </equal>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk>
+		<lit v="adv"/>
+		<lit-tag v="NEG"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="no"/>
+		</get-case-from>
+		<lit-tag v="adv"/>
+		<lit v="$}"/>
+	      </chunk>
 	      <b/>
-	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+	      <chunk>
 		<clip pos="2" part="lem"/>
 		<clip pos="2" part="tags"/>
 		<clip pos="2" part="chcontent"/>
@@ -8630,213 +4490,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	      </chunk>
 	    </out>
 	  </when>
-	  
-
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="1" part="gen"/>
-		  <lit-tag v="m"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="pri"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <equal>
-			<clip pos="2" part="temps"/>
-			<lit-tag v="pri"/>
-		      </equal>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </when>
-		  <when>
-		    <test>
-		      <and>
-			<equal>
-			  <clip pos="2" part="temps"/>
-			  <lit-tag v="ifip"/>
-			</equal>
-			<equal caseless="yes">
-			  <clip pos="2" part="lem"/>
-			  <lit v="be"/>
-			</equal>
-			<equal>
-			  <clip pos="2" part="nbr"/>
-			  <lit-tag v="ND"/>
-			</equal>
-		      </and>
-		    </test>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="pl"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="1" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="pers"/>
-		  <lit-tag v="p3"/>
-		</let>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="nbr"/>
-			  <lit-tag v="sp"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <clip pos="1" part="nbr"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="nbr"/>
-		      <lit-tag v="sg"/>
-		    </let>
-		  </otherwise>
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="2" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</test>
-		<choose>
-		  <when>
-		    <test>
-		      <not>
-			<equal>
-			  <clip pos="1" part="gen"/>
-			  <lit-tag v="mf"/>
-			</equal>
-		      </not>
-		    </test>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <clip pos="1" part="gen"/>
-		    </let>
-		  </when>
-		  <otherwise>
-		    <let>
-		      <clip pos="2" part="gen"/>
-		      <lit-tag v="m"/>
-		    </let>
-		  </otherwise>		    
-		</choose>
-	      </when>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -8869,7 +4523,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	    </out>
 	  </otherwise>
 	</choose>	
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
@@ -8882,6 +4536,9 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	<pattern-item n="SVGER"/>
       </pattern>
       <action>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<let>
 	   <clip pos="2" part="temps"/>
 	   <lit-tag v="pri"/>
@@ -8901,7 +4558,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 		</let>
 	      </when>
 	    </choose>    
-	    <!--el gerundi sempre és GD i ND, ara cal assignar-li gen i nbr del SN -->
+	    <!--el gerundi sempre és PD i ND, ara cal assignar-li persona p3 i nbr del SN -->
 	    <let>
 	      <clip pos="2" part="pers"/>
 	      <lit-tag v="p3"/>
@@ -8927,48 +4584,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 		  <lit-tag v="sg"/>
 		</let>
 	      </otherwise>
-	    </choose>
-	    <choose>
-	      <when>
-		<test>
-		  <!-- <and>-->
-		  <or>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="nom_conj_nom"/>
-		    </equal>
-		    <equal caseless="yes">
-		      <clip pos="1" part="lem"/>
-		      <lit v="adj_adj_nom"/>
-		    </equal>
-		    <!--   <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="nom_nom"/>
-			 </equal> -->
-		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_nom"/> fer aquest
-			 </equal>
-			 <equal caseless="yes">
-			 <clip pos="1" part="lem"/>
-			 <lit v="adj_nom_conj_nom"/>
-			 </equal> -->
-		  </or>
-		</test>
-		<let>
-		  <clip pos="1" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</let>
-	      </when>
-	    </choose>
+	    </choose>	   
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -8996,7 +4612,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 		<clip pos="2" part="chcontent"/>
 	      </chunk>
 	    </out>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
@@ -9009,102 +4625,13 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	<pattern-item n="pp"/>
       </pattern>
       <action>
-	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<equal>
-		  <clip pos="2" part="gen"/>
-		  <lit-tag v="GD"/>
-		</equal>
-		<not>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</not>
-	      </and>
-	    </test>
-	    <let>
-	      <clip pos="2" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="2" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<equal>
-		  <clip pos="2" part="nbr"/>
-		  <lit-tag v="ND"/>
-		</equal>
-		<not>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</not>
-	      </and>
-	    </test>
-	    <let>
-	      <clip pos="2" part="nbr"/>
-	      <clip pos="1" part="nbr"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="2" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose> 
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk>
 	    <clip pos="1" part="lem"/>
@@ -9118,7 +4645,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	    <clip pos="2" part="chcontent"/>
 	  </chunk>
 	</out>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
@@ -9132,102 +4659,13 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	<pattern-item n="pp"/>
       </pattern>
       <action>
-	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<equal>
-		  <clip pos="3" part="gen"/>
-		  <lit-tag v="GD"/>
-		</equal>
-		<not>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="GD"/>
-		  </equal>
-		</not>
-	      </and>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<equal>
-		  <clip pos="3" part="nbr"/>
-		  <lit-tag v="ND"/>
-		</equal>
-		<not>
-		  <equal>
-		    <clip pos="1" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</not>
-	      </and>
-	    </test>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <clip pos="1" part="nbr"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="3" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose> 
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk>
 	    <clip pos="1" part="lem"/>
@@ -9245,7 +4683,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	    <clip pos="3" part="chcontent"/>
 	  </chunk>
 	</out>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
@@ -9352,7 +4790,6 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	    </choose>
 	  </when>
 	</choose>
-
 	<out>
 	  <chunk>
 	    <clip pos="1" part="lem"/>
@@ -9674,7 +5111,7 @@ Aquí torna a mirar si posició 4 és GD o ND, ja que en cas que  pos1 no sigui 
 	    <clip pos="1" part="whole"/>
 	  </chunk>
 	</out>
-	<call-macro n="nombre_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
 	</call-macro>
       </action>
