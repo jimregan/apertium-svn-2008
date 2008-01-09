@@ -27,6 +27,14 @@
       <cat-item tags="np.*"/>
     </def-cat>
 
+
+    <def-cat n="nomcomu">
+      <cat-item tags="n.*"/>
+    </def-cat>
+    
+    <def-cat n="nompropi">
+      <cat-item tags="np.*"/>
+    </def-cat>
     <def-cat n="nploc">
       <cat-item tags="np.loc.*"/>
     </def-cat>
@@ -540,7 +548,8 @@
       <attr-item tags="np.loc"/>
       <attr-item tags="np.ant"/>
       <attr-item tags="np.cog"/>
-      <attr-item tags="np.al"/>	  
+      <attr-item tags="np.al"/>	
+      <attr-item tags="adv"/>	  
     </def-attr>
 
     <def-attr n="a_np">
@@ -938,6 +947,35 @@
 	  </let>
 	</when>
       </choose>
+      <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="2" side="sl" part="lem"/>
+	      <lit v="percent"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <clip pos="2" side="tl" part="lem"/>
+	    <lit v="per cent"/>
+	  </let>
+	  <let>
+	    <clip pos="2" side="tl" part="a_nom"/>
+	    <lit-tag v="adv"/>
+	  </let>
+	  <let>
+	    <clip pos="2" side="tl" part="gen"/>
+	    <lit v=""/>
+	  </let>
+	  <let>
+	    <clip pos="2" side="tl" part="nbr"/>
+	    <lit v=""/>
+	  </let>
+	</when>
+      </choose>
+
+	  
+
     </def-macro>
 
 
@@ -4440,7 +4478,6 @@
 	<pattern-item n="adj"/>
 	<pattern-item n="cnjcoo"/>
 	<pattern-item n="adj"/>
-
 	<pattern-item n="nom"/>
       </pattern>
       <action>
@@ -6782,11 +6819,11 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: NOM1 NOM2 NOM3 -> NOM3 de NOM2 del NOM1">
+    <rule comment="REGLA: NOM1 NOM2 NOM3 -> NOM3 de NOM2 del NOM1 (noms comuns: una altra manera de solucionar reordenaments no volguts de noms propis, que en les regles anteriors es fa mitjançant operacions dins la regla">
       <pattern>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
       </pattern>
       <action>
 	<call-macro n="genere_nombre">
@@ -6795,7 +6832,7 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<out> <!--NOTA: a partir d'aquí no està feta la comprovació de si és nom propi -->
+	<out> 
 	  <chunk name="nom_nom_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
@@ -6851,12 +6888,64 @@
       </action>
     </rule>
 
+  <rule comment="REGLA: NOM1 NOM2 NOM3 -> NOM3 de NOM2 del NOM1 (noms comuns: una altra manera de solucionar reordenaments no volguts de noms propis, que en les regles anteriors es fa mitjançant operacions dins la regla">
+      <pattern>
+	<pattern-item n="nompropi"/>
+	<pattern-item n="nompropi"/>
+	<pattern-item n="nompropi"/>
+      </pattern>
+      <action>
+	<call-macro n="genere_nombre">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="nom_nom_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.UNDET"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen" link-to="3"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="lemq"/>  
+	    </lu> 
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu> 
+	    <b pos="2"/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
     <rule comment="REGLA: DET NOM1 NOM2 NOM3 -> DET NOM3 de NOM2 del NOM1">
       <pattern>
 	<pattern-item n="det"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
       </pattern>
       <action>
 	<call-macro n="genere_nombre">
@@ -6931,9 +7020,9 @@
     <rule comment="REGLA: ADJ NOM1 NOM2 NOM3 -> NOM3 de NOM2 de NOM1 ADJ (professional video game design -> disseny de joc de vídeo professional (?)">
       <pattern>
 	<pattern-item n="adj"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
       </pattern>
       <action>
 	<call-macro n="genere_nombre">
@@ -7008,9 +7097,9 @@
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="adj"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
       </pattern>
       <action>
 	<call-macro n="genere_nombre">
@@ -7089,10 +7178,10 @@
 
     <rule comment="REGLA: NOM1 NOM2 NOM3 NOM4-> NOM4 de NOM3 de NOM2 de NOM1 (video game design industry -> indústria de disseny de joc de vídeo (?)">
       <pattern>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
       </pattern>
       <action>
 	<call-macro n="genere_nombre">
@@ -7166,10 +7255,10 @@
     <rule comment="REGLA: DET NOM1 NOM2 NOM3 NOM4-> DET NOM4 de NOM3 de NOM2 de NOM1 (the video game design industry -> la indústria de disseny de joc de vídeo (?)">
       <pattern>
 	<pattern-item n="det"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
       </pattern>
       <action>
 	<call-macro n="genere_nombre">
@@ -7317,8 +7406,8 @@
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="cnjcoo"/>
-	<pattern-item n="nom"/>
-	<pattern-item n="nom"/>
+	<pattern-item n="nomcomu"/>
+	<pattern-item n="nomcomu"/>
       </pattern>
       <action>
 	<choose><!--To determine value of variables of gender-->
@@ -7471,6 +7560,10 @@
 	</let>
       </action>
     </rule>
+
+
+
+
     <!-- FI SINTAGMES NOMINALS AMB MES D'UN NOM-->
 
     <!-- SINTAGMES NOMINALS AMB GENITIU-->
@@ -8862,7 +8955,7 @@
 
     <rule comment="REGLA: ADV ADJ TO INF (BCN: canviem la prep TO per DE; els adjectius que no compleixin la regla s'han de codificar al lèxic. Queda com a GD i ND fins al interchunk)">
       <pattern>
-	<pattern-item n="adv_preadv"/> 
+	<pattern-item n="preadv"/> 
 	<pattern-item n="adj2"/> <!-- BCN només volem adjs 'reals' no PPs-->
 	<pattern-item n="to"/>
 	<pattern-item n="inf"/>
@@ -8998,7 +9091,7 @@
 
    <rule comment="REGLA: ADV ADJ TO INF (BCN: canviem la prep TO per DE; els adjectius que no compleixin la regla s'han de codificar al lèxic. Queda com a GD i ND fins al interchunk)">
       <pattern>
-	<pattern-item n="adv_preadv"/> 
+	<pattern-item n="preadv"/> 
 	<pattern-item n="adj2"/> <!-- BCN només volem adjs 'reals' no PPs-->
 	<pattern-item n="to"/>
 	<pattern-item n="inf"/>
@@ -9151,7 +9244,7 @@
 
     <rule comment="REGLA: PREADV ADJECTIU ('very difficult'; queda com a GD i ND fins al interchunk)">
       <pattern>
-	<pattern-item n="adv_preadv"/><!--BCN  -->
+	<pattern-item n="preadv"/>
 	<pattern-item n="adj"/>
       </pattern>
       <action>    
