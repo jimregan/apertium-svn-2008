@@ -3,8 +3,8 @@
 
 <section-def-cats>
   <def-cat n="nom">
-     <cat-item tags="n"/>
      <cat-item tags="n.*"/>
+     <cat-item tags="np.*"/>
   </def-cat>
   <def-cat n="adj">
      <cat-item tags="adj"/>
@@ -13,8 +13,8 @@
   <def-cat n="rel">
     <cat-item tags="rel.*"/>
   </def-cat>
-  <def-cat n="izofa">
-    <cat-item tags="iza"/>
+  <def-cat n="enc">
+    <cat-item tags="enc.*"/>
   </def-cat>
   <def-cat n="vpart">
     <cat-item tags="me"/>
@@ -36,6 +36,10 @@
   <def-cat n="pr">
     <cat-item tags="pr"/>
   </def-cat>
+  <def-cat n="adv">
+    <cat-item tags="adv"/>
+    <cat-item tags="adv.*"/>
+  </def-cat>
 </section-def-cats>
 
 <section-def-attrs>
@@ -47,9 +51,19 @@
   <def-attr n="a_nom">
      <attr-item tags="n"/>
      <attr-item tags="np"/>
+     <attr-item tags="np.top"/>
+     <attr-item tags="np.ant"/>
   </def-attr>
   <def-attr n="a_pr">
      <attr-item tags="pr"/>
+  </def-attr>
+  <def-attr n="a_adv">
+     <attr-item tags="adv"/>
+     <attr-item tags="adv.itg"/>
+  </def-attr>
+  <def-attr n="a_enc">
+     <attr-item tags="enc.izo"/>
+     <attr-item tags="enc.acc"/>
   </def-attr>
   <def-attr n="a_det">
      <attr-item tags="det.ind"/>
@@ -92,7 +106,7 @@
 
 <section-def-vars>
   <def-var n="number"/>
-  <def-var n="isFirstWord"/>
+  <def-var n="isFirstWord" v="true"/>
 </section-def-vars>
 
 <section-rules>
@@ -162,6 +176,39 @@
      </action>
   </rule>
 
+  <rule>
+     <pattern>
+       <pattern-item n="adv"/>
+     </pattern>
+     <action>
+       <choose>
+         <when>
+           <test>
+             <equal>
+               <var n="isFirstWord"/>
+               <lit v="true"/>
+             </equal>
+           </test>
+           <modify-case>
+             <clip pos="1" side="tl" part="lem"/>
+             <lit v="Aa"/>
+           </modify-case>
+         </when>
+       </choose>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_adv"/>
+         </lu>
+       </out>
+       <let>
+         <var n="isFirstWord"/>
+         <lit v="false"/> 
+       </let>
+     </action>
+  </rule>
+
+
 
 
 
@@ -201,7 +248,7 @@
   <rule>
      <pattern>
        <pattern-item n="nom"/>
-       <pattern-item n="izofa"/>
+       <pattern-item n="enc"/>
      </pattern>
      <action>
        <choose>
@@ -226,7 +273,7 @@
          </lu>
 	 <lu>
            <clip pos="2" side="tl" part="lem"/>
-	   <lit-tag v="izo"/>
+           <clip pos="2" side="tl" part="a_enc"/>
 	 </lu>
        </out>
        <let>
