@@ -30,16 +30,31 @@
   <def-cat n="sent">
     <cat-item tags="sent"/>
   </def-cat>
-
+  <def-cat n="det">
+    <cat-item tags="det.*"/>
+  </def-cat>
+  <def-cat n="pr">
+    <cat-item tags="pr"/>
+  </def-cat>
 </section-def-cats>
 
 <section-def-attrs>
   <def-attr n="nbr">
+     <attr-item tags="sp"/>
      <attr-item tags="sg"/>
      <attr-item tags="pl"/>
   </def-attr>
   <def-attr n="a_nom">
      <attr-item tags="n"/>
+     <attr-item tags="np"/>
+  </def-attr>
+  <def-attr n="a_pr">
+     <attr-item tags="pr"/>
+  </def-attr>
+  <def-attr n="a_det">
+     <attr-item tags="det.ind"/>
+     <attr-item tags="det.def"/>
+     <attr-item tags="det.dem"/>
   </def-attr>
   <def-attr n="a_rel">
      <attr-item tags="rel"/>
@@ -84,22 +99,90 @@
 
   <rule>
      <pattern>
+       <pattern-item n="det"/>
+     </pattern>
+     <action>
+       <choose>
+         <when>
+           <test>
+             <equal>
+               <var n="isFirstWord"/>
+               <lit v="true"/>
+             </equal>
+           </test>
+           <modify-case>
+             <clip pos="1" side="tl" part="lem"/>
+             <lit v="Aa"/>
+           </modify-case>
+         </when>
+       </choose>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_det"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+       </out>
+       <let>
+         <var n="isFirstWord"/>
+         <lit v="false"/> 
+       </let>
+     </action>
+  </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="pr"/>
+     </pattern>
+     <action>
+       <choose>
+         <when>
+           <test>
+             <equal>
+               <var n="isFirstWord"/>
+               <lit v="true"/>
+             </equal>
+           </test>
+           <modify-case>
+             <clip pos="1" side="tl" part="lem"/>
+             <lit v="Aa"/>
+           </modify-case>
+         </when>
+       </choose>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_pr"/>
+         </lu>
+       </out>
+       <let>
+         <var n="isFirstWord"/>
+         <lit v="false"/> 
+       </let>
+     </action>
+  </rule>
+
+
+
+
+  <rule>
+     <pattern>
        <pattern-item n="nom"/>
      </pattern>
      <action>
        <choose>
-       <when>
-         <test>
-           <equal>
-             <var n="isFirstWord"/>
-             <lit v="true"/>
-           </equal>
-         </test>
-         <modify-case>
-           <clip pos="1" side="tl" part="lem"/>
-           <lit v="Aa"/>
-         </modify-case>
-       </when>
+         <when>
+           <test>
+             <equal>
+               <var n="isFirstWord"/>
+               <lit v="true"/>
+             </equal>
+           </test>
+           <modify-case>
+             <clip pos="1" side="tl" part="lem"/>
+             <lit v="Aa"/>
+           </modify-case>
+         </when>
        </choose>
        <out>
          <lu>
@@ -121,6 +204,20 @@
        <pattern-item n="izofa"/>
      </pattern>
      <action>
+       <choose>
+         <when>
+           <test>
+             <equal>
+               <var n="isFirstWord"/>
+               <lit v="true"/>
+             </equal>
+           </test>
+           <modify-case>
+             <clip pos="1" side="tl" part="lem"/>
+             <lit v="Aa"/>
+           </modify-case>
+         </when>
+       </choose>
        <out>
          <lu>
            <clip pos="1" side="tl" part="lem"/>
@@ -194,15 +291,15 @@
         <pattern-item n="sent"/>
       </pattern>
       <action>
-       <let>
-         <var n="isFirstWord"/>
-         <lit-tag v="true"/>
-       </let>
         <out>
             <lu>
               <clip pos="1" side="tl" part="whole"/>
             </lu>
         </out>
+        <let>
+          <var n="isFirstWord"/>
+          <lit v="true"/>
+       </let>
      </action>
    </rule>
 
