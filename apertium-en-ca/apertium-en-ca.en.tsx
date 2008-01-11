@@ -32,6 +32,14 @@
     <tags-item lemma="do" tags="vblex.pri.p3.sg"/>
     <tags-item lemma="do" tags="vblex.past"/>
   </def-label>
+
+
+  <def-label name="VERBS_DISCURS" closed="true">
+    <tags-item lemma="say" tags="vblex.pp"/>
+    <tags-item lemma="explain" tags="vblex.pp"/>
+    <tags-item lemma="add" tags="vblex.pp"/>
+  </def-label>
+
   <def-label name="INTNOM" closed="true">
     <tags-item tags="prn.itg.*"/>
   </def-label> 
@@ -99,6 +107,7 @@
   </def-label>
   <def-label name="ANTROPONIM">
     <tags-item tags="np.ant.*"/>
+    <tags-item tags="np.cog.*"/>
   </def-label>
   <def-label name="TOPONIM">
     <tags-item tags="np.loc.*"/>
@@ -304,6 +313,10 @@
     <label-sequence>
       <label-item label="PRNSUBJ"/>
       <label-item label="VLEXPP"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="PRNSUBJ"/>
+      <label-item label="VERBS_DISCURS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="PRNSUBJ"/>
@@ -329,6 +342,22 @@
     <label-sequence>
       <label-item label="PRNSUBJ"/>
       <label-item label="NOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRNSUBJ"/>
+      <label-item label="DET"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRNSUBJ"/>
+      <label-item label="DETQNT_ORD"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRNSUBJ"/>
+      <label-item label="PREDET"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRNSUBJ"/>
+      <label-item label="NUM"/>
     </label-sequence>
     <label-sequence>
       <label-item label="PRNSUBJ"/>
@@ -378,6 +407,50 @@
       <label-item label="RELADV"/>
       <label-item label="PRES"/>      
     </label-sequence>
+
+    <label-sequence>
+      <label-item label="RELAN"/>
+      <label-item label="VLEXPP"/>     
+    </label-sequence>
+    <label-sequence>
+      <label-item label="RELAN"/>
+      <label-item label="VSERPP"/>      
+    </label-sequence>
+    <label-sequence>
+      <label-item label="RELAN"/>
+      <label-item label="VMODPP"/>      
+    </label-sequence>
+    <label-sequence>
+      <label-item label="RELAN"/>
+      <label-item label="VHAVEPP"/>      
+    </label-sequence>
+    <label-sequence>
+      <label-item label="RELAN"/>
+      <label-item label="VERBS_DISCURS"/>      
+    </label-sequence>
+    <label-sequence><!--no estic segura que aquesta prohib sigui adequada per a tots els rel 'nn' -->
+      <label-item label="RELNN"/>
+      <label-item label="VLEXPP"/>    
+    </label-sequence>
+    <label-sequence>
+      <label-item label="RELNN"/>
+      <label-item label="VSERPP"/>      
+    </label-sequence>
+    <label-sequence>
+      <label-item label="RELNN"/>
+      <label-item label="VMODPP"/>      
+    </label-sequence>
+    <label-sequence>
+      <label-item label="RELNN"/>
+      <label-item label="VHAVEPP"/>      
+    </label-sequence>
+    <label-sequence>
+      <label-item label="RELNN"/>
+      <label-item label="VERBS_DISCURS"/>      
+    </label-sequence>
+
+ 
+
     <label-sequence><!--'Visitors who wanted to come', pq esculli el rel (no obstant, es farà malament: ask visitors who is the first) -->
       <label-item label="NOMSG"/>
       <label-item label="INTNOM"/>      
@@ -399,7 +472,11 @@
     <label-sequence>
       <label-item label="ANTROPONIM"/>
       <label-item label="VLEXPP"/>
-    </label-sequence> 
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ANTROPONIM"/>
+      <label-item label="VERBS_DISCURS"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="ANTROPONIM"/>
       <label-item label="VSERPP"/>
@@ -411,6 +488,10 @@
     <label-sequence>
       <label-item label="TOPONIM"/>
       <label-item label="VLEXPP"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="TOPONIM"/>
+      <label-item label="VERBS_DISCURS"/>
     </label-sequence> 
     <label-sequence>
       <label-item label="TOPONIM"/>
@@ -423,7 +504,11 @@
     <label-sequence>
       <label-item label="NPALTRES"/>
       <label-item label="VLEXPP"/>
-    </label-sequence> 
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NPALTRES"/>
+      <label-item label="VERBS_DISCURS"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="NPALTRES"/>
       <label-item label="VSERPP"/>
@@ -680,12 +765,36 @@
       <label-item label="NOMPL"/>
     </label-sequence>
 
+    <label-sequence>
+      <label-item label="VERBS_DISCURS"/>
+      <label-item label="NOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VERBS_DISCURS"/>
+      <label-item label="NOMSG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="CM"/>
+      <label-item label="VERBS_DISCURS"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VERBS_DISCURS"/>
+      <label-item label="DET"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VERBS_DISCURS"/>
+      <label-item label="DETQNT_ORD"/>
+    </label-sequence>
+
+
+
  </forbid>
 
  <enforce-rules>
     <enforce-after label="VHAVEPAST">
       <label-set>
         <label-item label="VLEXPP"/>
+        <label-item label="VERBS_DISCURS"/>
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
 	<label-item label="NOT"/>
@@ -695,6 +804,7 @@
     <enforce-after label="VHAVEINF">
       <label-set>
         <label-item label="VLEXPP"/>
+        <label-item label="VERBS_DISCURS"/>
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
       </label-set>
@@ -702,6 +812,7 @@
      <enforce-after label="VHAVEPRES">
       <label-set>
         <label-item label="VLEXPP"/>
+        <label-item label="VERBS_DISCURS"/>
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
 	<label-item label="NOT"/>
@@ -711,6 +822,7 @@
      <enforce-after label="VHAVE">
       <label-set>
         <label-item label="VLEXPP"/>
+        <label-item label="VERBS_DISCURS"/>
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
 	<label-item label="NOT"/>

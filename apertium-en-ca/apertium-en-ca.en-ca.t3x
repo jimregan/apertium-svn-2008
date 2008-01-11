@@ -413,76 +413,7 @@
       </action>
     </rule> 
 
-    
-    <rule comment="CHUNK: nom">
-      <pattern>
-	<pattern-item n="nom_nom"/>
-      </pattern>
-      <action>
-	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<equal>
-		  <clip pos="0" part="a_SN"/>
-		  <lit-tag v="PDET"/>
-		</equal>
-		<not>
-		  <equal>
-		    <clip pos="2" part="a_nom"/>
-		    <lit-tag v="np"/>
-		  </equal>
-		</not>
-	      </and>
-	    </test>
-	    <out>
-	      <lu>
-		<get-case-from pos="1">
-		  <lit v="el"/>
-		</get-case-from>
-		<lit-tag v="det.def"/>
-		<clip pos="1" part="gen"/>
-		<clip pos="1" part="nbr"/>
-	      </lu>
-	      <b/>
-	    </out>
-	  </when>
-	</choose>	 
-	<out>
-	  <lu>
-	    <clip pos="1" part="whole"/>
-	  </lu> 
-	  <b pos="1"/>
-	  <lu>
-	    <clip pos="2" part="whole"/>
-	  </lu>
-	</out>   
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<or>
-		  <equal>
-		    <clip pos="2" part="a_np"/>
-		    <lit-tag v="np.ant"/>
-		  </equal>		  
-		  <equal>
-		    <clip pos="2" part="a_np"/>
-		    <lit-tag v="np.cog"/>
-		  </equal>
-		</or>
-	      </not>
-	    </test>
-	    <out>	       
-	      <b pos="2"/>
-	      <lu>
-		<clip pos="3" part="whole"/>
-	      </lu>
-	    </out>
-	  </when>
-	</choose>
-      </action>
-    </rule> 
+ 
 
 
     <rule comment="CHUNK: INF">

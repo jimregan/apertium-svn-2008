@@ -35,6 +35,10 @@
       <cat-item tags="SN.NUM.*"/>
     </def-cat>
 
+    <def-cat n="SNundet">
+      <cat-item tags="SN.UNDET.*"/>
+    </def-cat>
+
     <def-cat n="SV"><!--Verb conjugat, i tb infinitiu per quan el tagger s'equivoca. -->
       <cat-item lemma="verbcj" tags="SV.*"/>
       <cat-item tags="Vcop.*"/>
@@ -134,6 +138,12 @@
     <def-cat n="pp">
       <cat-item lemma="pp"  tags="SA.*"/>
       <cat-item lemma="adj"  tags="SA.*"/><!-- BCN per que agafi bé resolutions adopted -->
+    </def-cat>
+
+
+    <def-cat n="adj">
+      <cat-item lemma="adj"  tags="SA.*"/>
+      <cat-item lemma="np_pp"  tags="SA.*"/>
     </def-cat>
 
     <def-cat n="DET">
@@ -910,6 +920,10 @@ Your mother and you will come - La vostra mare i tu vindran
 		    <!--   <equal caseless="yes">
 			 <clip pos="1" part="lem"/>
 			 <lit v="nom_nom"/>
+			 </equal> -->
+		    <!--   <equal caseless="yes">
+			 <clip pos="1" part="lem"/>
+			 <lit v="nom_de_nom"/>
 			 </equal> -->
 		    <!--  <equal caseless="yes"> Aquests encara no estan posats en t3x
 			 <clip pos="1" part="lem"/>
@@ -4938,8 +4952,8 @@ Your mother and you will come - La vostra mare i tu vindran
 
   <rule comment="REGLA: SA SN (London-based design company)">
       <pattern>
-	<pattern-item n="SA"/>
-	<pattern-item n="SN"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="SNundet"/>
       </pattern>
       <action>
 	<choose>
