@@ -13,6 +13,9 @@
   <def-cat n="rel">
     <cat-item tags="rel.*"/>
   </def-cat>
+  <def-cat n="prn">
+    <cat-item tags="prn.*"/>
+  </def-cat>
   <def-cat n="enc">
     <cat-item tags="enc.*"/>
   </def-cat>
@@ -43,6 +46,11 @@
 </section-def-cats>
 
 <section-def-attrs>
+  <def-attr n="gen">
+     <attr-item tags="mf"/>
+     <attr-item tags="f"/>
+     <attr-item tags="m"/>
+  </def-attr>
   <def-attr n="nbr">
      <attr-item tags="sp"/>
      <attr-item tags="sg"/>
@@ -56,6 +64,10 @@
   </def-attr>
   <def-attr n="a_pr">
      <attr-item tags="pr"/>
+  </def-attr>
+  <def-attr n="a_prn">
+     <attr-item tags="prn"/>
+     <attr-item tags="prn.subj"/>
   </def-attr>
   <def-attr n="a_adv">
      <attr-item tags="adv"/>
@@ -143,6 +155,43 @@
        </let>
      </action>
   </rule>
+
+  <rule>
+     <pattern>
+       <pattern-item n="prn"/>
+     </pattern>
+     <action>
+       <choose>
+         <when>
+           <test>
+             <equal>
+               <var n="isFirstWord"/>
+               <lit v="true"/>
+             </equal>
+           </test>
+           <modify-case>
+             <clip pos="1" side="tl" part="lem"/>
+             <lit v="Aa"/>
+           </modify-case>
+         </when>
+       </choose>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_prn"/>
+           <clip pos="1" side="tl" part="pers"/>
+           <clip pos="1" side="tl" part="gen"/>
+           <clip pos="1" side="tl" part="nbr"/>
+         </lu>
+       </out>
+       <let>
+         <var n="isFirstWord"/>
+         <lit v="false"/> 
+       </let>
+     </action>
+  </rule>
+
+
 
   <rule>
      <pattern>
