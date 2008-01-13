@@ -98,9 +98,9 @@
   </def-attr>
   <def-attr n="a_adj">
      <attr-item tags="adj"/>
-     <attr-item tags="pve"/>
-     <attr-item tags="comp"/>
-     <attr-item tags="sup"/>
+     <attr-item tags="adj.pve"/>
+     <attr-item tags="adj.comp"/>
+     <attr-item tags="adj.sup"/>
   </def-attr>
   <def-attr n="temps">
      <attr-item tags="pri"/>
@@ -248,6 +248,39 @@
          <lu>
            <clip pos="1" side="tl" part="lem"/>
            <clip pos="1" side="tl" part="a_adv"/>
+         </lu>
+       </out>
+       <let>
+         <var n="isFirstWord"/>
+         <lit v="false"/> 
+       </let>
+     </action>
+  </rule>
+
+
+  <rule>
+     <pattern>
+       <pattern-item n="adj"/>
+     </pattern>
+     <action>
+       <choose>
+         <when>
+           <test>
+             <equal>
+               <var n="isFirstWord"/>
+               <lit v="true"/>
+             </equal>
+           </test>
+           <modify-case>
+             <clip pos="1" side="tl" part="lem"/>
+             <lit v="Aa"/>
+           </modify-case>
+         </when>
+       </choose>
+       <out>
+         <lu>
+           <clip pos="1" side="tl" part="lem"/>
+           <clip pos="1" side="tl" part="a_adj"/>
          </lu>
        </out>
        <let>
