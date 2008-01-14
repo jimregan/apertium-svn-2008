@@ -14,7 +14,9 @@ $subsections = array
    (
    	"translatetext"=>"Text translation",
    	"translatedoc"=>"Document translation",
-   	"surfandtranslate"=>"Surf &amp; translate"   	
+   	"surfandtranslate"=>"Surf &amp; translate",
+   	"link@Apertium unstable"=>"http://xixona.dlsi.ua.es/apertium-unstable/",
+   	"link@Apertium alpha-testing"=>"http://xixona.dlsi.ua.es/testing/"   	
    ),
 "documentation" =>array
    (

@@ -12,9 +12,9 @@ $subsections = array
    */
    "testdrive"=>array
    (
-   	"translatetext"=>"Text translation",
-   	"translatedoc"=>"Document translation",
-   	"surfandtranslate"=>"Surf &amp; translate"
+   	"translatetext"=>"Traducere de texte",
+   	"translatedoc"=>"Traducere de documente",
+   	"surfandtranslate"=>"Navigare și traducere"
    ),
 "documentation" =>array
    (

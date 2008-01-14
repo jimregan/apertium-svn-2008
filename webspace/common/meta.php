@@ -5,9 +5,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
   <head>
+	<link rel="shortcut icon" href="http://xixona.dlsi.ua.es/apertium-www/favicon.ico"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
         <link rel="stylesheet" type="text/css" href="style/style.css" />
         <title>Apertium: an open-source shallow-transfer machine translation engine and toolbox</title>
+        
     </head>
 
 <?php 

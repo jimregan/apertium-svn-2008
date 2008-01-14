@@ -7,30 +7,44 @@
 	if ($dir == "") {
 		$dir = getPair($lang);
 	}
-	show_form($dir);
+	show_form($dir, $lang);
 
 /*
   **************************
 	   SHOW FORM
   **************************
 */
-function show_form($dir) {
+function show_form($dir, $lang) {
+	print '<script src="common/js/surfandtranslate.js" type="text/javascript"></script>';
 	print '<form class="translation" action="common/browser.php" method="post">';
 	print '<table><fieldset><legend></legend>';
 	print '<tr><label for="dir">';
 	print '<td>' . _("Translation") . ':</td>';
-	print '<td><select id="dir" name="dir" title="' . _("Select the translation type") . '">';
+	print '<td><select onchange="loadURLExamples();" id="dir" name="dir" title="' . _("Select the translation type") . '">';
 
 	include_once("available_pairs.php");
 
 	print '</select></td></label></tr>';
 
 	print '<tr><label for="inurl"><td>URL:</td>';
-	print '<td><input size="40" title="' . _("URL to be translated") . '" name="inurl" type="text" value="http://"/></td>';
+	print '<td><input size="40" title="' . _("URL to be translated") . '" name="inurl" id="inurl" type="text" value="http://"/></td>';
 	print '</label></tr>';
 
-	print '<tr><label for="mark"><td>' . _("Mark unknown words") . ':</td>';
-	print '<td><input name="mark" value="1" type="checkbox"/></td>';
+	// An example of URL is given for ro-es
+	if( $dir == "ro-es" ) {
+	print '<tr>';
+	print '<td></td><td>- ' . _("or") . ' -</td>';
+	print '</tr>';
+	print '<tr><label for="urlexample"><td></td>';
+	print '<td>';
+	include_once("urlexamples.php");
+	print '</td>';
+	print '</label></tr>';
+	}
+	
+
+	print '<tr><label for="mark"><td colspan="2">' . _("Mark unknown words") . ': ';
+	print '<input name="mark" value="1" type="checkbox"/></td>';
 	print '</label></tr></fieldset>';
 
 	print '<tr><div><td><input type="submit" value="' . _("Translate") . '" class="submit" title="' . _("Click here to translate") . '"/>';

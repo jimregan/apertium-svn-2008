@@ -8,8 +8,6 @@ function updateLang() {
 	xgettext -n ../common/*.php ../php/*.php
 	cat messages.po | sed 's/CHARSET/UTF-8/g' > messages.po
 	msgmerge old.po messages.po --output-file=$lang.po
-	#msgfmt $lang.po
-	#mv messages.mo "../locale/$lang/LC_MESSAGES/"
 	rm old.po
 	rm messages.po
 }                                                                          
