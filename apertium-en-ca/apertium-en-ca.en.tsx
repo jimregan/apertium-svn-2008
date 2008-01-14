@@ -38,6 +38,7 @@
     <tags-item lemma="say" tags="vblex.pp"/>
     <tags-item lemma="explain" tags="vblex.pp"/>
     <tags-item lemma="add" tags="vblex.pp"/>
+    <tags-item lemma="tell" tags="vblex.pp"/>
   </def-label>
 
   <def-label name="INTNOM" closed="true">

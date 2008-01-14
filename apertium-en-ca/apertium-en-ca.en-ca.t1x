@@ -7261,7 +7261,7 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
-	  <chunk name="nom_genitiu_nom" case="caseFirstWord">
+	  <chunk name="nom_genitiu_nom_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.DET"/></tag>
 	      <tag><clip pos="4" side="tl" part="gen"/></tag>
@@ -7315,6 +7315,93 @@
 	</let>
       </action>
     </rule>
+
+
+   <rule comment="REGLA: NOM GENITIU NOM NOM (Colombia's child welfare agency)">
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="genitiu"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<call-macro n="genere_nombre">
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="nom_genitiu_nom_nom_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><clip pos="5" side="tl" part="gen"/></tag>
+	      <tag><clip pos="5" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="el"/>
+	      <lit-tag v="det.def"/>
+	      <clip pos="5" side="tl" part="gen" link-to="3"/>
+	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu> 
+	      <clip pos="5" side="tl" part="lemh"/> 
+	      <clip pos="5" side="tl" part="a_nom"/>
+	      <clip pos="5" side="tl" part="gen" link-to="3"/>
+	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="5" side="tl" part="lemq"/>  
+	    </lu> 
+	    <b/>
+	    <lu>
+	      <lit v="de"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	    <b pos="3"/>
+	    <lu> 
+	      <clip pos="4" side="tl" part="lemh"/> 
+	      <clip pos="4" side="tl" part="a_nom"/>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <clip pos="4" side="tl" part="lemq"/> 
+	    </lu>
+	    <b pos="4"/>
+	    <lu>   
+	      <lit v="de"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="lemq"/>  
+	    </lu> 
+	    <b/>
+	    <lu>   
+	      <lit v="de"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	    <b/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>  
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
 
     <rule comment="REGLA: DET ADJ NOM GENITIU NOM (the American public's imagination)">
       <pattern>
