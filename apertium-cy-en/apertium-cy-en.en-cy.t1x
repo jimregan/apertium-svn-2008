@@ -77,88 +77,14 @@
         <lit v="false"/>
       </let>
     </def-macro>
-
-    <def-macro n="genere_nombre" npar="1">
-      <choose>
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="gen"/>
-              <lit-tag v="m"/>
-            </equal>
-          </test>
-          <let><var n="genere"/><lit-tag v="m"/></let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="gen"/>
-              <lit-tag v="f"/>
-            </equal>
-          </test>
-          <let><var n="genere"/><lit-tag v="f"/></let>
-        </when>
-      </choose>
-      <choose>
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="sg"/>
-            </equal>
-          </test>
-          <let><var n="nombre"/><lit-tag v="sg"/></let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="pl"/>
-            </equal>
-          </test>
-          <let><var n="nombre"/><lit-tag v="pl"/></let>
-        </when>
-      </choose>
-    </def-macro>
-
   </section-def-macros>
   <section-rules>
-<!--    <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
+
+    <rule comment="REGLA: NOM">
       <pattern>
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <out>
-          <chunk name="nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="1" side="tl" part="gen"/></tag>
-              <tag><clip pos="1" side="tl" part="nbr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_nom"/>
-                                <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-                                <clip pos="1" side="tl" part="gen_mf"/>
-                                <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-                                <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="1" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-      </action>
-    </rule> -->
-
-    <rule comment="REGLA: NOM (per a donar valor a la variable de gènere, i per a col·locar la cua en les multiparaules amb g">      <pattern>
-        <pattern-item n="nom"/>
-      </pattern>
-      <action>
-        <call-macro n="genere_nombre">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
         <out>
           <chunk name="nom" case="caseFirstWord">
             <tags>
