@@ -59,7 +59,7 @@ void help(char *name) {
       <<" --file file --tscript tscript --lscript lscript [--trules transferrules]"
       <<" [--supforms superficialforms] [--genpaths pathsfile]"
       <<" [--translations transfile [--likelihoods likefiles]]"
-      <<" [--save <n>] [--norules] [--debug]\n\n"
+      <<" [--save <n>] [--norules] [--savecounts] [--debug]\n\n"
       <<"ARGUMENTS:\n"
       <<"   --tsxfile|-x: Specify the tagger specification file in XML format\n"
       <<"   --train|-t: Train the HMM-based part-of-speech tagger using\n"
@@ -108,6 +108,7 @@ void help(char *name) {
       <<"                     new parameters (weigh of the new model).  Range: c > 0 \n"
       <<"   --initprob|-b:  Specify the file (.prob) with the initial parameters to be used\n"
       <<"               when pruning techniques are used\n"
+      <<"   --savecount|-c: Save counts (file.counts)\n"
       <<"   --debug|-d: Print debug information while operating\n"
       <<"   --help|-h:  Prints this help message\n"
       <<"   --version|-v: Print version and license information and exits\n\n";
@@ -143,6 +144,7 @@ int main(int argc, char *argv[]) {
   string transfile="";
   string likefile="";
 
+  bool savecounts=false;
 
   int save_after_nwords=0;
 
@@ -171,6 +173,7 @@ int main(int argc, char *argv[]) {
 	{"translations",required_argument, 0, 'a'},
 	{"likelihoods", required_argument, 0, 'e'},
 	{"save",       required_argument, 0, 's'},
+	{"savecounts", no_argument,       0, 'c'},
 	{"norules",    no_argument,       0, 'n'},
 	{"debug",      no_argument,       0, 'd'},
 	{"help",       no_argument,       0, 'h'},
@@ -178,7 +181,7 @@ int main(int argc, char *argv[]) {
 	{0, 0, 0, 0}
       };
 
-    c=getopt_long(argc, argv, "x:t:f:r:l:u:k:b:g:a:e:s:ndhv",long_options, &option_index);
+    c=getopt_long(argc, argv, "x:t:f:r:l:u:k:b:g:a:e:s:cndhv",long_options, &option_index);
     if (c==-1)
       break;
       
@@ -268,6 +271,9 @@ int main(int argc, char *argv[]) {
       break;
     case 'e':
       likefile=optarg;
+      break;
+    case 'c':
+      savecounts=true;
       break;
     case 'n':
       use_tags_rules=false;
@@ -398,9 +404,9 @@ int main(int argc, char *argv[]) {
 
   if (mode==MODE_TRAIN) {
     if (prune_m<=0)
-      hmm_trainer.train(fcrp, corpus_length, save_after_nwords, filename, fpaths, ftrans, flike);
+      hmm_trainer.train(fcrp, corpus_length, save_after_nwords, filename, fpaths, ftrans, flike, savecounts);
     else {
-      hmm_trainer.train_pruning(fcrp, corpus_length, save_after_nwords, filename, mixing_c, ftrans, flike);
+      hmm_trainer.train_pruning(fcrp, corpus_length, save_after_nwords, filename, mixing_c, ftrans, flike, savecounts);
     }
   } 
 

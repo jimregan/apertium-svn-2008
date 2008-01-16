@@ -47,6 +47,14 @@ public:
 					    map<int, double> &tags_count_for_emis,
 					    double corpus_length);
 
+  void static save_counts(TaggerData& td, const string& filename,
+			  map<int, map<int, double> > &tags_pair, 
+			  map<int, map<int, double> > &emis, 
+			  map<int, double> &tags_count, 
+			  map<int, double> &ambclass_count,
+			  map<int, double> &tags_count_for_emis);
+
+
 };
 
 #endif

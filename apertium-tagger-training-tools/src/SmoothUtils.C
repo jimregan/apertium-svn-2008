@@ -24,6 +24,10 @@
  */
 
 #include <iostream>
+#include <fstream>
+
+#include <lttoolbox/Compression.H>
+#include <lttoolbox/EndianUtil.H>
 
 #include "SmoothUtils.H"
 #include <cmath>
@@ -173,4 +177,46 @@ SmoothUtils::calculate_smoothed_parameters(TaggerData& tagger_data,
       }
     }
   }
+}
+
+
+void 
+SmoothUtils::save_counts(TaggerData& td, const string& filename,
+			 map<int, map<int, double> > &tags_pair, 
+			 map<int, map<int, double> > &emis, 
+			 map<int, double> &tags_count, 
+			 map<int, double> &ambclass_count,
+			 map<int, double> &tags_count_for_emis) {
+  fstream fcounts;
+  fcounts.open(filename.c_str(), ios::out | ios::trunc);
+
+  for (int i=0; i<td.getN(); i++) {
+    for(int j=0; j<td.getN(); j++) {
+      EndianUtil<double>::write(fcounts, tags_pair[i][j]);
+    }
+  }
+
+  for(int i=0; i<td.getN(); i++) {
+    for(int k=0; k<td.getM(); k++) {
+      if (td.getOutput()[k].find(i)!=td.getOutput()[k].end()) {
+	Compression::multibyte_write(i, fcounts);
+	Compression::multibyte_write(k, fcounts);
+	EndianUtil<double>::write(fcounts, emis[i][k]);
+      }
+    }
+  }
+
+  for (int i=0; i<td.getN(); i++) {
+    EndianUtil<double>::write(fcounts, tags_count[i]);
+  }
+
+  for (int k=0; k<td.getM(); k++) {
+    EndianUtil<double>::write(fcounts, ambclass_count[k]);
+  }
+
+  for (int i=0; i<td.getN(); i++) {
+    EndianUtil<double>::write(fcounts, tags_count_for_emis[i]);
+  }
+
+  fcounts.close();
 }

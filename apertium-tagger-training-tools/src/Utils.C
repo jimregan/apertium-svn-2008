@@ -32,6 +32,8 @@
 #include <sys/times.h>
 #include <sys/resource.h>
 
+#include <cmath>
+
 #include "Utils.H"
 
 string Utils::translation_script;
@@ -209,4 +211,9 @@ void
 Utils::print_debug(const int& i) {
   if (debug)
     cerr<<i;
+}
+
+double
+Utils::log2(double v) {
+  return (log(v)/log(2));
 }

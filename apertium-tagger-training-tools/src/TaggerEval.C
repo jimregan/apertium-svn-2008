@@ -25,6 +25,16 @@
 #include "TaggerEval.H"
 #include "Utils.H"
 
+TaggerEval::TaggerEval() {
+  nwords=0.0;
+  nunknown=0.0;
+  nignored=0.0;
+  nambiguous=0.0;
+  nerrors_noamb=0.0;
+  nerrors_amb=0.0;
+  nerrors_unk=0.0;
+}
+
 TaggerEval::TaggerEval(FILE* fprob) {
   tagger_data.read(fprob);
 
@@ -277,6 +287,138 @@ TaggerEval::evalword(TaggerWord& word, TTag& tag, MorphoStream& morpho_streameva
     } else  if (word.get_tags().size()==1) {
       nerrors_noamb+=1.0;
       Utils::print_debug("ERROR TAG OK NOT AVAILABLE (NO AMBIGUOUS)\n");
+    } else {
+      if (word.get_tags().find(tagok)==word.get_tags().end()) {
+	nerrors_noamb+=1.0;
+	Utils::print_debug("ERROR TAG OK NOT AVAILABLE (AMBIGUOUS)\n");
+      }
+      else { 
+	nerrors_amb+=1.0;
+	Utils::print_debug("ERROR\n");
+      }
+    }
+  }
+  else
+    Utils::print_debug("OK\n");
+   
+  delete wordok;   
+  return 0;
+}
+
+int
+TaggerEval::evalwordmerging(TaggerMergingData& tmd, TaggerWordMerging& word, TTag& tag, MorphoStreamMerging& morpho_streameval) {
+  static string fsok;
+  static TTag tagok;   
+  static bool read_word_ok=true;
+  static TaggerWord *wordok;    
+   
+  string fstag; 
+  set<TTag> tagsok;   
+   
+  fstag=word.get_superficial_form();
+   
+  if(read_word_ok) {   
+    wordok = morpho_streameval.get_next_word();
+    fsok = wordok->get_superficial_form();
+    tagsok = wordok->get_tags();
+
+    if(tagsok.size()>1) {
+      cerr<<"Error in tagged corpus (.eval) used for evaluation. A word with more than one tag was found\n"<<*wordok<<"\n";
+      return 0;
+    }
+    else if(tagsok.size()==0) {
+      cerr<<"Error in tagged corpus (.eval) used for evaluation. An unknown word was found\n"<<*wordok<<"\n";
+      return 0;
+    }
+   
+    tagok = *(tagsok.begin());
+  
+    nwords+=1.0;
+  }
+  else
+    read_word_ok=true;
+   
+  if (((tagok!=tag)||(fstag != fsok)) && (tag==tmd.getEosTag()) && (fstag==".")) {
+    cerr<<"SKIPING EOS: "<<tag<<"\n";
+    //An end-of-sentence that needs to be skeeped
+    read_word_ok=false;
+    return 0;
+  }
+
+  Utils::print_debug(word.get_string_tags()+" "+word.get_superficial_form());
+  Utils::print_debug(" (");
+  Utils::print_debug(tag);
+  Utils::print_debug(") \t--\t ");
+  Utils::print_debug(wordok->get_superficial_form()+" (");
+  Utils::print_debug(tagok);
+  Utils::print_debug(")  ===> ");
+
+  if (fstag!=fsok) {  	    
+    int ntokens_ok = ntokens_multiword(wordok->get_lexical_form(tagok, tmd.getFineEofTag()));
+    int ntokens_tag = ntokens_multiword(word.get_lexical_form(tag, tmd.getFineEofTag()));
+    int words_distance = abs(ntokens_ok - ntokens_tag);
+    if(ntokens_ok<ntokens_tag) { 
+      //We need to read more words from the tagged corpus used for evaluation
+      //so as to align it witrh the corpus being tagged
+      while(words_distance>0) {
+	delete wordok;
+	wordok = morpho_streameval.get_next_word();
+	words_distance--;
+      }
+      words_distance=0;
+    }
+      
+    if (words_distance>0) {
+      delete wordok;
+      nignored+=1.0;
+      Utils::print_debug(" IGNORED (multiword): ");
+      Utils::print_debug(words_distance);
+      Utils::print_debug("\n");
+
+      return words_distance;
+    }
+      
+    int nguiones_ok = nguiones_fs(fsok); 
+    int nguiones_tag = nguiones_fs(fstag);
+    words_distance = abs(nguiones_ok-nguiones_tag);
+    if(nguiones_ok<nguiones_tag) { 
+      //We need to read more words from the tagged corpus used for evaluation
+      //so as to align it witrh the corpus being tagged
+      while(words_distance>0) {
+	delete wordok;
+	wordok = morpho_streameval.get_next_word();
+	words_distance--;
+      }
+      words_distance=0;
+    }
+    delete wordok;
+    nignored+=1.0;
+    Utils::print_debug(" IGNORED (hyphen): ");
+    Utils::print_debug(words_distance);
+    Utils::print_debug("\n");
+
+    return words_distance;      
+  }
+ 
+  //Both superficial forms are equal
+  if (word.get_tags().size()>1) // Ambiguous
+    nambiguous+=1.0;
+  else if (word.is_unknown()) { // Unknown
+    nunknown+=1.0;
+  }
+
+  if (tag!=tagok) {
+    if (word.get_tags().size()==0) {
+      nerrors_unk+=1.0;
+      Utils::print_debug("ERROR UNKNOWN");
+      if (tagger_data.getOpenClass().find(tagok)==tagger_data.getOpenClass().end())
+	Utils::print_debug(", TAG NOT AVAILABLE IN THE OPEN CLASS");
+      Utils::print_debug("\n");
+    } else  if (word.get_tags().size()==1) {
+      if (!word.is_unknown()) {
+	nerrors_noamb+=1.0;
+	Utils::print_debug("ERROR TAG OK NOT AVAILABLE (NO AMBIGUOUS)\n");
+      }
     } else {
       if (word.get_tags().find(tagok)==word.get_tags().end()) {
 	nerrors_noamb+=1.0;

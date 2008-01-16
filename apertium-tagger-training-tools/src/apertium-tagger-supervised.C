@@ -57,7 +57,7 @@ void check_file(FILE *f, const string& path) {
 }
 
 void 
-supervised(FILE *ftagged, FILE *funtagged) {
+supervised(FILE *ftagged, FILE *funtagged, string savecountsfile) {
   int i, j, k, nw=0;
 
   map<int, map<int, double> > tags_pair; //NxN
@@ -113,9 +113,10 @@ supervised(FILE *ftagged, FILE *funtagged) {
       exit(1);
     }
 
-    if (word_tagged->get_tags().size()==0) // Unknown word
-      tag1 = -1;
-    else if (word_tagged->get_tags().size()>1) // Ambiguous word
+    if (word_tagged->get_tags().size()==0) { // Unknown word
+      //tag1 = -1;
+      tag1=tagger_data.getTagIndex()["TAG_kUNDEF"];
+    } else if (word_tagged->get_tags().size()>1) // Ambiguous word
       cerr<<"Error in tagged text. An ambiguous word was found: "<<word_tagged->get_superficial_form()<<"\n";
     else
       tag1 = *(word_tagged->get_tags()).begin();
@@ -157,7 +158,13 @@ supervised(FILE *ftagged, FILE *funtagged) {
   }
   
   SmoothUtils::calculate_smoothed_parameters(tagger_data, tags_count, tags_pair, ambclass_count, emis, tags_count_for_emis, nw);  
-  
+
+  if (savecountsfile!="") {
+    cerr<<"Saving counts to file '"<<savecountsfile<<"' ... "<<flush;
+    SmoothUtils::save_counts(tagger_data, savecountsfile, tags_pair, emis, tags_count, ambclass_count, tags_count_for_emis);
+    cerr<<"done.\n";
+  }  
+
   cerr<<"Number of words processed: "<<nw<<"\n";  
 }
 
@@ -199,7 +206,7 @@ void apply_rules() {
 
 void help(char *name) {
   cerr<<"USAGE:\n";
-  cerr<<name<<" --tsxfile tsxfile --dicfile file.dic --tagged file.tagger --untagged file.untagged --outfile fileout.prob [--norules]\n\n";
+  cerr<<name<<" --tsxfile tsxfile --dicfile file.dic --tagged file.tagger --untagged file.untagged --outfile fileout.prob [--norules] [--savecounts fileout.counts]\n\n";
 
   cerr<<"ARGUMENTS: \n"
       <<"   --tsxfile|-x: To provide the tagger specification file in XML\n"
@@ -208,6 +215,7 @@ void help(char *name) {
       <<"   --tagged|-t: To specify the file with the tagged corpus to be used for training\n"
       <<"   --untagged|-u: To specify the file with the untagged corpus to be used for training\n"
       <<"   --outfile|-o: To specify the file in which the new parameters will be stored\n"
+      <<"   --savecounts|-s: To specify the file in which the collected counts will be stored\n"
       <<"   --norules|-n: Do not use forbid and enforce rules\n";
 }
 
@@ -218,6 +226,7 @@ int main(int argc, char* argv[]) {
   string filetagged="";
   string fileuntagged="";
   string fileout="";
+  string filecounts="";
 
   bool use_forbid_enforce_rules=true;
 
@@ -234,18 +243,19 @@ int main(int argc, char* argv[]) {
   while (true) {
     static struct option long_options[] =
       {
-	{"tsxfile",  required_argument, 0, 'x'},
-	{"dicfile",  required_argument, 0, 'd'},
-	{"tagged",   required_argument, 0, 't'},
-	{"untagged", required_argument, 0, 'u'},
-	{"outfile",  required_argument, 0, 'o'},
-	{"norules",    no_argument,     0, 'n'},
-	{"help",       no_argument,     0, 'h'},
-	{"version",    no_argument,     0, 'v'},
+	{"tsxfile",    required_argument, 0, 'x'},
+	{"dicfile",    required_argument, 0, 'd'},
+	{"tagged",     required_argument, 0, 't'},
+	{"untagged",   required_argument, 0, 'u'},
+	{"outfile",    required_argument, 0, 'o'},
+	{"savecounts", required_argument, 0, 's'},
+	{"norules",      no_argument,     0, 'n'},
+	{"help",         no_argument,     0, 'h'},
+	{"version",      no_argument,     0, 'v'},
 	{0, 0, 0, 0}
       };
 
-    c=getopt_long(argc, argv, "x:d:t:u:o:nhv",long_options, &option_index);
+    c=getopt_long(argc, argv, "x:d:t:u:o:s:nhv",long_options, &option_index);
     if (c==-1)
       break;
       
@@ -264,6 +274,9 @@ int main(int argc, char* argv[]) {
       break;
     case 'o': 
       fileout=optarg;
+      break;
+    case 's':
+      filecounts=optarg;
       break;
     case 'n': 
       use_forbid_enforce_rules=false;
@@ -343,6 +356,13 @@ int main(int argc, char* argv[]) {
   TaggerWord::setArrayTags(tagger_data.getArrayTags());
   eos=(tagger_data.getTagIndex())["TAG_SENT"];
 
+  //NEW
+  if (tagger_data.getOpenClass().size()==0) {
+    cerr<<"Inserting TAG_kUNDEF in open_class because it was empty\n";
+    tagger_data.getOpenClass().insert(tagger_data.getTagIndex()["TAG_kUNDEF"]);
+  }
+  //
+
   fdic=fopen(filedic.c_str(), "r");
   check_file(fdic, filedic);
   ftagged=fopen(filetagged.c_str(), "r");
@@ -355,7 +375,7 @@ int main(int argc, char* argv[]) {
   cerr<<"done.\n";
   fclose(fdic);
 
-  supervised(ftagged, funtagged);
+  supervised(ftagged, funtagged, filecounts);
   fclose(ftagged);
   fclose(funtagged);
 

@@ -95,7 +95,7 @@ void apply_rules() {
   }
 }
 
-void kupiec (FILE *is, int corpus_length) {
+void kupiec (FILE *is, int corpus_length, string savecountsfile) {
   int i, j, k, k1, k2, nw=0;
   map<int, double> classes_ocurrences; // M
   map<int, map<int, double> > classes_pair_ocurrences; // MxM
@@ -204,11 +204,17 @@ void kupiec (FILE *is, int corpus_length) {
     }
   }
 
+  if (savecountsfile!="") {
+    cerr<<"Saving counts to file '"<<savecountsfile<<"' ... "<<flush;
+    SmoothUtils::save_counts(tagger_data, savecountsfile, tags_pairs, emis, tags_count, classes_ocurrences, tags_count_for_emis);
+    cerr<<"done.\n";
+  }
+
   SmoothUtils::calculate_smoothed_parameters(tagger_data, tags_count, tags_pairs, classes_ocurrences, emis, tags_count_for_emis, nw);
   cerr<<" done\n";
 }
 
-void baum_welch(FILE *ftxt, int corpus_length) {
+void baum_welch(FILE *ftxt, int corpus_length, string savecountsfile) {
   int i, j, k, t, len, nw = 0;
   TaggerWord *word=NULL;
   TTag tag; 
@@ -251,7 +257,7 @@ void baum_welch(FILE *ftxt, int corpus_length) {
     if (tags.size()==0) { // This is an unknown word
       tags = tagger_data.getOpenClass();
     }
-    
+
     if (tagger_data.getOutput().has_not(tags)) {
       string errors;
       errors = "A new ambiguity class was found. I cannot continue.\n";
@@ -341,60 +347,66 @@ void baum_welch(FILE *ftxt, int corpus_length) {
   /*
   //Clean previous values   
   for(i=0; i<tagger_data.getN(); i++) {
-    for(j=0; j<tagger_data.getN(); j++)
-      tagger_data.getA()[i][j]=0;
-    for(k=0; k<tagger_data.getM(); k++)
-      tagger_data.getB()[i][k]=0;
+  for(j=0; j<tagger_data.getN(); j++)
+  tagger_data.getA()[i][j]=0;
+  for(k=0; k<tagger_data.getM(); k++)
+  tagger_data.getB()[i][k]=0;
   }
  
   // new parameters
   for (it=xsi.begin(); it!=xsi.end(); it++) {
-    i = it->first;
-    for (jt=xsi[i].begin(); jt!=xsi[i].end(); jt++) {
-      j = jt->first;
-      if (xsi[i][j]>0) {        
-	tagger_data.getA()[i][j] = xsi[i][j]/gamma[i];
+  i = it->first;
+  for (jt=xsi[i].begin(); jt!=xsi[i].end(); jt++) {
+  j = jt->first;
+  if (xsi[i][j]>0) {        
+  tagger_data.getA()[i][j] = xsi[i][j]/gamma[i];
 	
-	if (isnan(tagger_data.getA()[i][j])) {
-	  cerr <<"Error: BW - NAN(1) a["<<i<<"]["<<j<<"]="<<tagger_data.getA()[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
-	  exit(EXIT_FAILURE);
-	}
-	if (isinf(tagger_data.getA()[i][j])) {
-	  cerr <<"Error: BW - INF(1) a["<<i<<"]["<<j<<"]="<<tagger_data.getA()[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
-	  exit(EXIT_FAILURE);
-	}
-	if (tagger_data.getA()[i][j]==0) {
-	  //cerr <<"Error: BW - ZERO(1) a["<<i<<"]["<<j<<"]="<<a[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
-	  //exit(1);
-	}
-      }
-    }
+  if (isnan(tagger_data.getA()[i][j])) {
+  cerr <<"Error: BW - NAN(1) a["<<i<<"]["<<j<<"]="<<tagger_data.getA()[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+  exit(EXIT_FAILURE);
+  }
+  if (isinf(tagger_data.getA()[i][j])) {
+  cerr <<"Error: BW - INF(1) a["<<i<<"]["<<j<<"]="<<tagger_data.getA()[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+  exit(EXIT_FAILURE);
+  }
+  if (tagger_data.getA()[i][j]==0) {
+  //cerr <<"Error: BW - ZERO(1) a["<<i<<"]["<<j<<"]="<<a[i][j]<<"\txsi["<<i<<"]["<<j<<"]="<<xsi[i][j]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+  //exit(1);
+  }
+  }
+  }
   }
   
 
   for (it=phi.begin(); it!=phi.end(); it++) {
-    i = it->first;
-    for (kt=phi[i].begin(); kt!=phi[i].end(); kt++) {
-      k = kt->first;
-      if (phi[i][k]>0) {
-	tagger_data.getB()[i][k] = phi[i][k]/gamma[i];	
+  i = it->first;
+  for (kt=phi[i].begin(); kt!=phi[i].end(); kt++) {
+  k = kt->first;
+  if (phi[i][k]>0) {
+  tagger_data.getB()[i][k] = phi[i][k]/gamma[i];	
         
-	if (isnan(tagger_data.getB()[i][k])) {
-	  cerr <<"Error: BW - NAN(2) b["<<i<<"]["<<k<<"]="<<tagger_data.getB()[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
-	  exit(EXIT_FAILURE);
-	}
-	if (isinf(tagger_data.getB()[i][k])) {
-	  cerr <<"Error: BW - INF(2) b["<<i<<"]["<<k<<"]="<<tagger_data.getB()[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
-	  exit(EXIT_FAILURE);
-	}
-	if (tagger_data.getB()[i][k]==0) {
-	  //cerr <<"Error: BW - ZERO(2) b["<<i<<"]["<<k<<"]="<<b[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
-	  //exit(1);
-	}
-      }
-    }
+  if (isnan(tagger_data.getB()[i][k])) {
+  cerr <<"Error: BW - NAN(2) b["<<i<<"]["<<k<<"]="<<tagger_data.getB()[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+  exit(EXIT_FAILURE);
+  }
+  if (isinf(tagger_data.getB()[i][k])) {
+  cerr <<"Error: BW - INF(2) b["<<i<<"]["<<k<<"]="<<tagger_data.getB()[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+  exit(EXIT_FAILURE);
+  }
+  if (tagger_data.getB()[i][k]==0) {
+  //cerr <<"Error: BW - ZERO(2) b["<<i<<"]["<<k<<"]="<<b[i][k]<<"\tphi["<<i<<"]["<<k<<"]="<<phi[i][k]<<"\tgamma["<<i<<"]="<<gamma[i]<<"\n";
+  //exit(1);
+  }
+  }
+  }
   }
   */
+
+  if (savecountsfile!="") {
+    cerr<<"Saving counts to file '"<<savecountsfile<<"' ... "<<flush;
+    SmoothUtils::save_counts(tagger_data, savecountsfile, xsi, phi, gamma, ambclass_count, gamma);
+    cerr<<"done.\n";
+  }
 
   SmoothUtils::calculate_smoothed_parameters(tagger_data, gamma, xsi, ambclass_count, phi, gamma, nw);
   cerr<<" done. Log="<<loli<<"\n";
@@ -402,8 +414,8 @@ void baum_welch(FILE *ftxt, int corpus_length) {
 
 void help(char *name) {
   cerr<<"USAGE:\n";
-  cerr<<name<<" --train <n> [--clength <corpus_length>] --tsxfile tsxfile --dicfile file.dic --crpfile file.crp --outfile fileout.prob [--norules]\nOR\n"
-      <<name<<" --retrain <n> [--clength <corpus_length>] --infile filein.prob --crpfile file.crp --outfile fileout.prob\n\n";
+  cerr<<name<<" --train <n> [--clength <corpus_length>] --tsxfile tsxfile --dicfile file.dic --crpfile file.crp --outfile fileout.prob [--norules] [--savecounts fileout.counts]\nOR\n"
+      <<name<<" --retrain <n> [--clength <corpus_length>] --infile filein.prob --crpfile file.crp --outfile fileout.prob [--savecounts fileout.counts]\n\n";
 
   cerr<<"ARGUMENTS: \n"
       <<"   --train|-t: To train the HMM-based apertium-tagger for <n> Baum-Welch interations\n"
@@ -416,6 +428,7 @@ void help(char *name) {
       <<"   --crpfile|-c: To specify the corpus to be used for training\n"
       <<"   --infile|-i: To specify a file containing initial tagger parameters\n"
       <<"   --outfile|-o: To specify the file in which the new parameters will be stored\n"
+      <<"   --savecounts|-s: To specify the file in which the collected counts will be stored\n"
       <<"   --norules|-n: Do not use forbid and enforce rules\n";
 }
 
@@ -426,6 +439,7 @@ int main(int argc, char* argv[]) {
   string filecrp="";
   string filein="";
   string fileout="";
+  string filecounts="";
   int nit=-1;
   int corpus_length=-1;
   int mode=MODE_UNKNOWN;
@@ -444,21 +458,22 @@ int main(int argc, char* argv[]) {
   while (true) {
     static struct option long_options[] =
       {
-	{"train",    required_argument, 0, 't'},
-	{"retrain",  required_argument, 0, 'r'},
-	{"clength",  required_argument, 0, 'l'},
-	{"tsxfile",  required_argument, 0, 'x'},
-	{"dicfile",  required_argument, 0, 'd'},
-	{"crpfile",  required_argument, 0, 'c'},
-	{"infile",   required_argument, 0, 'i'},
-	{"outfile",  required_argument, 0, 'o'},
-	{"norules",    no_argument,     0, 'n'},
-	{"help",       no_argument,     0, 'h'},
-	{"version",    no_argument,     0, 'v'},
+	{"train",      required_argument, 0, 't'},
+	{"retrain",    required_argument, 0, 'r'},
+	{"clength",    required_argument, 0, 'l'},
+	{"tsxfile",    required_argument, 0, 'x'},
+	{"dicfile",    required_argument, 0, 'd'},
+	{"crpfile",    required_argument, 0, 'c'},
+	{"infile",     required_argument, 0, 'i'},
+	{"outfile",    required_argument, 0, 'o'},
+	{"savecounts", required_argument, 0, 's'},
+	{"norules",      no_argument,     0, 'n'},
+	{"help",         no_argument,     0, 'h'},
+	{"version",      no_argument,     0, 'v'},
 	{0, 0, 0, 0}
       };
 
-    c=getopt_long(argc, argv, "t:r:l:x:d:c:i:o:nhv",long_options, &option_index);
+    c=getopt_long(argc, argv, "t:r:l:x:d:c:i:o:s:nhv",long_options, &option_index);
     if (c==-1)
       break;
       
@@ -493,6 +508,9 @@ int main(int argc, char* argv[]) {
       break;
     case 'o': 
       fileout=optarg;
+      break;
+    case 's':
+      filecounts=optarg;
       break;
     case 'n': 
       use_forbid_enforce_rules=false;
@@ -578,6 +596,13 @@ int main(int argc, char* argv[]) {
     TaggerWord::setArrayTags(tagger_data.getArrayTags());
     eos=(tagger_data.getTagIndex())["TAG_SENT"];
 
+    //NEW
+    if (tagger_data.getOpenClass().size()==0) {
+      cerr<<"Inserting TAG_kUNDEF in open_class because it was empty\n";
+      tagger_data.getOpenClass().insert(tagger_data.getTagIndex()["TAG_kUNDEF"]);
+    }
+    //
+
     fdic=fopen(filedic.c_str(), "r");
     check_file(fdic, filedic);
     fcrp=fopen(filecrp.c_str(), "r");
@@ -588,7 +613,7 @@ int main(int argc, char* argv[]) {
     cerr<<"done.\n";
     fclose(fdic);
 
-    kupiec(fcrp, corpus_length);
+    kupiec(fcrp, corpus_length, filecounts);
 
     if (use_forbid_enforce_rules) {
       cerr<<"Applying forbid and enforce rules ... "<<flush;
@@ -598,7 +623,7 @@ int main(int argc, char* argv[]) {
 
     while(nit>0) {
       rewind(fcrp);
-      baum_welch(fcrp, corpus_length);
+      baum_welch(fcrp, corpus_length, filecounts);
       nit--;
     }
     fclose(fcrp);
@@ -630,7 +655,7 @@ int main(int argc, char* argv[]) {
     eos=(tagger_data.getTagIndex())["TAG_SENT"];
 
     while(nit>0) {
-      baum_welch(fcrp, corpus_length);
+      baum_welch(fcrp, corpus_length, filecounts);
       rewind(fcrp);
       nit--;
     }

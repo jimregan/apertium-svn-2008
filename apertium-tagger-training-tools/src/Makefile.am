@@ -3,16 +3,17 @@
 bin_PROGRAMS = apertium-tagger-tl-trainer apertium-tagger-eval apertium-tagger-baum-welch \
                apertium-tagger-check-parameters apertium-tagger-readwords  \
                apertium-SGT apertium-tagger-apply-rules apertium-tagger-prob2txt \
-               apertium-tagger-supervised
+               apertium-tagger-supervised apertium-tagger-tagset-clustering \
+               apertium-tagger-states-merging
 # apertium-bestTLtagger apertium-hmm-language-model
 
 bin_SCRIPTS = apertium-xtract-regex-trules apertium-tagger-gen-crp-file apertium-tagger-gen-dic-file \
-              apertium-trigrams-langmodel apertium-trigrams-langmodel-perline
+              apertium-tagger-gen-tsx-file apertium-trigrams-langmodel apertium-trigrams-langmodel-perline
 
 apertium_tagger_training_toolsdir=$(prefix)/apertium-tagger-training-tools-$(GENERIC_API_VERSION)
 
 EXTRA_DIST = xtract-trules.xsl xtract-regex-trules.sh gen_crp_file.sh gen_dic_file.sh \
-             apertium-trigrams-langmodel.pl apertium-trigrams-langmodel-perline.pl 
+             gen_tsx_file.sh apertium-trigrams-langmodel.pl apertium-trigrams-langmodel-perline.pl 
 
 apertium_tagger_tl_trainer_SOURCES =  HMM_TL_driven_trainer.H  Segment.H \
             StringCollection.H  TransferRules.H  Translations.H  Utils.H PathsPruner.H \
@@ -21,7 +22,9 @@ apertium_tagger_tl_trainer_SOURCES =  HMM_TL_driven_trainer.H  Segment.H \
             Translations.C  Utils.C PathsPruner.C SmoothUtils.C
 apertium_tagger_tl_trainer_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
-apertium_tagger_eval_SOURCES = Utils.H Utils.C TaggerEval.H TaggerEval.C apertium-tagger-eval.C
+apertium_tagger_eval_SOURCES = Utils.H Utils.C TaggerEval.H TaggerEval.C apertium-tagger-eval.C \
+            TaggerMergingData.H TaggerMergingData.C MorphoStreamMerging.H MorphoStreamMerging.C \
+            TaggerWordMerging.H TaggerWordMerging.C SmoothUtils.H SmoothUtils.C
 apertium_tagger_eval_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
 apertium_tagger_baum_welch_SOURCES = apertium-tagger-baum-welch.C SmoothUtils.H SmoothUtils.C
@@ -42,10 +45,20 @@ apertium_tagger_apply_rules_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM
 apertium_tagger_prob2txt_SOURCES = apertium-tagger-prob2txt.C
 apertium_tagger_prob2txt_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
+apertium_tagger_tagset_clustering_SOURCES = apertium-tagger-tagset-clustering.C Utils.H Utils.C \
+            HMMStatesMerging.H HMMStatesMerging.C
+apertium_tagger_tagset_clustering_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
+
+apertium_tagger_states_merging_SOURCES = apertium-tagger-states-merging.C Utils.H Utils.C \
+            TaggerMerging.H TaggerMerging.C TaggerMergingData.H TaggerMergingData.C \
+            SmoothUtils.H SmoothUtils.C MorphoStreamMerging.H MorphoStreamMerging.C \
+            TaggerWordMerging.H TaggerWordMerging.C TaggerEval.H TaggerEval.C
+apertium_tagger_states_merging_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
+
 #apertium_hmm_language_model_SOURCES = apertium-hmm-language-model.C Utils.H Utils.C
 #apertium_hmm_language_model_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
-#apertium_bestTLtagger_SOURCES = apertium-bestTLtagger.C Segment.H TransferRules.H Utils.H Segment.C TransferRules.C Utils.C                                                
+#apertium_bestTLtagger_SOURCES = apertium-bestTLtagger.C Segment.H TransferRules.H Utils.H Segment.C TransferRules.C Utils.C
 #apertium_bestTLtagger_LDADD = $(LIBXML2_LIBS) $(LTTOOLBOX_LIBS) $(APERTIUM_LIBS)
 
 apertium_SGT_SOURCES = apertium-SGT.C 
@@ -76,6 +89,12 @@ apertium-tagger-gen-dic-file: gen_dic_file.sh Makefile.am
 	@echo "Creating $@ script"
 	@echo "#!$(BASH)" > $@
 	@cat   gen_dic_file.sh >> $@
+	@chmod a+x $@
+
+apertium-tagger-gen-tsx-file: gen_tsx_file.sh Makefile.am
+	@echo "Creating $@ script"
+	@echo "#!$(BASH)" > $@
+	@cat   gen_tsx_file.sh >> $@
 	@chmod a+x $@
 
 apertium-trigrams-langmodel: apertium-trigrams-langmodel.pl Makefile.am
