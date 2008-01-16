@@ -20,6 +20,9 @@
       <cat-item name="ger_enc"/>
     </def-cat>
 
+<def-cat n="ger_enc_enc"> 
+      <cat-item name="ger_enc_enc"/>
+    </def-cat>
 
     <def-cat n="be">
       <cat-item name="be"/>
@@ -45,6 +48,8 @@
       <cat-item name="nom_conj_nom"/>
     </def-cat>
 
+ 
+
     <def-cat n="pottenirpronom">
       <cat-item name="verbcj"/>
       <cat-item name="verbcj_perif"/>
@@ -66,7 +71,7 @@
       <cat-item name="pro_auxmod_have_pp"/>
     </def-cat>   
 
-<def-cat n="pottenirenclitic">
+<def-cat n="pottenirenclitic"><!--MG: canviar tot això pel nou mecanisme, sense mlu en el t1x, i aquí fabricar les mlu -->
       <cat-item name="verbcj_inf_perif"/>
       <cat-item name="verbcj_inf"/>
       <cat-item name="auxmod_inf_inf"/>
@@ -174,6 +179,9 @@
       <attr-item tags="prn.enc"/>
     </def-attr>
 
+  <def-attr n="a_ref">
+      <attr-item tags="ref"/>
+    </def-attr> 
 
   </section-def-attrs>
   <section-def-vars>
@@ -426,12 +434,18 @@
       <action>
 	<choose>
 	  <when>
-	    <test><!--Si no és PD tampoc serà ND, en principi -->
+	    <test><!--Mirem si ha deixat de ser 'inf' i ha rebut persona i nombre. Si no és PD tampoc serà ND, en principi -->
 	      <not>
-		<equal>
-		  <clip pos="0" part="pers"/>
-		  <lit-tag v="PD"/>
-		</equal>
+		<and>
+		  <equal>
+		    <clip pos="0" part="pers"/>
+		    <lit-tag v="PD"/>
+		  </equal>
+		  <equal>
+		    <clip pos="0" part="temps"/>
+		    <lit-tag v="inf"/>
+		  </equal>
+		</and>
 	      </not>
 	    </test>      
 	    <out>
@@ -463,12 +477,18 @@
       <action>
 	<choose>
 	  <when>
-	    <test><!--Si no és PD tampoc serà ND, en principi -->
+	    <test><!--Mirem si ha deixat de ser 'inf' i ha rebut persona i nombre. Si no és PD tampoc serà ND, en principi -->
 	      <not>
-		<equal>
-		  <clip pos="0" part="pers"/>
-		  <lit-tag v="PD"/>
-		</equal>
+		<and>
+		  <equal>
+		    <clip pos="0" part="pers"/>
+		    <lit-tag v="PD"/>
+		  </equal>
+		  <equal>
+		    <clip pos="0" part="temps"/>
+		    <lit-tag v="inf"/>
+		  </equal>
+		</and>
 	      </not>
 	    </test>      
 	    <out>
@@ -512,10 +532,16 @@
 	  <when>
 	    <test><!--Si no és PD tampoc serà ND, en principi -->
 	      <not>
-		<equal>
-		  <clip pos="0" part="pers"/>
-		  <lit-tag v="PD"/>
-		</equal>
+		<and>
+		  <equal>
+		    <clip pos="0" part="pers"/>
+		    <lit-tag v="PD"/>
+		  </equal>
+		  <equal>
+		    <clip pos="0" part="temps"/>
+		    <lit-tag v="ger"/>
+		  </equal>
+		</and>
 	      </not>
 	    </test>      
 	    <out>
@@ -548,110 +574,127 @@
 	  <when>
 	    <test><!--Si no és PD tampoc serà ND, en principi -->
 	      <not>
-		<equal>
-		  <clip pos="0" part="pers"/>
-		  <lit-tag v="PD"/>
-		</equal>
+		<and>
+		  <equal>
+		    <clip pos="0" part="pers"/>
+		    <lit-tag v="PD"/>
+		  </equal>
+		  <equal>
+		    <clip pos="0" part="temps"/>
+		    <lit-tag v="ger"/>
+		  </equal>
+		</and>
 	      </not>
 	    </test>  
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="0" part="tipus_verb"/>
-		    <lit-tag v="SV.pron"/>
-		  </equal>
-		</test>
-		<out>	      
-		  <lu>
-		    <clip pos="2" part="lem"/>
-		    <lit-tag v="prn.pro.ref"/>
-		    <clip pos="2" part="pers"/>
-		    <clip pos="2" part="gen"/>
-		    <clip pos="2" part="nbr"/>
-		  </lu>
-		  <b pos="1"/>
-		  <lu>
-		    <clip pos="3" part="lem"/>
-		    <lit-tag v="prn.pro"/>
-		    <clip pos="3" part="pers"/>
-		    <clip pos="3" part="gen"/>
-		    <clip pos="3" part="nbr"/>
-		  </lu>
-		  <b/>
-		  <lu>
-		    <clip pos="1" part="lemh"/>
-		    <clip pos="1" part="tags"/>
-		    <clip pos="0" part="pers"/>
-		    <clip pos="0" part="nbr"/>
-		    <clip pos="1" part="lemq"/>
-		  </lu> 
-		</out>  
-	      </when>
-	      <otherwise>
-		<out>	      
-		  <lu>
-		    <clip pos="2" part="lem"/>
-		    <lit-tag v="prn.pro"/>
-		    <clip pos="2" part="pers"/>
-		    <clip pos="2" part="gen"/>
-		    <clip pos="2" part="nbr"/>
-		  </lu>
-		  <b pos="1"/>
-		  <lu>
-		    <clip pos="1" part="lemh"/>
-		    <clip pos="1" part="tags"/>
-		    <clip pos="0" part="pers"/>
-		    <clip pos="0" part="nbr"/>
-		    <clip pos="1" part="lemq"/>
-		  </lu> 
-		</out> 
-	      </otherwise>
-	    </choose>
+	    <out>	      
+	      <lu>
+		<clip pos="2" part="lem"/>
+		<lit-tag v="prn.pro"/>
+		<clip pos="2" part="a_ref"/><!--només tindrà valor si el pronom és reflexiu -->
+		<clip pos="2" part="pers"/>
+		<clip pos="2" part="gen"/>
+		<clip pos="2" part="nbr"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="1" part="lemh"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="0" part="pers"/>
+		<clip pos="0" part="nbr"/>
+		<clip pos="2" part="lemq"/><!--atenció: lemq de posició 2, tot i que ho és del verb, perquè per les operacions del t1x ha passat a ser cua del pronom i no del verb, aquí cal recolocar-la -->
+	      </lu> 
+	    </out> 
 	  </when>
-	  <otherwise>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="0" part="tipus_verb"/>
-		    <lit-tag v="SV.pron"/>
-		  </equal>
-		</test>
-		<out>
-		  <mlu>
-		    <lu> 
-		      <clip pos="1" part="whole"/>
-		    </lu>
-		    <lu> 
-		      <clip pos="2" part="whole"/>
-		    </lu>
-		    <lu> 
-		      <clip pos="3" part="whole"/>
-		    </lu>
-		  </mlu>
-		</out>
-	      </when>
-	      <otherwise>
-		<out>
-		  <mlu>
-		    <lu> 
-		      <clip pos="1" part="whole"/>
-		    </lu>
-		    <lu> 
-		      <clip pos="2" part="whole"/>
-		    </lu>
-		  </mlu>
-		</out>
-	      </otherwise>
-	    </choose>
-	    <call-macro n="f_bcond">
-	      <with-param pos="1"/>
-	    </call-macro>
+	  <otherwise><!--si no tenen pers ni nbr, cal crear les 'mlu'. Aquí la cua ja està bé com està -->	   
+	    <out>
+	      <mlu>
+		<lu> 
+		  <clip pos="1" part="whole"/>
+		</lu>
+		<lu> 
+		  <clip pos="2" part="whole"/>
+		</lu>
+	      </mlu>
+	    </out>
 	  </otherwise>
-	</choose>	
+	</choose>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	</call-macro>
+  </action>
+</rule>
+
+
+  <rule comment="CHUNK: GER ENC">
+      <pattern>
+	<pattern-item n="ger_enc_enc"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test><!--Si no és PD tampoc serà ND, en principi -->
+	      <not>
+		<and>
+		  <equal>
+		    <clip pos="0" part="pers"/>
+		    <lit-tag v="PD"/>
+		  </equal>
+		  <equal>
+		    <clip pos="0" part="temps"/>
+		    <lit-tag v="ger"/>
+		  </equal>
+		</and>
+	      </not>
+	    </test>  
+	    <out>   
+	      <lu>
+		<clip pos="2" part="lem"/>
+		<lit-tag v="prn.pro"/>
+		<clip pos="2" part="a_ref"/><!--només tindrà valor si el pronom és reflexiu -->
+		<clip pos="2" part="pers"/>
+		<clip pos="2" part="gen"/>
+		<clip pos="2" part="nbr"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="3" part="lem"/>
+		<lit-tag v="prn.pro"/>
+		<clip pos="3" part="pers"/>
+		<clip pos="3" part="gen"/>
+		<clip pos="3" part="nbr"/>
+	      </lu>
+	      <b/>
+	      <lu>
+		<clip pos="1" part="lemh"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="0" part="pers"/>
+		<clip pos="0" part="nbr"/>
+		<clip pos="2" part="lemq"/><!--atenció: lemq de posició 2, tot i que ho és del verb, perquè per les operacions del t1x ha passat a ser cua del pronom i no del verb, aquí cal recolocar-la -->
+	      </lu> 
+	    </out>  
+	  </when>
+	  <otherwise><!--si no tenen pers ni nbr, cal crear les 'mlu'. Aquí la cua ja està bé com està-->	   
+	    <out>
+	      <mlu>
+		<lu> 
+		  <clip pos="1" part="whole"/>
+		</lu>
+		<lu> 
+		  <clip pos="2" part="whole"/>
+		</lu>
+		<lu> 
+		  <clip pos="3" part="whole"/>
+		</lu>
+	      </mlu>
+	    </out>
+	  </otherwise>
+	</choose>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	</call-macro>
       </action>
-    </rule>
+  </rule>
+
 
     <rule comment="CHUNK: BE (there is)">
       <pattern>

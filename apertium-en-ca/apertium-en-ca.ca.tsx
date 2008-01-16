@@ -97,6 +97,7 @@
   </def-label>
   <def-label name="ANTROPONIM">
     <tags-item tags="np.ant.*"/>
+    <tags-item tags="np.cog.*"/>
   </def-label>
   <def-label name="TOPONIM">
     <tags-item tags="np.loc.*"/>
