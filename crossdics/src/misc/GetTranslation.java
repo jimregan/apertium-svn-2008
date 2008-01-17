@@ -100,8 +100,8 @@ public class GetTranslation {
 	    setTl(tl);
 	}
 
-	msg.out("source lang: " + this.getSl());
-	msg.out("target lang: " + this.getTl());
+	msg.out("source lang: " + getSl());
+	msg.out("target lang: " + getTl());
 
 	connectDB("omegawiki", "omegawiki", "");
     }
@@ -124,13 +124,16 @@ public class GetTranslation {
 	    con = DriverManager.getConnection(url, props);
 	    msg.out("Database connection established");
 	} catch (ClassNotFoundException cnfe) {
-	    msg.err("Class not found!");
+	    msg.err("Error: could not find MySQL driver (org.gjt.mm.mysql.Driver)");
+	    System.exit(-1);
 	} catch (SQLException sqle) {
 	    msg.err("Error SQL!");
 	    sqle.printStackTrace();
+	    System.exit(-1);
 	} catch (Exception e) {
 	    msg.err("Error!");
 	    e.printStackTrace();
+	    System.exit(-1);
 	} finally {
 	}
 
@@ -228,7 +231,7 @@ public class GetTranslation {
 		    slPoS = posTag;
 		    c = i;
 		}
-		if (lang.equals(tl) && i == c) {
+		if (lang.equals(tl) && (i == c)) {
 		    tltext = expr;
 		    tlPoS = posTag;
 		    sltext = sltext.replaceAll(" ", "<b/>");

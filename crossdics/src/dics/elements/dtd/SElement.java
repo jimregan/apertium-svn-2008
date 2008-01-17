@@ -44,8 +44,7 @@ public class SElement extends Element {
     /**
          * 
          */
-    //private String temp;
-
+    // private String temp;
     /**
          * 
          * 
@@ -172,14 +171,10 @@ public class SElement extends Element {
     }
 
     /*
-    public final String getTemp() {
-	return temp;
-    }
-
-    public final void setTemp(String temp) {
-	this.temp = temp;
-    }
-    */
+         * public final String getTemp() { return temp; }
+         * 
+         * public final void setTemp(String temp) { this.temp = temp; }
+         */
 
     @Override
     public Object clone() {

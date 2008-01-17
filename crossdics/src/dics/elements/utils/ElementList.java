@@ -82,6 +82,22 @@ public class ElementList extends ArrayList<Element> implements Cloneable {
 	}
     }
 
+        public final void printErr() {
+	if (size() > 0) {
+	    for (Element e : this) {
+		String tmp = "";
+		if (e instanceof SElement) {
+		    tmp = ((SElement) e).getTemp();
+		    if (tmp == null) {
+			tmp = "";
+		    }
+		}
+		System.err.print("<" + e.getValue() + "/" + tmp + ">");
+	    }
+	    System.err.println("");
+	}
+    }
+
     /**
          * 
          */

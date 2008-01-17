@@ -115,7 +115,10 @@ public class DicTools {
 	final EElementMap entriesMap = new EElementMap();
 
 	for (final EElement e : entries) {
-	    final String lemma = e.getLemma();
+	    String lemma = e.getLemma();
+            if (lemma == null) {
+                lemma = e.getValueNoTags();
+            }
 	    final String key = DicTools.clearTags(lemma);
 	    if (entriesMap.containsKey(key)) {
 		final EElementList eList = entriesMap.get(key);
@@ -242,6 +245,10 @@ public class DicTools {
 	    final EElementList eList = monMap.get(key);
 	    for (final EElement e : eList) {
 		String lemma = e.getLemma();
+                // in case no lemma is defined
+                if (lemma == null) {
+                    lemma = e.getValueNoTags();
+                }
 		lemma = DicTools.clearTags(lemma);
 
 		if (bilABMap.containsKey(lemma)) {
@@ -387,8 +394,8 @@ public class DicTools {
 	}
 
 	final String[] st = DicTools.getSourceAndTarget(bil.getFileName());
-	bil.setSL(st[0]);
-	bil.setTL(st[1]);
+	bil.setLeftLanguage(st[0]);
+	bil.setRightLanguage(st[1]);
 	dicReaderBil = null;
 	return bil;
     }

@@ -33,133 +33,134 @@ import java.util.Set;
 public class ActionSetList extends HashMap<String, ActionSet> {
 
     /**
-         * 
-         */
+     * 
+     */
     private static final long serialVersionUID = 1L;
+    
+    /**
+     * 
+     */
+    private ActionSet bestActionSet;
 
     /**
-         * 
-         * 
-         */
+     * 
+     * 
+     */
     public final void print() {
-	Set keySet = keySet();
-	Iterator it = keySet.iterator();
-	int max = size();
-	int cont = 1;
+        Set keySet = keySet();
+        Iterator it = keySet.iterator();
+        int max = size();
+        int cont = 1;
 
-	System.err.print("{ ");
-	while (it.hasNext()) {
-	    String key = (String) it.next();
-	    ActionSet actionSet = get(key);
+        System.err.print("{ ");
+        while (it.hasNext()) {
+            String key = (String) it.next();
+            ActionSet actionSet = get(key);
 
-	    for (Action action : actionSet) {
-		System.err.print(action.getName() + " ("
-			+ action.getPatternLength() + "/"
-			+ action.getNumberOfConstants() + ")");
-		if (cont < max) {
-		    System.err.print(", ");
-		    cont++;
-		}
-	    }
-	}
-	System.err.println(" }");
+                System.err.print(actionSet.getName() + " (" + actionSet.getPatternLength() + "/" + actionSet.getNumberOfConstants() + ")");
+                if (cont < max) {
+                    System.err.print(", ");
+                    cont++;
+                }
+        }
+        System.err.println(" }");
     }
 
-    /**
-         * 
-         * @return
-         */
-    public final ActionSet getBestActionSetOld() {
-	ActionSet bestActionSet = null;
-	ArrayList<ActionSet> actionSetList = new ArrayList<ActionSet>();
-	int maxLength = 0;
-	Set keySet = keySet();
-	Iterator it = keySet.iterator();
-
-	while (it.hasNext()) {
-	    String key = (String) it.next();
-	    ActionSet actionSet = get(key);
-	    if (actionSet.getPatternLength() > maxLength) {
-		actionSetList = new ArrayList<ActionSet>();
-		actionSetList.add(actionSet);
-		maxLength = actionSet.getPatternLength();
-	    } else {
-		if (actionSet.getPatternLength() == maxLength) {
-		    actionSetList.add(actionSet);
-		}
-	    }
-	}
-
-	int maxNConstants = -1;
-	for (ActionSet actionSet : actionSetList) {
-	    if (actionSet.getNumberOfConstants() > maxNConstants) {
-		bestActionSet = actionSet;
-		maxNConstants = actionSet.getNumberOfConstants();
-	    }
-	}
-
-	return bestActionSet;
-    }
 
     /**
-         * 
-         * @return
-         */
+     * 
+     * @return
+     */
     public final ActionSet getBestActionSet() {
-	ActionSet bestActionSet = null;
-	ArrayList<ActionSet> actionSetList = new ArrayList<ActionSet>();
+        ActionSet defaultActionSet = null;
+        ArrayList<ActionSet> actionSetList = new ArrayList<ActionSet>();
+        Set keySet = keySet();
+        Iterator it = keySet.iterator();
+        int maxNConstants = -1;
+        boolean defaultCanBeApplied = false;
 
-	Set keySet = keySet();
-	Iterator it = keySet.iterator();
-	int maxNConstants = -1;
+        while (it.hasNext()) {
+            String key = (String) it.next();
+            ActionSet actionSet = get(key);
+            if (!actionSet.getName().equals("default")) {
+                if (actionSet.getNumberOfConstants() > maxNConstants) {
+                    actionSetList = new ArrayList<ActionSet>();
+                    actionSetList.add(actionSet);
+                    maxNConstants = actionSet.getNumberOfConstants();
+                } else {
+                    if (actionSet.getNumberOfConstants() == maxNConstants) {
+                        actionSetList.add(actionSet);
+                    }
+                }
+            } else {
+                defaultCanBeApplied = true;
+                defaultActionSet = actionSet;
+            }
+        }
 
-	int i = 1;
-	// System.err.println("Candidates:");
-	while (it.hasNext()) {
-	    String key = (String) it.next();
-	    ActionSet actionSet = get(key);
-	    // System.err.println("\tcandidate (" + i + "): " +
-	    // actionSet.getName());
-	    // System.err.println("\t\tconstants: " +
-	    // actionSet.getNumberOfConstants());
-	    // System.err.println("\t\tlength: " +
-	    // actionSet.getPatternLength());
-	    if (actionSet.getNumberOfConstants() > maxNConstants) {
-		actionSetList = new ArrayList<ActionSet>();
-		actionSetList.add(actionSet);
-		maxNConstants = actionSet.getNumberOfConstants();
-	    } else {
-		if (actionSet.getNumberOfConstants() == maxNConstants) {
-		    actionSetList.add(actionSet);
-		}
-	    }
-	    i++;
-	}
-
-	int maxLength = 0;
-
-	ArrayList<ActionSet> actionSetList2 = new ArrayList<ActionSet>();
-	for (ActionSet actionSet : actionSetList) {
-	    if (actionSet.getPatternLength() > maxLength) {
-		bestActionSet = actionSet;
-		maxLength = actionSet.getPatternLength();
-	    } else {
-		if (actionSet.getPatternLength() == maxLength) {
-		    actionSetList2.add(actionSet);
-		}
-	    }
-	}
-
-	if (actionSetList2.size() > 1) {
-	    int maxR = 0;
-	    for (ActionSet actionSet2 : actionSetList2) {
-		if (actionSet2.getNumberOfRestrictions() > maxR) {
-		    bestActionSet = actionSet2;
-		    maxR = actionSet2.getNumberOfRestrictions();
-		}
-	    }
-	}
-	// System.err.println("Winner: " + bestActionSet.getName());
-	return bestActionSet;
+        ArrayList<ActionSet> longestPatterns = this.getLongestPatterns(actionSetList);
+        this.getMostConcretePatterns(longestPatterns);
+        
+        if (!isDefinedBestAction() && defaultCanBeApplied) {
+            setBestActionSet(defaultActionSet);
+        }
+        return bestActionSet;
     }
+    
+    /**
+     * 
+     * @param actionSetList
+     * @return
+     */
+    private final ArrayList<ActionSet> getLongestPatterns(ArrayList<ActionSet> actionSetList) {
+        int maxLength = 0;
+        ArrayList<ActionSet> longestPatterns = new ArrayList<ActionSet>();
+        for (ActionSet actionSet : actionSetList) {
+            int patternLength = actionSet.getNumberOfConstants();
+            if (patternLength > maxLength) {
+                this.setBestActionSet(actionSet);
+                maxLength = patternLength;
+            } else {
+                if (patternLength == maxLength) {
+                    longestPatterns.add(actionSet);
+                }
+            }
+        }
+        return longestPatterns;
+    }
+    
+    /**
+     * 
+     * @param actionSetList
+     */
+    private final void getMostConcretePatterns(final ArrayList<ActionSet> actionSetList) {
+        if (actionSetList.size() > 1) {
+            int maxR = 0;
+            for (ActionSet actionSet2 : actionSetList) {
+                if (actionSet2.getNumberOfRestrictions() > maxR) {
+                    this.setBestActionSet(actionSet2);
+                    maxR = actionSet2.getNumberOfRestrictions();
+                }
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    private final boolean isDefinedBestAction() {
+        return this.bestActionSet != null;
+    }
+    
+    /**
+     * 
+     * @param action
+     */
+    private final void setBestActionSet(ActionSet action) {
+        this.bestActionSet = action;
+        
+    }
+    
+    
 }

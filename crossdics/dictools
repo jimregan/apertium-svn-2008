@@ -4,16 +4,17 @@ mainClass="ProcessDics"
 # Minimum and maximum memory for JVM
 defaultMinMem=32
 defaultMaxMem=300
-library='lib/cross-dics.jar'
-java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp ${library} $mainClass"
-#java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -cp $CLASSPATH $mainClass"
-#echo $java_options
+if [$CROSSDICS_PATH == ""]; then
+	CROSSDICS_PATH="."
+fi
+library="$CROSSDICS_PATH/dist/crossdics.jar"
+java_options="-Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library}"
 
 #
 #	cross
 #
 function cross() {
-   crossmodel="schemas/cross-model-test.xml"
+   crossmodel="$CROSSDICS_PATH/schemas/cross-model-test.xml"
    if [ $nparams -ge 7 ] && [ $nparams -le 9  ]; then
 	   if [ $nparams -ge 8 ]
    	then
@@ -22,8 +23,10 @@ function cross() {
 	   echo "cross model: $crossmodel"
    	java ${java_options} $task -bilAB $3 $4 -bilBC $5 $6 -monA $2 -monC $7 -cross-model $crossmodel $9 2> $task.err
    else
-   	echo "Usage: dictools cross <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> crossmodel"
+   	echo "Usage: dictools cross <monA> <-r|-n> <bilAB> <-r|-n> <bilBC> <monC> crossmodel";
+   	echo "";
    	echo "More information in http://xixona.dlsi.ua.es/wiki/index.php/Crossdics";
+   	echo "";
    fi
 }
 
@@ -39,6 +42,9 @@ function format() {
       echo "Log file in 'format.err'"
    else
       echo "Usage: dictools format <-mon|-bil> <dic> <out>"
+      echo "";
+      echo "More information: http://xixona.dlsi.ua.es/wiki/index.php/Format_dictionaries";
+      echo "";
    fi
 }
 
@@ -54,6 +60,9 @@ function merge-morph() {
       echo "Merged dictionary: $4"
    else
       echo "Usage: dictools merge-morph <monA1> <monA2> <merged>"
+      echo "";
+      echo "More information: http://xixona.dlsi.ua.es/wiki/index.php/Merge_dictionaries";
+      echo "";
    fi
 }
 
@@ -69,7 +78,10 @@ function merge-bil() {
       java ${java_options} $task -bilAB1 $2 $3 -bilAB2 $4 $5 -out $6
       echo "Merged: $6"
    else
-   	echo "Usage: dictools merge-bil <-n|-r> <bilAB1> <-n|-r> <bilAB2> <merged>"
+   	echo "Usage: dictools merge-bil <-n|-r> <bilAB1> <-n|-r> <bilAB2> <merged>";
+   	echo "";
+   	#echo "More information: ";
+   	#echo "";
    fi
 }
 
@@ -82,7 +94,10 @@ function reverse-bil() {
       echo "Reading '$2'..."
    	java ${java_options} reverse $2 $3 2> reverse-bil.err      
    else
-      echo "Usage: dictools reverse-bil <dic> <out>"
+      echo "Usage: dictools reverse-bil <dic> <out>";
+      echo "";
+      echo "More information: http://xixona.dlsi.ua.es/wiki/index.php/Reverse_a_dictionary";
+      echo "";
    fi
 }
 
@@ -96,7 +111,10 @@ function sort() {
       java ${java_options} $task $2 $3 $4 $5
       echo "Sorted: $5"
    else
-      echo "Usage: dictools sort <-bil|-mon> <-xinclude|-same-file> <dic.dix> <out.dix>"
+      echo "Usage: dictools sort <-bil|-mon> <-xinclude|-same-file> <dic.dix> <out.dix>";
+      echo "";
+      echo "More information: http://xixona.dlsi.ua.es/wiki/index.php/Sort_a_dictionary";
+      echo "";
    fi
 }
 
@@ -109,7 +127,10 @@ function process-xincludes() {
       java ${java_options} gather $2 $3
       echo "Dictionary: $3"
    else
-      echo "Usage: dictools process-xincludes <dic> <out.dix>"
+      echo "Usage: dictools process-xincludes <dic> <out.dix>";
+      echo "";
+      #echo "More information: ";
+      #echo "";
    fi
 }
 
@@ -123,6 +144,9 @@ function get-bil-omegawiki() {
       echo "Dictionary: $4"
    else
       echo "Usage: dictools get-bil-omegawiki <source-lang> <target-lang> <dic-out>"
+      echo "";
+      echo "More information: http://xixona.dlsi.ua.es/wiki/index.php/Getting_bilingual_dictionaries_from_OmegaWiki";
+      echo "";
    fi
 }
 
@@ -168,6 +192,9 @@ function equiv-paradigms() {
       java ${java_options} $task $2 $3
    else
       echo "Usage: dictools equiv-paradigms <dic> <out>"
+      echo "";
+      echo "More information: http://xixona.dlsi.ua.es/wiki/index.php/Equivalent_paradigms";
+      echo "";
    fi
 }
 
@@ -178,15 +205,16 @@ function equiv-paradigms() {
 function show_help() {
    echo "Usage: dictools [task] ..."
    echo "  Tasks:"
-   echo "    cross:             crosses a set of dictionaries"
-   echo "    dic-reader:        reads elements from a dictionary"
-   echo "    equiv-paradigms:   finds equivalent paradigms and updates references"
-   echo "    format:            formats a dictionary"   
-   echo "    merge-bil:         merges two bilingual dictionaries"
-   echo "    merge-morph:       merges two morphological dictionaries"
-   echo "    process-xincludes: processes and expands all xincludes in the dictionary"
-   echo "    reverse-bil:       reverses a bilingual dictionary"
-   echo "    sort:              sorts (and groups by category) a dictionary"
+   echo "    cross:              crosses a set of dictionaries"
+   echo "    dic-reader:         reads elements from a dictionary"
+   echo "    equiv-paradigms:    finds equivalent paradigms and updates references"
+   echo "    format:             formats a dictionary"   
+   echo "    get-bil-omegawiki:  gets cheap bilingual dictionaries from Omegawiki."
+   echo "    merge-bil:          merges two bilingual dictionaries"
+   echo "    merge-morph:        merges two morphological dictionaries"
+   echo "    process-xincludes:  processes and expands all xincludes in the dictionary"
+   echo "    reverse-bil:        reverses a bilingual dictionary"
+   echo "    sort:               sorts (and groups by category) a dictionary"
    echo ""
    echo "More info: http://xixona.dlsi.ua.es/wiki/index.php/Crossdics"
    echo ""

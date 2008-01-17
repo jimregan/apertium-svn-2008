@@ -130,22 +130,6 @@ public class DicSet {
          * 
          * 
          */
-    /*
-         * public final void printSize() {
-         * System.err.println(mon1.getEntries().size() + " entradas en el
-         * diccionario monolinge es-ca");
-         * System.err.println(mon2.getEntries().size() + " entradas en el
-         * diccionario monolinge es-pt");
-         * System.err.println(bil1.getEntries().size() + " entradas en el
-         * diccionario bilinge es-ca");
-         * System.err.println(bil2.getEntries().size() + " entradas en el
-         * diccionario bilinge es-pt"); }
-         */
-
-    /**
-         * 
-         * 
-         */
     public final void reportMetrics() {
 	System.err.println("monA");
 	mon1.reportMetrics();
@@ -163,12 +147,10 @@ public class DicSet {
          */
     public final void printXML(final String suffix) {
 	printMonolXML(suffix);
-	getBil1().printXML(
-		DicTools.removeExtension(getBil1().getFileName()) + "-"
-			+ suffix + ".dix");
-	getBil2().printXML(
-		DicTools.removeExtension(getBil2().getFileName()) + "-"
-			+ suffix + ".dix");
+	getBil1().printXML(suffix + "-bilAB.dix");
+	//DicTools.removeExtension(getBil1().getFileName()) + "-" + suffix + ".dix");
+	getBil2().printXML(suffix + "-bilBC.dix");
+           //	DicTools.removeExtension(getBil2().getFileName()) + "-" + suffix + ".dix");
     }
 
     /**
@@ -176,12 +158,10 @@ public class DicSet {
          * @param suffix
          */
     public final void printMonolXML(final String suffix) {
-	getMon1().printXML(
-		DicTools.removeExtension(getMon1().getFileName()) + "-"
-			+ suffix + ".dix");
-	getMon2().printXML(
-		DicTools.removeExtension(getMon2().getFileName()) + "-"
-			+ suffix + ".dix");
+	getMon1().printXML(suffix + "-monA.dix");
+		//DicTools.removeExtension(getMon1().getFileName()) + "-"		+ suffix + ".dix");
+	getMon2().printXML(suffix + "-monC.dix");
+		//DicTools.removeExtension(getMon2().getFileName()) + "-"		+ suffix + ".dix");
     }
 
 }

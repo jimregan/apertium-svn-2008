@@ -103,32 +103,32 @@ public class PardefElement extends Element {
     }
 
     /**
-     * 
-     * @param pardef2
-     * @return
-     */
+         * 
+         * @param pardef2
+         * @return
+         */
     public final boolean equals(final PardefElement pardef2) {
 	EElementList eList1 = getEElements();
 	EElementList eList2 = pardef2.getEElements();
-	
+
 	if (eList1.size() != eList2.size()) {
 	    return false;
 	}
-	
-	HashMap<String,EElement> elementsPardef1 = new HashMap<String,EElement>();
-	
-	for(EElement element1 : eList1) {
+
+	HashMap<String, EElement> elementsPardef1 = new HashMap<String, EElement>();
+
+	for (EElement element1 : eList1) {
 	    elementsPardef1.put(element1.toStringAll(), element1);
 	}
-	
-	for(EElement element2: eList2) {
+
+	for (EElement element2 : eList2) {
 	    if (!elementsPardef1.containsKey(element2.toStringAll())) {
 		return false;
 	    }
 	}
 	return true;
     }
-    
+
     /**
          * 
          * @param pardef2
@@ -161,7 +161,7 @@ public class PardefElement extends Element {
 		}
 	    }
 	}
-	
+
 	for (int i = 0; i < maxi; i++) {
 	    if (!c1[i]) {
 		return false;
@@ -189,9 +189,9 @@ public class PardefElement extends Element {
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public final String toStringNoParName() {
 	String str = "";
 	for (final EElement e : eElements) {

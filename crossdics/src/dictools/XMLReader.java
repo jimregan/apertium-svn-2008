@@ -53,6 +53,7 @@ import dics.elements.dtd.ReElement;
 import dics.elements.dtd.SElement;
 import dics.elements.dtd.SaElement;
 import dics.elements.dtd.TextElement;
+import org.w3c.dom.Comment;
 
 /**
  * 
@@ -80,15 +81,15 @@ public class XMLReader {
          * 
          */
     protected File dicFile;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     protected InputStream is;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     protected boolean urlDic;
 
     /*
@@ -112,13 +113,13 @@ public class XMLReader {
     protected SaElement saElement;
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public XMLReader() {
 	init();
     }
-    
+
     /**
          * 
          * @param fileName
@@ -129,11 +130,11 @@ public class XMLReader {
     }
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     private final void init() {
-	//getFactory().setXIncludeAware(true);
+	// getFactory().setXIncludeAware(true);
 	try {
 	    setFactory(DocumentBuilderFactory.newInstance());
 	    setBuilder(getFactory().newDocumentBuilder());
@@ -157,7 +158,7 @@ public class XMLReader {
 	    if (isUrlDic()) {
 		// case: url
 		setDocument(getBuilder().parse(getIs()));
-		
+
 	    } else {
 		// case: file
 		setDocument(getBuilder().parse(getDicFile()));
@@ -221,7 +222,7 @@ public class XMLReader {
 	final String lm = getAttributeValue(e, "lm");
 	final String a = getAttributeValue(e, "a");
 	final String c = getAttributeValue(e, "c");
-	final String aversion = this.getAttributeValue(e, "aversion");
+	final String aversion = getAttributeValue(e, "aversion");
 
 	final EElement eElement = new EElement(r, lm, a, c);
 	eElement.setAversion(aversion);
@@ -340,6 +341,7 @@ public class XMLReader {
 
 	String text = "";
 
+        try {
 	if (e.hasChildNodes()) {
 	    final NodeList children = e.getChildNodes();
 	    for (int i = 0; i < children.getLength(); i++) {
@@ -348,19 +350,26 @@ public class XMLReader {
 		    final Text textNode = (Text) child;
 		    final String str = textNode.getData().trim();
 		    text += str;
+                    //System.err.println("Text: " + text);
 		    final TextElement tE = new TextElement(str);
 		    cElement.addChild(tE);
 		} else {
+                    if (!(child instanceof Comment)) {
 		    final Element childElement = (Element) child;
 		    final String tag = childElement.getNodeName();
 		    text += processTagText(tag, child);
 		    dics.elements.dtd.Element element = processTagE(tag, child);
 		    cElement.addChild(element);
+                    }
 		}
 	    }
 	} else {
 	    text = "";
 	}
+        } catch(Exception exp) {
+            exp.printStackTrace();
+            System.exit(-1);
+        }
 	// cElement.setValue(text);
 	return cElement;
     }
@@ -633,31 +642,33 @@ public class XMLReader {
     }
 
     /**
-     * @return the is
-     */
+         * @return the is
+         */
     public final InputStream getIs() {
-        return is;
+	return is;
     }
 
     /**
-     * @param is the is to set
-     */
+         * @param is
+         *                the is to set
+         */
     public final void setIs(InputStream is) {
-        this.is = is;
+	this.is = is;
     }
 
     /**
-     * @return the urlDic
-     */
+         * @return the urlDic
+         */
     public final boolean isUrlDic() {
-        return urlDic;
+	return urlDic;
     }
 
     /**
-     * @param urlDic the urlDic to set
-     */
+         * @param urlDic
+         *                the urlDic to set
+         */
     public final void setUrlDic(boolean urlDic) {
-        this.urlDic = urlDic;
+	this.urlDic = urlDic;
     }
 
 }

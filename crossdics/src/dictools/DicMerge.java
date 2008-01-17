@@ -284,13 +284,14 @@ public class DicMerge {
 	for (final SectionElement section1 : m1.getSections()) {
 	    final SectionElement section2 = m2.getSection(section1.getID());
 	    if (section2 != null) {
-	    final SectionElement section = mergeSectionElements(section1,
-		    section2);
-	    mon.addSection(section);
+		final SectionElement section = mergeSectionElements(section1,
+			section2);
+		mon.addSection(section);
 	    } else {
-		msg.err("There's no '" + section1.getID() + "' section in monolingual 2");
+		msg.err("There's no '" + section1.getID()
+			+ "' section in monolingual 2");
 	    }
-	    
+
 	}
 
 	return mon;
@@ -314,7 +315,7 @@ public class DicMerge {
 
 	int duplicated = 0;
 
-	this.paradigmsToRemove = new HashMap<String, String>();
+	paradigmsToRemove = new HashMap<String, String>();
 
 	final EElementList elements1 = sectionE1.getEElements();
 	System.out.println("  monolingual 1 (" + elements1.size() + " lemmas)");
@@ -348,7 +349,7 @@ public class DicMerge {
 		fromSec2++;
 	    } else {
 		// System.out.println("'" + e2.getLemma() + "' already
-                // exists.");
+		// exists.");
 		common++;
 		String parName2 = e2.getParadigmValue();
 
@@ -380,7 +381,7 @@ public class DicMerge {
 		+ " lemmas in merged dictionary");
 
 	// System.out.println(duplicated + " duplicated entries in sections " +
-        // sectionE1.getID() + "/" + sectionE2.getID());
+	// sectionE1.getID() + "/" + sectionE2.getID());
 
 	return sectionElement;
     }
@@ -924,7 +925,7 @@ public class DicMerge {
          * @param parName
          */
     public final void addParadigmToRemove(final String parName) {
-	this.paradigmsToRemove.put(parName, parName);
+	paradigmsToRemove.put(parName, parName);
     }
 
 }

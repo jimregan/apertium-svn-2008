@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007 Universitat d'Alacant / Universidad de Alicante
  * Author: Enrique Benimeli Bofarull
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -24,123 +24,190 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import javax.swing.JLabel;
 
 /**
- * 
+ *
  * @author Enrique Benimeli Bofarull
- * 
+ *
  */
 public class Msg {
 
     /**
-         * 
-         */
+     *
+     */
     private boolean debug;
-
     /**
-         * 
-         */
+     *
+     */
     private String logFileName;
-
     /**
-         * 
-         */
+     *
+     */
     private DataOutputStream log;
+    /**
+     *
+     */
+    private JLabel label;
+    /**
+     *
+     */
+    private int type = 0;
+    /**
+     *
+     */
+    static final int NORMAL = 0;
+    /**
+     *
+     */
+    static final int LABEL = 1;
 
     /**
-         * 
-         * 
-         */
+     *
+     *
+     */
     public Msg(final String logFileName) {
-	this.debug = false;
+        debug = false;
     }
 
     /**
-         * 
-         * 
-         */
+     *
+     */
+    public Msg(JLabel label) {
+        this.label = label;
+        this.setType(this.LABEL);
+    }
+
+    /**
+     *
+     *
+     */
     public Msg() {
-	this.debug = false;
+        debug = false;
     }
 
     /**
-         * 
-         * @param logFileName
-         */
+     *
+     * @param logFileName
+     */
     private final void openLogStream(final String logFileName) {
-	try {
-	    File file = new File(logFileName);
-	    FileOutputStream fos = new FileOutputStream(file);
-	    log = new DataOutputStream(fos);
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+        try {
+            File file = new File(logFileName);
+            FileOutputStream fos = new FileOutputStream(file);
+            log = new DataOutputStream(fos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-         * 
-         * @param text
-         */
+     *
+     * @param text
+     */
     public final void err(final String text) {
-	System.err.println(text);
+        System.err.println(text);
     }
 
     /**
-         * 
-         * @param text
-         */
+     *
+     * @param text
+     */
     public final void out(final String text) {
-	System.out.println(text);
+
+        switch (this.getType()) {
+            case LABEL:
+                label.setText(text);
+                break;
+            default:
+                System.out.println(text);
+                break;
+        }
     }
 
     /**
-         * 
-         * @param text
-         */
+     * 
+     */
+    public final void msg(final String text) {
+
+        // Only for Java components (JLabel, etc)
+        switch (this.getType()) {
+            case LABEL:
+                label.setText(text);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     *
+     * @param text
+     */
     public final void log(final String text) {
-	if (isDebug()) {
-	    if (log == null) {
-		openLogStream(logFileName);
-	    }
-	    try {
-		log.writeBytes(text + "\n");
-	    } catch (IOException ioe) {
-		System.err
-			.println("Error writing log file " + getLogFileName());
-	    }
-	}
+        if (isDebug()) {
+            if (log == null) {
+                openLogStream(logFileName);
+            }
+            try {
+                log.writeBytes(text + "\n");
+            } catch (IOException ioe) {
+                System.err.println("Error writing log file " + getLogFileName());
+            }
+        }
     }
 
     /**
-         * @return the debug
-         */
+     * @return the debug
+     */
     public final boolean isDebug() {
-	return debug;
+        return debug;
     }
 
     /**
-         * @param debug
-         *                the debug to set
-         */
+     * @param debug
+     *                the debug to set
+     */
     public final void setDebug(boolean debug) {
-	this.debug = debug;
+        this.debug = debug;
     }
 
     /**
-         * @return the logFileName
-         */
+     * @return the logFileName
+     */
     public final String getLogFileName() {
-	return logFileName;
+        return logFileName;
     }
 
     /**
-         * @param logFileName
-         *                the logFileName to set
-         */
+     * @param logFileName
+     *                the logFileName to set
+     */
     public final void setLogFileName(String logFileName) {
-	this.logFileName = logFileName;
-	if (isDebug()) {
-	    openLogStream(logFileName);
-	}
+        this.logFileName = logFileName;
+        if (isDebug()) {
+            openLogStream(logFileName);
+        }
+    }
+
+    /**
+     *
+     */
+    public final void setType(int t) {
+        this.type = t;
+    }
+
+    /**
+     *
+     */
+    public final int getType() {
+        return type;
+    }
+
+    /**
+     *
+     */
+    public final void setLabel(JLabel label) {
+        this.label = label;
+        this.type = this.LABEL;
     }
 }

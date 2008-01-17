@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import dics.elements.dtd.Element;
-import dics.elements.dtd.SElement;
 import dics.elements.dtd.TextElement;
 import dics.elements.utils.ElementList;
 
@@ -36,64 +35,64 @@ import dics.elements.utils.ElementList;
 public class State {
 
     /**
-     * 
-     */
+         * 
+         */
     private String value;
 
     /**
-     * 
-     */
+         * 
+         */
     private String temp;
 
     /**
-     * 
-     */
+         * 
+         */
     private TransitionSet transitions;
 
     /**
-     * 
-     */
+         * 
+         */
     private ActionSet actionSet;
 
     /**
-     * 
-     */
+         * 
+         */
     private static int nStates;
 
     /**
-     * 
-     */
+         * 
+         */
     private Vector<String> lrrl;
 
     /**
-     * 
-     */
+         * 
+         */
     private Vector<String> lr;
 
     /**
-     * 
-     */
+         * 
+         */
     private Vector<String> rl;
 
     /**
-     * 
-     */
+         * 
+         */
     private boolean restrictionMatched;
 
     /**
-     * 
-     */
+         * 
+         */
     private ElementList entries;
 
     /**
-     * 
-     */
+         * 
+         */
     private ActionSetList actionSetList;
 
     /**
-     * 
-     * @param value
-     */
+         * 
+         * @param value
+         */
     public State(final String value) {
 	this.value = value;
 	transitions = new TransitionSet();
@@ -101,19 +100,19 @@ public class State {
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     private final void incrementNStates() {
 	State.nStates++;
     }
 
     /**
-     * 
-     * @param pattern
-     * @param actionSet
-     * @param i
-     */
+         * 
+         * @param pattern
+         * @param actionSet
+         * @param i
+         */
     public final void add(ElementList pattern, ActionSet actionSet, int i) {
 	TransitionSet transitions = getTransitions();
 	if (i < pattern.size()) {
@@ -121,7 +120,7 @@ public class State {
 	    State state;
 	    if (!transitions.containsKey(e.getValue())) {
 		state = new State(e.getValue());
-		//state.setTemp(((SElement) e).getTemp());
+		// state.setTemp(((SElement) e).getTemp());
 		state.setTemp(e.getTemp());
 		transitions.put(state.getValue(), state);
 	    } else {
@@ -138,11 +137,11 @@ public class State {
     }
 
     /**
-     * 
-     * @param entries
-     * @param i
-     * @param actionSetList
-     */
+         * 
+         * @param entries
+         * @param i
+         * @param actionSetList
+         */
     public final void getActionSet(final ElementList entries, int i,
 	    ActionSetList actionSetList, HashMap<String, ElementList> tails) {
 	if (i < entries.size()) {
@@ -172,10 +171,10 @@ public class State {
 	    processRestriction(v, "LR", lr, i, tails);
 	    processRestriction(v, "RL", rl, i, tails);
 
-	    //SElement sE = (SElement) e;
+	    // SElement sE = (SElement) e;
 
 	    if (!isRestrictionMatched()) {
-		//String real = sE.getTemp();
+		// String real = sE.getTemp();
 		String real = e.getTemp();
 		// System.out.println(v + "/" + real);
 
@@ -191,17 +190,17 @@ public class State {
     }
 
     /**
-     * This method will be removed
-     * 
-     * @param v
-     * @param value
-     * @param values
-     * @param state
-     * @param entries
-     * @param i
-     * @param actionList
-     * @return
-     */
+         * This method will be removed
+         * 
+         * @param v
+         * @param value
+         * @param values
+         * @param state
+         * @param entries
+         * @param i
+         * @param actionList
+         * @return
+         */
     private final void processRestriction(final String v, final String value,
 	    final Vector<String> values, int i,
 	    HashMap<String, ElementList> tails) {
@@ -220,10 +219,10 @@ public class State {
     }
 
     /**
-     * 
-     * @param value
-     * @param i
-     */
+         * 
+         * @param value
+         * @param i
+         */
     private final void processItem(final String value, int i,
 	    HashMap<String, ElementList> tails) {
 	if (getTransitions().containsKey(value)) {
@@ -246,8 +245,6 @@ public class State {
 	    if (tails == null) {
 		tails = new HashMap<String, ElementList>();
 	    }
-	    // System.out.print("entries: ");
-	    // this.getEntries().print();
 	    ElementList tail = new ElementList();
 	    ElementList entries = getEntries();
 
@@ -257,10 +254,6 @@ public class State {
 		i++;
 		e = entries.get(i);
 	    }
-	    // System.out.print("S = ");
-	    // s.print();
-
-	    // CrossModelFST.addTail(s);
 
 	    State state = getTransitions().get("0");
 	    if (tail.size() > 0) {
@@ -268,131 +261,116 @@ public class State {
 		    tails.put(state.getTemp(), tail);
 		}
 	    }
-
 	    state.getActionSet(getEntries(), i, getActionSetList(), tails);
-
-	    /*
-	     * if (getTransitions().containsKey(e.getValue())) {
-	     * System.out.println("Next: " + e.getValue()); State state =
-	     * getTransitions().get(e.getValue());
-	     * 
-	     * if (state.getValue().equals("j")) {
-	     * System.out.println("Accepted pattern with S");
-	     * setActionSet(state.getActionSet());
-	     * getActionSetList().put(this.getActionSet().getName(),
-	     * this.getActionSet()); } else {
-	     * state.getActionSet(getEntries(), i + 1, getActionSetList()); } }
-	     */
-
 	}
 
     }
 
     /**
-     * @return the value
-     */
+         * @return the value
+         */
     public final String getValue() {
 	return value;
     }
 
     /**
-     * @param value
-     *                the value to set
-     */
+         * @param value
+         *                the value to set
+         */
     public final void setValue(String value) {
 	this.value = value;
     }
 
     /**
-     * @return the nStates
-     */
+         * @return the nStates
+         */
     public static final int getNStates() {
 	return State.nStates;
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     private final TransitionSet getTransitions() {
 	return transitions;
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     private final boolean isRestrictionMatched() {
 	return restrictionMatched;
     }
 
     /**
-     * 
-     * @param restrictionMatched
-     */
+         * 
+         * @param restrictionMatched
+         */
     private final void setRestrictionMatched(boolean restrictionMatched) {
 	this.restrictionMatched = restrictionMatched;
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     private final ElementList getEntries() {
 	return entries;
     }
 
     /**
-     * 
-     * @param entries
-     */
+         * 
+         * @param entries
+         */
     private final void setEntries(ElementList entries) {
 	this.entries = entries;
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public final ActionSet getActionSet() {
 	return actionSet;
     }
 
     /**
-     * 
-     * @param actionSet
-     */
+         * 
+         * @param actionSet
+         */
     public final void setActionSet(ActionSet actionSet) {
 	this.actionSet = actionSet;
     }
 
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public final ActionSetList getActionSetList() {
 	return actionSetList;
     }
 
     /**
-     * 
-     * @param actionSetList
-     */
+         * 
+         * @param actionSetList
+         */
     public final void setActionSetList(ActionSetList actionSetList) {
 	this.actionSetList = actionSetList;
     }
 
     /**
-     * @return the temp
-     */
+         * @return the temp
+         */
     public final String getTemp() {
 	return temp;
     }
 
     /**
-     * @param temp
-     *                the temp to set
-     */
+         * @param temp
+         *                the temp to set
+         */
     public final void setTemp(String temp) {
 	this.temp = temp;
     }

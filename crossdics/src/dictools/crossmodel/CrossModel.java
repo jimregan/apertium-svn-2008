@@ -37,6 +37,16 @@ public class CrossModel {
          * 
          */
     private CrossActionList crossActions;
+    
+    /**
+     * 
+     */
+    private String fileName;
+    
+    /**
+     * 
+     */
+    private String filePath;
 
     /**
          * 
@@ -111,5 +121,33 @@ public class CrossModel {
 	} catch (final Exception eg) {
 	    eg.printStackTrace();
 	}
+    }
+    
+    /**
+     * 
+     */
+    public final String getFileName() {
+        return this.fileName;
+    }
+    
+    /**
+     * 
+     */
+    public final void setFileName(final String fileName) {
+        this.fileName = fileName;
+    }
+    
+    /**
+     * 
+     */
+    public final String getFilePath() {
+        return this.filePath;
+    }
+    
+    /**
+     * 
+     */
+    public final void setFilePath(final String filePath) {
+       this.filePath = filePath; 
     }
 }

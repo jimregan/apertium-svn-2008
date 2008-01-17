@@ -64,10 +64,10 @@ public class EElement extends Element implements Cloneable,
          * 
          */
     private String c;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String aversion;
 
     /**
@@ -475,7 +475,7 @@ public class EElement extends Element implements Cloneable,
 	if (aversion != null) {
 	    attributes += " aversion=\"" + aversion + "\"";
 	}
-	
+
 	if (comments != null) {
 	    dos.writeBytes(tab(2) + "<!-- \n");
 	    dos.writeBytes(comments);
@@ -1008,11 +1008,11 @@ public class EElement extends Element implements Cloneable,
 	str += "</e>";
 	return str;
     }
-    
+
     /**
-     * 
-     * @return
-     */
+         * 
+         * @return
+         */
     public final String toStringAll() {
 	String str = "";
 	String r = "";
@@ -1073,7 +1073,7 @@ public class EElement extends Element implements Cloneable,
 	    r = " r=\"" + getRestriction() + "\"";
 	}
 	str += "<e" + r + ">";
-	str += this.getLemma();
+	str += getLemma();
 	for (final Element e : children) {
 	    /*
                  * if (e instanceof IElement) { final IElement i = (IElement) e;
@@ -1092,9 +1092,9 @@ public class EElement extends Element implements Cloneable,
 		final String parValue = par.getValue();
 		String[] parts = parValue.toString().split("__");
 		String category = "";
-		for (int i = 0; i < parts.length; i++) {
+		for (String element : parts) {
 		    // System.out.print("(" + parts[i] + ")");
-		    category = parts[i];
+		    category = element;
 		}
 		str += "/" + category;
 	    }
@@ -1259,17 +1259,18 @@ public class EElement extends Element implements Cloneable,
     }
 
     /**
-     * @return the aversion
-     */
+         * @return the aversion
+         */
     public final String getAversion() {
-        return aversion;
+	return aversion;
     }
 
     /**
-     * @param aversion the aversion to set
-     */
+         * @param aversion
+         *                the aversion to set
+         */
     public final void setAversion(String aversion) {
-        this.aversion = aversion;
+	this.aversion = aversion;
     }
 
 }

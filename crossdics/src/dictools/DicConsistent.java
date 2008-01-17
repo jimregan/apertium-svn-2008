@@ -29,6 +29,7 @@ import dics.elements.utils.DicSet;
 import dics.elements.utils.EElementList;
 import dics.elements.utils.EElementMap;
 import dics.elements.utils.Msg;
+import java.io.File;
 
 /**
  * 
@@ -96,6 +97,11 @@ public class DicConsistent {
          * 
          */
     private Msg msg;
+    
+    /**
+     * 
+     */
+    private String outDir = "dix/";
 
     /**
          * 
@@ -119,7 +125,7 @@ public class DicConsistent {
 	differentC = new EElementMap();
 	commonA = new EElementMap();
 	commonC = new EElementMap();
-	setNotCommonSuffix("-not-common.dix");
+	setNotCommonSuffix("not-common-");
     }
 
     /**
@@ -170,11 +176,17 @@ public class DicConsistent {
     private final void buildNotCommonDictionary(final DictionaryElement dic) {
 	DictionaryElement dicNotCommon = new DictionaryElement(dic);
 	String fnDic = dic.getFileName();
+        
+        File file = new File(fnDic);
+        
+        String fileName = file.getName();
+        
 	fnDic = fnDic.replaceAll("\\.dix", "");
 	fnDic = fnDic.replaceAll("\\.metadix", "");
 	fnDic = fnDic.replaceAll("/dics/", "/dix/");
 
-	dicNotCommon.printXML(fnDic + getNotCommonSuffix());
+	//dicNotCommon.printXML(fnDic + getNotCommonSuffix());
+        dicNotCommon.printXML( this.getOutDir() + getNotCommonSuffix() + fileName);
 	dicNotCommon = null;
 
     }
@@ -473,6 +485,20 @@ public class DicConsistent {
          */
     private final void setDicSet(DicSet dicSet) {
 	this.dicSet = dicSet;
+    }
+    
+    /**
+     * 
+     */
+    public final void setOutDir(final String path) {
+        this.outDir = path;
+    }
+    
+    /**
+     * 
+     */
+    public final String getOutDir() {
+        return this.outDir;
     }
 
 }

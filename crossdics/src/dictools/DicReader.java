@@ -20,16 +20,9 @@
 
 package dictools;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import dics.elements.dtd.DictionaryElement;
@@ -41,104 +34,111 @@ import dics.elements.dtd.RElement;
 import dics.elements.dtd.SdefElement;
 import dics.elements.dtd.SdefsElement;
 import dics.elements.dtd.SectionElement;
+import dics.elements.utils.Msg;
 
 /**
  * 
  * @author Enrique Benimeli Bofarull
- *
+ * 
  */
 public class DicReader {
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement dic;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String action;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private boolean urlDic;
-    
+
     /**
-     * 
-     */
+         * 
+         */
     private String url;
-    
+
     /**
-     * 
-     *
-     */
+         * 
+         */
+    private Msg msg;
+
+    /**
+         * 
+         * 
+         */
     public DicReader(final String fileName) {
+	msg = new Msg();
 	DictionaryReader dicReader = new DictionaryReader(fileName);
 	DictionaryElement dic = dicReader.readDic();
 	setDic(dic);
     }
 
     public DicReader() {
-	
+	msg = new Msg();
     }
 
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public void getListOfParadigms() {
-	DictionaryElement dic = this.getDic();
+	DictionaryElement dic = getDic();
 	PardefsElement paradigms = dic.getPardefsElement();
-	
+
 	for (PardefElement paradigm : paradigms.getPardefElements()) {
-	    System.out.println(paradigm.getName());
+	    msg.out(paradigm.getName());
 	}
     }
-    
+
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public void getListOfLemmas() {
 	DictionaryElement dic = getDic();
-	
+
 	int nLemmas = 0;
-	for (SectionElement section: dic.getSections()) {
-	    for( EElement element: section.getEElements()) {
-		if( element.getLemma() != null) {
-		    System.out.println(element.getLemma());
+	for (SectionElement section : dic.getSections()) {
+	    for (EElement element : section.getEElements()) {
+		if (element.getLemma() != null) {
+		    msg.out(element.getLemma());
 		    nLemmas++;
 		}
 	    }
 	}
-	System.err.println("# " + nLemmas + " lemmas");
+	msg.err("# " + nLemmas + " lemmas");
     }
-    
+
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void getDefinitions() {
 	DictionaryElement dic = getDic();
-	
+
 	SdefsElement sdefs = dic.getSdefs();
-	
-	for ( SdefElement sdef: sdefs.getSdefsElements()) {
-	    System.out.println(sdef.getValue());    
+
+	for (SdefElement sdef : sdefs.getSdefsElements()) {
+	    msg.out(sdef.getValue());
 	}
     }
-    
+
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void getPairs() {
 	DictionaryElement dic = getDic();
-	
+
 	int nLemmas = 0;
-	for (SectionElement section: dic.getSections()) {
-	    for( EElement element: section.getEElements()) {
+	for (SectionElement section : dic.getSections()) {
+	    for (EElement element : section.getEElements()) {
 		LElement left = element.getLeft();
 		RElement right = element.getRight();
 
@@ -146,117 +146,117 @@ public class DicReader {
 		String rightValue = right.getValueNoTags();
 
 		if (!leftValue.equals("") && !rightValue.equals("")) {
-		    System.out.println(leftValue + "/" + rightValue);
+		    msg.out(leftValue + "/" + rightValue);
 		}
 		nLemmas++;
 	    }
 	}
-	System.err.println("# " + nLemmas + " entries.");
+	msg.err("# " + nLemmas + " entries.");
     }
-    
+
     /**
-     * 
-     *
-     */
+         * 
+         * 
+         */
     public final void doit() {
 	if (getAction().equals("list-paradigms")) {
 	    getListOfParadigms();
 	}
-	if( getAction().equals("list-lemmas")) {
+	if (getAction().equals("list-lemmas")) {
 	    getListOfLemmas();
 	}
-	if( getAction().equals("list-definitions")) {
+	if (getAction().equals("list-definitions")) {
 	    getDefinitions();
 	}
-	if( getAction().equals("list-pairs")) {
+	if (getAction().equals("list-pairs")) {
 	    getPairs();
 	}
-	
+
     }
-   
 
     /**
-     * @return the dic
-     */
+         * @return the dic
+         */
     public final DictionaryElement getDic() {
-        return dic;
+	return dic;
     }
 
     /**
-     * @param dic the dic to set
-     */
+         * @param dic
+         *                the dic to set
+         */
     public final void setDic(DictionaryElement dic) {
-        this.dic = dic;
+	this.dic = dic;
     }
 
     /**
-     * 
-     * @param fileName
-     */
+         * 
+         * @param fileName
+         */
     public final void setDic(final String fileName) {
 	DictionaryReader dicReader = new DictionaryReader(fileName);
 	DictionaryElement dic = dicReader.readDic();
 	setDic(dic);
     }
 
-
-
     /**
-     * @return the action
-     */
+         * @return the action
+         */
     public final String getAction() {
-        return action;
+	return action;
     }
 
     /**
-     * @param action the action to set
-     */
+         * @param action
+         *                the action to set
+         */
     public final void setAction(String action) {
-        this.action = action;
+	this.action = action;
     }
 
     /**
-     * @return the urlDic
-     */
+         * @return the urlDic
+         */
     public final boolean isUrlDic() {
-        return urlDic;
+	return urlDic;
     }
 
     /**
-     * @param urlDic the urlDic to set
-     */
+         * @param urlDic
+         *                the urlDic to set
+         */
     public final void setUrlDic(boolean urlDic) {
-        this.urlDic = urlDic;
+	this.urlDic = urlDic;
     }
 
     /**
-     * @return the url
-     */
+         * @return the url
+         */
     public final String getUrl() {
-        return url;
+	return url;
     }
 
     /**
-     * @param url the url to set
-     */
+         * @param url
+         *                the url to set
+         */
     public final void setUrl(String url) {
-        this.url = url;
-        try {
-            URL theUrl = new URL(url);
-            //BufferedReader in = new BufferedReader(new InputStreamReader(theUrl.openStream()));
-            InputStream is = theUrl.openStream();
-            DictionaryReader dicReader = new DictionaryReader();
-            dicReader.setUrlDic(true);
-            dicReader.setIs(is);
-            DictionaryElement dic = dicReader.readDic();
-            setDic(dic);
-        } catch(MalformedURLException mfue) {
-          
-        } catch(IOException ioe) {
-
-            
-        }
+	this.url = url;
+	try {
+	    URL theUrl = new URL(url);
+	    InputStream is = theUrl.openStream();
+	    DictionaryReader dicReader = new DictionaryReader();
+	    dicReader.setUrlDic(true);
+	    dicReader.setIs(is);
+	    DictionaryElement dic = dicReader.readDic();
+	    setDic(dic);
+	} catch (MalformedURLException mfue) {
+	    msg.err("Error: URL not well formed");
+	    System.exit(-1);
+	} catch (IOException ioe) {
+	    msg.err("Errr: Input/Output error");
+	    System.exit(-1);
+	}
     }
-
 
 }

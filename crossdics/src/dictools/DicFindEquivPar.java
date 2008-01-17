@@ -43,33 +43,33 @@ import dics.elements.utils.Msg;
 public class DicFindEquivPar {
 
     /**
-     * 
-     */
+         * 
+         */
     private DictionaryElement dic;
 
     /**
-     * 
-     */
+         * 
+         */
     private String outFileName;
 
     /**
-     * 
-     */
+         * 
+         */
     private Msg msg;
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public DicFindEquivPar() {
 	msg = new Msg();
 
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public DicFindEquivPar(final String fileName) {
 	msg = new Msg();
 	DictionaryReader dicReader = new DictionaryReader(fileName);
@@ -78,9 +78,9 @@ public class DicFindEquivPar {
     }
 
     /**
-     * 
-     * 
-     */
+         * 
+         * 
+         */
     public final void findEquivalents() {
 	ArrayList<PardefElement> canBeRemoved = new ArrayList<PardefElement>();
 
@@ -118,9 +118,9 @@ public class DicFindEquivPar {
     }
 
     /**
-     * 
-     * @param equivalents
-     */
+         * 
+         * @param equivalents
+         */
     private final void replaceParadigm(final HashMap<String, String> equivalents) {
 	HashMap<String, Integer> counter = new HashMap<String, Integer>();
 
@@ -143,18 +143,18 @@ public class DicFindEquivPar {
 	msg.err("\nReplacements:");
 	while (it.hasNext()) {
 	    String key = (String) it.next();
-	    Integer iO = (Integer) counter.get(key);
+	    Integer iO = counter.get(key);
 	    msg.err("'" + key + "' has been replaced " + iO + " times.");
 	}
 
     }
 
     /**
-     * 
-     * @param eList
-     * @param equivalents
-     * @param counter
-     */
+         * 
+         * @param eList
+         * @param equivalents
+         * @param counter
+         */
     private final void processElementList(final EElementList eList,
 	    final HashMap<String, String> equivalents,
 	    HashMap<String, Integer> counter) {
@@ -175,10 +175,10 @@ public class DicFindEquivPar {
     }
 
     /**
-     * 
-     * @param counter
-     * @param paradigmName
-     */
+         * 
+         * @param counter
+         * @param paradigmName
+         */
     private final void incrementReplacementCounter(
 	    final HashMap<String, Integer> counter, final String paradigmName) {
 	if (!counter.containsKey(paradigmName)) {
@@ -192,31 +192,31 @@ public class DicFindEquivPar {
     }
 
     /**
-     * @return the dic
-     */
+         * @return the dic
+         */
     private final DictionaryElement getDic() {
 	return dic;
     }
 
     /**
-     * @param dic
-     *                the dic to set
-     */
+         * @param dic
+         *                the dic to set
+         */
     private final void setDic(DictionaryElement dic) {
 	this.dic = dic;
     }
 
     /**
-     * @return the outFileName
-     */
+         * @return the outFileName
+         */
     public final String getOutFileName() {
 	return outFileName;
     }
 
     /**
-     * @param outFileName
-     *                the outFileName to set
-     */
+         * @param outFileName
+         *                the outFileName to set
+         */
     public final void setOutFileName(String outFileName) {
 	this.outFileName = outFileName;
     }

@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import dics.elements.dtd.Element;
-import dics.elements.dtd.SElement;
 import dics.elements.utils.ElementList;
 
 /**
@@ -50,7 +49,6 @@ public class CrossModelFST {
          * 
          */
     public CrossModelFST(final CrossModel crossModel) {
-
 	initialState = new State("");
 	String str;
 	HashMap<String, CrossAction> patterns = new HashMap<String, CrossAction>();
@@ -63,10 +61,8 @@ public class CrossModelFST {
 		patterns.put(str, crossAction);
 		// System.out.println(crossAction.getId() + ": " + str);
 		ActionSet actionSet = crossAction.getActionSet();
-
 		// we add a refernce to the crossAction
 		actionSet.setCrossAction(crossAction);
-
 		add(eList, actionSet);
 	    } else {
 		CrossAction cA = patterns.get(str);
@@ -93,35 +89,15 @@ public class CrossModelFST {
          * @return
          */
     public final ActionSet getActionSet(CrossAction entries) {
-	// HashMap<String,ElementList> tails = new
-	// HashMap<String,ElementList>();
 	HashMap<String, ElementList> tails = null;
 	ElementList eList = entries.processEntries();
-	String str = getElementListString(eList);
-	// System.out.println(str);
 	ActionSetList actionSetList = new ActionSetList();
 	initialState.getActionSet(eList, 0, actionSetList, tails);
-
 	if (actionSetList.size() > 0) {
-	    // System.err.println(str);
-	    // entries.print();
+            System.err.println("Candidates:");
+            actionSetList.print();
 	    ActionSet bestActionSet = actionSetList.getBestActionSet();
-	    // System.err.println("Action: " + bestActionSet.getName());
-
-	    if (bestActionSet.getTails() != null) {
-		// System.err.println("Tails:");
-		Set keySet = bestActionSet.getTails().keySet();
-		Iterator it = keySet.iterator();
-
-		while (it.hasNext()) {
-		    String key = (String) it.next();
-		    ElementList tail = bestActionSet.getTails().get(key);
-		    // System.err.print(key + ": ");
-		    // tail.print();
-		}
-	    }
-
-	    setActionSet(bestActionSet);
+            setActionSet(bestActionSet);
 	    return bestActionSet;
 	} else {
 	    return null;
@@ -136,15 +112,15 @@ public class CrossModelFST {
 	String str = "";
 	for (Element e : eList) {
 	    // only 's' elements are considered as a pattern
-	    //if (e instanceof SElement) {
-	    //String real = ((SElement) e).getTemp();
+	    // if (e instanceof SElement) {
+	    // String real = ((SElement) e).getTemp();
 	    String real = e.getTemp();
 	    if (real != null) {
 		str += "<" + e.getValue() + "/" + real + ">";
 	    } else {
 		str += "<" + e.getValue() + ">";
 	    }
-	    //}
+	    // }
 	}
 	return str;
     }
