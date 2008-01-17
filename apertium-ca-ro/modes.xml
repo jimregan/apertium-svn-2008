@@ -46,4 +46,29 @@
     </pipeline>
   </mode>
 
+  <mode name="ro-ca-anmor" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-ca.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ro-ca-transfer" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ro-ca.prob"/>
+      </program> 
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-ca-ro.ro-ca.t1x"/>
+        <file name="ro-ca.t1x.bin"/>
+        <file name="ro-ca.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
 </modes>
