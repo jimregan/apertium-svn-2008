@@ -1,11 +1,24 @@
 <dictionary>
-  <alphabet>ABCDEFGHILMNOPRSTUabcdefghilmnoprstu</alphabet>
+  <alphabet>ABCDEFGHILMNOPRSTUÀÈÌÒÙÁÉÓabcdefghilmnoprstuàèìòùáéó</alphabet>
 
   <sdefs>
-    <sdef n="n" c="Noun"/>
+    <sdef n="n"     c="Noun"/>
+
+    <sdef n="f"     c="Feminine"/>
+    <sdef n="m"     c="Masculine"/>
+
+    <sdef n="pl"    c="Plural"/>
+    <sdef n="sg"    c="Singular"/>
+
+    <sdef n="nom"   c="Nominative"/>
+    <sdef n="dat"   c="Dative"/>
+    <sdef n="gen"   c="Genitive"/>
   </sdefs>
 
   <pardefs>
+
+    <!-- Mutations -->
+
     <pardef n="initial-b">
       <e r="LR">
         <p>
@@ -487,8 +500,50 @@
       </e>
     </pardef>
 
+    <!-- Nouns -->
+
+    <pardef n="ca/t__n">
+      <e>
+        <p>
+          <l>t</l>
+          <r>t<s n="n"/><s n="sg"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>t</l>
+          <r>t<s n="n"/><s n="sg"/><s n="dat"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>it</l>
+          <r>t<s n="n"/><s n="sg"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>it</l>
+          <r>t<s n="n"/><s n="pl"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>t</l>
+          <r>t<s n="n"/><s n="pl"/><s n="dat"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>t</l>
+          <r>t<s n="n"/><s n="pl"/><s n="gen"/></r>
+        </p>
+      </e>
+
+    </pardef>
+
   </pardefs>
   <section id="main" type="standard">
-
+    <e lm="cat"><par n="initial-c"/><i>a</i><par n="ca/t__n"/></e> 
   </section>
 </dictionary>
