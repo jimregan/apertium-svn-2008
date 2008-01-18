@@ -12,6 +12,7 @@
     <def-cat n="inf_2">
       <cat-item name="inf_inf"/>
     </def-cat>
+
     <def-cat n="ger"> <!-- BCN -->
       <cat-item name="ger"/>
     </def-cat>
@@ -435,18 +436,20 @@
 	<choose>
 	  <when>
 	    <test><!--Mirem si ha deixat de ser 'inf' i ha rebut persona i nombre. Si no és PD tampoc serà ND, en principi -->
-	      <not>
-		<and>
+	      <and>
+		<not>
 		  <equal>
 		    <clip pos="0" part="pers"/>
 		    <lit-tag v="PD"/>
 		  </equal>
+		</not>
+		<not>
 		  <equal>
 		    <clip pos="0" part="temps"/>
 		    <lit-tag v="inf"/>
 		  </equal>
-		</and>
-	      </not>
+		</not>
+	      </and>
 	    </test>      
 	    <out>
 	      <lu>
@@ -470,6 +473,8 @@
     </rule>
 
 
+
+
     <rule comment="CHUNK: INF + 2a paraula">
       <pattern>
 	<pattern-item n="inf_2"/>
@@ -478,18 +483,20 @@
 	<choose>
 	  <when>
 	    <test><!--Mirem si ha deixat de ser 'inf' i ha rebut persona i nombre. Si no és PD tampoc serà ND, en principi -->
-	      <not>
-		<and>
+	      <and>
+		<not>
 		  <equal>
 		    <clip pos="0" part="pers"/>
 		    <lit-tag v="PD"/>
 		  </equal>
+		</not>
+		<not>
 		  <equal>
 		    <clip pos="0" part="temps"/>
 		    <lit-tag v="inf"/>
 		  </equal>
-		</and>
-	      </not>
+		</not>
+	      </and>
 	    </test>      
 	    <out>
 	      <lu>
@@ -531,18 +538,20 @@
 	<choose>
 	  <when>
 	    <test><!--Si no és PD tampoc serà ND, en principi -->
-	      <not>
-		<and>
+	      <and>
+		<not>
 		  <equal>
 		    <clip pos="0" part="pers"/>
 		    <lit-tag v="PD"/>
 		  </equal>
+		</not>
+		<not>
 		  <equal>
 		    <clip pos="0" part="temps"/>
 		    <lit-tag v="ger"/>
 		  </equal>
-		</and>
-	      </not>
+		</not>
+	      </and>
 	    </test>      
 	    <out>
 	      <lu>
@@ -573,18 +582,20 @@
 	<choose>
 	  <when>
 	    <test><!--Si no és PD tampoc serà ND, en principi -->
-	      <not>
-		<and>
+	      <and>
+		<not>
 		  <equal>
 		    <clip pos="0" part="pers"/>
 		    <lit-tag v="PD"/>
 		  </equal>
+		</not>
+		<not>
 		  <equal>
 		    <clip pos="0" part="temps"/>
 		    <lit-tag v="ger"/>
 		  </equal>
-		</and>
-	      </not>
+		</not>
+	      </and>
 	    </test>  
 	    <out>	      
 	      <lu>
@@ -633,18 +644,20 @@
 	<choose>
 	  <when>
 	    <test><!--Si no és PD tampoc serà ND, en principi -->
-	      <not>
-		<and>
+	      <and>
+		<not>
 		  <equal>
 		    <clip pos="0" part="pers"/>
 		    <lit-tag v="PD"/>
 		  </equal>
+		</not>
+		<not>
 		  <equal>
 		    <clip pos="0" part="temps"/>
 		    <lit-tag v="ger"/>
 		  </equal>
-		</and>
-	      </not>
+		</not>
+	      </and>
 	    </test>  
 	    <out>   
 	      <lu>
