@@ -18,4 +18,4 @@ dist: $(FILES) apertium2doc.pdf Makefile
 	gzip -9 -f apertium2-documentation-ca-$(VERSION).tar
 	
 clean: 
-	rm -f *.aux *.bbl *.blg *.dvi *.log *.toc *~
+	rm -f *.aux *.bbl *.blg *.dvi *.log *.toc 
