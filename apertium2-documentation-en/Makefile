@@ -19,3 +19,6 @@ dist: $(FILES) documentation.pdf Makefile
 	rm -Rf apertium-documentation-es-$(VERSION)
 	gzip -9 -f apertium-documentation-es-$(VERSION).tar
 	
+
+clean:
+	rm *.pdf *.log *.blg *.dvi *.aux *.toc *.bbl
